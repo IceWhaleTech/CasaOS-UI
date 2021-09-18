@@ -1,4 +1,4 @@
-# wuji
+# CasaOS-UI
 
 ## Project setup
 ```
