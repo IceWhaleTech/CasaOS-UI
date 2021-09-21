@@ -40,6 +40,7 @@
 
 <script>
 export default {
+  name:'input-group',
   data() {
     return {
       isLoading: false,

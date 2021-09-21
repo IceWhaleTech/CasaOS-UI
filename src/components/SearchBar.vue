@@ -1,3 +1,12 @@
+<!--
+ * @Author: JerryK
+ * @Date: 2021-09-18 21:32:13
+ * @LastEditors: JerryK
+ * @LastEditTime: 2021-09-19 09:23:01
+ * @Description: Top Search bar
+ * @FilePath: \CasaOS-UI\src\components\SearchBar.vue
+-->
+
 <template>
   <b-field position="is-centered " class="search-bar has-text-white">
     <b-input placeholder="Google Search..." v-model="keyText" icon="magnify" icon-right="magnify" icon-right-clickable @icon-right-click="gotoSearch" @keyup.enter.native="gotoSearch" size="is-large" :class="['ovh',isFocus?'fo':'']" expanded @focus="onFocus" @blur="onBlur">
@@ -7,6 +16,7 @@
 
 <script>
 export default {
+  name: "search-bar",
   data() {
     return {
       isFocus: false,
@@ -14,13 +24,27 @@ export default {
     }
   },
   methods: {
+    /**
+     * @description: Handle Focus event
+     * @return {*} void
+     */
     onFocus() {
       this.isFocus = true;
     },
+
+    /**
+     * @description: Handle Blur event
+     * @return {*} void
+     */
     onBlur() {
       if (this.keyText == "")
         this.isFocus = false;
     },
+
+    /**
+     * @description: Pop up a new window and jump to google search
+     * @return {*} void
+     */
     gotoSearch() {
       window.open("https://www.google.com/search?q=" + this.keyText, '_blank')
     }

@@ -1,8 +1,17 @@
-<template>
+<!--
+ * @Author: JerryK
+ * @Date: 2021-09-18 21:32:13
+ * @LastEditors: JerryK
+ * @LastEditTime: 2021-09-18 23:12:57
+ * @Description: App Card item
+ * @FilePath: \CasaOS-UI\src\components\Apps\AppCard.vue
+-->
 
+<template>
   <div class="wuji-card is-flex is-align-items-center is-justify-content-center p-55 app-card" @mouseover="hover = true" @mouseleave="hover = false">
+    <!-- Action Button Start -->
     <div class="action-btn">
-      <b-dropdown aria-role="list" position="is-bottom-left" class="ii" ref="dro" @active-change="getDropState">
+      <b-dropdown aria-role="list" position="is-bottom-left" class="ii" ref="dro" @active-change="setDropState">
         <template #trigger>
           <p role="button">
             <b-icon pack="fas" icon="ellipsis-v" size="is-small">
@@ -19,25 +28,18 @@
               <b-button icon-pack="fas" icon-left="sync" type="is-text" expanded :loading="isRestarting" @click="restartApp"></b-button>
             </div>
             <div class="column is-flex is-justify-content-center is-align-items-center">
-              <b-button icon-pack="fas" icon-left="power-off" type="is-text" expanded @click="toggle(item)" :loading="isLoading" :class="item.state"></b-button>
+              <b-button icon-pack="fas" icon-left="power-off" type="is-text" expanded @click="toggle(item)" :loading="isStarting" :class="item.state"></b-button>
             </div>
           </div>
         </b-dropdown-item>
       </b-dropdown>
     </div>
+    <!-- Action Button End -->
 
+    <!-- Card Content Start -->
     <div class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-3 pb-3">
       <a :target="(item.state == 'running') ?'_blank':'_self'" class="is-flex is-justify-content-center" :href="(item.state == 'running') ? siteUrl(item.port,item.index) :'javascript:void(0)'">
-        <!-- <figure class="image is-72x72 icon-img " :class="item.state | dotClass">
-          <img :src="item.icon">
-        </figure> -->
-        <b-image
-            :src="item.icon"
-            :src-fallback="require('@/assets/img/default.png')"
-            webp-fallback=".jpg"
-            class="is-72x72"
-            :class="item.state | dotClass"
-        ></b-image>
+        <b-image :src="item.icon" :src-fallback="require('@/assets/img/default.png')" webp-fallback=".jpg" class="is-72x72" :class="item.state | dotClass"></b-image>
       </a>
       <p class="mt-4 one-line">
         <a class="one-line" :target="(item.state == 'running') ?'_blank':'_self'" :href="(item.state == 'running') ? siteUrl(item.port,item.index) :'javascript:void(0)'">
@@ -46,17 +48,22 @@
       </p>
 
     </div>
+    <!-- Card Content End -->
+
+    <!-- Loading Bar Start -->
     <b-loading :is-full-page="false" v-model="isUninstalling" :can-cancel="false"></b-loading>
+    <!-- Loading Bar End -->
   </div>
+
 </template>
 
 <script>
 export default {
+  name: "app-card",
   data() {
     return {
       hover: false,
       dropState: false,
-      isLoading: false,
       isUninstalling: false,
       isRestarting: false,
       isStarting: false,
@@ -69,17 +76,30 @@ export default {
       type: Object
     },
   },
-  mounted() {
-    //console.log(this.item);
-  },
   methods: {
+    /**
+     * @description: Create application access link
+     * @param {String} port App access port
+     * @param {String} index App access index page
+     * @return {String}
+     */    
     siteUrl(port, index) {
       return (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${port}${index}` : `http://${document.domain}:${port}${index}`
     },
-    getDropState(e) {
+
+    /**
+     * @description: Set drop-down menu status
+     * @param {Boolean} e
+     * @return {*} void
+     */    
+    setDropState(e) {
       this.dropState = e
     },
-    // Restart Application
+
+    /**
+     * @description: Restart Application
+     * @return {*} void
+     */    
     restartApp() {
       this.isRestarting = true
       this.$api.app.startContainer(this.item.custom_id, { state: "restart" }).then((res) => {
@@ -90,7 +110,11 @@ export default {
         this.isRestarting = false;
       })
     },
-    // Uninstall Application
+
+    /**
+     * @description: Confirm before uninstall
+     * @return {*} void
+     */    
     uninstallConfirm() {
       let _this = this
       this.$buefy.dialog.confirm({
@@ -104,6 +128,11 @@ export default {
         }
       })
     },
+
+    /**
+     * @description: Uninstall app
+     * @return {*} void
+     */    
     uninstallApp() {
       this.isUninstalling = true
       this.$api.app.uninstall(this.item.custom_id).then((res) => {
@@ -114,23 +143,37 @@ export default {
         this.isUninstalling = false;
       })
     },
+
+    /**
+     * @description: Emit the event that the app has been updated
+     * @return {*} void
+     */    
     updateState() {
       this.$emit("updateState")
     },
+
+    /**
+     * @description: Emit the event that the app has been updated with custom_id
+     * @return {*} void
+     */    
     configApp() {
       this.$emit("configApp", this.item.custom_id)
     },
-    // Start or Stop a Container
 
+    /**
+     * @description: Start or Stop a App
+     * @param {Object} item the app info object
+     * @return {*} void
+     */    
     toggle(item) {
-      this.isLoading = true;
+      this.isStarting = true;
       let data = {
         state: item.state == "running" ? "stop" : "start"
       }
       this.$api.app.startContainer(item.custom_id, data).then((res) => {
         console.log(res.data);
         item.state = res.data.data
-        this.isLoading = false
+        this.isStarting = false
         this.updateState()
       })
     },
@@ -143,7 +186,11 @@ export default {
     }
   },
   filters: {
-    // Format Dot Class
+    /**
+     * @description: Format Dot Class
+     * @param {String} state
+     * @return {String}
+     */    
     dotClass(state) {
       return state == 'running' ? 'start' : 'stop'
     },

@@ -1,3 +1,11 @@
+<!--
+ * @Author: JerryK
+ * @Date: 2021-09-18 21:32:13
+ * @LastEditors: JerryK
+ * @LastEditTime: 2021-09-18 23:20:19
+ * @Description: 
+ * @FilePath: \CasaOS-UI\src\components\Suggestion.vue
+-->
 <template>
   <div class="has-text-left ">
     <h1 class="title is-4 mt-6 has-text-white">Suggestions</h1>
@@ -27,6 +35,7 @@
 
 <script>
 export default {
+  name:'suggestion',
   data() {
     return {
       list: []

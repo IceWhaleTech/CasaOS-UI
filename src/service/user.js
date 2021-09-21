@@ -1,10 +1,12 @@
+/*
+ * @Author: JerryK
+ * @Date: 2021-09-18 21:32:13
+ * @LastEditors: JerryK
+ * @LastEditTime: 2021-09-19 09:26:47
+ * @Description: User API
+ * @FilePath: \CasaOS-UI\src\service\user.js
+ */
 import { api } from "./service.js";
-
-/*******************************
- * 
- * User Apis
- * 
- *****************************/
 
 const user = {
     //login

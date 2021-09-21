@@ -1,10 +1,12 @@
+/*
+ * @Author: JerryK
+ * @Date: 2021-09-18 21:32:13
+ * @LastEditors: JerryK
+ * @LastEditTime: 2021-09-19 09:26:50
+ * @Description: Zerotier API
+ * @FilePath: \CasaOS-UI\src\service\zerotier.js
+ */
 import { api } from "./service.js";
-
-/*******************************
- * 
- * Zerotier Apis
- * 
- *****************************/
 
 const zerotier = {
     //Check if Need login to zerotier
@@ -21,7 +23,7 @@ const zerotier = {
     },
     //networklist
     networkLits() {
-        return api.get('/zerotier/list');
+        return api.get('/zerotier/list'); 
     },
     //joinNetwork
     joinNetwork(id) {

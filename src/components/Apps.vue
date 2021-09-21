@@ -1,16 +1,30 @@
+<!--
+ * @Author: JerryK
+ * @Date: 2021-09-18 21:32:13
+ * @LastEditors: JerryK
+ * @LastEditTime: 2021-09-18 23:01:19
+ * @Description: App module
+ * @FilePath: \CasaOS-UI\src\components\Apps.vue
+-->
+
 <template>
   <div class="has-text-left mt-6">
+    <!-- Title Bar Start -->
     <div class="title-bar is-flex is-align-items-center">
       <h1 class="title is-4  has-text-white is-flex-shrink-1">Apps</h1>
       <div class="buttons ">
         <b-button icon-left="plus" type="is-dark" size="is-small" rounded @click="showInstall">New App</b-button>
       </div>
     </div>
+    <!-- Title Bar End -->
+
+    <!-- App List Start -->
     <div class="columns is-variable is-2 is-multiline ">
       <div class="column is-narrow is-3" v-for="(item,index) in appList" :key="'app-'+index">
-        <app-card :item="item" @updateState="updateState" @configApp="showConfigPanel"></app-card>
+        <app-card :item="item" @updateState="getList" @configApp="showConfigPanel"></app-card>
       </div>
     </div>
+    <!-- Title Bar End -->
   </div>
 </template>
 
@@ -31,7 +45,21 @@ export default {
     this.getList();
   },
   methods: {
-    // Show Install Panel Programmatic
+
+    /**
+     * @description: Fetch the list of installed apps
+     * @return {*} void
+     */
+    getList() {
+      this.$api.app.myAppList().then(res => {
+        this.appList = res.data.data;
+      })
+    },
+
+    /**
+     * @description: Show Install Panel Programmatic
+     * @return {*} void
+     */
     showInstall() {
       this.$api.app.appConfig().then(res => {
         if (res.data.success == 200) {
@@ -51,21 +79,18 @@ export default {
             },
             props: {
               id: "0",
-              state:"install",
+              state: "install",
               configData: res.data.data
             }
           })
         }
       })
     },
-    getList() {
-      this.$api.app.myAppList().then(res => {
-        this.appList = res.data.data;
-      })
-    },
-    updateState() {
-      this.getList()
-    },
+
+    /**
+     * @description: Show Settings Panel Programmatic
+     * @return {*} void
+     */
     showConfigPanel(id) {
       this.$api.app.getContainerSettingdata(id).then(ret => {
         this.$api.app.appConfig().then(res => {
@@ -86,7 +111,7 @@ export default {
               },
               props: {
                 id: id,
-                state:"update",
+                state: "update",
                 configData: res.data.data,
                 initDatas: ret.data.data
               }
@@ -94,13 +119,8 @@ export default {
           }
         })
       })
-    },
-
-    // Format External Link
-    siteUrl(port, index) {
-      return (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${port}${index}` : `http://${document.domain}:${port}${index}`
-    },
-  },
+    }
+  }
 }
 </script>
 

@@ -1,3 +1,11 @@
+<!--
+ * @Author: JerryK
+ * @Date: 2021-09-18 21:32:13
+ * @LastEditors: JerryK
+ * @LastEditTime: 2021-09-19 09:23:49
+ * @Description: 
+ * @FilePath: \CasaOS-UI\src\components\Shortcuts.vue
+-->
 <template>
   <div class="has-text-left mt-6">
     <div class="title-bar is-flex is-align-items-center">
@@ -14,7 +22,7 @@
           <figure class="image is-32x32 simg">
             <img :src="require('@/assets/img/icon.png')">
           </figure>
-          <p class="ml-4 flex1 one-line">LindarrLindarrLindarrLindarrLindarrLindarr</p>
+          <p class="ml-4 flex1 one-line">Test</p>
           <div class="action-btn1">
             <b-dropdown aria-role="list" position="is-bottom-left" append-to-body>
               <template #trigger>
@@ -39,6 +47,7 @@
 
 <script>
 export default {
+  name: 'shortcuts'
 
 }
 </script>

@@ -1,10 +1,12 @@
+/*
+ * @Author: JerryK
+ * @Date: 2021-09-18 21:32:13
+ * @LastEditors: JerryK
+ * @LastEditTime: 2021-09-19 09:26:38
+ * @Description: System HardWare Info API
+ * @FilePath: \CasaOS-UI\src\service\info.js
+ */
 import { api } from "./service.js";
-
-/*******************************
- * 
- * System HardWare Info Apis
- * 
- *****************************/
 
 const info = {
     //CPU info
@@ -29,7 +31,7 @@ const info = {
     },
     // System Info
     systemInfo() {
-        return api.get('/zima/sysinfo');
+        return api.get('/zima/sysinfo'); 
     }
 }
 export default info;

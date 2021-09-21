@@ -1,3 +1,12 @@
+<!--
+ * @Author: JerryK
+ * @Date: 2021-09-18 21:32:13
+ * @LastEditors: JerryK
+ * @LastEditTime: 2021-09-18 23:13:58
+ * @Description: The left bottom brand bar
+ * @FilePath: \CasaOS-UI\src\components\BrandBar.vue
+-->
+
 <template>
   <div class="brand-bar is-flex is-align-items-center has-text-white">
     <figure class="image is-32x32">
@@ -10,7 +19,7 @@
 
 <script>
 export default {
-
+  name: "brand-bar"
 }
 </script>
 

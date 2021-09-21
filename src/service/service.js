@@ -1,3 +1,11 @@
+/*
+ * @Author: JerryK
+ * @Date: 2021-09-18 21:32:13
+ * @LastEditors: JerryK
+ * @LastEditTime: 2021-09-19 09:24:54
+ * @Description: 
+ * @FilePath: \CasaOS-UI\src\service\service.js
+ */
 import axios from 'axios'
 import qs from 'qs'
 import router from '@/router'
@@ -91,4 +99,4 @@ const api = {
         return instance.delete(url, { params: data })
     }
 }
-export { api }
+export { api } 

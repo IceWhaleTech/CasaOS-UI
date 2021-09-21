@@ -49,9 +49,9 @@
 </template>
 
 <script>
-
+ 
 export default {
-
+  name: 'ports',
   data() {
     return {
       isLoading: false,

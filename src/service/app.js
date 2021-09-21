@@ -1,10 +1,12 @@
+/*
+ * @Author: JerryK
+ * @Date: 2021-09-18 21:32:13
+ * @LastEditors: JerryK
+ * @LastEditTime: 2021-09-19 09:26:20
+ * @Description: Application API
+ * @FilePath: \CasaOS-UI\src\service\app.js
+ */
 import { api } from "./service.js";
-
-/*******************************
- * 
- * App And App Store
- * 
- *****************************/
 
 const app = {
     //Get Install Info
@@ -24,7 +26,7 @@ const app = {
         return api.get("/app/category");
     },
     //Check Port
-    checkPort(port, type) {
+    checkPort(port, type) { 
         let data = {
             type: type
         }

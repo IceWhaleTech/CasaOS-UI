@@ -1,3 +1,12 @@
+<!--
+ * @Author: JerryK
+ * @Date: 2021-09-18 21:32:13
+ * @LastEditors: JerryK
+ * @LastEditTime: 2021-09-18 22:55:43
+ * @Description: Install Panel of Docker
+ * @FilePath: \CasaOS-UI\src\components\Panel.vue
+-->
+
 <template>
   <div class="modal-card">
     <!-- Modal-Card Header Start -->
@@ -6,7 +15,6 @@
         <h3 class="title is-4 has-text-weight-normal">Create a new App manually</h3>
       </div>
       <b-button icon-left="file-import" type="is-dark" size="is-small" rounded @click="showImportPanel" v-if="currentSlide == 1 && state == 'install'">Import</b-button>
-
     </header>
     <!-- Modal-Card Header End -->
     <!-- Modal-Card Body Start -->
@@ -85,6 +93,7 @@
 
     </section>
     <!-- Modal-Card Body End -->
+
     <!-- Modal-Card Footer Start-->
     <footer class="modal-card-foot is-flex is-align-items-center">
       <div class="flex1"></div>
@@ -94,7 +103,6 @@
         <b-button v-if="currentSlide == 1 && state == 'install'" label="Install" type="is-dark" @click="installApp()" rounded />
         <b-button v-if="currentSlide == 1 && state == 'update'" label="Update" type="is-dark" @click="updateApp()" rounded />
         <b-button v-if="currentSlide == 2" :label="cancelButtonText" type="is-dark" @click="$emit('close')" rounded />
-
       </div>
     </footer>
     <!-- Modal-Card Footer End -->
@@ -102,15 +110,26 @@
 </template>
 
 <script>
+import axios from 'axios'
 import InputGroup from './forms/InputGroup.vue';
 import Ports from './forms/Ports.vue'
 import ImportPanel from './forms/ImportPanel.vue'
+import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
+import VueSlider from 'vue-slider-component'
+import 'vue-slider-component/theme/default.css'
 import { ValidationObserver, ValidationProvider } from "vee-validate";
-import wait from 'wait'
+import "@/plugins/vee-validate";
 import debounce from 'lodash/debounce'
-import axios from 'axios'
+
 export default {
-  components: { Ports, InputGroup, ValidationObserver, ValidationProvider },
+  components: {
+    Ports,
+    InputGroup,
+    ValidationObserver,
+    ValidationProvider,
+    LottieAnimation,
+    VueSlider
+  },
   data() {
     return {
       timer: 0,
@@ -186,6 +205,7 @@ export default {
     this.baseUrl = `${window.location.protocol}//${document.domain}:`;
   },
   computed: {
+    
     showPorts() {
       if (this.initData.network_model.indexOf("macvlan") > -1) {
         return false
@@ -202,6 +222,12 @@ export default {
     }
   },
   methods: {
+
+    /**
+     * @description: Process the datas before submit
+     * @param {*}
+     * @return {*} void
+     */    
     processData() {
       // GET port map and index
       if (this.webui != "") {
@@ -213,6 +239,12 @@ export default {
       let model = this.initData.network_model.split("-");
       this.initData.network_model = model[0]
     },
+
+    /**
+     * @description: Array deduplication
+     * @param {Array} arr
+     * @return {Array}
+     */    
     unique(arr) {
       for (var i = 0; i < arr.length; i++) {
         for (var j = i + 1; j < arr.length; j++) {
@@ -224,14 +256,31 @@ export default {
       }
       return arr;
     },
+
+    /**
+     * @description: Back to prev Step
+     * @param {*}
+     * @return {*} void
+     */    
     prevStep() {
       this.currentSlide--;
     },
+
+    /**
+     * @description: Validate form async
+     * @param {Object} ref ref of component
+     * @return {Boolean} 
+     */    
     async checkStep(ref) {
       let isValid = await ref.validate()
       return isValid
     },
 
+    /**
+     * @description: Submit datas after valid
+     * @param {*}
+     * @return {*} void
+     */    
     installApp() {
       this.checkStep(this.$refs.ob1).then(val => {
         if (val) {
@@ -242,7 +291,6 @@ export default {
             if (res.data.success == 200) {
               this.currentSlide = 2;
               this.cancelButtonText = "Continue in background"
-
               this.checkInstallState(res.data.data)
             } else {
               //this.currentSlide = 1;
@@ -254,13 +302,24 @@ export default {
           })
         }
       })
-
     },
+
+    /**
+     * @description: Check the installation process every 250 milliseconds
+     * @param {String} appId
+     * @return {*} void
+     */    
     checkInstallState(appId) {
       this.timer = setInterval(() => {
         this.updateInstallState(appId)
       }, 250)
     },
+
+    /**
+     * @description: Update the installation status to the UI
+     * @param {String} appId
+     * @return {*} void
+     */    
     updateInstallState(appId) {
       this.$api.app.state(appId).then((res) => {
         let resData = res.data.data;
@@ -282,7 +341,6 @@ export default {
           } catch (error) {
             console.log(error);
           }
-          //
         } else {
           this.installText = resData.message
         }
@@ -290,20 +348,23 @@ export default {
         if (resData.speed == 100 || this.errorType == 3) {
           clearInterval(this.timer)
         }
+        let _this = this
         if (resData.speed == 100) {
-          (async () => {
-            await wait(1000);
-            this.$emit('updateState')
-            this.$emit('close')
-          })()
+          setTimeout(() => {
+            _this.$emit('updateState')
+            _this.$emit('close')
+          }, 1000)
         }
       })
     },
-    //Update
+
+    /**
+     * @description: Save edit update
+     * @return {*} void
+     */    
     updateApp() {
       this.processData();
       this.isLoading = true;
-
       this.$api.app.updateContainerSetting(this.id, this.initData).then((res) => {
         if (res.data.success == 200) {
           this.isLoading = false;
@@ -317,6 +378,11 @@ export default {
         this.$emit('close')
       })
     },
+
+    /**
+     * @description: Show import panel
+     * @return {*} void
+     */    
     showImportPanel() {
       this.$buefy.modal.open({
         parent: this,
@@ -343,6 +409,11 @@ export default {
       })
     },
 
+    /**
+     * @description: Get remote synchronization information
+     * @param {*} function
+     * @return {*} void
+     */    
     getAsyncData: debounce(function (name) {
       if (!name.length) {
         this.data = []

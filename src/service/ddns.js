@@ -1,10 +1,12 @@
+/*
+ * @Author: JerryK
+ * @Date: 2021-09-18 21:32:13
+ * @LastEditors: JerryK
+ * @LastEditTime: 2021-09-19 09:26:08
+ * @Description: DDNS Service API
+ * @FilePath: \CasaOS-UI\src\service\ddns.js
+ */
 import { api } from "./service.js";
-
-/*******************************
- * 
- * DDNS Service
- * 
- *****************************/
 
 const ddns = {
     //Add New DDNS
@@ -27,7 +29,7 @@ const ddns = {
     get_ipv4() {
         return api.get('/ddns/ip');
     },
-    // Ping Host
+    // Ping Host 
     ping(host) {
         return api.get('/ddns/ping/' + host);
     }

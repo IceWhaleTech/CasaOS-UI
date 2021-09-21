@@ -1,17 +1,19 @@
+/*
+ * @Author: JerryK
+ * @Date: 2021-09-18 21:32:13
+ * @LastEditors: JerryK
+ * @LastEditTime: 2021-09-19 09:26:02
+ * @Description: Disk API
+ * @FilePath: \CasaOS-UI\src\service\disk.js
+ */
 import { api } from "./service.js";
-
-/*******************************
- * 
- * Disk Apis
- * 
- *****************************/
 
 const disk = {
     // get Path list
     diskInfo() {
         return api.get('/disk/info');
     },
-    diskList(){
+    diskList() {
         return api.get('/disk/list');
     },
     // System path

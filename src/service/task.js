@@ -1,10 +1,12 @@
+/*
+ * @Author: JerryK
+ * @Date: 2021-09-18 21:32:13
+ * @LastEditors: JerryK
+ * @LastEditTime: 2021-09-19 09:26:45
+ * @Description: Task API
+ * @FilePath: \CasaOS-UI\src\service\task.js
+ */
 import { api } from "./service.js";
-
-/*******************************
- * 
- * Task
- * 
- *****************************/
 
 const task = {
     //List
@@ -16,4 +18,4 @@ const task = {
         return api.put(`/task/completion/${id}`);
     }
 }
-export default task;
+export default task; 

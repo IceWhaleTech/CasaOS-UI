@@ -1,3 +1,11 @@
+/*
+ * @Author: JerryK
+ * @Date: 2021-09-18 21:32:13
+ * @LastEditors: JerryK
+ * @LastEditTime: 2021-09-18 23:22:43
+ * @Description: 
+ * @FilePath: \CasaOS-UI\src\store\index.js
+ */
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from "vuex-persistedstate";
@@ -9,13 +17,13 @@ export default new Vuex.Store({
   state: {
     token: "",
     devIp: "192.168.2.217",
-    serviceError:false
+    serviceError: false
   },
   mutations: {
     setToken(state, val) {
       state.token = val
     },
-    setServiceError(state,val){
+    setServiceError(state, val) {
       state.serviceError = val
     }
   },
