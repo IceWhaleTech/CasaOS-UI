@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-09-18 22:55:43
+ * @LastEditTime: 2021-09-22 14:18:44
  * @Description: Install Panel of Docker
- * @FilePath: \CasaOS-UI\src\components\Panel.vue
+ * @FilePath: /wuji/src/components/Panel.vue
 -->
 
 <template>
@@ -86,7 +86,7 @@
       </section>
       <section v-show="currentSlide == 2">
         <div class="installing-warpper">
-          <lottie-animation path="ani/52692-rocket-launching.json" :autoPlay="true" :width="200" :height="200"></lottie-animation>
+          <lottie-animation path="img/ani/rocket-launching.json" :autoPlay="true" :width="200" :height="200"></lottie-animation>
           <h3 class="title is-6 has-text-centered" :class="{'has-text-danger':errorType == 3,'has-text-black':errorType != 3}" v-html="installText"></h3>
         </div>
       </section>
@@ -147,6 +147,7 @@ export default {
       networkModes: [],
       installPercent: 0,
       installText: "",
+
       initData: {
         port_map: "",
         cpu_shares: 10,
@@ -178,11 +179,17 @@ export default {
   },
 
   created() {
+    //If it is edit, Init data
     if (this.initDatas != undefined) {
       this.initData = this.initDatas
       this.webui = this.initDatas.port_map + this.initDatas.index
     }
+
+    //Get Max memory info form device
     this.totalMemory = Math.floor(this.configData.memory.total / 1048576);
+    this.initData.memory = this.totalMemory
+
+    //Handling network types
     this.tempNetworks = this.configData.networks;
     this.networkModes = this.unique(this.tempNetworks.map(item => {
       return item.driver
@@ -195,17 +202,20 @@ export default {
       })
       return tempitem
     })
+
     let gg = this.tempNetworks.filter(item => {
       if (item.driver == "bridge") {
         return item
       }
     })
-    this.initData.memory = this.totalMemory
+
     this.initData.network_model = gg[0].id
+
+    // Set Front-end base url
     this.baseUrl = `${window.location.protocol}//${document.domain}:`;
   },
   computed: {
-    
+
     showPorts() {
       if (this.initData.network_model.indexOf("macvlan") > -1) {
         return false
@@ -227,7 +237,7 @@ export default {
      * @description: Process the datas before submit
      * @param {*}
      * @return {*} void
-     */    
+     */
     processData() {
       // GET port map and index
       if (this.webui != "") {
@@ -244,7 +254,7 @@ export default {
      * @description: Array deduplication
      * @param {Array} arr
      * @return {Array}
-     */    
+     */
     unique(arr) {
       for (var i = 0; i < arr.length; i++) {
         for (var j = i + 1; j < arr.length; j++) {
@@ -261,7 +271,7 @@ export default {
      * @description: Back to prev Step
      * @param {*}
      * @return {*} void
-     */    
+     */
     prevStep() {
       this.currentSlide--;
     },
@@ -270,7 +280,7 @@ export default {
      * @description: Validate form async
      * @param {Object} ref ref of component
      * @return {Boolean} 
-     */    
+     */
     async checkStep(ref) {
       let isValid = await ref.validate()
       return isValid
@@ -280,7 +290,7 @@ export default {
      * @description: Submit datas after valid
      * @param {*}
      * @return {*} void
-     */    
+     */
     installApp() {
       this.checkStep(this.$refs.ob1).then(val => {
         if (val) {
@@ -308,7 +318,7 @@ export default {
      * @description: Check the installation process every 250 milliseconds
      * @param {String} appId
      * @return {*} void
-     */    
+     */
     checkInstallState(appId) {
       this.timer = setInterval(() => {
         this.updateInstallState(appId)
@@ -319,7 +329,7 @@ export default {
      * @description: Update the installation status to the UI
      * @param {String} appId
      * @return {*} void
-     */    
+     */
     updateInstallState(appId) {
       this.$api.app.state(appId).then((res) => {
         let resData = res.data.data;
@@ -361,7 +371,7 @@ export default {
     /**
      * @description: Save edit update
      * @return {*} void
-     */    
+     */
     updateApp() {
       this.processData();
       this.isLoading = true;
@@ -382,7 +392,7 @@ export default {
     /**
      * @description: Show import panel
      * @return {*} void
-     */    
+     */
     showImportPanel() {
       this.$buefy.modal.open({
         parent: this,
@@ -404,7 +414,8 @@ export default {
           }
         },
         props: {
-          initData: this.initData
+          initData: this.initData,
+          netWorks: this.networks
         }
       })
     },
@@ -413,7 +424,7 @@ export default {
      * @description: Get remote synchronization information
      * @param {*} function
      * @return {*} void
-     */    
+     */
     getAsyncData: debounce(function (name) {
       if (!name.length) {
         this.data = []

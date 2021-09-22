@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-09-19 09:24:54
+ * @LastEditTime: 2021-09-22 14:12:28
  * @Description: 
- * @FilePath: \CasaOS-UI\src\service\service.js
+ * @FilePath: /wuji/src/service/service.js
  */
 import axios from 'axios'
 import qs from 'qs'
@@ -14,9 +14,9 @@ import store from '@/store'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 axios.defaults.withCredentials = false;
 if (process.env.NODE_ENV === "'dev'") {
-    axios.defaults.baseURL = 'http://192.168.2.217:8089/v1'
+    axios.defaults.baseURL = `http://${store.state.devIp}/v1`
 } else {
-    axios.defaults.baseURL = document.location.protocol + "//" + document.domain + ":" + window.g.PORT + "/v1"
+    axios.defaults.baseURL = `${document.location.protocol}//${document.location.host}/v1`
 }
 
 //Create a axios instance, And set timeout to 30s
@@ -60,14 +60,14 @@ instance.interceptors.response.use(response => {
                 })
                 break;
             case 404:
-                store.commit('setServiceError',true);
+                store.commit('setServiceError', true);
                 break;
             case 500:
                 break;
         }
     } else {
-        
-        store.commit('setServiceError',true);
+
+        store.commit('setServiceError', true);
     }
     return Promise.reject(error)
 })
@@ -99,4 +99,4 @@ const api = {
         return instance.delete(url, { params: data })
     }
 }
-export { api } 
+export { api }

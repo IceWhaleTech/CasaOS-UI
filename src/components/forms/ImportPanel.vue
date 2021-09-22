@@ -9,7 +9,6 @@
     <!-- Modal-Card Header End -->
     <!-- Modal-Card Body Start -->
     <section class="modal-card-body">
-
       <b-field label="Command Line" :type="{ 'is-danger': parseError}" :message="errors">
         <b-input maxlength="800" type="textarea" class="import-area" v-model="dockerCliCommands"></b-input>
       </b-field>
@@ -38,9 +37,19 @@ export default {
     }
   },
   props: {
-    initData: Object
+    initData: Object,
+    netWorks: Array
+  },
+  created() {
+    console.log(this.netWorks);
   },
   methods: {
+
+    /**
+     * @description: Emit Event to tell parent Update
+     * @param {*}
+     * @return {*} void
+     */
     emitSubmit() {
       if (this.parseCli()) {
         this.errors = ""
@@ -52,11 +61,15 @@ export default {
       }
 
     },
-    // Parse Import Docker Cli Commands
-    // Return True/False
+
+    /**
+     * @description: Parse Import Docker Cli Commands
+     * @return {Boolean} 
+     */
     parseCli() {
-      const formattedInput = this.dockerCliCommands.replace(/\<[^\>]*\>/g, ' ').trim();
+      const formattedInput = this.dockerCliCommands.replace(/\<[^\>]*\>/g, 'Custom_data').replace(/[\r\n]/g, "").replace(/\\/g, "\\ ").trim();
       const parsedInput = parser(formattedInput)
+      console.log(parsedInput);
       const { _: command, ...params } = parsedInput;
       if (command[0] !== 'docker' || (command[1] !== 'run' && command[1] !== 'create')) {
         return false
@@ -96,8 +109,21 @@ export default {
             host: ii[0]
           }
         })
+
+        //Network
+        if (parsedInput.network != undefined) {
+          let network = (parsedInput.network == 'physical') ? 'macvlan' : parsedInput.network;
+          let seletNetworks = this.netWorks.filter(item => {
+            if (item.driver == network) {
+              return true
+            }
+          })
+          if (seletNetworks.length > 0) {
+            this.initData.network_model = seletNetworks[0].networks[0].id;
+          }
+        }
+
         //Image
-        
         this.initData.image = [...command].pop()
         //Label
         if (parsedInput.name != undefined) {
@@ -110,6 +136,12 @@ export default {
         return true
       }
     },
+
+    /**
+     * @description: Make String to Array
+     * @param {*}
+     * @return {Array}
+     */
     makeArray(foo) {
       let newArray = (typeof (foo) == "string") ? [foo] : foo
       return (newArray == undefined) ? [] : newArray
