@@ -1,7 +1,7 @@
 <template>
   <div class="modal-card">
     <!-- Modal-Card Header Start -->
-    <header class="modal-card-head">
+    <header class="modal-card-head"> 
       <div class="flex1">
         <h3 class="title is-4 has-text-weight-normal">Import From Docker CLI</h3>
       </div>

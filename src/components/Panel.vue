@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-09-22 14:18:44
+ * @LastEditTime: 2021-09-22 16:27:00
  * @Description: Install Panel of Docker
- * @FilePath: /wuji/src/components/Panel.vue
+ * @FilePath: /CasaOS-UI/src/components/Panel.vue
 -->
 
 <template>
@@ -86,7 +86,7 @@
       </section>
       <section v-show="currentSlide == 2">
         <div class="installing-warpper">
-          <lottie-animation path="img/ani/rocket-launching.json" :autoPlay="true" :width="200" :height="200"></lottie-animation>
+          <lottie-animation path="./ui/img/ani/rocket-launching.json" :autoPlay="true" :width="200" :height="200"></lottie-animation>
           <h3 class="title is-6 has-text-centered" :class="{'has-text-danger':errorType == 3,'has-text-black':errorType != 3}" v-html="installText"></h3>
         </div>
       </section>
