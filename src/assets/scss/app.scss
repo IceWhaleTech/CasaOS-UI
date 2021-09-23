@@ -63,9 +63,47 @@ html {
   position: relative;
   z-index: 10;
 
-  height: 4rem;
-  background: rgba(255, 255, 255, 0.72);
+  height: 3rem;
+  background: rgba(255, 255, 255, 0.22);
   backdrop-filter: blur(180.282px);
+  .navbar-brand {
+    .dropdown-menu {
+      margin-top: 0.5rem;
+      min-width: 20rem;
+      .dropdown-content {
+        .dropdown-item {
+          padding: 1.25rem;
+          text-align: left;
+          .item {
+            height: 2rem;
+          }
+        }
+      }
+    }
+  }
+  .field {
+    line-height: 1rem;
+  }
+  .switch {
+    &.is-flex-direction-row-reverse {
+      .control-label {
+        padding-left: 0;
+        padding-right: calc(0.75em - 1px);
+      }
+    }
+  }
+  .update-container {
+    .button.is-rounded {
+      border-radius: 9999px !important;
+      padding-left: calc(1em + 0.25em);
+      padding-right: calc(1em + 0.25em);
+    }
+  }
+  .button{
+    &.is-small{
+      height: 2em;
+    }
+  }
 }
 
 .brand-bar {
@@ -140,7 +178,6 @@ html {
 .pagination-link,
 .pagination-ellipsis {
   &:focus {
-    border: 0;
     box-shadow: none;
   }
 }
@@ -166,7 +203,7 @@ html {
   padding: 1.5rem;
   color: $white;
   position: relative;
-  
+
   .info {
     flex: 1;
     margin-right: 1rem;
@@ -195,7 +232,7 @@ html {
       margin: 0 auto;
     }
   }
-  .b-image-wrapper{
+  .b-image-wrapper {
     position: relative;
     display: flex;
     align-items: center;
@@ -261,53 +298,54 @@ html {
     margin-bottom: 0;
   }
 }
+.ii {
+  .dropdown-menu {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: $backDropBlur;
+    border-radius: $backDropBorderRadius;
+    overflow: hidden;
+    padding-top: 0;
 
-.dropdown-menu {
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: $backDropBlur;
-  border-radius: $backDropBorderRadius;
-  overflow: hidden;
-  padding-top: 0;
-
-  .dropdown-content {
-    background: none;
-    padding: 0;
-    .button {
-      border-radius: 0;
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
-      &.is-text {
-        text-decoration: none;
-        justify-content: flex-start;
-        outline: none;
-        transition: all 0.2s;
-        border: none !important;
-        &.running {
-          color: #779e2a !important;
+    .dropdown-content {
+      background: none;
+      padding: 0;
+      .button {
+        border-radius: 0;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        &.is-text {
+          text-decoration: none;
+          justify-content: flex-start;
+          outline: none;
+          transition: all 0.2s;
+          border: none !important;
+          &.running {
+            color: #779e2a !important;
+          }
+          &.exited {
+            color: #ff1616 !important;
+          }
         }
-        &.exited {
-          color: #ff1616 !important;
+        &:active {
+          background: none;
+          outline: none;
+        }
+        &:focus {
+          background: none;
+          box-shadow: none;
+          outline: none;
         }
       }
-      &:active {
-        background: none;
-        outline: none;
-      }
-      &:focus {
-        background: none;
-        box-shadow: none;
-        outline: none;
-      }
-    }
-    .bbor {
-      overflow: hidden;
-      border-top: #2c3e50 1px solid;
-      .is-text {
-        text-decoration: none;
-        justify-content: center !important ;
-      }
-      .column:first-child {
-        border-right: #2c3e50 1px solid;
+      .bbor {
+        overflow: hidden;
+        border-top: #2c3e50 1px solid;
+        .is-text {
+          text-decoration: none;
+          justify-content: center !important ;
+        }
+        .column:first-child {
+          border-right: #2c3e50 1px solid;
+        }
       }
     }
   }
@@ -347,7 +385,6 @@ html {
       border: 1px solid #cfcfcf !important;
       border-radius: 4px;
       &:focus {
-        border: 0;
         box-shadow: none;
       }
     }
@@ -384,8 +421,8 @@ html {
   min-height: 16em;
 }
 
-.app-card{
-  .loading-background{
+.app-card {
+  .loading-background {
     background: none !important;
     border-radius: $backDropBorderRadius;
   }

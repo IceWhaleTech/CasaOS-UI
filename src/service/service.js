@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-09-22 16:28:43
+ * @LastEditTime: 2021-09-23 17:26:31
  * @Description: 
  * @FilePath: /CasaOS-UI/src/service/service.js
  */
@@ -24,6 +24,19 @@ const instance = axios.create({
     timeout: 10000,
 });
 
+
+window.isRefreshing = false
+
+let refreshSubscribers = []
+
+function subscribeTokenRefresh(cb) {
+    refreshSubscribers.push(cb)
+}
+
+function onRrefreshed(token) {
+    refreshSubscribers.map(cb => cb(token))
+}
+
 // Request interceptors
 instance.interceptors.request.use((config) => {
     let token = ''
@@ -33,11 +46,34 @@ instance.interceptors.request.use((config) => {
     if (localStorage.getItem("user_token")) {
         token = localStorage.getItem("user_token")
     }
+    config.headers.Authorization = token
+    if (token === "" && config.url !== "user/login") {
+        if (!window.isRefreshing) {
+            window.isRefreshing = true;
+            axios.post('user/login', qs.stringify({
+                username: "admin",
+                pwd: "admin"
+            })).then(res => {
+                token = res.data.data;
+                store.commit('setToken', token)
+                localStorage.setItem("user_token", token)
+                onRrefreshed(token);
+            })
+        }
+        let retry = new Promise((resolve) => {
+            /* (token) => {...}这个函数就是回调函数 */
+            subscribeTokenRefresh((token) => {
+                config.headers.Authorization = token
+                /* 将请求挂起 */
+                resolve(config)
+            })
+        })
+        return retry
+    } else {
+        return config;
+    }
 
-    config.headers.Authorization = 'Bearer ' + token
-    store.commit('setToken', token)
-    //console.log("请求拦截", config);
-    return config;
+
 }, (error) => {
     // Do something with request error
     return Promise.reject(error)
@@ -78,7 +114,7 @@ const api = {
         return instance.get(url, { params: data })
     },
     post(url, data) {
-        let newData = (url.indexOf("install") > 0) ? JSON.stringify(data) : qs.stringify(data)
+        let newData = (url.indexOf("install") > 0 || url.indexOf("sys") > 0) ? JSON.stringify(data) : qs.stringify(data)
         if (url.indexOf("install") > 0) {
             axios.defaults.headers.post['Content-Type'] = 'application/json';
         } else {

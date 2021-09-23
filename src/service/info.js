@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-09-19 09:26:38
+ * @LastEditTime: 2021-09-23 17:41:01
  * @Description: System HardWare Info API
- * @FilePath: \CasaOS-UI\src\service\info.js
+ * @FilePath: /CasaOS-UI/src/service/info.js
  */
 import { api } from "./service.js";
 
@@ -31,7 +31,23 @@ const info = {
     },
     // System Info
     systemInfo() {
-        return api.get('/zima/sysinfo'); 
+        return api.get('/zima/sysinfo');
+    },
+    //Get CasaOS Config
+    systemConfig() {
+        return api.get('/sys/config')
+    },
+    //Save CasaOs Config
+    saveSystemConfig(data) {
+        return api.post('/sys/config', data)
+    },
+    // Check Verison
+    checkVersion() {
+        return api.get('/sys/check');
+    },
+    //Update System
+    updateSystem(){
+        return api.post('/sys/update');
     }
 }
 export default info;
