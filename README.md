@@ -2,13 +2,13 @@
  * @Author: JerryK
  * @Date: 2021-09-22 14:24:43
  * @LastEditors: JerryK
- * @LastEditTime: 2021-09-22 14:44:31
+ * @LastEditTime: 2021-09-26 19:10:59
  * @Description: 
  * @FilePath: /CasaOS-UI/README.md
 -->
 # CasaOS-UI
 
-The front-end of CasaOs,build with VueJS
+The front-end of CasaOS,build with VueJS
 
 ## Project setup
 ```
