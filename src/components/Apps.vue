@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-09-18 23:01:19
+ * @LastEditTime: 2021-09-26 18:48:27
  * @Description: App module
- * @FilePath: \CasaOS-UI\src\components\Apps.vue
+ * @FilePath: /CasaOS-UI/src/components/Apps.vue
 -->
 
 <template>
@@ -13,7 +13,7 @@
     <div class="title-bar is-flex is-align-items-center">
       <h1 class="title is-4  has-text-white is-flex-shrink-1">Apps</h1>
       <div class="buttons ">
-        <b-button icon-left="plus" type="is-dark" size="is-small" rounded @click="showInstall">New App</b-button>
+        <b-button id="v-step-0" icon-left="plus" type="is-dark" size="is-small" rounded @click="showInstall">New App</b-button>
       </div>
     </div>
     <!-- Title Bar End -->

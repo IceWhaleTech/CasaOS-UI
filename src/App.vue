@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-09-23 16:42:14
+ * @LastEditTime: 2021-09-26 19:00:28
  * @Description: Main entry of application
  * @FilePath: /CasaOS-UI/src/App.vue
 -->
@@ -61,6 +61,8 @@
     <!-- ContactBar Start -->
     <contact-bar></contact-bar>
     <!-- ContactBar End -->
+
+    <v-tour name="myTour" :steps="steps"></v-tour>
   </div>
 </template>
 
@@ -84,11 +86,29 @@ export default {
     TopBar,
     //Shortcuts
   },
+  data() {
+    return {
+      steps: [
+        // {
+        //   target: '#v-step-0',  // We're using document.querySelector() under the hood
+
+        //   content: `Add your first App!`
+        // },
+        // {
+        //   target: '#v-step-1',  // We're using document.querySelector() under the hood
+        //   content: `Add your first App!`
+        // }
+      ]
+    }
+  },
   created() {
     // Check if not login then login and get token
     if (!localStorage.getItem("user_token")) {
       this.login()
     }
+  },
+  mounted() {
+    this.$tours['myTour'].start()
   },
   methods: {
     login() {
