@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-09-26 19:00:28
+ * @LastEditTime: 2021-09-28 17:45:40
  * @Description: Main entry of application
  * @FilePath: /CasaOS-UI/src/App.vue
 -->
@@ -62,7 +62,7 @@
     <contact-bar></contact-bar>
     <!-- ContactBar End -->
 
-    <v-tour name="myTour" :steps="steps"></v-tour>
+    <!-- <v-tour name="myTour" :steps="steps"></v-tour> -->
   </div>
 </template>
 
@@ -108,7 +108,7 @@ export default {
     }
   },
   mounted() {
-    this.$tours['myTour'].start()
+    //this.$tours['myTour'].start()
   },
   methods: {
     login() {

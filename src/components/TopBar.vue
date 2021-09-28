@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-09-23 18:21:13
+ * @LastEditTime: 2021-09-28 19:05:44
  * @Description: Top bar 
  * @FilePath: /CasaOS-UI/src/components/TopBar.vue
 -->
@@ -118,12 +118,16 @@ export default {
      */
     onOpen(isOpen) {
       if (isOpen) {
-        this.$api.info.checkVersion().then(res => {
-          if (res.data.success == 200) {
-            this.updateInfo = res.data.data
-          }
-        })
+        this.checkVersion()
       }
+    },
+
+    checkVersion() {
+      this.$api.info.checkVersion().then(res => {
+        if (res.data.success == 200) {
+          this.updateInfo = res.data.data
+        }
+      })
     },
 
     /**

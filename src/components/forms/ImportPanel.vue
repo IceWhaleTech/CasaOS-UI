@@ -1,17 +1,37 @@
 <template>
   <div class="modal-card">
     <!-- Modal-Card Header Start -->
-    <header class="modal-card-head"> 
+    <header class="modal-card-head">
       <div class="flex1">
-        <h3 class="title is-4 has-text-weight-normal">Import From Docker CLI</h3>
+        <h3 class="title is-4 has-text-weight-normal">Import</h3>
       </div>
     </header>
     <!-- Modal-Card Header End -->
     <!-- Modal-Card Body Start -->
     <section class="modal-card-body">
-      <b-field label="Command Line" :type="{ 'is-danger': parseError}" :message="errors">
-        <b-input maxlength="800" type="textarea" class="import-area" v-model="dockerCliCommands"></b-input>
-      </b-field>
+      <b-tabs v-model="activeTab">
+        <b-tab-item label="Docker CLI">
+          <b-field :type="{ 'is-danger': parseError}" :message="errors">
+            <b-input maxlength="800" type="textarea" class="import-area" v-model="dockerCliCommands"></b-input>
+          </b-field>
+        </b-tab-item>
+        <b-tab-item label="App File">
+          <b-field :type="{ 'is-danger': parseError}" :message="errors">
+            <b-upload v-model="dropFiles" drag-drop expanded accept="application/json" @input="onSelect">
+              <section class="section">
+                <div class="content has-text-centered">
+                  <p>
+                    <b-icon icon="upload" size="is-large"></b-icon>
+                  </p>
+                  <p>{{dropText}}</p>
+                </div>
+              </section>
+            </b-upload>
+          </b-field>
+        </b-tab-item>
+
+      </b-tabs>
+
     </section>
     <!-- Modal-Card Body End -->
     <!-- Modal-Card Footer Start-->
@@ -31,17 +51,25 @@ import parser from 'yargs-parser'
 export default {
   data() {
     return {
+      activeTab: 0,
+      file: {},
+      dropFiles: {},
       dockerCliCommands: "",
       parseError: false,
+      appFileLoaded: false,
       errors: "",
+      dropText: "Drop your app file here or click to upload",
+      updateData: this.initData
     }
   },
   props: {
     initData: Object,
-    netWorks: Array
+    netWorks: Array,
+    oriNetWorks: Array,
+    deviceMemory: Number
   },
   created() {
-    console.log(this.netWorks);
+    //console.log(this.oriNetWorks);
   },
   methods: {
 
@@ -51,14 +79,26 @@ export default {
      * @return {*} void
      */
     emitSubmit() {
-      if (this.parseCli()) {
-        this.errors = ""
-        this.$emit('update', this.initData)
-        this.$emit('close')
-      } else {
-        this.errors = "Please fill correct command line"
-        this.parseError = true;
+      if (this.activeTab == 0) {
+        if (this.parseCli()) {
+          this.errors = ""
+          this.$emit('update', this.updateData)
+          this.$emit('close')
+        } else {
+          this.errors = "Please fill correct command line"
+          this.parseError = true;
+        }
+      } else if (this.activeTab == 1) {
+        if(this.appFileLoaded){
+          this.errors = ""
+          this.$emit('update', this.updateData)
+          this.$emit('close')
+        }else{
+          this.errors = "Please import a valid App file"
+          this.parseError = true;
+        }
       }
+
 
     },
 
@@ -75,7 +115,7 @@ export default {
         return false
       } else {
         //Envs
-        this.initData.envs = this.makeArray(parsedInput.e).map(item => {
+        this.updateData.envs = this.makeArray(parsedInput.e).map(item => {
           let ii = item.split("=");
           return {
             container: ii[0],
@@ -83,7 +123,7 @@ export default {
           }
         })
         //Ports
-        this.initData.ports = this.makeArray(parsedInput.p).map(item => {
+        this.updateData.ports = this.makeArray(parsedInput.p).map(item => {
           let pArray = item.split(":")
           let endArray = pArray[1].split("/")
           let protocol = (endArray[1]) ? endArray[1] : 'tcp';
@@ -94,7 +134,7 @@ export default {
           }
         })
         //Volume
-        this.initData.volumes = this.makeArray(parsedInput.v).map(item => {
+        this.updateData.volumes = this.makeArray(parsedInput.v).map(item => {
           let ii = item.split(":");
           return {
             container: ii[1],
@@ -102,7 +142,7 @@ export default {
           }
         })
         // Devices
-        this.initData.devices = this.makeArray(parsedInput.device).map(item => {
+        this.updateData.devices = this.makeArray(parsedInput.device).map(item => {
           let ii = item.split(":");
           return {
             container: ii[1],
@@ -119,19 +159,19 @@ export default {
             }
           })
           if (seletNetworks.length > 0) {
-            this.initData.network_model = seletNetworks[0].networks[0].id;
+            this.updateData.network_model = seletNetworks[0].networks[0].id;
           }
         }
 
         //Image
-        this.initData.image = [...command].pop()
+        this.updateData.image = [...command].pop()
         //Label
         if (parsedInput.name != undefined) {
-          this.initData.label = parsedInput.name.replace(/^\S/, s => s.toUpperCase())
+          this.updateData.label = parsedInput.name.replace(/^\S/, s => s.toUpperCase())
         }
         //Restart
         if (parsedInput.restart != undefined) {
-          this.initData.restart = parsedInput.restart
+          this.updateData.restart = parsedInput.restart
         }
         return true
       }
@@ -145,7 +185,60 @@ export default {
     makeArray(foo) {
       let newArray = (typeof (foo) == "string") ? [foo] : foo
       return (newArray == undefined) ? [] : newArray
-    }
+    },
+
+    deleteDropFile(index) {
+      this.dropFiles.splice(index, 1);
+    },
+    onSelect(val) {
+      let _this = this
+      let reader = new FileReader();
+      if (typeof FileReader === "undefined") {
+        this.$buefy.toast.open({
+          duration: 3000,
+          message: `Your browser does not support file reading.`,
+          type: 'is-danger'
+        })
+        return;
+      }
+      reader.readAsText(val)
+      reader.onload = function () {
+        try {
+          _this.updateData = JSON.parse(this.result);
+          if (_this.updateData.version === undefined) {
+            _this.$buefy.toast.open({
+              duration: 3000,
+              message: `This is not a valid App file.`,
+              type: 'is-danger'
+            })
+            _this.appFileLoaded = false
+            return false
+          } else {
+            delete _this.updateData.versison
+            _this.updateData.network_model = _this.getNetworkModel(_this.updateData.network_model)
+            _this.updateData.memory = _this.deviceMemory
+            _this.dropText = `${val.name} has been selected`
+            _this.appFileLoaded = true
+            return true
+          }
+
+        } catch (e) {
+          _this.$buefy.toast.open({
+            duration: 3000,
+            message: `This is not a valid json file.`,
+            type: 'is-danger'
+          })
+          _this.appFileLoaded = false
+          return false
+        }
+      }
+    },
+    getNetworkModel(netName) {
+      let network = this.oriNetWorks.filter(net => {
+        return net.name == netName
+      })
+      return network[0].id
+    },
   },
 }
 </script>

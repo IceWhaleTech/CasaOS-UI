@@ -12,6 +12,7 @@
     "buefy": "^0.9.0",
     "core-js": "^3.6.5",
     "easy-affix": "^1.0.8",
+    "file-saver": "^2.0.5",
     "lodash.debounce": "^4.0.8",
     "lottie-vuejs": "^0.4.0",
     "moment": "^2.29.1",

@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-09-26 18:48:27
+ * @LastEditTime: 2021-09-28 19:01:51
  * @Description: App module
  * @FilePath: /CasaOS-UI/src/components/Apps.vue
 -->
@@ -20,7 +20,7 @@
 
     <!-- App List Start -->
     <div class="columns is-variable is-2 is-multiline ">
-      <div class="column is-narrow is-3" v-for="(item,index) in appList" :key="'app-'+index">
+      <div class="column is-narrow is-3" v-for="(item,index) in appList" :key="'app-'+index+item.icon+item.port">
         <app-card :item="item" @updateState="getList" @configApp="showConfigPanel"></app-card>
       </div>
     </div>

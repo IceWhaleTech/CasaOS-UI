@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-09-23 17:26:31
+ * @LastEditTime: 2021-09-28 14:57:35
  * @Description: 
  * @FilePath: /CasaOS-UI/src/service/service.js
  */
@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === "'dev'") {
 
 //Create a axios instance, And set timeout to 30s
 const instance = axios.create({
-    timeout: 10000,
+    timeout: 30000,
 });
 
 
@@ -82,6 +82,12 @@ instance.interceptors.request.use((config) => {
 // 响应拦截（请求返回后拦截）
 instance.interceptors.response.use(response => {
     //console.log("响应拦截", response);
+    switch(response.data.success){
+        case 401:
+            localStorage.removeItem('user_token');
+            router.go(0)
+            break;
+    }
     return response;
 }, error => {
     console.log('catch', error)

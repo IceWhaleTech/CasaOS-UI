@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-09-22 16:27:00
+ * @LastEditTime: 2021-09-28 19:11:06
  * @Description: Install Panel of Docker
  * @FilePath: /CasaOS-UI/src/components/Panel.vue
 -->
@@ -15,6 +15,7 @@
         <h3 class="title is-4 has-text-weight-normal">Create a new App manually</h3>
       </div>
       <b-button icon-left="file-import" type="is-dark" size="is-small" rounded @click="showImportPanel" v-if="currentSlide == 1 && state == 'install'">Import</b-button>
+      <b-button icon-left="file-import" type="is-dark" size="is-small" rounded @click="exportJSON" v-if="currentSlide == 1 && state == 'update'">Export</b-button>
     </header>
     <!-- Modal-Card Header End -->
     <!-- Modal-Card Body Start -->
@@ -120,6 +121,7 @@ import 'vue-slider-component/theme/default.css'
 import { ValidationObserver, ValidationProvider } from "vee-validate";
 import "@/plugins/vee-validate";
 import debounce from 'lodash/debounce'
+import FileSaver from 'file-saver';
 
 export default {
   components: {
@@ -343,7 +345,7 @@ export default {
             if (info.progressDetail != undefined) {
               let progressDetail = info.progressDetail
               if (!isNaN(progressDetail.current / progressDetail.total)) {
-                progress = "<br>Progress:" + String(Math.floor((progressDetail.current / progressDetail.total) * 100)) + "%"
+                progress = `[ ${String(Math.floor((progressDetail.current / progressDetail.total) * 100))}% ]`
               }
             }
             let status = info.status
@@ -406,6 +408,7 @@ export default {
         events: {
           'update': (e) => {
             this.initData = e
+            this.webui = this.initData.port_map + this.initData.index
             this.$buefy.dialog.alert({
               title: 'Attention',
               message: 'AutoFill only helps you to complete most of the configuration. Some of the configuration information still needs to be confirmed by you.',
@@ -415,7 +418,9 @@ export default {
         },
         props: {
           initData: this.initData,
-          netWorks: this.networks
+          netWorks: this.networks,
+          oriNetWorks: this.tempNetworks,
+          deviceMemory: this.totalMemory
         }
       })
     },
@@ -443,7 +448,24 @@ export default {
         .finally(() => {
           this.isFetching = false
         })
-    }, 500)
+    }, 500),
+
+    exportJSON() {
+      // 将json转换成字符串
+      let exportData = { ...this.initData };
+      exportData.network_model = this.getNetworkName(this.initData.network_model);
+      exportData.version = "1.0"
+      delete exportData.memory
+      const data = JSON.stringify(exportData);
+      const blob = new Blob([data], { type: '' });
+      FileSaver.saveAs(blob, `${exportData.label}.json`);
+    },
+    getNetworkName(netId) {
+      let network = this.tempNetworks.filter(net => {
+        return net.id == netId
+      })
+      return network[0].name
+    }
 
   },
   destroyed() {
