@@ -387,6 +387,8 @@ html {
       &:focus {
         box-shadow: none;
       }
+
+      
     }
     .media {
       padding: 0rem;
@@ -425,5 +427,13 @@ html {
   .loading-background {
     background: none !important;
     border-radius: $backDropBorderRadius;
+  }
+}
+
+.tabs li.is-active a{
+  color: #363636;
+  border-bottom-color: #363636;
+  &:focus{
+    border-bottom-color: #363636;
   }
 }

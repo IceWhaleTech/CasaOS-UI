@@ -7,7 +7,7 @@
     <div class="is-flex is-align-items-center mb-5 info" v-if="vdata.length == 0">
       <b-icon pack="fas" icon="info-circle" size="is-small" class="mr-2 "></b-icon>
       <span>
-        No App Ports now, Click “+” to add one.
+        No ports now, click “+” to add one.
       </span>
 
     </div>

@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-09-28 19:11:06
+ * @LastEditTime: 2021-09-29 19:12:20
  * @Description: Install Panel of Docker
  * @FilePath: /CasaOS-UI/src/components/Panel.vue
 -->
@@ -43,7 +43,7 @@
             <p class="control">
               <span class="button is-static">{{baseUrl}}</span>
             </p>
-            <b-input v-model="webui" placeholder="8080/web/index.html" expanded></b-input>
+            <b-input v-model="webui" placeholder="port[/path/to/index.html]" expanded></b-input>
           </b-field>
 
           <b-field label="Network">
@@ -57,9 +57,9 @@
           </b-field>
 
           <ports v-model="initData.ports" :showHostPost="showHostPort" v-if="showPorts"></ports>
-          <input-group v-model="initData.volumes" label="Data Volumes" message="No App Data Volumes now, Click “+” to add one."></input-group>
-          <input-group v-model="initData.envs" label="Environment Variables" message="No environment variables now, Click “+” to add one." name1="Key" name2="Value"></input-group>
-          <input-group v-model="initData.devices" label="Devices" message="No devices now, Click “+” to add one."></input-group>
+          <input-group v-model="initData.volumes" label="Volumes" message="No volumes now, click “+” to add one."></input-group>
+          <input-group v-model="initData.envs" label="Environment Variables" message="No environment variables now, click “+” to add one." name1="Key" name2="Value"></input-group>
+          <input-group v-model="initData.devices" label="Devices" message="No devices now, click “+” to add one."></input-group>
           <b-field label="Memory Limit">
             <vue-slider :min="256" :max="totalMemory" v-model="initData.memory"></vue-slider>
           </b-field>

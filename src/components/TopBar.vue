@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-09-28 19:05:44
+ * @LastEditTime: 2021-09-29 18:21:28
  * @Description: Top bar 
  * @FilePath: /CasaOS-UI/src/components/TopBar.vue
 -->
@@ -84,6 +84,9 @@ export default {
   },
   created() {
     this.getConfig();
+  },
+  mounted() {
+    this.checkVersion();
   },
 
   methods: {

@@ -89,17 +89,15 @@ export default {
           this.parseError = true;
         }
       } else if (this.activeTab == 1) {
-        if(this.appFileLoaded){
+        if (this.appFileLoaded) {
           this.errors = ""
           this.$emit('update', this.updateData)
           this.$emit('close')
-        }else{
+        } else {
           this.errors = "Please import a valid App file"
           this.parseError = true;
         }
       }
-
-
     },
 
     /**
@@ -107,10 +105,10 @@ export default {
      * @return {Boolean} 
      */
     parseCli() {
-      const formattedInput = this.dockerCliCommands.replace(/\<[^\>]*\>/g, 'Custom_data').replace(/[\r\n]/g, "").replace(/\\/g, "\\ ").trim();
+      const formattedInput = this.dockerCliCommands.replace(/<[^>]*>/g, 'Custom_data').replace(/[\r\n]/g, "").replace(/\\/g, "\\ ").trim();
       const parsedInput = parser(formattedInput)
       console.log(parsedInput);
-      const { _: command, ...params } = parsedInput;
+      const { _: command } = parsedInput;
       if (command[0] !== 'docker' || (command[1] !== 'run' && command[1] !== 'create')) {
         return false
       } else {
@@ -118,8 +116,8 @@ export default {
         this.updateData.envs = this.makeArray(parsedInput.e).map(item => {
           let ii = item.split("=");
           return {
-            container: ii[0],
-            host: ii[1]
+            host: ii[1].replace(/"/g, ""),
+            container: ii[0]
           }
         })
         //Ports
@@ -136,10 +134,18 @@ export default {
         //Volume
         this.updateData.volumes = this.makeArray(parsedInput.v).map(item => {
           let ii = item.split(":");
-          return {
-            container: ii[1],
-            host: ii[0]
+          if (ii.length > 1) {
+            return {
+              container: ii[1],
+              host: ii[0]
+            }
+          } else {
+            return {
+              container: ii[0],
+              host: ""
+            }
           }
+
         })
         // Devices
         this.updateData.devices = this.makeArray(parsedInput.device).map(item => {
@@ -168,7 +174,12 @@ export default {
         //Label
         if (parsedInput.name != undefined) {
           this.updateData.label = parsedInput.name.replace(/^\S/, s => s.toUpperCase())
+        } else {
+          const imageArray = this.updateData.image.split("/")
+          const lastNode = [...imageArray].pop()
+          this.updateData.label = lastNode.split(":")[0].replace(/^\S/, s => s.toUpperCase())
         }
+
         //Restart
         if (parsedInput.restart != undefined) {
           this.updateData.restart = parsedInput.restart
@@ -183,7 +194,7 @@ export default {
      * @return {Array}
      */
     makeArray(foo) {
-      let newArray = (typeof (foo) == "string") ? [foo] : foo
+      const newArray = (typeof (foo) == "string") ? [foo] : foo
       return (newArray == undefined) ? [] : newArray
     },
 
@@ -191,8 +202,8 @@ export default {
       this.dropFiles.splice(index, 1);
     },
     onSelect(val) {
-      let _this = this
-      let reader = new FileReader();
+      const _this = this
+      const reader = new FileReader();
       if (typeof FileReader === "undefined") {
         this.$buefy.toast.open({
           duration: 3000,
@@ -233,11 +244,13 @@ export default {
         }
       }
     },
+
     getNetworkModel(netName) {
-      let network = this.oriNetWorks.filter(net => {
+      const network = this.oriNetWorks.filter(net => {
         return net.name == netName
       })
-      return network[0].id
+      return (network.length > 0) ? network[0].id : this.oriNetWorks[0].id
+
     },
   },
 }
