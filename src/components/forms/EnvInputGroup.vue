@@ -16,11 +16,11 @@
       <b-icon pack="fas" icon="times" size="is-small" class="is-clickable" @click.native="removeItem(index)"></b-icon>
       <template v-if="index < 1">
         <b-field grouped>
-          <b-field :label="name2" expanded>
-            <b-input :placeholder="name2" v-model="item.host" expanded @input="handleInput"></b-input>
-          </b-field>
           <b-field :label="name1" expanded>
             <b-input :placeholder="name1" v-model="item.container" expanded @input="handleInput"></b-input>
+          </b-field>
+          <b-field :label="name2" expanded>
+            <b-input :placeholder="name2" v-model="item.host" expanded @input="handleInput"></b-input>
           </b-field>
 
         </b-field>
@@ -28,9 +28,8 @@
       <template v-else>
 
         <b-field grouped>
-          <b-input :placeholder="name2" v-model="item.host" expanded @input="handleInput"></b-input>
           <b-input :placeholder="name1" v-model="item.container" expanded @input="handleInput"></b-input>
-
+          <b-input :placeholder="name2" v-model="item.host" expanded @input="handleInput"></b-input>
         </b-field>
 
       </template>
@@ -41,7 +40,7 @@
 
 <script>
 export default {
-  name: 'input-group',
+  name: 'env-input-group',
   data() {
     return {
       isLoading: false,
@@ -59,11 +58,11 @@ export default {
     message: String,
     name1: {
       type: String,
-      default: "Container"
+      default: "Key"
     },
     name2: {
       type: String,
-      default: "Host"
+      default: "Value"
     },
 
   },
@@ -93,13 +92,6 @@ export default {
       this.filterArray()
     },
     filterArray() {
-      // let newArray = this.items.filter(item => {
-      //   if (item.container != "" && item.host != "") {
-      //     return true
-      //   } else {
-      //     return false
-      //   }
-      // })
       this.$emit('change', this.vdata)
 
     }

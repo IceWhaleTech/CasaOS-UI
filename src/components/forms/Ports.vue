@@ -15,12 +15,13 @@
       <b-icon pack="fas" icon="times" size="is-small" class="is-clickable" @click.native="removeItem(index)"></b-icon>
       <template v-if="index < 1">
         <b-field grouped>
-          <b-field label="Container" expanded>
-            <b-input placeholder="Container" type="number" v-model="item.container" expanded @input="handleInput"></b-input>
-          </b-field>
           <b-field label="Host" expanded>
             <b-input placeholder="Host" type="number" v-model="item.host" expanded @input="handleInput" v-if="showHostPost"></b-input>
           </b-field>
+          <b-field label="Container" expanded>
+            <b-input placeholder="Container" type="number" v-model="item.container" expanded @input="handleInput"></b-input>
+          </b-field>
+
           <b-field label="Protocol" expanded>
             <b-select placeholder="Protocol" v-model="item.protocol" expanded @input="handleInput">
               <option value="tcp">TCP</option>
@@ -33,8 +34,9 @@
       <template v-else>
 
         <b-field grouped>
-          <b-input placeholder="Container" type="number" v-model="item.container" expanded @input="handleInput"></b-input>
           <b-input placeholder="Host" type="number" v-model="item.host" expanded @input="handleInput" v-if="showHostPost"></b-input>
+          <b-input placeholder="Container" type="number" v-model="item.container" expanded @input="handleInput"></b-input>
+
           <b-select placeholder="Protocol" v-model="item.protocol" expanded @input="handleInput">
             <option value="tcp">TCP</option>
             <option value="udp">UDP</option>
@@ -49,7 +51,7 @@
 </template>
 
 <script>
- 
+
 export default {
   name: 'ports',
   data() {

@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-09-29 19:12:20
+ * @LastEditTime: 2021-09-30 12:40:43
  * @Description: Install Panel of Docker
  * @FilePath: /CasaOS-UI/src/components/Panel.vue
 -->
@@ -58,7 +58,7 @@
 
           <ports v-model="initData.ports" :showHostPost="showHostPort" v-if="showPorts"></ports>
           <input-group v-model="initData.volumes" label="Volumes" message="No volumes now, click “+” to add one."></input-group>
-          <input-group v-model="initData.envs" label="Environment Variables" message="No environment variables now, click “+” to add one." name1="Key" name2="Value"></input-group>
+          <env-input-group v-model="initData.envs" label="Environment Variables" message="No environment variables now, click “+” to add one." ></env-input-group>
           <input-group v-model="initData.devices" label="Devices" message="No devices now, click “+” to add one."></input-group>
           <b-field label="Memory Limit">
             <vue-slider :min="256" :max="totalMemory" v-model="initData.memory"></vue-slider>
@@ -113,6 +113,7 @@
 <script>
 import axios from 'axios'
 import InputGroup from './forms/InputGroup.vue';
+import EnvInputGroup from './forms/EnvInputGroup.vue';
 import Ports from './forms/Ports.vue'
 import ImportPanel from './forms/ImportPanel.vue'
 import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
@@ -127,6 +128,7 @@ export default {
   components: {
     Ports,
     InputGroup,
+    EnvInputGroup,
     ValidationObserver,
     ValidationProvider,
     LottieAnimation,
