@@ -8,11 +8,15 @@
 <script>
 import moment from 'moment'
 export default {
+  name: "clock",
+  icon: "clock-outline",
+  title: "Time",
+  initShow: true,
   data() {
     return {
       timer: 0,
-      timeText:"",
-      dateText:""
+      timeText: "",
+      dateText: ""
     }
   },
   mounted() {
@@ -26,9 +30,8 @@ export default {
   },
   methods: {
     updateClock() {
-        
-        this.timeText = moment().format('LT');
-        this.dateText = moment().format('dddd, MMMM Do')
+      this.timeText = moment().format('HH:mm');
+      this.dateText = moment().format('dddd, MMMM Do');
     }
   },
 }

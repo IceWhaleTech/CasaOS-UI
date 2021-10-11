@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-09-29 18:21:28
+ * @LastEditTime: 2021-10-11 18:05:34
  * @Description: Top bar 
  * @FilePath: /CasaOS-UI/src/components/TopBar.vue
 -->
@@ -13,7 +13,7 @@
       <b-dropdown aria-role="list" class="navbar-item" @active-change="onOpen">
         <template #trigger>
           <p role="button">
-            <b-icon pack="fas" icon="sliders-h">
+            <b-icon icon="tune">
             </b-icon>
           </p>
         </template>
@@ -22,7 +22,7 @@
           <h2 class="title is-4">CasaOS Setting</h2>
           <div class="is-flex is-align-items-center item">
             <div class="is-flex is-align-items-center flex1">
-              <b-icon pack="fas" icon="sync-alt" class="mr-1"></b-icon> <b>Update</b>
+              <b-icon icon="sync" class="mr-1"></b-icon> <b>Update</b>
             </div>
             <div>
               v{{updateInfo.current_version}}
@@ -36,7 +36,7 @@
 
           <div class="is-flex is-align-items-center pl-5" v-if="!updateInfo.is_need">
             {{latestText}}
-            <b-icon type="is-success" pack="fas" icon="check" class="ml-1"></b-icon>
+            <b-icon type="is-success" icon="check" class="ml-1"></b-icon>
           </div>
           <div class="is-flex is-align-items-center is-justify-content-end update-container pl-5" v-if="updateInfo.is_need">
             <div class="flex1">{{updateText}}</div>
@@ -98,6 +98,7 @@ export default {
       this.$api.info.systemConfig().then(res => {
         if (res.data.success == 200) {
           this.barData = res.data.data
+          console.log(res.data);
         }
       })
     },

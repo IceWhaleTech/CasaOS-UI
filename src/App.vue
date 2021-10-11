@@ -2,14 +2,14 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-09-28 17:45:40
+ * @LastEditTime: 2021-10-11 17:57:40
  * @Description: Main entry of application
  * @FilePath: /CasaOS-UI/src/App.vue
 -->
 
 <template>
-  <!-- <div id="app" class="is-flex is-flex-direction-column" :style="{'background-image': 'url(' + require('./assets/background/AbstractShapes.jpg') + ')'}"> -->
-  <div id="app" class="is-flex is-flex-direction-column" :style="{'background-image': 'url(https://www.bing.com/th?id=OHR.Aldeyjarfoss_ZH-CN0106567013_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp)'}">
+  <div id="app" class="is-flex is-flex-direction-column" :style="{'background-image': 'url(' + require('./assets/background/bg.jpeg') + ')'}">
+  <!-- <div id="app" class="is-flex is-flex-direction-column" :style="{'background-image': 'url(https://www.bing.com/th?id=OHR.Aldeyjarfoss_ZH-CN0106567013_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp)'}"> -->
     <!-- NavBar Start -->
     <top-bar></top-bar>
     <!-- NavBar End -->

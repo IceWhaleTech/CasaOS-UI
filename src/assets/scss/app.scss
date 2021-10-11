@@ -61,7 +61,7 @@ html {
 
 .top-bar {
   position: relative;
-  z-index: 10;
+  z-index: 20;
 
   height: 3rem;
   background: rgba(255, 255, 255, 0.22);
@@ -99,8 +99,8 @@ html {
       padding-right: calc(1em + 0.25em);
     }
   }
-  .button{
-    &.is-small{
+  .button {
+    &.is-small {
       height: 2em;
     }
   }
@@ -108,6 +108,7 @@ html {
 
 .brand-bar {
   position: fixed;
+  z-index: 0;
   left: 2rem;
   bottom: 2rem;
 }
@@ -140,11 +141,17 @@ html {
 .side-bar {
   width: 16rem;
   position: fixed;
+  z-index: 10;
+  height: calc(100vh - 6rem);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .main-content {
   flex: 1;
   margin-left: 17.5rem;
+  position: relative;
+  z-index: 10;
 }
 
 .pt-7 {
@@ -387,8 +394,6 @@ html {
       &:focus {
         box-shadow: none;
       }
-
-      
     }
     .media {
       padding: 0rem;
@@ -430,10 +435,14 @@ html {
   }
 }
 
-.tabs li.is-active a{
+.tabs li.is-active a {
   color: #363636;
   border-bottom-color: #363636;
-  &:focus{
+  &:focus {
     border-bottom-color: #363636;
   }
 }
+.is-size-6-5{
+  font-size: 0.875rem !important;
+}
+

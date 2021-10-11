@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-09-30 12:40:43
+ * @LastEditTime: 2021-10-11 17:53:06
  * @Description: Install Panel of Docker
  * @FilePath: /CasaOS-UI/src/components/Panel.vue
 -->
@@ -12,7 +12,7 @@
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
       <div class="flex1">
-        <h3 class="title is-4 has-text-weight-normal">Create a new App manually</h3>
+        <h3 class="title is-4 has-text-weight-normal">{{panelTitle}}</h3>
       </div>
       <b-button icon-left="file-import" type="is-dark" size="is-small" rounded @click="showImportPanel" v-if="currentSlide == 1 && state == 'install'">Import</b-button>
       <b-button icon-left="file-import" type="is-dark" size="is-small" rounded @click="exportJSON" v-if="currentSlide == 1 && state == 'update'">Export</b-button>
@@ -58,7 +58,7 @@
 
           <ports v-model="initData.ports" :showHostPost="showHostPort" v-if="showPorts"></ports>
           <input-group v-model="initData.volumes" label="Volumes" message="No volumes now, click “+” to add one."></input-group>
-          <env-input-group v-model="initData.envs" label="Environment Variables" message="No environment variables now, click “+” to add one." ></env-input-group>
+          <env-input-group v-model="initData.envs" label="Environment Variables" message="No environment variables now, click “+” to add one."></env-input-group>
           <input-group v-model="initData.devices" label="Devices" message="No devices now, click “+” to add one."></input-group>
           <b-field label="Memory Limit">
             <vue-slider :min="256" :max="totalMemory" v-model="initData.memory"></vue-slider>
@@ -99,11 +99,11 @@
     <footer class="modal-card-foot is-flex is-align-items-center">
       <div class="flex1"></div>
       <div>
-        <b-button v-if="currentSlide == 1" :label="cancelButtonText" @click="$emit('close')" rounded />
+        <!-- <b-button v-if="currentSlide == 1" :label="cancelButtonText" @click="$emit('close')" rounded /> -->
         <b-button v-if="currentSlide == 2 && errorType == 3 " label="Back" @click="prevStep" rounded />
         <b-button v-if="currentSlide == 1 && state == 'install'" label="Install" type="is-dark" @click="installApp()" rounded />
-        <b-button v-if="currentSlide == 1 && state == 'update'" label="Update" type="is-dark" @click="updateApp()" rounded />
-        <b-button v-if="currentSlide == 2" :label="cancelButtonText" type="is-dark" @click="$emit('close')" rounded />
+        <b-button v-if="currentSlide == 1 && state == 'update'" label="Save" type="is-dark" @click="updateApp()" rounded />
+        <b-button v-if="currentSlide == 2 && errorType == 1" :label="cancelButtonText" type="is-dark" @click="$emit('close')" rounded />
       </div>
     </footer>
     <!-- Modal-Card Footer End -->
@@ -151,7 +151,7 @@ export default {
       networkModes: [],
       installPercent: 0,
       installText: "",
-
+      panelTitle: "",
       initData: {
         port_map: "",
         cpu_shares: 10,
@@ -187,6 +187,10 @@ export default {
     if (this.initDatas != undefined) {
       this.initData = this.initDatas
       this.webui = this.initDatas.port_map + this.initDatas.index
+      this.panelTitle = this.initData.label + " Setting"
+    } else {
+      this.panelTitle = "Install a new App manually"
+
     }
 
     //Get Max memory info form device

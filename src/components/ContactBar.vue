@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-09-26 18:03:12
+ * @LastEditTime: 2021-10-11 18:00:22
  * @Description: The right bottom contact bar
  * @FilePath: /CasaOS-UI/src/components/ContactBar.vue
 -->
@@ -10,13 +10,13 @@
 <template>
   <div class="contact-bar is-flex is-align-items-center has-text-white pl-3 pr-3">
     <a href="#">
-      <b-icon pack="fas" icon="map-signs" size=""></b-icon>
+      <b-icon  icon="routes" ></b-icon>
     </a>
     <a href="https://discord.gg/Gx4BCEtHjx" target="_blank">
-      <b-icon pack="fab" icon="discord" size=""></b-icon>
+      <b-icon  icon="discord" ></b-icon>
     </a>
     <a href="https://github.com/IceWhaleTech/CasaOS" target="_blank">
-      <b-icon pack="fab" icon="github" size=""></b-icon>
+      <b-icon  icon="github" ></b-icon>
     </a>
   </div>
 </template>
