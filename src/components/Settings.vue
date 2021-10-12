@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-09 18:41:15
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-11 18:12:41
+ * @LastEditTime: 2021-10-12 17:01:03
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/Settings.vue
 -->
@@ -14,15 +14,14 @@
       </template>
       <b-dropdown-item aria-role="menu-item" :focusable="false" custom class="has-text-white has-text-left">
         <h2 class="title is-5 has-text-white">Widgets Settings</h2>
-        <div class="is-flex is-align-items-center item" v-for="(item,index) in apps" :key="`setting_${index}`">
+        <div class="is-flex is-align-items-center item" v-for="(item,index) in settingsData" :key="`setting_${index}`">
           <div class="is-flex is-align-items-center flex1">
-            <b-icon :icon="item.app.default.icon" class="mr-2"></b-icon> <b>{{item.app.default.title}}</b>
+            <b-icon :icon="getIcon(item.name)" class="mr-2"></b-icon> <b>{{getTitle(item.name)}}</b>
           </div>
           <b-field>
-            <b-switch type="is-dark" size="is-small" class="is-flex-direction-row-reverse mr-0"></b-switch>
+            <b-switch type="is-dark" v-model="item.show" size="is-small" class="is-flex-direction-row-reverse mr-0" @input="handleInput"></b-switch>
           </b-field>
         </div>
-
       </b-dropdown-item>
     </b-dropdown>
   </div>
@@ -34,21 +33,48 @@ const widgetsComponents = require.context(
   false,
   /.vue$/
 )
+const _ = require('lodash')
+
 export default {
   name: "settings",
   data() {
     return {
-      apps: []
+      apps: [],
+      settingsData: []
     }
   },
+  model: {
+    prop: 'widgetsSettings',
+    event: 'change'
+  },
+  props: {
+    widgetsSettings: Array
+  },
   created() {
+    this.settingsData = JSON.parse(JSON.stringify(this.widgetsSettings))
     widgetsComponents.keys().forEach(fileName => {
       const componentConfig = widgetsComponents(fileName)
       this.apps.push({ app: componentConfig })
-
     });
-    // console.log(this.apps);
   },
+  methods: {
+    getIcon(value) {
+      let obj = _.find(this.apps, o => {
+        return o.app.default.name === value
+      });
+      return obj.app.default.icon;
+    },
+    getTitle(value) {
+      let obj = _.find(this.apps, o => {
+        return o.app.default.name === value
+      });
+      return obj.app.default.title;
+    },
+    handleInput() {
+      this.$emit('change', this.settingsData)
+
+    }
+  }
 }
 </script>
 <style lang="scss" >

@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-11 17:18:44
+ * @LastEditTime: 2021-10-12 10:24:18
  * @Description: App Card item
  * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
 -->
@@ -14,7 +14,7 @@
       <b-dropdown aria-role="list" position="is-bottom-left" class="ii" ref="dro" @active-change="setDropState" :mobile-modal="false">
         <template #trigger>
           <p role="button">
-            <b-icon pack="fas" icon="ellipsis-v" size="is-small">
+            <b-icon  icon="dots-vertical" >
             </b-icon>
           </p>
         </template>
@@ -25,10 +25,10 @@
           <b-button type="is-text" expanded @click="uninstallConfirm" :loading="isUninstalling">Unistall</b-button>
           <div class="columns is-gapless bbor">
             <div class="column is-flex is-justify-content-center is-align-items-center">
-              <b-button icon-pack="fas" icon-left="sync" type="is-text" expanded :loading="isRestarting" @click="restartApp"></b-button>
+              <b-button  icon-left="sync" type="is-text" expanded :loading="isRestarting" @click="restartApp"></b-button>
             </div>
             <div class="column is-flex is-justify-content-center is-align-items-center">
-              <b-button icon-pack="fas" icon-left="power-off" type="is-text" expanded @click="toggle(item)" :loading="isStarting" :class="item.state"></b-button>
+              <b-button  icon-left="power-standby" type="is-text" expanded @click="toggle(item)" :loading="isStarting" :class="item.state"></b-button>
             </div>
           </div>
         </b-dropdown-item>

@@ -11,9 +11,10 @@ export default {
   title: "Weather",
   initShow: false,
   mounted() {
-    this.$api.info.getIp().then(res => {
-      console.log(res);
-    })
+    // this.$api.info.getIp().then(res => {
+    //   console.log(res);
+    // })
+    this.addJs()
   },
   methods: {
     addJs() {
