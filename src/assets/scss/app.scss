@@ -370,9 +370,10 @@ html {
   .modal-card-foot {
     background-color: transparent;
     border: none;
+    word-break: break-all;
   }
   .modal-card-head {
-    padding: 3rem;
+    padding: 3rem 3rem 1.5rem 3rem;
   }
   .modal-card-body {
     padding: 0 3rem;
@@ -442,7 +443,71 @@ html {
     border-bottom-color: #363636;
   }
 }
-.is-size-6-5{
+.is-size-6-5 {
   font-size: 0.875rem !important;
 }
 
+.control {
+  .button {
+    font-size: 0.875rem;
+    height: 2.714em;
+  }
+}
+
+.filelist {
+  li {
+    border-bottom: #e4e4e4 1px solid;
+    line-height: 1.75rem;
+    border-radius: 4px;
+    transition: background-color 0.1s;
+    cursor: pointer;
+    &:hover {
+      background-color: #e0e0e0;
+    }
+    &.active {
+      background-color: #e0e0e0;
+    }
+  }
+}
+
+.ficon {
+  background-size: 1.75rem;
+  background-repeat: no-repeat;
+  background-position: left center;
+  padding: 0.5rem 0.5rem 0.5rem 2rem;
+  &.folder {
+    background-image: url(../img/folder.png);
+  }
+  &.file {
+    background-image: url(../img/xfile.png);
+  }
+}
+.breadcrumb {
+  ul {
+    overflow: hidden;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: flex-start;
+    li {
+      white-space: nowrap;
+      div {
+        max-width: 100%;
+        padding: 0 0.75em;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      &:last-child {
+        min-width: 0;
+        width: 100%;
+      }
+    }
+  }
+}
+
+.c-button{
+  border-radius: 4px;
+  &:hover{
+    background-color: #cfcfcf;
+  }
+}

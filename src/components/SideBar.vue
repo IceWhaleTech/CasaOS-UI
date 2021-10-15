@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-12 16:54:11
+ * @LastEditTime: 2021-10-13 14:03:59
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/SideBar.vue
 -->
@@ -98,7 +98,7 @@ export default {
     },
     diffAndCombineData(initData, remoteData) {
       let newData = initData.map(item => {
-        let remoteItem = remoteData.find(el => el.name == item.name)
+        let remoteItem = _.find(remoteData, el => el.name == item.name)
         if (remoteItem && item.name === remoteItem.name) {
           return {
             name: item.name,

@@ -5,19 +5,20 @@
       <b-button icon-left="plus" type="is-dark" size="is-small" rounded @click="addItem">Add</b-button>
     </div>
     <div class="is-flex is-align-items-center mb-5 info" v-if="vdata.length == 0">
-      <b-icon pack="fas" icon="info-circle" size="is-small" class="mr-2 "></b-icon>
+      <b-icon icon="information" size="is-small" class="mr-2 "></b-icon>
       <span>
         {{message}}
       </span>
-
     </div>
 
     <div class="port-item" v-for="(item,index) in vdata" :key="'port'+index">
-      <b-icon pack="fas" icon="times" size="is-small" class="is-clickable" @click.native="removeItem(index)"></b-icon>
+      <b-icon icon="close" size="is-small" class="is-clickable" @click.native="removeItem(index)"></b-icon>
       <template v-if="index < 1">
         <b-field grouped>
           <b-field :label="name2" expanded>
-            <b-input :placeholder="name2" v-model="item.host" expanded @input="handleInput"></b-input>
+            <!-- <b-input :placeholder="name2" v-model="item.host" expanded @input="handleInput" icon-right="image-filter-center-focus-strong" icon-right-clickable @icon-right-click="selectFile"></b-input> -->
+            <icon-input :placeholder="name2" v-model="item.host" expanded @input="handleInput"></icon-input>
+
           </b-field>
           <b-field :label="name1" expanded>
             <b-input :placeholder="name1" v-model="item.container" expanded @input="handleInput"></b-input>
@@ -26,10 +27,14 @@
         </b-field>
       </template>
       <template v-else>
-
         <b-field grouped>
-          <b-input :placeholder="name2" v-model="item.host" expanded @input="handleInput"></b-input>
-          <b-input :placeholder="name1" v-model="item.container" expanded @input="handleInput"></b-input>
+          <b-field expanded>
+            <!-- <b-input :placeholder="name2" v-model="item.host" expanded @input="handleInput" icon-right="image-filter-center-focus-strong" icon-right-clickable @icon-right-click="selectFile"></b-input> -->
+            <icon-input :placeholder="name2" v-model="item.host" expanded @input="handleInput"></icon-input>
+          </b-field>
+          <b-field expanded>
+            <b-input :placeholder="name1" v-model="item.container" expanded @input="handleInput"></b-input>
+          </b-field>
 
         </b-field>
 
@@ -40,8 +45,12 @@
 </template>
 
 <script>
+import IconInput from '../forms/IconInput.vue'
 export default {
   name: 'input-group',
+  components: {
+    IconInput,
+  },
   data() {
     return {
       isLoading: false,
@@ -93,15 +102,12 @@ export default {
       this.filterArray()
     },
     filterArray() {
-      // let newArray = this.items.filter(item => {
-      //   if (item.container != "" && item.host != "") {
-      //     return true
-      //   } else {
-      //     return false
-      //   }
-      // })
       this.$emit('change', this.vdata)
 
+    },
+    selectFile(e) {
+
+      console.log(e.target.parents);
     }
   },
 }

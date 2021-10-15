@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-09 18:41:15
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-12 17:01:03
+ * @LastEditTime: 2021-10-13 15:33:30
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/Settings.vue
 -->
@@ -57,6 +57,9 @@ export default {
       this.apps.push({ app: componentConfig })
     });
   },
+  mounted () {
+    window.addEventListener('resize', this.onRezise);
+  },
   methods: {
     getIcon(value) {
       let obj = _.find(this.apps, o => {
@@ -72,9 +75,15 @@ export default {
     },
     handleInput() {
       this.$emit('change', this.settingsData)
-
+    },
+    onRezise(){
+      // let container = document.querySelector(".scroll-area")
+      //console.log(container.offsetHeight);
     }
-  }
+  },
+  destroyed () {
+    window.addEventListener('resize', this.onRezise);
+  },
 }
 </script>
 <style lang="scss" >

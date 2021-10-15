@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-12 10:24:18
+ * @LastEditTime: 2021-10-13 15:43:43
  * @Description: App Card item
  * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
 -->
@@ -14,7 +14,7 @@
       <b-dropdown aria-role="list" position="is-bottom-left" class="ii" ref="dro" @active-change="setDropState" :mobile-modal="false">
         <template #trigger>
           <p role="button">
-            <b-icon  icon="dots-vertical" >
+            <b-icon icon="dots-vertical">
             </b-icon>
           </p>
         </template>
@@ -23,12 +23,12 @@
           <b-button type="is-text" tag="a" :target="(item.state == 'running') ?'_blank':'_self'" :href="(item.state == 'running') ? siteUrl(item.port,item.index) :'javascript:void(0)'" expanded>Open</b-button>
           <b-button type="is-text" @click="configApp" expanded>Setting</b-button>
           <b-button type="is-text" expanded @click="uninstallConfirm" :loading="isUninstalling">Unistall</b-button>
-          <div class="columns is-gapless bbor">
+          <div class="columns is-gapless bbor is-flex">
             <div class="column is-flex is-justify-content-center is-align-items-center">
-              <b-button  icon-left="sync" type="is-text" expanded :loading="isRestarting" @click="restartApp"></b-button>
+              <b-button icon-left="sync" type="is-text" expanded :loading="isRestarting" @click="restartApp"></b-button>
             </div>
             <div class="column is-flex is-justify-content-center is-align-items-center">
-              <b-button  icon-left="power-standby" type="is-text" expanded @click="toggle(item)" :loading="isStarting" :class="item.state"></b-button>
+              <b-button icon-left="power-standby" type="is-text" expanded @click="toggle(item)" :loading="isStarting" :class="item.state"></b-button>
             </div>
           </div>
         </b-dropdown-item>
@@ -82,7 +82,7 @@ export default {
      * @param {String} port App access port
      * @param {String} index App access index page
      * @return {String}
-     */    
+     */
     siteUrl(port, index) {
       return (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${port}${index}` : `http://${document.domain}:${port}${index}`
     },
@@ -91,7 +91,7 @@ export default {
      * @description: Set drop-down menu status
      * @param {Boolean} e
      * @return {*} void
-     */    
+     */
     setDropState(e) {
       this.dropState = e
     },
@@ -99,7 +99,7 @@ export default {
     /**
      * @description: Restart Application
      * @return {*} void
-     */    
+     */
     restartApp() {
       this.isRestarting = true
       this.$api.app.startContainer(this.item.custom_id, { state: "restart" }).then((res) => {
@@ -114,7 +114,7 @@ export default {
     /**
      * @description: Confirm before uninstall
      * @return {*} void
-     */    
+     */
     uninstallConfirm() {
       let _this = this
       this.$buefy.dialog.confirm({
@@ -132,7 +132,7 @@ export default {
     /**
      * @description: Uninstall app
      * @return {*} void
-     */    
+     */
     uninstallApp() {
       this.isUninstalling = true
       this.$api.app.uninstall(this.item.custom_id).then((res) => {
@@ -147,7 +147,7 @@ export default {
     /**
      * @description: Emit the event that the app has been updated
      * @return {*} void
-     */    
+     */
     updateState() {
       this.$emit("updateState")
     },
@@ -155,7 +155,7 @@ export default {
     /**
      * @description: Emit the event that the app has been updated with custom_id
      * @return {*} void
-     */    
+     */
     configApp() {
       this.$emit("configApp", this.item.custom_id)
     },
@@ -164,7 +164,7 @@ export default {
      * @description: Start or Stop a App
      * @param {Object} item the app info object
      * @return {*} void
-     */    
+     */
     toggle(item) {
       this.isStarting = true;
       let data = {
@@ -172,9 +172,20 @@ export default {
       }
       this.$api.app.startContainer(item.custom_id, data).then((res) => {
         console.log(res.data);
-        item.state = res.data.data
         this.isStarting = false
-        this.updateState()
+        if (res.data.success == 200) {
+          item.state = res.data.data
+          this.updateState()
+        } else {
+          this.$buefy.dialog.alert({
+            title: 'Error',
+            message: res.data.data,
+            type: 'is-danger',
+            ariaRole: 'alertdialog',
+            ariaModal: true
+          })
+        }
+
       })
     },
 
@@ -190,7 +201,7 @@ export default {
      * @description: Format Dot Class
      * @param {String} state
      * @return {String}
-     */    
+     */
     dotClass(state) {
       return state == 'running' ? 'start' : 'stop'
     },

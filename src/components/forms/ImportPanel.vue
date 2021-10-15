@@ -48,6 +48,7 @@
 
 <script>
 import parser from 'yargs-parser'
+const _ = require('lodash')
 export default {
   data() {
     return {
@@ -100,6 +101,48 @@ export default {
       }
     },
 
+    volumeAutoCheck(containerPath, hostPath, appName) {
+      let finalHostPath = hostPath
+      const rootDir = "/DATA"
+      const checkArray = [
+        {
+          keywords: ["config"],
+          value: `/AppData/${appName}${containerPath}`
+        },
+        {
+          keywords: ["tvshows", "TV", "tv"],
+          value: `/Media/TV Shows`
+        },
+        {
+          keywords: ["movies", "Movie", "movie"],
+          value: `/Media/Movies`
+        },
+        {
+          keywords: ["Music", "music"],
+          value: `/Media/Music`
+        },
+        {
+          keywords: ["download"],
+          value: `/Downloads`
+        },
+        {
+          keywords: ["pictures", "photo"],
+          value: `/Gallery`
+        }
+      ]
+
+      checkArray.forEach(item => {
+        if (item.keywords.some(keywordsItem => {
+          return containerPath.includes(keywordsItem)
+        })) {
+          finalHostPath = rootDir + item.value
+          return
+        }
+      })
+
+      return finalHostPath
+    },
+
     /**
      * @description: Parse Import Docker Cli Commands
      * @return {Boolean} 
@@ -112,6 +155,18 @@ export default {
       if (command[0] !== 'docker' || (command[1] !== 'run' && command[1] !== 'create')) {
         return false
       } else {
+
+        //Image
+        this.updateData.image = [...command].pop()
+        //Label
+        if (parsedInput.name != undefined) {
+          this.updateData.label = _.upperFirst(parsedInput.name)
+        } else {
+          const imageArray = this.updateData.image.split("/")
+          const lastNode = [...imageArray].pop()
+          this.updateData.label = _.upperFirst(lastNode.split(":")[0])
+        }
+
         //Envs
         this.updateData.envs = this.makeArray(parsedInput.e).map(item => {
           let ii = item.split("=");
@@ -135,14 +190,15 @@ export default {
         this.updateData.volumes = this.makeArray(parsedInput.v).map(item => {
           let ii = item.split(":");
           if (ii.length > 1) {
+            // console.log(this.volumeAutoCheck(ii[1],ii[0], _.lowerFirst(this.updateData.label)));
             return {
               container: ii[1],
-              host: ii[0]
+              host: this.volumeAutoCheck(ii[1], ii[0], _.lowerFirst(this.updateData.label))
             }
           } else {
             return {
               container: ii[0],
-              host: ""
+              host: this.volumeAutoCheck(ii[0], "", _.lowerFirst(this.updateData.label))
             }
           }
 
@@ -169,16 +225,7 @@ export default {
           }
         }
 
-        //Image
-        this.updateData.image = [...command].pop()
-        //Label
-        if (parsedInput.name != undefined) {
-          this.updateData.label = parsedInput.name.replace(/^\S/, s => s.toUpperCase())
-        } else {
-          const imageArray = this.updateData.image.split("/")
-          const lastNode = [...imageArray].pop()
-          this.updateData.label = lastNode.split(":")[0].replace(/^\S/, s => s.toUpperCase())
-        }
+
 
         //Restart
         if (parsedInput.restart != undefined) {

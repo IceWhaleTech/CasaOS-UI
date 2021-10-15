@@ -5,14 +5,14 @@
       <b-button icon-left="plus" type="is-dark" size="is-small" rounded @click="addItem">Add</b-button>
     </div>
     <div class="is-flex is-align-items-center mb-5 info" v-if="vdata.length == 0">
-      <b-icon pack="fas" icon="info-circle" size="is-small" class="mr-2 "></b-icon>
+      <b-icon icon="information" size="is-small" class="mr-2 "></b-icon>
       <span>
         No ports now, click “+” to add one.
       </span>
 
     </div>
     <div class="port-item" v-for="(item,index) in vdata" :key="'port'+index">
-      <b-icon pack="fas" icon="times" size="is-small" class="is-clickable" @click.native="removeItem(index)"></b-icon>
+      <b-icon icon="close" size="is-small" class="is-clickable" @click.native="removeItem(index)"></b-icon>
       <template v-if="index < 1">
         <b-field grouped>
           <b-field label="Host" expanded>
@@ -32,7 +32,6 @@
         </b-field>
       </template>
       <template v-else>
-
         <b-field grouped>
           <b-input placeholder="Host" type="number" v-model="item.host" expanded @input="handleInput" v-if="showHostPost"></b-input>
           <b-input placeholder="Container" type="number" v-model="item.container" expanded @input="handleInput"></b-input>

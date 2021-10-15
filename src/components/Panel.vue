@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-11 17:53:06
+ * @LastEditTime: 2021-10-13 18:28:04
  * @Description: Install Panel of Docker
  * @FilePath: /CasaOS-UI/src/components/Panel.vue
 -->
@@ -99,11 +99,11 @@
     <footer class="modal-card-foot is-flex is-align-items-center">
       <div class="flex1"></div>
       <div>
-        <!-- <b-button v-if="currentSlide == 1" :label="cancelButtonText" @click="$emit('close')" rounded /> -->
+        <b-button v-if="currentSlide == 1" label="Cancel" @click="$emit('close')" rounded />
         <b-button v-if="currentSlide == 2 && errorType == 3 " label="Back" @click="prevStep" rounded />
         <b-button v-if="currentSlide == 1 && state == 'install'" label="Install" type="is-dark" @click="installApp()" rounded />
         <b-button v-if="currentSlide == 1 && state == 'update'" label="Save" type="is-dark" @click="updateApp()" rounded />
-        <b-button v-if="currentSlide == 2 && errorType == 1" :label="cancelButtonText" type="is-dark" @click="$emit('close')" rounded />
+        <b-button v-if="currentSlide == 2 && (errorType == 1 || errorType == 4)" :label="cancelButtonText" type="is-dark" @click="$emit('close')" rounded />
       </div>
     </footer>
     <!-- Modal-Card Footer End -->
@@ -216,7 +216,6 @@ export default {
         return item
       }
     })
-
     this.initData.network_model = gg[0].id
 
     // Set Front-end base url
@@ -472,7 +471,6 @@ export default {
       })
       return network[0].name
     }
-
   },
   destroyed() {
     clearInterval(this.timer)

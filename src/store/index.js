@@ -2,18 +2,18 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-09 18:33:47
+ * @LastEditTime: 2021-10-14 17:22:29
  * @Description: 
  * @FilePath: /CasaOS-UI/src/store/index.js
  */
 import Vue from 'vue'
 import Vuex from 'vuex'
-import createPersistedState from "vuex-persistedstate";
+// import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  plugins: [createPersistedState()],
+  // plugins: [createPersistedState()],
   state: {
     token: "",
     devIp: "192.168.2.217",
