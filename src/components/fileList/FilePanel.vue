@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-14 14:08:40
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-18 17:03:09
+ * @LastEditTime: 2021-10-18 19:15:32
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/fileList/FilePanel.vue
 -->
@@ -40,18 +40,19 @@
     <!-- Modal-Card Footer Start-->
     <footer class="modal-card-foot is-flex is-align-items-center">
       <div class="flex1">
-        <b-tooltip label="Create Folder" type="is-dark">
-          <a class="add-button" @click="showCreatePanel(true)">
-            <b-icon icon="folder-plus"></b-icon>
-          </a>
-        </b-tooltip>
+        <div v-if="rootPath == '/DATA/'">
+          <b-tooltip label="Create Folder" type="is-dark">
+            <a class="add-button" @click="showCreatePanel(true)">
+              <b-icon icon="folder-plus"></b-icon>
+            </a>
+          </b-tooltip>
 
-        <b-tooltip label="Create File" type="is-dark">
-          <a class="add-button" @click="showCreatePanel(false)">
-            <b-icon icon="file-plus-outline"></b-icon>
-          </a>
-        </b-tooltip>
-
+          <b-tooltip label="Create File" type="is-dark">
+            <a class="add-button" @click="showCreatePanel(false)">
+              <b-icon icon="file-plus-outline"></b-icon>
+            </a>
+          </b-tooltip>
+        </div>
       </div>
       <div>
         <b-button label="Cancel" type="is-grey" @click="$emit('close')" rounded />
@@ -73,14 +74,15 @@ export default {
   },
   data() {
     return {
-      rootPath: "/DATA/",
+      // rootPath: "/DATA/",
       path: this.initPath,
       activePath: this.initPath,
       fileList: [],
     }
   },
   props: {
-    initPath: String
+    initPath: String,
+    rootPath: String
   },
   computed: {
     // get Last foler name for breadcrumb
@@ -148,7 +150,7 @@ export default {
           }
         },
         props: {
-          initPath: (this.path == "") ? "/DATA/" : this.path,
+          initPath: (this.path == "") ? this.rootPath : this.path,
           isDir: isFolder
         }
       })

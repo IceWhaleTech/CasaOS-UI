@@ -9,6 +9,7 @@ export default {
   name: "iconinput",
   props: {
     vdata: String,
+    type: String,
     placeholder: String
   },
   model: {
@@ -18,6 +19,23 @@ export default {
   data() {
     return {
       path: this.vdata
+    }
+  },
+  computed: {
+    initPath() {
+      if (this.type == "device") {
+        console.log(this.path);
+        return (this.path == "") ? "/dev/" : this.path
+      } else {
+        return (this.path == "") ? "/DATA/" : this.path
+      }
+    },
+    rootPath() {
+      if (this.type == "device") {
+        return "/dev/"
+      } else {
+        return "/DATA/"
+      }
     }
   },
   methods: {
@@ -46,7 +64,8 @@ export default {
           }
         },
         props: {
-          initPath: (this.path == "") ? "/DATA/" : this.path
+          initPath: this.initPath,
+          rootPath: this.rootPath
         }
       })
     }

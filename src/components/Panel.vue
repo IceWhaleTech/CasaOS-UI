@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-18 18:18:50
+ * @LastEditTime: 2021-10-18 19:05:22
  * @Description: Install Panel of Docker
  * @FilePath: /CasaOS-UI/src/components/Panel.vue
 -->
@@ -25,7 +25,7 @@
         <ValidationObserver ref="ob1">
           <ValidationProvider rules="required" name="Image" v-slot="{ errors, valid }">
             <b-field label="Docker Image *" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
-              <b-input v-model="initData.image" placeholder="e.g.,hello-world:latest" :readonly="state == 'update'"></b-input>
+              <b-input v-model="initData.image" placeholder="e.g.,hello-world:latest" :readonly="state == 'update'" @input="changeIcon"></b-input>
               <!-- <b-autocomplete :data="data" placeholder="e.g. hello-world:latest" field="image" :loading="isFetching" @typing="getAsyncData" @select="option => selected = option" v-model="initData.image" :readonly="state == 'update'"></b-autocomplete> -->
             </b-field>
           </ValidationProvider>
@@ -57,9 +57,9 @@
           </b-field>
 
           <ports v-model="initData.ports" :showHostPost="showHostPort" v-if="showPorts"></ports>
-          <input-group v-model="initData.volumes" label="Volumes" message="No volumes now, click “+” to add one."></input-group>
+          <input-group v-model="initData.volumes" type="volume" label="Volumes" message="No volumes now, click “+” to add one."></input-group>
           <env-input-group v-model="initData.envs" label="Environment Variables" message="No environment variables now, click “+” to add one."></env-input-group>
-          <input-group v-model="initData.devices" label="Devices" message="No devices now, click “+” to add one."></input-group>
+          <input-group v-model="initData.devices" type="device" label="Devices" message="No devices now, click “+” to add one."></input-group>
           <b-field label="Memory Limit">
             <vue-slider :min="256" :max="totalMemory" v-model="initData.memory"></vue-slider>
           </b-field>
@@ -414,6 +414,7 @@ export default {
           'update': (e) => {
             this.initData = e
             this.webui = this.initData.port_map + this.initData.index
+            this.changeIcon(this.initData.image)
             this.$buefy.dialog.alert({
               title: 'Attention',
               message: 'AutoFill only helps you to complete most of the configuration. Some of the configuration information still needs to be confirmed by you.',
@@ -470,6 +471,19 @@ export default {
         return net.id == netId
       })
       return network[0].name
+    },
+    /**
+     * @description: Change App icon when image changed
+     * @param {*} function
+     * @return {*} void
+     */
+    changeIcon(e) {
+      if (e == "") {
+        this.initData.icon = "";
+      } else {
+        let appIcon = e.split(":")[0].split("/").pop();
+        this.initData.icon = `https://cdn.jsdelivr.net/gh/IceWhaleTech/AppIcon@main/all/${appIcon}.png`;
+      }
     }
   },
   destroyed() {

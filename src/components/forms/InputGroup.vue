@@ -17,7 +17,7 @@
         <b-field grouped>
           <b-field :label="name2" expanded>
             <!-- <b-input :placeholder="name2" v-model="item.host" expanded @input="handleInput" icon-right="image-filter-center-focus-strong" icon-right-clickable @icon-right-click="selectFile"></b-input> -->
-            <icon-input :placeholder="name2" v-model="item.host" expanded @input="handleInput"></icon-input>
+            <icon-input :placeholder="name2" :type="type" v-model="item.host" expanded @input="handleInput"></icon-input>
 
           </b-field>
           <b-field :label="name1" expanded>
@@ -30,7 +30,7 @@
         <b-field grouped>
           <b-field expanded>
             <!-- <b-input :placeholder="name2" v-model="item.host" expanded @input="handleInput" icon-right="image-filter-center-focus-strong" icon-right-clickable @icon-right-click="selectFile"></b-input> -->
-            <icon-input :placeholder="name2" v-model="item.host" expanded @input="handleInput"></icon-input>
+            <icon-input :placeholder="name2" :type="type" v-model="item.host" expanded @input="handleInput"></icon-input>
           </b-field>
           <b-field expanded>
             <b-input :placeholder="name1" v-model="item.container" expanded @input="handleInput"></b-input>
@@ -66,6 +66,7 @@ export default {
     vdata: Array,
     label: String,
     message: String,
+    type: String,
     name1: {
       type: String,
       default: "Container"
