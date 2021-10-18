@@ -1,6 +1,6 @@
 <template>
-  <!-- <b-input :placeholder="placeholder" v-model="path" expanded @input="handleInput" icon-right="image-filter-center-focus-strong" icon-right-clickable @icon-right-click="selectFile"></b-input> -->
-  <b-input :placeholder="placeholder" v-model="path" expanded @input="handleInput"></b-input>
+  <b-input :placeholder="placeholder" v-model="path" expanded @input="handleInput" icon-right="image-filter-center-focus-strong" icon-right-clickable @icon-right-click="selectFile"></b-input>
+  <!-- <b-input :placeholder="placeholder" v-model="path" expanded @input="handleInput"></b-input> -->
 </template>
 
 <script>
@@ -22,8 +22,8 @@ export default {
   },
   methods: {
     handleInput() {
-      this.$emit('change', this.vdata)
-      this.$emit('input', this.vdata)
+      this.$emit('change', this.path)
+      this.$emit('input', this.path)
     },
     selectFile() {
       this.showFileModal();
@@ -33,7 +33,7 @@ export default {
         parent: this,
         component: FilePanel,
         hasModalCard: true,
-        customClass: '',
+        customClass: 'fileModal',
         trapFocus: true,
         canCancel: ['escape'],
         scroll: "keep",
@@ -46,7 +46,7 @@ export default {
           }
         },
         props: {
-          initPath: this.path
+          initPath: (this.path == "") ? "/DATA/" : this.path
         }
       })
     }

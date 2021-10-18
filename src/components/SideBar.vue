@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-13 14:03:59
+ * @LastEditTime: 2021-10-18 10:57:22
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/SideBar.vue
 -->
@@ -150,7 +150,6 @@ export default {
       return obj.show
     }
   },
-
 }
 </script>
 
@@ -158,7 +157,7 @@ export default {
 .scroll-area {
   position: relative;
   margin: auto;
-  height: calc(100vh - 6rem);
+  height: calc(100% - 4rem);
 }
 .ps:hover > .ps__rail-x,
 .ps:hover > .ps__rail-y,

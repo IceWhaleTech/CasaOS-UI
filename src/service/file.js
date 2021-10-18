@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-09-19 09:25:53
+ * @LastEditTime: 2021-10-18 16:33:39
  * @Description: File API
- * @FilePath: \CasaOS-UI\src\service\file.js
+ * @FilePath: /CasaOS-UI/src/service/file.js
  */
 import { api } from "./service.js";
 
@@ -26,10 +26,17 @@ const file = {
     },
     // Make a new Dir
     mkdir(path) {
-        let data = { 
+        let data = {
             path: path
         }
         return api.post('/file/mkdir', data)
+    },
+    // Create a new File
+    create(path) {
+        let data = {
+            path: path
+        }
+        return api.post('/file/create', data)
     }
 }
 

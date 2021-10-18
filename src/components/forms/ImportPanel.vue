@@ -107,27 +107,27 @@ export default {
       const checkArray = [
         {
           keywords: ["config"],
-          value: `/AppData/${appName}${containerPath}`
+          value: `/AppData/${appName}${containerPath}/`
         },
         {
           keywords: ["tvshows", "TV", "tv"],
-          value: `/Media/TV Shows`
+          value: `/Media/TV Shows/`
         },
         {
           keywords: ["movies", "Movie", "movie"],
-          value: `/Media/Movies`
+          value: `/Media/Movies/`
         },
         {
           keywords: ["Music", "music"],
-          value: `/Media/Music`
+          value: `/Media/Music/`
         },
         {
           keywords: ["download"],
-          value: `/Downloads`
+          value: `/Downloads/`
         },
         {
           keywords: ["pictures", "photo"],
-          value: `/Gallery`
+          value: `/Gallery/`
         }
       ]
 

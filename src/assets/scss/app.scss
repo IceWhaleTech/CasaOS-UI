@@ -454,18 +454,30 @@ html {
   }
 }
 
+// File Modals
+@media screen and (min-width: 769px) {
+  .fileModal {
+    .modal-card {
+      width: 30rem;
+    }
+  }
+}
+
 .filelist {
+  height: 19.6875rem;
+  overflow-x: hidden;
+  overflow-y: auto;
   li {
     border-bottom: #e4e4e4 1px solid;
     line-height: 1.75rem;
     border-radius: 4px;
-    transition: background-color 0.1s;
+    transition: background-color 0.2s;
     cursor: pointer;
     &:hover {
       background-color: #e0e0e0;
     }
     &.active {
-      background-color: #e0e0e0;
+      background-color: #b6e0ff;
     }
   }
 }
@@ -475,6 +487,12 @@ html {
   background-repeat: no-repeat;
   background-position: left center;
   padding: 0.5rem 0.5rem 0.5rem 2rem;
+  -webkit-touch-callout: none;
+  -moz-user-select: none; /*火狐*/
+  -webkit-user-select: none; /*webkit浏览器*/
+  -ms-user-select: none; /*IE10*/
+  -khtml-user-select: none; /*早期浏览器*/
+  user-select: none;
   &.folder {
     background-image: url(../img/folder.png);
   }
@@ -483,6 +501,9 @@ html {
   }
 }
 .breadcrumb {
+  a {
+    color: #0e9aff;
+  }
   ul {
     overflow: hidden;
     flex-wrap: nowrap;
@@ -492,22 +513,46 @@ html {
       white-space: nowrap;
       div {
         max-width: 100%;
-        padding: 0 0.75em;
+        padding: 0 0.5em;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+      }
+      &:first-child {
+        a {
+          padding-right: 0;
+          .icon {
+            margin-left: 0;
+          }
+        }
       }
       &:last-child {
         min-width: 0;
         width: 100%;
       }
+      &:nth-child(2) {
+        &::before {
+          content: "|";
+        }
+      }
     }
   }
 }
 
-.c-button{
+.c-button {
   border-radius: 4px;
-  &:hover{
+  &:hover {
     background-color: #cfcfcf;
   }
+}
+
+.button.is-grey {
+  background-color: #A6AFB9;
+  border-color: transparent;
+  color: whitesmoke;
+}
+
+.add-button{
+  color: #0e9aff;
+  margin: 0 0.25rem;
 }

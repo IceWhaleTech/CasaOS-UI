@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-13 18:28:04
+ * @LastEditTime: 2021-10-18 15:40:54
  * @Description: Install Panel of Docker
  * @FilePath: /CasaOS-UI/src/components/Panel.vue
 -->
@@ -99,7 +99,7 @@
     <footer class="modal-card-foot is-flex is-align-items-center">
       <div class="flex1"></div>
       <div>
-        <b-button v-if="currentSlide == 1" label="Cancel" @click="$emit('close')" rounded />
+        <b-button v-if="currentSlide == 1" label="Cancel" @click="$emit('close')" type="is-grey" rounded />
         <b-button v-if="currentSlide == 2 && errorType == 3 " label="Back" @click="prevStep" rounded />
         <b-button v-if="currentSlide == 1 && state == 'install'" label="Install" type="is-dark" @click="installApp()" rounded />
         <b-button v-if="currentSlide == 1 && state == 'update'" label="Save" type="is-dark" @click="updateApp()" rounded />
@@ -302,21 +302,22 @@ export default {
       this.checkStep(this.$refs.ob1).then(val => {
         if (val) {
           this.processData();
-          this.isLoading = true;
-          this.$api.app.install(this.id, this.initData).then((res) => {
-            this.isLoading = false;
-            if (res.data.success == 200) {
-              this.currentSlide = 2;
-              this.cancelButtonText = "Continue in background"
-              this.checkInstallState(res.data.data)
-            } else {
-              //this.currentSlide = 1;
-              this.$buefy.toast.open({
-                message: res.data.message,
-                type: 'is-warning'
-              })
-            }
-          })
+          //this.isLoading = true;
+          console.log(this.initData);
+          // this.$api.app.install(this.id, this.initData).then((res) => {
+          //   this.isLoading = false;
+          //   if (res.data.success == 200) {
+          //     this.currentSlide = 2;
+          //     this.cancelButtonText = "Continue in background"
+          //     this.checkInstallState(res.data.data)
+          //   } else {
+          //     //this.currentSlide = 1;
+          //     this.$buefy.toast.open({
+          //       message: res.data.message,
+          //       type: 'is-warning'
+          //     })
+          //   }
+          // })
         }
       })
     },
