@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-18 15:40:54
+ * @LastEditTime: 2021-10-18 18:18:50
  * @Description: Install Panel of Docker
  * @FilePath: /CasaOS-UI/src/components/Panel.vue
 -->
@@ -302,22 +302,21 @@ export default {
       this.checkStep(this.$refs.ob1).then(val => {
         if (val) {
           this.processData();
-          //this.isLoading = true;
-          console.log(this.initData);
-          // this.$api.app.install(this.id, this.initData).then((res) => {
-          //   this.isLoading = false;
-          //   if (res.data.success == 200) {
-          //     this.currentSlide = 2;
-          //     this.cancelButtonText = "Continue in background"
-          //     this.checkInstallState(res.data.data)
-          //   } else {
-          //     //this.currentSlide = 1;
-          //     this.$buefy.toast.open({
-          //       message: res.data.message,
-          //       type: 'is-warning'
-          //     })
-          //   }
-          // })
+          this.isLoading = true;
+          this.$api.app.install(this.id, this.initData).then((res) => {
+            this.isLoading = false;
+            if (res.data.success == 200) {
+              this.currentSlide = 2;
+              this.cancelButtonText = "Continue in background"
+              this.checkInstallState(res.data.data)
+            } else {
+              //this.currentSlide = 1;
+              this.$buefy.toast.open({
+                message: res.data.message,
+                type: 'is-warning'
+              })
+            }
+          })
         }
       })
     },
