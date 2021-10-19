@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-18 19:05:22
+ * @LastEditTime: 2021-10-19 18:46:02
  * @Description: Install Panel of Docker
  * @FilePath: /CasaOS-UI/src/components/Panel.vue
 -->
@@ -416,8 +416,17 @@ export default {
             this.webui = this.initData.port_map + this.initData.index
             this.changeIcon(this.initData.image)
             this.$buefy.dialog.alert({
-              title: 'Attention',
-              message: 'AutoFill only helps you to complete most of the configuration. Some of the configuration information still needs to be confirmed by you.',
+              title: '⚠️ Attention',
+              message: `<div class="nobrk"><h4 class="title is-5">AutoFill only helps you to complete most of the configuration. </h4>
+                        <p class="mb-3">Some configuration information such as:</p>
+                        <ul>
+                        <li>1. the port and path of the Web UI</li>
+                        <li>2. the mount location of the volume or file</li>
+                        <li>3. the port mapping of the Host</li>
+                        <li>4. optional configuration items</li>
+                        </ul>
+                        <p class="mt-3">These include but are not limited to these cases and <b>still need to be confirmed or modified by you.</b></p>
+                        <p class="mt-3">Feel free to suggest improvements to this feature in Discord Server!</p></div>`,
               type: 'is-dark'
             })
           }

@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-14 14:08:40
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-18 19:15:32
+ * @LastEditTime: 2021-10-19 18:30:26
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/fileList/FilePanel.vue
 -->
@@ -25,7 +25,7 @@
               <b-icon icon="arrow-up"></b-icon>
             </a>
           </li>
-          <li v-if="showItem"><a @click="getFileList(rootPath)">{{rootPath.slice(1, -1)}}</a></li>
+          <li v-if="showItem"><a @click="getFileList(rootPath)">{{rootName}}</a></li>
           <li v-if="showItem & showDots"><a @click="getParentList()">...</a></li>
           <li class="is-active ">
             <div>{{lastFolder}}</div>
@@ -33,25 +33,26 @@
         </ul>
       </nav>
       <ul class="filelist">
-        <list-item v-for="item in fileList" :key="item.path" :name="item.name" :IsDir="item.is_dir" :path="item.path" :state="checkActive(item.path)" @active="activeFile" @expand="getFileList"></list-item>
+        <list-item v-for="(item,index) in fileList" :id="item.path" :key="item.path" :name="item.name" :IsDir="item.is_dir" :path="item.path" :state="checkActive(item.path)" @active="activeFile" @expand="getFileList"></list-item>
       </ul>
     </section>
     <!-- Modal-Card Body End -->
     <!-- Modal-Card Footer Start-->
     <footer class="modal-card-foot is-flex is-align-items-center">
       <div class="flex1">
-        <div v-if="rootPath == '/DATA/'">
+        <div v-if="rootPath == '/DATA'">
           <b-tooltip label="Create Folder" type="is-dark">
             <a class="add-button" @click="showCreatePanel(true)">
               <b-icon icon="folder-plus"></b-icon>
             </a>
           </b-tooltip>
-
-          <b-tooltip label="Create File" type="is-dark">
-            <a class="add-button" @click="showCreatePanel(false)">
-              <b-icon icon="file-plus-outline"></b-icon>
-            </a>
-          </b-tooltip>
+          <template v-if="rootPath != path">
+            <b-tooltip label="Create File" type="is-dark">
+              <a class="add-button" @click="showCreatePanel(false)">
+                <b-icon icon="file-plus-outline"></b-icon>
+              </a>
+            </b-tooltip>
+          </template>
         </div>
       </div>
       <div>
@@ -74,7 +75,6 @@ export default {
   },
   data() {
     return {
-      // rootPath: "/DATA/",
       path: this.initPath,
       activePath: this.initPath,
       fileList: [],
@@ -87,7 +87,7 @@ export default {
   computed: {
     // get Last foler name for breadcrumb
     lastFolder() {
-      return _.dropRight(this.path.split("/"), 1).pop()
+      return this.path.split("/").pop()
     },
     // check show breadcrumb item
     showItem() {
@@ -95,13 +95,22 @@ export default {
     },
     // check show breadcrumb dots
     showDots() {
-      return this.path.split("/").length > 4
-    }
+      return this.path.split("/").length > 3
+    },
+    // Root Name
+    rootName() {
+      return _.trimStart(this.rootPath, '/');
+    },
   },
   created() {
-    let i = this.path.endsWith("/") ? 2 : 1;
-    this.path = (this.path == this.rootPath) ? this.path : _.dropRight(this.path.split("/"), i).join("/") + "/"
+    // let i = this.path.endsWith("/") ? 2 : 1;
+    this.path = (this.path == this.rootPath) ? this.path : _.dropRight(this.path.split("/"), 1).join("/")
     this.getFileList(this.path);
+  },
+
+  mounted() {
+
+
   },
 
   methods: {
@@ -111,13 +120,25 @@ export default {
         if (res.data.success == 200) {
           this.path = path
           this.fileList = res.data.data;
+          this.locateFile();
         }
+      })
+    },
+
+    locateFile() {
+      this.$nextTick(() => {
+        try {
+          document.getElementById(this.activePath).scrollIntoView()
+        } catch (error) {
+          console.log(error);
+        }
+        
       })
     },
 
     // get parent list
     getParentList() {
-      let backDir = _.dropRight(this.path.split("/"), 2).join("/") + "/";
+      let backDir = _.dropRight(this.path.split("/"), 1).join("/");
       if (backDir === "/")
         return false
       this.getFileList(backDir);
@@ -145,8 +166,10 @@ export default {
         scroll: "keep",
         animation: "zoom-out",
         events: {
-          'reloadPath': () => {
+          'reloadPath': (path) => {
+
             this.getFileList(this.path);
+            this.activePath = path;
           }
         },
         props: {

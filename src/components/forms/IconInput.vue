@@ -5,6 +5,8 @@
 
 <script>
 import FilePanel from '../fileList/FilePanel.vue'
+const DATA_PATH = "/DATA"
+const DEV_PATH = "/dev"
 export default {
   name: "iconinput",
   props: {
@@ -24,17 +26,16 @@ export default {
   computed: {
     initPath() {
       if (this.type == "device") {
-        console.log(this.path);
-        return (this.path == "") ? "/dev/" : this.path
+        return (this.path == "") ? DEV_PATH : this.path
       } else {
-        return (this.path == "") ? "/DATA/" : this.path
+        return (this.path == "") ? DATA_PATH : this.path
       }
     },
     rootPath() {
       if (this.type == "device") {
-        return "/dev/"
+        return DEV_PATH
       } else {
-        return "/DATA/"
+        return DATA_PATH
       }
     }
   },

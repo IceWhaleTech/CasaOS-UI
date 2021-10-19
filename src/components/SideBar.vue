@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-18 10:57:22
+ * @LastEditTime: 2021-10-19 13:12:03
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/SideBar.vue
 -->
@@ -48,7 +48,7 @@ export default {
         suppressScrollX: true,
         wheelPropagation: false
       },
-      widgetsSettings: {}
+      widgetsSettings: []
     }
   },
   computed: {
@@ -89,16 +89,17 @@ export default {
         if (res.status == 200) {
           if (res.data === "") {
             this.saveData(initData);
-            this.widgetsSettings = initData
+            this.widgetsSettings = initData;
+            this.isLoading = false;
           } else {
-            this.diffAndCombineData(initData, res.data.data)
+            this.diffAndCombineData(initData, res.data.data);
           }
         }
       })
     },
     diffAndCombineData(initData, remoteData) {
       let newData = initData.map(item => {
-        let remoteItem = _.find(remoteData, el => el.name == item.name)
+        let remoteItem = _.find(remoteData, el => el.name == item.name);
         if (remoteItem && item.name === remoteItem.name) {
           return {
             name: item.name,
@@ -111,9 +112,9 @@ export default {
           }
         }
       })
-      this.widgetsSettings = newData
+      this.widgetsSettings = newData;
       this.saveData(newData);
-      this.isLoading = false
+      this.isLoading = false;
     },
     /**
      * @description: Get Local widgets datas
@@ -136,7 +137,7 @@ export default {
     saveData(data) {
       this.$api.info.saveWidgetsConfig(data).then(res => {
         if (res.data.success == 200) {
-          this.widgetsSettings = res.data.data
+          this.widgetsSettings = res.data.data;
         }
       })
     },

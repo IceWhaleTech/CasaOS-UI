@@ -49,21 +49,19 @@ export default {
   },
   methods: {
     create() {
-      let path = "";
+      let path = `${this.initPath}/${this.name}`
       if (this.isDir) {
-        path = `${this.initPath}${this.name}/`
         this.$api.file.mkdir(path).then(res => {
           if (res.data.success == 200) {
-            this.successCallBack();
+            this.successCallBack(path);
           } else {
             this.errorCallBack(res.data.message);
           }
         })
       } else {
-        path = `${this.initPath}${this.name}`
         this.$api.file.create(path).then(res => {
           if (res.data.success == 200) {
-            this.successCallBack();
+            this.successCallBack(path);
           } else {
             this.errorType = "is-danger"
             this.errorCallBack(res.data.message);
@@ -71,11 +69,11 @@ export default {
         })
       }
     },
-    successCallBack() {
+    successCallBack(path) {
       this.message = ""
       this.errorType = ""
       this.$emit('close');
-      this.$emit("reloadPath")
+      this.$emit("reloadPath",path)
     },
     errorCallBack(message) {
       this.errorType = "is-danger"
