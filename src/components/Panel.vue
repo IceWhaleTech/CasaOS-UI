@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-19 18:46:02
+ * @LastEditTime: 2021-10-20 19:45:43
  * @Description: Install Panel of Docker
  * @FilePath: /CasaOS-UI/src/components/Panel.vue
 -->
@@ -49,7 +49,7 @@
           <b-field label="Network">
             <b-select v-model="initData.network_model" placeholder="Select" expanded>
               <optgroup v-for="net in networks" :key="net.driver" :label="net.driver">
-                <option v-for="(option,index) in net.networks" :value="option.id" :key="option.name+index">
+                <option v-for="(option,index) in net.networks" :value="option.name" :key="option.name+index">
                   {{ option.name}}
                 </option>
               </optgroup>
@@ -216,7 +216,8 @@ export default {
         return item
       }
     })
-    this.initData.network_model = gg[0].id
+    console.log(gg);
+    this.initData.network_model = gg.length > 0 ? gg[0].name : "bridge";
 
     // Set Front-end base url
     this.baseUrl = `${window.location.protocol}//${document.domain}:`;
@@ -224,7 +225,7 @@ export default {
   computed: {
 
     showPorts() {
-      if (this.initData.network_model.indexOf("macvlan") > -1) {
+      if (this.initData.network_model.toLowerCase().indexOf("macvlan") > -1 || this.initData.network_model.indexOf("host") > -1) {
         return false
       } else {
         return true
@@ -302,6 +303,8 @@ export default {
       this.checkStep(this.$refs.ob1).then(val => {
         if (val) {
           this.processData();
+
+          //console.log(this.initData);
           this.isLoading = true;
           this.$api.app.install(this.id, this.initData).then((res) => {
             this.isLoading = false;
@@ -310,7 +313,6 @@ export default {
               this.cancelButtonText = "Continue in background"
               this.checkInstallState(res.data.data)
             } else {
-              //this.currentSlide = 1;
               this.$buefy.toast.open({
                 message: res.data.message,
                 type: 'is-warning'
@@ -382,6 +384,7 @@ export default {
     updateApp() {
       this.processData();
       this.isLoading = true;
+      console.log(this.initData);
       this.$api.app.updateContainerSetting(this.id, this.initData).then((res) => {
         if (res.data.success == 200) {
           this.isLoading = false;

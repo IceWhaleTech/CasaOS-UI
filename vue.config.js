@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-22 10:10:10
  * @LastEditors: JerryK
- * @LastEditTime: 2021-09-22 15:26:47
+ * @LastEditTime: 2021-10-20 16:52:53
  * @Description: 
  * @FilePath: /CasaOS-UI/vue.config.js
  */
@@ -19,5 +19,7 @@ module.exports = {
     chainWebpack: config => {
         config.plugin('ignore')
             .use(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
+        config.plugin('webpack-bundle-analyzer')
+            .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
     }
 }

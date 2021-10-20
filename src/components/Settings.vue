@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-09 18:41:15
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-13 15:33:30
+ * @LastEditTime: 2021-10-20 17:00:11
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/Settings.vue
 -->
@@ -28,12 +28,13 @@
 </template>
 
 <script>
+import find from 'lodash/find';
 const widgetsComponents = require.context(
   '@/widgets',
   false,
   /.vue$/
 )
-const _ = require('lodash')
+
 
 export default {
   name: "settings",
@@ -57,18 +58,18 @@ export default {
       this.apps.push({ app: componentConfig })
     });
   },
-  mounted () {
+  mounted() {
     window.addEventListener('resize', this.onRezise);
   },
   methods: {
     getIcon(value) {
-      let obj = _.find(this.apps, o => {
+      let obj = find(this.apps, o => {
         return o.app.default.name === value
       });
       return obj.app.default.icon;
     },
     getTitle(value) {
-      let obj = _.find(this.apps, o => {
+      let obj = find(this.apps, o => {
         return o.app.default.name === value
       });
       return obj.app.default.title;
@@ -76,12 +77,12 @@ export default {
     handleInput() {
       this.$emit('change', this.settingsData)
     },
-    onRezise(){
+    onRezise() {
       // let container = document.querySelector(".scroll-area")
       //console.log(container.offsetHeight);
     }
   },
-  destroyed () {
+  destroyed() {
     window.addEventListener('resize', this.onRezise);
   },
 }

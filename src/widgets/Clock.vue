@@ -6,7 +6,8 @@
 </template>
 
 <script>
-import moment from 'moment'
+import dateFormat from "dateformat";
+
 export default {
   name: "clock",
   icon: "clock-outline",
@@ -30,8 +31,9 @@ export default {
   },
   methods: {
     updateClock() {
-      this.timeText = moment().format('HH:mm');
-      this.dateText = moment().format('dddd, MMMM Do');
+      var today = new Date();
+      this.timeText = dateFormat(today,"HH:MM");
+      this.dateText = dateFormat(today,"fullDate");
     }
   },
 }

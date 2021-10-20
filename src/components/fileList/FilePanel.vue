@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-14 14:08:40
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-19 18:30:26
+ * @LastEditTime: 2021-10-20 17:03:30
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/fileList/FilePanel.vue
 -->
@@ -67,7 +67,9 @@
 <script>
 import ListItem from "./ListItem.vue"
 import CreatePanel from './CreatePanel.vue'
-const _ = require('lodash')
+import trimStart from 'lodash/trimStart'
+import dropRight from 'lodash/dropRight'
+
 export default {
   name: "file-panel",
   components: {
@@ -99,12 +101,12 @@ export default {
     },
     // Root Name
     rootName() {
-      return _.trimStart(this.rootPath, '/');
+      return trimStart(this.rootPath, '/');
     },
   },
   created() {
     // let i = this.path.endsWith("/") ? 2 : 1;
-    this.path = (this.path == this.rootPath) ? this.path : _.dropRight(this.path.split("/"), 1).join("/")
+    this.path = (this.path == this.rootPath) ? this.path : dropRight(this.path.split("/"), 1).join("/")
     this.getFileList(this.path);
   },
 
@@ -138,7 +140,7 @@ export default {
 
     // get parent list
     getParentList() {
-      let backDir = _.dropRight(this.path.split("/"), 1).join("/");
+      let backDir = dropRight(this.path.split("/"), 1).join("/");
       if (backDir === "/")
         return false
       this.getFileList(backDir);

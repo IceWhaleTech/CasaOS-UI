@@ -47,8 +47,10 @@
 </template>
 
 <script>
+import upperFirst from 'lodash/upperFirst'
+import lowerFirst from 'lodash/lowerFirst'
 import parser from 'yargs-parser'
-const _ = require('lodash')
+
 export default {
   data() {
     return {
@@ -160,11 +162,11 @@ export default {
         this.updateData.image = [...command].pop()
         //Label
         if (parsedInput.name != undefined) {
-          this.updateData.label = _.upperFirst(parsedInput.name)
+          this.updateData.label = upperFirst(parsedInput.name)
         } else {
           const imageArray = this.updateData.image.split("/")
           const lastNode = [...imageArray].pop()
-          this.updateData.label = _.upperFirst(lastNode.split(":")[0])
+          this.updateData.label = upperFirst(lastNode.split(":")[0])
         }
 
         //Envs
@@ -193,12 +195,12 @@ export default {
             // console.log(this.volumeAutoCheck(ii[1],ii[0], _.lowerFirst(this.updateData.label)));
             return {
               container: ii[1],
-              host: this.volumeAutoCheck(ii[1], ii[0], _.lowerFirst(this.updateData.label))
+              host: this.volumeAutoCheck(ii[1], ii[0], lowerFirst(this.updateData.label))
             }
           } else {
             return {
               container: ii[0],
-              host: this.volumeAutoCheck(ii[0], "", _.lowerFirst(this.updateData.label))
+              host: this.volumeAutoCheck(ii[0], "", lowerFirst(this.updateData.label))
             }
           }
 

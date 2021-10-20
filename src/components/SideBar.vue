@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-19 13:12:03
+ * @LastEditTime: 2021-10-20 17:02:02
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/SideBar.vue
 -->
@@ -22,10 +22,11 @@
 <script>
 import lowerFirst from 'lodash/lowerFirst'
 import camelCase from 'lodash/camelCase'
+import find from 'lodash/find';
 import Settings from '@/components/Settings.vue'
 import vueCustomScrollbar from 'vue-custom-scrollbar'
 import "vue-custom-scrollbar/dist/vueScrollbar.css"
-const _ = require('lodash')
+
 const widgetsComponents = require.context(
   '@/widgets',
   false,
@@ -54,7 +55,7 @@ export default {
   computed: {
     activeApps() {
       let newArray = this.widgetsSettings.map(item => {
-        let obj = _.find(this.apps, function (o) { return o.app.name == item.name; });
+        let obj = find(this.apps, function (o) { return o.app.name == item.name; });
         return obj;
       })
       return newArray
@@ -99,7 +100,7 @@ export default {
     },
     diffAndCombineData(initData, remoteData) {
       let newData = initData.map(item => {
-        let remoteItem = _.find(remoteData, el => el.name == item.name);
+        let remoteItem = find(remoteData, el => el.name == item.name);
         if (remoteItem && item.name === remoteItem.name) {
           return {
             name: item.name,
@@ -147,7 +148,7 @@ export default {
       this.saveData(this.widgetsSettings)
     },
     checkShow(name) {
-      let obj = _.find(this.widgetsSettings, o => { return name == o.name });
+      let obj = find(this.widgetsSettings, o => { return name == o.name });
       return obj.show
     }
   },

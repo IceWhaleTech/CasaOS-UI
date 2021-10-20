@@ -15,8 +15,8 @@
       <b-icon icon="close" size="is-small" class="is-clickable" @click.native="removeItem(index)"></b-icon>
       <template v-if="index < 1">
         <b-field grouped>
-          <b-field label="Host" expanded>
-            <b-input placeholder="Host" type="number" v-model="item.host" expanded @input="handleInput" v-if="showHostPost"></b-input>
+          <b-field label="Host" v-if="showHostPost" expanded>
+            <b-input placeholder="Host" type="number" v-model="item.host" expanded @input="handleInput" ></b-input>
           </b-field>
           <b-field label="Container" expanded>
             <b-input placeholder="Container" type="number" v-model="item.container" expanded @input="handleInput"></b-input>
