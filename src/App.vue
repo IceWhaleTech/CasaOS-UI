@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-20 16:38:51
+ * @LastEditTime: 2021-10-21 13:30:20
  * @Description: Main entry of application
  * @FilePath: /CasaOS-UI/src/App.vue
 -->
@@ -48,29 +48,13 @@ export default {
     }
   },
   created() {
-    // Check if not login then login and get token
-    if (!localStorage.getItem("user_token")) {
-      this.login()
-    }
+
   },
   mounted() {
     //this.$tours['myTour'].start()
   },
   methods: {
-    login() {
-      /**
-       * @description: Login
-       * @return void
-       */
-      // this.$api.user.login({
-      //   username: "admin",
-      //   pwd: "admin"
-      // }).then((res) => {
-      //   if (res.data.success == 200) {
-      //     localStorage.setItem("user_token", res.data.data)
-      //   }
-      // })
-    }
+
   },
 }
 </script>

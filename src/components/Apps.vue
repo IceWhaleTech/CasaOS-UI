@@ -2,13 +2,13 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-09 17:19:09
+ * @LastEditTime: 2021-10-22 14:57:20
  * @Description: App module
  * @FilePath: /CasaOS-UI/src/components/Apps.vue
 -->
 
 <template>
-  <div class="has-text-left mt-6">
+  <div class="home-section has-text-left mt-6">
     <!-- Title Bar Start -->
     <div class="title-bar is-flex is-align-items-center">
       <h1 class="title is-4  has-text-white is-flex-shrink-1">Apps</h1>
@@ -19,11 +19,15 @@
     <!-- Title Bar End -->
 
     <!-- App List Start -->
-    <div class="columns is-variable is-2 is-multiline ">
-      <div class="column is-narrow is-3" v-for="(item,index) in appList" :key="'app-'+index+item.icon+item.port">
-        <app-card :item="item" @updateState="getList" @configApp="showConfigPanel"></app-card>
-      </div>
+    <div class="columns is-variable is-2 is-multiline app-list ">
+      <template v-if="!isLoading">
+        <div class="column is-narrow is-3" v-for="(item,index) in appList" :key="'app-'+index+item.icon+item.port">
+          <app-card :item="item" @updateState="getList" @configApp="showConfigPanel"></app-card>
+        </div>
+      </template>
+      <b-loading :is-full-page="false" v-model="isLoading"></b-loading>
     </div>
+
     <!-- Title Bar End -->
   </div>
 </template>
@@ -35,7 +39,8 @@ export default {
   data() {
     return {
       appList: [],
-      appConfig: {}
+      appConfig: {},
+      isLoading: true
     }
   },
   components: {
@@ -52,7 +57,11 @@ export default {
      */
     getList() {
       this.$api.app.myAppList().then(res => {
-        this.appList = res.data.data;
+        if (res.data.success == 200) {
+          this.appList = res.data.data;
+          this.isLoading = false;
+        }
+
       })
     },
 

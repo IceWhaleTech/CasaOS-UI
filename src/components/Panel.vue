@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-20 19:45:43
+ * @LastEditTime: 2021-10-22 15:06:04
  * @Description: Install Panel of Docker
  * @FilePath: /CasaOS-UI/src/components/Panel.vue
 -->
@@ -87,7 +87,9 @@
       </section>
       <section v-show="currentSlide == 2">
         <div class="installing-warpper">
-          <lottie-animation path="./ui/img/ani/rocket-launching.json" :autoPlay="true" :width="200" :height="200"></lottie-animation>
+          <div class="is-flex is-align-items-center is-justify-content-center">
+            <lottie-animation class="install-animation" :animationData="require('@/assets/ani/rocket-launching.json')" :loop="true" :autoPlay="true"></lottie-animation>
+          </div>
           <h3 class="title is-6 has-text-centered" :class="{'has-text-danger':errorType == 3,'has-text-black':errorType != 3}" v-html="installText"></h3>
         </div>
       </section>
@@ -116,12 +118,15 @@ import InputGroup from './forms/InputGroup.vue';
 import EnvInputGroup from './forms/EnvInputGroup.vue';
 import Ports from './forms/Ports.vue'
 import ImportPanel from './forms/ImportPanel.vue'
-import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
+import LottieAnimation from "lottie-web-vue";
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
 import { ValidationObserver, ValidationProvider } from "vee-validate";
 import "@/plugins/vee-validate";
 import debounce from 'lodash/debounce'
+import find from 'lodash/find';
+import uniq from 'lodash/uniq';
+import orderBy from 'lodash/orderBy';
 import FileSaver from 'file-saver';
 
 export default {
@@ -183,15 +188,9 @@ export default {
   },
 
   created() {
-    //If it is edit, Init data
-    if (this.initDatas != undefined) {
-      this.initData = this.initDatas
-      this.webui = this.initDatas.port_map + this.initDatas.index
-      this.panelTitle = this.initData.label + " Setting"
-    } else {
-      this.panelTitle = "Install a new App manually"
 
-    }
+    // Set Front-end base url
+    this.baseUrl = `${window.location.protocol}//${document.domain}:`;
 
     //Get Max memory info form device
     this.totalMemory = Math.floor(this.configData.memory.total / 1048576);
@@ -199,7 +198,7 @@ export default {
 
     //Handling network types
     this.tempNetworks = this.configData.networks;
-    this.networkModes = this.unique(this.tempNetworks.map(item => {
+    this.networkModes = uniq(this.tempNetworks.map(item => {
       return item.driver
     }))
     this.networks = this.networkModes.map(item => {
@@ -210,17 +209,21 @@ export default {
       })
       return tempitem
     })
+    this.networks = orderBy(this.networks, ['driver'], ['asc']);
 
-    let gg = this.tempNetworks.filter(item => {
-      if (item.driver == "bridge") {
-        return item
-      }
-    })
-    console.log(gg);
-    this.initData.network_model = gg.length > 0 ? gg[0].name : "bridge";
+    //If it is edit, Init data
+    if (this.initDatas != undefined) {
+      this.initData = this.initDatas
+      this.webui = this.initDatas.port_map + this.initDatas.index
+      this.panelTitle = this.initData.label + " Setting"
+    } else {
+      this.panelTitle = "Install a new App manually"
+      let gg = find(this.tempNetworks, (o) => {
+        return o.driver == "bridge"
+      })
+      this.initData.network_model = gg.length > 0 ? gg[0].name : "bridge";
+    }
 
-    // Set Front-end base url
-    this.baseUrl = `${window.location.protocol}//${document.domain}:`;
   },
   computed: {
 
@@ -256,23 +259,6 @@ export default {
 
       let model = this.initData.network_model.split("-");
       this.initData.network_model = model[0]
-    },
-
-    /**
-     * @description: Array deduplication
-     * @param {Array} arr
-     * @return {Array}
-     */
-    unique(arr) {
-      for (var i = 0; i < arr.length; i++) {
-        for (var j = i + 1; j < arr.length; j++) {
-          if (arr[i] == arr[j]) {
-            arr.splice(j, 1);
-            j--;
-          }
-        }
-      }
-      return arr;
     },
 
     /**
@@ -384,7 +370,6 @@ export default {
     updateApp() {
       this.processData();
       this.isLoading = true;
-      console.log(this.initData);
       this.$api.app.updateContainerSetting(this.id, this.initData).then((res) => {
         if (res.data.success == 200) {
           this.isLoading = false;

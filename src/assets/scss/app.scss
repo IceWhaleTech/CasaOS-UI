@@ -13,6 +13,12 @@ $twitter-invert: findColorInvert($twitter);
 $github: #333;
 $github-invert: findColorInvert($github);
 
+$primary: #2276f3;
+$primary-light: findLightColor($primary);
+$primary-dark: findDarkColor($primary);
+$primary-invert: findColorInvert($primary);
+$loading-icon-size: 2.5rem;
+
 @import "~bulma/sass/utilities/derived-variables";
 
 // 3. Add new color variables to the color map.
@@ -72,7 +78,7 @@ html {
       min-width: 20rem;
       .dropdown-content {
         .dropdown-item {
-          padding: 1.25rem;
+          padding: 0.875rem 1.25rem;
           text-align: left;
           .item {
             height: 2rem;
@@ -136,6 +142,7 @@ html {
 .contents {
   flex: 1;
   overflow: auto;
+  height: calc(100vh - 3rem);
 }
 
 .side-bar {
@@ -266,6 +273,7 @@ html {
     visibility: hidden;
     opacity: 0;
     transition: all 0.2s;
+    outline: none;
   }
   p {
     font-weight: 500;
@@ -377,6 +385,25 @@ html {
   }
   .modal-card-body {
     padding: 0 3rem;
+    .loading-overlay .loading-icon:after {
+      -webkit-animation: spinAround 500ms infinite linear;
+      animation: spinAround 500ms infinite linear;
+      border: 4px solid #000;
+      border-radius: 9999px;
+      border-right-color: transparent;
+      border-top-color: transparent;
+      content: "";
+      display: block;
+      height: 1em;
+      position: relative;
+      width: 1em;
+      position: absolute;
+      top: calc(50% - 1.25rem);
+      left: calc(50% - 1.25rem);
+      width: 2.5rem;
+      height: 2.5rem;
+      border-width: 0.2 em;
+    }
     .button.is-static,
     .input,
     .textarea,
@@ -547,16 +574,49 @@ html {
 }
 
 .button.is-grey {
-  background-color: #A6AFB9;
+  background-color: #a6afb9;
   border-color: transparent;
   color: whitesmoke;
 }
 
-.add-button{
+.add-button {
   color: #0e9aff;
   margin: 0 0.25rem;
 }
 
-.nobrk{
+.nobrk {
   word-break: normal;
+}
+
+.home-section .loading-background {
+  background-color: transparent !important;
+}
+
+.app-list {
+  min-height: 14rem;
+  position: relative;
+}
+
+.suggestion-list {
+  min-height: 7.5rem;
+  position: relative;
+}
+// Login Page
+
+#login-page {
+  height: calc(100% - 5.5rem);
+  .login-panel {
+    text-align: left;
+    max-width: 30rem;
+    background: rgba(255, 255, 255, 0.56);
+    backdrop-filter: blur(1rem);
+    border-radius: 8px;
+    padding: 3.5rem 2.5rem;
+    width: 30rem;
+  }
+}
+
+.install-animation {
+  width: 200px;
+  height: 200px;
 }

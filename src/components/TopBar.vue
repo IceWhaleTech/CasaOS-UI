@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-11 18:05:34
+ * @LastEditTime: 2021-10-22 14:10:30
  * @Description: Top bar 
  * @FilePath: /CasaOS-UI/src/components/TopBar.vue
 -->
@@ -19,7 +19,8 @@
         </template>
 
         <b-dropdown-item aria-role="menu-item" :focusable="false" custom>
-          <h2 class="title is-4">CasaOS Setting</h2>
+          <h2 class="title is-4">CasaOS Settings</h2>
+
           <div class="is-flex is-align-items-center item">
             <div class="is-flex is-align-items-center flex1">
               <b-icon icon="sync" class="mr-1"></b-icon> <b>Update</b>
@@ -41,6 +42,15 @@
           <div class="is-flex is-align-items-center is-justify-content-end update-container pl-5" v-if="updateInfo.is_need">
             <div class="flex1">{{updateText}}</div>
             <b-button type="is-dark" size="is-small" class="ml-2" :loading="isUpdating" rounded @click="updateSystem">Update</b-button>
+          </div>
+
+          <div class="is-flex is-align-items-center item mt-2">
+            <div class="is-flex is-align-items-center flex1">
+
+            </div>
+            <div>
+              <b-button type="is-dark" size="is-small" class="ml-2" rounded @click="logout">Logout</b-button>
+            </div>
           </div>
 
         </b-dropdown-item>
@@ -98,7 +108,6 @@ export default {
       this.$api.info.systemConfig().then(res => {
         if (res.data.success == 200) {
           this.barData = res.data.data
-          console.log(res.data);
         }
       })
     },
@@ -108,11 +117,7 @@ export default {
      * @return {*} void
      */
     saveData() {
-      this.$api.info.saveSystemConfig(this.barData).then(res => {
-        if (res.data.success == 200) {
-          console.log(res);
-        }
-      })
+      this.$api.info.saveSystemConfig(this.barData);
     },
 
     /**
@@ -162,6 +167,13 @@ export default {
           }
         })
       }, 3000)
+    },
+    /**
+     * @description: Logout
+     * @return {*} void
+     */
+    logout() {
+      this.$router.push("/logout");
     }
   },
 

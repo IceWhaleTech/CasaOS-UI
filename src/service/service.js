@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-09-28 14:57:35
+ * @LastEditTime: 2021-10-21 16:57:43
  * @Description: 
  * @FilePath: /CasaOS-UI/src/service/service.js
  */
@@ -25,55 +25,17 @@ const instance = axios.create({
 });
 
 
-window.isRefreshing = false
-
-let refreshSubscribers = []
-
-function subscribeTokenRefresh(cb) {
-    refreshSubscribers.push(cb)
-}
-
-function onRrefreshed(token) {
-    refreshSubscribers.map(cb => cb(token))
-}
-
-// Request interceptors
+//请求和响应拦截可以根据实际项目需求进行编写
+// 请求发起前拦截
 instance.interceptors.request.use((config) => {
     let token = ''
-    if (sessionStorage.getItem("user_token")) {
-        token = sessionStorage.getItem("user_token")
-    }
     if (localStorage.getItem("user_token")) {
         token = localStorage.getItem("user_token")
     }
-    config.headers.Authorization = token
-    if (token === "" && config.url !== "user/login") {
-        if (!window.isRefreshing) {
-            window.isRefreshing = true;
-            axios.post('user/login', qs.stringify({
-                username: "admin",
-                pwd: "admin"
-            })).then(res => {
-                token = res.data.data;
-                store.commit('setToken', token)
-                localStorage.setItem("user_token", token)
-                onRrefreshed(token);
-            })
-        }
-        let retry = new Promise((resolve) => {
-            /* (token) => {...}这个函数就是回调函数 */
-            subscribeTokenRefresh((token) => {
-                config.headers.Authorization = token
-                /* 将请求挂起 */
-                resolve(config)
-            })
-        })
-        return retry
-    } else {
-        return config;
-    }
-
-
+    config.headers.Authorization =  token
+    store.commit('setToken', token)
+    //console.log("请求拦截", config);
+    return config;
 }, (error) => {
     // Do something with request error
     return Promise.reject(error)
@@ -82,12 +44,7 @@ instance.interceptors.request.use((config) => {
 // 响应拦截（请求返回后拦截）
 instance.interceptors.response.use(response => {
     //console.log("响应拦截", response);
-    switch(response.data.success){
-        case 401:
-            localStorage.removeItem('user_token');
-            router.go(0)
-            break;
-    }
+    
     return response;
 }, error => {
     console.log('catch', error)
@@ -95,9 +52,9 @@ instance.interceptors.response.use(response => {
 
         switch (error.response.status) {
             case 401:
-                sessionStorage.removeItem('user_token') //可能是token过期，清除它
+                localStorage.removeItem('user_token') //可能是token过期，清除它
                 router.replace({ //跳转到登录页面
-                    path: '/',
+                    path: '/login',
                     query: { redirect: router.currentRoute.fullPath } // 将跳转的路由path作为参数，登录成功后跳转到该路由
                 })
                 break;

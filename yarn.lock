@@ -5616,10 +5616,22 @@ lottie-vuejs@^0.4.0:
     axios "^0.19.0"
     lottie-web "^5.1.9"
 
+lottie-web-vue@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/lottie-web-vue/-/lottie-web-vue-1.2.0.tgz#3570c6e5756b4be353dac59a3ec673434ce50bc8"
+  integrity sha512-DWxaA3Y93sRg/O003p9T88aUcVxM4DMamrQUYNVnbyy3ds+5CZzYYwci0FsoKUSqgV1+/JAXKXrARnHq4tVY7A==
+  dependencies:
+    lottie-web "^5.7.4"
+
 lottie-web@^5.1.9:
   version "5.7.13"
   resolved "https://registry.yarnpkg.com/lottie-web/-/lottie-web-5.7.13.tgz#c4087e4742c485fc2c4034adad65d1f3fcd438b0"
   integrity sha512-6iy93BGPkdk39b0jRgJ8Zosxi8QqcMP5XcDvg1f0XAvEkke6EMCl6BUO4Lu78dpgvfG2tzut4QJ+0vCrfbrldQ==
+
+lottie-web@^5.7.4:
+  version "5.7.14"
+  resolved "https://registry.yarnpkg.com/lottie-web/-/lottie-web-5.7.14.tgz#cdabd256181c3ea64cf0c174a61dfa137228981f"
+  integrity sha512-J+QEPse7Rws0XvTqRJNtcE8cszb5FWYFHubEK6bgDJtw64/AQJ40aazbWXsWGBM4sm/PgLBLgmmhDU4QpLiieg==
 
 loud-rejection@^1.0.0:
   version "1.6.0"

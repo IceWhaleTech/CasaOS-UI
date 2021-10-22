@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-11 18:08:47
+ * @LastEditTime: 2021-10-22 11:57:58
  * @Description: System HardWare Info API
  * @FilePath: /CasaOS-UI/src/service/info.js
  */
@@ -61,6 +61,11 @@ const info = {
     saveWidgetsConfig(data) {
         return api.post('/sys/widget/config', data)
     },
+
+    // Get System state
+    guideCheck(){
+        return api.get('/guide/check');
+    }
 
 }
 export default info;

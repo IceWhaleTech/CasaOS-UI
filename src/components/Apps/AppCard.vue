@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-13 15:43:43
+ * @LastEditTime: 2021-10-22 14:22:47
  * @Description: App Card item
  * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
 -->
@@ -103,7 +103,6 @@ export default {
     restartApp() {
       this.isRestarting = true
       this.$api.app.startContainer(this.item.custom_id, { state: "restart" }).then((res) => {
-        console.log(res.data);
         if (res.data.success == 200) {
           this.updateState()
         }
@@ -171,7 +170,6 @@ export default {
         state: item.state == "running" ? "stop" : "start"
       }
       this.$api.app.startContainer(item.custom_id, data).then((res) => {
-        console.log(res.data);
         this.isStarting = false
         if (res.data.success == 200) {
           item.state = res.data.data

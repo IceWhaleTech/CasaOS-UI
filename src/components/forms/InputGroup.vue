@@ -106,10 +106,6 @@ export default {
       this.$emit('change', this.vdata)
 
     },
-    selectFile(e) {
-
-      console.log(e.target.parents);
-    }
   },
 }
 </script>

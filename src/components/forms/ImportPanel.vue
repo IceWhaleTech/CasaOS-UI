@@ -152,7 +152,6 @@ export default {
     parseCli() {
       const formattedInput = this.dockerCliCommands.replace(/<[^>]*>/g, 'Custom_data').replace(/[\r\n]/g, "").replace(/\\/g, "\\ ").trim();
       const parsedInput = parser(formattedInput)
-      console.log(parsedInput);
       const { _: command } = parsedInput;
       if (command[0] !== 'docker' || (command[1] !== 'run' && command[1] !== 'create')) {
         return false
@@ -222,8 +221,9 @@ export default {
               return true
             }
           })
+          console.log(seletNetworks);
           if (seletNetworks.length > 0) {
-            this.updateData.network_model = seletNetworks[0].networks[0].id;
+            this.updateData.network_model = seletNetworks[0].networks[0].name;
           }
         }
 
@@ -298,7 +298,7 @@ export default {
       const network = this.oriNetWorks.filter(net => {
         return net.name == netName
       })
-      return (network.length > 0) ? network[0].id : this.oriNetWorks[0].id
+      return (network.length > 0) ? network[0].name : this.oriNetWorks[0].name
 
     },
   },

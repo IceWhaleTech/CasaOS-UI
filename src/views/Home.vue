@@ -2,12 +2,12 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-20 16:39:51
+ * @LastEditTime: 2021-10-22 14:41:09
  * @Description: 
  * @FilePath: /CasaOS-UI/src/views/Home.vue
 -->
 <template>
-  <div>
+  <div v-if="!isLoading">
     <!-- NavBar Start -->
     <top-bar></top-bar>
     <!-- NavBar End -->
@@ -72,6 +72,21 @@ export default {
     Apps,
     TopBar,
     //Shortcuts
+  },
+  data() {
+      return {
+          isLoading: true
+      }
+  },
+  mounted() {
+    this.$api.info.guideCheck().then(res => {
+      if (res.data.success == 200 && res.data.data.need_init_user) {
+        localStorage.removeItem("user_token");
+        this.$router.push("/welcome");
+      }else{
+          this.isLoading = false
+      }
+    });
   },
 }
 </script>
