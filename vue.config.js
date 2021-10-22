@@ -19,7 +19,7 @@ module.exports = {
     chainWebpack: config => {
         config.plugin('ignore')
             .use(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
-        config.plugin('webpack-bundle-analyzer')
-            .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
+        // config.plugin('webpack-bundle-analyzer')
+        //     .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
     }
 }
