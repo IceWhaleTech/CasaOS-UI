@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-22 14:24:43
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-20 16:48:01
+ * @LastEditTime: 2021-10-22 18:23:01
  * @Description: 
  * @FilePath: /CasaOS-UI/src/main.js
  */
@@ -15,7 +15,6 @@ import Buefy from 'buefy'
 // import VueTour from 'vue-tour'
 import '@/assets/scss/app.scss'
 // import 'vue-tour/dist/vue-tour.css'
-import '@mdi/font/css/materialdesignicons.min.css'
 Vue.use(Buefy)
 // Vue.use(VueTour)
 
