@@ -48,20 +48,44 @@ export default {
   methods: {
     getDiskInfo() {
       this.$api.disk.diskList().then((res) => {
+        //console.log(res.data);
         if (res.data.success == 200) {
           this.diskData = res.data.data.reverse().map((disk) => {
-            let totalSize = disk.size;
+            // let totalSize = disk.size;
+            let totalSize = disk.children.reduce((total, item) => {
+              let totalsize = 0
+              if (item.mountpoint.indexOf("boot") == -1) {
+                totalsize = item.fssize != "" ? Number(item.fssize) : 0
+              } else {
+                totalsize = 0;
+              }
+              return total + totalsize
+            }, 0);
             let useSize = disk.children.reduce((total, item) => {
-              let used = item.fsused != "" ? Number(item.fsused) : 0
+              let used = 0
+              if (item.mountpoint.indexOf("boot") == -1) {
+                used = item.fsused != "" ? Number(item.fsused) : 0
+              } else {
+                used = 0;
+              }
               return total + used
+            }, 0);
+            let availSize = disk.children.reduce((total, item) => {
+              let fsavail = 0
+              if (item.mountpoint.indexOf("boot") == -1) {
+                fsavail = item.fsavail != "" ? Number(item.fsavail) : 0
+              } else {
+                fsavail = 0;
+              }
+              return total + fsavail
             }, 0);
             return {
               label: disk.model != "" ? disk.model : disk.name,
               size: totalSize,
               tran: disk.tran,
-              availSize: totalSize - useSize,
+              availSize: availSize,
               useSize: useSize,
-              usePercnet: Math.floor(useSize * 100 / totalSize),
+              usePercnet: 100 - Math.floor(availSize * 100 / totalSize),
             }
           })
         }

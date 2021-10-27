@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-22 14:10:30
+ * @LastEditTime: 2021-10-26 17:47:31
  * @Description: Top bar 
  * @FilePath: /CasaOS-UI/src/components/TopBar.vue
 -->
@@ -10,16 +10,55 @@
 <template>
   <div class="navbar top-bar is-flex is-align-items-center">
     <div class="navbar-brand ml-3">
-      <b-dropdown aria-role="list" class="navbar-item" @active-change="onOpen">
+      <!-- Account Dropmenu Start -->
+      <b-dropdown aria-role="list" class="navbar-item " animation="slide-fade" @active-change="getUserInfo">
         <template #trigger>
-          <p role="button">
-            <b-icon icon="tune">
-            </b-icon>
-          </p>
+          <b-tooltip label="Account" position="is-right" type="is-dark">
+            <p role="button">
+              <b-icon icon="account-circle"></b-icon>
+            </p>
+          </b-tooltip>
         </template>
 
         <b-dropdown-item aria-role="menu-item" :focusable="false" custom>
-          <h2 class="title is-4">CasaOS Settings</h2>
+          <h2 class="title is-4">Account</h2>
+
+          <div class="is-flex is-align-items-center item">
+            <div class="is-flex is-align-items-center flex1">
+              <b-image :src="require('@/assets/img/user.svg')" class="is-40x40 mr-3" rounded></b-image>
+              <b>{{userInfo.user_name}}</b>
+            </div>
+            <div>
+              <a aria-role="button" @click="showAccountPanel">
+                <b-icon icon="account-edit"></b-icon>
+              </a>
+            </div>
+          </div>
+
+          <div class="is-flex is-align-items-center item mt-2">
+            <div class="is-flex is-align-items-center flex1">
+            </div>
+            <div>
+              <b-button type="is-dark" size="is-small" class="ml-2" rounded @click="logout">Logout</b-button>
+            </div>
+          </div>
+
+        </b-dropdown-item>
+      </b-dropdown>
+      <!-- Account Dropmenu End -->
+
+      <!-- Settings Dropmenu Start -->
+      <b-dropdown aria-role="list" class="navbar-item" animation="slide-fade" @active-change="onOpen">
+        <template #trigger>
+          <b-tooltip label="Settings" position="is-right" type="is-dark">
+            <p role="button">
+              <b-icon icon="tune"></b-icon>
+            </p>
+          </b-tooltip>
+        </template>
+
+        <b-dropdown-item aria-role="menu-item" :focusable="false" custom>
+          <h2 class="title is-4">Settings</h2>
 
           <div class="is-flex is-align-items-center item">
             <div class="is-flex is-align-items-center flex1">
@@ -44,18 +83,19 @@
             <b-button type="is-dark" size="is-small" class="ml-2" :loading="isUpdating" rounded @click="updateSystem">Update</b-button>
           </div>
 
-          <div class="is-flex is-align-items-center item mt-2">
-            <div class="is-flex is-align-items-center flex1">
-
-            </div>
-            <div>
-              <b-button type="is-dark" size="is-small" class="ml-2" rounded @click="logout">Logout</b-button>
-            </div>
-          </div>
-
         </b-dropdown-item>
       </b-dropdown>
+      <!-- Settings Dropmenu End -->
 
+      <!-- Terminal  Start -->
+      <div class="is-flex is-align-items-center ml-3">
+        <b-tooltip label="Terminal & Logs" position="is-right" type="is-dark">
+          <p role="button" @click="showTerminalPanel">
+            <b-icon icon="console"></b-icon>
+          </p>
+        </b-tooltip>
+      </div>
+      <!-- Terminal  End -->
     </div>
 
     <div class="navbar-menu">
@@ -68,6 +108,8 @@
 </template>
 
 <script>
+import AccountPanel from './AccountPanel.vue'
+import TerminalPanel from './TerminalPanel.vue'
 export default {
   name: "top-bar",
   data() {
@@ -89,14 +131,17 @@ export default {
       },
       isUpdating: false,
       latestText: "Currently the latest version",
-      updateText: "A new version is available!"
+      updateText: "A new version is available!",
+      userInfo: this.$store.state.userinfo
     }
   },
   created() {
     this.getConfig();
+
   },
   mounted() {
     this.checkVersion();
+    this.getUserInfo();
   },
 
   methods: {
@@ -174,7 +219,66 @@ export default {
      */
     logout() {
       this.$router.push("/logout");
-    }
+    },
+    /**
+     * @description: Get user info
+     * @return {*} void
+     */
+
+    getUserInfo() {
+      this.$api.user.getUserInfo().then((res) => {
+        if (res.data.success == 200) {
+          this.$store.commit('changeUserInfo', res.data.data)
+          this.userInfo = res.data.data
+        }
+      })
+    },
+    /**
+     * @description: Show Account panel
+     * @return {*} void
+     */
+    showAccountPanel() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: AccountPanel,
+        hasModalCard: true,
+        customClass: 'account-modal',
+        trapFocus: true,
+        canCancel: ['escape'],
+        scroll: "keep",
+        animation: "zoom-out",
+        events: {
+
+        },
+        props: {
+
+        }
+      })
+    },
+    /**
+     * @description: Show Terminal panel
+     * @return {*} void
+     */
+    showTerminalPanel() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: TerminalPanel,
+        hasModalCard: true,
+        customClass: 'terminal-modal',
+        trapFocus: true,
+        canCancel: ['escape'],
+        scroll: "keep",
+        //fullScreen: true,
+        animation: "zoom-out",
+        events: {
+
+        },
+        props: {
+
+        }
+      })
+    },
+
   },
 
 }

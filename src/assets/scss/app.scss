@@ -65,18 +65,32 @@ html {
   background-position: center center;
 }
 
+.slide-fade-enter-active {
+  transition: all 0.25s ease-out;
+}
+.slide-fade-leave-active {
+  transition: all 0.25s ease-out;
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active for below version 2.1.8 */ {
+  transform: translateY(10px);
+  opacity: 0;
+}
+
 .top-bar {
   position: relative;
   z-index: 20;
 
   height: 3rem;
-  background: rgba(255, 255, 255, 0.22);
-  backdrop-filter: blur(180.282px);
+  background: rgba(221, 221, 221, 0.95);
+
   .navbar-brand {
     .dropdown-menu {
       margin-top: 0.5rem;
       min-width: 20rem;
       .dropdown-content {
+        background: rgba(255, 255, 255, 0.72);
+        backdrop-filter: blur(1rem);
         .dropdown-item {
           padding: 0.875rem 1.25rem;
           text-align: left;
@@ -87,6 +101,7 @@ html {
       }
     }
   }
+
   .field {
     line-height: 1rem;
   }
@@ -198,6 +213,16 @@ html {
 .image.is-72x72 {
   height: 72px;
   width: 72px;
+}
+
+.image.is-40x40 {
+  height: 40px;
+  width: 40px;
+  img {
+    height: 40px;
+    width: 40px !important;
+    max-height: 40px !important;
+  }
 }
 
 // widgets
@@ -316,7 +341,6 @@ html {
 .ii {
   .dropdown-menu {
     background: rgba(255, 255, 255, 0.88);
-    backdrop-filter: $backDropBlur;
     border-radius: $backDropBorderRadius;
     overflow: hidden;
     padding-top: 0;
@@ -451,6 +475,70 @@ html {
   }
 }
 
+.account-modal,
+.terminal-modal {
+  .delete,
+  .modal-close {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    background-color: transparent;
+    border: none;
+    border-radius: 9999px;
+    cursor: pointer;
+    pointer-events: auto;
+    display: inline-block;
+    flex-grow: 0;
+    flex-shrink: 0;
+    font-size: 0;
+    height: 20 px;
+    max-height: 20px;
+    max-width: 20px;
+    min-height: 20px;
+    min-width: 20px;
+    outline: none;
+    position: relative;
+    vertical-align: top;
+    width: 20px;
+    &::before {
+      width: 80%;
+      background-color: black;
+    }
+    &::after {
+      height: 80%;
+      background-color: black;
+    }
+  }
+}
+
+.account-modal {
+  .modal-card-head1 {
+    padding: 1.5rem 1.5rem 0.5rem 1.5rem;
+  }
+  .input {
+    background: rgba(255, 255, 255, 0.32);
+    border-color: transparent;
+  }
+}
+.terminal-modal {
+  .modal-card-body{
+    
+    padding: 1.5rem 1.5rem 1.25rem 1.5rem;
+  }
+  .close-container{
+    position: absolute;
+    right: 1.5rem;
+    top: 1.5rem;
+  }
+  .tab-content{
+    padding: 0;
+  }
+}
+
 .import-area .textarea {
   max-height: 40em;
   min-height: 173px;
@@ -483,9 +571,16 @@ html {
 
 // File Modals
 @media screen and (min-width: 769px) {
-  .fileModal {
+  .fileModal,
+  .account-modal {
     .modal-card {
       width: 30rem;
+    }
+  }
+
+  .terminal-modal {
+    .modal-card {
+      width: 50rem;
     }
   }
 }
@@ -565,6 +660,12 @@ html {
     }
   }
 }
+.fullScreen{
+  z-index: 1000;
+  background-color: #1E1E1E !important;
+  border-radius: 4px;
+  position: relative;
+}
 
 .c-button {
   border-radius: 4px;
@@ -582,6 +683,15 @@ html {
 .add-button {
   color: #0e9aff;
   margin: 0 0.25rem;
+}
+.top-button {
+  margin-left: 0.5em;
+}
+.fullscreen-button{
+  position: absolute;
+  z-index: 100;
+  right: 0.75rem;
+  top: 0.75rem;
 }
 
 .nobrk {
@@ -607,12 +717,19 @@ html {
   height: calc(100% - 5.5rem);
   .login-panel {
     text-align: left;
-    max-width: 30rem;
-    background: rgba(255, 255, 255, 0.56);
+    max-width: 28.125rem;
+    background: rgba(255, 255, 255, 0.46);
     backdrop-filter: blur(1rem);
     border-radius: 8px;
-    padding: 3.5rem 2.5rem;
-    width: 30rem;
+    padding: 2.5rem 4rem;
+    width: 28.125rem;
+    .label {
+      color: #dfdfdf;
+    }
+    .input {
+      background: rgba(255, 255, 255, 0.32);
+      border-color: transparent;
+    }
   }
 }
 

@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:30:26
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-22 14:11:54
+ * @LastEditTime: 2021-10-26 17:03:55
  * @Description: 
  * @FilePath: /CasaOS-UI/src/views/Welcome.vue
 -->
@@ -18,6 +18,11 @@
 
       <div v-if="step == 2">
         <h2 class="title is-3  has-text-centered">Create Account</h2>
+        <div class="is-flex is-justify-content-center ">
+          <div class="has-text-centered">
+            <b-image :src="require('@/assets/img/user.svg')" class="is-128x128" rounded></b-image>
+          </div>
+        </div>
         <ValidationObserver ref="observer" v-slot="{ handleSubmit }">
           <ValidationProvider rules="required" name="User" v-slot="{ errors, valid }">
             <b-field label="Username" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
@@ -25,16 +30,16 @@
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required|min:5" vid="password" name="Password" v-slot="{ errors, valid }">
-            <b-field label="Password" class="mt-5" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
+            <b-field label="Password" class="mt-4" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
               <b-input type="password" v-model="password" password-reveal v-on:keyup.enter.native="handleSubmit(reg)"></b-input>
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required|confirmed:password" name="Password Confirmation" v-slot="{ errors, valid }">
-            <b-field label="Confirm Password" class="mt-5" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
+            <b-field label="Confirm Password" class="mt-4" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
               <b-input type="password" v-model="confirmation" password-reveal v-on:keyup.enter.native="handleSubmit(reg)"></b-input>
             </b-field>
           </ValidationProvider>
-          <b-button type="is-primary" class="mt-6" rounded expanded @click="handleSubmit(reg)">Create</b-button>
+          <b-button type="is-primary" class="mt-5" rounded expanded @click="handleSubmit(reg)">Create</b-button>
         </ValidationObserver>
       </div>
 
@@ -73,11 +78,10 @@ export default {
   },
   mounted() {
     this.$api.info.guideCheck().then(res => {
-      //console.log(res.data.data);
       if (res.data.success == 200 && !res.data.data.need_init_user) {
         this.$router.push("/login");
-      }else{
-        this.isLoading = false
+      } else {
+        this.isLoading = false;
       }
     })
   },
