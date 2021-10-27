@@ -63,6 +63,7 @@ html {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
+  overflow-y: hidden;
 }
 
 .slide-fade-enter-active {
@@ -156,7 +157,8 @@ html {
 
 .contents {
   flex: 1;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   height: calc(100vh - 3rem);
 }
 
@@ -525,16 +527,15 @@ html {
   }
 }
 .terminal-modal {
-  .modal-card-body{
-    
+  .modal-card-body {
     padding: 1.5rem 1.5rem 1.25rem 1.5rem;
   }
-  .close-container{
+  .close-container {
     position: absolute;
     right: 1.5rem;
     top: 1.5rem;
   }
-  .tab-content{
+  .tab-content {
     padding: 0;
   }
 }
@@ -660,9 +661,9 @@ html {
     }
   }
 }
-.fullScreen{
+.fullScreen {
   z-index: 1000;
-  background-color: #1E1E1E !important;
+  background-color: #1e1e1e !important;
   border-radius: 4px;
   position: relative;
 }
@@ -687,7 +688,7 @@ html {
 .top-button {
   margin-left: 0.5em;
 }
-.fullscreen-button{
+.fullscreen-button {
   position: absolute;
   z-index: 100;
   right: 0.75rem;
@@ -736,4 +737,34 @@ html {
 .install-animation {
   width: 200px;
   height: 200px;
+}
+
+// ScrollBars
+
+.xterm-viewport::-webkit-scrollbar {
+  width: 8px;
+}
+
+.xterm-viewport::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.xterm-viewport::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  outline: none;
+}
+
+.contents::-webkit-scrollbar {
+  width: 8px;
+}
+
+.contents::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.contents::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+  outline: none;
 }

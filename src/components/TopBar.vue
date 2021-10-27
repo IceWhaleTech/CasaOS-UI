@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-26 17:47:31
+ * @LastEditTime: 2021-10-27 15:51:10
  * @Description: Top bar 
- * @FilePath: /CasaOS-UI/src/components/TopBar.vue
+ * @FilePath: \CasaOS-UI\src\components\TopBar.vue
 -->
 
 <template>
@@ -89,7 +89,7 @@
 
       <!-- Terminal  Start -->
       <div class="is-flex is-align-items-center ml-3">
-        <b-tooltip label="Terminal & Logs" position="is-right" type="is-dark">
+        <b-tooltip label="Terminal" position="is-right" type="is-dark">
           <p role="button" @click="showTerminalPanel">
             <b-icon icon="console"></b-icon>
           </p>

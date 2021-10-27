@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-27 10:24:16
+ * @LastEditTime: 2021-10-27 15:47:12
  * @Description: 
- * @FilePath: /CasaOS-UI/src/store/index.js
+ * @FilePath: \CasaOS-UI\src\store\index.js
  */
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -16,7 +16,7 @@ export default new Vuex.Store({
   // plugins: [createPersistedState()],
   state: {
     token: "",
-    devIp: "192.168.2.193",
+    devIp: "192.168.2.217",
     serviceError: false,
     userinfo: {},
     widgetsSwitch: {

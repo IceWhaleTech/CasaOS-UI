@@ -1,5 +1,5 @@
 <template>
-  <fullscreen class="fullScreen  p-2" :class="{'mt-6':!fullscreen}" :fullscreen.sync="fullscreen" :teleport="true" :page-only="true" @change="onWindowResize">
+  <fullscreen class="fullScreen  pl-2 pt-2 pb-2" :class="{'mt-6':!fullscreen}" :fullscreen.sync="fullscreen" :teleport="true" :page-only="true" @change="onWindowResize">
     <a class="fullscreen-button" @click="toggleFullScreen">
       <b-icon :icon="buttonIcon"></b-icon>
     </a>
