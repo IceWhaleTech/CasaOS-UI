@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-25 18:19:17
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-27 17:08:53
+ * @LastEditTime: 2021-10-27 18:03:14
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\AccountPanel.vue
 -->
@@ -108,6 +108,7 @@ export default {
         case 2:
           val = "Change name";
           break;
+          
         case 3:
           val = "Change Password";
           break;

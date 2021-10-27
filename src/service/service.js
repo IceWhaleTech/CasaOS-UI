@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-21 16:57:43
+ * @LastEditTime: 2021-10-27 18:55:54
  * @Description: 
- * @FilePath: /CasaOS-UI/src/service/service.js
+ * @FilePath: \CasaOS-UI\src\service\service.js
  */
 import axios from 'axios'
 import qs from 'qs'

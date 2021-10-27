@@ -46,39 +46,25 @@ export default {
     }, 5000)
   },
   methods: {
+    getTotalSize(part, key) {
+      let size = 0;
+      if (part.children !== null) {
+        size = part.children.reduce((total, item) => {
+          let totalsize = (item.mountpoint.indexOf("boot") == -1) ? this.getTotalSize(item, key) : 0;
+          return total + totalsize
+        }, 0);
+      } else {
+        size = Number(part[key])
+      }
+      return size;
+    },
     getDiskInfo() {
       this.$api.disk.diskList().then((res) => {
-        //console.log(res.data);
         if (res.data.success == 200) {
           this.diskData = res.data.data.reverse().map((disk) => {
-            // let totalSize = disk.size;
-            let totalSize = disk.children.reduce((total, item) => {
-              let totalsize = 0
-              if (item.mountpoint.indexOf("boot") == -1) {
-                totalsize = item.fssize != "" ? Number(item.fssize) : 0
-              } else {
-                totalsize = 0;
-              }
-              return total + totalsize
-            }, 0);
-            let useSize = disk.children.reduce((total, item) => {
-              let used = 0
-              if (item.mountpoint.indexOf("boot") == -1) {
-                used = item.fsused != "" ? Number(item.fsused) : 0
-              } else {
-                used = 0;
-              }
-              return total + used
-            }, 0);
-            let availSize = disk.children.reduce((total, item) => {
-              let fsavail = 0
-              if (item.mountpoint.indexOf("boot") == -1) {
-                fsavail = item.fsavail != "" ? Number(item.fsavail) : 0
-              } else {
-                fsavail = 0;
-              }
-              return total + fsavail
-            }, 0);
+            let totalSize = this.getTotalSize(disk, "fssize");
+            let useSize = this.getTotalSize(disk, "fsused");
+            let availSize = this.getTotalSize(disk, "fsavail");
             return {
               label: disk.model != "" ? disk.model : disk.name,
               size: totalSize,
