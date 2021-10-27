@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-25 18:19:17
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-26 17:58:29
+ * @LastEditTime: 2021-10-27 17:08:53
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/AccountPanel.vue
+ * @FilePath: \CasaOS-UI\src\components\AccountPanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -85,7 +85,6 @@ export default {
   data() {
     return {
       isLoading: false,
-      userInfo: this.$store.state.userinfo,
       state: 1,
       username: this.$store.state.userinfo.user_name,
       oriPassword: "",
@@ -117,16 +116,23 @@ export default {
           break;
       }
       return val
+    },
+    userInfo() {
+      return this.$store.state.userinfo;
     }
   },
 
   methods: {
     goto(val) {
       this.state = val
+      if (val == 1) {
+        this.username = this.userInfo.user_name;
+      }
     },
     updateUserInfo() {
       this.$api.user.getUserInfo().then((res) => {
         if (res.data.success == 200) {
+          console.log(res.data.data);
           this.$store.commit('changeUserInfo', res.data.data);
           this.goto(1);
         }
