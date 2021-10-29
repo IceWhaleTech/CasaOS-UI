@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-29 18:01:42
+ * @LastEditTime: 2021-10-29 19:09:36
  * @Description: App module
  * @FilePath: /CasaOS-UI/src/components/Apps.vue
 -->
@@ -121,7 +121,7 @@ export default {
               props: {
                 id: id,
                 state: "update",
-                status:status,
+                runningStatus:status,
                 configData: res.data.data,
                 initDatas: ret.data.data
               }

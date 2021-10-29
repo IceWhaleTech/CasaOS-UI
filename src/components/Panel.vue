@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-29 18:03:05
+ * @LastEditTime: 2021-10-29 19:09:27
  * @Description: Install Panel of Docker
  * @FilePath: /CasaOS-UI/src/components/Panel.vue
 -->
@@ -22,7 +22,7 @@
       </b-tooltip>
 
       <b-tooltip label="Terminal & Logs" position="is-top" type="is-dark">
-        <button type="button" class="icon-button mdi mdi-console" @click="showTerminalPanel" v-if="currentSlide == 1 && state == 'update' && status == 'running' " />
+        <button type="button" class="icon-button mdi mdi-console" @click="showTerminalPanel" v-if="currentSlide == 1 && state == 'update' && runningStatus == 'running' " />
       </b-tooltip>
 
       <b-tooltip label="Export AppFile" position="is-top" type="is-dark">
@@ -193,7 +193,7 @@ export default {
   props: {
     id: String,
     state: String,
-    status: String,
+    runningStatus: String,
     configData: Object,
     initDatas: {
       type: Object
