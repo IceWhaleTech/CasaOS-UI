@@ -2,14 +2,14 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-29 19:09:36
+ * @LastEditTime: 2021-10-29 19:32:33
  * @Description: App module
  * @FilePath: /CasaOS-UI/src/components/Apps.vue
 -->
 
 <template>
   <div class="home-section has-text-left mt-6">
-    <!-- Title Bar Start -->
+    <!-- Title Bar Start --> 
     <div class="title-bar is-flex is-align-items-center">
       <h1 class="title is-4  has-text-white is-flex-shrink-1">Apps</h1>
       <div class="buttons ">
