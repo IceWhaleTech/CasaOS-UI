@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-29 15:38:35
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-29 17:38:07
+ * @LastEditTime: 2021-10-29 19:07:03
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/AppTerminalPanel.vue
+ * @FilePath: /CasaOS-UI/src/components/Apps/AppTerminalPanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       isLoading: false,
-      wsUrl: (process.env.NODE_ENV === "'dev'") ? `ws://${this.$store.state.devIp}:8089/v1/app/terminal/${this.appid}?token=${this.$store.state.token}` : `ws://${document.domain}:${window.g.PORT}/v1/app/terminal/${this.appid}?token=${this.$store.state.token}`,
+      wsUrl: (process.env.NODE_ENV === "'dev'") ? `ws://${this.$store.state.devIp}:8089/v1/app/terminal/${this.appid}?token=${this.$store.state.token}` : `ws://${document.location.host}/v1/app/terminal/${this.appid}?token=${this.$store.state.token}`,
       logData: ""
     }
   },
