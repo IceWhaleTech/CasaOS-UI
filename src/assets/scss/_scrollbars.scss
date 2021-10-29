@@ -1,0 +1,47 @@
+/************************************
+*
+* Scrollbars
+*
+*************************************/
+
+.xterm-viewport::-webkit-scrollbar {
+  width: 8px;
+}
+
+.xterm-viewport::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.xterm-viewport::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  outline: none;
+}
+
+.contents::-webkit-scrollbar {
+  width: 8px;
+}
+
+.contents::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.contents::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+  outline: none;
+}
+
+.scrollbars::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbars::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbars::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+  outline: none;
+}

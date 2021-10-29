@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-22 11:57:58
+ * @LastEditTime: 2021-10-28 14:20:07
  * @Description: System HardWare Info API
  * @FilePath: /CasaOS-UI/src/service/info.js
  */
@@ -46,11 +46,11 @@ const info = {
         return api.get('/sys/check');
     },
     //Update System
-    updateSystem(){
+    updateSystem() {
         return api.post('/sys/update');
     },
     //ip
-    getIp(){
+    getIp() {
         return api.get('https://ipapi.co/json/');
     },
     //Get CasaOS Config
@@ -63,8 +63,12 @@ const info = {
     },
 
     // Get System state
-    guideCheck(){
+    guideCheck() {
         return api.get('/guide/check');
+    },
+    // Get System logs
+    systemLogs() {
+        return api.get('/sys/error/logs');
     }
 
 }

@@ -1,10 +1,18 @@
+<!--
+ * @Author: JerryK
+ * @Date: 2021-10-29 15:38:35
+ * @LastEditors: JerryK
+ * @LastEditTime: 2021-10-29 17:38:07
+ * @Description: 
+ * @FilePath: /CasaOS-UI/src/components/AppTerminalPanel.vue
+-->
 <template>
   <div class="modal-card">
 
     <!-- Modal-Card Body Start -->
     <section class="modal-card-body ">
-      <h2 class="title is-4">CasaOS</h2>
       <div class="close-container"><button type="button" class="delete" @click="$emit('close')" /></div>
+      <h2 class="title is-4">{{appName}}</h2>
       <div class="flex1">
         <b-tabs type="is-toggle" :animated="false" @input="onInput">
           <b-tab-item label="Terminal" value="terminal">
@@ -28,7 +36,7 @@
 import TerminalCard from '@/components/TerminalCard.vue';
 import LogsCard from '@/components/LogsCard.vue'
 export default {
-  name: 'terminal-panel',
+  name: 'app-terminal-panel',
   components: {
     TerminalCard,
     LogsCard
@@ -36,17 +44,23 @@ export default {
   data() {
     return {
       isLoading: false,
-      wsUrl: (process.env.NODE_ENV === "'dev'") ? `ws://${this.$store.state.devIp}:8089/v1/sys/wsssh?token=${this.$store.state.token}` : `ws://${document.location.host}/v1/sys/wsssh?token=${this.$store.state.token}`,
-      logData:""
+      wsUrl: (process.env.NODE_ENV === "'dev'") ? `ws://${this.$store.state.devIp}:8089/v1/app/terminal/${this.appid}?token=${this.$store.state.token}` : `ws://${document.domain}:${window.g.PORT}/v1/app/terminal/${this.appid}?token=${this.$store.state.token}`,
+      logData: ""
     }
   },
-  mounted () {
+  props: {
+    appid: String,
+    appName: String
+  },
+  mounted() {
     this.getLogs();
   },
   methods: {
     getLogs() {
-      this.$api.info.systemLogs().then(res => {
-        this.logData = res.data.data;
+      this.$api.app.getContainerLogs(this.appid).then((res) => {
+        if (res.data.success == 200) {
+          this.logData = res.data.data
+        }
       })
     },
     onInput(e) {

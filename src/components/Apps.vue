@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-22 14:57:20
+ * @LastEditTime: 2021-10-29 18:01:42
  * @Description: App module
  * @FilePath: /CasaOS-UI/src/components/Apps.vue
 -->
@@ -100,7 +100,7 @@ export default {
      * @description: Show Settings Panel Programmatic
      * @return {*} void
      */
-    showConfigPanel(id) {
+    showConfigPanel(id,status) {
       this.$api.app.getContainerSettingdata(id).then(ret => {
         this.$api.app.appConfig().then(res => {
           if (res.data.success == 200) {
@@ -121,6 +121,7 @@ export default {
               props: {
                 id: id,
                 state: "update",
+                status:status,
                 configData: res.data.data,
                 initDatas: ret.data.data
               }

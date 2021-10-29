@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-22 14:22:47
+ * @LastEditTime: 2021-10-29 18:01:00
  * @Description: App Card item
  * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
 -->
@@ -38,11 +38,11 @@
 
     <!-- Card Content Start -->
     <div class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-3 pb-3">
-      <a :target="(item.state == 'running') ?'_blank':'_self'" class="is-flex is-justify-content-center" :href="(item.state == 'running') ? siteUrl(item.port,item.index) :'javascript:void(0)'">
+      <a :target="siteUrlTarget(item.state,item.port)" class="is-flex is-justify-content-center" :href="siteUrl(item.state,item.port,item.index)">
         <b-image :src="item.icon" :src-fallback="require('@/assets/img/default.png')" webp-fallback=".jpg" class="is-72x72" :class="item.state | dotClass"></b-image>
       </a>
       <p class="mt-4 one-line">
-        <a class="one-line" :target="(item.state == 'running') ?'_blank':'_self'" :href="(item.state == 'running') ? siteUrl(item.port,item.index) :'javascript:void(0)'">
+        <a class="one-line" :target="siteUrlTarget(item.state,item.port)" :href="siteUrl(item.state,item.port,item.index)">
           {{item.name}}
         </a>
       </p>
@@ -58,6 +58,7 @@
 </template>
 
 <script>
+
 export default {
   name: "app-card",
   data() {
@@ -79,12 +80,34 @@ export default {
   methods: {
     /**
      * @description: Create application access link
+     * @param {String} state App state
      * @param {String} port App access port
      * @param {String} index App access index page
      * @return {String}
      */
-    siteUrl(port, index) {
-      return (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${port}${index}` : `http://${document.domain}:${port}${index}`
+    siteUrl(state, port, index) {
+      if (port == "" && index == "") {
+        return 'javascript:void(0)';
+      } else {
+        if (state == 'running') {
+          return 'javascript:void(0)';
+        } else {
+          return (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${port}${index}` : `http://${document.domain}:${port}${index}`
+        }
+      }
+    },
+    /**
+     * @description: Create application access target
+     * @param {String} state App state
+     * @param {String} port App access port
+     * @return {String}
+     */
+    siteUrlTarget(state, port) {
+      if (port == "") {
+        return '_self';
+      } else {
+        return (state == 'running') ? '_blank' : '_self';
+      }
     },
 
     /**
@@ -156,7 +179,7 @@ export default {
      * @return {*} void
      */
     configApp() {
-      this.$emit("configApp", this.item.custom_id)
+      this.$emit("configApp", this.item.custom_id,this.item.state)
     },
 
     /**
