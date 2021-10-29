@@ -1,5 +1,5 @@
 <template>
-  <fullscreen class="fullScreen  pl-2 pt-2 pb-2" :class="{'mt-6':!fullscreen}" :fullscreen.sync="fullscreen" :teleport="true" :page-only="true" @change="onWindowResize">
+  <fullscreen class="fullScreen  pl-2 pt-2 pb-2" :class="{'mt-5':!fullscreen}" :fullscreen.sync="fullscreen" :teleport="true" :page-only="true" @change="onWindowResize">
     <a class="fullscreen-button" @click="toggleFullScreen">
       <b-icon :icon="buttonIcon"></b-icon>
     </a>
@@ -18,16 +18,14 @@ export default {
   name: "terminal-card",
   props: {
     id: String,
-    // wsUrl: String,
-    label: String
+    label: String,
+    wsUrl: String
   },
   data() {
     return {
       fullscreen: false,
       term: "",
-      user: "",
-      password: "",
-      wsUrl: (process.env.NODE_ENV === "'dev'") ? `ws://${this.$store.state.devIp}:8089/v1/sys/wsssh?token=${this.$store.state.token}&user=${this.user}&password=${this.password}` : `ws://${document.location.host}/v1/sys/wsssh?token=${this.$store.state.token}&user=${this.user}&password=${this.password}`
+      state: true,
     }
   },
   computed: {
@@ -39,6 +37,7 @@ export default {
     }
   },
   mounted() {
+    console.log("ter init");
     this.initSocket();
 
   },
@@ -71,7 +70,6 @@ export default {
 
     },
     initSocket() {
-
       this.socket = new WebSocket(this.wsUrl);
       this.socketOnClose();
       this.socketOnOpen();
@@ -84,12 +82,12 @@ export default {
     },
     socketOnClose() {
       this.socket.onclose = () => {
-        // console.log('close socket')
+        console.log('close socket')
       }
     },
     socketOnError() {
       this.socket.onerror = () => {
-        // console.log('socket 链接失败')
+        console.log('socket 链接失败')
       }
     },
     onWindowResize() {
@@ -101,25 +99,26 @@ export default {
           document.getElementById('xterm').style.height = window.innerHeight - this.getTop(document.getElementById('xterm')) - 62 + 'px';
           document.body.style.overflow = "auto";
         }
-        console.log(this.getTop(document.getElementById('xterm')));
-        fitAddon.fit();
-        this.socket.send(JSON.stringify({
-          type: "resize",
-          cols: this.term.cols,
-          rows: this.term.rows
-        }))
+        if (this.state) {
+          fitAddon.fit();
+          this.socket.send(JSON.stringify({
+            type: "resize",
+            cols: this.term.cols,
+            rows: this.term.rows
+          }))
+        }
       })
-
     },
     getTop(e) {
       var offset = e.offsetTop;
       if (e.offsetParent != null) offset += this.getTop(e.offsetParent);
       return offset;
-    }
-  },
-  watch: {
-    fullscreen() {
-      this.onWindowResize()
+    },
+    active(state) {
+      this.state = state;
+      if (state) {
+        this.onWindowResize();
+      }
     }
   }
 }

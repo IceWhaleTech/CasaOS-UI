@@ -1,0 +1,20 @@
+/************************************
+*
+* Images
+*
+*************************************/
+
+.image.is-72x72 {
+  height: 72px;
+  width: 72px;
+}
+
+.image.is-40x40 {
+  height: 40px;
+  width: 40px;
+  img {
+    height: 40px;
+    width: 40px !important;
+    max-height: 40px !important;
+  }
+}

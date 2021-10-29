@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-22 15:06:04
+ * @LastEditTime: 2021-10-29 18:03:05
  * @Description: Install Panel of Docker
  * @FilePath: /CasaOS-UI/src/components/Panel.vue
 -->
@@ -14,13 +14,25 @@
       <div class="flex1">
         <h3 class="title is-4 has-text-weight-normal">{{panelTitle}}</h3>
       </div>
-      <b-button icon-left="file-import" type="is-dark" size="is-small" rounded @click="showImportPanel" v-if="currentSlide == 1 && state == 'install'">Import</b-button>
-      <b-button icon-left="file-import" type="is-dark" size="is-small" rounded @click="exportJSON" v-if="currentSlide == 1 && state == 'update'">Export</b-button>
+      <!-- <b-button icon-left="file-import" type="is-dark" size="is-small" rounded @click="showImportPanel" v-if="currentSlide == 1 && state == 'install'">Import</b-button>
+      <b-button icon-left="file-import" type="is-dark" size="is-small" rounded @click="exportJSON" v-if="currentSlide == 1 && state == 'update'">Export</b-button> -->
+
+      <b-tooltip label="Import" position="is-top" type="is-dark">
+        <button type="button" class="icon-button mdi mdi-import" @click="showImportPanel" v-if="currentSlide == 1 && state == 'install'" />
+      </b-tooltip>
+
+      <b-tooltip label="Terminal & Logs" position="is-top" type="is-dark">
+        <button type="button" class="icon-button mdi mdi-console" @click="showTerminalPanel" v-if="currentSlide == 1 && state == 'update' && status == 'running' " />
+      </b-tooltip>
+
+      <b-tooltip label="Export AppFile" position="is-top" type="is-dark">
+        <button type="button" class="icon-button mdi mdi-export" @click="exportJSON" v-if="currentSlide == 1 && state == 'update'" />
+      </b-tooltip>
+
     </header>
     <!-- Modal-Card Header End -->
     <!-- Modal-Card Body Start -->
     <section class="modal-card-body">
-
       <section v-show="currentSlide == 1">
         <ValidationObserver ref="ob1">
           <ValidationProvider rules="required" name="Image" v-slot="{ errors, valid }">
@@ -118,6 +130,7 @@ import InputGroup from './forms/InputGroup.vue';
 import EnvInputGroup from './forms/EnvInputGroup.vue';
 import Ports from './forms/Ports.vue'
 import ImportPanel from './forms/ImportPanel.vue'
+import AppTerminalPanel from './Apps/AppTerminalPanel.vue'
 import LottieAnimation from "lottie-web-vue";
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
@@ -175,12 +188,12 @@ export default {
         envs: [],
         devices: [],
       }
-
     }
   },
   props: {
     id: String,
     state: String,
+    status: String,
     configData: Object,
     initDatas: {
       type: Object
@@ -188,7 +201,6 @@ export default {
   },
 
   created() {
-
     // Set Front-end base url
     this.baseUrl = `${window.location.protocol}//${document.domain}:`;
 
@@ -463,12 +475,14 @@ export default {
       const blob = new Blob([data], { type: '' });
       FileSaver.saveAs(blob, `${exportData.label}.json`);
     },
+
     getNetworkName(netId) {
       let network = this.tempNetworks.filter(net => {
-        return net.id == netId
+        return net.name == netId
       })
       return network[0].name
     },
+
     /**
      * @description: Change App icon when image changed
      * @param {*} function
@@ -481,7 +495,29 @@ export default {
         let appIcon = e.split(":")[0].split("/").pop();
         this.initData.icon = `https://cdn.jsdelivr.net/gh/IceWhaleTech/AppIcon@main/all/${appIcon}.png`;
       }
-    }
+    },
+
+    /**
+     * @description: Show Terminal & Logs panel
+     * @return {*} void
+     */
+
+    showTerminalPanel() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: AppTerminalPanel,
+        hasModalCard: true,
+        customClass: 'terminal-modal',
+        trapFocus: true,
+        canCancel: ['escape'],
+        scroll: "keep",
+        animation: "zoom-out",
+        props: {
+          appid: this.id,
+          appName: this.initData.label
+        }
+      })
+    },
   },
   destroyed() {
     clearInterval(this.timer)

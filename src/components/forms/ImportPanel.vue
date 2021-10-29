@@ -150,7 +150,7 @@ export default {
      * @return {Boolean} 
      */
     parseCli() {
-      const formattedInput = this.dockerCliCommands.replace(/<[^>]*>/g, 'Custom_data').replace(/[\r\n]/g, "").replace(/\\/g, "\\ ").trim();
+      const formattedInput = this.dockerCliCommands.replace(/<[^>]*>/g, 'Custom_data').replace(/[\r\n]/g, "").replace(/\\/g, "\\ ").replace("-d", "").trim();
       const parsedInput = parser(formattedInput)
       const { _: command } = parsedInput;
       if (command[0] !== 'docker' || (command[1] !== 'run' && command[1] !== 'create')) {
