@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-29 19:09:27
+ * @LastEditTime: 2021-11-03 16:44:57
  * @Description: Install Panel of Docker
  * @FilePath: /CasaOS-UI/src/components/Panel.vue
 -->
@@ -14,26 +14,43 @@
       <div class="flex1">
         <h3 class="title is-4 has-text-weight-normal">{{panelTitle}}</h3>
       </div>
-      <!-- <b-button icon-left="file-import" type="is-dark" size="is-small" rounded @click="showImportPanel" v-if="currentSlide == 1 && state == 'install'">Import</b-button>
-      <b-button icon-left="file-import" type="is-dark" size="is-small" rounded @click="exportJSON" v-if="currentSlide == 1 && state == 'update'">Export</b-button> -->
-
       <b-tooltip label="Import" position="is-top" type="is-dark">
-        <button type="button" class="icon-button mdi mdi-import" @click="showImportPanel" v-if="currentSlide == 1 && state == 'install'" />
+        <button type="button" class="icon-button mdi mdi-import" @click="showImportPanel" v-if="showImportButton" />
       </b-tooltip>
 
       <b-tooltip label="Terminal & Logs" position="is-top" type="is-dark">
-        <button type="button" class="icon-button mdi mdi-console" @click="showTerminalPanel" v-if="currentSlide == 1 && state == 'update' && runningStatus == 'running' " />
+        <button type="button" class="icon-button mdi mdi-console" @click="showTerminalPanel" v-if="showTerminalButton" />
       </b-tooltip>
 
       <b-tooltip label="Export AppFile" position="is-top" type="is-dark">
-        <button type="button" class="icon-button mdi mdi-export" @click="exportJSON" v-if="currentSlide == 1 && state == 'update'" />
+        <button type="button" class="icon-button mdi mdi-export" @click="exportJSON" v-if="showExportButton" />
       </b-tooltip>
 
     </header>
     <!-- Modal-Card Header End -->
     <!-- Modal-Card Body Start -->
     <section class="modal-card-body">
-      <section v-show="currentSlide == 1">
+      <!-- App Store List Start -->
+      <section v-if="currentSlide == 0">
+
+        <div v-for="(item,index) in pageList" :key="index+item.title+item.id" class="is-flex pt-5 pb-5 b-line is-align-items-center">
+          <div class="list-icon mr-4">
+            <b-image :src="item.icon" :src-fallback="require('@/assets/img/default.png')" webp-fallback=".jpg" class="is-72x72 icon-shadow"></b-image>
+          </div>
+          <div class="flex1 mr-4">
+            <h6 class="title is-6 mb-2">{{item.title}}</h6>
+            <p class="is-size-65 two-line">{{item.tagline}}</p>
+          </div>
+          <div>
+            <b-button type="is-primary" size="is-small" rounded @click="qucikInstall(item.id)" :loading="item.id == currentInstallId">Install</b-button>
+          </div>
+        </div>
+
+      </section>
+      <!-- App Store List Start -->
+
+      <!-- App Install Form Start -->
+      <section v-if="currentSlide == 1">
         <ValidationObserver ref="ob1">
           <ValidationProvider rules="required" name="Image" v-slot="{ errors, valid }">
             <b-field label="Docker Image *" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
@@ -94,10 +111,13 @@
           <b-field label="App Description">
             <b-input v-model="initData.description"></b-input>
           </b-field>
-          <b-loading :is-full-page="false" v-model="isLoading" :can-cancel="false"></b-loading>
+
         </ValidationObserver>
       </section>
-      <section v-show="currentSlide == 2">
+      <!-- App Install Form End -->
+
+      <!-- App Install Process Start -->
+      <section v-if="currentSlide == 2">
         <div class="installing-warpper">
           <div class="is-flex is-align-items-center is-justify-content-center">
             <lottie-animation class="install-animation" :animationData="require('@/assets/ani/rocket-launching.json')" :loop="true" :autoPlay="true"></lottie-animation>
@@ -105,20 +125,30 @@
           <h3 class="title is-6 has-text-centered" :class="{'has-text-danger':errorType == 3,'has-text-black':errorType != 3}" v-html="installText"></h3>
         </div>
       </section>
-
+      <!-- App Install Process End -->
+      <b-loading :is-full-page="false" v-model="isLoading" :can-cancel="false"></b-loading>
     </section>
     <!-- Modal-Card Body End -->
 
     <!-- Modal-Card Footer Start-->
-    <footer class="modal-card-foot is-flex is-align-items-center">
-      <div class="flex1"></div>
-      <div>
-        <b-button v-if="currentSlide == 1" label="Cancel" @click="$emit('close')" type="is-grey" rounded />
-        <b-button v-if="currentSlide == 2 && errorType == 3 " label="Back" @click="prevStep" rounded />
-        <b-button v-if="currentSlide == 1 && state == 'install'" label="Install" type="is-dark" @click="installApp()" rounded />
-        <b-button v-if="currentSlide == 1 && state == 'update'" label="Save" type="is-dark" @click="updateApp()" rounded />
-        <b-button v-if="currentSlide == 2 && (errorType == 1 || errorType == 4)" :label="cancelButtonText" type="is-dark" @click="$emit('close')" rounded />
-      </div>
+    <footer class="modal-card-foot is-flex is-align-items-center " :class="{'is-justify-content-center':currentSlide == 0}">
+      <template>
+        <div class="flex1">
+          <div v-if="currentSlide == 0">
+            <b-pagination v-if="listTotal > pageSize" :total="listTotal" v-model="pageIndex" range-before=1 range-after=1 order="is-centered" size="is-small" :simple="false" :rounded="true" :per-page="pageSize" icon-prev="chevron-left" icon-next="chevron-right" aria-next-label="Next page" aria-previous-label="Previous page" aria-page-label="Page" aria-current-label="Current page">
+            </b-pagination>
+          </div>
+        </div>
+        <div>
+          <b-button v-if="currentSlide < 2" label="Cancel" @click="$emit('close')" type="is-grey" rounded />
+          <b-button v-if="currentSlide == 0" label="Custom Install" @click="currentSlide = 1" type="is-dark" rounded />
+          <b-button v-if="currentSlide == 2 && errorType == 3 " label="Back" @click="prevStep" rounded />
+          <b-button v-if="currentSlide == 1 && state == 'install'" label="Install" type="is-dark" @click="installApp()" rounded />
+          <b-button v-if="currentSlide == 1 && state == 'update'" label="Save" type="is-dark" @click="updateApp()" rounded />
+          <b-button v-if="currentSlide == 2 && (errorType == 1 || errorType == 4)" :label="cancelButtonText" type="is-dark" @click="$emit('close')" rounded />
+        </div>
+      </template>
+
     </footer>
     <!-- Modal-Card Footer End -->
   </div>
@@ -139,6 +169,8 @@ import "@/plugins/vee-validate";
 import debounce from 'lodash/debounce'
 import find from 'lodash/find';
 import uniq from 'lodash/uniq';
+import upperFirst from 'lodash/upperFirst'
+import isNull from 'lodash/isNull'
 import orderBy from 'lodash/orderBy';
 import FileSaver from 'file-saver';
 
@@ -156,10 +188,10 @@ export default {
     return {
       timer: 0,
       data: [],
-      isLoading: false,
+      isLoading: true,
       isFetching: false,
       errorType: 1,
-      currentSlide: 1,
+
       cancelButtonText: "Cancel",
       webui: "",
       baseUrl: "",
@@ -169,7 +201,6 @@ export default {
       networkModes: [],
       installPercent: 0,
       installText: "",
-      panelTitle: "",
       initData: {
         port_map: "",
         cpu_shares: 10,
@@ -187,7 +218,14 @@ export default {
         volumes: [],
         envs: [],
         devices: [],
-      }
+      },
+
+      pageIndex: 1,
+      pageSize: 5,
+      listTotal: 0,
+      pageList: {},
+      currentSlide: 0,
+      currentInstallId: 0
     }
   },
   props: {
@@ -225,16 +263,23 @@ export default {
 
     //If it is edit, Init data
     if (this.initDatas != undefined) {
+      this.isLoading = false
       this.initData = this.initDatas
       this.webui = this.initDatas.port_map + this.initDatas.index
-      this.panelTitle = this.initData.label + " Setting"
+      this.currentSlide = 1
     } else {
-      this.panelTitle = "Install a new App manually"
+
       let gg = find(this.tempNetworks, (o) => {
         return o.driver == "bridge"
       })
       this.initData.network_model = gg.length > 0 ? gg[0].name : "bridge";
+      let appData = localStorage.getItem("app_data")
+      if (!isNull(appData)) {
+        this.initData = JSON.parse(appData)
+      }
+      this.getStoreList()
     }
+
 
   },
   computed: {
@@ -252,9 +297,87 @@ export default {
       } else {
         return true
       }
+    },
+    showImportButton() {
+      return this.currentSlide == 1 && this.state == 'install'
+    },
+    showExportButton() {
+      return this.currentSlide == 1 && this.state == 'update'
+
+    },
+    showTerminalButton() {
+      return this.currentSlide == 1 && this.state == 'update' && this.runningStatus == 'running'
+    },
+    panelTitle() {
+      if (this.currentSlide == 0) {
+        return "Featured Apps";
+      } else if (this.currentSlide == 1) {
+        return (this.initDatas != undefined) ? this.initData.label + " Setting" : "Install a new App manually"
+      } else {
+        return "Installing " + this.initData.image
+      }
     }
+
   },
   methods: {
+    /**
+     * @description: Get App store list
+     * @param {*}
+     * @return {*} array
+     */
+    getStoreList() {
+      this.isLoading = true
+      this.$api.app.storeList({ index: this.pageIndex, size: this.pageSize }).then(res => {
+        this.isLoading = false
+        if (res.data.success == 200) {
+          this.listTotal = res.data.data.count
+          this.pageList = res.data.data.items
+        }
+      })
+    },
+    /**
+         * @description: Quick Install App from app store
+         * @param {*}
+         * @return {*} void
+         */
+    qucikInstall(id) {
+      this.currentInstallId = id
+      this.$api.app.storeAppInfo(id).then(resp => {
+        if (resp.data.success == 200) {
+          let respData = resp.data.data
+          this.initData.port_map = respData.port_map
+          this.initData.cpu_shares = 50
+          this.initData.memory = respData.max_memory
+          this.initData.restart = "always"
+          this.initData.label = upperFirst(respData.title)
+          this.initData.position = true
+          this.initData.index = respData.index
+          this.initData.icon = respData.icon
+          this.initData.network_model = respData.network_model
+          this.initData.image = respData.image
+          this.initData.description = respData.description
+          this.initData.origin = respData.origin
+          this.initData.ports = isNull(respData.ports) ? [] : respData.ports
+          this.initData.volumes = isNull(respData.volumes) ? [] : respData.volumes
+          this.initData.envs = isNull(respData.envs) ? [] : respData.envs
+          this.initData.devices = isNull(respData.devices) ? [] : respData.devices
+          this.currentInstallId = 0
+          if (respData.tip !== "") {
+            this.$buefy.dialog.confirm({
+              title: 'Attention',
+              message: respData.tip,
+              type: 'is-dark',
+              onConfirm: () => {
+                this.installAppData(id)
+              }
+            })
+          } else {
+            this.installAppData(id)
+          }
+        }
+      })
+    },
+
 
     /**
      * @description: Process the datas before submit
@@ -267,6 +390,8 @@ export default {
         let slashArr = this.webui.split("/")
         this.initData.port_map = slashArr[0]
         this.initData.index = "/" + slashArr.slice(1).join("/");
+
+        console.log(this.initData.index);
       }
 
       let model = this.initData.network_model.split("-");
@@ -300,22 +425,24 @@ export default {
     installApp() {
       this.checkStep(this.$refs.ob1).then(val => {
         if (val) {
-          this.processData();
+          this.installAppData(this.id);
+        }
+      })
+    },
 
-          //console.log(this.initData);
-          this.isLoading = true;
-          this.$api.app.install(this.id, this.initData).then((res) => {
-            this.isLoading = false;
-            if (res.data.success == 200) {
-              this.currentSlide = 2;
-              this.cancelButtonText = "Continue in background"
-              this.checkInstallState(res.data.data)
-            } else {
-              this.$buefy.toast.open({
-                message: res.data.message,
-                type: 'is-warning'
-              })
-            }
+    installAppData(id) {
+      this.processData();
+      this.isLoading = true;
+      this.$api.app.install(id, this.initData).then((res) => {
+        this.isLoading = false;
+        if (res.data.success == 200) {
+          this.currentSlide = 2;
+          this.cancelButtonText = "Continue in background"
+          this.checkInstallState(res.data.data)
+        } else {
+          this.$buefy.toast.open({
+            message: res.data.message,
+            type: 'is-warning'
           })
         }
       })
@@ -362,11 +489,10 @@ export default {
           this.installText = resData.message
         }
 
-        if (resData.speed == 100 || this.errorType == 3) {
+        if (resData.message == "installed") {
+          localStorage.removeItem("app_data")
           clearInterval(this.timer)
-        }
-        let _this = this
-        if (resData.speed == 100) {
+          let _this = this
           setTimeout(() => {
             _this.$emit('updateState')
             _this.$emit('close')
@@ -412,6 +538,7 @@ export default {
         animation: "zoom-out",
         events: {
           'update': (e) => {
+            //localStorage.removeItem("app_data")
             this.initData = e
             this.webui = this.initData.port_map + this.initData.index
             this.changeIcon(this.initData.image)
@@ -464,7 +591,11 @@ export default {
           this.isFetching = false
         })
     }, 500),
-
+    /**
+       * @description: Export AppData to json file
+       * @param {*} function
+       * @return {*} void
+       */
     exportJSON() {
       // 将json转换成字符串
       let exportData = { ...this.initData };
@@ -476,11 +607,20 @@ export default {
       FileSaver.saveAs(blob, `${exportData.label}.json`);
     },
 
+    /**
+     * @description: Get Network name from network list
+     * @param {*} 
+     * @return {*} String
+     */
     getNetworkName(netId) {
-      let network = this.tempNetworks.filter(net => {
-        return net.name == netId
-      })
-      return network[0].name
+      if (netId == "") {
+        return "bridge"
+      } else {
+        let network = this.tempNetworks.filter(net => {
+          return net.name == netId
+        })
+        return network[0].name
+      }
     },
 
     /**
@@ -518,6 +658,21 @@ export default {
         }
       })
     },
+  },
+  watch: {
+    pageIndex() {
+      this.getStoreList()
+    },
+    initData: {
+      handler(val) {
+        if (this.state == 'install') {
+          localStorage.setItem("app_data", JSON.stringify(val))
+        }
+
+      },
+      deep: true
+    }
+
   },
   destroyed() {
     clearInterval(this.timer)

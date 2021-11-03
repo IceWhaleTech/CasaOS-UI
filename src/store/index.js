@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-27 18:55:57
+ * @LastEditTime: 2021-11-03 16:22:41
  * @Description: 
- * @FilePath: \CasaOS-UI\src\store\index.js
+ * @FilePath: /CasaOS-UI/src/store/index.js
  */
 import Vue from 'vue'
 import Vuex from 'vuex'
