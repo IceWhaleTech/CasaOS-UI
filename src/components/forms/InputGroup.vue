@@ -2,7 +2,7 @@
   <div class="mb-5">
     <div class="field is-flex is-align-items-center mb-2">
       <label class="label mb-0 flex1">{{label}}</label>
-      <b-button icon-left="plus" type="is-dark" size="is-small" rounded @click="addItem">Add</b-button>
+      <b-button icon-left="plus" size="is-small" rounded @click="addItem">Add</b-button>
     </div>
     <div class="is-flex is-align-items-center mb-5 info" v-if="vdata.length == 0">
       <b-icon icon="information" size="is-small" class="mr-2 "></b-icon>
