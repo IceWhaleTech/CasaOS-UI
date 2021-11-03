@@ -82,6 +82,9 @@ html {
   transform: translateY(10px);
   opacity: 0;
 }
+.is-size-65 {
+  font-size: 0.875rem;
+}
 
 .button,
 .input,
@@ -171,11 +174,10 @@ html {
     display: flex;
     align-items: center;
     &:hover {
-      color: #0077b5;
+      color: #fff;
     }
   }
 }
-
 
 .contents {
   flex: 1;
@@ -423,7 +425,7 @@ html {
   .loading-background {
     background: none !important;
     border-radius: $backDropBorderRadius;
-    transform:translate3d(0,0,0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -587,4 +589,29 @@ html {
   height: 200px;
 }
 
-// ScrollBars
+.b-line {
+  border-bottom: #cfcfcf 1px solid;
+}
+.list-icon {
+  width: 72px;
+}
+.icon-shadow {
+  
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.two-line {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  word-break: normal;
+  -webkit-line-clamp: 2; //行数
+  -webkit-box-orient: vertical;
+}
+
+.pagination-link.is-current {
+  background-color: hsl(216, 90%, 54%);
+  border-color: hsl(216, 90%, 54%);
+  color: #fff;
+}

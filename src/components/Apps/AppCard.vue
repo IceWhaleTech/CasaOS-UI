@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-29 18:01:00
+ * @LastEditTime: 2021-11-02 16:26:43
  * @Description: App Card item
  * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
 -->
@@ -20,7 +20,7 @@
         </template>
 
         <b-dropdown-item aria-role="menu-item" :focusable="false" custom paddingless>
-          <b-button type="is-text" tag="a" :target="(item.state == 'running') ?'_blank':'_self'" :href="(item.state == 'running') ? siteUrl(item.port,item.index) :'javascript:void(0)'" expanded>Open</b-button>
+          <b-button type="is-text" tag="a" @click="openApp(item.state,item.port,item.index)" expanded>Open</b-button>
           <b-button type="is-text" @click="configApp" expanded>Setting</b-button>
           <b-button type="is-text" expanded @click="uninstallConfirm" :loading="isUninstalling">Unistall</b-button>
           <div class="columns is-gapless bbor is-flex">
@@ -38,11 +38,11 @@
 
     <!-- Card Content Start -->
     <div class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-3 pb-3">
-      <a :target="siteUrlTarget(item.state,item.port)" class="is-flex is-justify-content-center" :href="siteUrl(item.state,item.port,item.index)">
+      <a class="is-flex is-justify-content-center" @click="openApp(item.state,item.port,item.index)">
         <b-image :src="item.icon" :src-fallback="require('@/assets/img/default.png')" webp-fallback=".jpg" class="is-72x72" :class="item.state | dotClass"></b-image>
       </a>
       <p class="mt-4 one-line">
-        <a class="one-line" :target="siteUrlTarget(item.state,item.port)" :href="siteUrl(item.state,item.port,item.index)">
+        <a class="one-line" @click="openApp(item.state,item.port,item.index)">
           {{item.name}}
         </a>
       </p>
@@ -78,35 +78,19 @@ export default {
     },
   },
   methods: {
+
     /**
-     * @description: Create application access link
+     * @description: Open app in new windows
      * @param {String} state App state
      * @param {String} port App access port
-     * @param {String} index App access index page
-     * @return {String}
+     * @param {String} index App access index
+     * @return {*} void
      */
-    siteUrl(state, port, index) {
-      if (port == "" && index == "") {
-        return 'javascript:void(0)';
-      } else {
-        if (state == 'running') {
-          return 'javascript:void(0)';
-        } else {
-          return (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${port}${index}` : `http://${document.domain}:${port}${index}`
-        }
-      }
-    },
-    /**
-     * @description: Create application access target
-     * @param {String} state App state
-     * @param {String} port App access port
-     * @return {String}
-     */
-    siteUrlTarget(state, port) {
-      if (port == "") {
-        return '_self';
-      } else {
-        return (state == 'running') ? '_blank' : '_self';
+    openApp(state, port, index) {
+      if (port != "" && state == 'running') {
+        let url = (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${port}${index}` : `http://${document.domain}:${port}${index}`
+        var arg = '\u003cscript\u003elocation.replace("' + url + '")\u003c/script\u003e';
+        window.open('javascript:window.name;', arg);
       }
     },
 
@@ -138,15 +122,15 @@ export default {
      * @return {*} void
      */
     uninstallConfirm() {
-      let _this = this
+
       this.$buefy.dialog.confirm({
         title: 'Attention',
         message: 'Data cannot be recovered after deletion! <br>Continue on to uninstall this application?',
         type: 'is-dark',
         confirmText: 'Uninstall',
         onConfirm: () => {
-          _this.isUninstalling = true
-          _this.uninstallApp()
+          this.isUninstalling = true
+          this.uninstallApp()
         }
       })
     },
@@ -179,7 +163,7 @@ export default {
      * @return {*} void
      */
     configApp() {
-      this.$emit("configApp", this.item.custom_id,this.item.state)
+      this.$emit("configApp", this.item.custom_id, this.item.state)
     },
 
     /**
