@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-03 18:42:47
+ * @LastEditTime: 2021-11-03 19:17:12
  * @Description: Install Panel of Docker
  * @FilePath: /CasaOS-UI/src/components/Panel.vue
 -->
@@ -26,7 +26,7 @@
         <b-tooltip label="Export AppFile" position="is-bottom" type="is-dark">
           <button type="button" class="icon-button mdi mdi-export-variant" @click="exportJSON" v-if="showExportButton" />
         </b-tooltip>
-        <div class="is-flex is-align-items-center modal-close-container" :class="{'modal-close-container-line':currentSlide > 0}">
+        <div v-if="currentSlide < 2" class="is-flex is-align-items-center modal-close-container" :class="{'modal-close-container-line':currentSlide == 1}">
           <button type="button" class="delete" @click="$emit('close')" />
         </div>
         
