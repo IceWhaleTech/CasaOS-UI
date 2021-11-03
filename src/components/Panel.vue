@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-03 16:44:57
+ * @LastEditTime: 2021-11-03 18:42:47
  * @Description: Install Panel of Docker
  * @FilePath: /CasaOS-UI/src/components/Panel.vue
 -->
@@ -14,17 +14,23 @@
       <div class="flex1">
         <h3 class="title is-4 has-text-weight-normal">{{panelTitle}}</h3>
       </div>
-      <b-tooltip label="Import" position="is-top" type="is-dark">
-        <button type="button" class="icon-button mdi mdi-import" @click="showImportPanel" v-if="showImportButton" />
-      </b-tooltip>
+      <div class="is-flex is-align-items-center">
+        <b-tooltip label="Import" position="is-bottom" type="is-dark">
+          <button type="button" class="icon-button mdi mdi-import" @click="showImportPanel" v-if="showImportButton" />
+        </b-tooltip>
 
-      <b-tooltip label="Terminal & Logs" position="is-top" type="is-dark">
-        <button type="button" class="icon-button mdi mdi-console" @click="showTerminalPanel" v-if="showTerminalButton" />
-      </b-tooltip>
+        <b-tooltip label="Terminal & Logs" position="is-bottom" type="is-dark">
+          <button type="button" class="icon-button mdi mdi-console" @click="showTerminalPanel" v-if="showTerminalButton" />
+        </b-tooltip>
 
-      <b-tooltip label="Export AppFile" position="is-top" type="is-dark">
-        <button type="button" class="icon-button mdi mdi-export" @click="exportJSON" v-if="showExportButton" />
-      </b-tooltip>
+        <b-tooltip label="Export AppFile" position="is-bottom" type="is-dark">
+          <button type="button" class="icon-button mdi mdi-export-variant" @click="exportJSON" v-if="showExportButton" />
+        </b-tooltip>
+        <div class="is-flex is-align-items-center modal-close-container" :class="{'modal-close-container-line':currentSlide > 0}">
+          <button type="button" class="delete" @click="$emit('close')" />
+        </div>
+        
+      </div>
 
     </header>
     <!-- Modal-Card Header End -->
@@ -140,12 +146,12 @@
           </div>
         </div>
         <div>
-          <b-button v-if="currentSlide < 2" label="Cancel" @click="$emit('close')" type="is-grey" rounded />
-          <b-button v-if="currentSlide == 0" label="Custom Install" @click="currentSlide = 1" type="is-dark" rounded />
+          <!-- <b-button v-if="currentSlide < 2" label="Cancel" @click="$emit('close')"  rounded /> -->
+          <b-button v-if="currentSlide == 0" label="Custom Install" @click="currentSlide = 1" type="is-primary" rounded />
           <b-button v-if="currentSlide == 2 && errorType == 3 " label="Back" @click="prevStep" rounded />
-          <b-button v-if="currentSlide == 1 && state == 'install'" label="Install" type="is-dark" @click="installApp()" rounded />
-          <b-button v-if="currentSlide == 1 && state == 'update'" label="Save" type="is-dark" @click="updateApp()" rounded />
-          <b-button v-if="currentSlide == 2 && (errorType == 1 || errorType == 4)" :label="cancelButtonText" type="is-dark" @click="$emit('close')" rounded />
+          <b-button v-if="currentSlide == 1 && state == 'install'" label="Install" type="is-primary" @click="installApp()" rounded />
+          <b-button v-if="currentSlide == 1 && state == 'update'" label="Save" type="is-primary" @click="updateApp()" rounded />
+          <b-button v-if="currentSlide == 2 && (errorType == 1 || errorType == 4)" :label="cancelButtonText" type="is-primary" @click="$emit('close')" rounded />
         </div>
       </template>
 

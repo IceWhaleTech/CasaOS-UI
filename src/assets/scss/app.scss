@@ -226,6 +226,27 @@ html {
   background: rgba(255, 255, 255, 0.88);
   backdrop-filter: $backDropBlur;
   border-radius: $backDropBorderRadius;
+  .close-container {
+    position: absolute;
+    right: 2rem;
+    top: 2rem;
+  }
+
+  .modal-close-container {
+    padding-left: 1rem;
+    margin-left: 0.5rem;
+    position: relative;
+    height: 100%;
+  }
+  .modal-close-container-line {
+    &:before {
+      content: "";
+      position: absolute;
+      border-left: #363636 2px solid;
+      height: 1rem;
+      left: 0;
+    }
+  }
   .modal-card-head,
   .modal-card-body,
   .modal-card-foot {
@@ -234,10 +255,10 @@ html {
     word-break: break-all;
   }
   .modal-card-head {
-    padding: 3rem 3rem 1.5rem 3rem;
+    padding: 2rem 2rem 1.5rem 2rem;
   }
   .modal-card-body {
-    padding: 0 3rem;
+    padding: 0 2rem;
     .loading-overlay .loading-icon:after {
       -webkit-animation: spinAround 500ms infinite linear;
       animation: spinAround 500ms infinite linear;
@@ -295,7 +316,7 @@ html {
     }
   }
   .modal-card-foot {
-    padding: 1rem 3rem 2rem 3rem;
+    padding: 1rem 2rem 2rem 2rem;
     .button {
       border-radius: 9999px;
       padding-left: calc(1em + 0.25em);
@@ -304,43 +325,43 @@ html {
   }
 }
 
-.account-modal,
-.terminal-modal {
-  .delete,
-  .modal-close {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    -moz-appearance: none;
-    -webkit-appearance: none;
+.delete,
+.modal-close {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  pointer-events: auto;
+  display: inline-block;
+  flex-grow: 0;
+  flex-shrink: 0;
+  font-size: 0;
+  height: 20 px;
+  max-height: 20px;
+  max-width: 20px;
+  min-height: 20px;
+  min-width: 20px;
+  outline: none;
+  position: relative;
+  vertical-align: top;
+  width: 20px;
+  &::before {
+    width: 80%;
+    background-color: black;
+  }
+  &::after {
+    height: 80%;
+    background-color: black;
+  }
+  &:hover {
     background-color: transparent;
-    border: none;
-    border-radius: 9999px;
-    cursor: pointer;
-    pointer-events: auto;
-    display: inline-block;
-    flex-grow: 0;
-    flex-shrink: 0;
-    font-size: 0;
-    height: 20 px;
-    max-height: 20px;
-    max-width: 20px;
-    min-height: 20px;
-    min-width: 20px;
-    outline: none;
-    position: relative;
-    vertical-align: top;
-    width: 20px;
-    &::before {
-      width: 80%;
-      background-color: black;
-    }
-    &::after {
-      height: 80%;
-      background-color: black;
-    }
   }
 }
 
@@ -355,12 +376,12 @@ html {
 }
 .terminal-modal {
   .modal-card-body {
-    padding: 1.5rem 1.5rem 1.25rem 1.5rem;
+    padding: 2rem 2rem 2rem 2rem;
   }
   .close-container {
     position: absolute;
-    right: 1.5rem;
-    top: 1.5rem;
+    right: 2rem;
+    top: 2rem;
   }
   .tab-content {
     padding: 0;
@@ -596,7 +617,6 @@ html {
   width: 72px;
 }
 .icon-shadow {
-  
   border-radius: 6px;
   box-sizing: border-box;
 }
@@ -614,4 +634,12 @@ html {
   background-color: hsl(216, 90%, 54%);
   border-color: hsl(216, 90%, 54%);
   color: #fff;
+}
+
+.b-tabs .tab-content {
+  position: relative;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0 0 0;
 }

@@ -39,7 +39,7 @@
       <div class="flex1"></div>
       <div>
         <b-button label="Cancel" @click="$emit('close')" rounded />
-        <b-button label="Sumbit" type="is-dark" @click="emitSubmit" rounded />
+        <b-button label="Sumbit" type="is-primary" @click="emitSubmit" rounded />
       </div>
     </footer>
     <!-- Modal-Card Footer End -->

@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-25 18:19:17
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-27 18:03:14
+ * @LastEditTime: 2021-11-03 18:29:26
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\AccountPanel.vue
+ * @FilePath: /CasaOS-UI/src/components/AccountPanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -12,9 +12,9 @@
       <!-- Modal-Card Header Start -->
       <header class="modal-card-head" :class="{'modal-card-head1':state == 1}">
         <div class="flex1">
-          <h3 class="title is-4 ">{{title}}</h3>
+          <h3 class="title is-4 has-text-weight-normal">{{title}}</h3>
         </div>
-        <div v-if="state == 1"><button type="button" class="delete" @click="$emit('close')" /></div>
+        <div ><button type="button" class="delete" @click="$emit('close')" /></div>
       </header>
       <!-- Modal-Card Header End -->
       <!-- Modal-Card Body Start -->
@@ -66,7 +66,7 @@
       <footer class="modal-card-foot is-flex is-align-items-center">
         <div class="flex1"></div>
         <div>
-          <b-button v-if="state >= 2" label="Cancel" type="is-grey" @click="goto(1)" rounded />
+          <b-button v-if="state >= 2" label="Back"  @click="goto(1)" rounded />
           <b-button v-if="state == 2" label="Submit" type="is-primary" rounded expaned @click="handleSubmit(saveUser)" />
           <b-button v-if="state == 3" label="Submit" type="is-primary" rounded expaned @click="handleSubmit(savePassword)" />
         </div>
