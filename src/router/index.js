@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-21 18:56:45
+ * @LastEditTime: 2021-11-04 15:22:44
  * @Description: 
  * @FilePath: /CasaOS-UI/src/router/index.js
  */
@@ -36,7 +36,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes
 })
