@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-03 19:17:12
+ * @LastEditTime: 2021-11-04 14:38:59
  * @Description: Install Panel of Docker
  * @FilePath: /CasaOS-UI/src/components/Panel.vue
 -->
@@ -655,7 +655,7 @@ export default {
         hasModalCard: true,
         customClass: 'terminal-modal',
         trapFocus: true,
-        canCancel: ['escape'],
+        canCancel: [],
         scroll: "keep",
         animation: "zoom-out",
         props: {

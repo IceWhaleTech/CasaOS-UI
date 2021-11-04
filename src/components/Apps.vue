@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-29 19:32:33
+ * @LastEditTime: 2021-11-04 14:39:37
  * @Description: App module
  * @FilePath: /CasaOS-UI/src/components/Apps.vue
 -->
@@ -110,7 +110,7 @@ export default {
               hasModalCard: true,
               customClass: '',
               trapFocus: true,
-              canCancel: ['escape'],
+              canCancel: [''],
               scroll: "keep",
               animation: "zoom-out",
               events: {
