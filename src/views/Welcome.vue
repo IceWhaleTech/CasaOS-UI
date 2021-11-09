@@ -2,25 +2,29 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:30:26
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-26 17:03:55
+ * @LastEditTime: 2021-11-09 16:46:39
  * @Description: 
  * @FilePath: /CasaOS-UI/src/views/Welcome.vue
 -->
 <template>
   <div id="login-page" class="is-flex is-justify-content-center is-align-items-center">
-    <div class="login-panel " v-if="!isLoading">
+    <div class="login-panel is-shadow" v-if="!isLoading" v-animate-css="initAni" :class="'step'+step">
 
       <div v-if="step == 1" class="has-text-centered">
-        <h2 class="title is-3  has-text-centered">Welcome to CasaOS</h2>
-        <h2 class="subtitle  has-text-centered">Let's create your initial account</h2>
-        <b-button type="is-primary" class="mt-2" rounded @click="goToStep(2)">Go →</b-button>
+        <div class=" is-flex is-justify-content-center" v-animate-css="s1Ani">
+          <b-image :src="require('@/assets/img/wuji.svg')" class="is-128x128 mb-4"></b-image>
+        </div>
+
+        <h2 class="title is-2 mb-5 has-text-centered" v-animate-css="s2Ani">Welcome to CasaOS</h2>
+        <h2 class="subtitle  has-text-centered" v-animate-css="s3Ani">Let's create your initial account</h2>
+        <b-button type="is-primary" class="mt-2" rounded @click="goToStep(2)" v-animate-css="s4Ani">Go →</b-button>
       </div>
 
       <div v-if="step == 2">
         <h2 class="title is-3  has-text-centered">Create Account</h2>
         <div class="is-flex is-justify-content-center ">
           <div class="has-text-centered">
-            <b-image :src="require('@/assets/img/user.svg')" class="is-128x128" rounded></b-image>
+            <b-image :src="require('@/assets/img/Account.png')" class="is-128x128" rounded></b-image>
           </div>
         </div>
         <ValidationObserver ref="observer" v-slot="{ handleSubmit }">
@@ -57,9 +61,11 @@
 import { ValidationObserver, ValidationProvider } from "vee-validate";
 import "@/plugins/vee-validate";
 import LottieAnimation from "lottie-web-vue";
+import smoothReflow from 'vue-smooth-reflow'
 export default {
 
   name: "Welcome",
+  mixins: [smoothReflow],
   data() {
     return {
       step: 1,
@@ -68,7 +74,32 @@ export default {
       confirmation: "",
       isLoading: true,
       message: "",
-      notificationShow: false
+      notificationShow: false,
+      initAni: {
+        classes: 'zoomIn',
+        delay: 1000,
+        duration: 700
+      },
+      s1Ani: {
+        classes: 'fadeInUp',
+        delay: 1300,
+        duration: 700
+      },
+      s2Ani: {
+        classes: 'fadeInUp',
+        delay: 1700,
+        duration: 700
+      },
+      s3Ani: {
+        classes: 'fadeInUp',
+        delay: 1900,
+        duration: 700
+      },
+      s4Ani: {
+        classes: 'fadeIn',
+        delay: 2500,
+        duration: 700
+      }
     }
   },
   components: {
@@ -77,6 +108,10 @@ export default {
     LottieAnimation
   },
   mounted() {
+    this.$smoothReflow({
+      el: '.login-panel',
+      property: ['height', 'width'],
+    })
     this.$api.info.guideCheck().then(res => {
       if (res.data.success == 200 && !res.data.data.need_init_user) {
         this.$router.push("/login");
