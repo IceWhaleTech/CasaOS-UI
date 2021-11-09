@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-02 16:26:43
+ * @LastEditTime: 2021-11-09 12:54:09
  * @Description: App Card item
  * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
 -->
@@ -11,7 +11,7 @@
   <div class="wuji-card is-flex is-align-items-center is-justify-content-center p-55 app-card" @mouseover="hover = true" @mouseleave="hover = false">
     <!-- Action Button Start -->
     <div class="action-btn">
-      <b-dropdown aria-role="list" position="is-bottom-left" class="ii" ref="dro" @active-change="setDropState" :mobile-modal="false">
+      <b-dropdown aria-role="list" position="is-bottom-left" class="ii" ref="dro" animation="slide-fade" @active-change="setDropState" :mobile-modal="false">
         <template #trigger>
           <p role="button">
             <b-icon icon="dots-vertical">
@@ -20,7 +20,7 @@
         </template>
 
         <b-dropdown-item aria-role="menu-item" :focusable="false" custom paddingless>
-          <b-button type="is-text" tag="a" @click="openApp(item.state,item.port,item.index)" expanded>Open</b-button>
+          <b-button type="is-text" tag="a" @click="openApp(item)" expanded>Open</b-button>
           <b-button type="is-text" @click="configApp" expanded>Setting</b-button>
           <b-button type="is-text" expanded @click="uninstallConfirm" :loading="isUninstalling">Unistall</b-button>
           <div class="columns is-gapless bbor is-flex">
@@ -37,12 +37,12 @@
     <!-- Action Button End -->
 
     <!-- Card Content Start -->
-    <div class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-3 pb-3">
-      <a class="is-flex is-justify-content-center" @click="openApp(item.state,item.port,item.index)">
+    <div class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-3 pb-3 img-c">
+      <a class="is-flex is-justify-content-center" @click="openApp(item)">
         <b-image :src="item.icon" :src-fallback="require('@/assets/img/default.png')" webp-fallback=".jpg" class="is-72x72" :class="item.state | dotClass"></b-image>
       </a>
       <p class="mt-4 one-line">
-        <a class="one-line" @click="openApp(item.state,item.port,item.index)">
+        <a class="one-line" @click="openApp(item)">
           {{item.name}}
         </a>
       </p>
@@ -86,11 +86,15 @@ export default {
      * @param {String} index App access index
      * @return {*} void
      */
-    openApp(state, port, index) {
-      if (port != "" && state == 'running') {
-        let url = (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${port}${index}` : `http://${document.domain}:${port}${index}`
-        var arg = '\u003cscript\u003elocation.replace("' + url + '")\u003c/script\u003e';
-        window.open('javascript:window.name;', arg);
+    openApp(item) {
+      if (item.port != "" && item.state == 'running') {
+        let url = (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${item.port}${item.index}` : `http://${document.domain}:${item.port}${item.index}`
+        if (item.image.toLowerCase().indexOf("qbittorrent") == -1) {
+          window.open(url, '_blank');
+        } else {
+          var arg = '\u003cscript\u003elocation.replace("' + url + '")\u003c/script\u003e';
+          window.open('javascript:window.name;', arg);
+        }
       }
     },
 

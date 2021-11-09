@@ -1,0 +1,28 @@
+@-webkit-keyframes zoomOutIn {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale3d(1.2, 1.2, 1.2);
+    transform: scale3d(1.2, 1.2, 1.2);
+  }
+
+  70% {
+    opacity: 1;
+  }
+}
+
+@keyframes zoomOutIn {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale3d(1.2, 1.2, 1.2);
+    transform: scale3d(1.2, 1.2, 1.2);
+  }
+
+  70% {
+    opacity: 1;
+  }
+}
+
+.zoomOutIn {
+  -webkit-animation-name: zoomOutIn;
+  animation-name: zoomOutIn;
+}

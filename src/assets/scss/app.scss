@@ -49,12 +49,14 @@ $backDropBorderRadius: 0.5rem;
 @import "images";
 @import "widgets";
 @import "scrollbars";
+@import "animate";
 
 // 4. Provide custom buefy overrides and site styles here
 body,
 html {
   overflow: hidden;
   font-family: "Roboto", sans-serif;
+  background-color: #000;
 }
 
 #app {
@@ -71,17 +73,21 @@ html {
   overflow-y: hidden;
 }
 
-.slide-fade-enter-active {
-  transition: all 0.25s ease-out;
+#background {
+  position: fixed;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: bottom center;
 }
-.slide-fade-leave-active {
-  transition: all 0.25s ease-out;
+
+.is-shadow {
+  -webkit-box-shadow: 0px 0px 17px -2px rgba(0, 0, 0, 0.47);
+  box-shadow: 0px 0px 17px -2px rgba(0, 0, 0, 0.47);
 }
-.slide-fade-enter, .slide-fade-leave-to
-/* .slide-fade-leave-active for below version 2.1.8 */ {
-  transform: translateY(10px);
-  opacity: 0;
-}
+
 .is-size-65 {
   font-size: 0.875rem;
 }
@@ -162,7 +168,7 @@ html {
 .contact-bar {
   position: fixed;
   right: 2rem;
-  bottom: 2rem;
+  bottom: 1.5rem;
   height: 3.5rem;
   background: rgba(0, 0, 0, 0.16);
   backdrop-filter: blur(24px);
@@ -179,18 +185,23 @@ html {
   }
 }
 
+.out-container {
+  position: relative;
+  height: 100%;
+}
+
 .contents {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  height: calc(100vh - 3rem);
+  height: calc(100% - 8rem);
 }
 
 .side-bar {
   width: 16rem;
   position: fixed;
   z-index: 10;
-  height: calc(100vh - 6rem);
+  height: calc(100% - 6rem);
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -224,7 +235,7 @@ html {
 }
 .modal-card {
   background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: $backDropBlur;
+  //backdrop-filter: $backDropBlur;
   border-radius: $backDropBorderRadius;
   .close-container {
     position: absolute;
@@ -443,10 +454,15 @@ html {
 }
 
 .app-card {
+  transition: all 0.3s;
   .loading-background {
     background: none !important;
     border-radius: $backDropBorderRadius;
     transform: translate3d(0, 0, 0);
+  }
+
+  &:hover {
+    box-shadow: 0px 0px 17px 0px rgba(0, 0, 0, 0.2);
   }
 }
 
@@ -465,22 +481,6 @@ html {
   .button {
     font-size: 0.875rem;
     height: 2.714em;
-  }
-}
-
-// File Modals
-@media screen and (min-width: 769px) {
-  .fileModal,
-  .account-modal {
-    .modal-card {
-      width: 30rem;
-    }
-  }
-
-  .terminal-modal {
-    .modal-card {
-      width: 50rem;
-    }
   }
 }
 
@@ -587,20 +587,38 @@ html {
 
 #login-page {
   height: calc(100% - 5.5rem);
+  position: relative;
+  z-index: 500;
   .login-panel {
     text-align: left;
-    max-width: 28.125rem;
     background: rgba(255, 255, 255, 0.46);
     backdrop-filter: blur(1rem);
     border-radius: 8px;
     padding: 2.5rem 4rem;
-    width: 28.125rem;
+
     .label {
       color: #dfdfdf;
     }
     .input {
       background: rgba(255, 255, 255, 0.32);
       border-color: transparent;
+    }
+
+    &.step1 {
+      padding: 4rem 6rem;
+    }
+
+    &.step2 {
+      padding: 2.5rem 4rem;
+      width: 32rem;
+    }
+
+    &.step3 {
+      padding: 4rem 8rem;
+    }
+
+    &.step4 {
+      width: 28rem;
     }
   }
 }
@@ -642,4 +660,180 @@ html {
   display: flex;
   flex-direction: column;
   padding: 1rem 0 0 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+.slide-fade-enter-active {
+  transition: all 0.25s ease-out;
+}
+.slide-fade-leave-active {
+  transition: all 0.25s ease-out;
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active for below version 2.1.8 */ {
+  transform: translateY(10px);
+  opacity: 0;
+}
+
+.img-c {
+  .image {
+    transition: all 0.3s;
+  }
+  &:hover {
+    .image {
+      transform: scale3d(1.1, 1.1, 1.1);
+    }
+  }
+}
+
+.dark-bg {
+  position: fixed;
+  transition: all 0.3s ease;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 19;
+  opacity: 0;
+  visibility: hidden;
+  &.open {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+// File Modals
+@media screen and (min-width: 769px) {
+  .fileModal,
+  .account-modal {
+    .modal-card {
+      width: 30rem;
+    }
+  }
+
+  .terminal-modal {
+    .modal-card {
+      width: 50rem;
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .container {
+    margin: 0 1rem;
+  }
+}
+@media screen and (min-width: 481px) {
+  #sidebar-btn {
+    display: none !important;
+  }
+}
+@media screen and (max-width: 768px) {
+  .main-content {
+    .app-list {
+      display: flex;
+      .column {
+        flex: none;
+        width: 50%;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #sidebar-btn {
+    display: flex !important;
+  }
+
+  .login-panel {
+    text-align: left;
+    background: rgba(255, 255, 255, 0.46);
+    backdrop-filter: blur(1rem);
+    border-radius: 8px;
+    margin: 0 2rem;
+    padding: 2rem !important;
+    .label {
+      color: #dfdfdf;
+    }
+    .input {
+      background: rgba(255, 255, 255, 0.32);
+      border-color: transparent;
+    }
+    .is-128x128 {
+      height: 96px;
+      width: 96px;
+    }
+    .is-3 {
+      font-size: 1.5rem;
+    }
+    &.step1 {
+      .is-2 {
+        font-size: 1.5rem;
+      }
+      .subtitle {
+        font-size: 1rem;
+      }
+    }
+    &.step3 {
+      padding: 4rem !important;
+    }
+  }
+
+  .brand-bar {
+    bottom: 3rem;
+    font-size: 0.875rem;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    .image.is-32x32 {
+      height: 24px;
+      width: 24px;
+    }
+    .is-size-4 {
+      font-size: 1.25rem !important;
+    }
+  }
+
+  .contact-bar {
+    right: 0;
+    bottom: 0rem;
+    background-color: transparent;
+    backdrop-filter: none;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .side-bar {
+    transition: all 0.3s ease-out;
+    left: 0rem;
+    transform: translateX(-100vw);
+    z-index: 20;
+    width: auto;
+    margin: 0 1rem !important;
+    &.open {
+      transform: translateX(0);
+    }
+  }
+
+  .main-content {
+    margin-left: 0;
+
+    .app-list {
+      display: flex;
+      .column {
+        flex: none;
+        width: 50%;
+      }
+    }
+  }
 }

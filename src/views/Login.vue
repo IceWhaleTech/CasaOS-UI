@@ -2,16 +2,16 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:30:26
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-25 17:11:21
+ * @LastEditTime: 2021-11-09 11:44:37
  * @Description: 
  * @FilePath: /CasaOS-UI/src/views/Login.vue
 -->
 <template>
   <div id="login-page" class="is-flex is-justify-content-center is-align-items-center ">
-    <div class="login-panel" v-if="!isLoading">
+    <div class="login-panel step4 is-shadow" v-if="!isLoading">
       <div class="is-flex is-justify-content-center ">
         <div class="has-text-centered">
-          <b-image :src="require('@/assets/img/user.svg')" class="is-128x128" rounded></b-image>
+          <b-image :src="require('@/assets/img/Account.png')" class="is-128x128" rounded></b-image>
           <p class="is-size-5 has-text-weight-bold mt-3">{{username}}</p>
         </div>
 
@@ -32,9 +32,7 @@
         </ValidationProvider>
         <b-button type="is-primary" class="mt-5" rounded expanded @click="handleSubmit(login)">Login</b-button>
       </ValidationObserver>
-
     </div>
-
   </div>
 </template>
 
@@ -60,7 +58,6 @@ export default {
   },
   mounted() {
     this.$api.info.guideCheck().then(res => {
-      console.log(res.data.data);
       if (res.data.success == 200 && res.data.data.need_init_user) {
         this.$router.push("/welcome");
       } else {

@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-03 16:22:41
+ * @LastEditTime: 2021-11-09 16:49:07
  * @Description: 
  * @FilePath: /CasaOS-UI/src/store/index.js
  */
@@ -19,6 +19,7 @@ export default new Vuex.Store({
     devIp: "192.168.2.217",
     serviceError: false,
     userinfo: {},
+    sidebarOpen: false,
     widgetsSwitch: {
       clock: true,
       weather: true,
@@ -39,6 +40,12 @@ export default new Vuex.Store({
     },
     changeUserInfo(state, val) {
       state.userinfo = val
+    },
+    changeSideBarState(state) {
+      state.sidebarOpen = !state.sidebarOpen
+    },
+    closeSideBar(state) {
+      state.sidebarOpen = false
     }
   },
   actions: {

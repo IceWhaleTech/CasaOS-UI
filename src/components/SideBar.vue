@@ -2,17 +2,15 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-20 17:02:02
+ * @LastEditTime: 2021-11-09 15:43:56
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/SideBar.vue
 -->
 <template>
-  <div class="side-bar mr-5" v-if="!isLoading">
+  <div class="side-bar mr-5" :class="{'open':sidebarOpen}" v-if="!isLoading">
     <vue-custom-scrollbar class="scroll-area" :settings="scrollSettings">
       <div v-for="(item,index) in activeApps" :key="`widgets_${index}`">
-        <transition name="fade">
-          <component :is="item.app" v-if="checkShow(item.app.name,widgetsSettings)"></component>
-        </transition>
+        <component :is="item.app" v-if="checkShow(item.app.name,widgetsSettings)"></component>
       </div>
       <settings v-model="widgetsSettings" @change="handleChange"></settings>
     </vue-custom-scrollbar>
@@ -59,6 +57,9 @@ export default {
         return obj;
       })
       return newArray
+    },
+    sidebarOpen() {
+      return this.$store.state.sidebarOpen
     }
   },
   created() {

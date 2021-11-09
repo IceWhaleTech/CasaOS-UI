@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-04 14:38:00
+ * @LastEditTime: 2021-11-09 17:28:50
  * @Description: Top bar 
  * @FilePath: /CasaOS-UI/src/components/TopBar.vue
 -->
@@ -10,8 +10,19 @@
 <template>
   <div class="navbar top-bar is-flex is-align-items-center">
     <div class="navbar-brand ml-3">
+
+      <!-- SideBar Button Start -->
+      <div class="is-flex is-align-items-center mr-3 ml-3" id="sidebar-btn">
+        <b-tooltip :label="sidebarIconLabel" position="is-right" type="is-dark">
+          <p role="button" @click="showSideBar">
+            <b-icon :icon="sidebarIcon"></b-icon>
+          </p>
+        </b-tooltip>
+      </div>
+      <!-- SideBar Button Start -->
+
       <!-- Account Dropmenu Start -->
-      <b-dropdown aria-role="list" class="navbar-item " animation="slide-fade" @active-change="getUserInfo">
+      <b-dropdown aria-role="list" class="navbar-item " animation="slide-fade" @active-change="getUserInfo" >
         <template #trigger>
           <b-tooltip label="Account" position="is-right" type="is-dark">
             <p role="button">
@@ -25,7 +36,7 @@
 
           <div class="is-flex is-align-items-center item">
             <div class="is-flex is-align-items-center flex1">
-              <b-image :src="require('@/assets/img/user.svg')" class="is-40x40 mr-3" rounded></b-image>
+              <b-image :src="require('@/assets/img/Account.png')" class="is-40x40 mr-3" rounded></b-image>
               <b>{{userInfo.user_name}}</b>
             </div>
             <div>
@@ -48,7 +59,7 @@
       <!-- Account Dropmenu End -->
 
       <!-- Settings Dropmenu Start -->
-      <b-dropdown aria-role="list" class="navbar-item" animation="slide-fade" @active-change="onOpen">
+      <b-dropdown aria-role="list" class="navbar-item" animation="slide-fade" @active-change="onOpen" >
         <template #trigger>
           <b-tooltip label="Settings" position="is-right" type="is-dark">
             <p role="button">
@@ -138,6 +149,14 @@ export default {
   created() {
     this.getConfig();
 
+  },
+  computed: {
+    sidebarIcon() {
+      return this.$store.state.sidebarOpen ? "close" : "menu"
+    },
+    sidebarIconLabel(){
+      return this.$store.state.sidebarOpen ? "Hide Sidebar" : "Show SideBar"
+    }
   },
   mounted() {
     this.checkVersion();
@@ -272,6 +291,13 @@ export default {
       })
     },
 
+    /**
+     * @description: Show SideBar
+     * @return {*} void
+     */
+    showSideBar() {
+      this.$store.commit('changeSideBarState')
+    }
   },
 
 }
