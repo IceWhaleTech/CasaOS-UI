@@ -2,13 +2,13 @@
  * @Author: JerryK
  * @Date: 2021-10-09 18:41:15
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-09 14:35:45
+ * @LastEditTime: 2021-11-11 14:18:05
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/Settings.vue
 -->
 <template>
   <div class="wsettings">
-    <b-dropdown aria-role="list" class="navbar-item" animation="slide-fade" :mobile-modal="false" position="is-top-left">
+    <b-dropdown aria-role="list" class="navbar-item" animation="slide-fade" :mobile-modal="false" position="is-bottom-left">
       <template #trigger>
         <b-button icon-left="menu" class="circle-btn" rounded></b-button>
       </template>

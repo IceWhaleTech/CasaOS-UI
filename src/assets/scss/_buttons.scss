@@ -80,3 +80,46 @@
     }
   }
 }
+
+.icon-button-new {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  pointer-events: auto;
+  display: inline-block;
+  flex-grow: 0;
+  flex-shrink: 0;
+  font-size: 0;
+  height: 1.5rem;
+  max-height: 1.5rem;
+  max-width: 1.5rem;
+  min-height: 1.5rem;
+  min-width: 1.5rem;
+  outline: none;
+  position: relative;
+  vertical-align: top;
+  width: 1.5rem;
+  padding: 0;
+  transition: all 0.2s;
+  margin: 0 0.25rem;
+  &:before {
+    transition: all 0.2s;
+    position: relative;
+    font-size: 1.25rem;
+    color: #fff;
+  }
+  &:hover {
+
+    &:before {
+      color: #fff;
+    }
+  }
+}

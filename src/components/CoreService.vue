@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-11-10 17:50:18
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-10 18:20:33
+ * @LastEditTime: 2021-11-12 13:22:31
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\CoreService.vue
+ * @FilePath: /CasaOS-UI/src/components/CoreService.vue
 -->
 <template>
   <div class=" home-section has-text-left mt-55">
@@ -34,4 +34,5 @@ export default {
 </script>
 
 <style>
+
 </style>
