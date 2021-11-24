@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-11-10 17:48:25
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-19 18:54:01
+ * @LastEditTime: 2021-11-24 17:22:39
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/SyncBlock.vue
 -->
@@ -85,10 +85,6 @@ import SyncPanel from './SyncPanel.vue'
 import forEach from 'lodash/forEach';
 import pull from 'lodash/pull';
 import axios from 'axios'
-const syncXhr = axios.create({
-  baseURL: 'http://192.168.2.217:8384'
-});
-syncXhr.defaults.headers.common['X-API-Key'] = `uZnepMtkYEfMaCGmJEeKRzCaHMjVzJq7`;
 
 export default {
   name: "sync-block",
@@ -112,8 +108,17 @@ export default {
       upSpeed: 0,
       downSpeed: 0,
       myID: "",
-      totalSize: 0
+      totalSize: 0,
+      syncXhr: Object,
+      syncBaseURL: ""
     }
+  },
+  created() {
+    this.syncBaseURL = (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${this.$store.state.syncthingPort}` : `${document.location.protocol}//${document.location.host}:${this.$store.state.syncthingPort}`
+    this.syncXhr = axios.create({
+      baseURL: this.syncBaseURL
+    });
+    this.syncXhr.defaults.headers.common['X-API-Key'] = this.$store.state.syncthingKey;
   },
 
   computed: {
@@ -135,7 +140,7 @@ export default {
     }
 
     // Get Events
-    syncXhr.get(`/rest/events?limit=1`).then(res => {
+    this.syncXhr.get(`/rest/events?limit=1`).then(res => {
       let lastEvent = res.data[0]
       this.getFolderCompletion(res)
       this.getEvents(lastEvent.id);
@@ -186,7 +191,7 @@ export default {
     getEvents(ll) {
       let _this = this
 
-      syncXhr.get(`/rest/events?since=${ll}`, { timeout: 60000 })
+      this.syncXhr.get(`/rest/events?since=${ll}`, { timeout: 60000 })
         .then(response => {
           this.getFolderCompletion(response)
           ll = Number(response.data[0].id) + 1
@@ -218,18 +223,18 @@ export default {
       })
     },
     getStatus() {
-      syncXhr.get(`/rest/system/status`).then(res => {
+      this.syncXhr.get(`/rest/system/status`).then(res => {
         // console.log('status', res.data);
         this.myID = res.data.myID
       })
     },
     getTotalSize() {
-      syncXhr.get(`/rest/db/completion?device=${this.myID}`).then(res => {
+      this.syncXhr.get(`/rest/db/completion?device=${this.myID}`).then(res => {
         this.totalSize = res.data.globalBytes
       })
     },
     getConnections() {
-      syncXhr.get(`/rest/system/connections`).then(res => {
+      this.syncXhr.get(`/rest/system/connections`).then(res => {
 
         this.total = res.data.total
         //console.log("connection", res.data);
@@ -246,7 +251,7 @@ export default {
       })
     },
     getConfigs() {
-      syncXhr.get(`/rest/config`).then(res => {
+      this.syncXhr.get(`/rest/config`).then(res => {
         this.state = (res.data.devices.length > 1) ? 2 : 1;
         this.devices = res.data.devices.map(item => {
           item.fullData = this.connection[item.deviceID]
@@ -260,8 +265,7 @@ export default {
     },
 
     gotoAdvancedPanel() {
-      let url = (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:8384` : `http://${document.domain}:8384`
-      window.open(url, "_blank");
+      window.open(this.syncBaseURL, "_blank");
     }
   },
   filters: {

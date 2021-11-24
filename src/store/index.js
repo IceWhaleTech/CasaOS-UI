@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-11 15:24:24
+ * @LastEditTime: 2021-11-24 16:27:41
  * @Description: 
  * @FilePath: /CasaOS-UI/src/store/index.js
  */
@@ -20,6 +20,8 @@ export default new Vuex.Store({
     serviceError: false,
     userinfo: {},
     sidebarOpen: false,
+    syncthingKey: '',
+    syncthingPort: '',
     widgetsSwitch: {
       clock: true,
       weather: true,
@@ -46,7 +48,11 @@ export default new Vuex.Store({
     },
     closeSideBar(state) {
       state.sidebarOpen = false
-    }
+    },
+    changeSyncthingInfo(state, val) {
+      state.syncthingKey = val.key
+      state.syncthingPort = val.port
+    },
   },
   actions: {
   },

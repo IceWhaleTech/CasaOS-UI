@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-11-10 18:22:36
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-16 10:56:15
+ * @LastEditTime: 2021-11-24 18:21:10
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/SyncPanel.vue
 -->
@@ -26,7 +26,7 @@
     <section class="modal-card-body">
       <!-- Steps Start -->
       <div class="columns is-mobile">
-        <div class="column is-8 is-offset-2">
+        <div class="column is-8 is-offset-2 is-12-mobile is-offset-0-mobile">
           <div class="columns is-mobile steps">
             <div class="column has-text-centered">
               <span class="dot" :class="[{'active':step == 1},{'ok-dot':step > 1}]" data-title="1">Install</span>
@@ -62,12 +62,12 @@
               <div class="columns is-mobile ">
                 <div class="column has-text-centered">
                   <p class="control is-flex is-justify-content-center">
-                    <b-button type="is-dark" label="Get Syncthing for Win x64" @click="downloadSyncthing(syncthingWindows64DlUrl)" rounded />
+                    <b-button type="is-dark" label="Syncthing Win x64" @click="downloadSyncthing(syncthingWindows64DlUrl)" rounded />
                   </p>
                 </div>
                 <div class="column has-text-centered">
                   <p class="control is-flex is-justify-content-center">
-                    <b-button type="is-dark" label="Get Syncthing for Win x32" @click="downloadSyncthing(syncthingWindows32DlUrl)" rounded />
+                    <b-button type="is-dark" label="Syncthing Win x32" @click="downloadSyncthing(syncthingWindows32DlUrl)" rounded />
                   </p>
                 </div>
 
@@ -75,12 +75,12 @@
               <div class="columns is-mobile">
                 <div class="column has-text-centered">
                   <p class="control is-flex is-justify-content-center">
-                    <b-button type="is-dark" label="Get Syncthing for macOS" @click="downloadSyncthing(syncthingMacDlUrl)" rounded />
+                    <b-button type="is-dark" label="Syncthing macOS" @click="downloadSyncthing(syncthingMacDlUrl)" rounded />
                   </p>
                 </div>
                 <div class="column has-text-centered">
                   <p class="control is-flex is-justify-content-center">
-                    <b-button type="is-dark" label="Get Syncthing for Andorid" @click="downloadSyncthing(syncthingAndroidDlUrl)" rounded />
+                    <b-button type="is-dark" label="Syncthing Andorid" @click="downloadSyncthing(syncthingAndroidDlUrl)" rounded />
 
                   </p>
                   <p class="control is-flex is-justify-content-center">
@@ -94,7 +94,7 @@
             <b-button type="is-ghost" label="Show all Platforms" rounded @click="showMorePlatform" />
           </p>
 
-          <p class="is-flex is-align-items-center is-size-65 is-justify-content-center">
+          <p class="is-flex is-align-items-top is-size-65 is-justify-content-center">
             <b-icon icon="information" class="mr-2" style="color:#F8D149" /> Install and open the downloaded application, then click the "Next" button.
           </p>
         </div>
@@ -114,16 +114,20 @@
                   <ol>
                     <li>Open the SyncTrayzor</li>
                     <li>Find the Device ID
-                      <b-image :src="require(`@/assets/syncthing_tutorials/macOS-DefaultFolder-3.png`)" class="t-img"></b-image>
+                      <b-image :src="require(`@/assets/syncthing_tutorials/Windows-ShowID.png`)" class="t-img"></b-image>
+                      <b-image :src="require(`@/assets/syncthing_tutorials/Windows-DeviceID.png`)" class="t-img"></b-image>
                     </li>
-                    <li>Fill in the Device ID in the textbox below</li>
 
                   </ol>
                 </div>
                 <div v-if="isSubmited">
                   <ol>
                     <li>Add new device on your device</li>
+                    <b-image :src="require(`@/assets/syncthing_tutorials/Windows-NewDevice.png`)" class="t-img"></b-image>
+                    <b-image :src="require(`@/assets/syncthing_tutorials/Windows-NewDeviceSave.png`)" class="t-img"></b-image>
                     <li>Add new folder on your device</li>
+                    <b-image :src="require(`@/assets/syncthing_tutorials/Windows-NewFolder.png`)" class="t-img"></b-image>
+                    <b-image :src="require(`@/assets/syncthing_tutorials/Windows-NewFolderSave.png`)" class="t-img"></b-image>
                     <li>Done!</li>
                   </ol>
                 </div>
@@ -135,19 +139,24 @@
                 <div v-if="!isSubmited">
                   <ol>
                     <li>Open Syncthing in the Launchpad</li>
-                    <li>Find the Syncthing icon in the menu bar
-                      <b-image :src="require(`@/assets/syncthing_tutorials/macOS-DefaultFolder-3.png`)" class="t-img"></b-image>
+                    <li>Find the Syncthing icon in the menubar
+                      <b-image :src="require(`@/assets/syncthing_tutorials/macOS-icon.png`)" class="t-img"></b-image>
+                      <b-image :src="require(`@/assets/syncthing_tutorials/macOS-Config.png`)" class="t-img"></b-image>
                     </li>
-                    <li>Remove the default folder</li>
-                    <li>Find the Device ID</li>
-                    <li>Fill in the Device ID in the textbox below</li>
-
+                    <li>Find the Device ID
+                      <b-image :src="require(`@/assets/syncthing_tutorials/macOS-ShowID.png`)" class="t-img"></b-image>
+                      <b-image :src="require(`@/assets/syncthing_tutorials/macOS-DeviceID.png`)" class="t-img"></b-image>
+                    </li>
                   </ol>
                 </div>
                 <div v-if="isSubmited">
                   <ol>
                     <li>Add new device on your device</li>
+                    <b-image :src="require(`@/assets/syncthing_tutorials/Windows-NewDevice.png`)" class="t-img"></b-image>
+                    <b-image :src="require(`@/assets/syncthing_tutorials/Windows-NewDeviceSave.png`)" class="t-img"></b-image>
                     <li>Add new folder on your device</li>
+                    <b-image :src="require(`@/assets/syncthing_tutorials/macOS-NewFolder.png`)" class="t-img"></b-image>
+                    <b-image :src="require(`@/assets/syncthing_tutorials/macOS-NewFolderSave.png`)" class="t-img"></b-image>
                     <li>Done!</li>
                   </ol>
                 </div>
@@ -157,20 +166,26 @@
               <div class="t-box">
                 <div v-if="!isSubmited">
                   <ol>
-                    <li>Open Syncthing in the Launchpad</li>
-                    <li>Find the Syncthing icon in the menu bar
-                      <b-image :src="require(`@/assets/syncthing_tutorials/macOS-DefaultFolder-3.png`)" class="t-img"></b-image>
+                    <li>Open Syncthing</li>
+                    <li>Open the menu
+                      <b-image :src="require(`@/assets/syncthing_tutorials/Android-Menu.png`)" class="t-img"></b-image>
                     </li>
-                    <li>Remove the default folder</li>
-                    <li>Find the Device ID</li>
-                    <li>Fill in the Device ID in the textbox below</li>
-
+                    <li>Choose "Show device ID"
+                      <b-image :src="require(`@/assets/syncthing_tutorials/Android-ShowDeviceID.png`)" class="t-img"></b-image>
+                    </li>
+                    <li>Copy the Device ID
+                      <b-image :src="require(`@/assets/syncthing_tutorials/Android-DeviceID.png`)" class="t-img"></b-image>
+                    </li>
                   </ol>
                 </div>
                 <div v-if="isSubmited">
                   <ol>
                     <li>Add new device on your device</li>
+                    <b-image :src="require(`@/assets/syncthing_tutorials/Android-NewDevice.png`)" class="t-img"></b-image>
+                    <b-image :src="require(`@/assets/syncthing_tutorials/Android-NewDeviceAdd.png`)" class="t-img"></b-image>
                     <li>Add new folder on your device</li>
+                    <b-image :src="require(`@/assets/syncthing_tutorials/Android-NewFolder.png`)" class="t-img"></b-image>
+                    <b-image :src="require(`@/assets/syncthing_tutorials/Android-NewFolderCreate.png`)" class="t-img"></b-image>
                     <li>Done!</li>
                   </ol>
                 </div>
@@ -221,13 +236,11 @@ import UAParser from 'ua-parser-js';
 import LottieAnimation from "lottie-web-vue";
 import smoothReflow from 'vue-smooth-reflow'
 import axios from 'axios'
-const syncXhr = axios.create({
-  baseURL: 'http://192.168.2.217:8384'
-});
-syncXhr.defaults.headers.common['X-API-Key'] = `uZnepMtkYEfMaCGmJEeKRzCaHMjVzJq7`;
 
 const SYNCTHING_GITURL = `https://api.github.com/repos/syncthing/syncthing/releases/latest`
-const SYNCTHING_GIT_RELEASE_URL = "https://github.com/syncthing/syncthing/releases/download/"
+const SYNCTHING_GIT_RELEASE_URL = `https://github.com/syncthing/syncthing/releases/download/`
+const SYNCTHING_GOOGLEPLAY_URL = `https://play.google.com/store/apps/details?id=com.nutomic.syncthingandroid`
+const SYNCTHING_APK_URL = `https://f-droid.org/repo/com.nutomic.syncthingandroid_4286.apk`
 export default {
   name: "sync-panel",
   components: {
@@ -256,13 +269,22 @@ export default {
       syncConfig: {},
       isSubmiting: false,
       isSubmited: false,
-      isValId: false
+      isValId: false,
+      syncXhr: Object,
+      syncBaseURL: ""
     }
   },
 
   created() {
+    this.syncBaseURL = (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${this.$store.state.syncthingPort}` : `${document.location.protocol}//${document.location.host}:${this.$store.state.syncthingPort}`
+    this.syncXhr = axios.create({
+      baseURL: this.syncBaseURL
+    });
+    this.syncXhr.defaults.headers.common['X-API-Key'] = this.$store.state.syncthingKey;
+
     const parser = new UAParser();
     this.broswerUA = parser.getResult();
+    this.getOSIcon()
     axios.get(SYNCTHING_GITURL)
       .then(({ data }) => {
         this.isLoading = false;
@@ -271,8 +293,8 @@ export default {
         this.syncthingMacDlUrl = `${SYNCTHING_GIT_RELEASE_URL}${tagName}/syncthing-macos-universal-${tagName}.zip`
         this.syncthingWindows64DlUrl = `${SYNCTHING_GIT_RELEASE_URL}${tagName}/syncthing-windows-amd64-${tagName}.zip`
         this.syncthingWindows32DlUrl = `${SYNCTHING_GIT_RELEASE_URL}${tagName}/syncthing-windows-386-${tagName}.zip`
-        this.syncthingAndroidDlUrl = `https://play.google.com/store/apps/details?id=com.nutomic.syncthingandroid`
-        this.syncthingAndroidDlUrl1 = `https://f-droid.org/repo/com.nutomic.syncthingandroid_4286.apk`
+        this.syncthingAndroidDlUrl = SYNCTHING_GOOGLEPLAY_URL
+        this.syncthingAndroidDlUrl1 = SYNCTHING_APK_URL
       })
       .catch((error) => {
         throw error
@@ -290,32 +312,51 @@ export default {
   },
 
   methods: {
-    getOS(tagName) {
+    getOSIcon() {
       switch (this.broswerUA.os.name) {
         case "Mac OS":
           this.platform = this.icon = "macos";
           this.osName = "macOS"
-          this.syncthingDownloadUrl = `${SYNCTHING_GIT_RELEASE_URL}${tagName}/syncthing-${this.platform}-${this.getArchitecture()}-${tagName}.zip`
+
           break;
         case "Windows":
           this.platform = this.icon = "windows";
           this.osName = "Windows"
-          this.syncthingDownloadUrl = `${SYNCTHING_GIT_RELEASE_URL}${tagName}/syncthing-${this.platform}-${this.getArchitecture()}-${tagName}.zip`
+
           break;
         case "Android":
           this.platform = this.icon = "android";
           this.osName = "Android"
-          this.syncthingDownloadUrl = `https://play.google.com/store/apps/details?id=com.nutomic.syncthingandroid`
-          this.syncthingDownloadUrl1 = `https://f-droid.org/repo/com.nutomic.syncthingandroid_4286.apk`
+
           break;
         case "iOS":
-          this.platform = this.icon = "ios";
+          this.platform = this.icon = "syncthing";
           this.osName = "iOS"
-          this.syncthingDownloadUrl = ``
+          this.showMore = true;
+
           break;
         default:
           this.platform = this.icon = "linux";
           this.osName = "Linux";
+          break;
+      }
+    },
+    getOS(tagName) {
+      switch (this.broswerUA.os.name) {
+        case "Mac OS":
+          this.syncthingDownloadUrl = `${SYNCTHING_GIT_RELEASE_URL}${tagName}/syncthing-${this.platform}-${this.getArchitecture()}-${tagName}.zip`
+          break;
+        case "Windows":
+          this.syncthingDownloadUrl = `${SYNCTHING_GIT_RELEASE_URL}${tagName}/syncthing-${this.platform}-${this.getArchitecture()}-${tagName}.zip`
+          break;
+        case "Android":
+          this.syncthingAndroidDlUrl = SYNCTHING_GOOGLEPLAY_URL
+          this.syncthingAndroidDlUrl1 = SYNCTHING_APK_URL
+          break;
+        case "iOS":
+          this.syncthingDownloadUrl = ``
+          break;
+        default:
           this.syncthingDownloadUrl = `${SYNCTHING_GIT_RELEASE_URL}${tagName}/syncthing-${this.platform}-${this.getArchitecture()}-${tagName}.tar.gz`
           break;
       }
@@ -331,7 +372,7 @@ export default {
     },
     downloadSyncthing(url, isSelf = true) {
       let target = (isSelf) ? "_self" : "_blank"
-      if (url == "https://play.google.com/store/apps/details?id=com.nutomic.syncthingandroid") {
+      if (url == SYNCTHING_GOOGLEPLAY_URL) {
         target = "_blank"
       }
       window.open(url, target);
@@ -341,7 +382,7 @@ export default {
       this.showMore = true;
     },
     checkDeviceId() {
-      syncXhr.get(`/rest/svc/deviceid?id=${this.deviceId}`).then(res => {
+      this.syncXhr.get(`/rest/svc/deviceid?id=${this.deviceId}`).then(res => {
         if (res.data.id) {
           this.isValId = true;
         } else {
@@ -352,16 +393,16 @@ export default {
 
     submitNewDevice() {
       this.isSubmiting = true
-      syncXhr.get(`/rest/config`).then(res => {
+      this.syncXhr.get(`/rest/config`).then(res => {
         this.syncConfig = res.data
         let newDevice = this.genNewDevice(this.deviceId)
         this.syncConfig.devices.push(newDevice);
         this.syncConfig.folders = this.createShareFolder(this.syncConfig.folders)
-        syncXhr.put(`/rest/config`, this.syncConfig).then(res => {
+        this.syncXhr.put(`/rest/config`, this.syncConfig).then(res => {
           this.isSubmiting = false;
           if (res.status == 200) {
             this.isSubmited = true;
-            this.helpTitle = "Next actions on your device";
+            this.helpTitle = "What do I need to do on my device?";
           }
         })
       })

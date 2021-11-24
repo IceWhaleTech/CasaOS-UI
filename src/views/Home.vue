@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-10 17:58:05
+ * @LastEditTime: 2021-11-24 17:09:35
  * @Description: 
- * @FilePath: \CasaOS-UI\src\views\Home.vue
+ * @FilePath: /CasaOS-UI/src/views/Home.vue
 -->
 <template>
   <div v-if="!isLoading" class="out-container">
@@ -32,7 +32,7 @@
             <!-- Suggestions For You Start -->
             <section>
               <!-- <suggestion></suggestion> -->
-              <core-service></core-service>
+              <core-service ></core-service>
             </section>
             <!-- Suggestions For You End -->
 
@@ -80,6 +80,7 @@ export default {
   data() {
     return {
       isLoading: true,
+      
       topBarAni: {
         classes: 'fadeInDown',
         duration: 800
@@ -87,6 +88,7 @@ export default {
 
     }
   },
+  
   computed: {
     sidebarOpen() {
       return this.$store.state.sidebarOpen
