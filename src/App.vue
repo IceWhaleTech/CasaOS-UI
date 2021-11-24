@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-09 16:43:29
+ * @LastEditTime: 2021-11-11 10:58:20
  * @Description: Main entry of application
  * @FilePath: /CasaOS-UI/src/App.vue
 -->
@@ -35,10 +35,9 @@
 <script>
 import BrandBar from './components/BrandBar.vue'
 import ContactBar from './components/ContactBar.vue'
-// import UAParser from 'ua-parser-js';
 
-// const parser = new UAParser();
-// console.log(parser.getResult());
+
+
 export default {
   components: {
     BrandBar,

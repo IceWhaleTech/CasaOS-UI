@@ -20,6 +20,13 @@
   padding: 1.5rem;
   color: $white;
   position: relative;
+  transition: all 0.3s;
+  .buttons {
+    min-height: 2.375rem;
+  }
+  &:hover {
+    box-shadow: 0px 0px 17px 0px rgba(0, 0, 0, 0.2);
+  }
 
   .info {
     flex: 1;

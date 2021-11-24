@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-09 15:55:47
+ * @LastEditTime: 2021-11-24 17:09:35
  * @Description: 
  * @FilePath: /CasaOS-UI/src/views/Home.vue
 -->
@@ -31,7 +31,8 @@
 
             <!-- Suggestions For You Start -->
             <section>
-              <suggestion></suggestion>
+              <!-- <suggestion></suggestion> -->
+              <core-service ></core-service>
             </section>
             <!-- Suggestions For You End -->
 
@@ -60,8 +61,9 @@ import Apps from '@/components/Apps.vue'
 
 import SearchBar from '@/components/SearchBar.vue'
 import SideBar from '@/components/SideBar.vue'
-import Suggestion from '@/components/Suggestion.vue'
+// import Suggestion from '@/components/Suggestion.vue'
 import TopBar from '@/components/TopBar.vue'
+import CoreService from '../components/CoreService.vue'
 //import Shortcuts from '@/components/Shortcuts.vue'
 
 export default {
@@ -69,14 +71,16 @@ export default {
   components: {
     SideBar,
     SearchBar,
-    Suggestion,
+    // Suggestion,
     Apps,
     TopBar,
+    CoreService,
     //Shortcuts
   },
   data() {
     return {
       isLoading: true,
+      
       topBarAni: {
         classes: 'fadeInDown',
         duration: 800
@@ -84,6 +88,7 @@ export default {
 
     }
   },
+  
   computed: {
     sidebarOpen() {
       return this.$store.state.sidebarOpen

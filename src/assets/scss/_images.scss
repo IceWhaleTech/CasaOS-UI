@@ -9,6 +9,11 @@
   width: 72px;
 }
 
+.image.is-176x176 {
+  height: 176px;
+  width: 176px;
+}
+
 .image.is-40x40 {
   height: 40px;
   width: 40px;
@@ -17,4 +22,9 @@
     width: 40px !important;
     max-height: 40px !important;
   }
+}
+
+.image.syncthing-logo {
+  height: 21px;
+  width: 75px;
 }

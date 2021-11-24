@@ -130,7 +130,12 @@ export default {
         {
           keywords: ["pictures", "photo"],
           value: `/Gallery`
+        },
+        {
+          keywords: ["media"],
+          value: `/Media`
         }
+        
       ]
 
       checkArray.forEach(item => {
