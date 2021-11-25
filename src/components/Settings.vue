@@ -2,13 +2,13 @@
  * @Author: JerryK
  * @Date: 2021-10-09 18:41:15
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-11 14:18:05
+ * @LastEditTime: 2021-11-25 12:28:04
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/Settings.vue
 -->
 <template>
   <div class="wsettings">
-    <b-dropdown aria-role="list" class="navbar-item" animation="slide-fade" :mobile-modal="false" position="is-bottom-left">
+    <b-dropdown aria-role="list" class="navbar-item" animation="slide-fade" :mobile-modal="false" :position="position">
       <template #trigger>
         <b-button icon-left="menu" class="circle-btn" rounded></b-button>
       </template>
@@ -50,6 +50,14 @@ export default {
   },
   props: {
     widgetsSettings: Array
+  },
+  computed: {
+    position() {
+      let tempSettingArray = this.settingsData.filter(item => {
+        return item.show
+      })
+      return tempSettingArray.length > 0 ? "is-top-left" : "is-bottom-left";
+    }
   },
   created() {
     this.settingsData = JSON.parse(JSON.stringify(this.widgetsSettings))

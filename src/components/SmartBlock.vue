@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-11-10 18:14:56
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-10 18:16:25
+ * @LastEditTime: 2021-11-25 16:35:02
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\SmartBlock.vue
+ * @FilePath: /CasaOS-UI/src/components/SmartBlock.vue
 -->
 <!--
  * @Author: JerryK
@@ -21,13 +21,13 @@
       <div class="is-flex is-align-items-center">
         <div class="info ">
           <div class="des two-line">
-            Get started syncing your data.Get started syncing your data.
+            We want to give you a smart home experience with privacy, high speed, and localized storage.
           </div>
         </div>
         <b-image :src="require('@/assets/img/smart_icon.png')" class="is-64x64"></b-image>
       </div>
       <div class="buttons">
-        <!-- <b-button type="is-primary" size="is-small" rounded>Go!</b-button> -->
+        <b-button type="is-primary" size="is-small" @click="goToDiscord" rounded>In development</b-button>
       </div>
     </div>
   </div>
@@ -35,7 +35,21 @@
 
 <script>
 export default {
-  name: "smart-block"
+  name: "smart-block",
+  methods: {
+    goToDiscord() {
+      this.$buefy.dialog.confirm({
+        title: ' ',
+        message: 'Have an idea? Shoot it on Discord!',
+        hasIcon: true,
+        icon:'discord',
+        confirmText:'Go',
+        onConfirm: () => {
+          window.open('https://discord.gg/Gx4BCEtHjx', '_blank');
+        }
+      })
+    }
+  },
 }
 </script>
 
