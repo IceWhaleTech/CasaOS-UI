@@ -793,9 +793,18 @@ html {
   .t-img {
     margin-bottom: 1rem;
     img {
-      max-width: 80%;
+      max-width: 60%;
       width: auto;
     }
+  }
+  .t-img-1 img{
+    max-width: 5rem;
+  }
+  .t-img-2 img{
+    max-width: 13rem;
+  }
+  .t-img-3 img{
+    max-width: 18rem;
   }
 }
 @keyframes load8 {

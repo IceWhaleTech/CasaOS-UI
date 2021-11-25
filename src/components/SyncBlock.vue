@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-11-10 17:48:25
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-24 17:22:39
+ * @LastEditTime: 2021-11-25 15:39:14
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/SyncBlock.vue
 -->
@@ -114,7 +114,7 @@ export default {
     }
   },
   created() {
-    this.syncBaseURL = (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${this.$store.state.syncthingPort}` : `${document.location.protocol}//${document.location.host}:${this.$store.state.syncthingPort}`
+    this.syncBaseURL = (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${this.$store.state.syncthingPort}` : `${document.location.protocol}//${document.location.hostname}:${this.$store.state.syncthingPort}`
     this.syncXhr = axios.create({
       baseURL: this.syncBaseURL
     });
@@ -131,10 +131,6 @@ export default {
   },
 
   mounted() {
-    // this.$api.sync.getConfig().then(res => {
-    //   console.log(res.data);
-    // })
-
     if (this.timer) {
       clearInterval(this.timer)
     }
@@ -146,7 +142,7 @@ export default {
       this.getEvents(lastEvent.id);
     })
 
-    this.init(true);
+    this.init();
     this.timer = setInterval(() => {
       this.init();
     }, this.timeGap * 1000);
@@ -165,13 +161,10 @@ export default {
   },
 
   methods: {
-    init(needConfig = false) {
+    init() {
       this.getStatus();
       this.getConnections();
-      if (needConfig) {
-        this.getConfigs();
-      }
-
+      this.getConfigs();
       this.getTotalSize();
     },
 
@@ -184,22 +177,29 @@ export default {
         trapFocus: true,
         canCancel: ['escape'],
         scroll: "keep",
-        animation: "zoom-out"
+        animation: "zoom-out",
+        events: {
+          'updateConfig': () => {
+            this.init(true);
+          }
+        },
       })
     },
     //Events Long polling 
-    getEvents(ll) {
+    getEvents(id) {
       let _this = this
 
-      this.syncXhr.get(`/rest/events?since=${ll}`, { timeout: 60000 })
-        .then(response => {
+      this.syncXhr.get(`/rest/events?since=${id}`, { timeout: 60000 })
+        .then((response) => {
           this.getFolderCompletion(response)
-          ll = Number(response.data[0].id) + 1
-          _this.getEvents(ll)
+          id = Number(response.data[0].id) + 1
+          _this.getEvents(id)
         })
         .catch((error) => {
-          _this.getEvents(ll)
-          throw error
+          if (error.message.includes('timeout')) {
+            _this.getEvents(id)
+          }
+
         });
     },
     getFolderCompletion(response) {

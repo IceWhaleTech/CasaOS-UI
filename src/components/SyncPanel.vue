@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-11-10 18:22:36
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-24 18:21:10
+ * @LastEditTime: 2021-11-25 17:09:01
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/SyncPanel.vue
 -->
@@ -51,10 +51,10 @@
           </div>
           <template v-if="!showMore">
             <p class="control is-flex is-justify-content-center mt-5">
-              <b-button type="is-dark" size="is-large" :label="`Get Syncthing for ${broswerUA.os.name}`" @click="downloadSyncthing(syncthingDownloadUrl)" rounded />
+              <b-button type="is-dark" size="is-large" :label="`Get Syncthing for ${broswerUA.os.name}`" :loading="isGettingUrl" @click="getDownloadUrl(osName)" rounded />
             </p>
             <p class="control is-flex is-justify-content-center" v-if="platform == 'android'">
-              <b-button type="is-ghost" label="Download APK" @click="downloadSyncthing(syncthingAndroidDlUrl1)" rounded />
+              <b-button type="is-ghost" label="Download APK" @click="getDownloadUrl('Android','apk')" rounded />
             </p>
           </template>
           <div class="columns is-mobile  mt-4" v-if="showMore">
@@ -62,12 +62,12 @@
               <div class="columns is-mobile ">
                 <div class="column has-text-centered">
                   <p class="control is-flex is-justify-content-center">
-                    <b-button type="is-dark" label="Syncthing Win x64" @click="downloadSyncthing(syncthingWindows64DlUrl)" rounded />
+                    <b-button type="is-dark" label="Syncthing Win x64" @click="getDownloadUrl('Windows','x64')" rounded />
                   </p>
                 </div>
                 <div class="column has-text-centered">
                   <p class="control is-flex is-justify-content-center">
-                    <b-button type="is-dark" label="Syncthing Win x32" @click="downloadSyncthing(syncthingWindows32DlUrl)" rounded />
+                    <b-button type="is-dark" label="Syncthing Win x32" @click="getDownloadUrl('Windows','x64')" rounded />
                   </p>
                 </div>
 
@@ -75,7 +75,7 @@
               <div class="columns is-mobile">
                 <div class="column has-text-centered">
                   <p class="control is-flex is-justify-content-center">
-                    <b-button type="is-dark" label="Syncthing macOS" @click="downloadSyncthing(syncthingMacDlUrl)" rounded />
+                    <b-button type="is-dark" label="Syncthing macOS" @click="getDownloadUrl('macOS')" rounded />
                   </p>
                 </div>
                 <div class="column has-text-centered">
@@ -114,7 +114,7 @@
                   <ol>
                     <li>Open the SyncTrayzor</li>
                     <li>Find the Device ID
-                      <b-image :src="require(`@/assets/syncthing_tutorials/Windows-ShowID.png`)" class="t-img"></b-image>
+                      <b-image :src="require(`@/assets/syncthing_tutorials/Windows-ShowID.png`)" class="t-img t-img-2"></b-image>
                       <b-image :src="require(`@/assets/syncthing_tutorials/Windows-DeviceID.png`)" class="t-img"></b-image>
                     </li>
 
@@ -140,11 +140,11 @@
                   <ol>
                     <li>Open Syncthing in the Launchpad</li>
                     <li>Find the Syncthing icon in the menubar
-                      <b-image :src="require(`@/assets/syncthing_tutorials/macOS-icon.png`)" class="t-img"></b-image>
-                      <b-image :src="require(`@/assets/syncthing_tutorials/macOS-Config.png`)" class="t-img"></b-image>
+                      <b-image :src="require(`@/assets/syncthing_tutorials/macOS-icon.png`)" class="t-img t-img-1"></b-image>
+                      <b-image :src="require(`@/assets/syncthing_tutorials/macOS-Config.png`)" class="t-img t-img-2"></b-image>
                     </li>
                     <li>Find the Device ID
-                      <b-image :src="require(`@/assets/syncthing_tutorials/macOS-ShowID.png`)" class="t-img"></b-image>
+                      <b-image :src="require(`@/assets/syncthing_tutorials/macOS-ShowID.png`)" class="t-img t-img-2"></b-image>
                       <b-image :src="require(`@/assets/syncthing_tutorials/macOS-DeviceID.png`)" class="t-img"></b-image>
                     </li>
                   </ol>
@@ -168,24 +168,24 @@
                   <ol>
                     <li>Open Syncthing</li>
                     <li>Open the menu
-                      <b-image :src="require(`@/assets/syncthing_tutorials/Android-Menu.png`)" class="t-img"></b-image>
+                      <b-image :src="require(`@/assets/syncthing_tutorials/Android-Menu.png`)" class="t-img t-img-3"></b-image>
                     </li>
                     <li>Choose "Show device ID"
-                      <b-image :src="require(`@/assets/syncthing_tutorials/Android-ShowDeviceID.png`)" class="t-img"></b-image>
+                      <b-image :src="require(`@/assets/syncthing_tutorials/Android-ShowDeviceID.png`)" class="t-img t-img-3"></b-image>
                     </li>
                     <li>Copy the Device ID
-                      <b-image :src="require(`@/assets/syncthing_tutorials/Android-DeviceID.png`)" class="t-img"></b-image>
+                      <b-image :src="require(`@/assets/syncthing_tutorials/Android-DeviceID.png`)" class="t-img t-img-3"></b-image>
                     </li>
                   </ol>
                 </div>
                 <div v-if="isSubmited">
                   <ol>
                     <li>Add new device on your device</li>
-                    <b-image :src="require(`@/assets/syncthing_tutorials/Android-NewDevice.png`)" class="t-img"></b-image>
-                    <b-image :src="require(`@/assets/syncthing_tutorials/Android-NewDeviceAdd.png`)" class="t-img"></b-image>
+                    <b-image :src="require(`@/assets/syncthing_tutorials/Android-NewDevice.png`)" class="t-img  t-img-3"></b-image>
+                    <b-image :src="require(`@/assets/syncthing_tutorials/Android-NewDeviceAdd.png`)" class="t-img  t-img-3"></b-image>
                     <li>Add new folder on your device</li>
-                    <b-image :src="require(`@/assets/syncthing_tutorials/Android-NewFolder.png`)" class="t-img"></b-image>
-                    <b-image :src="require(`@/assets/syncthing_tutorials/Android-NewFolderCreate.png`)" class="t-img"></b-image>
+                    <b-image :src="require(`@/assets/syncthing_tutorials/Android-NewFolder.png`)" class="t-img  t-img-3"></b-image>
+                    <b-image :src="require(`@/assets/syncthing_tutorials/Android-NewFolderCreate.png`)" class="t-img  t-img-3"></b-image>
                     <li>Done!</li>
                   </ol>
                 </div>
@@ -237,10 +237,16 @@ import LottieAnimation from "lottie-web-vue";
 import smoothReflow from 'vue-smooth-reflow'
 import axios from 'axios'
 
-const SYNCTHING_GITURL = `https://api.github.com/repos/syncthing/syncthing/releases/latest`
-const SYNCTHING_GIT_RELEASE_URL = `https://github.com/syncthing/syncthing/releases/download/`
+
 const SYNCTHING_GOOGLEPLAY_URL = `https://play.google.com/store/apps/details?id=com.nutomic.syncthingandroid`
 const SYNCTHING_APK_URL = `https://f-droid.org/repo/com.nutomic.syncthingandroid_4286.apk`
+
+const SYNCTRAY_GITURL = `https://api.github.com/repos/canton7/SyncTrayzor/releases/latest`
+const SYNCTRAY_GIT_RELEASE_URL = `https://github.com/canton7/SyncTrayzor/releases/download/`
+
+const SYNCTHING_MAC_GITURL = `https://api.github.com/repos/syncthing/syncthing-macos/releases/latest`
+const SYNCTHING_MAC_GIT_RELEASE_URL = `https://github.com/syncthing/syncthing-macos/releases/download/`
+
 export default {
   name: "sync-panel",
   components: {
@@ -250,6 +256,7 @@ export default {
   data() {
     return {
       isLoading: true,
+      isGettingUrl: false,
       showMore: false,
       step: 1,
       broswerUA: {},
@@ -276,7 +283,7 @@ export default {
   },
 
   created() {
-    this.syncBaseURL = (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${this.$store.state.syncthingPort}` : `${document.location.protocol}//${document.location.host}:${this.$store.state.syncthingPort}`
+    this.syncBaseURL = (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${this.$store.state.syncthingPort}` : `${document.location.protocol}//${document.location.hostname}:${this.$store.state.syncthingPort}`
     this.syncXhr = axios.create({
       baseURL: this.syncBaseURL
     });
@@ -285,22 +292,22 @@ export default {
     const parser = new UAParser();
     this.broswerUA = parser.getResult();
     this.getOSIcon()
-    axios.get(SYNCTHING_GITURL)
-      .then(({ data }) => {
-        this.isLoading = false;
-        const tagName = data.tag_name;
-        this.getOS(tagName)
-        this.syncthingMacDlUrl = `${SYNCTHING_GIT_RELEASE_URL}${tagName}/syncthing-macos-universal-${tagName}.zip`
-        this.syncthingWindows64DlUrl = `${SYNCTHING_GIT_RELEASE_URL}${tagName}/syncthing-windows-amd64-${tagName}.zip`
-        this.syncthingWindows32DlUrl = `${SYNCTHING_GIT_RELEASE_URL}${tagName}/syncthing-windows-386-${tagName}.zip`
-        this.syncthingAndroidDlUrl = SYNCTHING_GOOGLEPLAY_URL
-        this.syncthingAndroidDlUrl1 = SYNCTHING_APK_URL
-      })
-      .catch((error) => {
-        throw error
-      })
-      .finally(() => {
-      })
+    // axios.get(SYNCTHING_GITURL)
+    //   .then(({ data }) => {
+    //     this.isLoading = false;
+    //     const tagName = data.tag_name;
+    //     this.getOS(tagName)
+    //     this.syncthingMacDlUrl = `${SYNCTHING_GIT_RELEASE_URL}${tagName}/syncthing-macos-universal-${tagName}.zip`
+    //     this.syncthingWindows64DlUrl = `${SYNCTHING_GIT_RELEASE_URL}${tagName}/syncthing-windows-amd64-${tagName}.zip`
+    //     this.syncthingWindows32DlUrl = `${SYNCTHING_GIT_RELEASE_URL}${tagName}/syncthing-windows-386-${tagName}.zip`
+    //     this.syncthingAndroidDlUrl = SYNCTHING_GOOGLEPLAY_URL
+    //     this.syncthingAndroidDlUrl1 = SYNCTHING_APK_URL
+    //   })
+    //   .catch((error) => {
+    //     throw error
+    //   })
+    //   .finally(() => {
+    //   })
   },
   mounted() {
     this.$smoothReflow({
@@ -338,30 +345,64 @@ export default {
         default:
           this.platform = this.icon = "linux";
           this.osName = "Linux";
+
           break;
       }
     },
-    getOS(tagName) {
-      switch (this.broswerUA.os.name) {
-        case "Mac OS":
-          this.syncthingDownloadUrl = `${SYNCTHING_GIT_RELEASE_URL}${tagName}/syncthing-${this.platform}-${this.getArchitecture()}-${tagName}.zip`
+    getDownloadUrl(os, arch = "") {
+      console.log(os);
+      this.isGettingUrl = true;
+      switch (os) {
+        case "macOS":
+          axios.get(SYNCTHING_MAC_GITURL)
+            .then(({ data }) => {
+              const tagName = data.tag_name;
+              const tagNameDl = tagName.replace('v', "")
+              let url = `${SYNCTHING_MAC_GIT_RELEASE_URL}${tagName}/Syncthing-${tagNameDl}.dmg`
+              this.downloadSyncthing(url)
+            })
           break;
         case "Windows":
-          this.syncthingDownloadUrl = `${SYNCTHING_GIT_RELEASE_URL}${tagName}/syncthing-${this.platform}-${this.getArchitecture()}-${tagName}.zip`
+          axios.get(SYNCTRAY_GITURL)
+            .then(({ data }) => {
+              const tagName = data.tag_name;
+              let url = (arch == "") ? `${SYNCTRAY_GIT_RELEASE_URL}${tagName}/SyncTrayzorSetup-x64.exe` : `${SYNCTRAY_GIT_RELEASE_URL}${tagName}/SyncTrayzorSetup-${arch}.exe`
+              this.downloadSyncthing(url)
+            })
           break;
         case "Android":
-          this.syncthingAndroidDlUrl = SYNCTHING_GOOGLEPLAY_URL
-          this.syncthingAndroidDlUrl1 = SYNCTHING_APK_URL
-          break;
-        case "iOS":
-          this.syncthingDownloadUrl = ``
-          break;
-        default:
-          this.syncthingDownloadUrl = `${SYNCTHING_GIT_RELEASE_URL}${tagName}/syncthing-${this.platform}-${this.getArchitecture()}-${tagName}.tar.gz`
+          if (arch == "google") {
+            this.downloadSyncthing(SYNCTHING_GOOGLEPLAY_URL);
+          } else if (arch == "apk") {
+            this.downloadSyncthing(SYNCTHING_APK_URL);
+          } else {
+            this.downloadSyncthing(SYNCTHING_GOOGLEPLAY_URL);
+          }
           break;
       }
     },
+    // getOS(tagName) {
+    //   switch (this.broswerUA.os.name) {
+    //     case "Mac OS":
+    //       this.syncthingDownloadUrl = `${SYNCTHING_GIT_RELEASE_URL}${tagName}/syncthing-${this.platform}-${this.getArchitecture()}-${tagName}.zip`
+    //       break;
+    //     case "Windows":
+    //       this.syncthingDownloadUrl = `${SYNCTHING_GIT_RELEASE_URL}${tagName}/syncthing-${this.platform}-${this.getArchitecture()}-${tagName}.zip`
+    //       break;
+    //     case "Android":
+    //       this.syncthingAndroidDlUrl = SYNCTHING_GOOGLEPLAY_URL
+    //       this.syncthingAndroidDlUrl1 = SYNCTHING_APK_URL
+    //       break;
+    //     case "iOS":
+    //       this.syncthingDownloadUrl = ``
+    //       break;
+    //     default:
+    //       this.syncthingDownloadUrl = `${SYNCTHING_GIT_RELEASE_URL}${tagName}/syncthing-${this.platform}-${this.getArchitecture()}-${tagName}.tar.gz`
+    //       break;
+    //   }
+    // },
     getArchitecture() {
+
       let arch = ""
       if (this.broswerUA.cpu.architecture == undefined) {
         arch = "universal"
@@ -371,10 +412,13 @@ export default {
       return arch
     },
     downloadSyncthing(url, isSelf = true) {
+
       let target = (isSelf) ? "_self" : "_blank"
+      console.log(url);
       if (url == SYNCTHING_GOOGLEPLAY_URL) {
         target = "_blank"
       }
+      this.isGettingUrl = false;
       window.open(url, target);
     },
     showMorePlatform() {
@@ -390,7 +434,6 @@ export default {
         }
       })
     },
-
     submitNewDevice() {
       this.isSubmiting = true
       this.syncXhr.get(`/rest/config`).then(res => {
