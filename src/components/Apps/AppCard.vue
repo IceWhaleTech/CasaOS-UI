@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-09 12:54:09
+ * @LastEditTime: 2021-11-30 11:01:22
  * @Description: App Card item
  * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
 -->
@@ -11,7 +11,7 @@
   <div class="wuji-card is-flex is-align-items-center is-justify-content-center p-55 app-card" @mouseover="hover = true" @mouseleave="hover = false">
     <!-- Action Button Start -->
     <div class="action-btn">
-      <b-dropdown aria-role="list" position="is-bottom-left" class="ii" ref="dro" animation="slide-fade" @active-change="setDropState" :mobile-modal="false">
+      <b-dropdown aria-role="list" :triggers="['contextmenu','click']" position="is-bottom-left" class="ii" ref="dro" animation="slide-fade" @active-change="setDropState" :mobile-modal="false">
         <template #trigger>
           <p role="button">
             <b-icon icon="dots-vertical">
@@ -22,7 +22,7 @@
         <b-dropdown-item aria-role="menu-item" :focusable="false" custom paddingless>
           <b-button type="is-text" tag="a" @click="openApp(item)" expanded>Open</b-button>
           <b-button type="is-text" @click="configApp" expanded>Setting</b-button>
-          <b-button type="is-text" expanded @click="uninstallConfirm" :loading="isUninstalling">Unistall</b-button>
+          <b-button type="is-text" expanded @click="uninstallConfirm" :loading="isUninstalling">Uninstall</b-button>
           <div class="columns is-gapless bbor is-flex">
             <div class="column is-flex is-justify-content-center is-align-items-center">
               <b-button icon-left="sync" type="is-text" expanded :loading="isRestarting" @click="restartApp"></b-button>
