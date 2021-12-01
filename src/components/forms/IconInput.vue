@@ -23,7 +23,9 @@ export default {
       path: this.vdata
     }
   },
+
   computed: {
+
     initPath() {
       if (this.type == "device") {
         return (this.path == "") ? DEV_PATH : this.path
@@ -37,6 +39,11 @@ export default {
       } else {
         return DATA_PATH
       }
+    }
+  },
+  watch: {
+    vdata(val) {
+      this.path = val
     }
   },
   methods: {

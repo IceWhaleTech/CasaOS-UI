@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-11-10 17:48:25
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-25 15:39:14
+ * @LastEditTime: 2021-11-30 13:15:42
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/SyncBlock.vue
 -->
@@ -196,7 +196,8 @@ export default {
           _this.getEvents(id)
         })
         .catch((error) => {
-          if (error.message.includes('timeout')) {
+          console.log(error.message);
+          if (error.message.includes('timeout') || error.message.includes('Cannot')) {
             _this.getEvents(id)
           }
 
