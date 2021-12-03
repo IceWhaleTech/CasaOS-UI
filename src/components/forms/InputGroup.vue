@@ -97,7 +97,6 @@ export default {
 
     removeItem(index) {
       this.vdata.splice(index, 1)
-      console.log(this.vdata);
       this.filterArray()
     },
     handleInput() {
