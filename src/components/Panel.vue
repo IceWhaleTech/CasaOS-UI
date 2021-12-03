@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-04 14:38:59
+ * @LastEditTime: 2021-12-03 16:13:36
  * @Description: Install Panel of Docker
  * @FilePath: /CasaOS-UI/src/components/Panel.vue
 -->
@@ -29,7 +29,7 @@
         <div v-if="currentSlide < 2" class="is-flex is-align-items-center modal-close-container" :class="{'modal-close-container-line':currentSlide == 1}">
           <button type="button" class="delete" @click="$emit('close')" />
         </div>
-        
+
       </div>
 
     </header>
@@ -396,12 +396,20 @@ export default {
         let slashArr = this.webui.split("/")
         this.initData.port_map = slashArr[0]
         this.initData.index = "/" + slashArr.slice(1).join("/");
-
-        console.log(this.initData.index);
       }
 
       let model = this.initData.network_model.split("-");
       this.initData.network_model = model[0]
+
+      // change uuid to var
+      if (this.state == "update") {
+        this.initData.volumes.forEach((item) => {
+          item.host = item.host.replace(this.id, '$AppID');
+        })
+        this.initData.devices.forEach((item) => {
+          item.host = item.host.replace(this.id, '$AppID');
+        })
+      }
     },
 
     /**
@@ -493,6 +501,9 @@ export default {
           }
         } else {
           this.installText = resData.message
+          if (this.errorType == 3) {
+            clearInterval(this.timer)
+          }
         }
 
         if (resData.message == "installed") {

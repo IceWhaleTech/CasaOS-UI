@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-11 10:58:20
+ * @LastEditTime: 2021-12-03 16:30:48
  * @Description: Main entry of application
  * @FilePath: /CasaOS-UI/src/App.vue
 -->
@@ -74,7 +74,6 @@ export default {
   },
 
   created() {
-    console.log(this.$router.history.current.path);
     this.$api.info.guideCheck().then(res => {
       this.isLoading = false
       if (res.data.success == 200 && res.data.data.need_init_user) {
@@ -86,6 +85,15 @@ export default {
   },
   mounted() {
     //this.$tours['myTour'].start()
+    const host = (process.env.NODE_ENV === "'dev'") ? `${this.$store.state.devIp}` : `${document.domain}`;
+    if (host == '127.0.0.1' || host == "localhost") {
+      this.$buefy.dialog.alert({
+        title: '⚠️ Attention',
+        message: `<div class="nobrk"><p >Using localhost or 127.0.0.1 will cause the application to be inaccessible, please use the real ip to access. </p>
+                        </div>`,
+        type: 'is-dark'
+      })
+    }
   },
   methods: {
 
