@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-03 16:13:36
+ * @LastEditTime: 2021-12-07 18:17:52
  * @Description: Install Panel of Docker
  * @FilePath: /CasaOS-UI/src/components/Panel.vue
 -->
@@ -15,15 +15,15 @@
         <h3 class="title is-4 has-text-weight-normal">{{panelTitle}}</h3>
       </div>
       <div class="is-flex is-align-items-center">
-        <b-tooltip label="Import" position="is-bottom" type="is-dark">
+        <b-tooltip :label="$t('Import')" position="is-bottom" type="is-dark">
           <button type="button" class="icon-button mdi mdi-import" @click="showImportPanel" v-if="showImportButton" />
         </b-tooltip>
 
-        <b-tooltip label="Terminal & Logs" position="is-bottom" type="is-dark">
+        <b-tooltip :label="$t('Terminal & Logs')" position="is-bottom" type="is-dark">
           <button type="button" class="icon-button mdi mdi-console" @click="showTerminalPanel" v-if="showTerminalButton" />
         </b-tooltip>
 
-        <b-tooltip label="Export AppFile" position="is-bottom" type="is-dark">
+        <b-tooltip :label="$t('Export AppFile')" position="is-bottom" type="is-dark">
           <button type="button" class="icon-button mdi mdi-export-variant" @click="exportJSON" v-if="showExportButton" />
         </b-tooltip>
         <div v-if="currentSlide < 2" class="is-flex is-align-items-center modal-close-container" :class="{'modal-close-container-line':currentSlide == 1}">
@@ -48,7 +48,7 @@
             <p class="is-size-65 two-line">{{item.tagline}}</p>
           </div>
           <div>
-            <b-button type="is-primary" size="is-small" rounded @click="qucikInstall(item.id)" :loading="item.id == currentInstallId">Install</b-button>
+            <b-button type="is-primary" size="is-small" rounded @click="qucikInstall(item.id)" :loading="item.id == currentInstallId">{{$t('Install')}}</b-button>
           </div>
         </div>
 
@@ -59,19 +59,19 @@
       <section v-if="currentSlide == 1">
         <ValidationObserver ref="ob1">
           <ValidationProvider rules="required" name="Image" v-slot="{ errors, valid }">
-            <b-field label="Docker Image *" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
-              <b-input v-model="initData.image" placeholder="e.g.,hello-world:latest" :readonly="state == 'update'" @input="changeIcon"></b-input>
+            <b-field :label="$t('Docker Image')+' *'" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="$t(errors)">
+              <b-input v-model="initData.image" :placeholder="$t('e.g.,hello-world:latest')" :readonly="state == 'update'" @input="changeIcon"></b-input>
               <!-- <b-autocomplete :data="data" placeholder="e.g. hello-world:latest" field="image" :loading="isFetching" @typing="getAsyncData" @select="option => selected = option" v-model="initData.image" :readonly="state == 'update'"></b-autocomplete> -->
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required" name="Name" v-slot="{ errors, valid }">
-            <b-field label="App name *" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
-              <b-input value="" v-model="initData.label" placeholder="Your custom App Name"></b-input>
+            <b-field :label="$t('App name')+' *'" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
+              <b-input value="" v-model="initData.label" :placeholder="$t('Your custom App Name')"></b-input>
             </b-field>
           </ValidationProvider>
 
-          <b-field label="Icon URL">
-            <b-input value="" v-model="initData.icon" placeholder="Your custom icon URL"></b-input>
+          <b-field :label="$t('Icon URL')">
+            <b-input value="" v-model="initData.icon" :placeholder="$t('Your custom icon URL')"></b-input>
           </b-field>
 
           <b-field label="Web UI">
@@ -81,7 +81,7 @@
             <b-input v-model="webui" placeholder="port[/path/to/index.html]" expanded></b-input>
           </b-field>
 
-          <b-field label="Network">
+          <b-field :label="$t('Network')">
             <b-select v-model="initData.network_model" placeholder="Select" expanded>
               <optgroup v-for="net in networks" :key="net.driver" :label="net.driver">
                 <option v-for="(option,index) in net.networks" :value="option.name" :key="option.name+index">
@@ -92,29 +92,29 @@
           </b-field>
 
           <ports v-model="initData.ports" :showHostPost="showHostPort" v-if="showPorts"></ports>
-          <input-group v-model="initData.volumes" type="volume" label="Volumes" message="No volumes now, click “+” to add one."></input-group>
-          <env-input-group v-model="initData.envs" label="Environment Variables" message="No environment variables now, click “+” to add one."></env-input-group>
-          <input-group v-model="initData.devices" type="device" label="Devices" message="No devices now, click “+” to add one."></input-group>
-          <b-field label="Memory Limit">
+          <input-group v-model="initData.volumes" type="volume" :label="$t('Volumes')" :message="$t('No volumes now, click “+” to add one.')"></input-group>
+          <env-input-group v-model="initData.envs" :label="$t('Environment Variables')" :message="$t('No environment variables now, click “+” to add one.')"></env-input-group>
+          <input-group v-model="initData.devices" type="device" :label="$t('Devices')" :message="$t('No devices now, click “+” to add one.')"></input-group>
+          <b-field :label="$t('Memory Limit')">
             <vue-slider :min="256" :max="totalMemory" v-model="initData.memory"></vue-slider>
           </b-field>
 
-          <b-field label="CPU Shares">
-            <b-select v-model="initData.cpu_shares" placeholder="Select" expanded>
-              <option value="10">Low</option>
-              <option value="50">Medium</option>
-              <option value="90">High</option>
+          <b-field :label="$t('CPU Shares')">
+            <b-select v-model="initData.cpu_shares" :placeholder="$t('Select')" expanded>
+              <option value="10">{{$t('Low')}}</option>
+              <option value="50">{{$t('Medium')}}</option>
+              <option value="90">{{$t('High')}}</option>
             </b-select>
           </b-field>
 
-          <b-field label="Restart Policy">
-            <b-select v-model="initData.restart" placeholder="Select" expanded>
+          <b-field :label="$t('Restart Policy')">
+            <b-select v-model="initData.restart" :placeholder="$t('Select')" expanded>
               <option value="on-failure">on-failure</option>
               <option value="always">always</option>
               <option value="unless-stopped">unless-stopped</option>
             </b-select>
           </b-field>
-          <b-field label="App Description">
+          <b-field :label="$t('App Description')">
             <b-input v-model="initData.description"></b-input>
           </b-field>
 
@@ -147,11 +147,11 @@
         </div>
         <div>
           <!-- <b-button v-if="currentSlide < 2" label="Cancel" @click="$emit('close')"  rounded /> -->
-          <b-button v-if="currentSlide == 0" label="Custom Install" @click="currentSlide = 1" type="is-primary" rounded />
-          <b-button v-if="currentSlide == 2 && errorType == 3 " label="Back" @click="prevStep" rounded />
-          <b-button v-if="currentSlide == 1 && state == 'install'" label="Install" type="is-primary" @click="installApp()" rounded />
-          <b-button v-if="currentSlide == 1 && state == 'update'" label="Save" type="is-primary" @click="updateApp()" rounded />
-          <b-button v-if="currentSlide == 2 && (errorType == 1 || errorType == 4)" :label="cancelButtonText" type="is-primary" @click="$emit('close')" rounded />
+          <b-button v-if="currentSlide == 0" :label="$t('Custom Install')" @click="currentSlide = 1" type="is-primary" rounded />
+          <b-button v-if="currentSlide == 2 && errorType == 3 " :label="$t('Back')" @click="prevStep" rounded />
+          <b-button v-if="currentSlide == 1 && state == 'install'" :label="$t('Install')" type="is-primary" @click="installApp()" rounded />
+          <b-button v-if="currentSlide == 1 && state == 'update'" :label="$t('Save')" type="is-primary" @click="updateApp()" rounded />
+          <b-button v-if="currentSlide == 2 && (errorType == 1 || errorType == 4)" :label="$t(cancelButtonText)" type="is-primary" @click="$emit('close')" rounded />
         </div>
       </template>
 
@@ -316,11 +316,11 @@ export default {
     },
     panelTitle() {
       if (this.currentSlide == 0) {
-        return "Featured Apps";
+        return this.$t("Featured Apps");
       } else if (this.currentSlide == 1) {
-        return (this.initDatas != undefined) ? this.initData.label + " Setting" : "Install a new App manually"
+        return (this.initDatas != undefined) ? this.initData.label + " " + this.$t("Setting") : this.$t("Install a new App manually")
       } else {
-        return "Installing " + this.initData.image
+        return this.$t("Installing") + " " + this.initData.image
       }
     }
 
@@ -560,17 +560,17 @@ export default {
             this.webui = this.initData.port_map + this.initData.index
             this.changeIcon(this.initData.image)
             this.$buefy.dialog.alert({
-              title: '⚠️ Attention',
-              message: `<div class="nobrk"><h4 class="title is-5">AutoFill only helps you to complete most of the configuration. </h4>
-                        <p class="mb-3">Some configuration information such as:</p>
-                        <ul>
-                        <li>1. the port and path of the Web UI</li>
-                        <li>2. the mount location of the volume or file</li>
-                        <li>3. the port mapping of the Host</li>
-                        <li>4. optional configuration items</li>
-                        </ul>
-                        <p class="mt-3">These include but are not limited to these cases and <b>still need to be confirmed or modified by you.</b></p>
-                        <p class="mt-3">Feel free to suggest improvements to this feature in Discord Server!</p></div>`,
+              title: '⚠️ ' + this.$t('Attention'),
+              message: '<div class="nobrk"><h4 class="title is-5">' + this.$t('AutoFill only helps you to complete most of the configuration.') + '</h4>' +
+                '<p class="mb-3">' + this.$t('Some configuration information such as:') + '</p>' +
+                '<ul>' +
+                '<li>1. ' + this.$t('the port and path of the Web UI') + '</li>' +
+                '<li>2. ' + this.$t('the mount location of the volume or file') + '</li>' +
+                '<li>3. ' + this.$t('the port mapping of the Host') + '</li>' +
+                '<li>4. ' + this.$t('optional configuration items') + '</li>' +
+                '</ul>' +
+                '<p class="mt-3">' + this.$t('These include but are not limited to these cases and <b>still need to be confirmed or modified by you.</b>') + '</p>' +
+                '<p class="mt-3">' + this.$t('Feel free to suggest improvements to this feature in Discord Server!') + '</p></div>',
               type: 'is-dark'
             })
           }

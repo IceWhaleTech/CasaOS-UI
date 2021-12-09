@@ -2,18 +2,18 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-04 14:39:37
+ * @LastEditTime: 2021-12-08 15:05:23
  * @Description: App module
  * @FilePath: /CasaOS-UI/src/components/Apps.vue
 -->
 
 <template>
   <div class="home-section has-text-left mt-6">
-    <!-- Title Bar Start --> 
+    <!-- Title Bar Start -->
     <div class="title-bar is-flex is-align-items-center">
-      <h1 class="title is-4  has-text-white is-flex-shrink-1">Apps</h1>
+      <h1 class="title is-4  has-text-white is-flex-shrink-1">{{$t('Apps')}}</h1>
       <div class="buttons ">
-        <b-button id="v-step-0" icon-left="plus" type="is-dark" size="is-small" rounded @click="showInstall">App</b-button>
+        <b-button id="v-step-0" icon-left="plus" type="is-dark" size="is-small" rounded @click="showInstall">{{$t('App')}}</b-button>
       </div>
     </div>
     <!-- Title Bar End -->
@@ -21,6 +21,22 @@
     <!-- App List Start -->
     <div class="columns is-variable is-2 is-multiline app-list ">
       <template v-if="!isLoading">
+        <!-- If None Apps Start -->
+        <div class="column is-narrow is-3" v-if="appList.length == 0">
+          <div class="wuji-card is-flex is-align-items-center is-justify-content-center p-55 app-card" >
+            <!-- Card Content Start -->
+            <div class="has-text-centered is-flex is-justify-content-center is-flex-direction-column p-55  img-c">
+              <a class="is-flex is-justify-content-center" @click="showInstall">
+                <b-image :src="require('@/assets/img/add_button.svg')"  class="is-72x72" ></b-image>
+              </a>
+
+            </div>
+            <!-- Card Content End -->
+          </div>
+        </div>
+
+        <!-- If None Apps Start -->
+
         <div class="column is-narrow is-3" v-for="(item,index) in appList" :key="'app-'+index+item.icon+item.port">
           <app-card :item="item" @updateState="getList" @configApp="showConfigPanel"></app-card>
         </div>
@@ -61,7 +77,6 @@ export default {
           this.appList = res.data.data;
           this.isLoading = false;
         }
-
       })
     },
 
@@ -100,7 +115,7 @@ export default {
      * @description: Show Settings Panel Programmatic
      * @return {*} void
      */
-    showConfigPanel(id,status) {
+    showConfigPanel(id, status) {
       this.$api.app.getContainerSettingdata(id).then(ret => {
         this.$api.app.appConfig().then(res => {
           if (res.data.success == 200) {
@@ -121,7 +136,7 @@ export default {
               props: {
                 id: id,
                 state: "update",
-                runningStatus:status,
+                runningStatus: status,
                 configData: res.data.data,
                 initDatas: ret.data.data
               }

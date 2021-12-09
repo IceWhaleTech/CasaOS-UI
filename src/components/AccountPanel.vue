@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-25 18:19:17
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-03 18:29:26
+ * @LastEditTime: 2021-12-08 13:48:57
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/AccountPanel.vue
 -->
@@ -14,7 +14,7 @@
         <div class="flex1">
           <h3 class="title is-4 has-text-weight-normal">{{title}}</h3>
         </div>
-        <div ><button type="button" class="delete" @click="$emit('close')" /></div>
+        <div><button type="button" class="delete" @click="$emit('close')" /></div>
       </header>
       <!-- Modal-Card Header End -->
       <!-- Modal-Card Body Start -->
@@ -24,18 +24,18 @@
             <b-image :src="require('@/assets/img/user.svg')" class="is-128x128" rounded></b-image>
           </div>
           <div class="ml-5">
-            <h2 class="title is-4">Name</h2>
+            <h2 class="title is-4">{{$t('Name')}}</h2>
             <h2 class="title is-6">{{userInfo.user_name}}</h2>
-            <h2 class="title is-6 has-text-weight-normal"><a @click="goto(2)">Change name</a></h2>
+            <h2 class="title is-6 has-text-weight-normal"><a @click="goto(2)">{{$t('Change name')}}</a></h2>
 
-            <h2 class="title is-4 mt-6">Password</h2>
-            <h2 class="title is-6 has-text-weight-normal"><a @click="goto(3)">Change Password</a></h2>
+            <h2 class="title is-4 mt-6">{{$t('Password')}}</h2>
+            <h2 class="title is-6 has-text-weight-normal"><a @click="goto(3)">{{$t('Change Password')}}</a></h2>
           </div>
         </template>
 
         <template v-if="state == 2">
           <ValidationProvider rules="required" name="User" v-slot="{ errors, valid }">
-            <b-field class="mb-5 mt-5 has-text-light" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
+            <b-field class="mb-5 mt-5 has-text-light" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="$t(errors)">
               <b-input type="text" v-model="username" v-on:keyup.enter.native="handleSubmit(saveUser)"></b-input>
             </b-field>
           </ValidationProvider>
@@ -45,18 +45,18 @@
             {{message}}
           </b-notification>
           <ValidationProvider rules="required|min:5" vid="oriPassword" name="oriPassword" v-slot="{ errors, valid }">
-            <b-field class="mb-5 mt-5 has-text-light" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
-              <b-input type="password" placeholder="Original password" v-model="oriPassword" password-reveal></b-input>
+            <b-field class="mb-5 mt-5 has-text-light" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="$t(errors)">
+              <b-input type="password" :placeholder="$t('Original password')" v-model="oriPassword" password-reveal></b-input>
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required|min:5" vid="password" name="Password" v-slot="{ errors, valid }">
-            <b-field class="mb-5 mt-5 has-text-light" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
-              <b-input type="password" placeholder="New password" v-model="password" password-reveal></b-input>
+            <b-field class="mb-5 mt-5 has-text-light" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="$t(errors)">
+              <b-input type="password" :placeholder="$t('New password')" v-model="password" password-reveal></b-input>
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required|confirmed:password" name="Password Confirmation" v-slot="{ errors, valid }">
-            <b-field class="mt-4 mb-5" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
-              <b-input type="password" placeholder="Confirm the new password again" v-model="confirmation" password-reveal v-on:keyup.enter.native="savePassword(savePassword)"></b-input>
+            <b-field class="mt-4 mb-5" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="$t(errors)">
+              <b-input type="password" :placeholder="$t('Confirm the new password again')" v-model="confirmation" password-reveal v-on:keyup.enter.native="savePassword(savePassword)"></b-input>
             </b-field>
           </ValidationProvider>
         </template>
@@ -66,9 +66,9 @@
       <footer class="modal-card-foot is-flex is-align-items-center">
         <div class="flex1"></div>
         <div>
-          <b-button v-if="state >= 2" label="Back"  @click="goto(1)" rounded />
-          <b-button v-if="state == 2" label="Submit" type="is-primary" rounded expaned @click="handleSubmit(saveUser)" />
-          <b-button v-if="state == 3" label="Submit" type="is-primary" rounded expaned @click="handleSubmit(savePassword)" />
+          <b-button v-if="state >= 2" :label="$t('Back')" @click="goto(1)" rounded />
+          <b-button v-if="state == 2" :label="$t('Submit')" type="is-primary" rounded expaned @click="handleSubmit(saveUser)" />
+          <b-button v-if="state == 3" :label="$t('Submit')" type="is-primary" rounded expaned @click="handleSubmit(savePassword)" />
         </div>
       </footer>
       <!-- Modal-Card Footer End -->
@@ -106,11 +106,11 @@ export default {
           val = "";
           break;
         case 2:
-          val = "Change name";
+          val = this.$t("Change name");
           break;
-          
+
         case 3:
-          val = "Change Password";
+          val = this.$t("Change Password");
           break;
 
         default:
@@ -133,7 +133,6 @@ export default {
     updateUserInfo() {
       this.$api.user.getUserInfo().then((res) => {
         if (res.data.success == 200) {
-          console.log(res.data.data);
           this.$store.commit('changeUserInfo', res.data.data);
           this.goto(1);
         }

@@ -2,7 +2,7 @@
   <div class="mb-5">
     <div class="field is-flex is-align-items-center mb-2">
       <label class="label mb-0 flex1">{{label}}</label>
-      <b-button icon-left="plus" size="is-small" rounded @click="addItem">Add</b-button>
+      <b-button icon-left="plus" size="is-small" rounded @click="addItem">{{$t('Add')}}</b-button>
     </div>
     <div class="is-flex is-align-items-center mb-5 info" v-if="vdata.length == 0">
       <b-icon icon="information" size="is-small" class="mr-2 "></b-icon>
@@ -15,13 +15,13 @@
       <b-icon icon="close" size="is-small" class="is-clickable" @click.native="removeItem(index)"></b-icon>
       <template v-if="index < 1">
         <b-field grouped>
-          <b-field :label="name2" expanded>
+          <b-field :label="$t(name2)" expanded>
             <!-- <b-input :placeholder="name2" v-model="item.host" expanded @input="handleInput" icon-right="image-filter-center-focus-strong" icon-right-clickable @icon-right-click="selectFile"></b-input> -->
-            <icon-input :placeholder="name2" :type="type" v-model="item.host" expanded @input="handleInput"></icon-input>
+            <icon-input :placeholder="$t(name2)" :type="type" v-model="item.host" expanded @input="handleInput"></icon-input>
 
           </b-field>
-          <b-field :label="name1" expanded>
-            <b-input :placeholder="name1" v-model="item.container" expanded @input="handleInput"></b-input>
+          <b-field :label="$t(name1)" expanded>
+            <b-input :placeholder="$t(name1)" v-model="item.container" expanded @input="handleInput"></b-input>
           </b-field>
 
         </b-field>
@@ -30,10 +30,10 @@
         <b-field grouped>
           <b-field expanded>
             <!-- <b-input :placeholder="name2" v-model="item.host" expanded @input="handleInput" icon-right="image-filter-center-focus-strong" icon-right-clickable @icon-right-click="selectFile"></b-input> -->
-            <icon-input :placeholder="name2" :type="type" v-model="item.host" expanded @input="handleInput"></icon-input>
+            <icon-input :placeholder="$t(name2)" :type="type" v-model="item.host" expanded @input="handleInput"></icon-input>
           </b-field>
           <b-field expanded>
-            <b-input :placeholder="name1" v-model="item.container" expanded @input="handleInput"></b-input>
+            <b-input :placeholder="$t(name1)" v-model="item.container" expanded @input="handleInput"></b-input>
           </b-field>
 
         </b-field>

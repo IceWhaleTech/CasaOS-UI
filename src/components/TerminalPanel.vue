@@ -7,10 +7,10 @@
       <div class="close-container"><button type="button" class="delete" @click="$emit('close')" /></div>
       <div class="flex1">
         <b-tabs type="is-toggle" :animated="false" @input="onInput">
-          <b-tab-item label="Terminal" value="terminal">
+          <b-tab-item :label="$t('Terminal')" value="terminal">
             <terminal-card ref="terminal" :wsUrl="wsUrl"></terminal-card>
           </b-tab-item>
-          <b-tab-item label="Logs" value="logs">
+          <b-tab-item :label="$t('Logs')" value="logs">
             <logs-card ref="logs" :data="logData"></logs-card>
           </b-tab-item>
         </b-tabs>
@@ -37,10 +37,10 @@ export default {
     return {
       isLoading: false,
       wsUrl: (process.env.NODE_ENV === "'dev'") ? `ws://${this.$store.state.devIp}:8089/v1/sys/wsssh?token=${this.$store.state.token}` : `ws://${document.location.host}/v1/sys/wsssh?token=${this.$store.state.token}`,
-      logData:""
+      logData: ""
     }
   },
-  mounted () {
+  mounted() {
     this.getLogs();
   },
   methods: {

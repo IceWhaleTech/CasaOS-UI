@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-09 17:28:50
+ * @LastEditTime: 2021-12-08 13:54:16
  * @Description: Top bar 
  * @FilePath: /CasaOS-UI/src/components/TopBar.vue
 -->
@@ -22,9 +22,9 @@
       <!-- SideBar Button Start -->
 
       <!-- Account Dropmenu Start -->
-      <b-dropdown aria-role="list" class="navbar-item " animation="slide-fade" @active-change="getUserInfo" >
+      <b-dropdown aria-role="list" class="navbar-item " animation="slide-fade" @active-change="getUserInfo">
         <template #trigger>
-          <b-tooltip label="Account" position="is-right" type="is-dark">
+          <b-tooltip :label="$t('Account')" position="is-right" type="is-dark">
             <p role="button">
               <b-icon icon="account-circle"></b-icon>
             </p>
@@ -32,7 +32,7 @@
         </template>
 
         <b-dropdown-item aria-role="menu-item" :focusable="false" custom>
-          <h2 class="title is-4">Account</h2>
+          <h2 class="title is-4">{{$t('Account')}}</h2>
 
           <div class="is-flex is-align-items-center item">
             <div class="is-flex is-align-items-center flex1">
@@ -50,7 +50,7 @@
             <div class="is-flex is-align-items-center flex1">
             </div>
             <div>
-              <b-button type="is-dark" size="is-small" class="ml-2" rounded @click="logout">Logout</b-button>
+              <b-button type="is-dark" size="is-small" class="ml-2" rounded @click="logout">{{$t('Logout')}}</b-button>
             </div>
           </div>
 
@@ -59,9 +59,9 @@
       <!-- Account Dropmenu End -->
 
       <!-- Settings Dropmenu Start -->
-      <b-dropdown aria-role="list" class="navbar-item" animation="slide-fade" @active-change="onOpen" >
+      <b-dropdown aria-role="list" class="navbar-item" animation="slide-fade" @active-change="onOpen">
         <template #trigger>
-          <b-tooltip label="Settings" position="is-right" type="is-dark">
+          <b-tooltip :label="$t('Settings')" position="is-right" type="is-dark">
             <p role="button">
               <b-icon icon="tune"></b-icon>
             </p>
@@ -69,11 +69,53 @@
         </template>
 
         <b-dropdown-item aria-role="menu-item" :focusable="false" custom>
-          <h2 class="title is-4">Settings</h2>
+          <h2 class="title is-4">{{$t('Dashboard Setting')}}</h2>
+          <div class="is-flex is-align-items-center mb-2">
+            <div class="is-flex is-align-items-center flex1">
+              <b-icon icon="magnify" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{$t('Search Engine')}}</b>
+            </div>
+            <div>
+              <b-field>
+                <b-select size="is-small" class="set-select" v-model="barData.search_engine" @input="saveData">
+                  <option value="https://duckduckgo.com/?q=">DuckDuckGo</option>
+                  <option value="https://www.google.com/search?q=">Google</option>
+                  <option value="https://www.bing.com/search?q=">Bing</option>
+                </b-select>
+              </b-field>
+            </div>
+          </div>
+
+          <div class="is-flex is-align-items-center mb-2">
+            <div class="is-flex is-align-items-center flex1">
+              <b-icon icon="translate" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{ $t('Language') }}</b>
+            </div>
+            <div>
+              <b-field>
+                <b-select size="is-small" class="set-select" v-model="barData.lang" @input="saveData">
+                  <option value="en">English</option>
+                  <option value="zh">简体中文</option>
+                </b-select>
+
+              </b-field>
+            </div>
+          </div>
+
+          <div class="is-flex is-align-items-center mb-1">
+            <div class="is-flex is-align-items-center flex1">
+              <b-icon icon="view-dashboard-outline" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{$t('WebUI port')}}</b>
+            </div>
+            <div>
+              {{port}}
+            </div>
+          </div>
+          <div class="is-flex is-align-items-center is-justify-content-end update-container  mb-2">
+            <div class="flex1"></div>
+            <b-button type="is-dark" size="is-small" rounded @click="showPortPanel">{{$t('Edit')}}</b-button>
+          </div>
 
           <div class="is-flex is-align-items-center item">
             <div class="is-flex is-align-items-center flex1">
-              <b-icon icon="sync" class="mr-1"></b-icon> <b>Update</b>
+              <b-icon icon="sync" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{$t('Update')}}</b>
             </div>
             <div>
               v{{updateInfo.current_version}}
@@ -85,13 +127,13 @@
             </b-field> -->
           </div>
 
-          <div class="is-flex is-align-items-center pl-5" v-if="!updateInfo.is_need">
-            {{latestText}}
-            <b-icon type="is-success" icon="check" class="ml-1"></b-icon>
+          <div class="is-flex is-align-items-center pl-55" v-if="!updateInfo.is_need">
+            {{$t(latestText)}}
+            <b-icon type="is-success" icon="check" class="ml-1" custom-size="mdi-18px"></b-icon>
           </div>
           <div class="is-flex is-align-items-center is-justify-content-end update-container pl-5" v-if="updateInfo.is_need">
-            <div class="flex1">{{updateText}}</div>
-            <b-button type="is-dark" size="is-small" class="ml-2" :loading="isUpdating" rounded @click="updateSystem">Update</b-button>
+            <div class="flex1">{{$t(updateText)}}</div>
+            <b-button type="is-dark" size="is-small" class="ml-2" :loading="isUpdating" rounded @click="updateSystem">{{$t('Update')}}</b-button>
           </div>
 
         </b-dropdown-item>
@@ -100,7 +142,7 @@
 
       <!-- Terminal  Start -->
       <div class="is-flex is-align-items-center ml-3">
-        <b-tooltip label="Terminal & Logs" position="is-right" type="is-dark">
+        <b-tooltip :label="$t('Terminal & Logs')" position="is-right" type="is-dark">
           <p role="button" @click="showTerminalPanel">
             <b-icon icon="console"></b-icon>
           </p>
@@ -121,6 +163,7 @@
 <script>
 import AccountPanel from './AccountPanel.vue'
 import TerminalPanel from './TerminalPanel.vue'
+import PortPanel from './PortPanel.vue'
 export default {
   name: "top-bar",
   data() {
@@ -129,11 +172,12 @@ export default {
       barData: {
         auto_update: false,
         background: "",
-        background_type: "d",
-        search_engine: "google",
+        background_type: "",
+        search_engine: "https://duckduckgo.com/?q=",
         search_switch: false,
         shortcuts_switch: false,
-        widgets_switch: false
+        widgets_switch: false,
+        lang: this.getInitLang(),
       },
       updateInfo: {
         current_version: '0',
@@ -143,18 +187,20 @@ export default {
       isUpdating: false,
       latestText: "Currently the latest version",
       updateText: "A new version is available!",
-      userInfo: this.$store.state.userinfo
+      userInfo: this.$store.state.userinfo,
+      port: ""
     }
   },
   created() {
     this.getConfig();
+    this.getPort();
 
   },
   computed: {
     sidebarIcon() {
       return this.$store.state.sidebarOpen ? "close" : "menu"
     },
-    sidebarIconLabel(){
+    sidebarIconLabel() {
       return this.$store.state.sidebarOpen ? "Hide Sidebar" : "Show SideBar"
     }
   },
@@ -164,14 +210,43 @@ export default {
   },
 
   methods: {
+    // getInitLang
+    getInitLang() {
+      let lang = localStorage.getItem('lang') ? localStorage.getItem('lang') : this.getLangFromBrowser()
+      return lang
+    },
+    // Get Default Lang from browser
+    getLangFromBrowser() {
+      var lang = navigator.language || navigator.userLanguage;
+      lang = lang.substr(0, 2);
+      return lang
+    },
+
+    setLang(lang) {
+      localStorage.setItem('lang', lang)
+      this.$i18n.locale = lang;
+    },
     /**
      * @description: Get CasaOs Configs
      * @return {*} void
      */
     getConfig() {
       this.$api.info.systemConfig().then(res => {
+
+        if (res.data == undefined || res.data == '') {
+          this.barData.lang = this.getLangFromBrowser()
+          this.$api.info.saveSystemConfig(this.barData).then(res => {
+            if (res.data.success == 200) {
+              this.getConfig()
+            }
+          });
+        }
         if (res.data.success == 200) {
           this.barData = res.data.data
+          this.setLang(res.data.data.lang)
+          this.updateStore()
+
+          this.$emit('changeSiteLoading')
         }
       })
     },
@@ -182,6 +257,51 @@ export default {
      */
     saveData() {
       this.$api.info.saveSystemConfig(this.barData);
+      this.setLang(this.barData.lang);
+      this.updateStore();
+    },
+    /**
+     * @description: Update search Engine in store
+     * @return {*} void
+     */
+    updateStore() {
+      this.$store.commit('changeSearchEngine', this.barData.search_engine);
+    },
+
+    /**
+     * @description: Get CasaOs WebUI port
+     * @return {*} void
+     */
+    getPort() {
+      this.$api.info.getSystemPort().then(res => {
+        if (res.data.success == 200) {
+          this.port = res.data.data
+        }
+      })
+
+    },
+
+    /**
+     * @description: Show Port panel
+     * @return {*} void
+     */
+    showPortPanel() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: PortPanel,
+        hasModalCard: true,
+        customClass: 'account-modal',
+        trapFocus: true,
+        canCancel: ['escape'],
+        scroll: "keep",
+        animation: "zoom-out",
+        events: {
+
+        },
+        props: {
+          initPort: this.port
+        }
+      })
     },
 
     /**
@@ -194,6 +314,7 @@ export default {
         this.checkVersion()
       }
     },
+
 
     checkVersion() {
       this.$api.info.checkVersion().then(res => {
@@ -297,7 +418,10 @@ export default {
      */
     showSideBar() {
       this.$store.commit('changeSideBarState')
-    }
+    },
+
+
+
   },
 
 }

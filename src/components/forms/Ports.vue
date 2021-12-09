@@ -1,13 +1,13 @@
 <template>
   <div class="mb-5">
     <div class="field is-flex is-align-items-center mb-2">
-      <label class="label mb-0 flex1">Ports</label>
-      <b-button icon-left="plus" size="is-small" rounded @click="addItem">Add</b-button>
+      <label class="label mb-0 flex1">{{$t('Ports')}}</label>
+      <b-button icon-left="plus" size="is-small" rounded @click="addItem">{{$t('Add')}}</b-button>
     </div>
     <div class="is-flex is-align-items-center mb-5 info" v-if="vdata.length == 0">
       <b-icon icon="information" size="is-small" class="mr-2 "></b-icon>
       <span>
-        No ports now, click “+” to add one.
+        {{$t('No ports now, click “+” to add one.')}}
       </span>
 
     </div>
@@ -15,15 +15,15 @@
       <b-icon icon="close" size="is-small" class="is-clickable" @click.native="removeItem(index)"></b-icon>
       <template v-if="index < 1">
         <b-field grouped>
-          <b-field label="Host" v-if="showHostPost" expanded>
-            <b-input placeholder="Host" type="number" v-model="item.host" expanded @input="handleInput" ></b-input>
+          <b-field :label="$t('Host')" v-if="showHostPost" expanded>
+            <b-input :placeholder="$t('Host')" type="number" v-model="item.host" expanded @input="handleInput" ></b-input>
           </b-field>
-          <b-field label="Container" expanded>
-            <b-input placeholder="Container" type="number" v-model="item.container" expanded @input="handleInput"></b-input>
+          <b-field :label="$t('Container')" expanded>
+            <b-input :placeholder="$t('Container')" type="number" v-model="item.container" expanded @input="handleInput"></b-input>
           </b-field>
 
-          <b-field label="Protocol" expanded>
-            <b-select placeholder="Protocol" v-model="item.protocol" expanded @input="handleInput">
+          <b-field :label="$t('Protocol')" expanded>
+            <b-select :placeholder="$t('Protocol')" v-model="item.protocol" expanded @input="handleInput">
               <option value="tcp">TCP</option>
               <option value="udp">UDP</option>
               <option value="both">TCP + UDP</option>
@@ -33,10 +33,10 @@
       </template>
       <template v-else>
         <b-field grouped>
-          <b-input placeholder="Host" type="number" v-model="item.host" expanded @input="handleInput" v-if="showHostPost"></b-input>
-          <b-input placeholder="Container" type="number" v-model="item.container" expanded @input="handleInput"></b-input>
+          <b-input :placeholder="$t('Host')" type="number" v-model="item.host" expanded @input="handleInput" v-if="showHostPost"></b-input>
+          <b-input :placeholder="$t('Container')" type="number" v-model="item.container" expanded @input="handleInput"></b-input>
 
-          <b-select placeholder="Protocol" v-model="item.protocol" expanded @input="handleInput">
+          <b-select :placeholder="$t('Protocol')" v-model="item.protocol" expanded @input="handleInput">
             <option value="tcp">TCP</option>
             <option value="udp">UDP</option>
             <option value="both">TCP + UDP</option>

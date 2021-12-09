@@ -3,7 +3,7 @@
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
       <div class="flex1">
-        <h3 class="title is-4 has-text-weight-normal">Import</h3>
+        <h3 class="title is-4 has-text-weight-normal">{{ $t('Import') }}</h3>
       </div>
     </header>
     <!-- Modal-Card Header End -->
@@ -15,7 +15,7 @@
             <b-input maxlength="800" type="textarea" class="import-area" v-model="dockerCliCommands"></b-input>
           </b-field>
         </b-tab-item>
-        <b-tab-item label="App File">
+        <b-tab-item :label="$t('AppFile')">
           <b-field :type="{ 'is-danger': parseError}" :message="errors">
             <b-upload v-model="dropFiles" drag-drop expanded accept="application/json" @input="onSelect">
               <section class="section">
@@ -38,8 +38,8 @@
     <footer class="modal-card-foot is-flex is-align-items-center">
       <div class="flex1"></div>
       <div>
-        <b-button label="Cancel" @click="$emit('close')" rounded />
-        <b-button label="Sumbit" type="is-primary" @click="emitSubmit" rounded />
+        <b-button :label="$t('Cancel')" @click="$emit('close')" rounded />
+        <b-button :label="$t('Submit')" type="is-primary" @click="emitSubmit" rounded />
       </div>
     </footer>
     <!-- Modal-Card Footer End -->
@@ -61,7 +61,7 @@ export default {
       parseError: false,
       appFileLoaded: false,
       errors: "",
-      dropText: "Drop your app file here or click to upload",
+      dropText: this.$t('Drop your app file here or click to upload'),
       updateData: this.initData
     }
   },
@@ -88,7 +88,7 @@ export default {
           this.$emit('update', this.updateData)
           this.$emit('close')
         } else {
-          this.errors = "Please fill correct command line"
+          this.errors = this.$t('Please fill correct command line')
           this.parseError = true;
         }
       } else if (this.activeTab == 1) {
@@ -97,7 +97,7 @@ export default {
           this.$emit('update', this.updateData)
           this.$emit('close')
         } else {
-          this.errors = "Please import a valid App file"
+          this.errors = this.$t('Please import a valid App file')
           this.parseError = true;
         }
       }
@@ -261,7 +261,7 @@ export default {
       if (typeof FileReader === "undefined") {
         this.$buefy.toast.open({
           duration: 3000,
-          message: `Your browser does not support file reading.`,
+          message: this.$t('Your browser does not support file reading.'),
           type: 'is-danger'
         })
         return;
@@ -273,7 +273,7 @@ export default {
           if (_this.updateData.version === undefined) {
             _this.$buefy.toast.open({
               duration: 3000,
-              message: `This is not a valid App file.`,
+              message: this.$t('This is not a valid App file.'),
               type: 'is-danger'
             })
             _this.appFileLoaded = false
@@ -282,7 +282,7 @@ export default {
             delete _this.updateData.versison
             _this.updateData.network_model = _this.getNetworkModel(_this.updateData.network_model)
             _this.updateData.memory = _this.deviceMemory
-            _this.dropText = `${val.name} has been selected`
+            _this.dropText = val.name + this.$t('has been selected')
             _this.appFileLoaded = true
             return true
           }
@@ -290,7 +290,7 @@ export default {
         } catch (e) {
           _this.$buefy.toast.open({
             duration: 3000,
-            message: `This is not a valid json file.`,
+            message: this.$t('This is not a valid json file.'),
             type: 'is-danger'
           })
           _this.appFileLoaded = false

@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:30:26
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-09 11:44:37
+ * @LastEditTime: 2021-12-07 14:17:00
  * @Description: 
  * @FilePath: /CasaOS-UI/src/views/Login.vue
 -->
@@ -26,11 +26,11 @@
           </b-field>
         </ValidationProvider> -->
         <ValidationProvider rules="required|min:5" vid="password" name="Password" v-slot="{ errors, valid }">
-          <b-field label="Password" class="mt-5 has-text-light" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
+          <b-field :label="$t('Password')" class="mt-5 has-text-light" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="$t(errors)">
             <b-input type="password" v-model="password" password-reveal v-on:keyup.enter.native="handleSubmit(login)"></b-input>
           </b-field>
         </ValidationProvider>
-        <b-button type="is-primary" class="mt-5" rounded expanded @click="handleSubmit(login)">Login</b-button>
+        <b-button type="is-primary" class="mt-5" rounded expanded @click="handleSubmit(login)">{{$t('Login')}}</b-button>
       </ValidationObserver>
     </div>
   </div>
@@ -86,7 +86,7 @@ export default {
           })
         } else {
           this.notificationShow = true;
-          this.message = "Username or Password error!"
+          this.message = this.$t("Password error!")
         }
       })
 

@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-30 11:01:22
+ * @LastEditTime: 2021-12-07 13:30:59
  * @Description: App Card item
  * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
 -->
@@ -20,9 +20,9 @@
         </template>
 
         <b-dropdown-item aria-role="menu-item" :focusable="false" custom paddingless>
-          <b-button type="is-text" tag="a" @click="openApp(item)" expanded>Open</b-button>
-          <b-button type="is-text" @click="configApp" expanded>Setting</b-button>
-          <b-button type="is-text" expanded @click="uninstallConfirm" :loading="isUninstalling">Uninstall</b-button>
+          <b-button type="is-text" tag="a" @click="openApp(item)" expanded>{{$t('Open')}}</b-button>
+          <b-button type="is-text" @click="configApp" expanded>{{$t('Setting')}}</b-button>
+          <b-button type="is-text" expanded @click="uninstallConfirm" :loading="isUninstalling">{{$t('Uninstall')}}</b-button>
           <div class="columns is-gapless bbor is-flex">
             <div class="column is-flex is-justify-content-center is-align-items-center">
               <b-button icon-left="sync" type="is-text" expanded :loading="isRestarting" @click="restartApp"></b-button>
@@ -128,10 +128,11 @@ export default {
     uninstallConfirm() {
 
       this.$buefy.dialog.confirm({
-        title: 'Attention',
-        message: 'Data cannot be recovered after deletion! <br>Continue on to uninstall this application?',
+        title: this.$t('Attention'),
+        message: this.$t('Data cannot be recovered after deletion! <br>Continue on to uninstall this application?'),
         type: 'is-dark',
-        confirmText: 'Uninstall',
+        confirmText: this.$t('Uninstall'),
+        cancelText: this.$t('Cancel'),
         onConfirm: () => {
           this.isUninstalling = true
           this.uninstallApp()

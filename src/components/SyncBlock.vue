@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-11-10 17:48:25
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-30 13:15:42
+ * @LastEditTime: 2021-12-07 14:12:03
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/SyncBlock.vue
 -->
@@ -11,17 +11,17 @@
     <div class="wuji-card">
       <!-- Init State Start -->
       <template v-if="state == 1">
-        <h6 class="title is-6 mb-2 has-text-white">Sync your data</h6>
+        <h6 class="title is-6 mb-2 has-text-white">{{$t(`Sync your data`)}}</h6>
         <div class="is-flex is-align-items-center">
           <div class="info ">
             <div class="des two-line">
-              Follow the guide to start syncing your files across multiple devices.
+              {{$t(`Follow the guide to start syncing your files across multiple devices.`)}}
             </div>
           </div>
           <b-image :src="require('@/assets/img/sync_icon.png')" class="is-64x64"></b-image>
         </div>
         <div class="buttons">
-          <b-button type="is-primary" size="is-small" rounded @click="openSyncPanel">Go !</b-button>
+          <b-button type="is-primary" size="is-small" rounded @click="openSyncPanel">{{$t(`Go !`)}}</b-button>
         </div>
       </template>
       <!-- Init State End -->
@@ -30,7 +30,7 @@
       <template v-if="state == 2">
         <div class="is-flex is-align-items-center">
           <div class="flex1">
-            <h6 class="title is-6 mb-2 has-text-white">Sync your data</h6>
+            <h6 class="title is-6 mb-2 has-text-white">{{$t(`Sync your data`)}}</h6>
           </div>
           <div class="is-flex is-align-items-center">
             <b-tooltip label="Add New Device" position="is-top" type="is-dark">

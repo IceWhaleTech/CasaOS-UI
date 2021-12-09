@@ -37,7 +37,6 @@ export default {
     }
   },
   mounted() {
-    console.log("ter init");
     this.initSocket();
 
   },

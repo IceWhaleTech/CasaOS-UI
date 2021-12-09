@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-28 14:20:07
+ * @LastEditTime: 2021-12-07 11:12:03
  * @Description: System HardWare Info API
  * @FilePath: /CasaOS-UI/src/service/info.js
  */
@@ -69,7 +69,25 @@ const info = {
     // Get System logs
     systemLogs() {
         return api.get('/sys/error/logs');
+    },
+
+    // Get System Port
+    getSystemPort() {
+        return api.get('/sys/port');
+    },
+    // Save System Port
+    saveSystemPort(data) {
+        return api.put('/sys/port', data);
+    },
+    //Kill System
+    killSystem() {
+        return api.post('/sys/kill');
+    },
+    //Check web ui Port
+    checkUiPort(url) {
+        return api.get(url);
     }
+
 
 }
 export default info;

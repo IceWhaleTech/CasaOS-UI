@@ -2,14 +2,14 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-09-19 09:23:01
+ * @LastEditTime: 2021-12-07 16:38:34
  * @Description: Top Search bar
- * @FilePath: \CasaOS-UI\src\components\SearchBar.vue
+ * @FilePath: /CasaOS-UI/src/components/SearchBar.vue
 -->
 
 <template>
   <b-field position="is-centered " class="search-bar has-text-white">
-    <b-input placeholder="Google Search..." v-model="keyText" icon="magnify" icon-right="magnify" icon-right-clickable @icon-right-click="gotoSearch" @keyup.enter.native="gotoSearch" size="is-large" :class="['ovh',isFocus?'fo':'']" expanded @focus="onFocus" @blur="onBlur">
+    <b-input :placeholder="$t('Search...')" v-model="keyText" icon="magnify" icon-right="magnify" icon-right-clickable @icon-right-click="gotoSearch" @keyup.enter.native="gotoSearch" size="is-large" :class="['ovh',isFocus?'fo':'']" expanded @focus="onFocus" @blur="onBlur">
     </b-input>
   </b-field>
 </template>
@@ -20,7 +20,13 @@ export default {
   data() {
     return {
       isFocus: false,
-      keyText: ""
+      keyText: "",
+      // searchEngine:this.$store.state.searchEngine
+    }
+  },
+  computed: {
+    searchEngine() {
+      return this.$store.state.searchEngine == "" ? "https://duckduckgo.com/?q=" : this.$store.state.searchEngine
     }
   },
   methods: {
@@ -46,7 +52,7 @@ export default {
      * @return {*} void
      */
     gotoSearch() {
-      window.open("https://www.google.com/search?q=" + this.keyText, '_blank')
+      window.open(this.searchEngine + this.keyText, '_blank')
     }
   },
 }
