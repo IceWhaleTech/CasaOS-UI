@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-11-10 18:22:36
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-08 13:49:09
+ * @LastEditTime: 2021-12-09 15:27:54
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/SyncPanel.vue
 -->
@@ -202,7 +202,7 @@
         <div class="step3" v-if="step == 3">
           <div class="mt-6">
             <h3 class="title is-4 has-text-centered has-text-weight-normal">{{$t('There you go!')}}</h3>
-            <h2 class="subtitle is-5 has-text-centered has-text-weight-light">{{$t('Your data has started to sync.<br>It may take some minutes to fulfill synchronization.')}}</h2>
+            <h2 class="subtitle is-5 has-text-centered has-text-weight-light">{{$t('Your data has started to sync.It may take some minutes to fulfill synchronization.')}}</h2>
             <div class="is-flex is-align-items-center is-justify-content-center">
               <lottie-animation class="animation" :animationData="require('@/assets/ani/sync.json')" :autoPlay="true" :loop="true"></lottie-animation>
             </div>

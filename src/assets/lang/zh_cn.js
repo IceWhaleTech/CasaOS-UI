@@ -109,7 +109,12 @@ export default {
     'Choose "Show device ID"': '选择 "显示设备ID"',
     "Copy the Device ID": "复制设备ID",
     "There you go!": "一切就绪",
-    "Your data has started to sync.<br>It may take some minutes to fulfill synchronization.": "你的数据已经开始同步,完成同步可能需要几分钟时间。",
+    "Your data has started to sync.It may take some minutes to fulfill synchronization.": "你的数据已经开始同步,完成同步可能需要几分钟时间。",
+    "Up to Date":"已同步",
+    "Synchronizing":"同步中",
+    "Synchronized":"同步完成",
+    "Total":"总计",
+    "Add New Device":"添加新设备",
 
     // Iot
     "Have an idea? Shoot it on Discord!": "有想法？在 Discord 上告诉我们！",

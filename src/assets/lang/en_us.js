@@ -20,7 +20,7 @@ export default {
     "Low": "Low",
     "Medium": "Medium",
     "High": "High",
-    "Language":"Language",
+    "Language": "Language",
 
     "This field is required": "This field is required",
     "This field must be a valid email": "This field must be a valid email",
@@ -109,7 +109,12 @@ export default {
     'Choose "Show device ID"': 'Choose "Show device ID"',
     "Copy the Device ID": "Copy the Device ID",
     "There you go!": "There you go!",
-    "Your data has started to sync.<br>It may take some minutes to fulfill synchronization.": "Your data has started to sync.<br>It may take some minutes to fulfill synchronization.",
+    "Your data has started to sync.It may take some minutes to fulfill synchronization.": "Your data has started to sync.<br>It may take some minutes to fulfill synchronization.",
+    "Up to Date": "Up to Date",
+    "Synchronizing": "Synchronizing",
+    "Synchronized": "Synchronized",
+    "Total": "Total",
+    "Add New Device": "Add New Device",
 
     // Iot
     "Have an idea? Shoot it on Discord!": "Have an idea? Shoot it on Discord!",
@@ -170,5 +175,5 @@ export default {
     "optional configuration items": "optional configuration items",
     "These include but are not limited to these cases and <b>still need to be confirmed or modified by you.</b>": "These include but are not limited to these cases and <b>still need to be confirmed or modified by you.</b>",
     "Feel free to suggest improvements to this feature in Discord Server!": "Feel free to suggest improvements to this feature in Discord Server!",
-    "Using localhost or 127.0.0.1 will cause the application to be inaccessible, please use the real ip to access.":"Using localhost or 127.0.0.1 will cause the application to be inaccessible, please use the real ip to access."
+    "Using localhost or 127.0.0.1 will cause the application to be inaccessible, please use the real ip to access.": "Using localhost or 127.0.0.1 will cause the application to be inaccessible, please use the real ip to access."
 }

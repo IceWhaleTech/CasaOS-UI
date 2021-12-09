@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-11-10 17:48:25
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-07 14:12:03
+ * @LastEditTime: 2021-12-09 15:37:37
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/SyncBlock.vue
 -->
@@ -33,10 +33,10 @@
             <h6 class="title is-6 mb-2 has-text-white">{{$t(`Sync your data`)}}</h6>
           </div>
           <div class="is-flex is-align-items-center">
-            <b-tooltip label="Add New Device" position="is-top" type="is-dark">
+            <b-tooltip :label="$t('Add New Device')" position="is-top" type="is-dark">
               <button type="button" class="icon-button-new mdi mdi-plus" @click="openSyncPanel" />
             </b-tooltip>
-            <b-tooltip label="Config" position="is-top" type="is-dark">
+            <b-tooltip :label="$t('Config')" position="is-top" type="is-dark">
               <button type="button" class="icon-button-new mdi mdi-cog-outline" @click="gotoAdvancedPanel" />
             </b-tooltip>
           </div>
@@ -46,13 +46,13 @@
           <div class="column is-flex  is-align-items-center">
             <b-image :src="require('@/assets/img/device.png')" class="is-32x32"></b-image>
             <div class="flex1">
-              <p class="is-size-65 ml-2 one-line">Up to Date {{activeDevice}}/{{totalDevice}}</p>
+              <p class="is-size-65 ml-2 one-line">{{ $t('Up to Date') }} {{activeDevice}}/{{totalDevice}}</p>
             </div>
           </div>
           <div class="column is-flex  is-align-items-center">
             <b-image :src="require('@/assets/img/folder1.png')" class="is-32x32"></b-image>
             <div class="flex1">
-              <p class="is-size-65 ml-2 one-line">Up to Date {{activeFolders.length}}/{{folders}}</p>
+              <p class="is-size-65 ml-2 one-line">{{ $t('Up to Date') }} {{activeFolders.length}}/{{folders}}</p>
             </div>
           </div>
         </div>
@@ -60,10 +60,10 @@
         <div class="columns mb-0 mt-1 is-mobile">
           <div class="column pt-0 pb-0 is-flex  is-align-items-center is-size-65">
             <b-icon :icon="syncIcon" class="mr-1" type="is-success" custom-size="mdi-18px" :custom-class="spinner"></b-icon>
-            {{syncState}}
+            {{ $t(syncState) }}
           </div>
           <div class="column pt-0 pb-0 is-flex  is-align-items-center is-size-65 is-justify-content-end ">
-            <b class="one-line" v-if="syncState == 'Synchronized'">Total：{{totalSize | renderSize}}</b>
+            <b class="one-line" v-if="syncState == 'Synchronized'">{{ $t('Total') }}：{{totalSize | renderSize}}</b>
             <p class="one-line is-flex  is-align-items-center" v-if="syncState == 'Synchronizing'">
               <b-icon icon="cloud-upload-outline" class="mr-1" custom-size="mdi-18px"></b-icon>
               {{upSpeed | renderBps}}

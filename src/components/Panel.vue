@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-07 18:17:52
+ * @LastEditTime: 2021-12-09 15:30:00
  * @Description: Install Panel of Docker
  * @FilePath: /CasaOS-UI/src/components/Panel.vue
 -->
@@ -370,7 +370,7 @@ export default {
           this.currentInstallId = 0
           if (respData.tip !== "") {
             this.$buefy.dialog.confirm({
-              title: 'Attention',
+              title: this.$t('Attention'),
               message: respData.tip,
               type: 'is-dark',
               onConfirm: () => {

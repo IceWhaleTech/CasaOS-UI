@@ -18,23 +18,29 @@
       <div class="more-info pt-3 pb-1">
         <b-tabs v-model="activeTab">
           <b-tab-item label="CPU">
-            <div class="is-flex is-size-7 is-align-items-center mb-2" v-for="(item,index) in containerCpuList" :key="index+'-cpu'">
-              <div class="is-flex-grow-1 is-flex is-align-items-center">
-                <b-image :src="item.icon" class="is-16x16 mr-2"></b-image>
-                <span>{{item.title}}</span>
+            <div v-for="(item,index) in containerCpuList" :key="index+'-cpu'">
+              <div class="is-flex is-size-7 is-align-items-center mb-2" v-if="!isNaN(item.usage)">
+                <div class="is-flex-grow-1 is-flex is-align-items-center">
+                  <b-image :src="item.icon" :src-fallback="require('@/assets/img/default.png')" webp-fallback=".jpg" class="is-16x16 mr-2"></b-image>
+                  <span>{{item.title}}</span>
+                </div>
+                <div>{{item.usage}}%</div>
               </div>
-              <div>{{item.usage}}%</div>
             </div>
+
           </b-tab-item>
 
           <b-tab-item label="RAM">
-            <div class="is-flex is-size-7 is-align-items-center mb-2" v-for="(item,index) in containerRamList" :key="index+'-rem'">
-              <div class="is-flex-grow-1 is-flex is-align-items-center">
-                <b-image :src="item.icon" class="is-16x16 mr-2"></b-image>
-                <span>{{item.title}}</span>
+            <div v-for="(item,index) in containerRamList" :key="index+'-rem'">
+              <div class="is-flex is-size-7 is-align-items-center mb-2" v-if="!isNaN(item.usage)">
+                <div class="is-flex-grow-1 is-flex is-align-items-center">
+                  <b-image :src="item.icon" :src-fallback="require('@/assets/img/default.png')" webp-fallback=".jpg" class="is-16x16 mr-2"></b-image>
+                  <span>{{item.title}}</span>
+                </div>
+                <div>{{item.usage | renderSize}}</div>
               </div>
-              <div>{{item.usage | renderSize}}</div>
             </div>
+
           </b-tab-item>
 
         </b-tabs>
@@ -177,11 +183,15 @@ export default {
 
       this.$api.app.getAppUsage().then(res => {
         this.containerCpuList = res.data.data.map(item => {
-          const cpu_delta = item.data.cpu_stats.cpu_usage.total_usage - item.data.precpu_stats.cpu_usage.total_usage
-          const pre_system_cpu_usage = (item.data.precpu_stats.system_cpu_usage == undefined) ? 0 : item.data.precpu_stats.system_cpu_usage
-          const system_cpu_delta = item.data.cpu_stats.system_cpu_usage - pre_system_cpu_usage
-          const number_cpus = item.data.cpu_stats.online_cpus
-          const usage = ((cpu_delta / system_cpu_delta) * number_cpus * 100).toFixed(1)
+          let usage = 0;
+          if (item.pre == null) {
+            usage = 0;
+          } else {
+            const cpu_delta = item.data.cpu_stats.cpu_usage.total_usage - item.pre.cpu_stats.cpu_usage.total_usage
+            const system_cpu_delta = item.data.cpu_stats.system_cpu_usage - item.pre.cpu_stats.system_cpu_usage + 1
+            const number_cpus = item.data.cpu_stats.online_cpus
+            usage = ((cpu_delta / system_cpu_delta) * number_cpus * 100).toFixed(1)
+          }
           return {
             usage: usage,
             icon: item.icon,
@@ -190,15 +200,15 @@ export default {
         })
 
         this.containerRamList = res.data.data.map(item => {
-          let used_memory = item.data.memory_stats.usage - item.data.memory_stats.stats.cache
+          const used_memory = ("stats" in item.data.memory_stats) ? (item.data.memory_stats.usage - item.data.memory_stats.stats.cache) : NaN
           return {
             usage: used_memory,
             icon: item.icon,
             title: item.title
           };
         })
-        this.containerCpuList = orderBy(this.containerCpuList, ['usage', 'title'], ['desc', 'asc'])
-        this.containerRamList = orderBy(this.containerRamList, ['usage', 'title'], ['desc', 'asc'])
+        this.containerCpuList = orderBy(this.containerCpuList, ['usage'], ['desc'])
+        this.containerRamList = orderBy(this.containerRamList, ['usage'], ['desc'])
       })
     },
     showMoreInfo() {
