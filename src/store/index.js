@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-24 16:27:41
+ * @LastEditTime: 2021-12-09 10:52:35
  * @Description: 
  * @FilePath: /CasaOS-UI/src/store/index.js
  */
@@ -16,12 +16,14 @@ export default new Vuex.Store({
   // plugins: [createPersistedState()],
   state: {
     token: "",
-    devIp: "192.168.2.217",
+    devIp: "192.168.2.115",
     serviceError: false,
     userinfo: {},
     sidebarOpen: false,
     syncthingKey: '',
     syncthingPort: '',
+    searchEngine: '',
+    siteLoading:true,
     widgetsSwitch: {
       clock: true,
       weather: true,
@@ -53,6 +55,12 @@ export default new Vuex.Store({
       state.syncthingKey = val.key
       state.syncthingPort = val.port
     },
+    changeSearchEngine(state, val) {
+      state.searchEngine = val
+    },
+    changeSiteLoading(state){
+      state.siteLoading = false
+    }
   },
   actions: {
   },

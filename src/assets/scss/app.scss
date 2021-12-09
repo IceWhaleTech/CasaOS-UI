@@ -133,6 +133,18 @@ html {
     }
   }
 
+  .set-select {
+    .select {
+      &::after {
+        border-color: #000 !important;
+      }
+    }
+    select {
+      background-color: transparent !important;
+      border-color: #000 !important;
+    }
+  }
+
   .field {
     line-height: 1rem;
   }
@@ -225,6 +237,9 @@ html {
 }
 .mt-55 {
   margin-top: 2.5rem !important;
+}
+.pl-55 {
+  padding-left: 1.75rem;
 }
 .pl-7 {
   padding-left: 4.75rem;
@@ -797,13 +812,13 @@ html {
       width: auto;
     }
   }
-  .t-img-1 img{
+  .t-img-1 img {
     max-width: 5rem;
   }
-  .t-img-2 img{
+  .t-img-2 img {
     max-width: 13rem;
   }
-  .t-img-3 img{
+  .t-img-3 img {
     max-width: 18rem;
   }
 }

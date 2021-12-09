@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:30:26
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-09 16:46:39
+ * @LastEditTime: 2021-12-07 14:59:52
  * @Description: 
  * @FilePath: /CasaOS-UI/src/views/Welcome.vue
 -->
@@ -15,13 +15,13 @@
           <b-image :src="require('@/assets/img/wuji.svg')" class="is-128x128 mb-4"></b-image>
         </div>
 
-        <h2 class="title is-2 mb-5 has-text-centered" v-animate-css="s2Ani">Welcome to CasaOS</h2>
-        <h2 class="subtitle  has-text-centered" v-animate-css="s3Ani">Let's create your initial account</h2>
-        <b-button type="is-primary" class="mt-2" rounded @click="goToStep(2)" v-animate-css="s4Ani">Go →</b-button>
+        <h2 class="title is-2 mb-5 has-text-centered" v-animate-css="s2Ani">{{$t('Welcome to CasaOS')}}</h2>
+        <h2 class="subtitle  has-text-centered" v-animate-css="s3Ani">{{$t(`Let's create your initial account`)}}</h2>
+        <b-button type="is-primary" class="mt-2" rounded @click="goToStep(2)" v-animate-css="s4Ani">{{$t(`Go →`)}}</b-button>
       </div>
 
       <div v-if="step == 2">
-        <h2 class="title is-3  has-text-centered">Create Account</h2>
+        <h2 class="title is-3  has-text-centered">{{$t('Create Account')}}</h2>
         <div class="is-flex is-justify-content-center ">
           <div class="has-text-centered">
             <b-image :src="require('@/assets/img/Account.png')" class="is-128x128" rounded></b-image>
@@ -29,26 +29,26 @@
         </div>
         <ValidationObserver ref="observer" v-slot="{ handleSubmit }">
           <ValidationProvider rules="required" name="User" v-slot="{ errors, valid }">
-            <b-field label="Username" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
+            <b-field :label="$t('Username')" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="$t(errors)">
               <b-input type="text" v-model="username" v-on:keyup.enter.native="handleSubmit(reg)"></b-input>
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required|min:5" vid="password" name="Password" v-slot="{ errors, valid }">
-            <b-field label="Password" class="mt-4" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
+            <b-field :label="$t('Password')" class="mt-4" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="$t(errors)">
               <b-input type="password" v-model="password" password-reveal v-on:keyup.enter.native="handleSubmit(reg)"></b-input>
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required|confirmed:password" name="Password Confirmation" v-slot="{ errors, valid }">
-            <b-field label="Confirm Password" class="mt-4" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
+            <b-field :label="$t('Confirm Password')" class="mt-4" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="$t(errors)">
               <b-input type="password" v-model="confirmation" password-reveal v-on:keyup.enter.native="handleSubmit(reg)"></b-input>
             </b-field>
           </ValidationProvider>
-          <b-button type="is-primary" class="mt-5" rounded expanded @click="handleSubmit(reg)">Create</b-button>
+          <b-button type="is-primary" class="mt-5" rounded expanded @click="handleSubmit(reg)">{{$t('Create')}}</b-button>
         </ValidationObserver>
       </div>
 
       <div v-if="step == 3" class="has-text-centered ">
-        <h2 class="title is-3  has-text-centered">All things done!</h2>
+        <h2 class="title is-3  has-text-centered">{{$t('All things done!')}}</h2>
         <div class="is-flex is-align-items-center is-justify-content-center">
           <lottie-animation class="animation" :animationData="require('@/assets/ani/done.json')" :autoPlay="true" :loop="false" @complete="complete"></lottie-animation>
         </div>
@@ -107,6 +107,10 @@ export default {
     ValidationProvider,
     LottieAnimation
   },
+  created() {
+    var lang = navigator.language || navigator.userLanguage;
+    console.log(lang);
+  },
   mounted() {
     this.$smoothReflow({
       el: '.login-panel',
@@ -149,7 +153,7 @@ export default {
           })
         } else {
           this.notificationShow = true;
-          this.message = "Username or Password error!"
+          this.message = this.$t("Username or Password error!")
         }
       })
 

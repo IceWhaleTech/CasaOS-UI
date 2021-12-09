@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-11-10 18:22:36
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-25 17:09:01
+ * @LastEditTime: 2021-12-08 13:49:09
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/SyncPanel.vue
 -->
@@ -11,7 +11,7 @@
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
       <div class="flex1">
-        <h3 class="title is-4 has-text-weight-normal">Sync Guide</h3>
+        <h3 class="title is-4 has-text-weight-normal">{{$t('Sync Guide')}}</h3>
       </div>
       <div class="is-flex is-align-items-center">
 
@@ -29,13 +29,13 @@
         <div class="column is-8 is-offset-2 is-12-mobile is-offset-0-mobile">
           <div class="columns is-mobile steps">
             <div class="column has-text-centered">
-              <span class="dot" :class="[{'active':step == 1},{'ok-dot':step > 1}]" data-title="1">Install</span>
+              <span class="dot" :class="[{'active':step == 1},{'ok-dot':step > 1}]" data-title="1">{{$t('Install')}}</span>
             </div>
             <div class="column has-text-centered">
-              <span class="dot " :class="[{'active':step == 2},{'ok-dot':step > 2}]" data-title="2">Config</span>
+              <span class="dot " :class="[{'active':step == 2},{'ok-dot':step > 2}]" data-title="2">{{$t('Config')}}</span>
             </div>
             <div class="column has-text-centered">
-              <span class="dot " :class="[{'active':step == 3},{'ok-dot':step > 2}]" data-title="3">Complete</span>
+              <span class="dot " :class="[{'active':step == 3},{'ok-dot':step > 2}]" data-title="3">{{$t('Complete')}}</span>
             </div>
           </div>
         </div>
@@ -45,16 +45,16 @@
 
       <div>
         <div class="step1 has-text-centered " v-if="step == 1">
-          <h1 class="title is-5 has-text-weight-normal">Download Syncthing on the device you want to sync with CasaOS</h1>
+          <h1 class="title is-5 has-text-weight-normal">{{$t('Download Syncthing on the device you want to sync with CasaOS')}}</h1>
           <div class="is-flex is-justify-content-center mt-6">
             <b-image :src="require(`@/assets/img/${icon}.svg`)" class="is-176x176"></b-image>
           </div>
           <template v-if="!showMore">
             <p class="control is-flex is-justify-content-center mt-5">
-              <b-button type="is-dark" size="is-large" :label="`Get Syncthing for ${broswerUA.os.name}`" :loading="isGettingUrl" @click="getDownloadUrl(osName)" rounded />
+              <b-button type="is-dark" size="is-large" :label="$t(`Get Syncthing for`,{os:broswerUA.os.name})" :loading="isGettingUrl" @click="getDownloadUrl(osName)" rounded />
             </p>
             <p class="control is-flex is-justify-content-center" v-if="platform == 'android'">
-              <b-button type="is-ghost" label="Download APK" @click="getDownloadUrl('Android','apk')" rounded />
+              <b-button type="is-ghost" :label="$t(`Download APK`)" @click="getDownloadUrl('Android','apk')" rounded />
             </p>
           </template>
           <div class="columns is-mobile  mt-4" v-if="showMore">
@@ -84,36 +84,36 @@
 
                   </p>
                   <p class="control is-flex is-justify-content-center">
-                    <b-button type="is-ghost" label="Download APK" @click="downloadSyncthing(syncthingAndroidDlUrl1)" rounded />
+                    <b-button type="is-ghost" :label="$t(`Download APK`)" @click="downloadSyncthing(syncthingAndroidDlUrl1)" rounded />
                   </p>
                 </div>
               </div>
             </div>
           </div>
           <p class="control is-flex is-justify-content-center mt-5 mb-5" v-if="!showMore">
-            <b-button type="is-ghost" label="Show all Platforms" rounded @click="showMorePlatform" />
+            <b-button type="is-ghost" :label="$t('Show all Platforms')" rounded @click="showMorePlatform" />
           </p>
 
           <p class="is-flex is-align-items-top is-size-65 is-justify-content-center">
-            <b-icon icon="information" class="mr-2" style="color:#F8D149" /> Install and open the downloaded application, then click the "Next" button.
+            <b-icon icon="information" class="mr-2" style="color:#F8D149" /> {{$t('Install and open the downloaded application, then click the "Next" button.')}}
           </p>
         </div>
         <div class="step2" v-if="step == 2 ">
-          <b-field label="Device ID" expanded>
-            <b-input placeholder="Fill in your Device ID to continue" v-model="deviceId" @input="checkDeviceId" :disabled="isSubmited" expanded></b-input>
+          <b-field :label="$t('Device ID')" expanded>
+            <b-input :placeholder="$t('Fill in your Device ID to continue')" v-model="deviceId" @input="checkDeviceId" :disabled="isSubmited" expanded></b-input>
             <p class="control">
-              <b-button type="is-primary" label="Submit" @click="submitNewDevice" :loading="isSubmiting" :disabled="!isValId || isSubmited" />
+              <b-button type="is-primary" :label="$t('Submit')" @click="submitNewDevice" :loading="isSubmiting" :disabled="!isValId || isSubmited" />
             </p>
           </b-field>
 
-          <h3 class="title is-6 mt-5 mb-3">{{helpTitle}}</h3>
+          <h3 class="title is-6 mt-5 mb-3">{{$t(helpTitle)}}</h3>
           <b-tabs v-model="platform">
             <b-tab-item label="Windows" icon="microsoft-windows" key="windows" value="windows">
               <div class="t-box">
                 <div v-if="!isSubmited">
                   <ol>
-                    <li>Open the SyncTrayzor</li>
-                    <li>Find the Device ID
+                    <li>{{$t('Open the SyncTrayzor')}}</li>
+                    <li>{{$t('Find the Device ID')}}
                       <b-image :src="require(`@/assets/syncthing_tutorials/Windows-ShowID.png`)" class="t-img t-img-2"></b-image>
                       <b-image :src="require(`@/assets/syncthing_tutorials/Windows-DeviceID.png`)" class="t-img"></b-image>
                     </li>
@@ -122,13 +122,13 @@
                 </div>
                 <div v-if="isSubmited">
                   <ol>
-                    <li>Add new device on your device</li>
+                    <li>{{$t('Add new device on your device')}}</li>
                     <b-image :src="require(`@/assets/syncthing_tutorials/Windows-NewDevice.png`)" class="t-img"></b-image>
                     <b-image :src="require(`@/assets/syncthing_tutorials/Windows-NewDeviceSave.png`)" class="t-img"></b-image>
-                    <li>Add new folder on your device</li>
+                    <li>{{$t('Add new folder on your device')}}</li>
                     <b-image :src="require(`@/assets/syncthing_tutorials/Windows-NewFolder.png`)" class="t-img"></b-image>
                     <b-image :src="require(`@/assets/syncthing_tutorials/Windows-NewFolderSave.png`)" class="t-img"></b-image>
-                    <li>Done!</li>
+                    <li>{{$t('Done!')}}</li>
                   </ol>
                 </div>
               </div>
@@ -138,12 +138,12 @@
               <div class="t-box">
                 <div v-if="!isSubmited">
                   <ol>
-                    <li>Open Syncthing in the Launchpad</li>
-                    <li>Find the Syncthing icon in the menubar
+                    <li>{{$t('Open Syncthing in the Launchpad')}}</li>
+                    <li>{{$t('Find the Syncthing icon in the menubar')}}
                       <b-image :src="require(`@/assets/syncthing_tutorials/macOS-icon.png`)" class="t-img t-img-1"></b-image>
                       <b-image :src="require(`@/assets/syncthing_tutorials/macOS-Config.png`)" class="t-img t-img-2"></b-image>
                     </li>
-                    <li>Find the Device ID
+                    <li>{{$t('Find the Device ID')}}
                       <b-image :src="require(`@/assets/syncthing_tutorials/macOS-ShowID.png`)" class="t-img t-img-2"></b-image>
                       <b-image :src="require(`@/assets/syncthing_tutorials/macOS-DeviceID.png`)" class="t-img"></b-image>
                     </li>
@@ -151,13 +151,13 @@
                 </div>
                 <div v-if="isSubmited">
                   <ol>
-                    <li>Add new device on your device</li>
+                    <li>{{$t('Add new device on your device')}}</li>
                     <b-image :src="require(`@/assets/syncthing_tutorials/Windows-NewDevice.png`)" class="t-img"></b-image>
                     <b-image :src="require(`@/assets/syncthing_tutorials/Windows-NewDeviceSave.png`)" class="t-img"></b-image>
-                    <li>Add new folder on your device</li>
+                    <li>{{$t('Add new folder on your device')}}</li>
                     <b-image :src="require(`@/assets/syncthing_tutorials/macOS-NewFolder.png`)" class="t-img"></b-image>
                     <b-image :src="require(`@/assets/syncthing_tutorials/macOS-NewFolderSave.png`)" class="t-img"></b-image>
-                    <li>Done!</li>
+                    <li>{{$t('Done!')}}</li>
                   </ol>
                 </div>
               </div>
@@ -166,27 +166,27 @@
               <div class="t-box">
                 <div v-if="!isSubmited">
                   <ol>
-                    <li>Open Syncthing</li>
-                    <li>Open the menu
+                    <li>{{$t('Open Syncthing')}}</li>
+                    <li>{{$t('Open the menu')}}
                       <b-image :src="require(`@/assets/syncthing_tutorials/Android-Menu.png`)" class="t-img t-img-3"></b-image>
                     </li>
-                    <li>Choose "Show device ID"
+                    <li>{{$t('Choose "Show device ID"')}}
                       <b-image :src="require(`@/assets/syncthing_tutorials/Android-ShowDeviceID.png`)" class="t-img t-img-3"></b-image>
                     </li>
-                    <li>Copy the Device ID
+                    <li>{{$t('Copy the Device ID')}}
                       <b-image :src="require(`@/assets/syncthing_tutorials/Android-DeviceID.png`)" class="t-img t-img-3"></b-image>
                     </li>
                   </ol>
                 </div>
                 <div v-if="isSubmited">
                   <ol>
-                    <li>Add new device on your device</li>
+                    <li>{{$t('Add new device on your device')}}</li>
                     <b-image :src="require(`@/assets/syncthing_tutorials/Android-NewDevice.png`)" class="t-img  t-img-3"></b-image>
                     <b-image :src="require(`@/assets/syncthing_tutorials/Android-NewDeviceAdd.png`)" class="t-img  t-img-3"></b-image>
-                    <li>Add new folder on your device</li>
+                    <li>{{$t('Add new folder on your device')}}</li>
                     <b-image :src="require(`@/assets/syncthing_tutorials/Android-NewFolder.png`)" class="t-img  t-img-3"></b-image>
                     <b-image :src="require(`@/assets/syncthing_tutorials/Android-NewFolderCreate.png`)" class="t-img  t-img-3"></b-image>
-                    <li>Done!</li>
+                    <li>{{$t('Done!')}}</li>
                   </ol>
                 </div>
               </div>
@@ -201,9 +201,8 @@
         </div>
         <div class="step3" v-if="step == 3">
           <div class="mt-6">
-            <h3 class="title is-4 has-text-centered has-text-weight-normal">There you go!</h3>
-            <h2 class="subtitle is-5 has-text-centered has-text-weight-light">Your data has started to sync.<br>
-              It may take some minutes to fulfill synchronization.</h2>
+            <h3 class="title is-4 has-text-centered has-text-weight-normal">{{$t('There you go!')}}</h3>
+            <h2 class="subtitle is-5 has-text-centered has-text-weight-light">{{$t('Your data has started to sync.<br>It may take some minutes to fulfill synchronization.')}}</h2>
             <div class="is-flex is-align-items-center is-justify-content-center">
               <lottie-animation class="animation" :animationData="require('@/assets/ani/sync.json')" :autoPlay="true" :loop="true"></lottie-animation>
             </div>
@@ -222,8 +221,8 @@
       </div>
 
       <div>
-        <b-button v-show="step == 1 || (step == 2 && isSubmited)" label="Next" type="is-primary" @click="nextStep" rounded />
-        <b-button v-show="step == 3" label="Close" type="is-primary" @click="$emit('close')" rounded />
+        <b-button v-show="step == 1 || (step == 2 && isSubmited)" :label="$t('Next')" type="is-primary" @click="nextStep" rounded />
+        <b-button v-show="step == 3" :label="$t('Close')" type="is-primary" @click="$emit('close')" rounded />
 
       </div>
     </footer>
@@ -350,7 +349,6 @@ export default {
       }
     },
     getDownloadUrl(os, arch = "") {
-      console.log(os);
       this.isGettingUrl = true;
       switch (os) {
         case "macOS":

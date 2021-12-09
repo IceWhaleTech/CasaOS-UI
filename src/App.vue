@@ -2,13 +2,13 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-03 16:30:48
+ * @LastEditTime: 2021-12-09 10:47:39
  * @Description: Main entry of application
  * @FilePath: /CasaOS-UI/src/App.vue
 -->
 
 <template>
-  <div id="app" class="is-flex is-flex-direction-column" v-if="!isLoading">
+  <div id="app" class="is-flex is-flex-direction-column" v-show="!isLoading">
 
     <!-- Background Layer Start -->
     <div v-if="isWelcome" id="background" v-animate-css="initAni" :style="{'background-image': 'url(' + require('./assets/background/bg3.jpg') + ')'}"></div>
@@ -45,7 +45,7 @@ export default {
   },
   data() {
     return {
-      isLoading: true,
+      //isLoading: true,
       steps: [
         // {
         //   target: '#v-step-0',  // We're using document.querySelector() under the hood
@@ -73,29 +73,45 @@ export default {
     }
   },
 
+  computed: {
+    isLoading() {
+      return this.$store.state.siteLoading
+    }
+  },
+
   created() {
+    
     this.$api.info.guideCheck().then(res => {
-      this.isLoading = false
       if (res.data.success == 200 && res.data.data.need_init_user) {
         this.isWelcome = true
+        this.$emit('changeSiteLoading');
       } else {
         this.isWelcome = false
       }
     })
   },
   mounted() {
-    //this.$tours['myTour'].start()
+    let lang = localStorage.getItem('lang') ? localStorage.getItem('lang') : this.getLangFromBrowser()
+    this.setLang(lang);
     const host = (process.env.NODE_ENV === "'dev'") ? `${this.$store.state.devIp}` : `${document.domain}`;
     if (host == '127.0.0.1' || host == "localhost") {
       this.$buefy.dialog.alert({
-        title: '⚠️ Attention',
-        message: `<div class="nobrk"><p >Using localhost or 127.0.0.1 will cause the application to be inaccessible, please use the real ip to access. </p>
-                        </div>`,
+        title: '⚠️ ' + this.$t('Attention'),
+        message: '<div class="nobrk"><p >' + this.$t('Using localhost or 127.0.0.1 will cause the application to be inaccessible, please use the real ip to access.') + '</p></div>',
         type: 'is-dark'
       })
     }
   },
   methods: {
+    getLangFromBrowser() {
+      var lang = navigator.language || navigator.userLanguage;
+      lang = lang.substr(0, 2);
+      return lang
+    },
+    setLang(lang) {
+      localStorage.setItem('lang', lang)
+      this.$i18n.locale = lang;
+    },
 
   },
 }

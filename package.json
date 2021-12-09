@@ -31,6 +31,7 @@
     "vue-apexcharts": "^1.6.2",
     "vue-custom-scrollbar": "^1.4.1",
     "vue-fullscreen": "^2.5.2",
+    "vue-i18n": "^8.26.7",
     "vue-router": "^3.2.0",
     "vue-slider-component": "^3.2.14",
     "vue-smooth-reflow": "^0.1.12",

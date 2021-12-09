@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-09 18:41:15
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-25 12:28:04
+ * @LastEditTime: 2021-12-07 15:38:21
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/Settings.vue
 -->
@@ -13,10 +13,10 @@
         <b-button icon-left="menu" class="circle-btn" rounded></b-button>
       </template>
       <b-dropdown-item aria-role="menu-item" :focusable="false" custom class="has-text-white has-text-left">
-        <h2 class="title is-5 has-text-white">Widgets Settings</h2>
+        <h2 class="title is-5 has-text-white">{{$t('Widgets Settings')}}</h2>
         <div class="is-flex is-align-items-center item" v-for="(item,index) in settingsData" :key="`setting_${index}`">
           <div class="is-flex is-align-items-center flex1">
-            <b-icon :icon="getIcon(item.name)" class="mr-2"></b-icon> <b>{{getTitle(item.name)}}</b>
+            <b-icon :icon="getIcon(item.name)" class="mr-2"></b-icon> <b>{{$t(getTitle(item.name))}}</b>
           </div>
           <b-field>
             <b-switch type="is-dark" v-model="item.show" size="is-small" class="is-flex-direction-row-reverse mr-0" @input="handleInput"></b-switch>

@@ -8,16 +8,13 @@
           </div>
           <div class="ml-3 is-flex-grow-1">
             <h4 class="title is-size-6-5 mb-2 mt-1 has-text-left has-text-white one-line">{{item.label}}</h4>
-            <p class="has-text-left is-size-7 mt-1 is-uppercase">{{item.size | renderSize}} {{item.tran}} </p>
+            <p class="has-text-left is-size-7 mt-1 is-uppercase">{{renderSize(item.size)}} {{item.tran}} </p>
           </div>
         </div>
-        <div class="has-text-left is-size-7 mt-1">{{item.availSize | renderSize}} available of {{item.size | renderSize}}</div>
+        <div class="has-text-left is-size-7 mt-1">{{$t("available of",{avl:renderSize(item.availSize),total:renderSize(item.size)})}}</div>
         <b-progress :type="item.usePercnet | getType" :value="item.usePercnet" size="is-xsmall" class="mt-2"></b-progress>
-
       </div>
-
     </div>
-
   </div>
 </template>
 
@@ -77,11 +74,6 @@ export default {
         }
       })
     },
-  },
-  destroyed() {
-    clearInterval(this.timer);
-  },
-  filters: {
     renderSize(value) {
       if (null == value || value == '') {
         return "0 Bytes";
@@ -94,6 +86,12 @@ export default {
       size = size.toFixed(2);
       return size + unitArr[index];
     },
+  },
+  destroyed() {
+    clearInterval(this.timer);
+  },
+  filters: {
+
     formatNum(number) {
       return new Intl.NumberFormat().format(number)
     },

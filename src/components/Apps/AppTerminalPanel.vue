@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-29 15:38:35
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-29 19:07:03
+ * @LastEditTime: 2021-12-07 17:39:56
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/Apps/AppTerminalPanel.vue
 -->
@@ -15,10 +15,10 @@
       <h2 class="title is-4">{{appName}}</h2>
       <div class="flex1">
         <b-tabs type="is-toggle" :animated="false" @input="onInput">
-          <b-tab-item label="Terminal" value="terminal">
+          <b-tab-item :label="$t('Terminal')" value="terminal">
             <terminal-card ref="terminal" :wsUrl="wsUrl"></terminal-card>
           </b-tab-item>
-          <b-tab-item label="Logs" value="logs">
+          <b-tab-item :label="$t('Logs')" value="logs">
             <logs-card ref="logs" :data="logData"></logs-card>
           </b-tab-item>
         </b-tabs>

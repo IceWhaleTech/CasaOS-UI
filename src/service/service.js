@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-27 18:55:54
+ * @LastEditTime: 2021-12-09 10:52:48
  * @Description: 
- * @FilePath: \CasaOS-UI\src\service\service.js
+ * @FilePath: /CasaOS-UI/src/service/service.js
  */
 import axios from 'axios'
 import qs from 'qs'
@@ -14,7 +14,7 @@ import store from '@/store'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 axios.defaults.withCredentials = false;
 if (process.env.NODE_ENV === "'dev'") {
-    axios.defaults.baseURL = `http://${store.state.devIp}:8089/v1`;
+    axios.defaults.baseURL = `http://${store.state.devIp}:80/v1`;
 } else {
     axios.defaults.baseURL = `${document.location.protocol}//${document.location.host}/v1`
 }
@@ -24,6 +24,10 @@ const instance = axios.create({
     timeout: 30000,
 });
 
+const getInitLang = () => {
+    let lang = localStorage.getItem('lang') ? localStorage.getItem('lang') : this.getLangFromBrowser()
+    return lang
+}
 
 //请求和响应拦截可以根据实际项目需求进行编写
 // 请求发起前拦截
@@ -32,7 +36,8 @@ instance.interceptors.request.use((config) => {
     if (localStorage.getItem("user_token")) {
         token = localStorage.getItem("user_token")
     }
-    config.headers.Authorization =  token
+    config.headers.Authorization = token
+    config.headers.common["Language"] = getInitLang()
     store.commit('setToken', token)
     //console.log("请求拦截", config);
     return config;
@@ -44,7 +49,6 @@ instance.interceptors.request.use((config) => {
 // 响应拦截（请求返回后拦截）
 instance.interceptors.response.use(response => {
     //console.log("响应拦截", response);
-    
     return response;
 }, error => {
     console.log('catch', error)

@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-04 15:22:44
+ * @LastEditTime: 2021-12-08 13:50:33
  * @Description: 
  * @FilePath: /CasaOS-UI/src/router/index.js
  */
@@ -53,7 +53,6 @@ router.beforeEach((to, from, next) => {
 
   //Check if have a verison string in localStorage when access home page
   let version = localStorage.getItem("version");
-  console.log(version);
   if (to.path == "/" && version == null) {
     localStorage.removeItem("user_token");
     next({ path: '/login' })
