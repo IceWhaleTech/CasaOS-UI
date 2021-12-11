@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-09 15:30:00
+ * @LastEditTime: 2021-12-11 12:06:24
  * @Description: Install Panel of Docker
- * @FilePath: /CasaOS-UI/src/components/Panel.vue
+ * @FilePath: \CasaOS-UI\src\components\Panel.vue
 -->
 
 <template>
@@ -178,6 +178,7 @@ import uniq from 'lodash/uniq';
 import upperFirst from 'lodash/upperFirst'
 import isNull from 'lodash/isNull'
 import orderBy from 'lodash/orderBy';
+import cloneDeep from 'lodash/cloneDeep';
 import FileSaver from 'file-saver';
 
 export default {
@@ -401,15 +402,7 @@ export default {
       let model = this.initData.network_model.split("-");
       this.initData.network_model = model[0]
 
-      // change uuid to var
-      if (this.state == "update") {
-        this.initData.volumes.forEach((item) => {
-          item.host = item.host.replace(this.id, '$AppID');
-        })
-        this.initData.devices.forEach((item) => {
-          item.host = item.host.replace(this.id, '$AppID');
-        })
-      }
+
     },
 
     /**
@@ -525,7 +518,8 @@ export default {
     updateApp() {
       this.processData();
       this.isLoading = true;
-      this.$api.app.updateContainerSetting(this.id, this.initData).then((res) => {
+      let updateData = this.uuid2var(cloneDeep(this.initData));
+      this.$api.app.updateContainerSetting(this.id, updateData).then((res) => {
         if (res.data.success == 200) {
           this.isLoading = false;
           this.$emit('updateState')
@@ -615,13 +609,30 @@ export default {
        */
     exportJSON() {
       // 将json转换成字符串
-      let exportData = { ...this.initData };
+      let exportData = cloneDeep(this.initData);
       exportData.network_model = this.getNetworkName(this.initData.network_model);
       exportData.version = "1.0"
+      exportData = this.uuid2var(exportData)
       delete exportData.memory
       const data = JSON.stringify(exportData);
       const blob = new Blob([data], { type: '' });
       FileSaver.saveAs(blob, `${exportData.label}.json`);
+    },
+
+    /**
+       * @description: change uuid to var
+       * @param {*} function
+       * @return {data} Object
+       */
+
+    uuid2var(data) {
+      data.volumes.forEach((item) => {
+        item.host = item.host.replace(this.id, '$AppID');
+      })
+      data.devices.forEach((item) => {
+        item.host = item.host.replace(this.id, '$AppID');
+      })
+      return data
     },
 
     /**

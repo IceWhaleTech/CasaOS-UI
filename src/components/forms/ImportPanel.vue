@@ -273,7 +273,7 @@ export default {
           if (_this.updateData.version === undefined) {
             _this.$buefy.toast.open({
               duration: 3000,
-              message: this.$t('This is not a valid App file.'),
+              message: _this.$t('This is not a valid App file.'),
               type: 'is-danger'
             })
             _this.appFileLoaded = false
@@ -282,7 +282,7 @@ export default {
             delete _this.updateData.versison
             _this.updateData.network_model = _this.getNetworkModel(_this.updateData.network_model)
             _this.updateData.memory = _this.deviceMemory
-            _this.dropText = val.name + this.$t('has been selected')
+            _this.dropText = val.name + _this.$t('has been selected')
             _this.appFileLoaded = true
             return true
           }
@@ -290,7 +290,7 @@ export default {
         } catch (e) {
           _this.$buefy.toast.open({
             duration: 3000,
-            message: this.$t('This is not a valid json file.'),
+            message: _this.$t('This is not a valid json file.'),
             type: 'is-danger'
           })
           _this.appFileLoaded = false
