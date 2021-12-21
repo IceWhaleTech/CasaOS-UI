@@ -36,7 +36,7 @@ export default {
   data() {
     return {
       isLoading: false,
-      wsUrl: (process.env.NODE_ENV === "'dev'") ? `ws://${this.$store.state.devIp}:8089/v1/sys/wsssh?token=${this.$store.state.token}` : `ws://${document.location.host}/v1/sys/wsssh?token=${this.$store.state.token}`,
+      wsUrl: (process.env.NODE_ENV === "'dev'") ? `ws://${this.$store.state.devIp}:${this.$store.state.devPort}/v1/sys/wsssh?token=${this.$store.state.token}` : `ws://${document.location.host}/v1/sys/wsssh?token=${this.$store.state.token}`,
       logData: ""
     }
   },

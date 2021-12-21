@@ -200,7 +200,9 @@ export default {
         })
 
         this.containerRamList = res.data.data.map(item => {
-          const used_memory = ("stats" in item.data.memory_stats) ? (item.data.memory_stats.usage - item.data.memory_stats.stats.cache) : NaN
+          let cache = (item.data.memory_stats.stats.cache == undefined) ? item.data.memory_stats.stats.total_inactive_file : item.data.memory_stats.stats.cache
+          cache = (cache == undefined) ? item.data.memory_stats.stats.inactive_file : cache
+          const used_memory = ("stats" in item.data.memory_stats) ? (item.data.memory_stats.usage - cache) : NaN
           return {
             usage: used_memory,
             icon: item.icon,

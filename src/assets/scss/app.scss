@@ -4,7 +4,7 @@
 //    variables in _variables.scss
 @import "variables";
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap");
-
+// @import "~@mdi/font/css/materialdesignicons.min.css";
 // 2. Setup your Custom Colors
 $linkedin: #0077b5;
 $linkedin-invert: findColorInvert($linkedin);
@@ -17,6 +17,11 @@ $primary: #2276f3;
 $primary-light: findLightColor($primary);
 $primary-dark: findDarkColor($primary);
 $primary-invert: findColorInvert($primary);
+$ghost: #2276f3;
+$ghost-light: findLightColor($ghost);
+$ghost-dark: findDarkColor($ghost);
+$ghost-invert: findColorInvert($ghost);
+
 $loading-icon-size: 2.5rem;
 
 @import "~bulma/sass/utilities/derived-variables";
@@ -50,13 +55,20 @@ $backDropBorderRadius: 0.5rem;
 @import "widgets";
 @import "scrollbars";
 @import "animate";
+@import "~swiper/swiper-bundle.min.css";
 
 // 4. Provide custom buefy overrides and site styles here
+
+:root {
+  --swiper-navigation-size: 24px !important;
+}
+
 body,
 html {
   overflow: hidden;
   font-family: "Roboto", sans-serif;
   background-color: #000;
+  color: #5a5a5a;
 }
 
 #app {
@@ -238,8 +250,14 @@ html {
 .mt-55 {
   margin-top: 2.5rem !important;
 }
+.ml-7 {
+  margin-left: 5.5rem;
+}
 .pl-55 {
   padding-left: 1.75rem;
+}
+.is-size-66 {
+  font-size: 0.875rem;
 }
 .pl-7 {
   padding-left: 4.75rem;
@@ -250,6 +268,22 @@ html {
 .is-abs {
   position: absolute;
 }
+
+.auto-height {
+  height: auto !important;
+}
+.z-20 {
+  position: relative;
+  z-index: 20;
+}
+.z-30 {
+  z-index: 20;
+}
+.border-8 {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
 .powered-con {
   width: 100%;
   height: 2.5rem;
@@ -740,6 +774,87 @@ html {
   }
 }
 
+// App Store Panel
+.app-sidebar {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  z-index: 15;
+  pointer-events: none;
+  &.no-event {
+    pointer-events: all;
+  }
+  &.h-100 {
+    height: 100% !important;
+  }
+  &.w-100 {
+    width: 100% !important;
+  }
+  .sidebar-content {
+    position: relative;
+    height: 100%;
+  }
+}
+
+.app-detial {
+  overflow: auto;
+  height: 100%;
+  .app-header {
+    position: relative;
+  }
+  .swiper-container {
+    // overflow: hidden;
+  }
+  .swiper-button-next,
+  .swiper-rtl .swiper-button-prev {
+    right: -20px;
+    left: auto;
+  }
+  .swiper-button-prev,
+  .swiper-rtl .swiper-button-next {
+    left: -20px;
+    right: auto;
+  }
+}
+.featured-app {
+  .swiper-button-next,
+  .swiper-rtl .swiper-button-prev {
+    right: -20px;
+    top: calc(50% - 2.25rem);
+    left: auto;
+  }
+  .swiper-button-prev,
+  .swiper-rtl .swiper-button-next {
+    left: -20px;
+    top: calc(50% - 2.25rem);
+    right: auto;
+  }
+  .button {
+    box-sizing: border-box !important;
+  }
+}
+.app-select {
+  .dropdown-menu {
+    min-width: 1rem !important;
+  }
+  a.dropdown-item {
+    padding-right: 1.5rem;
+    font-size: 0.875rem;
+  }
+}
+a.dropdown-item.is-active,
+.dropdown .dropdown-menu .has-link a.is-active,
+button.dropdown-item.is-active {
+  background-color: $primary;
+  color: #fff;
+}
+.button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+// Sync Panel
 .sync-panel {
   .modal-card {
     width: 50rem;
@@ -851,11 +966,45 @@ html {
       width: 50rem;
     }
   }
+  .app-panel {
+    .animation-content {
+      max-width: 90% !important;
+    }
+    .modal-card {
+      width: 90vw;
+      transition: all 0.3s;
+      &.narrow{
+        width: 50rem !important;
+      }
+    }
+  }
+}
+
+
+
+@media screen and (max-width: 1366px) {
+  .f-list {
+    .is-one-quarter {
+      width: 33.333333% !important;
+    }
+  }
+  
+}
+
+@media screen and (min-width: 1440px) {
+  .modal-card {
+    width: 83rem !important;
+  }
 }
 
 @media screen and (max-width: 1024px) {
   .container {
     margin: 0 1rem;
+  }
+  .f-list {
+    .is-one-quarter {
+      width: 50% !important;
+    }
   }
 }
 @media screen and (min-width: 481px) {
@@ -871,6 +1020,12 @@ html {
         flex: none;
         width: 50%;
       }
+    }
+  }
+
+  .f-list {
+    .is-one-quarter {
+      width: 50% !important;
     }
   }
 
@@ -1036,4 +1191,61 @@ html {
       }
     }
   }
+
+  .f-list {
+    .is-one-quarter {
+      width: 100% !important;
+    }
+  }
+
+  .app-detial {
+    overflow: auto;
+    height: 100%;
+    .modal-card-head {
+      .button {
+        -webkit-tap-highlight-color: transparent;
+      }
+    }
+    .app-header {
+      position: relative;
+      .header-icon {
+        .is-128x128 {
+          height: 96px;
+          width: 96px;
+        }
+      }
+      .store-title {
+        font-size: 1.125rem;
+      }
+      .subtitle {
+        font-size: 0.75rem;
+        margin-bottom: 0.75rem;
+      }
+      .description {
+        .button {
+          font-size: 0.75rem;
+        }
+      }
+    }
+    .level {
+      .mdi-36px.mdi-set,
+      .mdi-36px.mdi:before {
+        font-size: 24px;
+      }
+      .title {
+        font-size: 24px;
+      }
+      .footing {
+        font-size: 0.6rem !important;
+      }
+    }
+  }
+}
+
+.slide-next-leave-active,
+.slide-next-enter-active,
+.slide-prev-enter-active,
+.slide-prev-leave-active {
+  // transition-timing-function:cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition-duration: 0.35s;
 }

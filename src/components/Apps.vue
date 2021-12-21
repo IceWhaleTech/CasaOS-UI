@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-08 15:05:23
+ * @LastEditTime: 2021-12-13 15:10:47
  * @Description: App module
  * @FilePath: /CasaOS-UI/src/components/Apps.vue
 -->
@@ -91,7 +91,7 @@ export default {
             parent: this,
             component: Panel,
             hasModalCard: true,
-            customClass: '',
+            customClass: 'app-panel',
             trapFocus: true,
             canCancel: ['escape'],
             scroll: "keep",

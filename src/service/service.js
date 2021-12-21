@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-09 15:24:57
+ * @LastEditTime: 2021-12-21 13:50:28
  * @Description: 
  * @FilePath: /CasaOS-UI/src/service/service.js
  */
@@ -14,7 +14,7 @@ import store from '@/store'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 axios.defaults.withCredentials = false;
 if (process.env.NODE_ENV === "'dev'") {
-    axios.defaults.baseURL = `http://${store.state.devIp}:8089/v1`;
+    axios.defaults.baseURL = `http://${store.state.devIp}:${store.state.devPort}/v1`;
 } else {
     axios.defaults.baseURL = `${document.location.protocol}//${document.location.host}/v1`
 }

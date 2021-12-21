@@ -2,132 +2,31 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-20 15:18:14
+ * @LastEditTime: 2021-12-11 12:06:24
  * @Description: Install Panel of Docker
- * @FilePath: /CasaOS-UI/src/components/Panel.vue
+ * @FilePath: \CasaOS-UI\src\components\Panel.vue
 -->
 
 <template>
-  <div class="modal-card app-card" :class="{'narrow': currentSlide > 0}">
-
-    <!-- Sidebar Start -->
-    <app-side-bar :overlay="true" position="absolute" :right="true" v-model="sidebarOpen">
-      <template slot-scope="{close}">
-        <div class="modal-card app-detial">
-          <!-- Header Start -->
-          <header class="modal-card-head" style="background:#ff000">
-            <div class="flex1">
-              <div @click="close" class="button is-ghost auto-height pl-0 pt-0 pb-0">
-                <b-icon icon="chevron-left" size="is-medium" class="mr-1"></b-icon> {{ $t('Back') }}
-              </div>
-            </div>
-          </header>
-          <!-- Header End -->
-          <section id="ss-content" class="modal-card-body">
-            <!-- App Info Header Start -->
-            <div class="app-header is-flex pb-4 b-line">
-              <div class="header-icon mr-5">
-                <b-image :src="detailData.icon" :src-fallback="require('@/assets/img/default.png')" webp-fallback=".jpg" class="is-128x128 icon-shadow"></b-image>
-              </div>
-              <div class="flex1 is-flex is-align-items-center">
-                <div>
-                  <h4 class="title store-title is-4 ">{{detailData.title}}</h4>
-                  <p class="subtitle is-size-66 two-line">{{detailData.tagline}}</p>
-                  <p class="description">
-                    <b-button type="is-primary" size="is-normal" @click="qucikInstall(detailData.id)" :loading="detailData.id == currentInstallId" rounded>{{$t('Install')}}</b-button>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <!-- App Info Header End -->
-            <!-- App Info Table Start -->
-            <nav class="level is-mobile mt-4">
-              <div class="level-item has-text-centered">
-                <div>
-                  <p class="heading">{{ $t('CATEGORY') }}</p>
-                  <p class="title">
-                    <b-icon :icon="detailData.category_font" custom-size="mdi-36px"></b-icon>
-                  </p>
-                  <p class="footing is-size-65">{{detailData.category}}</p>
-                </div>
-              </div>
-              <div class="level-item has-text-centered">
-                <div>
-                  <p class="heading">{{ $t('DEVELOPER') }}</p>
-                  <p class="title">
-                    <b-icon icon="account-circle-outline" custom-size="mdi-36px"></b-icon>
-                  </p>
-                  <p class="footing is-size-65">{{detailData.author}}</p>
-                </div>
-              </div>
-              <div class="level-item has-text-centered">
-                <div>
-                  <p class="heading "><span class="is-hidden-mobile">{{ $t('REQUIRE') }} </span>{{ $t('MEMORY') }}</p>
-                  <p class="title">{{detailData.min_memory}}</p>
-                  <p class="footing is-size-65">MB</p>
-                </div>
-              </div>
-              <div class="level-item has-text-centered">
-                <div>
-                  <p class="heading"><span class="is-hidden-mobile">{{ $t('REQUIRE') }} </span>{{ $t('DISK') }}</p>
-                  <p class="title">{{detailData.min_disk}}</p>
-                  <p class="footing is-size-65">MB</p>
-                </div>
-              </div>
-            </nav>
-            <!-- App Info Table End -->
-
-            <!-- App Info Slider Start -->
-            <div class="is-relative" v-if="showDetailSwiper">
-              <swiper class="swiper swiper-responsive-breakpoints" ref="infoSwiper" :options="swiperOptions">
-                <swiper-slide v-for="item in detailData.screenshot_link" :key="'sc'+item">
-                  <div class="gap">
-                    <b-image :src="item" :src-fallback="require('@/assets/img/swiper_placeholder.png')" placeholder ratio="16by9" class="border-8"></b-image>
-                  </div>
-                </swiper-slide>
-
-              </swiper>
-              <div class="swiper-button-prev" :class="{'swiper-button-disabled':disPrev}" @click="$refs.infoSwiper.$swiper.slidePrev()"></div>
-              <div class="swiper-button-next" :class="{'swiper-button-disabled':disNext}" @click="$refs.infoSwiper.$swiper.slideNext()"></div>
-            </div>
-
-            <!-- App Info Slider End -->
-
-            <!-- App Info  Start -->
-            <div class="app-desc mt-4 mb-6">
-              <p class="is-size-66 mb-2">{{detailData.tagline}}</p>
-              <p class="is-size-66 ">{{detailData.description}}</p>
-              <p class="is-size-66 " v-html="detailData.tip"></p>
-            </div>
-            <!-- App Info  End -->
-
-          </section>
-        </div>
-
-      </template>
-    </app-side-bar>
-    <!-- Sidebar End -->
-
+  <div class="modal-card">
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
       <div class="flex1">
         <h3 class="title is-4 has-text-weight-normal">{{panelTitle}}</h3>
       </div>
       <div class="is-flex is-align-items-center">
-        <b-button v-if="currentSlide == 0" icon-left="view-grid-plus" size="is-small" type="is-primary" :label="$t('Custom Install')" @click="currentSlide = 1" class="mr-2" rounded />
-
-        <b-tooltip :label="$t('Import')" position="is-bottom" type="is-dark" v-if="showImportButton">
-          <button type="button" class="icon-button mdi mdi-import" @click="showImportPanel" />
+        <b-tooltip :label="$t('Import')" position="is-bottom" type="is-dark">
+          <button type="button" class="icon-button mdi mdi-import" @click="showImportPanel" v-if="showImportButton" />
         </b-tooltip>
 
-        <b-tooltip :label="$t('Terminal & Logs')" position="is-bottom" type="is-dark" v-if="showTerminalButton">
-          <button type="button" class="icon-button mdi mdi-console" @click="showTerminalPanel" />
+        <b-tooltip :label="$t('Terminal & Logs')" position="is-bottom" type="is-dark">
+          <button type="button" class="icon-button mdi mdi-console" @click="showTerminalPanel" v-if="showTerminalButton" />
         </b-tooltip>
 
-        <b-tooltip :label="$t('Export AppFile')" position="is-bottom" type="is-dark" v-if="showExportButton">
-          <button type="button" class="icon-button mdi mdi-export-variant" @click="exportJSON" />
+        <b-tooltip :label="$t('Export AppFile')" position="is-bottom" type="is-dark">
+          <button type="button" class="icon-button mdi mdi-export-variant" @click="exportJSON" v-if="showExportButton" />
         </b-tooltip>
-        <div v-if="currentSlide < 2" class="is-flex is-align-items-center modal-close-container z-20 " :class="{'modal-close-container-line':!sidebarOpen}">
+        <div v-if="currentSlide < 2" class="is-flex is-align-items-center modal-close-container" :class="{'modal-close-container-line':currentSlide == 1}">
           <button type="button" class="delete" @click="$emit('close')" />
         </div>
 
@@ -139,133 +38,22 @@
     <section class="modal-card-body">
       <!-- App Store List Start -->
       <section v-if="currentSlide == 0">
-        <h3 class="title is-5 has-text-weight-normal">{{ $t('Featured Apps') }}</h3>
-        <!-- Featured Slider Start -->
-        <div class="is-relative featured-app b-line pb-5">
-          <swiper class="swiper " ref="featureSwiper" :options="featureSwiperOptions">
-            <swiper-slide v-for="(item,index) in recommendList " :key="index+item.title+item.id">
-              <div class="gap" @click="showAppDetial(item.id)">
-                <b-image :src="item.thumbnail" ratio="16by9" class="border-8 is-clickable" :src-fallback="require('@/assets/img/swiper_placeholder.png')" placeholder></b-image>
-              </div>
-              <div class="is-flex pt-5 is-align-items-center">
-                <div class=" mr-3" @click="showAppDetial(item.id)">
-                  <b-image :src="item.icon" :src-fallback="require('@/assets/img/default.png')" webp-fallback=".jpg" class="is-48x48 is-clickable"></b-image>
-                </div>
-                <div class="flex1 mr-4 is-clickable" @click="showAppDetial(item.id)">
-                  <h6 class="title is-6 mb-2 ">{{item.title}}</h6>
-                  <p class="is-size-7 two-line">{{item.tagline}}</p>
-                </div>
-                <div>
-                  <b-button type="is-primary is-light" size="is-small" rounded @click="qucikInstall(item.id)" :loading="item.id == currentInstallId">{{$t('Install')}}</b-button>
-                </div>
-              </div>
-            </swiper-slide>
 
-          </swiper>
-          <div class="swiper-button-prev" :class="{'swiper-button-disabled':disFeaturedPrev}" @click="$refs.featureSwiper.$swiper.slidePrev()"></div>
-          <div class="swiper-button-next" :class="{'swiper-button-disabled':disFeaturedNext}" @click="$refs.featureSwiper.$swiper.slideNext()"></div>
-        </div>
-
-        <!-- Featured Slider End -->
-
-        <!-- List condition Start -->
-        <div class="is-flex mt-5 mb-5">
-          <!-- Cate Start -->
-          <div class="flex1">
-            <b-dropdown aria-role="list" class="app-select" position="is-bottom-right" v-model="currentCate" animation="slide" :mobile-modal="false">
-              <template #trigger="{ active }">
-                <div class="button is-text auto-height pl-0 pt-0 pb-0 ">
-                  <b-icon :icon="currentCate.font" size="is-small" class="mr-1 ml-0"></b-icon>
-                  {{currentCate.name}}
-                  <b-icon icon="menu-down" size="is-normal" class="ml-1"></b-icon>
-                </div>
-              </template>
-              <b-dropdown-item v-for="menu in cateMenu" :key="menu.id" :value="menu" aria-role="listitem" :class="menu.id == currentCate.id?'is-active':''" :data-title="menu.count">
-                <div class="media is-align-items-center is-flex">
-                  <b-icon :icon="menu.font" size="is-small" class="mr-1"></b-icon>
-                  <div class="media-content">
-                    <h3>{{menu.name}}</h3>
-                  </div>
-                </div>
-              </b-dropdown-item>
-            </b-dropdown>
-
+        <div v-for="(item,index) in pageList" :key="index+item.title+item.id" class="is-flex pt-5 pb-5 b-line is-align-items-center">
+          <div class="list-icon mr-4">
+            <b-image :src="item.icon" :src-fallback="require('@/assets/img/default.png')" webp-fallback=".jpg" class="is-72x72 icon-shadow"></b-image>
           </div>
-          <!-- Cate End -->
-
-          <!-- Sort Start -->
+          <div class="flex1 mr-4">
+            <h6 class="title is-6 mb-2">{{item.title}}</h6>
+            <p class="is-size-65 two-line">{{item.tagline}}</p>
+          </div>
           <div>
-            Sort by:
-            <b-dropdown aria-role="list" class="app-select" position="is-bottom-left" v-model="currentSort" animation="slide" :mobile-modal="false">
-              <template #trigger="{ active }">
-                <div class="button is-text auto-height pl-0 pt-0 pb-0 is-size-65">
-                  {{currentSort.name}}
-                  <b-icon icon="menu-down" size="is-normal" class="ml-1"></b-icon>
-                </div>
-
-              </template>
-              <b-dropdown-item v-for="(menu,index) in sortMenu" :key="'sort_'+index" :value="menu" aria-role="listitem" :class="menu.slash == currentSort.slash?'is-active':''">
-                <div class="media align-items-center is-flex">
-                  <div class="media-content">
-                    <h3>{{menu.name}}</h3>
-                  </div>
-                </div>
-              </b-dropdown-item>
-            </b-dropdown>
-          </div>
-          <!-- Sort End -->
-        </div>
-
-        <!-- List condition End -->
-        <!-- App list Start-->
-        <div class="columns f-list is-multiline is-mobile pb-3 mb-5">
-          <div class="column is-one-quarter" v-for="(item,index) in pageList" :key="index+item.title+item.id">
-            <div class="is-flex  is-align-items-center">
-              <div class="list-icon mr-4 is-clickable" @click="showAppDetial(item.id)">
-                <b-image :src="item.icon" :src-fallback="require('@/assets/img/default.png')" webp-fallback=".jpg" class="is-72x72 icon-shadow"></b-image>
-              </div>
-              <div class="flex1 mr-4 is-clickable" @click="showAppDetial(item.id)">
-                <h6 class="title is-6 mb-2">{{item.title}}</h6>
-                <p class="is-size-7 two-line">{{item.tagline}}</p>
-              </div>
-
-            </div>
-            <div class="mt-1 ml-7 is-flex is-align-items-center">
-              <div class="flex1 is-size-7 has-text-grey-light	">{{item.category}}</div>
-              <b-button type="is-primary is-light" size="is-small" rounded @click="qucikInstall(item.id)" :loading="item.id == currentInstallId">{{$t('Install')}}</b-button>
-            </div>
+            <b-button type="is-primary" size="is-small" rounded @click="qucikInstall(item.id)" :loading="item.id == currentInstallId">{{$t('Install')}}</b-button>
           </div>
         </div>
-
-        <!-- App list End-->
-
-        <!-- Community App List Start -->
-        <h3 class="title is-5 has-text-weight-normal">{{ $t('Community Apps') }}</h3>
-        <h3 class="subtitle is-7 has-text-grey-light">{{ $t('From community contributors, not optimized for CasaOS, but provides a basic App experience.') }}</h3>
-
-        <div class="columns f-list is-multiline is-mobile  pb-3 mb-5">
-          <div class="column is-one-quarter" v-for="(item,index) in communityList " :key="index+item.title+item.id">
-            <div class="is-flex  is-align-items-center">
-              <div class="list-icon mr-4 is-clickable" @click="showAppDetial(item.id)">
-                <b-image :src="item.icon" :src-fallback="require('@/assets/img/default.png')" webp-fallback=".jpg" class="is-72x72 icon-shadow"></b-image>
-              </div>
-              <div class="flex1 mr-4 is-clickable" @click="showAppDetial(item.id)">
-                <h6 class="title is-6 mb-2">{{item.title}}</h6>
-                <p class="is-size-7 two-line">{{item.tagline}}</p>
-              </div>
-
-            </div>
-            <div class="mt-1 ml-7 is-flex is-align-items-center">
-              <div class="flex1 is-size-7 has-text-grey-light	">{{item.category}}</div>
-              <b-button type="is-primary is-light" size="is-small" rounded @click="qucikInstall(item.id)" :loading="item.id == currentInstallId">{{$t('Install')}}</b-button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Community App List End -->
 
       </section>
-      <!-- App Store List End -->
+      <!-- App Store List Start -->
 
       <!-- App Install Form Start -->
       <section v-if="currentSlide == 1">
@@ -352,14 +140,14 @@
     <footer class="modal-card-foot is-flex is-align-items-center " :class="{'is-justify-content-center':currentSlide == 0}">
       <template>
         <div class="flex1">
-          <!-- <div v-if="currentSlide == 0">
+          <div v-if="currentSlide == 0">
             <b-pagination v-if="listTotal > pageSize" :total="listTotal" v-model="pageIndex" range-before=1 range-after=1 order="is-centered" size="is-small" :simple="false" :rounded="true" :per-page="pageSize" icon-prev="chevron-left" icon-next="chevron-right" aria-next-label="Next page" aria-previous-label="Previous page" aria-page-label="Page" aria-current-label="Current page">
             </b-pagination>
-          </div> -->
+          </div>
         </div>
         <div>
           <!-- <b-button v-if="currentSlide < 2" label="Cancel" @click="$emit('close')"  rounded /> -->
-          <!-- <b-button v-if="currentSlide == 0" :label="$t('Custom Install')" @click="currentSlide = 1" type="is-primary" rounded /> -->
+          <b-button v-if="currentSlide == 0" :label="$t('Custom Install')" @click="currentSlide = 1" type="is-primary" rounded />
           <b-button v-if="currentSlide == 2 && errorType == 3 " :label="$t('Back')" @click="prevStep" rounded />
           <b-button v-if="currentSlide == 1 && state == 'install'" :label="$t('Install')" type="is-primary" @click="installApp()" rounded />
           <b-button v-if="currentSlide == 1 && state == 'update'" :label="$t('Save')" type="is-primary" @click="updateApp()" rounded />
@@ -377,7 +165,6 @@ import axios from 'axios'
 import InputGroup from './forms/InputGroup.vue';
 import EnvInputGroup from './forms/EnvInputGroup.vue';
 import Ports from './forms/Ports.vue'
-import AppSideBar from './Apps/AppSideBar.vue'
 import ImportPanel from './forms/ImportPanel.vue'
 import AppTerminalPanel from './Apps/AppTerminalPanel.vue'
 import LottieAnimation from "lottie-web-vue";
@@ -388,13 +175,11 @@ import "@/plugins/vee-validate";
 import debounce from 'lodash/debounce'
 import find from 'lodash/find';
 import uniq from 'lodash/uniq';
-// import upperFirst from 'lodash/upperFirst'
+import upperFirst from 'lodash/upperFirst'
 import isNull from 'lodash/isNull'
 import orderBy from 'lodash/orderBy';
 import cloneDeep from 'lodash/cloneDeep';
 import FileSaver from 'file-saver';
-import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
-
 
 export default {
   components: {
@@ -403,11 +188,8 @@ export default {
     EnvInputGroup,
     ValidationObserver,
     ValidationProvider,
-    AppSideBar,
     LottieAnimation,
-    VueSlider,
-    Swiper,
-    SwiperSlide
+    VueSlider
   },
   data() {
     return {
@@ -415,9 +197,8 @@ export default {
       data: [],
       isLoading: true,
       isFetching: false,
-      isFirst: true,
       errorType: 1,
-      sidebarOpen: false,
+
       cancelButtonText: "Cancel",
       webui: "",
       baseUrl: "",
@@ -450,72 +231,8 @@ export default {
       pageSize: 5,
       listTotal: 0,
       pageList: {},
-      communityList: {},
-      recommendList: {},
       currentSlide: 0,
-      currentInstallId: 0,
-
-      //Image List Swiper
-      disPrev: true,
-      disNext: false,
-      swiperOptions: {
-        loop: false,
-        autoplay: true,
-        spaceBetween: 24,
-        breakpoints: {
-          640: {
-            slidesPerView: 1
-          },
-          768: {
-            slidesPerView: 2
-          },
-          1680: {
-            slidesPerView: 3
-          }
-        },
-        on: {
-          slideChangeTransitionStart: this.handleInfoSlide
-        },
-      },
-      // Featured Swiper
-      disFeaturedPrev: true,
-      disFeaturedNext: false,
-      featureSwiperOptions: {
-        loop: false,
-        autoplay: true,
-        spaceBetween: 24,
-        breakpoints: {
-          640: {
-            slidesPerView: 1
-          },
-          768: {
-            slidesPerView: 2
-          },
-          1366: {
-            slidesPerView: 3
-          }
-        },
-        on: {
-          slideChangeTransitionStart: this.handleFeaturedSlide
-        },
-      },
-      searchKey: "",
-      currentCate: {},
-      currentSort: {},
-      cateMenu: [],
-      sortMenu: [
-        { icon: "", slash: "rank", name: "Popular" },
-        { icon: "", slash: "new", name: "New" },
-        { icon: "", slash: "name", name: "Name" },
-      ],
-      storeQueryData: {
-        index: 1,
-        category_id: "",
-        type: "rank",
-        key: this.searchKey
-      },
-      //  App Detail info
-      detailData: {}
+      currentInstallId: 0
     }
   },
   props: {
@@ -567,16 +284,11 @@ export default {
       if (!isNull(appData)) {
         this.initData = JSON.parse(appData)
       }
-      // this.getStoreList()
+      this.getStoreList()
     }
-
-    //loading app store list data from server
-    this.getCategoryList();
-
 
 
   },
-
   computed: {
 
     showPorts() {
@@ -605,102 +317,16 @@ export default {
     },
     panelTitle() {
       if (this.currentSlide == 0) {
-        return this.$t("App Store");
+        return this.$t("Featured Apps");
       } else if (this.currentSlide == 1) {
         return (this.initDatas != undefined) ? this.initData.label + " " + this.$t("Setting") : this.$t("Install a new App manually")
       } else {
         return this.$t("Installing") + " " + this.initData.image
       }
-    },
-    showDetailSwiper() {
-      return (!this.detailData.screenshot_link) ? false : true;
     }
 
-  },
-  watch: {
-    // Watch if Page index changes
-    pageIndex() {
-      // this.getStoreList()
-    },
-    // Watch if initData changes
-    initData: {
-      handler(val) {
-        if (this.state == 'install') {
-          localStorage.setItem("app_data", JSON.stringify(val))
-        }
-      },
-      deep: true
-    },
-    // Watch if the query data of app store changes
-    storeQueryData: {
-      handler() {
-        this.getStoreList();
-      },
-      deep: true
-    },
-    // Watch if app cates changes
-    currentCate: {
-      handler(val) {
-        if (!this.isFirst) {
-          this.storeQueryData.category_id = val.id
-        }
-      },
-      deep: true
-    },
-    // Watch if app sort changes
-    currentSort: {
-      handler(val) {
-        if (!this.isFirst) {
-          this.storeQueryData.type = val.slash
-        }
-      },
-      deep: true
-    }
   },
   methods: {
-    getImageUrl(imageId) {
-      return `https://picsum.photos/640/360/?image=${imageId}`
-    },
-    handleInfoSlide(swiper) {
-      this.disPrev = (swiper.activeIndex == 0) ? true : false;
-      this.disNext = swiper.isEnd;
-    },
-    handleFeaturedSlide(swiper) {
-      this.disFeaturedPrev = (swiper.activeIndex == 0) ? true : false;
-      this.disFeaturedNext = swiper.isEnd;
-    },
-
-    // Get category list
-    getCategoryList() {
-      this.$api.app.storeCategoryList().then((res) => {
-        this.cateMenu = res.data.data.filter((item) => {
-
-          return item.count > 0
-        })
-        this.currentCate = this.cateMenu[0]
-        this.currentSort = this.sortMenu[0]
-        if (this.isFirst) {
-          this.isFirst = false
-        }
-
-        //this.getStoreList();
-      })
-    },
-
-    /**
-     * @description: Show the details of app
-     * @param {id} String
-     * @return {*} void
-     */
-    showAppDetial(id) {
-      this.isLoading = true;
-      this.$api.app.storeAppInfo(id).then(resp => {
-        this.isLoading = false;
-        this.sidebarOpen = true;
-        this.detailData = resp.data.data
-      })
-    },
-
     /**
      * @description: Get App store list
      * @param {*}
@@ -708,13 +334,11 @@ export default {
      */
     getStoreList() {
       this.isLoading = true
-      this.$api.app.storeList(this.storeQueryData).then(res => {
+      this.$api.app.storeList({ index: this.pageIndex, size: this.pageSize }).then(res => {
         this.isLoading = false
         if (res.data.success == 200) {
-          // this.listTotal = res.data.data.count
-          this.pageList = res.data.data.list
-          this.communityList = res.data.data.community
-          this.recommendList = res.data.data.recommend
+          this.listTotal = res.data.data.count
+          this.pageList = res.data.data.items
         }
       })
     },
@@ -727,13 +351,12 @@ export default {
       this.currentInstallId = id
       this.$api.app.storeAppInfo(id).then(resp => {
         if (resp.data.success == 200) {
-
           let respData = resp.data.data
           this.initData.port_map = respData.port_map
           this.initData.cpu_shares = 50
           this.initData.memory = respData.max_memory
           this.initData.restart = "always"
-          this.initData.label = respData.title
+          this.initData.label = upperFirst(respData.title)
           this.initData.position = true
           this.initData.index = respData.index
           this.initData.icon = respData.icon
@@ -752,12 +375,10 @@ export default {
               message: respData.tip,
               type: 'is-dark',
               onConfirm: () => {
-                this.sidebarOpen = false;
                 this.installAppData(id)
               }
             })
           } else {
-            this.sidebarOpen = false;
             this.installAppData(id)
           }
         }
@@ -1066,7 +687,21 @@ export default {
       })
     },
   },
+  watch: {
+    pageIndex() {
+      this.getStoreList()
+    },
+    initData: {
+      handler(val) {
+        if (this.state == 'install') {
+          localStorage.setItem("app_data", JSON.stringify(val))
+        }
 
+      },
+      deep: true
+    }
+
+  },
   destroyed() {
     clearInterval(this.timer)
   },
