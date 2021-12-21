@@ -973,14 +973,12 @@ button.dropdown-item.is-active {
     .modal-card {
       width: 90vw;
       transition: all 0.3s;
-      &.narrow{
+      &.narrow {
         width: 50rem !important;
       }
     }
   }
 }
-
-
 
 @media screen and (max-width: 1366px) {
   .f-list {
@@ -988,12 +986,13 @@ button.dropdown-item.is-active {
       width: 33.333333% !important;
     }
   }
-  
 }
 
 @media screen and (min-width: 1440px) {
-  .modal-card {
-    width: 83rem !important;
+  .app-card {
+    .modal-card {
+      width: 83rem !important;
+    }
   }
 }
 
