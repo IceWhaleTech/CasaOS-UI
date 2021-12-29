@@ -135,7 +135,7 @@ export default {
           keywords: ["media"],
           value: `/Media`
         }
-        
+
       ]
 
       checkArray.forEach(item => {
@@ -282,7 +282,7 @@ export default {
             delete _this.updateData.versison
             _this.updateData.network_model = _this.getNetworkModel(_this.updateData.network_model)
             _this.updateData.memory = _this.deviceMemory
-            _this.dropText = val.name + _this.$t('has been selected')
+            _this.dropText = val.name + " " + _this.$t('has been selected')
             _this.appFileLoaded = true
             return true
           }

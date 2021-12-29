@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-24 17:09:35
+ * @LastEditTime: 2021-12-29 15:01:09
  * @Description: 
  * @FilePath: /CasaOS-UI/src/views/Home.vue
 -->
@@ -17,7 +17,7 @@
       <div class="container">
         <div class="is-flex">
           <!-- SideBar Start -->
-          <side-bar></side-bar>
+          <side-bar v-if="!hardwareInfoLoading"></side-bar>
           <div class="dark-bg" :class="{'open':sidebarOpen}"></div>
           <!-- SideBar End -->
 
@@ -32,7 +32,7 @@
             <!-- Suggestions For You Start -->
             <section>
               <!-- <suggestion></suggestion> -->
-              <core-service ></core-service>
+              <core-service></core-service>
             </section>
             <!-- Suggestions For You End -->
 
@@ -80,7 +80,9 @@ export default {
   data() {
     return {
       isLoading: true,
-      
+      hardwareInfoLoading: true,
+      timer: 0,
+      timeGap: 3,
       topBarAni: {
         classes: 'fadeInDown',
         duration: 800
@@ -88,36 +90,67 @@ export default {
 
     }
   },
-  
+
   computed: {
     sidebarOpen() {
       return this.$store.state.sidebarOpen
     }
   },
   mounted() {
-    this.$api.info.guideCheck().then(res => {
-      if (res.data.success == 200 && res.data.data.need_init_user) {
-        localStorage.removeItem("user_token");
-        this.$router.push("/welcome");
-      } else {
-        this.isLoading = false
-      }
-    });
+    this.isLoading = false
+    if (this.timer) {
+      clearInterval(this.timer)
+    }
+    this.getHardwareInfo();
+    this.timer = setInterval(() => {
+      this.getHardwareInfo()
+    }, 2000);
+
+
     window.addEventListener("resize", this.onResize);
     this.onResize()
   },
   methods: {
+    /**
+     * @description: Show SideBar
+     * @param {*}
+     * @return {*} void
+     */
     showSideBar() {
       console.log("showSidebar");
     },
+
+    /**
+     * @description: Window Resize Handler
+     * @param {*}
+     * @return {*} void
+     */
     onResize() {
       if (window.innerWidth > 480 && this.sidebarOpen) {
         this.$store.commit('closeSideBar');
       }
+    },
+
+    /**
+     * @description: Get Hardware info and save to store
+     * @param {*}
+     * @return {*} void
+     */
+
+    getHardwareInfo() {
+      this.$api.info.allInfo().then(res => {
+        if (res.data.success === 200) {
+          this.hardwareInfoLoading = false
+          this.$store.commit('changeHardwareInfo', res.data.data);
+        }
+      })
     }
+
+
   },
-  beforeDestroy () {
-    window.removeEventListener("resize", this.onResize)
+  beforeDestroy() {
+    window.removeEventListener("resize", this.onResize);
+    clearInterval(this.timer);
   },
 }
 </script>

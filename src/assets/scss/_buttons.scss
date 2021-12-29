@@ -22,6 +22,19 @@
   color: white;
 }
 
+.button.is-ghost {
+  color: $ghost;
+}
+.button.is-text {
+  color: #000;
+  text-decoration: none;
+  background: transparent;
+  &:hover{
+    background: transparent;
+  }
+}
+
+
 
 .add-button {
   color: #0e9aff;

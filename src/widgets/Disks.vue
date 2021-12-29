@@ -29,18 +29,20 @@ export default {
   },
   data() {
     return {
-      timer: 0,
       diskData: [],
     }
   },
   mounted() {
-    if (this.timer) {
-      clearInterval(this.timer)
-    }
-    this.getDiskInfo();
-    this.timer = setInterval(() => {
-      this.getDiskInfo();
-    }, 5000)
+    this.getDiskInfo(this.$store.state.hardwareInfo.disk)
+  },
+  watch: {
+    // Watch if Hardware info changes in the store
+    '$store.state.hardwareInfo': {
+      handler(val) {
+        this.getDiskInfo(val.disk)
+      },
+      deep: true
+    },
   },
   methods: {
     getTotalSize(part, key) {
@@ -55,24 +57,29 @@ export default {
       }
       return size;
     },
-    getDiskInfo() {
-      this.$api.disk.diskList().then((res) => {
-        if (res.data.success == 200) {
-          this.diskData = res.data.data.reverse().map((disk) => {
-            let totalSize = this.getTotalSize(disk, "fssize");
-            let useSize = this.getTotalSize(disk, "fsused");
-            let availSize = this.getTotalSize(disk, "fsavail");
-            return {
-              label: disk.model != "" ? disk.model : disk.name,
-              size: totalSize,
-              tran: disk.tran,
-              availSize: availSize,
-              useSize: useSize,
-              usePercnet: 100 - Math.floor(availSize * 100 / totalSize),
-            }
+    getDiskInfo(diskInfo) {
+      let realDisks = diskInfo.filter((disk) => {
+        if (disk.children !== null) {
+          let childs = disk.children.filter(part => {
+            return part.mountpoint != ""
           })
+          return childs.length > 0
         }
       })
+      this.diskData = realDisks.reverse().map((disk) => {
+        let totalSize = this.getTotalSize(disk, "fssize");
+        let useSize = this.getTotalSize(disk, "fsused");
+        let availSize = this.getTotalSize(disk, "fsavail");
+        return {
+          label: disk.model != "" ? disk.model : disk.name,
+          size: totalSize,
+          tran: disk.tran,
+          availSize: availSize,
+          useSize: useSize,
+          usePercnet: 100 - Math.floor(availSize * 100 / totalSize),
+        }
+      })
+
     },
     renderSize(value) {
       if (null == value || value == '') {
@@ -86,9 +93,6 @@ export default {
       size = size.toFixed(2);
       return size + unitArr[index];
     },
-  },
-  destroyed() {
-    clearInterval(this.timer);
   },
   filters: {
 

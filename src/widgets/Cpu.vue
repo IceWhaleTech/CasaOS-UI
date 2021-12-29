@@ -54,6 +54,9 @@
 import VueApexCharts from 'vue-apexcharts'
 import smoothReflow from 'vue-smooth-reflow'
 import orderBy from 'lodash/orderBy';
+import has from 'lodash/has';
+import slice from 'lodash/slice';
+
 export default {
   name: 'cpu',
   icon: "cog",
@@ -66,7 +69,6 @@ export default {
 
   data() {
     return {
-      timer: 0,
       activeTab: 0,
       showMore: false,
       barHeight: 120,
@@ -159,28 +161,44 @@ export default {
     }
   },
   mounted() {
-    if (this.timer) {
-      clearInterval(this.timer)
-    }
-    this.updateCharts()
-    this.timer = setInterval(() => {
-      this.updateCharts()
-    }, 2000)
+    this.updateCharts(this.$store.state.hardwareInfo)
+    this.getDockerUsage()
 
     this.$smoothReflow({
       el: '.widget',
       property: ['height'],
     })
   },
+  watch: {
+    // Watch if Hardware info changes in the store
+    '$store.state.hardwareInfo': {
+      handler(val) {
+        this.updateCharts(val)
+      },
+      deep: true
+    },
+  },
   methods: {
-    updateCharts() {
-      this.$api.info.allInfo().then(res => {
-        if (res.data.success === 200) {
-          this.cpuSeries = [res.data.data.cpu.percent]
-          this.ramSeries = [res.data.data.mem.usedPercent]
-        }
-      })
+    /**
+     * @description: Update cpu and memory usage
+     * @param {*}
+     * @return {*} void
+     */
+    updateCharts(hardwareInfo) {
 
+      this.cpuSeries = [hardwareInfo.cpu.percent]
+      this.ramSeries = [hardwareInfo.mem.usedPercent]
+
+      if (this.showMore) {
+        this.getDockerUsage()
+      }
+    },
+    /**
+     * @description: Get Docker apps cpu and memory usage
+     * @param {*}
+     * @return {*} void
+     */
+    getDockerUsage() {
       this.$api.app.getAppUsage().then(res => {
         this.containerCpuList = res.data.data.map(item => {
           let usage = 0;
@@ -200,24 +218,39 @@ export default {
         })
 
         this.containerRamList = res.data.data.map(item => {
-          const used_memory = ("stats" in item.data.memory_stats) ? (item.data.memory_stats.usage - item.data.memory_stats.stats.cache) : NaN
+
+          let cache = 0
+          if (has(item.data.memory_stats.stats, 'inactive_file')) {
+            cache = item.data.memory_stats.stats.inactive_file
+          } else {
+            if (has(item.data.memory_stats.stats, 'cache')) {
+              cache = item.data.memory_stats.stats.cache
+            } else if (has(item.data.memory_stats.stats, 'total_inactive_file')) {
+              cache = item.data.memory_stats.stats.total_inactive_file
+            }
+          }
+          const used_memory = ("stats" in item.data.memory_stats) ? (item.data.memory_stats.usage - cache) : NaN
           return {
             usage: used_memory,
             icon: item.icon,
             title: item.title
           };
         })
-        this.containerCpuList = orderBy(this.containerCpuList, ['usage'], ['desc'])
-        this.containerRamList = orderBy(this.containerRamList, ['usage'], ['desc'])
+        this.containerCpuList = slice(orderBy(this.containerCpuList, ['usage'], ['desc']), 0, 8)
+        this.containerRamList = slice(orderBy(this.containerRamList, ['usage'], ['desc']), 0, 8)
       })
     },
+
+    /**
+     * @description: Toggle more info
+     * @param {*}
+     * @return {*} void
+     */
     showMoreInfo() {
       this.showMore = !this.showMore;
     }
   },
-  destroyed() {
-    clearInterval(this.timer);
-  },
+
   filters: {
     renderSize(value) {
       if (null == value || value == '') {

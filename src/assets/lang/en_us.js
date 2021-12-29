@@ -58,7 +58,7 @@ export default {
     "Settings": "Settings",
     "Dashboard Setting": "Dashboard Setting",
     "Search Engine": "Search Engine",
-    "WebUI port": "WebUI port",
+    "WebUI Port": "WebUI Port",
     "Currently the latest version": "Currently the latest version",
     "A new version is available!": "A new version is available!",
     "Edit Web UI port": "Edit WebUI port",
@@ -175,5 +175,13 @@ export default {
     "optional configuration items": "optional configuration items",
     "These include but are not limited to these cases and <b>still need to be confirmed or modified by you.</b>": "These include but are not limited to these cases and <b>still need to be confirmed or modified by you.</b>",
     "Feel free to suggest improvements to this feature in Discord Server!": "Feel free to suggest improvements to this feature in Discord Server!",
-    "Using localhost or 127.0.0.1 will cause the application to be inaccessible, please use the real ip to access.": "Using localhost or 127.0.0.1 will cause the application to be inaccessible, please use the real ip to access."
+    "Using localhost or 127.0.0.1 will cause the application to be inaccessible, please use the real ip to access.": "Using localhost or 127.0.0.1 will cause the application to be inaccessible, please use the real ip to access.",
+    "CATEGORY":"CATEGORY",
+    "DEVELOPER":"DEVELOPER",
+    "REQUIRE":"REQUIRE",
+    "MEMORY":"MEMORY",
+    "DISK":"DISK",
+    "App Store":"App Store",
+    "Community Apps":"Community Apps",
+    "From community contributors, not optimized for CasaOS, but provides a basic App experience.":"From community contributors, not optimized for CasaOS, but provides a basic App experience.",
 }
