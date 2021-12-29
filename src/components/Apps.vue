@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-13 15:10:47
+ * @LastEditTime: 2021-12-29 16:20:58
  * @Description: App module
  * @FilePath: /CasaOS-UI/src/components/Apps.vue
 -->
@@ -13,7 +13,7 @@
     <div class="title-bar is-flex is-align-items-center">
       <h1 class="title is-4  has-text-white is-flex-shrink-1">{{$t('Apps')}}</h1>
       <div class="buttons ">
-        <b-button id="v-step-0" icon-left="plus" type="is-dark" size="is-small" rounded @click="showInstall">{{$t('App')}}</b-button>
+        <b-button id="v-step-0" icon-left="apps" type="is-dark" size="is-small" rounded @click="showInstall">{{$t('App Store')}}</b-button>
       </div>
     </div>
     <!-- Title Bar End -->

@@ -2,13 +2,13 @@
  * @Author: JerryK
  * @Date: 2021-12-06 13:52:11
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-06 15:54:55
+ * @LastEditTime: 2021-12-23 18:53:14
  * @Description: 
  * @FilePath: /CasaOS-UI/src/widgets/Network.vue
 -->
 <template>
   <div class="widget has-text-white clock is-relative pb-1">
-    <vue-apex-charts type="area" ref="chart" height="100" :options="lineChartSimple.chartOptions" :series="lineChartSimple.series" />
+    <vue-apex-charts type="area" ref="chart" height="150" :options="lineChartSimple.chartOptions" :series="netSeries" />
   </div>
 </template>
 
@@ -28,8 +28,20 @@ export default {
       timer: 0,
       timeGap: 3,
       seriesArray: [],
+      netSeries: [
+        {
+          name: 'Up',
+          data: [0],
+          cacheData: 0
+        },
+        {
+          name: 'Down',
+          data: [0],
+          cacheData: 0
+        }
+      ],
       lineChartSimple: {
-        series: this.buildSeries(),
+        series: this.netSeries,
         chartOptions: {
           chart: {
             zoom: {
@@ -57,7 +69,7 @@ export default {
           },
           stroke: {
             curve: 'smooth',
-            width: 3,
+            width: 1,
           },
           grid: {
             xaxis: {
@@ -79,14 +91,13 @@ export default {
             range: 60,
             labels: {
               show: false,
-
             },
             tooltip: {
               enabled: false
             }
           },
           yaxis: {
-            
+           
           },
           legend: {
             show: true,
@@ -105,24 +116,38 @@ export default {
     this.updateCharts()
     this.timer = setInterval(() => {
       this.updateCharts()
-    }, 3000)
+    }, this.timeGap * 1000)
   },
 
   methods: {
     updateCharts() {
       this.$api.info.allInfo().then(res => {
         if (res.data.success === 200) {
-          //console.log(res.data.data);
+          // console.log(res.data.data.net);
           this.initChart(res.data.data.net)
         }
       })
+
     },
 
     initChart(netArray) {
-      //console.log(netArray);
-      for (let index = 0; index < netArray.length; index++) {
-        this.seriesArray[index] = this.updateSeries(netArray[index], index);
+      let recData = netArray.reduce((total, item) => {
+        return total + item.bytesRecv
+      }, 0)
+      let sendData = netArray.reduce((total, item) => {
+        return total + item.bytesSent
+      }, 0)
+      if (this.netSeries[0].cacheData > 0) {
+        this.netSeries[0].data.push(this.covertToKB((sendData - this.netSeries[0].cacheData) / this.timeGap))
       }
+
+      this.netSeries[0].cacheData = sendData
+      if (this.netSeries[1].cacheData > 0) {
+        this.netSeries[1].data.push(this.covertToKB((recData - this.netSeries[1].cacheData) / this.timeGap))
+      }
+      this.netSeries[1].cacheData = recData
+      // console.log(this.netSeries);
+      this.$refs.chart.updateSeries(this.netSeries)
     },
     updateSeries(data, index) {
       let recvArr = []
@@ -142,7 +167,7 @@ export default {
       return this.buildSeries(sentArr, sentArrRef, recvArr, recvArrRef)
     },
     buildSeries(sentArr = [], sentArrRef = [], recvArr = [], recvArrRef = []) {
-      return [
+      let aa = [
         {
           name: 'Up',
           data: sentArr,
@@ -154,9 +179,10 @@ export default {
           refData: recvArrRef
         }
       ]
+      return aa
     },
     covertToKB(bytes) {
-      return (bytes / 1024).toFixed(1);
+      return (bytes / 1024).toFixed(0);
     }
   },
 }

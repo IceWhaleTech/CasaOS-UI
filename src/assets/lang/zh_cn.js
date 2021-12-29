@@ -58,7 +58,7 @@ export default {
     "Settings": "系统设置",
     "Dashboard Setting": "系统设置",
     "Search Engine": "搜索引擎",
-    "WebUI port": "网页界面端口",
+    "WebUI Port": "网页界面端口",
     "Currently the latest version": "当前已经是最新版",
     "A new version is available!": "有新的可用版本！",
     "Edit Web UI port": "修改网页界面端口",

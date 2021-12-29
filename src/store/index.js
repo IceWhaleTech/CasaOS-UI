@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-21 13:50:08
+ * @LastEditTime: 2021-12-29 14:51:10
  * @Description: 
  * @FilePath: /CasaOS-UI/src/store/index.js
  */
@@ -24,13 +24,15 @@ export default new Vuex.Store({
     syncthingKey: '',
     syncthingPort: '',
     searchEngine: '',
-    siteLoading:true,
+    siteLoading: true,
+    needInitialization: false,
     widgetsSwitch: {
       clock: true,
       weather: true,
       cpu: true,
       disk: true
-    }
+    },
+    hardwareInfo: {}
   },
   mutations: {
     setToken(state, val) {
@@ -40,7 +42,6 @@ export default new Vuex.Store({
       state.serviceError = val
     },
     setWidgets(state, val) {
-      console.log(state.widgetsSwitch[val.k]);
       state.widgetsSwitch[val.k] = val.v;
     },
     changeUserInfo(state, val) {
@@ -59,8 +60,14 @@ export default new Vuex.Store({
     changeSearchEngine(state, val) {
       state.searchEngine = val
     },
-    changeSiteLoading(state){
+    changeSiteLoading(state) {
       state.siteLoading = false
+    },
+    changeInitialization(state, val) {
+      state.needInitialization = val
+    },
+    changeHardwareInfo(state, val) {
+      state.hardwareInfo = val
     }
   },
   actions: {

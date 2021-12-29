@@ -907,6 +907,10 @@ button.dropdown-item.is-active {
   }
 }
 
+.un-break-word{
+  word-break: keep-all;
+}
+
 .t-box {
   background: #eeeeee;
   border-radius: 4px;
@@ -991,7 +995,7 @@ button.dropdown-item.is-active {
 @media screen and (min-width: 1440px) {
   .app-panel {
     .modal-card {
-      width: 83rem !important;
+      width: 70rem !important;
     }
   }
 }

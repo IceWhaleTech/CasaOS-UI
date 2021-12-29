@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-16 16:34:08
+ * @LastEditTime: 2021-12-29 13:51:24
  * @Description: Main entry of application
  * @FilePath: /CasaOS-UI/src/App.vue
 -->
@@ -80,11 +80,14 @@ export default {
   },
 
   created() {
-    
+
     this.$api.info.guideCheck().then(res => {
       if (res.data.success == 200 && res.data.data.need_init_user) {
         this.isWelcome = true
         this.$emit('changeSiteLoading');
+        this.$emit('changeInitialization', true);
+        localStorage.removeItem("user_token");
+        this.$router.push("/welcome");
       } else {
         this.isWelcome = false
       }

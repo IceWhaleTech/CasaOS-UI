@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-09 15:43:56
+ * @LastEditTime: 2021-12-29 15:30:51
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/SideBar.vue
 -->
@@ -21,6 +21,7 @@
 import lowerFirst from 'lodash/lowerFirst'
 import camelCase from 'lodash/camelCase'
 import find from 'lodash/find';
+import isEqual from 'lodash/isEqual';
 import Settings from '@/components/Settings.vue'
 import vueCustomScrollbar from 'vue-custom-scrollbar'
 import "vue-custom-scrollbar/dist/vueScrollbar.css"
@@ -115,7 +116,9 @@ export default {
         }
       })
       this.widgetsSettings = newData;
-      this.saveData(newData);
+      if (!isEqual(newData, remoteData)) {
+        this.saveData(newData);
+      }
       this.isLoading = false;
     },
     /**

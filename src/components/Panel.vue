@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-20 15:18:14
+ * @LastEditTime: 2021-12-29 10:41:14
  * @Description: Install Panel of Docker
  * @FilePath: /CasaOS-UI/src/components/Panel.vue
 -->
@@ -27,7 +27,7 @@
             <!-- App Info Header Start -->
             <div class="app-header is-flex pb-4 b-line">
               <div class="header-icon mr-5">
-                <b-image :src="detailData.icon" :src-fallback="require('@/assets/img/default.png')" webp-fallback=".jpg" class="is-128x128 icon-shadow"></b-image>
+                <b-image :src="detailData.icon" :key="detailData.icon" :src-fallback="require('@/assets/img/default.png')" webp-fallback=".jpg" class="is-128x128 icon-shadow"></b-image>
               </div>
               <div class="flex1 is-flex is-align-items-center">
                 <div>
@@ -57,7 +57,7 @@
                   <p class="title">
                     <b-icon icon="account-circle-outline" custom-size="mdi-36px"></b-icon>
                   </p>
-                  <p class="footing is-size-65">{{detailData.author}}</p>
+                  <p class="footing is-size-65">{{detailData.developer}}</p>
                 </div>
               </div>
               <div class="level-item has-text-centered">
@@ -95,9 +95,9 @@
 
             <!-- App Info  Start -->
             <div class="app-desc mt-4 mb-6">
-              <p class="is-size-66 mb-2">{{detailData.tagline}}</p>
-              <p class="is-size-66 ">{{detailData.description}}</p>
-              <p class="is-size-66 " v-html="detailData.tip"></p>
+              <p class="is-size-66 mb-2 un-break-word">{{detailData.tagline}}</p>
+              <p class="is-size-66 un-break-word">{{detailData.description}}</p>
+              <!-- <p class="is-size-66 " v-html="detailData.tip"></p> -->
             </div>
             <!-- App Info  End -->
 
@@ -127,7 +127,7 @@
         <b-tooltip :label="$t('Export AppFile')" position="is-bottom" type="is-dark" v-if="showExportButton">
           <button type="button" class="icon-button mdi mdi-export-variant" @click="exportJSON" />
         </b-tooltip>
-        <div v-if="currentSlide < 2" class="is-flex is-align-items-center modal-close-container z-20 " :class="{'modal-close-container-line':!sidebarOpen}">
+        <div v-if="currentSlide < 2" class="is-flex is-align-items-center modal-close-container modal-close-container-line" >
           <button type="button" class="delete" @click="$emit('close')" />
         </div>
 
@@ -139,33 +139,34 @@
     <section class="modal-card-body">
       <!-- App Store List Start -->
       <section v-if="currentSlide == 0">
-        <h3 class="title is-5 has-text-weight-normal">{{ $t('Featured Apps') }}</h3>
-        <!-- Featured Slider Start -->
-        <div class="is-relative featured-app b-line pb-5">
-          <swiper class="swiper " ref="featureSwiper" :options="featureSwiperOptions">
-            <swiper-slide v-for="(item,index) in recommendList " :key="index+item.title+item.id">
-              <div class="gap" @click="showAppDetial(item.id)">
-                <b-image :src="item.thumbnail" ratio="16by9" class="border-8 is-clickable" :src-fallback="require('@/assets/img/swiper_placeholder.png')" placeholder></b-image>
-              </div>
-              <div class="is-flex pt-5 is-align-items-center">
-                <div class=" mr-3" @click="showAppDetial(item.id)">
-                  <b-image :src="item.icon" :src-fallback="require('@/assets/img/default.png')" webp-fallback=".jpg" class="is-48x48 is-clickable"></b-image>
+        <template v-if="recommendList.length > 0">
+          <h3 class="title is-5 has-text-weight-normal">{{ $t('Featured Apps') }}</h3>
+          <!-- Featured Slider Start -->
+          <div class="is-relative featured-app b-line pb-5">
+            <swiper class="swiper " ref="featureSwiper" :options="featureSwiperOptions">
+              <swiper-slide v-for="(item,index) in recommendList " :key="index+item.title+item.id">
+                <div class="gap" @click="showAppDetial(item.id)">
+                  <b-image :src="item.thumbnail" ratio="16by9" class="border-8 is-clickable" :src-fallback="require('@/assets/img/swiper_placeholder.png')" placeholder></b-image>
                 </div>
-                <div class="flex1 mr-4 is-clickable" @click="showAppDetial(item.id)">
-                  <h6 class="title is-6 mb-2 ">{{item.title}}</h6>
-                  <p class="is-size-7 two-line">{{item.tagline}}</p>
+                <div class="is-flex pt-5 is-align-items-center">
+                  <div class=" mr-3" @click="showAppDetial(item.id)">
+                    <b-image :src="item.icon" :src-fallback="require('@/assets/img/default.png')" webp-fallback=".jpg" class="is-48x48 is-clickable"></b-image>
+                  </div>
+                  <div class="flex1 mr-4 is-clickable" @click="showAppDetial(item.id)">
+                    <h6 class="title is-6 mb-2 ">{{item.title}}</h6>
+                    <p class="is-size-7 two-line">{{item.tagline}}</p>
+                  </div>
+                  <div>
+                    <b-button type="is-primary is-light" size="is-small" rounded @click="qucikInstall(item.id)" :loading="item.id == currentInstallId">{{$t('Install')}}</b-button>
+                  </div>
                 </div>
-                <div>
-                  <b-button type="is-primary is-light" size="is-small" rounded @click="qucikInstall(item.id)" :loading="item.id == currentInstallId">{{$t('Install')}}</b-button>
-                </div>
-              </div>
-            </swiper-slide>
+              </swiper-slide>
 
-          </swiper>
-          <div class="swiper-button-prev" :class="{'swiper-button-disabled':disFeaturedPrev}" @click="$refs.featureSwiper.$swiper.slidePrev()"></div>
-          <div class="swiper-button-next" :class="{'swiper-button-disabled':disFeaturedNext}" @click="$refs.featureSwiper.$swiper.slideNext()"></div>
-        </div>
-
+            </swiper>
+            <div class="swiper-button-prev" :class="{'swiper-button-disabled':disFeaturedPrev}" @click="$refs.featureSwiper.$swiper.slidePrev()"></div>
+            <div class="swiper-button-next" :class="{'swiper-button-disabled':disFeaturedNext}" @click="$refs.featureSwiper.$swiper.slideNext()"></div>
+          </div>
+        </template>
         <!-- Featured Slider End -->
 
         <!-- List condition Start -->
@@ -240,27 +241,29 @@
         <!-- App list End-->
 
         <!-- Community App List Start -->
-        <h3 class="title is-5 has-text-weight-normal">{{ $t('Community Apps') }}</h3>
-        <h3 class="subtitle is-7 has-text-grey-light">{{ $t('From community contributors, not optimized for CasaOS, but provides a basic App experience.') }}</h3>
+        <template v-if="communityList.length > 0">
+          <h3 class="title is-5 has-text-weight-normal">{{ $t('Community Apps') }}</h3>
+          <h3 class="subtitle is-7 has-text-grey-light">{{ $t('From community contributors, not optimized for CasaOS, but provides a basic App experience.') }}</h3>
 
-        <div class="columns f-list is-multiline is-mobile  pb-3 mb-5">
-          <div class="column is-one-quarter" v-for="(item,index) in communityList " :key="index+item.title+item.id">
-            <div class="is-flex  is-align-items-center">
-              <div class="list-icon mr-4 is-clickable" @click="showAppDetial(item.id)">
-                <b-image :src="item.icon" :src-fallback="require('@/assets/img/default.png')" webp-fallback=".jpg" class="is-72x72 icon-shadow"></b-image>
-              </div>
-              <div class="flex1 mr-4 is-clickable" @click="showAppDetial(item.id)">
-                <h6 class="title is-6 mb-2">{{item.title}}</h6>
-                <p class="is-size-7 two-line">{{item.tagline}}</p>
-              </div>
+          <div class="columns f-list is-multiline is-mobile  pb-3 mb-5">
+            <div class="column is-one-quarter" v-for="(item,index) in communityList " :key="index+item.title+item.id">
+              <div class="is-flex  is-align-items-center">
+                <div class="list-icon mr-4 is-clickable" @click="showAppDetial(item.id)">
+                  <b-image :src="item.icon" :src-fallback="require('@/assets/img/default.png')" webp-fallback=".jpg" class="is-72x72 icon-shadow"></b-image>
+                </div>
+                <div class="flex1 mr-4 is-clickable" @click="showAppDetial(item.id)">
+                  <h6 class="title is-6 mb-2">{{item.title}}</h6>
+                  <p class="is-size-7 two-line">{{item.tagline}}</p>
+                </div>
 
-            </div>
-            <div class="mt-1 ml-7 is-flex is-align-items-center">
-              <div class="flex1 is-size-7 has-text-grey-light	">{{item.category}}</div>
-              <b-button type="is-primary is-light" size="is-small" rounded @click="qucikInstall(item.id)" :loading="item.id == currentInstallId">{{$t('Install')}}</b-button>
+              </div>
+              <div class="mt-1 ml-7 is-flex is-align-items-center">
+                <div class="flex1 is-size-7 has-text-grey-light	">{{item.category}}</div>
+                <b-button type="is-primary is-light" size="is-small" rounded @click="qucikInstall(item.id)" :loading="item.id == currentInstallId">{{$t('Install')}}</b-button>
+              </div>
             </div>
           </div>
-        </div>
+        </template>
 
         <!-- Community App List End -->
 
@@ -361,8 +364,8 @@
           <!-- <b-button v-if="currentSlide < 2" label="Cancel" @click="$emit('close')"  rounded /> -->
           <!-- <b-button v-if="currentSlide == 0" :label="$t('Custom Install')" @click="currentSlide = 1" type="is-primary" rounded /> -->
           <b-button v-if="currentSlide == 2 && errorType == 3 " :label="$t('Back')" @click="prevStep" rounded />
-          <b-button v-if="currentSlide == 1 && state == 'install'" :label="$t('Install')" type="is-primary" @click="installApp()" rounded />
-          <b-button v-if="currentSlide == 1 && state == 'update'" :label="$t('Save')" type="is-primary" @click="updateApp()" rounded />
+          <b-button v-if="currentSlide == 1 && state == 'install'" :label="$t('Install')" type="is-primary" @click="installApp()" rounded :loading="isLoading" />
+          <b-button v-if="currentSlide == 1 && state == 'update'" :label="$t('Save')" type="is-primary" @click="updateApp()" rounded :loading="isLoading" />
           <b-button v-if="currentSlide == 2 && (errorType == 1 || errorType == 4)" :label="$t(cancelButtonText)" type="is-primary" @click="$emit('close')" rounded />
         </div>
       </template>
@@ -469,7 +472,7 @@ export default {
           768: {
             slidesPerView: 2
           },
-          1680: {
+          1366: {
             slidesPerView: 3
           }
         },
@@ -618,8 +621,11 @@ export default {
 
   },
   watch: {
-    // Watch if Page index changes
-    pageIndex() {
+    // Watch if Section index changes
+    currentSlide(val) {
+      if (val == 1) {
+        this.isLoading = false;
+      }
       // this.getStoreList()
     },
     // Watch if initData changes
@@ -658,9 +664,7 @@ export default {
     }
   },
   methods: {
-    getImageUrl(imageId) {
-      return `https://picsum.photos/640/360/?image=${imageId}`
-    },
+    
     handleInfoSlide(swiper) {
       this.disPrev = (swiper.activeIndex == 0) ? true : false;
       this.disNext = swiper.isEnd;
@@ -670,7 +674,11 @@ export default {
       this.disFeaturedNext = swiper.isEnd;
     },
 
-    // Get category list
+    /**
+     * @description: Get category list
+     * @param {*} 
+     * @return {*} void
+     */
     getCategoryList() {
       this.$api.app.storeCategoryList().then((res) => {
         this.cateMenu = res.data.data.filter((item) => {
@@ -704,7 +712,7 @@ export default {
     /**
      * @description: Get App store list
      * @param {*}
-     * @return {*} array
+     * @return {*} void
      */
     getStoreList() {
       this.isLoading = true
@@ -746,10 +754,10 @@ export default {
           this.initData.envs = isNull(respData.envs) ? [] : respData.envs
           this.initData.devices = isNull(respData.devices) ? [] : respData.devices
           this.currentInstallId = 0
-          if (respData.tip !== "") {
+          if (respData.tip !== "null") {
             this.$buefy.dialog.confirm({
               title: this.$t('Attention'),
-              message: respData.tip,
+              message: this.formatTips(respData.tip),
               type: 'is-dark',
               onConfirm: () => {
                 this.sidebarOpen = false;
@@ -762,6 +770,22 @@ export default {
           }
         }
       })
+    },
+    /**
+     * @description: Format AppStore tip datas
+     * @param {data}
+     * @return {html} Str 
+     */
+    formatTips(data) {
+      let html = "";
+      JSON.parse(data).forEach(item => {
+        html += "<span class=' is-size-65 un-break-word'>" + item.content + "</span>"
+        if (item.value != '') {
+          html += "<span class='tag is-primary '>" + item.value + "</span>"
+        }
+        html += "<br/>"
+      })
+      return html
     },
 
 
@@ -777,11 +801,9 @@ export default {
         this.initData.port_map = slashArr[0]
         this.initData.index = "/" + slashArr.slice(1).join("/");
       }
-
+      this.initData.cpu_shares = Number(this.initData.cpu_shares)
       let model = this.initData.network_model.split("-");
       this.initData.network_model = model[0]
-
-
     },
 
     /**

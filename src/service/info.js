@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-07 11:12:03
+ * @LastEditTime: 2021-12-29 14:55:53
  * @Description: System HardWare Info API
  * @FilePath: /CasaOS-UI/src/service/info.js
  */
@@ -27,7 +27,7 @@ const info = {
     },
     //All Info
     allInfo() {
-        return api.get('/zima/getinfo');
+        return api.get('/sys/info');
     },
     // System Info
     systemInfo() {

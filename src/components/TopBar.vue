@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-08 13:54:16
+ * @LastEditTime: 2021-12-29 13:54:39
  * @Description: Top bar 
  * @FilePath: /CasaOS-UI/src/components/TopBar.vue
 -->
@@ -102,7 +102,7 @@
 
           <div class="is-flex is-align-items-center mb-1">
             <div class="is-flex is-align-items-center flex1">
-              <b-icon icon="view-dashboard-outline" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{$t('WebUI port')}}</b>
+              <b-icon icon="view-dashboard-outline" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{$t('WebUI Port')}}</b>
             </div>
             <div>
               {{port}}

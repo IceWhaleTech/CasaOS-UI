@@ -58,7 +58,7 @@ export default {
     "Settings": "Settings",
     "Dashboard Setting": "Dashboard Setting",
     "Search Engine": "Search Engine",
-    "WebUI port": "WebUI port",
+    "WebUI Port": "WebUI Port",
     "Currently the latest version": "Currently the latest version",
     "A new version is available!": "A new version is available!",
     "Edit Web UI port": "Edit WebUI port",
