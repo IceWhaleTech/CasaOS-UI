@@ -175,5 +175,13 @@ export default {
     "optional configuration items": "elementi di configurazione opzionali",
     "These include but are not limited to these cases and <b>still need to be confirmed or modified by you.</b>": "Questi includono ma non sono limitati a questi casi e <b> devono ancora essere confermati o modificati da te.</b>",
     "Feel free to suggest improvements to this feature in Discord Server!": "Sentiti libero di suggerire miglioramenti a questa funzione in Discord Server!",
-    "Using localhost or 127.0.0.1 will cause the application to be inaccessible, please use the real ip to access.": "L'utilizzo di localhost o 127.0.0.1 renderà l'applicazione inaccessibile, utilizzare l'ip reale per accedere."
+    "Using localhost or 127.0.0.1 will cause the application to be inaccessible, please use the real ip to access.": "L'utilizzo di localhost o 127.0.0.1 renderà l'applicazione inaccessibile, utilizzare l'ip reale per accedere.",
+    "CATEGORY":"CATEGORIA",
+    "DEVELOPER":"SVILUPPATORE",
+    "REQUIRE":"RICHIEDERE",
+    "MEMORY":"MEMORIA",
+    "DISK":"DISCO",
+    "App Store":"App Store",
+    "Community Apps":"App della Comunità",
+    "From community contributors, not optimized for CasaOS, but provides a basic App experience.":"Da contributori della community, non ottimizzato per CasaOS, ma fornisce un'esperienza di base dell'app.",
 }
