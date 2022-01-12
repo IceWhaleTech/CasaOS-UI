@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-29 10:41:14
+ * @LastEditTime: 2022-01-11 14:41:56
  * @Description: Install Panel of Docker
  * @FilePath: /CasaOS-UI/src/components/Panel.vue
 -->
@@ -196,7 +196,7 @@
 
           <!-- Sort Start -->
           <div>
-            Sort by:
+            {{ $t('Sort by') }}:
             <b-dropdown aria-role="list" class="app-select" position="is-bottom-left" v-model="currentSort" animation="slide" :mobile-modal="false">
               <template #trigger="{ active }">
                 <div class="button is-text auto-height pl-0 pt-0 pb-0 is-size-65">

@@ -184,4 +184,5 @@ export default {
     "App Store":"应用中心",
     "Community Apps":"社区App",
     "From community contributors, not optimized for CasaOS, but provides a basic App experience.":"来自社区贡献者。提供了基础的App体验，但不是专门为CasaOS优化的。",
+    "Sort by":"排序",
 }
