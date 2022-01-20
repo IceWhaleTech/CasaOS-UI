@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-11-10 17:48:25
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-29 15:26:47
+ * @LastEditTime: 2022-01-20 13:16:33
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/SyncBlock.vue
 -->
@@ -85,12 +85,13 @@ import SyncPanel from './SyncPanel.vue'
 import forEach from 'lodash/forEach';
 import pull from 'lodash/pull';
 import axios from 'axios'
-
+import { mixin } from '../mixins/mixin';
 export default {
   name: "sync-block",
   components: {
 
   },
+  mixins: [mixin],
   data() {
     return {
       isLoading: false,
@@ -269,32 +270,6 @@ export default {
       window.open(this.syncBaseURL, "_blank");
     }
   },
-  filters: {
-    renderBps(value) {
-      if (null == value || value == '' || value == 0) {
-        return "0 bps";
-      }
-      var unitArr = new Array("bps", "Kbps", "Mbps", "Gbps", "TB", "PB", "EB", "ZB", "YB");
-      var index = 0,
-        srcsize = parseFloat(value);
-      index = Math.floor(Math.log(srcsize) / Math.log(1024));
-      var size = srcsize / Math.pow(1024, index);
-      size = size.toFixed(2);
-      return size + " " + unitArr[index];
-    },
-    renderSize(value) {
-      if (null == value || value == '') {
-        return "0 Bytes";
-      }
-      var unitArr = new Array("Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB");
-      var index = 0,
-        srcsize = parseFloat(value);
-      index = Math.floor(Math.log(srcsize) / Math.log(1024));
-      var size = srcsize / Math.pow(1024, index);
-      size = size.toFixed(2);
-      return size + unitArr[index];
-    },
-  }
 }
 </script>
 

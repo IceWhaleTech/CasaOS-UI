@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-29 15:38:35
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-21 13:52:04
+ * @LastEditTime: 2022-01-20 11:57:01
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/Apps/AppTerminalPanel.vue
 -->
@@ -14,7 +14,7 @@
       <div class="close-container"><button type="button" class="delete" @click="$emit('close')" /></div>
       <h2 class="title is-4">{{appName}}</h2>
       <div class="flex1">
-        <b-tabs type="is-toggle" :animated="false" @input="onInput">
+        <b-tabs  :animated="false" @input="onInput">
           <b-tab-item :label="$t('Terminal')" value="terminal">
             <terminal-card ref="terminal" :wsUrl="wsUrl"></terminal-card>
           </b-tab-item>

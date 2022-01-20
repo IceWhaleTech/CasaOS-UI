@@ -1,35 +1,51 @@
 <template>
-  <div class="widget has-text-white disk">
-    <div class="columns is-mobile is-multiline pt-2 pb-2">
-      <div class="column is-full" v-for="(item,index) in diskData" :key="'disk'+index">
+  <div class="widget has-text-white disk is-relative">
+    <div class="arrow-btn" @click="showDiskManagement">
+      <b-icon icon="cog-outline" custom-size="mdi-18px"></b-icon>
+    </div>
+    <div class="columns is-mobile is-multiline pt-2 ">
+      <div class="column is-full pb-1">
         <div class="is-flex">
           <div class="header-icon">
-            <b-image :src="require('@/assets/img/disk.png')" class="is-48x48"></b-image>
+            <b-image :src="require('@/assets/img/storage.png')" class="is-64x64"></b-image>
           </div>
-          <div class="ml-3 is-flex-grow-1">
-            <h4 class="title is-size-6-5 mb-2 mt-1 has-text-left has-text-white one-line">{{item.label}}</h4>
-            <p class="has-text-left is-size-7 mt-1 is-uppercase">{{renderSize(item.size)}} {{item.tran}} </p>
+          <div class="ml-3 is-flex-grow-1 ">
+            <h4 class="title is-size-6-5 mb-2 mt-1 has-text-left has-text-white one-line is-align-items-center is-flex">{{ $t('Storage') }}
+
+              <b class="has-text-success is-size-7 has-text-weight-normal ml-3" v-if="health">{{ $t('Healthy') }}</b><b class="has-text-danger is-size-7 has-text-weight-normal ml-3" v-else>{{ $t('Damage') }}</b>
+
+            </h4>
+            <p class="has-text-left is-size-7 mt-1">{{ $t('Used') }}: {{renderSize(totalUsed)}}<br>
+              {{ $t('Total') }}: {{renderSize(totalSize)}}</p>
           </div>
         </div>
-        <div class="has-text-left is-size-7 mt-1">{{$t("available of",{avl:renderSize(item.availSize),total:renderSize(item.size)})}}</div>
-        <b-progress :type="item.usePercnet | getType" :value="item.usePercnet" size="is-xsmall" class="mt-2"></b-progress>
+        <b-progress type="is-primary" size="is-small" :value="totalPercent" class="mt-2"></b-progress>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import StorageManagerPanel from '@/components/StorageManagerPanel.vue'
+import sumBy from 'lodash/sumBy'
+import { mixin } from '../mixins/mixin';
 export default {
   name: 'disks',
   icon: "harddisk",
   title: "Disk Status",
   initShow: true,
+  mixins: [mixin],
   components: {
 
   },
+
   data() {
     return {
       diskData: [],
+      totalSize: 0,
+      totalUsed: 0,
+      totalPercent: 0,
+      health: ""
     }
   },
   mounted() {
@@ -45,6 +61,26 @@ export default {
     },
   },
   methods: {
+    showDiskManagement() {
+      console.log("disk");
+      this.$buefy.modal.open({
+        parent: this,
+        component: StorageManagerPanel,
+        hasModalCard: true,
+        customClass: 'storage-modal',
+        trapFocus: true,
+        canCancel: [],
+        scroll: "keep",
+        animation: "zoom-out",
+        events: {
+
+        },
+        props: {
+          id: "0",
+          state: "install",
+        }
+      })
+    },
     getTotalSize(part, key) {
       let size = 0;
       if (part.children !== null) {
@@ -77,21 +113,20 @@ export default {
           availSize: availSize,
           useSize: useSize,
           usePercnet: 100 - Math.floor(availSize * 100 / totalSize),
+          health: disk.health
         }
       })
 
-    },
-    renderSize(value) {
-      if (null == value || value == '') {
-        return "0 Bytes";
-      }
-      var unitArr = new Array("Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB");
-      var index = 0,
-        srcsize = parseFloat(value);
-      index = Math.floor(Math.log(srcsize) / Math.log(1024));
-      var size = srcsize / Math.pow(1024, index);
-      size = size.toFixed(2);
-      return size + unitArr[index];
+      this.totalSize = sumBy(this.diskData, (disk) => { return disk.size })
+      this.totalUsed = sumBy(this.diskData, (disk) => { return disk.useSize })
+      let totalAvail = sumBy(this.diskData, (disk) => { return disk.availSize })
+      this.totalPercent = 100 - Math.floor(totalAvail * 100 / this.totalSize)
+
+
+      this.health = !this.diskData.some((disk) => {
+        return disk.health == "false";
+      })
+
     },
   },
   filters: {
@@ -130,8 +165,8 @@ export default {
     overflow: hidden;
   }
   .progress {
-    border-radius: 4px;
-    height: 24px;
+    border-radius: 6px;
+    height: 12px;
     &::-webkit-progress-bar {
       background: rgba(0, 0, 0, 0.56);
     }
