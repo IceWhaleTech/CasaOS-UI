@@ -454,6 +454,70 @@ html {
     border-color: transparent;
   }
 }
+
+.create-container {
+  height: 2.25rem;
+  position: absolute;
+  right: 0;
+  display: flex;
+  align-items: center;
+}
+// Common Tabs
+.tabs {
+  ul {
+    border-bottom: 1px solid transparent;
+    li {
+      font-size: 1rem;
+
+      &:first-child {
+        a {
+          margin-left: 0;
+        }
+      }
+      a {
+        color: $primary;
+        border-bottom: transparent 2px solid !important;
+        padding: 0.5rem 0 0.1rem 0;
+        margin: 0 0.5rem;
+      }
+      &.is-active {
+        a {
+          font-weight: 700;
+          border-bottom: $primary 2px solid !important;
+        }
+      }
+    }
+  }
+}
+.storage-modal {
+  .modal-card-body {
+    transition: height 0.3s;
+    padding: 2rem 2rem 2rem 2rem;
+  }
+  .modal-card-foot {
+    padding-top: 0;
+  }
+  .close-container {
+    position: absolute;
+    right: 2rem;
+    top: 2rem;
+  }
+  .tab-content {
+    padding: 0;
+  }
+  .status {
+    min-width: 7.75rem;
+  }
+}
+
+.b-tooltip.is-multiline .tooltip-content {
+  word-break: keep-all;
+}
+
+.is-size-7 {
+  word-break: keep-all;
+}
+
 .terminal-modal {
   .modal-card-body {
     padding: 2rem 2rem 2rem 2rem;
@@ -692,6 +756,11 @@ html {
   height: 200px;
 }
 
+.creating-animation {
+  width: 16rem;
+  height: 16rem;
+}
+
 .b-line {
   border-bottom: #cfcfcf 1px solid;
 }
@@ -907,7 +976,7 @@ button.dropdown-item.is-active {
   }
 }
 
-.un-break-word{
+.un-break-word {
   word-break: keep-all;
 }
 
@@ -1042,6 +1111,17 @@ button.dropdown-item.is-active {
 @media screen and (max-width: 480px) {
   #sidebar-btn {
     display: flex !important;
+  }
+
+  .b-group {
+    align-items: initial !important;
+    display: block !important;
+    width: 5rem;
+    margin-left: 0.5rem;
+    .ml-2 {
+      margin-left: 0 !important;
+      margin-top: 0.5rem !important;
+    }
   }
 
   .login-panel {

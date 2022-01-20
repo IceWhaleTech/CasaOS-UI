@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-21 13:50:28
+ * @LastEditTime: 2022-01-19 18:09:14
  * @Description: 
  * @FilePath: /CasaOS-UI/src/service/service.js
  */
@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === "'dev'") {
 
 //Create a axios instance, And set timeout to 30s
 const instance = axios.create({
-    timeout: 30000,
+    timeout: 60000,
 });
 
 const getInitLang = () => {

@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-29 16:20:58
+ * @LastEditTime: 2022-01-18 10:45:44
  * @Description: App module
  * @FilePath: /CasaOS-UI/src/components/Apps.vue
 -->
@@ -13,7 +13,7 @@
     <div class="title-bar is-flex is-align-items-center">
       <h1 class="title is-4  has-text-white is-flex-shrink-1">{{$t('Apps')}}</h1>
       <div class="buttons ">
-        <b-button id="v-step-0" icon-left="apps" type="is-dark" size="is-small" rounded @click="showInstall">{{$t('App Store')}}</b-button>
+        <b-button id="v-step-0" icon-left="apps" type="is-dark" size="is-small" :loading="isShowing" rounded @click="showInstall">{{$t('App Store')}}</b-button>
       </div>
     </div>
     <!-- Title Bar End -->
@@ -23,13 +23,12 @@
       <template v-if="!isLoading">
         <!-- If None Apps Start -->
         <div class="column is-narrow is-3" v-if="appList.length == 0">
-          <div class="wuji-card is-flex is-align-items-center is-justify-content-center p-55 app-card" >
+          <div class="wuji-card is-flex is-align-items-center is-justify-content-center p-55 app-card">
             <!-- Card Content Start -->
             <div class="has-text-centered is-flex is-justify-content-center is-flex-direction-column p-55  img-c">
               <a class="is-flex is-justify-content-center" @click="showInstall">
-                <b-image :src="require('@/assets/img/add_button.svg')"  class="is-72x72" ></b-image>
+                <b-image :src="require('@/assets/img/add_button.svg')" class="is-72x72"></b-image>
               </a>
-
             </div>
             <!-- Card Content End -->
           </div>
@@ -56,7 +55,8 @@ export default {
     return {
       appList: [],
       appConfig: {},
-      isLoading: true
+      isLoading: true,
+      isShowing: false
     }
   },
   components: {
@@ -85,7 +85,9 @@ export default {
      * @return {*} void
      */
     showInstall() {
+      this.isShowing = true
       this.$api.app.appConfig().then(res => {
+        this.isShowing = false
         if (res.data.success == 200) {
           this.$buefy.modal.open({
             parent: this,

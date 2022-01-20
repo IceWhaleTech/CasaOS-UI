@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-11 12:06:24
+ * @LastEditTime: 2022-01-20 18:30:29
  * @Description: Install Panel of Docker
- * @FilePath: \CasaOS-UI\src\components\Panel.vue
+ * @FilePath: /CasaOS-UI/src/bak/Panel.vue
 -->
 
 <template>

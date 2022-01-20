@@ -6,7 +6,7 @@
       <h2 class="title is-4">CasaOS</h2>
       <div class="close-container"><button type="button" class="delete" @click="$emit('close')" /></div>
       <div class="flex1">
-        <b-tabs type="is-toggle" :animated="false" @input="onInput">
+        <b-tabs  :animated="false" @input="onInput">
           <b-tab-item :label="$t('Terminal')" value="terminal">
             <terminal-card ref="terminal" :wsUrl="wsUrl"></terminal-card>
           </b-tab-item>
@@ -26,7 +26,8 @@
 
 <script>
 import TerminalCard from '@/components/TerminalCard.vue';
-import LogsCard from '@/components/LogsCard.vue'
+import LogsCard from '@/components/LogsCard.vue';
+
 export default {
   name: 'terminal-panel',
   components: {
