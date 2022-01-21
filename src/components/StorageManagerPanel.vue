@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-01-17 15:16:11
  * @LastEditors: JerryK
- * @LastEditTime: 2022-01-20 18:30:33
+ * @LastEditTime: 2022-01-21 17:16:51
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/StorageManagerPanel.vue
 -->
@@ -121,9 +121,9 @@
 <script>
 import LottieAnimation from "lottie-web-vue";
 import smoothReflow from 'vue-smooth-reflow'
-import difference from 'lodash/difference';
 import delay from 'lodash/delay';
 import max from 'lodash/max';
+import orderBy from 'lodash/orderBy';
 import { ValidationObserver, ValidationProvider } from "vee-validate";
 import { mixin } from '../mixins/mixin';
 import DriveItem from './Storage/DriveItem.vue'
@@ -144,8 +144,6 @@ export default {
       creatIsShow: false,
       isCreating: false,
       isValiding: false,
-      removingId: "",
-      formatingId: "",
       activeTab: 0,
       activeDisk: "",
       createStorageName: "",
@@ -172,7 +170,6 @@ export default {
     })
 
     //Get disk list
-    // this.getDiskList()
     let _this = this
     delay(function () {
       _this.getDiskList()
@@ -188,38 +185,24 @@ export default {
     getDiskList(showDefault = false) {
       this.$api.disk.diskList().then(res => {
         if (res.data.success === 200) {
-          this.diskData = res.data.data
+          this.diskData = res.data.data.drive
 
-          let realDisks = this.diskData.filter((disk) => {
-            if (disk.children !== null && disk.children.length == 1) {
-              let childs = disk.children.filter(part => {
-                return part.mountpoint != "" && part.fstype == "ext4"
-              })
-              return childs.length > 0
-            }
-          })
+          this.unDiskData = res.data.data.avail
 
-          this.unDiskData = difference(this.diskData, realDisks);
-
-
-          this.storageData = realDisks.map((disk) => {
-            let totalSize = this.getTotalSize(disk, "fssize");
-            let useSize = this.getTotalSize(disk, "fsused");
-            let availSize = this.getTotalSize(disk, "fsavail");
+          this.storageData = orderBy(res.data.data.storage, ['create_at'], ['asc']).map((disk) => {
             return {
-              name: disk.children[0].name,
-              isSystem: disk.children[0].mountpoint == "/",
-              fsType: disk.children[0].fstype,
-              size: totalSize,
-              tran: disk.tran,
-              availSize: availSize,
-              useSize: useSize,
-              usePercent: 100 - Math.floor(availSize * 100 / totalSize),
-              diskName: disk.name,
-              path: disk.children[0].path,
-              mount_point: disk.children[0].mountpoint
+              name: disk.name,
+              isSystem: disk.name == "System",
+              fsType: disk.type,
+              size: disk.size,
+              availSize: disk.avail,
+              usePercent: 100 - Math.floor(disk.avail * 100 / disk.size),
+              diskName: disk.drive_name,
+              path: disk.path,
+              mount_point: disk.mountpoint
             }
           })
+
 
           let diskNumArray = this.storageData.map(disk => {
             if (disk.name.includes("Storage")) {
@@ -233,7 +216,7 @@ export default {
           if (this.unDiskData.length > 0) {
             this.createStoragePath = this.unDiskData[0].path
             this.createStorageSeiral = this.unDiskData[0].serial
-            this.createStorageType = this.getDiskType(this.unDiskData[0])
+            this.createStorageType = this.getDiskType(this.unDiskData[0].need_format)
             this.createStorageName = "Storage" + nextMaxNum
             this.activeDisk = 0
           }
@@ -252,10 +235,10 @@ export default {
      * @param {int} evt index of select 
      * @return {void} 
      */
-    onDiskChoose(evt) {
-      this.createStoragePath = this.unDiskData[evt].path
-      this.createStorageSeiral = this.unDiskData[evt].serial
-      this.createStorageType = this.getDiskType(this.unDiskData[evt])
+    onDiskChoose(index) {
+      this.createStoragePath = this.unDiskData[index].path
+      this.createStorageSeiral = this.unDiskData[index].serial
+      this.createStorageType = this.getDiskType(this.unDiskData[index].need_format)
     },
     showDefault() {
       this.creatIsShow = false
@@ -320,28 +303,9 @@ export default {
       })
     },
 
-    getTotalSize(part, key) {
-      let size = 0;
-      if (part.children !== null) {
-        size = part.children.reduce((total, item) => {
-          let totalsize = (item.mountpoint.indexOf("boot") == -1) ? this.getTotalSize(item, key) : 0;
-          return total + totalsize
-        }, 0);
-      } else {
-        size = Number(part[key])
-      }
-      return size;
-    },
-    getDiskType(disk) {
-      if (disk.children !== null && disk.children.length == 1 && disk.children[0].fstype == "ext4") {
-        return "mountable"
-      } else {
-        return "format"
-      }
+    getDiskType(need_format) {
+      return need_format ? "format" : "mountable"
     }
   }
 }
 </script>
-
-<style>
-</style>

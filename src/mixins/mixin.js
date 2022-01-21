@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-01-20 12:01:07
  * @LastEditors: JerryK
- * @LastEditTime: 2022-01-20 13:28:23
+ * @LastEditTime: 2022-01-21 17:19:36
  * @Description: 
  * @FilePath: /CasaOS-UI/src/mixins/mixin.js
  */
@@ -64,6 +64,27 @@ export const mixin = {
         },
         toFahrenheit: function (value) {
             return (32 + value * 1.8).toFixed(1);
+        },
+        formatNum(number) {
+            return new Intl.NumberFormat().format(number)
+        },
+        getProgressType(per) {
+            if (per >= 0 && per < 80) {
+                return "is-primary"
+            } else if (per >= 80 && per < 90) {
+                return "is-warning"
+            } else {
+                return "is-danger"
+            }
+        },
+        getTextType(per) {
+            if (per >= 0 && per < 80) {
+              return "has-text-success"
+            } else if (per >= 80 && per < 90) {
+              return "has-text-warning"
+            } else {
+              return "has-text-danger"
+            }
           }
     }
 }

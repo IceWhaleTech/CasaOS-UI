@@ -195,7 +195,7 @@ export default {
     "Single Drive Storage": "单硬盘存储空间",
     "Format": "格式化",
     "Remove": "移除",
-    "Available Total": "{name} {avl} 可用 (共计 {total})",
+    "Available Total": "{name} | {avl} 可用 (共计 {total})",
     "Health": "健康度",
     "Healthy": "健康",
     "Damage": "损毁",

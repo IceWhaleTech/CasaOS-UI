@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-01-20 13:21:12
  * @LastEditors: JerryK
- * @LastEditTime: 2022-01-20 18:30:27
+ * @LastEditTime: 2022-01-21 16:56:50
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/Storage/StorageItem.vue
 -->
@@ -31,7 +31,7 @@
         <b-button size="is-small" :type="isRemoving?'is-primary':''" rounded class="ml-2" @click="removeStorage(item.path,item.mount_point)" :loading="isRemoving" :disabled="isFormating"> {{ $t('Remove') }}</b-button>
       </div>
     </div>
-    <b-progress type="is-primary" size="is-small" :value="item.usePercent"></b-progress>
+    <b-progress :type="item.usePercent | getProgressType" size="is-small" :value="item.usePercent"></b-progress>
   </div>
 </template>
 
