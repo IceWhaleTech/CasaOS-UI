@@ -194,7 +194,7 @@ export default {
     "Single Drive Storage": "Single Drive Storage",
     "Format": "Format",
     "Remove": "Remove",
-    "Available Total": "{name} Available: {avl} (Total: {total})",
+    "Available Total": "{name} | Available: {avl} (Total: {total})",
     "Health": "Health",
     "Healthy": "Healthy",
     "Damage": "Damage",

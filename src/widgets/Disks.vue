@@ -19,7 +19,7 @@
               {{ $t('Total') }}: {{renderSize(totalSize)}}</p>
           </div>
         </div>
-        <b-progress type="is-primary" size="is-small" :value="totalPercent" class="mt-2"></b-progress>
+        <b-progress :type="totalPercent | getProgressType" size="is-small" :value="totalPercent" class="mt-2"></b-progress>
       </div>
     </div>
   </div>
@@ -27,7 +27,6 @@
 
 <script>
 import StorageManagerPanel from '@/components/StorageManagerPanel.vue'
-import sumBy from 'lodash/sumBy'
 import { mixin } from '../mixins/mixin';
 export default {
   name: 'disks',
@@ -35,13 +34,10 @@ export default {
   title: "Disk Status",
   initShow: true,
   mixins: [mixin],
-  components: {
 
-  },
 
   data() {
     return {
-      diskData: [],
       totalSize: 0,
       totalUsed: 0,
       totalPercent: 0,
@@ -54,15 +50,22 @@ export default {
   watch: {
     // Watch if Hardware info changes in the store
     '$store.state.hardwareInfo': {
-      handler(val) {
-        this.getDiskInfo(val.disk)
+      handler(data) {
+        this.getDiskInfo(data.disk)
       },
       deep: true
     },
   },
   methods: {
+    getDiskInfo(diskInfo) {
+      this.totalSize = diskInfo.size
+      this.totalUsed = diskInfo.used
+      this.totalPercent = 100 - Math.floor(diskInfo.avail * 100 / this.totalSize)
+      this.health = diskInfo.health
+    },
+
+
     showDiskManagement() {
-      console.log("disk");
       this.$buefy.modal.open({
         parent: this,
         component: StorageManagerPanel,
@@ -72,87 +75,11 @@ export default {
         canCancel: [],
         scroll: "keep",
         animation: "zoom-out",
-        events: {
-
-        },
-        props: {
-          id: "0",
-          state: "install",
-        }
       })
     },
-    getTotalSize(part, key) {
-      let size = 0;
-      if (part.children !== null) {
-        size = part.children.reduce((total, item) => {
-          let totalsize = (item.mountpoint.indexOf("boot") == -1) ? this.getTotalSize(item, key) : 0;
-          return total + totalsize
-        }, 0);
-      } else {
-        size = Number(part[key])
-      }
-      return size;
-    },
-    getDiskInfo(diskInfo) {
-      let realDisks = diskInfo.filter((disk) => {
-        if (disk.children !== null) {
-          let childs = disk.children.filter(part => {
-            return part.mountpoint != ""
-          })
-          return childs.length > 0
-        }
-      })
-      this.diskData = realDisks.reverse().map((disk) => {
-        let totalSize = this.getTotalSize(disk, "fssize");
-        let useSize = this.getTotalSize(disk, "fsused");
-        let availSize = this.getTotalSize(disk, "fsavail");
-        return {
-          label: disk.model != "" ? disk.model : disk.name,
-          size: totalSize,
-          tran: disk.tran,
-          availSize: availSize,
-          useSize: useSize,
-          usePercnet: 100 - Math.floor(availSize * 100 / totalSize),
-          health: disk.health
-        }
-      })
-
-      this.totalSize = sumBy(this.diskData, (disk) => { return disk.size })
-      this.totalUsed = sumBy(this.diskData, (disk) => { return disk.useSize })
-      let totalAvail = sumBy(this.diskData, (disk) => { return disk.availSize })
-      this.totalPercent = 100 - Math.floor(totalAvail * 100 / this.totalSize)
 
 
-      this.health = !this.diskData.some((disk) => {
-        return disk.health == "false";
-      })
-
-    },
   },
-  filters: {
-
-    formatNum(number) {
-      return new Intl.NumberFormat().format(number)
-    },
-    getType(per) {
-      if (per >= 0 && per < 80) {
-        return "is-success"
-      } else if (per >= 60 && per < 90) {
-        return "is-warning"
-      } else {
-        return "is-danger"
-      }
-    },
-    getTextType(per) {
-      if (per >= 0 && per < 80) {
-        return "has-text-success"
-      } else if (per >= 60 && per < 90) {
-        return "has-text-warning"
-      } else {
-        return "has-text-danger"
-      }
-    }
-  }
 }
 </script>
 
