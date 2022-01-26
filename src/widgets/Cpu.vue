@@ -27,7 +27,6 @@
                 <div>{{item.usage}}%</div>
               </div>
             </div>
-
           </b-tab-item>
 
           <b-tab-item label="RAM">
@@ -40,7 +39,6 @@
                 <div>{{item.usage | renderSize}}</div>
               </div>
             </div>
-
           </b-tab-item>
 
         </b-tabs>

@@ -176,15 +176,15 @@ export default {
     "These include but are not limited to these cases and <b>still need to be confirmed or modified by you.</b>": "К ним относятся, но не ограничиваются этими случаями, и <b> вы все равно должны подтвердить или изменить их. </b>",
     "Feel free to suggest improvements to this feature in Discord Server!": "Не стесняйтесь предлагать улучшения этой функции в Discord!",
     "Using localhost or 127.0.0.1 will cause the application to be inaccessible, please use the real ip to access.": "Использование localhost или 127.0.0.1 приведет к тому, что приложение станет недоступным, используйте для доступа реальный IP-адрес.",
-    "CATEGORY":"КАТЕГОРИЯ",
-    "DEVELOPER":"РАЗРАБОТЧИК",
-    "REQUIRE":"ТРЕБУЕТСЯ",
-    "MEMORY":"ПАМЯТИ",
-    "DISK":"МЕСТА",
-    "App Store":"Магазин приложений",
-    "Community Apps":"Пользовательские приложения",
-    "From community contributors, not optimized for CasaOS, but provides a basic App experience.":"От участников сообщества, не оптимизированы для CasaOS, но предоставляют базовые возможности приложения.",
-    "Sort by":"Сортировать по",
+    "CATEGORY": "КАТЕГОРИЯ",
+    "DEVELOPER": "РАЗРАБОТЧИК",
+    "REQUIRE": "ТРЕБУЕТСЯ",
+    "MEMORY": "ПАМЯТИ",
+    "DISK": "МЕСТА",
+    "App Store": "Магазин приложений",
+    "Community Apps": "Пользовательские приложения",
+    "From community contributors, not optimized for CasaOS, but provides a basic App experience.": "От участников сообщества, не оптимизированы для CasaOS, но предоставляют базовые возможности приложения.",
+    "Sort by": "Сортировать по",
 
     //Storage
     "Create Storage": "Create Storage",
@@ -214,4 +214,13 @@ export default {
     "The drive you select can be used directly as storage.": "The drive you select can be used directly as storage.",
     "You can also choose to create it after formatting. If formatted, the selected drive will be emptied.": "You can also choose to create it after formatting. If formatted, the selected drive will be emptied.",
     "Format and Create": "Format and Create",
+
+    // Feedback
+    "Join Discord": "Join Discord",
+    "Visit our Github": "Visit our Github",
+    "Bug report": "Bug report",
+    "Title": "Title",
+    "Describe the bug": "Describe the bug",
+    "A clear and concise description of what the bug is.": "A clear and concise description of what the bug is.",
+    "System infomation": "System infomation",
 }

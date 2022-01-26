@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-01-20 18:30:31
+ * @LastEditTime: 2022-01-24 10:46:39
  * @Description: Install Panel of Docker
  * @FilePath: /CasaOS-UI/src/components/Panel.vue
 -->
@@ -127,7 +127,7 @@
         <b-tooltip :label="$t('Export AppFile')" position="is-bottom" type="is-dark" v-if="showExportButton">
           <button type="button" class="icon-button mdi mdi-export-variant" @click="exportJSON" />
         </b-tooltip>
-        <div v-if="currentSlide < 2" class="is-flex is-align-items-center modal-close-container modal-close-container-line" >
+        <div v-if="currentSlide < 2" class="is-flex is-align-items-center modal-close-container modal-close-container-line">
           <button type="button" class="delete" @click="$emit('close')" />
         </div>
 
@@ -146,11 +146,11 @@
             <swiper class="swiper " ref="featureSwiper" :options="featureSwiperOptions">
               <swiper-slide v-for="(item,index) in recommendList " :key="index+item.title+item.id">
                 <div class="gap" @click="showAppDetial(item.id)">
-                  <b-image :src="item.thumbnail" ratio="16by9" class="border-8 is-clickable" :src-fallback="require('@/assets/img/swiper_placeholder.png')" placeholder></b-image>
+                  <b-image :src="item.thumbnail" ratio="16by9" class="border-8 is-clickable" :src-fallback="require('@/assets/img/swiper_placeholder.png')" :placeholder="require('@/assets/img/swiper_placeholder.png')"></b-image>
                 </div>
                 <div class="is-flex pt-5 is-align-items-center">
                   <div class=" mr-3" @click="showAppDetial(item.id)">
-                    <b-image :src="item.icon" :src-fallback="require('@/assets/img/default.png')" webp-fallback=".jpg" class="is-48x48 is-clickable"></b-image>
+                    <b-image :src="item.icon" :src-fallback="require('@/assets/img/default.png')" :placeholder="require('@/assets/img/default.png')" class="is-48x48 is-clickable"></b-image>
                   </div>
                   <div class="flex1 mr-4 is-clickable" @click="showAppDetial(item.id)">
                     <h6 class="title is-6 mb-2 ">{{item.title}}</h6>
@@ -664,7 +664,7 @@ export default {
     }
   },
   methods: {
-    
+
     handleInfoSlide(swiper) {
       this.disPrev = (swiper.activeIndex == 0) ? true : false;
       this.disNext = swiper.isEnd;
