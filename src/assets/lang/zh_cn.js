@@ -29,7 +29,7 @@ export default {
     "This field must have more than 5 characters": "此字段不少于 5 个字符",
 
     // Init Page
-    "Welcome to CasaOS": "欢迎进入CsasOS",
+    "Welcome to CasaOS": "欢迎进入CasaOS",
     "Let's create your initial account": "让我们来创建你的初始账户",
     "Go →": "开始 →",
     "Create Account": "创建账户",

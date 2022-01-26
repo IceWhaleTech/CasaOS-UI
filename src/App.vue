@@ -2,13 +2,13 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-29 13:51:24
+ * @LastEditTime: 2022-01-26 16:31:11
  * @Description: Main entry of application
  * @FilePath: /CasaOS-UI/src/App.vue
 -->
 
 <template>
-  <div id="app" class="is-flex is-flex-direction-column" v-show="!isLoading">
+  <div id="app" class="is-flex is-flex-direction-column" >
 
     <!-- Background Layer Start -->
     <div v-if="isWelcome" id="background" v-animate-css="initAni" :style="{'background-image': 'url(' + require('./assets/background/bg3.jpg') + ')'}"></div>
@@ -95,6 +95,7 @@ export default {
   },
   mounted() {
     let lang = localStorage.getItem('lang') ? localStorage.getItem('lang') : this.getLangFromBrowser()
+    console.log(lang);
     this.setLang(lang);
     // const host = (process.env.NODE_ENV === "'dev'") ? `${this.$store.state.devIp}` : `${document.domain}`;
     // if (host == '127.0.0.1' || host == "localhost") {
@@ -108,7 +109,7 @@ export default {
   methods: {
     getLangFromBrowser() {
       var lang = navigator.language || navigator.userLanguage;
-      lang = lang.substr(0, 2);
+      lang = lang.toLowerCase().replace("-","_");
       return lang
     },
     setLang(lang) {

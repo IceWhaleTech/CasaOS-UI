@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-01-11 14:53:43
+ * @LastEditTime: 2022-01-26 14:34:28
  * @Description: Top bar 
  * @FilePath: /CasaOS-UI/src/components/TopBar.vue
 -->
@@ -92,13 +92,13 @@
             <div>
               <b-field>
                 <b-select size="is-small" class="set-select" v-model="barData.lang" @input="saveData">
-                  <option value="de">Deutsch</option>
-                  <option value="en">English</option>
-                  <option value="es">Español</option>
-                  <option value="fr">Français</option>
-                  <option value="it">Italiano</option>
-                  <option value="ru">Русский</option>
-                  <option value="zh">简体中文</option>
+                  <option value="de_de">Deutsch</option>
+                  <option value="en_us">English</option>
+                  <option value="es_es">Español</option>
+                  <option value="fr_fr">Français</option>
+                  <option value="it_ir">Italiano</option>
+                  <option value="ru_ru">Русский</option>
+                  <option value="zh_cn">简体中文</option>
                 </b-select>
 
               </b-field>
