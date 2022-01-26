@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-29 14:55:53
+ * @LastEditTime: 2022-01-24 16:36:09
  * @Description: System HardWare Info API
  * @FilePath: /CasaOS-UI/src/service/info.js
  */
@@ -86,6 +86,10 @@ const info = {
     //Check web ui Port
     checkUiPort(url) {
         return api.get(url);
+    },
+    //Get Debug Info
+    getDebugInfo() {
+        return api.get('debug');
     }
 
 

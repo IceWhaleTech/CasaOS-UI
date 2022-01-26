@@ -214,4 +214,13 @@ export default {
     "The drive you select can be used directly as storage.": "The drive you select can be used directly as storage.",
     "You can also choose to create it after formatting. If formatted, the selected drive will be emptied.": "You can also choose to create it after formatting. If formatted, the selected drive will be emptied.",
     "Format and Create": "Format and Create",
+
+    // Feedback
+    "Join Discord": "Join Discord",
+    "Visit our Github": "Visit our Github",
+    "Bug report": "Bug report",
+    "Title": "Title",
+    "Describe the bug": "Describe the bug",
+    "A clear and concise description of what the bug is.": "A clear and concise description of what the bug is.",
+    "System infomation": "System infomation",
 }

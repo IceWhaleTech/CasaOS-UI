@@ -213,5 +213,14 @@ export default {
     "Please make sure again that there is no important data on the selected drive that needs to be backed up.": "请再次确保所选的硬盘上没有需要备份的重要数据。",
     "The drive you select can be used directly as storage.": "你所选择的硬盘可以直接作为存储空间使用。",
     "You can also choose to create it after formatting. If formatted, the selected drive will be emptied.": "你也可以选择在格式化后创建。如果格式化的话，选中的硬盘将会被清空。",
-    "Format and Create":"格式化并创建",
+    "Format and Create": "格式化并创建",
+
+    // Feedback
+    "Join Discord": "加入Discord",
+    "Visit our Github": "访问我们的Github",
+    "Bug report": "错误报告",
+    "Title": "标题",
+    "Describe the bug": "描述一下这个错误",
+    "A clear and concise description of what the bug is.": "清晰而简明地描述什么是错误。",
+    "System infomation": "系统信息",
 }
