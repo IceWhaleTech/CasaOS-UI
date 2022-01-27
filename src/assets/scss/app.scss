@@ -866,6 +866,9 @@ html {
     height: 100%;
   }
 }
+.op65{
+  opacity: 0.65;
+}
 
 .app-detial {
   overflow: auto;
@@ -873,9 +876,7 @@ html {
   .app-header {
     position: relative;
   }
-  .swiper-container {
-    // overflow: hidden;
-  }
+  
   .swiper-button-next,
   .swiper-rtl .swiper-button-prev {
     right: -20px;
