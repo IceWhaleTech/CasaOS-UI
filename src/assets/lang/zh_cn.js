@@ -71,8 +71,8 @@ export default {
     // Widgets
     "Widgets Settings": "小组件设置",
     "Time": "时间",
-    "System Status": "系统状况",
-    "Disk Status": "磁盘状况",
+    "System Status": "系统状态",
+    "Storage Status": "存储空间状态",
     "Network Status": "网络状况",
     "available of": "{avl}可用（共{total}）",
 

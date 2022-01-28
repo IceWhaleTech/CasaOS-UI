@@ -60,7 +60,7 @@ import { mixin } from '../mixins/mixin';
 export default {
   name: 'disks',
   icon: "harddisk",
-  title: "Disk Status",
+  title: "Storage Status",
   initShow: true,
   mixins: [mixin],
 
