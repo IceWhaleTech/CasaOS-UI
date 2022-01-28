@@ -72,7 +72,7 @@ export default {
     "Widgets Settings": "Widget-Einstellungen",
     "Time": "Uhrzeit",
     "System Status": "System-Status",
-    "Disk Status": "Festplatten-Status",
+    "Storage Status": "Storage Status",
     "Network Status": "Netzwerk-Status",
     "available of": "{avl} von {total} verfügbar",
 

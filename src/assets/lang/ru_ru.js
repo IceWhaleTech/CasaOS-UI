@@ -72,7 +72,7 @@ export default {
     "Widgets Settings": "Настройки виджетов",
     "Time": "Время",
     "System Status": "Состояние системы",
-    "Disk Status": "Состояние диска",
+    "Storage Status": "Storage Status",
     "Network Status": "Состояние сети",
     "available of": "{avl} доступно из {total}",
 
