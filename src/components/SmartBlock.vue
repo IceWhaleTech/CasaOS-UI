@@ -2,17 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-11-10 18:14:56
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-07 16:35:41
+ * @LastEditTime: 2022-01-28 11:43:33
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/SmartBlock.vue
--->
-<!--
- * @Author: JerryK
- * @Date: 2021-11-10 17:48:25
- * @LastEditors: JerryK
- * @LastEditTime: 2021-11-10 18:14:42
- * @Description: 
- * @FilePath: \CasaOS-UI\src\components\SyncBlock.vue
 -->
 <template>
   <div class="column is-one-half">

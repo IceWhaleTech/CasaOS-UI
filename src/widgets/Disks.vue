@@ -37,14 +37,14 @@
             <div class="ml-3 is-flex-grow-1 ">
               <h4 class="title is-size-6-5 mb-2 mt-1 has-text-left has-text-white one-line is-align-items-center is-flex">{{ item.model }}</h4>
               <p class="has-text-left is-size-7 mt-1 op65">
-                <span v-if="item.mount">{{ $t('Used') }}: {{renderSize(item.size)}}</span>
+                <span v-if="item.mount">{{ $t('Used') }}: {{renderSize(item.use)}}</span>
                 <span v-else>{{ $t('Used') }}: N/A</span>
                 <br>
                 {{ $t('Total') }}: {{renderSize(item.size)}}
               </p>
             </div>
           </div>
-          <b-progress v-if="item.mount" :type="(100 - Math.floor(item.avail * 100 / item.size)) | getProgressType" size="is-small" :value="100 - Math.floor(item.avail * 100 / item.size)" class="mt-2"></b-progress>
+          <b-progress v-if="item.mount" :type="(Math.floor(item.use * 100 / item.size)) | getProgressType" size="is-small" :value=" Math.floor(item.use * 100 / item.size)" class="mt-2"></b-progress>
           <b-progress v-else type="is-dark" size="is-small" :value="0" class="mt-2"></b-progress>
         </div>
       </div>

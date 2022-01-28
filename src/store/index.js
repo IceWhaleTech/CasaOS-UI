@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-01-27 16:07:17
+ * @LastEditTime: 2022-01-28 11:13:11
  * @Description: 
  * @FilePath: /CasaOS-UI/src/store/index.js
  */
@@ -16,7 +16,7 @@ export default new Vuex.Store({
   // plugins: [createPersistedState()],
   state: {
     token: "",
-    devIp: "192.168.2.181",
+    devIp: "192.168.2.247",
     devPort: "80",
     serviceError: false,
     userinfo: {},
@@ -64,6 +64,7 @@ export default new Vuex.Store({
       state.siteLoading = false
     },
     changeInitialization(state, val) {
+      console.log("init", val);
       state.needInitialization = val
     },
     changeHardwareInfo(state, val) {
