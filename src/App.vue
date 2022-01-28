@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-01-28 11:36:34
+ * @LastEditTime: 2022-01-28 15:30:53
  * @Description: Main entry of application
  * @FilePath: /CasaOS-UI/src/App.vue
 -->
@@ -95,6 +95,7 @@ export default {
   },
   mounted() {
     let lang = localStorage.getItem('lang') ? localStorage.getItem('lang') : this.getLangFromBrowser()
+    lang = lang.includes("_")?lang:"en_us";
     this.setLang(lang);
     // const host = (process.env.NODE_ENV === "'dev'") ? `${this.$store.state.devIp}` : `${document.domain}`;
     // if (host == '127.0.0.1' || host == "localhost") {
