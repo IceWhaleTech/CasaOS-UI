@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-01-26 16:31:11
+ * @LastEditTime: 2022-01-28 11:36:34
  * @Description: Main entry of application
  * @FilePath: /CasaOS-UI/src/App.vue
 -->
@@ -84,8 +84,8 @@ export default {
     this.$api.info.guideCheck().then(res => {
       if (res.data.success == 200 && res.data.data.need_init_user) {
         this.isWelcome = true
-        this.$emit('changeSiteLoading');
-        this.$emit('changeInitialization', true);
+        this.$store.commit('changeSiteLoading')
+        this.$store.commit('changeInitialization', true)
         localStorage.removeItem("user_token");
         this.$router.push("/welcome");
       } else {
@@ -95,7 +95,6 @@ export default {
   },
   mounted() {
     let lang = localStorage.getItem('lang') ? localStorage.getItem('lang') : this.getLangFromBrowser()
-    console.log(lang);
     this.setLang(lang);
     // const host = (process.env.NODE_ENV === "'dev'") ? `${this.$store.state.devIp}` : `${document.domain}`;
     // if (host == '127.0.0.1' || host == "localhost") {

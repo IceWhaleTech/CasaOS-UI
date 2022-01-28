@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:30:26
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-29 13:58:44
+ * @LastEditTime: 2022-01-28 11:24:28
  * @Description: 
  * @FilePath: /CasaOS-UI/src/views/Welcome.vue
 -->
@@ -75,6 +75,7 @@ export default {
       isLoading: true,
       message: "",
       notificationShow: false,
+      isInit: false,
       initAni: {
         classes: 'zoomIn',
         delay: 1000,
@@ -108,8 +109,11 @@ export default {
     LottieAnimation
   },
   created() {
-    var lang = navigator.language || navigator.userLanguage;
-    console.log(lang);
+    // var lang = navigator.language || navigator.userLanguage;
+    this.isInit = !this.$store.state.needInitialization
+    if (this.isInit) {
+      this.$router.push("/login");
+    }
   },
   mounted() {
     this.$smoothReflow({
@@ -118,7 +122,18 @@ export default {
     })
     this.isLoading = false;
   },
-
+  watch: {
+    // Watch  System  Initialization
+    '$store.state.needInitialization': {
+      handler(data) {
+        this.isInit = !data
+        if (this.isInit) {
+          this.$router.push("/login");
+        }
+      },
+      deep: true
+    },
+  },
   methods: {
     reg() {
       this.$api.user.createUsernameAndPaword({

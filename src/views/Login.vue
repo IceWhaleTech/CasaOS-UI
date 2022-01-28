@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:30:26
  * @LastEditors: JerryK
- * @LastEditTime: 2022-01-27 16:10:00
+ * @LastEditTime: 2022-01-28 11:24:46
  * @Description: 
  * @FilePath: /CasaOS-UI/src/views/Login.vue
 -->
@@ -47,7 +47,7 @@ export default {
     return {
       username: '',
       password: '',
-      isLoading: true,
+      isLoading: false,
       message: "",
       notificationShow: false,
       isInit: false
@@ -57,18 +57,29 @@ export default {
     ValidationObserver,
     ValidationProvider,
   },
+  created() {
+    this.isInit = !this.$store.state.needInitialization
+    if (!this.isInit) {
+      this.$router.push("/welcome");
+    }
+  },
   mounted() {
-    this.$api.info.guideCheck().then(res => {
-      if (res.data.success == 200) {
-        this.isLoading = res.data.data.need_init_user;
-      } else {
-        this.isLoading = true;
-      }
-    })
-
     this.$api.user.getUserInfo().then(user => {
       this.username = user.data.data.user_name;
     })
+  },
+
+  watch: {
+    // Watch  System  Initialization
+    '$store.state.needInitialization': {
+      handler(data) {
+        this.isInit = !data
+        if (!this.isInit) {
+          this.$router.push("/welcome");
+        }
+      },
+      deep: true
+    },
   },
   methods: {
     login() {
