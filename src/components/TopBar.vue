@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-01-26 18:47:47
+ * @LastEditTime: 2022-01-28 16:00:14
  * @Description: Top bar 
  * @FilePath: /CasaOS-UI/src/components/TopBar.vue
 -->
@@ -169,6 +169,7 @@
 import AccountPanel from './AccountPanel.vue'
 import TerminalPanel from './TerminalPanel.vue'
 import PortPanel from './PortPanel.vue'
+import { mixin } from '../mixins/mixin';
 export default {
   name: "top-bar",
   data() {
@@ -196,6 +197,7 @@ export default {
       port: ""
     }
   },
+  mixins: [mixin],
   created() {
     this.getConfig();
     this.getPort();
@@ -218,18 +220,8 @@ export default {
     // getInitLang
     getInitLang() {
       let lang = localStorage.getItem('lang') ? localStorage.getItem('lang') : this.getLangFromBrowser()
+      lang = lang.includes("_") ? lang : "en_us";
       return lang
-    },
-    // Get Default Lang from browser
-    getLangFromBrowser() {
-      var lang = navigator.language || navigator.userLanguage;
-      lang = lang.substr(0, 2);
-      return lang
-    },
-
-    setLang(lang) {
-      localStorage.setItem('lang', lang)
-      this.$i18n.locale = lang;
     },
     /**
      * @description: Get CasaOs Configs
@@ -248,7 +240,9 @@ export default {
         }
         if (res.data.success == 200) {
           this.barData = res.data.data
-          this.setLang(res.data.data.lang)
+          let lang = res.data.data.lang
+          lang = lang.includes("_") ? lang : "en_us";
+          this.setLang(lang)
           this.updateStore()
 
           this.$emit('changeSiteLoading')
@@ -262,7 +256,9 @@ export default {
      */
     saveData() {
       this.$api.info.saveSystemConfig(this.barData);
-      this.setLang(this.barData.lang);
+      let lang = this.barData.lang
+      lang = lang.includes("_") ? lang : "en_us";
+      this.setLang(lang);
       this.updateStore();
     },
     /**

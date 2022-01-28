@@ -2,13 +2,13 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-01-28 15:30:53
+ * @LastEditTime: 2022-01-28 16:05:56
  * @Description: Main entry of application
  * @FilePath: /CasaOS-UI/src/App.vue
 -->
 
 <template>
-  <div id="app" class="is-flex is-flex-direction-column" >
+  <div id="app" class="is-flex is-flex-direction-column">
 
     <!-- Background Layer Start -->
     <div v-if="isWelcome" id="background" v-animate-css="initAni" :style="{'background-image': 'url(' + require('./assets/background/bg3.jpg') + ')'}"></div>
@@ -35,7 +35,7 @@
 <script>
 import BrandBar from './components/BrandBar.vue'
 import ContactBar from './components/ContactBar.vue'
-
+import { mixin } from './mixins/mixin';
 
 
 export default {
@@ -43,6 +43,7 @@ export default {
     BrandBar,
     ContactBar,
   },
+  mixins: [mixin],
   data() {
     return {
       //isLoading: true,
@@ -80,42 +81,39 @@ export default {
   },
 
   created() {
+    this.checkInit();
 
-    this.$api.info.guideCheck().then(res => {
-      if (res.data.success == 200 && res.data.data.need_init_user) {
-        this.isWelcome = true
-        this.$store.commit('changeSiteLoading')
-        this.$store.commit('changeInitialization', true)
-        localStorage.removeItem("user_token");
-        this.$router.push("/welcome");
-      } else {
-        this.isWelcome = false
-      }
-    })
   },
   mounted() {
-    let lang = localStorage.getItem('lang') ? localStorage.getItem('lang') : this.getLangFromBrowser()
-    lang = lang.includes("_")?lang:"en_us";
-    this.setLang(lang);
-    // const host = (process.env.NODE_ENV === "'dev'") ? `${this.$store.state.devIp}` : `${document.domain}`;
-    // if (host == '127.0.0.1' || host == "localhost") {
-    //   this.$buefy.dialog.alert({
-    //     title: '⚠️ ' + this.$t('Attention'),
-    //     message: '<div class="nobrk"><p >' + this.$t('Using localhost or 127.0.0.1 will cause the application to be inaccessible, please use the real ip to access.') + '</p></div>',
-    //     type: 'is-dark'
-    //   })
-    // }
+    this.setInitLang();
   },
   methods: {
-    getLangFromBrowser() {
-      var lang = navigator.language || navigator.userLanguage;
-      lang = lang.toLowerCase().replace("-","_");
-      return lang
+    /**
+     * @description: Check if System need init first
+     * @return {*} void
+     */
+    checkInit() {
+      this.$api.info.guideCheck().then(res => {
+        if (res.data.success == 200 && res.data.data.need_init_user) {
+          this.isWelcome = true
+          this.$store.commit('changeSiteLoading')
+          this.$store.commit('changeInitialization', true)
+          localStorage.removeItem("user_token");
+          this.$router.push("/welcome");
+        } else {
+          this.isWelcome = false
+        }
+      })
     },
-    setLang(lang) {
-      localStorage.setItem('lang', lang)
-      this.$i18n.locale = lang;
-    },
+    /**
+     * @description: Get and Set default language 
+     * @return {*} void
+     */
+    setInitLang() {
+      let lang = localStorage.getItem('lang') ? localStorage.getItem('lang') : this.getLangFromBrowser()
+      lang = lang.includes("_") ? lang : "en_us";
+      this.setLang(lang);
+    }
 
   },
 }

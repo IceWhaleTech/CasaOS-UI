@@ -64,7 +64,6 @@ export default {
   initShow: true,
   mixins: [mixin],
 
-
   data() {
     return {
       totalSize: 0,
@@ -74,10 +73,12 @@ export default {
       usbDisks: []
     }
   },
+
   mounted() {
     this.getDiskInfo(this.$store.state.hardwareInfo.disk)
     this.usbDisks = this.$store.state.hardwareInfo.usb
   },
+
   watch: {
     // Watch if Hardware info changes in the store
     '$store.state.hardwareInfo': {
@@ -88,6 +89,7 @@ export default {
       deep: true
     },
   },
+  
   methods: {
     getDiskInfo(diskInfo) {
       this.totalSize = diskInfo.size
