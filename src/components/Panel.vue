@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-01-24 10:46:39
+ * @LastEditTime: 2022-02-17 11:21:34
  * @Description: Install Panel of Docker
  * @FilePath: /CasaOS-UI/src/components/Panel.vue
 -->
@@ -310,6 +310,12 @@
           <input-group v-model="initData.volumes" type="volume" :label="$t('Volumes')" :message="$t('No volumes now, click “+” to add one.')"></input-group>
           <env-input-group v-model="initData.envs" :label="$t('Environment Variables')" :message="$t('No environment variables now, click “+” to add one.')"></env-input-group>
           <input-group v-model="initData.devices" type="device" :label="$t('Devices')" :message="$t('No devices now, click “+” to add one.')"></input-group>
+          <commands-input v-model="initData.cmd" :label="$t('Container Command')" :message="$t('No commands now, click “+” to add one.')"></commands-input>
+
+          <b-field :label="$t('Privileged')">
+            <b-switch v-model="initData.privileged"></b-switch>
+          </b-field>
+
           <b-field :label="$t('Memory Limit')">
             <vue-slider :min="256" :max="totalMemory" v-model="initData.memory"></vue-slider>
           </b-field>
@@ -329,6 +335,29 @@
               <option value="unless-stopped">unless-stopped</option>
             </b-select>
           </b-field>
+
+          <b-field :label="$t('Container Capabilities (cap-add)')">
+            <b-taginput v-model="initData.cap_add" :data="capArray" autocomplete ref="taginput" :allow-new="false" :open-on-focus="false" @typing="getFilteredTags">
+              <template slot-scope="props">
+                {{props.option}}
+              </template>
+              <template #empty>
+                There are no items
+              </template>
+              <template #selected="props">
+                <b-tag v-for="(tag, index) in props.tags" :key="index" :tabstop="false" closable @close="$refs.taginput.removeTag(index, $event)">
+                  {{tag}}
+                </b-tag>
+              </template>
+            </b-taginput>
+          </b-field>
+
+          <ValidationProvider rules="rfc1123" name="Name" v-slot="{ errors, valid }">
+            <b-field :label="$t('Container Hostname')" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="$t(errors)">
+              <b-input value="" v-model="initData.hostname" :placeholder="$t('Hostname of app container')"></b-input>
+            </b-field>
+          </ValidationProvider>
+
           <b-field :label="$t('App Description')">
             <b-input v-model="initData.description"></b-input>
           </b-field>
@@ -379,6 +408,7 @@
 import axios from 'axios'
 import InputGroup from './forms/InputGroup.vue';
 import EnvInputGroup from './forms/EnvInputGroup.vue';
+import CommandsInput from './forms/CommandsInput.vue';
 import Ports from './forms/Ports.vue'
 import AppSideBar from './Apps/AppSideBar.vue'
 import ImportPanel from './forms/ImportPanel.vue'
@@ -398,12 +428,42 @@ import cloneDeep from 'lodash/cloneDeep';
 import FileSaver from 'file-saver';
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 
+const data = [
+  "AUDIT_CONTROL",
+  "AUDIT_READ",
+  "BLOCK_SUSPEND",
+  "BPF",
+  "CHECKPOINT_RESTORE",
+  "DAC_READ_SEARCH",
+  "IPC_LOCK",
+  "IPC_OWNER",
+  "LEASE",
+  "LINUX_IMMUTABLE",
+  "MAC_ADMIN",
+  "MAC_OVERRIDE",
+  "NET_ADMIN",
+  "NET_BROADCAST",
+  "PERFMON",
+  "SYS_ADMIN",
+  "SYS_BOOT",
+  "SYS_MODULE",
+  "SYS_NICE",
+  "SYS_PACCT",
+  "SYS_PTRACE",
+  "SYS_RAWIO",
+  "SYS_RESOURCE",
+  "SYS_TIME",
+  "SYS_TTY_CONFIG",
+  "SYSLOG",
+  "WAKE_ALARM"
+]
 
 export default {
   components: {
     Ports,
     InputGroup,
     EnvInputGroup,
+    CommandsInput,
     ValidationObserver,
     ValidationProvider,
     AppSideBar,
@@ -447,8 +507,13 @@ export default {
         volumes: [],
         envs: [],
         devices: [],
-      },
+        cap_add: [],
+        cmd: [],
+        privileged: false,
+        host_name: "",
 
+      },
+      capArray: data,
       pageIndex: 1,
       pageSize: 5,
       listTotal: 0,
@@ -532,6 +597,7 @@ export default {
   },
 
   created() {
+
     // Set Front-end base url
     this.baseUrl = `${window.location.protocol}//${document.domain}:`;
 
@@ -553,11 +619,11 @@ export default {
       return tempitem
     })
     this.networks = orderBy(this.networks, ['driver'], ['asc']);
-
     //If it is edit, Init data
     if (this.initDatas != undefined) {
       this.isLoading = false
       this.initData = this.initDatas
+
       this.webui = this.initDatas.port_map + this.initDatas.index
       this.currentSlide = 1
     } else {
@@ -566,10 +632,10 @@ export default {
         return o.driver == "bridge"
       })
       this.initData.network_model = gg.length > 0 ? gg[0].name : "bridge";
-      let appData = localStorage.getItem("app_data")
-      if (!isNull(appData)) {
-        this.initData = JSON.parse(appData)
-      }
+      // let appData = localStorage.getItem("app_data")
+      // if (!isNull(appData)) {
+      //   this.initData = JSON.parse(appData)
+      // }
       // this.getStoreList()
     }
 
@@ -664,6 +730,13 @@ export default {
     }
   },
   methods: {
+    getFilteredTags(text) {
+      this.capArray = data.filter((option) => {
+        return option
+          .toString()
+          .indexOf(text.toUpperCase()) >= 0
+      })
+    },
 
     handleInfoSlide(swiper) {
       this.disPrev = (swiper.activeIndex == 0) ? true : false;
@@ -753,6 +826,10 @@ export default {
           this.initData.volumes = isNull(respData.volumes) ? [] : respData.volumes
           this.initData.envs = isNull(respData.envs) ? [] : respData.envs
           this.initData.devices = isNull(respData.devices) ? [] : respData.devices
+          this.initData.cap_add = isNull(respData.cap_add) ? [] : respData.cap_add
+          this.initData.privileged = respData.privileged
+          this.initData.host_name = respData.host_name
+          this.initData.cmd = isNull(respData.cmd) ? [] : respData.cmd
           this.currentInstallId = 0
           if (respData.tip !== "null") {
             this.$buefy.dialog.confirm({

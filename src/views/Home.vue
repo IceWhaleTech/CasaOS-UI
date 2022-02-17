@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-29 15:01:09
+ * @LastEditTime: 2022-02-17 18:05:40
  * @Description: 
  * @FilePath: /CasaOS-UI/src/views/Home.vue
 -->
@@ -38,7 +38,7 @@
 
             <!-- Apps Start -->
             <section>
-              <apps></apps>
+              <apps ref="apps"></apps>
             </section>
             <!-- Apps End -->
 
@@ -86,7 +86,8 @@ export default {
       topBarAni: {
         classes: 'fadeInDown',
         duration: 800
-      }
+      },
+      wsUrl: (process.env.NODE_ENV === "'dev'") ? `ws://${this.$store.state.devIp}:${this.$store.state.devPort}/v1/notify/ws?token=${this.$store.state.token}` : `ws://${document.location.host}/v1/notify/ws?token=${this.$store.state.token}`,
 
     }
   },
@@ -109,6 +110,7 @@ export default {
 
     window.addEventListener("resize", this.onResize);
     this.onResize()
+    this.initWebSocket()
   },
   methods: {
     /**
@@ -144,7 +146,54 @@ export default {
           this.$store.commit('changeHardwareInfo', res.data.data);
         }
       })
-    }
+    },
+
+    /**
+     * @description: Handle applist change from websocket
+     * @param {*}
+     * @return {*} void
+     */
+
+    handleAppListChange() {
+      this.$refs.apps.getList()
+    },
+
+    /**
+     * @description: WebSocket group function
+     * @param {*}
+     * @return {*} void
+     */
+
+    initWebSocket() { //初始化weosocket
+      this.websock = new WebSocket(this.wsUrl);
+      this.websock.onmessage = this.websocketonmessage;
+      this.websock.onopen = this.websocketonopen;
+      this.websock.onerror = this.websocketonerror;
+      this.websock.onclose = this.websocketclose;
+    },
+    websocketonopen() { //连接建立之后执行send方法发送数据
+      console.log('connected');
+      const sendData = { type: "app", data: "" }
+      this.websocketsend(JSON.stringify(sendData))
+    },
+    websocketonerror() {//连接建立失败重连
+      this.initWebSocket();
+    },
+    websocketonmessage(e) { //数据接收
+      const redata = JSON.parse(e.data);
+      redata.forEach((item) => {
+        if (item.message == "uninstalled" || item.message == "installed") {
+          this.handleAppListChange()
+        }
+      })
+      
+    },
+    websocketsend(Data) {//数据发送
+      this.websock.send(Data);
+    },
+    websocketclose(e) {  //关闭
+      console.log('断开连接', e);
+    },
 
 
   },

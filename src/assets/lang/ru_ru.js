@@ -27,6 +27,7 @@ export default {
     "This field confirmation does not match": "Подтверждение в этом поле не совпадает",
     "This field must have 2 options": "В этом поле должно быть 2 опции",
     "This field must have more than 5 characters": "В этом поле должно быть больше чем 5 символов",
+    "You entered an invalid RFC1123 hostname": "You entered an invalid RFC1123 hostname",
 
     // Init Page
     "Welcome to CasaOS": "Добро пожаловать в CasaOS",
@@ -138,6 +139,11 @@ export default {
     "App name": "Имя приложения",
     "Icon URL": "URL значка",
     "Network": "Сеть",
+    "Privileged": "Privileged",
+    "Container Command": "Container Command",
+    "Container Capabilities (cap-add)": "Container Capabilities (cap-add)",
+    "Container Hostname": "Container Hostname",
+    "Hostname of app container": "Hostname of app container",
     "Ports": "Порты",
     "Volumes": "Тома",
     "Environment Variables": "Переменные среды",
@@ -150,6 +156,7 @@ export default {
     "No volumes now, click “+” to add one.": "Томов сейчас нет, нажмите “+”, чтобы добавить его.",
     "No environment variables now, click “+” to add one.": "Переменных среды сейчас нет, нажмите “+”, чтобы добавить их.",
     "No devices now, click “+” to add one.": "Устройств сейчас нет, нажмите “+”, чтобы добавить их.",
+    "No commands now, click “+” to add one.": "No commands now, click “+” to add one.",
     "e.g.,hello-world:latest": "например,hello-world:latest",
     "Your custom App Name": "Ваше собственное имя приложения",
     "Your custom icon URL": "URL вашего собственного значка",

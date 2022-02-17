@@ -155,7 +155,7 @@ export default {
      * @return {Boolean} 
      */
     parseCli() {
-      const formattedInput = this.dockerCliCommands.replace(/<[^>]*>/g, 'Custom_data').replace(/[\r\n]/g, "").replace(/\\/g, "\\ ").replace("-d", "").trim();
+      const formattedInput = this.dockerCliCommands.replace(/<[^>]*>/g, 'Custom_data').replace(/[\r\n]/g, "").replace(/\\/g, "\\ ").replace("-d", "").replace(/[\\]/g,'').trim();
       const parsedInput = parser(formattedInput)
       const { _: command } = parsedInput;
       if (command[0] !== 'docker' || (command[1] !== 'run' && command[1] !== 'create')) {
@@ -164,6 +164,7 @@ export default {
 
         //Image
         this.updateData.image = [...command].pop()
+        console.log(parsedInput);
         //Label
         if (parsedInput.name != undefined) {
           this.updateData.label = upperFirst(parsedInput.name)
@@ -226,13 +227,14 @@ export default {
               return true
             }
           })
-          console.log(seletNetworks);
           if (seletNetworks.length > 0) {
             this.updateData.network_model = seletNetworks[0].networks[0].name;
           }
         }
 
+        //privileged
 
+        this.updateData.privileged = parsedInput.privileged != undefined
 
         //Restart
         if (parsedInput.restart != undefined) {

@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-01-28 16:00:14
+ * @LastEditTime: 2022-02-17 14:24:52
  * @Description: Top bar 
  * @FilePath: /CasaOS-UI/src/components/TopBar.vue
 -->
@@ -63,7 +63,7 @@
         <template #trigger>
           <b-tooltip :label="$t('Settings')" position="is-right" type="is-dark">
             <p role="button">
-              <b-icon icon="tune"></b-icon>
+              <b-icon icon="tune" :class="{'update-icon-dot': updateInfo.is_need }"></b-icon>
             </p>
           </b-tooltip>
         </template>
@@ -120,7 +120,7 @@
 
           <div class="is-flex is-align-items-center item">
             <div class="is-flex is-align-items-center flex1">
-              <b-icon icon="sync" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{$t('Update')}}</b>
+              <b-icon icon="sync" class="mr-1" custom-size="mdi-18px"></b-icon> <b :class="{'update-text-dot': updateInfo.is_need}">{{$t('Update')}}</b>
             </div>
             <div>
               v{{updateInfo.current_version}}
@@ -136,7 +136,7 @@
             {{$t(latestText)}}
             <b-icon type="is-success" icon="check" class="ml-1" custom-size="mdi-18px"></b-icon>
           </div>
-          <div class="is-flex is-align-items-center is-justify-content-end update-container pl-5" v-if="updateInfo.is_need">
+          <div class="is-flex is-align-items-center is-justify-content-end update-container pl-5" v-else>
             <div class="flex1">{{$t(updateText)}}</div>
             <b-button type="is-dark" size="is-small" class="ml-2" :loading="isUpdating" rounded @click="updateSystem">{{$t('Update')}}</b-button>
           </div>
@@ -321,6 +321,7 @@ export default {
       this.$api.info.checkVersion().then(res => {
         if (res.data.success == 200) {
           this.updateInfo = res.data.data
+          // this.updateInfo.is_need = true
         }
       })
     },

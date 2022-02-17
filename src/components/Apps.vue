@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-01-18 10:45:44
+ * @LastEditTime: 2022-02-17 18:05:50
  * @Description: App module
  * @FilePath: /CasaOS-UI/src/components/Apps.vue
 -->
@@ -99,9 +99,9 @@ export default {
             scroll: "keep",
             animation: "zoom-out",
             events: {
-              'updateState': () => {
-                this.getList()
-              }
+              // 'updateState': () => {
+              //   this.getList()
+              // }
             },
             props: {
               id: "0",
@@ -119,6 +119,7 @@ export default {
      */
     showConfigPanel(id, status) {
       this.$api.app.getContainerSettingdata(id).then(ret => {
+        console.log(ret.data.data);
         this.$api.app.appConfig().then(res => {
           if (res.data.success == 200) {
             this.$buefy.modal.open({

@@ -27,7 +27,7 @@
     </div>
     <!-- Disk Info End -->
     <!-- Usb Disk List Start -->
-    <div class="widget has-text-white disk is-relative">
+    <div class="widget has-text-white disk is-relative" v-if="usbDisks.length > 0">
       <div class="columns is-mobile is-multiline pt-2 ">
         <div class="column is-full pb-1" v-for="(item,index) in usbDisks" :key="'usb_'+item.name">
           <div class="is-flex">
@@ -89,7 +89,7 @@ export default {
       deep: true
     },
   },
-  
+
   methods: {
     getDiskInfo(diskInfo) {
       this.totalSize = diskInfo.size

@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-11-10 17:48:25
  * @LastEditors: JerryK
- * @LastEditTime: 2022-01-20 13:16:33
+ * @LastEditTime: 2022-02-17 15:16:26
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/SyncBlock.vue
 -->
@@ -163,10 +163,13 @@ export default {
 
   methods: {
     init() {
-      this.getStatus();
-      this.getConnections();
-      this.getConfigs();
-      this.getTotalSize();
+      if (this.$store.state.syncthingKey.length == 32) {
+        this.getStatus();
+        this.getConnections();
+        this.getConfigs();
+        this.getTotalSize();
+      }
+
     },
 
     openSyncPanel() {

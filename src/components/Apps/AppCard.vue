@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-07 13:30:59
+ * @LastEditTime: 2022-02-17 17:59:45
  * @Description: App Card item
  * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
 -->
@@ -148,8 +148,7 @@ export default {
       this.isUninstalling = true
       this.$api.app.uninstall(this.item.custom_id).then((res) => {
         if (res.data.success == 200) {
-          console.log(res.data.data);
-          this.updateState()
+          // this.updateState()
         }
         this.isUninstalling = false;
       })
