@@ -1,5 +1,6 @@
 import { required, confirmed, length, email, min } from "vee-validate/dist/rules";
 import { extend } from "vee-validate";
+import isValidHostname from 'is-valid-hostname';
 
 extend("required", {
     ...required,
@@ -26,3 +27,7 @@ extend("min", {
     message: "This field must have more than {length} characters"
 });
 
+extend('rfc1123', {
+    validate: (value) => isValidHostname(value),
+    message: 'You entered an invalid RFC1123 hostname',
+});

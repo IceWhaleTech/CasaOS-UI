@@ -21,6 +21,7 @@
     "dateformat": "^5.0.2",
     "easy-affix": "^1.0.8",
     "file-saver": "^2.0.5",
+    "is-valid-hostname": "^1.0.2",
     "lodash": "^4.17.21",
     "lodash.debounce": "^4.0.8",
     "lottie-vuejs": "^0.4.0",

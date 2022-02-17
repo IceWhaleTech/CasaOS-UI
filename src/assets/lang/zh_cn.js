@@ -27,6 +27,7 @@ export default {
     "This field confirmation does not match": "此字段确认不匹配",
     "This field must have 2 options": "此字段必须有 2 个选项",
     "This field must have more than 5 characters": "此字段不少于 5 个字符",
+    "You entered an invalid RFC1123 hostname": "你输入的不是一个有效的RFC1123主机名",
 
     // Init Page
     "Welcome to CasaOS": "欢迎进入CasaOS",
@@ -138,6 +139,11 @@ export default {
     "App name": "App名称",
     "Icon URL": "图标路径",
     "Network": "网络",
+    "Privileged": "特权",
+    "Container Command": "容器命令",
+    "Container Capabilities (cap-add)": "容器能力 (cap-add)",
+    "Container Hostname": "容器主机名",
+    "Hostname of app container": "App容器的主机名",
     "Ports": "端口",
     "Volumes": "卷",
     "Environment Variables": "环境变量",
@@ -150,6 +156,7 @@ export default {
     "No volumes now, click “+” to add one.": "目前没有卷，点击 + 添加一个。",
     "No environment variables now, click “+” to add one.": "目前没有环境变量，点击 + 添加一个。",
     "No devices now, click “+” to add one.": "目前没有设备，点击 + 添加一个。",
+    "No commands now, click “+” to add one.": "目前没有命令，点击 + 来添加一个。",
     "e.g.,hello-world:latest": "例如: hello-world:latest",
     "Your custom App Name": "自定义App名称",
     "Your custom icon URL": "自定义图标路径",

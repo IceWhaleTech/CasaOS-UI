@@ -119,6 +119,14 @@ html {
     box-shadow: none;
   }
 }
+.icon{
+  overflow: hidden;
+}
+.level-item{
+  .icon{
+    overflow: initial;
+  }
+}
 
 .top-bar {
   position: relative;
@@ -332,7 +340,8 @@ html {
     position: relative;
     background-color: transparent;
     border: none;
-    word-break: break-all;
+    
+    
   }
   .modal-card-head {
     padding: 2rem 2rem 1.5rem 2rem;
@@ -361,7 +370,7 @@ html {
     .button.is-static,
     .input,
     .textarea,
-    .taginput .taginput-container.is-focusable,
+    
     .select select,
     .file-cta,
     .file-name,
@@ -379,6 +388,14 @@ html {
     }
     .media {
       padding: 0rem;
+    }
+    .media-content{
+      p{
+        word-wrap:break-word;
+      }
+    }
+    .title{
+      overflow: hidden;
     }
     .field:last-child {
       margin-bottom: 0.5rem;
@@ -512,6 +529,33 @@ html {
 
 .b-tooltip.is-multiline .tooltip-content {
   word-break: keep-all;
+}
+
+.update-icon-dot{
+  position: relative;
+  &::after{
+    content: '';
+    position: absolute;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: $danger;
+    right: 0;
+    top: 0;
+  }
+}
+.update-text-dot{
+  position: relative;
+  &::after{
+    content: '';
+    position: absolute;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: $danger;
+    right: -0.5rem;
+    top: 0rem;
+  }
 }
 
 .is-size-7 {
@@ -1332,4 +1376,8 @@ button.dropdown-item.is-active {
 .slide-prev-leave-active {
   // transition-timing-function:cubic-bezier(0.165, 0.84, 0.44, 1);
   transition-duration: 0.35s;
+}
+
+.taginput .taginput-container .autocomplete input{
+  border: none !important;
 }
