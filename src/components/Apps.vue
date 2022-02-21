@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-02-17 18:05:50
+ * @LastEditTime: 2022-02-18 12:51:39
  * @Description: App module
- * @FilePath: /CasaOS-UI/src/components/Apps.vue
+ * @FilePath: \CasaOS-UI\src\components\Apps.vue
 -->
 
 <template>
@@ -34,7 +34,11 @@
           </div>
         </div>
 
-        <!-- If None Apps Start -->
+        <!-- If None Apps End -->
+
+        <!-- FileFrowser Entry Start -->
+        <file-entry-card></file-entry-card>
+        <!-- FileFrowser Entry  -->
 
         <div class="column is-narrow is-3" v-for="(item,index) in appList" :key="'app-'+index+item.icon+item.port">
           <app-card :item="item" @updateState="getList" @configApp="showConfigPanel"></app-card>
@@ -50,6 +54,7 @@
 <script>
 import AppCard from './Apps/AppCard.vue'
 import Panel from './Panel.vue'
+import FileEntryCard from './filebrowser/FileEntryCard.vue'
 export default {
   data() {
     return {
@@ -61,6 +66,7 @@ export default {
   },
   components: {
     AppCard,
+    FileEntryCard
   },
   created() {
     this.getList();
