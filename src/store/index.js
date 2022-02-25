@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-02-15 16:46:57
+ * @LastEditTime: 2022-02-25 15:39:16
  * @Description: 
  * @FilePath: /CasaOS-UI/src/store/index.js
  */
@@ -16,7 +16,7 @@ export default new Vuex.Store({
   // plugins: [createPersistedState()],
   state: {
     token: "",
-    devIp: "192.168.2.247",
+    devIp: "192.168.2.10",
     devPort: "80",
     serviceError: false,
     userinfo: {},
@@ -26,6 +26,7 @@ export default new Vuex.Store({
     searchEngine: '',
     siteLoading: true,
     needInitialization: false,
+    pasteFiles: "",
     widgetsSwitch: {
       clock: true,
       weather: true,
@@ -68,6 +69,9 @@ export default new Vuex.Store({
     },
     changeHardwareInfo(state, val) {
       state.hardwareInfo = val
+    },
+    changePasteFiles(state, val) {
+      state.pasteFiles = val
     }
   },
   actions: {

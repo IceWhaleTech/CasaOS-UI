@@ -2,10 +2,12 @@
  * @Author: JerryK
  * @Date: 2022-01-20 12:01:07
  * @LastEditors: JerryK
- * @LastEditTime: 2022-01-28 16:07:33
+ * @LastEditTime: 2022-02-25 14:45:40
  * @Description: 
  * @FilePath: /CasaOS-UI/src/mixins/mixin.js
  */
+import qs from 'qs'
+
 export const mixin = {
 
     methods: {
@@ -48,6 +50,76 @@ export const mixin = {
         setLang(lang) {
             localStorage.setItem('lang', lang)
             this.$i18n.locale = lang;
+        },
+        /**
+         * @description: Get file icon from file name
+         * @param {Object} item 
+         * @return {Object} 
+         */
+        // 
+        getIconFile(item) {
+            if (item.is_dir) {
+                return require("@/assets/img/folder-icon-230-180.png")
+            } else {
+                const ext = item.name.substring(item.name.lastIndexOf('.') + 1);
+                // Check Images
+                if (['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'psd', 'svg', 'tiff', 'ai'].indexOf(ext.toLowerCase()) !== -1) {
+                    return require("@/assets/img/icon-image.png")
+                    // Check Videos
+                } else if (['mkv', 'mp4', '3gp', 'avi', 'm2ts', 'webm', 'flv', 'vob', 'ts', 'mts', 'mov', 'wmv', 'rm', 'rmvb', 'asf', 'wmv', 'mpg', 'm4v', 'mpeg', 'f4v'].indexOf(ext.toLowerCase()) !== -1) {
+                    return require("@/assets/img/icon-video.png")
+                    // Check Audios
+                } else if (['aac', 'aiff', 'alac', 'amr', 'ape', 'flac', 'm4a', 'mp3', 'ogg', 'opus', 'wma', 'wav'].indexOf(ext.toLowerCase()) !== -1) {
+                    return require("@/assets/img/icon-audio.png")
+                    // Check Documents
+                } else if (['txt', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pdf', 'html', 'css', 'scss', 'less', 'log', 'pages', 'wps', 'csv', 'json', 'xml'].indexOf(ext.toLowerCase()) !== -1) {
+                    return require("@/assets/img/icon-document.png")
+                    // Check Zip files
+                } else if (['zip', 'rar', '7z', 'gz', 'ace'].indexOf(ext.toLowerCase()) !== -1) {
+                    return require("@/assets/img/icon-document.png")
+                    // Check Archiving files
+                } else if (['iso', 'img', 'vmdk', 'raw', 'vhd'].indexOf(ext.toLowerCase()) !== -1) {
+                    return require("@/assets/img/icon-document.png")
+                } else {
+                    return require("@/assets/img/icon-unknown.png")
+                }
+
+            }
+        },
+        /**
+         * @description: Download File
+         * @param {Object} item 
+         * @return {void} 
+         */
+        downloadFile(item) {
+            this.$buefy.toast.open({
+                message: 'Download in preparation',
+                type: 'is-light'
+            })
+            let base_url = (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${this.$store.state.devPort}/v1/file/download?` : `http://${document.location.host}/v1/file/download?`;
+            let url = {
+                path: item.path,
+                token: this.$store.state.token
+            }
+            window.open(base_url + qs.stringify(url), '_self');
+        },
+        /**
+         * @description: Download File
+         * @param {Object,Object} event item 
+         * @return {void} 
+         */
+        clickItem(event, item) {
+            let bounced = event.target.getAttribute('class').includes('mdi-dots')
+            if (bounced) {
+                return false
+            }
+            if (item.is_dir) {
+                console.log("Open folder:", item.path);
+                this.$emit('gotoFolder', item.path)
+            } else {
+                console.log("Click:", item.path);
+                this.$emit('showDetailModal', item)
+            }
         },
     },
 
@@ -120,6 +192,16 @@ export const mixin = {
             } else {
                 return "has-text-danger"
             }
+        },
+
+        dateFmt: function (value) {
+            return new Date(value).toLocaleString();
+        },
+        coverType: function (item) {
+            return item.is_dir ? "folder-cover" : "file-cover"
+        },
+        iconType: function (item) {
+            return item.is_dir ? "folder-icon" : "files-icon"
         },
 
     }

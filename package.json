@@ -37,6 +37,7 @@
     "vue-apexcharts": "^1.6.2",
     "vue-awesome-swiper": "^4.1.1",
     "vue-cli-plugin-compression": "~1.1.5",
+    "vue-context": "^6.0.0",
     "vue-custom-scrollbar": "^1.4.1",
     "vue-fullscreen": "^2.5.2",
     "vue-i18n": "^8.26.7",

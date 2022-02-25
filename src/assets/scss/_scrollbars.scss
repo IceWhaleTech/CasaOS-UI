@@ -46,6 +46,20 @@
   outline: none;
 }
 
+.scrollbars-light::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbars-light::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbars-light::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  outline: none;
+}
+
 .modal-card-body::-webkit-scrollbar {
   width: 8px;
 }

@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-02-17 11:21:34
+ * @LastEditTime: 2022-02-21 17:44:29
  * @Description: Install Panel of Docker
  * @FilePath: /CasaOS-UI/src/components/Panel.vue
 -->
@@ -918,6 +918,7 @@ export default {
     installAppData(id) {
       this.processData();
       this.isLoading = true;
+      console.log(this.initData);
       this.$api.app.install(id, this.initData).then((res) => {
         this.isLoading = false;
         if (res.data.success == 200) {

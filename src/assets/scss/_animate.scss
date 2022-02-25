@@ -26,3 +26,15 @@
   -webkit-animation-name: zoomOutIn;
   animation-name: zoomOutIn;
 }
+
+// Vue DropDown animation
+.fade1-enter-active,
+.fade1-leave-active {
+  transform-origin: top;
+  transition: opacity $speed-slow $easing, transform $speed-slow $easing;
+}
+.fade1-enter,
+.fade1-leave-to {
+  transform: scaleY(0.9);
+  opacity: 0;
+}

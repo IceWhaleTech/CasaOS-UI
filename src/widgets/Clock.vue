@@ -17,7 +17,8 @@ export default {
     return {
       timer: 0,
       timeText: "",
-      dateText: ""
+      dateText: "",
+      lang: this.$i18n.locale.replace("_", "-")
     }
   },
   mounted() {
@@ -29,11 +30,21 @@ export default {
       this.updateClock()
     }, 1000)
   },
+  watch: {
+    '$i18n.locale': {
+      handler(data) {
+        this.lang = data.replace("_", "-")
+      },
+      deep: true
+    },
+  },
+
   methods: {
     updateClock() {
       var today = new Date();
-      this.timeText = dateFormat(today,"HH:MM");
-      this.dateText = dateFormat(today,"fullDate");
+
+      this.timeText = dateFormat(today, "HH:MM");
+      this.dateText = today.toLocaleDateString(this.lang, { weekday: "long", year: "numeric", month: "long", day: "numeric" })
     }
   },
 }

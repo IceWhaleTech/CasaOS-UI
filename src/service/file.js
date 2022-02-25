@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-18 16:33:39
+ * @LastEditTime: 2022-02-25 15:31:52
  * @Description: File API
  * @FilePath: /CasaOS-UI/src/service/file.js
  */
@@ -16,13 +16,13 @@ const file = {
         }
         return api.get('/file/dirpath', data);
     },
-    // System path
+    // Rename file path
     renamePath(oldpath, path) {
         let data = {
             oldpath: oldpath,
             newpath: path
         }
-        return api.get('/file/rename', data);
+        return api.put('/file/rename', data);
     },
     // Make a new Dir
     mkdir(path) {
@@ -37,6 +37,20 @@ const file = {
             path: path
         }
         return api.post('/file/create', data)
+    },
+    // Download File
+    download(path) {
+        let data = {
+            path: path
+        }
+        return api.get('/file/download', data);
+    },
+    // Delete file or folder
+    delete(path) {
+        let data = {
+            path: path
+        }
+        return api.delete('/file/delete', data);
     }
 }
 

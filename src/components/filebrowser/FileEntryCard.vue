@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-02-18 12:44:03
  * @LastEditors: JerryK
- * @LastEditTime: 2022-02-18 12:58:53
+ * @LastEditTime: 2022-02-25 14:48:09
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\filebrowser\FileEntryCard.vue
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/FileEntryCard.vue
 -->
 <template>
   <div class="column is-narrow is-3">

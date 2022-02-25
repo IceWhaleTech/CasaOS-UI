@@ -23,6 +23,7 @@ $ghost-dark: findDarkColor($ghost);
 $ghost-invert: findColorInvert($ghost);
 
 $loading-icon-size: 2.5rem;
+@import '~vue-context/src/sass/vue-context';
 
 @import "~bulma/sass/utilities/derived-variables";
 

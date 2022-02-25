@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-02-17 14:24:52
+ * @LastEditTime: 2022-02-25 13:35:32
  * @Description: Top bar 
  * @FilePath: /CasaOS-UI/src/components/TopBar.vue
 -->
@@ -59,7 +59,7 @@
       <!-- Account Dropmenu End -->
 
       <!-- Settings Dropmenu Start -->
-      <b-dropdown aria-role="list" class="navbar-item" animation="slide-fade" @active-change="onOpen">
+      <b-dropdown aria-role="list" class="navbar-item" animation="fade1" @active-change="onOpen">
         <template #trigger>
           <b-tooltip :label="$t('Settings')" position="is-right" type="is-dark">
             <p role="button">
