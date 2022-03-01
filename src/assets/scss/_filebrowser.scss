@@ -47,6 +47,7 @@
 
         .content {
           position: relative;
+          max-width: calc(100% - 15rem);
           .drag-mask {
             pointer-events: none;
             position: absolute;
@@ -135,6 +136,9 @@
               .tr {
                 transition: all 0.25s;
                 cursor: pointer;
+                &.isCutting {
+                  opacity: 0.5;
+                }
                 .td {
                   position: relative;
                   justify-content: initial;
@@ -156,6 +160,7 @@
                     margin-right: 20px;
                     flex-shrink: 0;
                     flex-grow: 0;
+                    pointer-events: none;
                   }
                   .text {
                     text-align: left;
@@ -167,6 +172,7 @@
                     position: absolute;
                     padding-left: 48px;
                     padding-right: 24px;
+                    pointer-events: none;
                   }
 
                   .action-btn {
@@ -195,14 +201,13 @@
               }
             }
           }
-          .context-area{
+          .context-area {
             position: absolute;
             z-index: 10;
             width: 100%;
             height: 100%;
             left: 0;
             top: 0;
-            
           }
 
           .content-components {
@@ -258,10 +263,15 @@
                           cursor: pointer;
                           padding: 8px 0 10px;
 
+                          &.isCutting {
+                            opacity: 0.5;
+                          }
+
                           .cover {
                             margin-bottom: 0.75rem;
                             display: flex;
                             justify-content: center;
+                            pointer-events: none;
                             .folder-cover,
                             .file-cover {
                               display: flex;
@@ -281,6 +291,7 @@
                           }
 
                           .info {
+                            pointer-events: none;
                             .title {
                               width: 100%;
                               text-align: center;
@@ -324,6 +335,50 @@
       }
     }
   }
+  .breadcrumb-container {
+    position: relative;
+    max-width: calc( 100% - 1.5rem);
+    overflow: hidden;
+  }
+
+  .breadcrumb {
+    ul {
+      margin-top: 0;
+      margin-left: 0;
+      flex-wrap: nowrap;
+      li {
+        margin-top: 0;
+        flex-shrink: 0;
+
+        &:first-child {
+          padding-right: 0.75em;
+          a{
+            padding-right: 0;
+          }
+        }
+        & + li::before {
+          color: #b5b5b5;
+          content: ">";
+        }
+        &:last-child {
+          overflow: hidden;
+          flex-shrink: 1;
+          
+          a {
+            display: block;
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+    }
+    &.is-medium {
+      font-size: 1rem;
+      font-weight: bold;
+    }
+  }
 }
 
 .file-dropdown {
@@ -354,16 +409,17 @@
   .modal-card {
     max-width: 28rem;
     .modal-card-body {
-
       .node-card {
         .cover {
           width: 92px;
           height: 92px;
           margin: 0 auto;
+          pointer-events: none;
         }
         .title {
           font-size: 0.875rem;
           text-align: center;
+          pointer-events: none;
         }
       }
     }
@@ -374,4 +430,9 @@
   .modal-card-body {
     min-height: 200px;
   }
+}
+
+.context-menu {
+  position: fixed;
+  z-index: 100;
 }

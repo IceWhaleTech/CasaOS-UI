@@ -2,15 +2,15 @@
  * @Author: JerryK
  * @Date: 2022-02-21 11:06:18
  * @LastEditors: JerryK
- * @LastEditTime: 2022-02-25 18:20:48
+ * @LastEditTime: 2022-03-01 15:29:10
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/filebrowser/GirdView.vue
 -->
 <template>
-  <div class="scroll-container scrollbars-light is-relative">
+  <div class="scroll-container scrollbars-light is-relative" @contextmenu.prevent="openContextMenu">
     <div class="content-components">
       <div class="card-container" id="card-container">
-        <div v-for="(item,index) in listData" :key="'list-'+index+item.name" class="grid-card" :style="colStyle">
+        <div v-for="(item,index) in listData" :key="'list-'+index+item.name" class="grid-card rdata" :data-rel="index" :style="colStyle">
           <div class="file-card">
             <div class="file-card-item">
               <div class="node-card-container">
@@ -19,7 +19,7 @@
                   <action-button :cols="cols" :index="index" :item="item" @showDetailModal="$emit('showDetailModal', item)" @reload="$emit('reload')"></action-button>
                   <!-- Action Button End -->
 
-                  <div class="node-card" @click="clickItem($event,item)">
+                  <div class="node-card" :class="{'isCutting':getCardState(item)}" @click="clickItem($event,item)" @contextmenu.prevent="openContextMenu($event,item)">
                     <div class="cover">
                       <div :class="item | coverType">
                         <img alt="folder" :src="getIconFile(item)" :class="item | iconType" />
@@ -35,24 +35,27 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
 
-    <context-menu></context-menu>
+    <!-- Context Menu Start -->
+    <context-menu ref="ctxMenu" @upload="$emit('upload')" @reload="$emit('reload')" @newFolder="$emit('newFolder')"></context-menu>
+    <!-- Context Menu End -->
   </div>
 </template>
 
 <script>
 import { mixin } from '@/mixins/mixin';
 import ActionButton from './ActionButton.vue';
-import ContextMenu from './ContextMenu.vue';
+import ContextMenu from './ContextMenu.vue'
+
 const cardWidth = 144;
 export default {
-  components: { 
+  components: {
     ActionButton,
-    ContextMenu
-     },
+    ContextMenu,
+
+  },
   mixins: [mixin],
   data() {
     return {
@@ -60,9 +63,11 @@ export default {
       items: [],
       min: 0,
       cols: 1,
+      contextIsShow: false,
       colStyle: {
         width: '33.3333%'
-      }
+      },
+
     }
   },
   model: {
@@ -84,8 +89,6 @@ export default {
       this.cols = Math.floor(ww / cardWidth)
       this.colStyle.width = (100 / this.cols).toString() + "%"
     },
-
-    
 
   },
 }

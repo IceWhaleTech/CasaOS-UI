@@ -23,7 +23,6 @@ $ghost-dark: findDarkColor($ghost);
 $ghost-invert: findColorInvert($ghost);
 
 $loading-icon-size: 2.5rem;
-@import '~vue-context/src/sass/vue-context';
 
 @import "~bulma/sass/utilities/derived-variables";
 
@@ -121,11 +120,11 @@ html {
     box-shadow: none;
   }
 }
-.icon{
+.icon {
   overflow: hidden;
 }
-.level-item{
-  .icon{
+.level-item {
+  .icon {
     overflow: initial;
   }
 }
@@ -342,8 +341,6 @@ html {
     position: relative;
     background-color: transparent;
     border: none;
-    
-    
   }
   .modal-card-head {
     padding: 2rem 2rem 1.5rem 2rem;
@@ -372,7 +369,6 @@ html {
     .button.is-static,
     .input,
     .textarea,
-    
     .select select,
     .file-cta,
     .file-name,
@@ -391,12 +387,12 @@ html {
     .media {
       padding: 0rem;
     }
-    .media-content{
-      p{
-        word-wrap:break-word;
+    .media-content {
+      p {
+        word-wrap: break-word;
       }
     }
-    .title{
+    .title {
       overflow: hidden;
     }
     .field:last-child {
@@ -533,10 +529,10 @@ html {
   word-break: keep-all;
 }
 
-.update-icon-dot{
+.update-icon-dot {
   position: relative;
-  &::after{
-    content: '';
+  &::after {
+    content: "";
     position: absolute;
     width: 0.5rem;
     height: 0.5rem;
@@ -546,10 +542,10 @@ html {
     top: 0;
   }
 }
-.update-text-dot{
+.update-text-dot {
   position: relative;
-  &::after{
-    content: '';
+  &::after {
+    content: "";
     position: absolute;
     width: 0.5rem;
     height: 0.5rem;
@@ -695,44 +691,47 @@ html {
     background-image: url(../img/xfile.png);
   }
 }
-.breadcrumb {
-  a {
-    color: #0e9aff;
-  }
-  ul {
-    overflow: hidden;
-    flex-wrap: nowrap;
-    flex-direction: row;
-    justify-content: flex-start;
-    li {
-      white-space: nowrap;
-      div {
-        max-width: 100%;
-        padding: 0 0.5em;
-        overflow: hidden;
+.fileModal {
+  .breadcrumb {
+    a {
+      color: #0e9aff;
+    }
+    ul {
+      overflow: hidden;
+      flex-wrap: nowrap;
+      flex-direction: row;
+      justify-content: flex-start;
+      li {
         white-space: nowrap;
-        text-overflow: ellipsis;
-      }
-      &:first-child {
-        a {
-          padding-right: 0;
-          .icon {
-            margin-left: 0;
+        div {
+          max-width: 100%;
+          padding: 0 0.5em;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        &:first-child {
+          a {
+            padding-right: 0;
+            .icon {
+              margin-left: 0;
+            }
           }
         }
-      }
-      &:last-child {
-        min-width: 0;
-        width: 100%;
-      }
-      &:nth-child(2) {
-        &::before {
-          content: "|";
+        &:last-child {
+          min-width: 0;
+          width: 100%;
+        }
+        &:nth-child(2) {
+          &::before {
+            content: "|";
+          }
         }
       }
     }
   }
 }
+
 .fullScreen {
   z-index: 1000;
   background-color: #1e1e1e !important;
@@ -912,7 +911,7 @@ html {
     height: 100%;
   }
 }
-.op65{
+.op65 {
   opacity: 0.65;
 }
 
@@ -922,7 +921,7 @@ html {
   .app-header {
     position: relative;
   }
-  
+
   .swiper-button-next,
   .swiper-rtl .swiper-button-prev {
     right: -20px;
@@ -1380,6 +1379,6 @@ button.dropdown-item.is-active {
   transition-duration: 0.35s;
 }
 
-.taginput .taginput-container .autocomplete input{
+.taginput .taginput-container .autocomplete input {
   border: none !important;
 }

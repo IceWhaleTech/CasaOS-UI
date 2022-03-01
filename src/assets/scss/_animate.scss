@@ -38,3 +38,10 @@
   transform: scaleY(0.9);
   opacity: 0;
 }
+
+.fade2-enter-active,
+.fade2-leave-active {
+  transform-origin: top;
+  transition: none;
+}
+

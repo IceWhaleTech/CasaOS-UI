@@ -2,11 +2,12 @@
  * @Author: JerryK
  * @Date: 2022-01-20 12:01:07
  * @LastEditors: JerryK
- * @LastEditTime: 2022-02-25 14:45:40
+ * @LastEditTime: 2022-03-01 16:08:22
  * @Description: 
  * @FilePath: /CasaOS-UI/src/mixins/mixin.js
  */
 import qs from 'qs'
+
 
 export const mixin = {
 
@@ -51,6 +52,8 @@ export const mixin = {
             localStorage.setItem('lang', lang)
             this.$i18n.locale = lang;
         },
+
+
         /**
          * @description: Get file icon from file name
          * @param {Object} item 
@@ -103,6 +106,11 @@ export const mixin = {
             }
             window.open(base_url + qs.stringify(url), '_self');
         },
+        // Download Button Action
+        download() {
+            this.$refs.dropDown.toggle()
+            this.downloadFile(this.item)
+        },
         /**
          * @description: Download File
          * @param {Object,Object} event item 
@@ -121,6 +129,69 @@ export const mixin = {
                 this.$emit('showDetailModal', item)
             }
         },
+        /**
+         * @description: Open Context Menu
+         * @param {Object,Object} event item 
+         * @return {void} 
+         */
+        openContextMenu(e, item) {
+            if (item) {
+                e.cancelBubble = true
+                document.dispatchEvent(new CustomEvent('contextmenu'));
+            }
+            this.$refs.ctxMenu.open(e, item)
+        },
+        /**
+         * @description: Copy Or Cut File
+         * @param {String} type
+         * @return {void} 
+         */
+        operate(type) {
+            const operateObject = {
+                from: this.item.path,
+                type: type
+            }
+            this.$store.commit('changeOperateObject', operateObject)
+            this.$refs.dropDown.toggle()
+        },
+
+        /**
+         * @description: Delete File
+         * @param {} 
+         * @return {void} 
+         */
+        deleteItem() {
+            this.$api.file.delete(this.item.path).then(res => {
+                if (res.data.success == 200) {
+                    this.$refs.dropDown.toggle()
+                    this.$emit("reload")
+                } else {
+                    this.$buefy.toast.open({
+                        message: res.data.message,
+                        type: 'is-danger'
+                    })
+                }
+            })
+        },
+
+        /**
+         * @description: Rename Button Action
+         * @param {} 
+         * @return {void} 
+         */
+        
+        /**
+         * @description: Check file or folder state
+         * @param {} 
+         * @return {void} 
+         */
+        getCardState(item) {
+            if (this.$store.state.operateObject != null && this.$store.state.operateObject.type == "move") {
+                return this.$store.state.operateObject.from == item.path
+            } else {
+                return false
+            }
+        }
     },
 
 

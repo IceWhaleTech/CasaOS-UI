@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-02-25 15:39:16
+ * @LastEditTime: 2022-03-01 14:53:27
  * @Description: 
  * @FilePath: /CasaOS-UI/src/store/index.js
  */
@@ -26,14 +26,17 @@ export default new Vuex.Store({
     searchEngine: '',
     siteLoading: true,
     needInitialization: false,
-    pasteFiles: "",
     widgetsSwitch: {
       clock: true,
       weather: true,
       cpu: true,
       disk: true
     },
-    hardwareInfo: {}
+    hardwareInfo: {},
+    // Files
+    pasteFiles: "",
+    operateObject: null,
+    currentPath: ""
   },
   mutations: {
     setToken(state, val) {
@@ -72,6 +75,12 @@ export default new Vuex.Store({
     },
     changePasteFiles(state, val) {
       state.pasteFiles = val
+    },
+    changeOperateObject(state, val) {
+      state.operateObject = val
+    },
+    changeCurrentPath(state, val) {
+      state.currentPath = val
     }
   },
   actions: {

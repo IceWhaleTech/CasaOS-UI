@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-02-18 12:42:06
  * @LastEditors: JerryK
- * @LastEditTime: 2022-02-25 18:29:35
+ * @LastEditTime: 2022-03-01 18:46:19
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/filebrowser/FilePanel.vue
 -->
@@ -27,20 +27,32 @@
         <!-- Drag and Drop Mask Start -->
         <div class="drag-mask" v-if="isDragIn"></div>
         <!-- Drag and Drop Mask End -->
+
         <!-- Header Start -->
         <header class="modal-card-head">
           <div class="flex1 is-flex ">
             <!-- <b-input placeholder="Search in folder..." size="is-small" rounded></b-input> -->
           </div>
           <div class="is-flex is-align-items-center">
+
+            <!-- Paste Button Start -->
+            <transition name="fade">
+              <b-button icon-left="content-paste" type="is-success" size="is-small" label="Paste" class="mr-3" @click.once="paste" v-if="hasPasteData" rounded />
+            </transition>
+            <!-- Paste Button End -->
+
+            <!-- Upload Button Start -->
             <b-upload class="mr-3">
               <a class="button is-primary is-rounded is-small">
                 <b-icon icon="upload" size="is-small"></b-icon>
                 <span>{{ "Upload"}}</span>
               </a>
             </b-upload>
+            <!-- Upload Button End -->
 
+            <!-- Create Button Start -->
             <b-button icon-left="folder-plus-outline" size="is-small" label="New folder" @click="showNewFolderModal" rounded />
+            <!-- Create Button End -->
 
             <div class="is-flex is-align-items-center modal-close-container ">
               <button type="button" class="delete" @click="$emit('close')" />
@@ -51,9 +63,11 @@
         <!-- Header End -->
 
         <!-- Tool Bar Start -->
-        <div class="tool-bar is-flex" >
-          <div class="flex1">My Space</div>
-          <div class="view-btns">
+        <div class="tool-bar is-flex">
+          <div class="breadcrumb-container  flex1" @click="init">
+            <file-breadcrumb></file-breadcrumb>
+          </div>
+          <div class="view-btns is-flex-shrink-0">
             <b-tooltip label="Change View" position="is-left" type="is-dark">
               <p role="button" class="is-clickable" @click="changeView">
                 <b-icon :icon="viewIcon"></b-icon>
@@ -64,8 +78,8 @@
         <!-- Tool Bar End -->
 
         <!-- List View Start -->
-        <component :is="listView" v-model="listData" @showDetailModal="showDetailModal" @gotoFolder="getFileList" @reload="getFileList(currentPath)"></component>
-        
+        <component :is="listView" v-model="listData" @showDetailModal="showDetailModal" @gotoFolder="getFileList" @reload="getFileList(currentPath)" @upload="$emit('upload')" @newFolder="showNewFolderModal"></component>
+
         <!-- List View End -->
 
       </div>
@@ -85,6 +99,7 @@ import GirdView from './GirdView.vue';
 import ListView from './ListView.vue';
 import DetailModal from './DetailModal.vue'
 import NewFolderModal from './NewFolderModal.vue'
+import FileBreadcrumb from './FileBreadcrumb.vue';
 
 export default {
   mixins: [mixin],
@@ -95,11 +110,13 @@ export default {
       currentPath: "",
       isViewGird: true,
       listData: [],
+      hasPasteData: this.$store.state.operateObject != null
     }
   },
   components: {
     ListView,
     GirdView,
+    FileBreadcrumb,
   },
   computed: {
     viewIcon() {
@@ -109,6 +126,14 @@ export default {
       return this.isViewGird ? "gird-view" : "list-view"
     }
   },
+  watch: {
+    '$store.state.operateObject': {
+      handler(val) {
+        this.hasPasteData = (val != null)
+      },
+      deep: true
+    },
+  },
   mounted() {
     this.init();
   },
@@ -116,14 +141,15 @@ export default {
   methods: {
     //   Init Funtion
     init() {
-      this.currentPath = this.rootPath
-      this.getFileList(this.currentPath);
+      this.getFileList(this.rootPath);
     },
     // Get Tree List
     getFileList(path) {
       this.$api.file.dirPath(path).then(res => {
         if (res.data.success == 200) {
-          console.log(res.data.data);
+          // console.log(res.data.data);
+          this.currentPath = path
+          this.$store.commit('changeCurrentPath', path)
           this.listData = orderBy(res.data.data, ['is_dir'], ['desc'])
         }
       })
@@ -169,6 +195,19 @@ export default {
           'reload': () => {
             this.getFileList(this.currentPath)
           }
+        }
+      })
+    },
+    paste() {
+      this.$api.file.operate(this.$store.state.operateObject.from, this.$store.state.currentPath, this.$store.state.operateObject.type).then(res => {
+        if (res.data.success == 200) {
+          this.$store.commit('changeOperateObject', null)
+          this.getFileList(this.currentPath)
+        } else {
+          this.$buefy.toast.open({
+            message: res.data.message,
+            type: 'is-danger'
+          })
         }
       })
     },
