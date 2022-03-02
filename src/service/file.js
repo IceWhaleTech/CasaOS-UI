@@ -53,6 +53,10 @@ const file = {
             path: path
         }
         return api.delete('/file/delete', data);
+    },
+    // Upload File
+    upload(){
+        
     }
 }
 
