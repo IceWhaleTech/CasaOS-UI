@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-02-18 12:42:06
  * @LastEditors: JerryK
- * @LastEditTime: 2022-03-01 18:46:19
+ * @LastEditTime: 2022-03-01 21:45:32
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/filebrowser/FilePanel.vue
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\FilePanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -42,7 +42,7 @@
             <!-- Paste Button End -->
 
             <!-- Upload Button Start -->
-            <b-upload class="mr-3">
+            <b-upload class="mr-3" v-model="file" @input="handleFileUpload">
               <a class="button is-primary is-rounded is-small">
                 <b-icon icon="upload" size="is-small"></b-icon>
                 <span>{{ "Upload"}}</span>
@@ -110,6 +110,8 @@ export default {
       currentPath: "",
       isViewGird: true,
       listData: [],
+      file: null,
+      uploadPercentage: 0,
       hasPasteData: this.$store.state.operateObject != null
     }
   },
@@ -224,6 +226,9 @@ export default {
     drop(event) {
       event.preventDefault();
       console.log("drop");
+    },
+    handleFileUpload(){
+      console.log(this.file);
     }
   },
 

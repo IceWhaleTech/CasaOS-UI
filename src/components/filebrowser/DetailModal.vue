@@ -22,8 +22,8 @@
     <!-- Header End -->
     <!-- Modal-Card Body Start -->
     <section class="modal-card-body is-flex is-justify-content-center is-align-items-center">
-      <div class="node-card">
-        <div class="cover">
+      <div class="node-card ">
+        <div class="cover is-unselectable">
           <div :class="item | coverType">
             <img alt="folder" :src="getIconFile(item)" :class="item | iconType" />
           </div>

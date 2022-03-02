@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-02-21 11:06:26
  * @LastEditors: JerryK
- * @LastEditTime: 2022-03-01 15:25:05
+ * @LastEditTime: 2022-03-02 08:32:36
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/filebrowser/ListView.vue
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\ListView.vue
 -->
 <template>
   <div class="node-list">
@@ -23,7 +23,7 @@
     <div class="tbody">
       <div class="scroll-container scrollbars-light is-relative" @contextmenu.prevent="openContextMenu">
         <div class="tr-wrapper rdata" :data-rel="index" v-for="(item,index) in listData" :key="'list-'+index+item.name">
-          <div class="tr" :class="{'isCutting':getCardState(item)}" @click.capture="clickItem($event,item)" @contextmenu.prevent="openContextMenu($event,item)">
+          <div class="tr is-unselectable" :class="{'isCutting':getCardState(item)}" @click.capture="clickItem($event,item)" @contextmenu.prevent="openContextMenu($event,item)">
             <div class="td">
               <div class="cover">
                 <div :class="item | coverType">

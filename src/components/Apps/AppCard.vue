@@ -2,16 +2,16 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-02-17 17:59:45
+ * @LastEditTime: 2022-03-01 21:34:51
  * @Description: App Card item
- * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
+ * @FilePath: \CasaOS-UI\src\components\Apps\AppCard.vue
 -->
 
 <template>
   <div class="wuji-card is-flex is-align-items-center is-justify-content-center p-55 app-card" @mouseover="hover = true" @mouseleave="hover = false">
     <!-- Action Button Start -->
     <div class="action-btn">
-      <b-dropdown aria-role="list" :triggers="['contextmenu','click']" position="is-bottom-left" class="ii" ref="dro" animation="slide-fade" @active-change="setDropState" :mobile-modal="false">
+      <b-dropdown aria-role="list" :triggers="['contextmenu','click']" position="is-bottom-left" class="ii" ref="dro" animation="fade1" @active-change="setDropState" :mobile-modal="false">
         <template #trigger>
           <p role="button">
             <b-icon icon="dots-vertical">

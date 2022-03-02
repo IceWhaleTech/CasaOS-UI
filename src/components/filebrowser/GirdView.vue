@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-02-21 11:06:18
  * @LastEditors: JerryK
- * @LastEditTime: 2022-03-01 15:29:10
+ * @LastEditTime: 2022-03-01 21:16:08
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/filebrowser/GirdView.vue
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\GirdView.vue
 -->
 <template>
   <div class="scroll-container scrollbars-light is-relative" @contextmenu.prevent="openContextMenu">
@@ -19,7 +19,7 @@
                   <action-button :cols="cols" :index="index" :item="item" @showDetailModal="$emit('showDetailModal', item)" @reload="$emit('reload')"></action-button>
                   <!-- Action Button End -->
 
-                  <div class="node-card" :class="{'isCutting':getCardState(item)}" @click="clickItem($event,item)" @contextmenu.prevent="openContextMenu($event,item)">
+                  <div class="node-card is-unselectable" :class="{'isCutting':getCardState(item)}" @click="clickItem($event,item)" @contextmenu.prevent="openContextMenu($event,item)">
                     <div class="cover">
                       <div :class="item | coverType">
                         <img alt="folder" :src="getIconFile(item)" :class="item | iconType" />

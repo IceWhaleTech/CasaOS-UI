@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-03-01 15:40:34
  * @LastEditors: JerryK
- * @LastEditTime: 2022-03-01 19:16:48
+ * @LastEditTime: 2022-03-01 21:11:18
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/filebrowser/FileBreadcrumb.vue
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\FileBreadcrumb.vue
 -->
 <template>
 
@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import last from 'lodash/last'
+// import last from 'lodash/last'
 import drop from 'lodash/drop'
 export default {
   data() {

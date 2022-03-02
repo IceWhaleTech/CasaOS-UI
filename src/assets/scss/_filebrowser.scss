@@ -161,6 +161,7 @@
                     flex-shrink: 0;
                     flex-grow: 0;
                     pointer-events: none;
+                    
                   }
                   .text {
                     text-align: left;
@@ -262,7 +263,7 @@
                           transition: all 0.25s;
                           cursor: pointer;
                           padding: 8px 0 10px;
-
+                          
                           &.isCutting {
                             opacity: 0.5;
                           }
