@@ -8220,6 +8220,11 @@ simple-swizzle@^0.2.2:
   dependencies:
     is-arrayish "^0.3.1"
 
+simple-uploader.js@^0.5.6:
+  version "0.5.6"
+  resolved "https://registry.yarnpkg.com/simple-uploader.js/-/simple-uploader.js-0.5.6.tgz#d37b8c0238348b3993541c7293ae9de5658b23a0"
+  integrity sha512-ukjL0wZhK1dNMaQa6sd+UpCSmnUjblaUGbAd/B8f5IFrChMzDsC/7eFSK4bs4BS5NPJFSZVLI+l6Ri7THTkQtw==
+
 sirv@^1.0.7:
   version "1.0.18"
   resolved "https://registry.yarnpkg.com/sirv/-/sirv-1.0.18.tgz#105fab52fb656ce8a2bebbf36b11052005952899"
@@ -9448,6 +9453,13 @@ vue-router@^3.2.0:
   version "3.5.2"
   resolved "https://registry.nlark.com/vue-router/download/vue-router-3.5.2.tgz?cache=0&sync_timestamp=1628495505697&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fvue-router%2Fdownload%2Fvue-router-3.5.2.tgz#5f55e3f251970e36c3e8d88a7cd2d67a350ade5c"
   integrity sha1-X1Xj8lGXDjbD6NiKfNLWejUK3lw=
+
+vue-simple-uploader@^0.7.6:
+  version "0.7.6"
+  resolved "https://registry.yarnpkg.com/vue-simple-uploader/-/vue-simple-uploader-0.7.6.tgz#2da8ce6995c0701c9b16acb7171b351835091d0e"
+  integrity sha512-DYddedNi+ZZzqxmKgW2t4lBN3aiB66oKOxgAfS9Hz9J1FHv7Xt+u1Pq8F48BFS4vG0+MFHCNzjzS2xaEUOIcHQ==
+  dependencies:
+    simple-uploader.js "^0.5.6"
 
 vue-slider-component@^3.2.14:
   version "3.2.14"

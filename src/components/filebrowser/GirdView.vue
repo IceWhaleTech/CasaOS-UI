@@ -2,13 +2,13 @@
  * @Author: JerryK
  * @Date: 2022-02-21 11:06:18
  * @LastEditors: JerryK
- * @LastEditTime: 2022-03-01 21:16:08
+ * @LastEditTime: 2022-03-02 15:17:28
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\filebrowser\GirdView.vue
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/GirdView.vue
 -->
 <template>
-  <div class="scroll-container scrollbars-light is-relative" @contextmenu.prevent="openContextMenu">
-    <div class="content-components">
+  <div class="scroll-container scrollbars-light is-relative" @contextmenu.prevent="openContextMenu" >
+    <div class="content-components" >
       <div class="card-container" id="card-container">
         <div v-for="(item,index) in listData" :key="'list-'+index+item.name" class="grid-card rdata" :data-rel="index" :style="colStyle">
           <div class="file-card">

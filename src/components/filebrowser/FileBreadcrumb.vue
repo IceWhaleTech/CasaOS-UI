@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-03-01 15:40:34
  * @LastEditors: JerryK
- * @LastEditTime: 2022-03-01 21:11:18
+ * @LastEditTime: 2022-03-02 15:02:21
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\filebrowser\FileBreadcrumb.vue
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/FileBreadcrumb.vue
 -->
 <template>
 
@@ -82,16 +82,16 @@ export default {
   },
   methods: {
     onResize() {
-      let ww = document.getElementById("bbb")
-      let list = ww.getElementsByTagName("li")
-      console.log(list);
-      let lastList = document.getElementById("lastNode")
-      console.log(lastList);
-      this.listLen = this.pathArray.length
-      this.lastWidth = lastList.clientWidth
-      console.log(this.listLen, this.lastWidth);
-      this.isMore = (this.listLen > 2) && (this.lastWidth < 50)
-      console.log(this.isMore);
+      // let ww = document.getElementById("bbb")
+      // let list = ww.getElementsByTagName("li")
+      // console.log(list);
+      // let lastList = document.getElementById("lastNode")
+      // console.log(lastList);
+      // this.listLen = this.pathArray.length
+      // this.lastWidth = lastList.clientWidth
+      // console.log(this.listLen, this.lastWidth);
+      // this.isMore = (this.listLen > 2) && (this.lastWidth < 50)
+      // console.log(this.isMore);
     },
   }
 }

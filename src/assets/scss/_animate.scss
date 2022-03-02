@@ -45,3 +45,21 @@
   transition: none;
 }
 
+.slide1-enter-active {
+  transition: 0.66s $easing;
+  transition-timing-function: cubic-bezier(0.66, 0, 0.01, 1);
+}
+.slide1-leave-active {
+  transition: 0.66s $easing;
+  transition-timing-function: cubic-bezier(0.66, 0, 0.01, 1);
+}
+.slide1-enter-to,
+.slide1-leave {
+  max-height: 512px;
+  overflow: hidden;
+}
+.slide1-enter,
+.slide1-leave-to {
+  overflow: hidden;
+  max-height: 0;
+}
