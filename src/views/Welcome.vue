@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:30:26
  * @LastEditors: JerryK
- * @LastEditTime: 2022-01-28 11:24:28
+ * @LastEditTime: 2022-03-09 16:09:38
  * @Description: 
- * @FilePath: /CasaOS-UI/src/views/Welcome.vue
+ * @FilePath: \CasaOS-UI\src\views\Welcome.vue
 -->
 <template>
   <div id="login-page" class="is-flex is-justify-content-center is-align-items-center">
@@ -12,7 +12,7 @@
 
       <div v-if="step == 1" class="has-text-centered">
         <div class=" is-flex is-justify-content-center" v-animate-css="s1Ani">
-          <b-image :src="require('@/assets/img/wuji.svg')" class="is-128x128 mb-4"></b-image>
+          <b-image :src="require('@/assets/img/logo/casa-dark.svg')" class="is-128x128 mb-4"></b-image>
         </div>
 
         <h2 class="title is-2 mb-5 has-text-centered" v-animate-css="s2Ani">{{$t('Welcome to CasaOS')}}</h2>
@@ -24,7 +24,7 @@
         <h2 class="title is-3  has-text-centered">{{$t('Create Account')}}</h2>
         <div class="is-flex is-justify-content-center ">
           <div class="has-text-centered">
-            <b-image :src="require('@/assets/img/Account.png')" class="is-128x128" rounded></b-image>
+            <b-image :src="require('@/assets/img/account/default-avatar.svg')" class="is-128x128" rounded></b-image>
           </div>
         </div>
         <ValidationObserver ref="observer" v-slot="{ handleSubmit }">

@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: JerryK
- * @LastEditTime: 2022-02-17 18:05:40
+ * @LastEditTime: 2022-03-08 20:51:13
  * @Description: 
- * @FilePath: /CasaOS-UI/src/views/Home.vue
+ * @FilePath: \CasaOS-UI\src\views\Home.vue
 -->
 <template>
   <div v-if="!isLoading" class="out-container">
@@ -38,7 +38,7 @@
 
             <!-- Apps Start -->
             <section>
-              <apps ref="apps"></apps>
+              <app-section ref="apps"></app-section>
             </section>
             <!-- Apps End -->
 
@@ -57,151 +57,151 @@
 </template>
 
 <script>
-import Apps from '@/components/Apps.vue'
 
 import SearchBar from '@/components/SearchBar.vue'
 import SideBar from '@/components/SideBar.vue'
 // import Suggestion from '@/components/Suggestion.vue'
 import TopBar from '@/components/TopBar.vue'
 import CoreService from '../components/CoreService.vue'
+import AppSection from '../components/Apps/AppSection.vue'
 //import Shortcuts from '@/components/Shortcuts.vue'
 
 export default {
-  name: "home",
+  name: "home-page",
   components: {
     SideBar,
     SearchBar,
     // Suggestion,
-    Apps,
+    AppSection,
     TopBar,
     CoreService,
-    //Shortcuts
-  },
-  data() {
-    return {
-      isLoading: true,
-      hardwareInfoLoading: true,
-      timer: 0,
-      timeGap: 3,
-      topBarAni: {
-        classes: 'fadeInDown',
-        duration: 800
-      },
-      wsUrl: (process.env.NODE_ENV === "'dev'") ? `ws://${this.$store.state.devIp}:${this.$store.state.devPort}/v1/notify/ws?token=${this.$store.state.token}` : `ws://${document.location.host}/v1/notify/ws?token=${this.$store.state.token}`,
-
-    }
-  },
-
-  computed: {
-    sidebarOpen() {
-      return this.$store.state.sidebarOpen
-    }
-  },
-  mounted() {
-    this.isLoading = false
-    if (this.timer) {
-      clearInterval(this.timer)
-    }
-    this.getHardwareInfo();
-    this.timer = setInterval(() => {
-      this.getHardwareInfo()
-    }, 2000);
-
-
-    window.addEventListener("resize", this.onResize);
-    this.onResize()
-    this.initWebSocket()
-  },
-  methods: {
-    /**
-     * @description: Show SideBar
-     * @param {*}
-     * @return {*} void
-     */
-    showSideBar() {
-      console.log("showSidebar");
+    //Shortcuts 
     },
+    data() {
+      return {
+        isLoading: true,
+        hardwareInfoLoading: true,
+        timer: 0,
+        timeGap: 3,
+        topBarAni: {
+          classes: 'fadeInDown',
+          duration: 800
+        },
+        wsUrl: (process.env.NODE_ENV === "'dev'") ? `ws://${this.$store.state.devIp}:${this.$store.state.devPort}/v1/notify/ws?token=${this.$store.state.token}` : `ws://${document.location.host}/v1/notify/ws?token=${this.$store.state.token}`,
 
-    /**
-     * @description: Window Resize Handler
-     * @param {*}
-     * @return {*} void
-     */
-    onResize() {
-      if (window.innerWidth > 480 && this.sidebarOpen) {
-        this.$store.commit('closeSideBar');
       }
     },
 
-    /**
-     * @description: Get Hardware info and save to store
-     * @param {*}
-     * @return {*} void
-     */
+    computed: {
+      sidebarOpen() {
+        return this.$store.state.sidebarOpen
+      }
+    },
+    mounted() {
+      this.isLoading = false
+      if (this.timer) {
+        clearInterval(this.timer)
+      }
+      this.getHardwareInfo();
+      this.timer = setInterval(() => {
+        this.getHardwareInfo()
+      }, 2000);
 
-    getHardwareInfo() {
-      this.$api.info.allInfo().then(res => {
-        if (res.data.success === 200) {
-          this.hardwareInfoLoading = false
-          this.$store.commit('changeHardwareInfo', res.data.data);
+
+      window.addEventListener("resize", this.onResize);
+      this.onResize()
+      this.initWebSocket()
+    },
+    methods: {
+      /**
+       * @description: Show SideBar
+       * @param {*}
+       * @return {*} void
+       */
+      showSideBar() {
+        console.log("showSidebar");
+      },
+
+      /**
+       * @description: Window Resize Handler
+       * @param {*}
+       * @return {*} void
+       */
+      onResize() {
+        if (window.innerWidth > 480 && this.sidebarOpen) {
+          this.$store.commit('closeSideBar');
         }
-      })
-    },
+      },
 
-    /**
-     * @description: Handle applist change from websocket
-     * @param {*}
-     * @return {*} void
-     */
+      /**
+       * @description: Get Hardware info and save to store
+       * @param {*}
+       * @return {*} void
+       */
 
-    handleAppListChange() {
-      this.$refs.apps.getList()
-    },
+      getHardwareInfo() {
+        this.$api.info.allInfo().then(res => {
+          if (res.data.success === 200) {
+            this.hardwareInfoLoading = false
+            this.$store.commit('changeHardwareInfo', res.data.data);
+          }
+        })
+      },
 
-    /**
-     * @description: WebSocket group function
-     * @param {*}
-     * @return {*} void
-     */
+      /**
+       * @description: Handle applist change from websocket
+       * @param {*}
+       * @return {*} void
+       */
 
-    initWebSocket() { //初始化weosocket
-      this.websock = new WebSocket(this.wsUrl);
-      this.websock.onmessage = this.websocketonmessage;
-      this.websock.onopen = this.websocketonopen;
-      this.websock.onerror = this.websocketonerror;
-      this.websock.onclose = this.websocketclose;
-    },
-    websocketonopen() { //连接建立之后执行send方法发送数据
-      console.log('connected');
-      const sendData = { type: "app", data: "" }
-      this.websocketsend(JSON.stringify(sendData))
-    },
-    websocketonerror() {//连接建立失败重连
-      this.initWebSocket();
-    },
-    websocketonmessage(e) { //数据接收
-      const redata = JSON.parse(e.data);
-      redata.forEach((item) => {
-        if (item.message == "uninstalled" || item.message == "installed") {
-          this.handleAppListChange()
-        }
-      })
-      
-    },
-    websocketsend(Data) {//数据发送
-      this.websock.send(Data);
-    },
-    websocketclose(e) {  //关闭
-      console.log('断开连接', e);
-    },
+      handleAppListChange() {
+        this.$refs.apps.getList()
+      },
+
+      /**
+       * @description: WebSocket group function
+       * @param {*}
+       * @return {*} void
+       */
+
+      initWebSocket() { //初始化weosocket
+        this.websock = new WebSocket(this.wsUrl);
+        this.websock.onmessage = this.websocketonmessage;
+        this.websock.onopen = this.websocketonopen;
+        this.websock.onerror = this.websocketonerror;
+        this.websock.onclose = this.websocketclose;
+      },
+      websocketonopen() { //连接建立之后执行send方法发送数据
+        console.log('connected');
+        const sendData = { type: "app", data: "" }
+        this.websocketsend(JSON.stringify(sendData))
+      },
+      websocketonerror() {//连接建立失败重连
+        this.initWebSocket();
+      },
+      websocketonmessage(e) { //数据接收
+        const redata = JSON.parse(e.data);
+        redata.forEach((item) => {
+          if (item.message == "uninstalled" || item.message == "installed") {
+            this.handleAppListChange()
+          }
+        })
+
+      },
+      websocketsend(Data) {//数据发送
+        this.websock.send(Data);
+      },
+      websocketclose(e) {  //关闭
+        console.log('断开连接', e);
+      },
 
 
-  },
-  beforeDestroy() {
-    window.removeEventListener("resize", this.onResize);
-    clearInterval(this.timer);
-  },
-}
+    },
+    beforeDestroy() {
+      window.removeEventListener("resize", this.onResize);
+      clearInterval(this.timer);
+    },
+  }
 </script>
 
 <style>

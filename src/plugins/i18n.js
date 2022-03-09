@@ -5,7 +5,7 @@ Vue.use(VueI18n)
 
 const i18n = new VueI18n({
     // Define defalut language
-    locale: localStorage.getItem('lang') || 'en',
+    locale: localStorage.getItem('lang') || 'en_us',
 
     messages
 })

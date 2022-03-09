@@ -5,13 +5,22 @@
 *************************************/
 
 .widget {
-  background: $backDropColor;
   backdrop-filter: $backDropBlur;
   border-radius: $backDropBorderRadius;
-  padding: 0.875rem 1.5rem;
+  position: relative;
   margin-bottom: 0.75rem;
-  .columns{
+  transition: all 0.3s;
+  .columns {
     margin-bottom: 0;
+  }
+  &:hover {
+    box-shadow: 0px 0px 17px 0px rgba(0, 0, 0, 0.2);
+  }
+
+  .widget-content {
+    padding: 0.875rem 1.5rem;
+    position: relative;
+    z-index: 10;
   }
 
   .tabs {
@@ -41,14 +50,35 @@
   }
 }
 
+.blur-background {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(59, 59, 59, 0.3);
+  background-size: cover;
+  background-position: bottom center;
+  background-attachment: fixed;
+  border-radius: $backDropBorderRadius;
+  position: absolute;
+  z-index: 0;
+  background-image: url(../background/bg3_blur.jpg);
+}
+.wuji-content {
+  position: relative;
+  z-index: 10;
+  padding: 1.5rem;
+}
+.cards-content {
+  position: relative;
+  z-index: 10;
+}
 // Cards
 .wuji-card {
-  background: $backDropColor;
   backdrop-filter: $backDropBlur;
   border-radius: $backDropBorderRadius;
-  padding: 1.5rem;
+
   color: $white;
   position: relative;
+
   transition: all 0.3s;
   .buttons {
     min-height: 2.375rem;
@@ -70,6 +100,9 @@
   }
   .icon-img {
     position: relative;
+    &.stop img{
+      filter: grayscale(100%);
+    }
     &.stop::after {
       position: absolute;
       content: "";
@@ -90,6 +123,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    &.stop img{
+      filter: grayscale(100%);
+    }
     &.stop::after {
       position: absolute;
       content: "";
@@ -113,9 +149,10 @@
     opacity: 0;
     transition: all 0.2s;
     outline: none;
+    z-index: 20;
   }
   p {
-    font-weight: 500;
+    font-weight: 300;
   }
   .one-line {
     display: -webkit-box;
@@ -152,26 +189,32 @@
     margin-bottom: 0;
   }
 }
-.ii {
+.app-card-drop {
   .dropdown-menu {
-    background: rgba(255, 255, 255, 0.88);
-    border-radius: $backDropBorderRadius;
-    overflow: hidden;
-    padding-top: 0;
-
+    min-width: 10rem;
     .dropdown-content {
+      padding: 4px !important;
+      width: 160px;
       background: none;
       padding: 0;
+      background: rgba(255, 255, 255, 0.88);
+      border-radius: 10px;
+      .dropdown-item {
+        padding: 0;
+      }
       .button {
         border-radius: 0;
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        border-radius: 5px;
         &.is-text {
           text-decoration: none;
           justify-content: flex-start;
           outline: none;
           transition: all 0.2s;
           border: none !important;
+          height: 2rem;
+          font-size: 0.875rem;
           &.running {
             color: #779e2a !important;
           }
@@ -188,13 +231,29 @@
           box-shadow: none;
           outline: none;
         }
+        &:hover {
+          background-color: hsl(0, 0%, 86%);
+        }
+      }
+      .gap {
+        margin-left: -4px;
+        margin-right: -4px;
       }
       .bbor {
-        overflow: hidden;
         border-top: #2c3e50 1px solid;
+
         .is-text {
+          
           text-decoration: none;
           justify-content: center !important ;
+        }
+        .column {
+          margin-bottom: -4px;
+          .button{
+            margin: 4px;
+            height: 2rem;
+            
+          }
         }
         .column:first-child {
           border-right: #2c3e50 1px solid;
@@ -221,4 +280,14 @@
 
 .more-info {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.is-noscroll,
+.is-clipped {
+  .wuji-card {
+    backdrop-filter: none !important;
+  }
+  .widget {
+    backdrop-filter: none !important;
+  }
 }

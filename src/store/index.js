@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-02-15 16:46:57
+ * @LastEditTime: 2022-03-08 21:19:27
  * @Description: 
- * @FilePath: /CasaOS-UI/src/store/index.js
+ * @FilePath: \CasaOS-UI\src\store\index.js
  */
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -16,7 +16,7 @@ export default new Vuex.Store({
   // plugins: [createPersistedState()],
   state: {
     token: "",
-    devIp: "192.168.2.247",
+    devIp: "192.168.2.10",
     devPort: "80",
     serviceError: false,
     userinfo: {},
@@ -32,7 +32,12 @@ export default new Vuex.Store({
       cpu: true,
       disk: true
     },
-    hardwareInfo: {}
+    hardwareInfo: {},
+    // Files
+    pasteFiles: "",
+    operateObject: null,
+    currentPath: "",
+    isViewGird: true,
   },
   mutations: {
     setToken(state, val) {
@@ -68,6 +73,18 @@ export default new Vuex.Store({
     },
     changeHardwareInfo(state, val) {
       state.hardwareInfo = val
+    },
+    changePasteFiles(state, val) {
+      state.pasteFiles = val
+    },
+    changeOperateObject(state, val) {
+      state.operateObject = val
+    },
+    changeCurrentPath(state, val) {
+      state.currentPath = val
+    },
+    changeViewGird(state, val) {
+      state.isViewGird = val
     }
   },
   actions: {

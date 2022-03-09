@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-01-20 18:30:29
+ * @LastEditTime: 2022-03-09 16:06:24
  * @Description: Install Panel of Docker
- * @FilePath: /CasaOS-UI/src/bak/Panel.vue
+ * @FilePath: \CasaOS-UI\src\bak\Panel.vue
 -->
 
 <template>
@@ -41,7 +41,7 @@
 
         <div v-for="(item,index) in pageList" :key="index+item.title+item.id" class="is-flex pt-5 pb-5 b-line is-align-items-center">
           <div class="list-icon mr-4">
-            <b-image :src="item.icon" :src-fallback="require('@/assets/img/default.png')" webp-fallback=".jpg" class="is-72x72 icon-shadow"></b-image>
+            <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-72x72 icon-shadow"></b-image>
           </div>
           <div class="flex1 mr-4">
             <h6 class="title is-6 mb-2">{{item.title}}</h6>
@@ -546,7 +546,7 @@ export default {
         trapFocus: true,
         canCancel: ['escape'],
         scroll: "keep",
-        animation: "zoom-out",
+        animation: "zoom-in",
         events: {
           'update': (e) => {
             //localStorage.removeItem("app_data")
@@ -577,7 +577,6 @@ export default {
         }
       })
     },
-
     /**
      * @description: Get remote synchronization information
      * @param {*} function
@@ -679,7 +678,7 @@ export default {
         trapFocus: true,
         canCancel: [],
         scroll: "keep",
-        animation: "zoom-out",
+        animation: "zoom-in",
         props: {
           appid: this.id,
           appName: this.initData.label
@@ -696,7 +695,6 @@ export default {
         if (this.state == 'install') {
           localStorage.setItem("app_data", JSON.stringify(val))
         }
-
       },
       deep: true
     }

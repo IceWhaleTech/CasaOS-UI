@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-06 15:53:55
+ * @LastEditTime: 2022-03-08 13:02:35
  * @Description: Application API
- * @FilePath: /CasaOS-UI/src/service/app.js
+ * @FilePath: \CasaOS-UI\src\service\app.js
  */
 import { api } from "./service.js";
 
@@ -79,6 +79,7 @@ const app = {
     //Get all Usage
     getAppUsage() {
         return api.get('/app/usage');
-    }
+    },
+    
 }
 export default app;

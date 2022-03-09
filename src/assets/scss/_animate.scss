@@ -26,3 +26,51 @@
   -webkit-animation-name: zoomOutIn;
   animation-name: zoomOutIn;
 }
+
+// Vue DropDown animation
+.fade1-enter-active,
+.fade1-leave-active {
+  transform-origin: top;
+  transition: opacity $speed-slow $easing, transform $speed-slow $easing;
+}
+.fade1-enter,
+.fade1-leave-to {
+  transform: scaleY(0.9);
+  opacity: 0;
+}
+
+.fade2-enter-active,
+.fade2-leave-active {
+  transform-origin: top;
+  transition: none;
+}
+
+.slide1-enter-active {
+  transition: 0.66s $easing;
+  transition-timing-function: cubic-bezier(0.66, 0, 0.01, 1);
+}
+.slide1-leave-active {
+  transition: 0.66s $easing;
+  transition-timing-function: cubic-bezier(0.66, 0, 0.01, 1);
+}
+.slide1-enter-to,
+.slide1-leave {
+  max-height: 464px;
+  overflow: hidden;
+}
+.slide1-enter,
+.slide1-leave-to {
+  overflow: hidden;
+  max-height: 0;
+}
+
+// custom Zoom in
+.c-zoom-in-enter-active,
+.c-zoom-in-leave-active {
+  transition: opacity $speed-slow $easing, transform $speed-slow $easing;
+}
+.c-zoom-in-enter,
+.c-zoom-in-leave-to {
+  transform: scale(0.95);
+  opacity: 0;
+}

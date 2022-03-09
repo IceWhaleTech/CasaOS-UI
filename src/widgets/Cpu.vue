@@ -1,50 +1,54 @@
 <template>
-  <div class="widget has-text-white clock is-relative pb-1">
-    <div class="arrow-btn" @click="showMoreInfo">
-      <b-icon icon="chevron-right" :class="{'open':showMore}"></b-icon>
-    </div>
+  <div class="widget has-text-white clock">
+    <div class="blur-background"></div>
+    <div class="widget-content">
+      <div class="arrow-btn" @click="showMoreInfo">
+        <b-icon icon="chevron-right" :class="{'open':showMore}"></b-icon>
+      </div>
 
-    <div class="columns is-mobile ">
-      <div class="column is-half has-text-centered">
-        <apexchart type="radialBar" :height="barHeight" :options="chartOptions" :series="cpuSeries"></apexchart>
-        <p class="is-size-6-5">CPU</p>
+      <div class="columns is-mobile ">
+        <div class="column is-half has-text-centered">
+          <apexchart type="radialBar" :height="barHeight" :options="chartOptions" :series="cpuSeries"></apexchart>
+          <p class="is-size-6-5">CPU <span class="is-size-7">({{cpuCores}} {{ $t('Cores') }})</span></p>
+        </div>
+        <div class="column is-half has-text-centered">
+          <apexchart type="radialBar" :height="barHeight" :options="chartOptions" :series="ramSeries"></apexchart>
+          <p class="is-size-6-5">RAM <span class="is-size-7">({{totalMemory | renderSize}})</span></p>
+        </div>
       </div>
-      <div class="column is-half has-text-centered">
-        <apexchart type="radialBar" :height="barHeight" :options="chartOptions" :series="ramSeries"></apexchart>
-        <p class="is-size-6-5">RAM</p>
-      </div>
-    </div>
-    <div v-if="showMore">
-      <div class="more-info pt-3 pb-1">
-        <b-tabs v-model="activeTab">
-          <b-tab-item label="CPU">
-            <div v-for="(item,index) in containerCpuList" :key="index+'-cpu'">
-              <div class="is-flex is-size-7 is-align-items-center mb-2" v-if="!isNaN(item.usage)">
-                <div class="is-flex-grow-1 is-flex is-align-items-center">
-                  <b-image :src="item.icon" :src-fallback="require('@/assets/img/default.png')" webp-fallback=".jpg" class="is-16x16 mr-2"></b-image>
-                  <span>{{item.title}}</span>
+      <div v-if="showMore">
+        <div class="more-info pt-3 pb-1">
+          <b-tabs v-model="activeTab">
+            <b-tab-item label="CPU">
+              <div v-for="(item,index) in containerCpuList" :key="index+'-cpu'">
+                <div class="is-flex is-size-7 is-align-items-center mb-2" v-if="!isNaN(item.usage)">
+                  <div class="is-flex-grow-1 is-flex is-align-items-center">
+                    <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg"
+                      class="is-16x16 mr-2"></b-image>
+                    <span>{{item.title}}</span>
+                  </div>
+                  <div>{{item.usage}}%</div>
                 </div>
-                <div>{{item.usage}}%</div>
               </div>
-            </div>
-          </b-tab-item>
+            </b-tab-item>
 
-          <b-tab-item label="RAM">
-            <div v-for="(item,index) in containerRamList" :key="index+'-rem'">
-              <div class="is-flex is-size-7 is-align-items-center mb-2" v-if="!isNaN(item.usage)">
-                <div class="is-flex-grow-1 is-flex is-align-items-center">
-                  <b-image :src="item.icon" :src-fallback="require('@/assets/img/default.png')" webp-fallback=".jpg" class="is-16x16 mr-2"></b-image>
-                  <span>{{item.title}}</span>
+            <b-tab-item label="RAM">
+              <div v-for="(item,index) in containerRamList" :key="index+'-rem'">
+                <div class="is-flex is-size-7 is-align-items-center mb-2" v-if="!isNaN(item.usage)">
+                  <div class="is-flex-grow-1 is-flex is-align-items-center">
+                    <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg"
+                      class="is-16x16 mr-2"></b-image>
+                    <span>{{item.title}}</span>
+                  </div>
+                  <div>{{item.usage | renderSize}}</div>
                 </div>
-                <div>{{item.usage | renderSize}}</div>
               </div>
-            </div>
-          </b-tab-item>
+            </b-tab-item>
 
-        </b-tabs>
+          </b-tabs>
+        </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -70,6 +74,8 @@ export default {
     return {
       activeTab: 0,
       showMore: false,
+      cpuCores: 0,
+      totalMemory: 0,
       barHeight: 120,
       cpuSeries: [0],
       ramSeries: [0],
@@ -160,6 +166,8 @@ export default {
     }
   },
   mounted() {
+    this.cpuCores = this.$store.state.hardwareInfo.cpu.num
+    this.totalMemory = this.$store.state.hardwareInfo.mem.total
     this.updateCharts(this.$store.state.hardwareInfo)
     this.getDockerUsage()
 

@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-01-28 11:40:53
+ * @LastEditTime: 2022-03-08 20:48:08
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/SideBar.vue
+ * @FilePath: \CasaOS-UI\src\components\SideBar.vue
 -->
 <template>
   <div class="side-bar mr-5" :class="{'open':sidebarOpen}" v-if="!isLoading">
@@ -22,7 +22,7 @@ import lowerFirst from 'lodash/lowerFirst'
 import camelCase from 'lodash/camelCase'
 import find from 'lodash/find';
 import isEqual from 'lodash/isEqual';
-import Settings from '@/components/Settings.vue'
+import Settings from '@/components/widgets/Settings.vue'
 import vueCustomScrollbar from 'vue-custom-scrollbar'
 import "vue-custom-scrollbar/dist/vueScrollbar.css"
 

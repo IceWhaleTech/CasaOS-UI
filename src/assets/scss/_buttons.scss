@@ -22,6 +22,30 @@
   color: white;
 }
 
+.button.is-iina {
+  background-color: #0088cc;
+  color: white;
+  &:hover {
+    background: findDarkColor(#0088cc);
+  }
+}
+
+.button.is-potplayer {
+  background-color: #ecc94b;
+  color: $black;
+  &:hover {
+    background: findDarkColor(#ecc94b);
+    color: $white;
+  }
+}
+.button.is-vlc {
+  background-color: #dd6b20;
+  color: $white;
+  &:hover {
+    background: findDarkColor(#dd6b20);
+    color: $white;
+  }
+}
 .button.is-ghost {
   color: $ghost;
 }
@@ -29,12 +53,10 @@
   color: #000;
   text-decoration: none;
   background: transparent;
-  &:hover{
+  &:hover {
     background: transparent;
   }
 }
-
-
 
 .add-button {
   color: #0e9aff;
@@ -130,7 +152,6 @@
     color: #fff;
   }
   &:hover {
-
     &:before {
       color: #fff;
     }

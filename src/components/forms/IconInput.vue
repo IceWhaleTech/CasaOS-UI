@@ -63,7 +63,7 @@ export default {
         trapFocus: true,
         canCancel: ['escape'],
         scroll: "keep",
-        animation: "zoom-out",
+        animation: "zoom-in",
         events: {
           'updatePath': (e) => {
             this.path = e

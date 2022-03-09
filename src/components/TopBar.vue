@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-02-17 14:24:52
+ * @LastEditTime: 2022-03-09 15:53:40
  * @Description: Top bar 
- * @FilePath: /CasaOS-UI/src/components/TopBar.vue
+ * @FilePath: \CasaOS-UI\src\components\TopBar.vue
 -->
 
 <template>
@@ -22,11 +22,11 @@
       <!-- SideBar Button Start -->
 
       <!-- Account Dropmenu Start -->
-      <b-dropdown aria-role="list" class="navbar-item " animation="slide-fade" @active-change="getUserInfo">
+      <b-dropdown aria-role="list" class="navbar-item " animation="fade1" @active-change="getUserInfo">
         <template #trigger>
           <b-tooltip :label="$t('Account')" position="is-right" type="is-dark">
             <p role="button">
-              <b-icon icon="account-circle"></b-icon>
+              <b-icon class="picon" icon="account-circle"></b-icon>
             </p>
           </b-tooltip>
         </template>
@@ -36,12 +36,12 @@
 
           <div class="is-flex is-align-items-center item">
             <div class="is-flex is-align-items-center flex1">
-              <b-image :src="require('@/assets/img/Account.png')" class="is-40x40 mr-3" rounded></b-image>
+              <b-image :src="require('@/assets/img/account/default-avatar.svg')" class="is-40x40 mr-3" rounded></b-image>
               <b>{{userInfo.user_name}}</b>
             </div>
             <div>
               <a aria-role="button" @click="showAccountPanel">
-                <b-icon icon="account-edit"></b-icon>
+                <b-icon  icon="account-edit"></b-icon>
               </a>
             </div>
           </div>
@@ -50,7 +50,7 @@
             <div class="is-flex is-align-items-center flex1">
             </div>
             <div>
-              <b-button type="is-dark" size="is-small" class="ml-2" rounded @click="logout">{{$t('Logout')}}</b-button>
+              <b-button type="is-dark" size="is-small" class="ml-2 " rounded @click="logout">{{$t('Logout')}}</b-button>
             </div>
           </div>
 
@@ -59,11 +59,11 @@
       <!-- Account Dropmenu End -->
 
       <!-- Settings Dropmenu Start -->
-      <b-dropdown aria-role="list" class="navbar-item" animation="slide-fade" @active-change="onOpen">
+      <b-dropdown aria-role="list" class="navbar-item" animation="fade1" @active-change="onOpen">
         <template #trigger>
           <b-tooltip :label="$t('Settings')" position="is-right" type="is-dark">
             <p role="button">
-              <b-icon icon="tune" :class="{'update-icon-dot': updateInfo.is_need }"></b-icon>
+              <b-icon icon="tune" class="picon" :class="{'update-icon-dot': updateInfo.is_need }"></b-icon>
             </p>
           </b-tooltip>
         </template>
@@ -149,7 +149,7 @@
       <div class="is-flex is-align-items-center ml-3">
         <b-tooltip :label="$t('Terminal & Logs')" position="is-right" type="is-dark">
           <p role="button" @click="showTerminalPanel">
-            <b-icon icon="console"></b-icon>
+            <b-icon class="picon" icon="console"></b-icon>
           </p>
         </b-tooltip>
       </div>
@@ -166,9 +166,9 @@
 </template>
 
 <script>
-import AccountPanel from './AccountPanel.vue'
-import TerminalPanel from './TerminalPanel.vue'
-import PortPanel from './PortPanel.vue'
+import AccountPanel from './account/AccountPanel.vue'
+import TerminalPanel from './logsAndTerminal/TerminalPanel.vue'
+import PortPanel from './settings/PortPanel.vue'
 import { mixin } from '../mixins/mixin';
 export default {
   name: "top-bar",
@@ -295,7 +295,7 @@ export default {
         trapFocus: true,
         canCancel: ['escape'],
         scroll: "keep",
-        animation: "zoom-out",
+        animation: "zoom-in",
         events: {
 
         },
@@ -388,7 +388,7 @@ export default {
         trapFocus: true,
         canCancel: ['escape'],
         scroll: "keep",
-        animation: "zoom-out",
+        animation: "zoom-in",
         events: {
 
         },
@@ -410,7 +410,7 @@ export default {
         trapFocus: true,
         canCancel: [],
         scroll: "keep",
-        animation: "zoom-out",
+        animation: "zoom-in",
       })
     },
 

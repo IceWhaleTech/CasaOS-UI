@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-11-10 17:50:18
  * @LastEditors: JerryK
- * @LastEditTime: 2021-11-24 17:09:42
+ * @LastEditTime: 2022-03-08 21:02:04
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/CoreService.vue
+ * @FilePath: \CasaOS-UI\src\components\CoreService.vue
 -->
 <template>
   <div class=" home-section has-text-left mt-55">
@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import SmartBlock from './SmartBlock.vue'
-import SyncBlock from './SyncBlock.vue'
+import SmartBlock from './smartHome/SmartBlock.vue'
+import SyncBlock from './syncthing/SyncBlock.vue'
 export default {
   components: { SyncBlock, SmartBlock },
   name: "core-service",
