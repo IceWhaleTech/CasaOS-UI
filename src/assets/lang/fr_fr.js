@@ -72,7 +72,7 @@ export default {
     // Widgets
     "Widgets Settings": "Paramètres des widgets",
     "Time": "Heure",
-    "Cores": "Cores",
+    "Cores": "cœurs",
     "System Status": "État du système",
     "Storage Status": "Storage Status",
     "Network Status": "État du réseau",
