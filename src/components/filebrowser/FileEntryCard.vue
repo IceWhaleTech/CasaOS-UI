@@ -2,25 +2,29 @@
  * @Author: JerryK
  * @Date: 2022-02-18 12:44:03
  * @LastEditors: JerryK
- * @LastEditTime: 2022-02-25 14:48:09
+ * @LastEditTime: 2022-03-08 20:17:36
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/filebrowser/FileEntryCard.vue
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\FileEntryCard.vue
 -->
 <template>
   <div class="column is-narrow is-3">
     <div class="wuji-card is-flex is-align-items-center is-justify-content-center p-55 app-card">
-      <!-- Card Content Start -->
-      <div class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-3 pb-3 img-c">
-        <a class="is-flex is-justify-content-center" @click="showFilePanel">
-          <b-image :src="require('@/assets/img/file-icon.svg')" class="is-72x72"></b-image>
-        </a>
-        <p class="mt-4 one-line">
-          <a class="one-line" @click="showFilePanel">
-            File Manager
+
+      <div class="blur-background"></div>
+      <div class="cards-content">
+        <!-- Card Content Start -->
+        <div class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-3 pb-3 img-c">
+          <a class="is-flex is-justify-content-center" @click="showFilePanel">
+            <b-image :src="require('@/assets/img/filebrowser/folder-open.svg')" class="is-72x72"></b-image>
           </a>
-        </p>
+          <p class="mt-4 one-line">
+            <a class="one-line" @click="showFilePanel">
+              {{ $t('Files') }}
+            </a>
+          </p>
+        </div>
+        <!-- Card Content End -->
       </div>
-      <!-- Card Content End -->
     </div>
   </div>
 </template>
@@ -35,17 +39,29 @@ export default {
    * @return {*} void
    */
     showFilePanel() {
+      try {
+        const appName = "Files"
+        const action = "open"
+        this.$api.analyse.analyseAppAction(appName, action)
+        // eslint-disable-next-line no-empty
+      } catch (err) { }
+
       this.$buefy.modal.open({
         parent: this,
         component: FilePanel,
         hasModalCard: true,
         customClass: 'file-panel',
         trapFocus: true,
-        canCancel: ['escape'],
-        scroll: "keep",
-        animation: "zoom-out",
+        canCancel: [''],
+        scroll: "clip",
+        animation: "zoom-in",
         props: {
 
+        },
+        events: {
+          'afterLeave': () => {
+            console.log('enter');
+          }
         }
       })
     }

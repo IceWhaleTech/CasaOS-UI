@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-03-02 13:53:44
+ * @LastEditTime: 2022-03-08 21:19:27
  * @Description: 
- * @FilePath: /CasaOS-UI/src/store/index.js
+ * @FilePath: \CasaOS-UI\src\store\index.js
  */
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -36,7 +36,8 @@ export default new Vuex.Store({
     // Files
     pasteFiles: "",
     operateObject: null,
-    currentPath: ""
+    currentPath: "",
+    isViewGird: true,
   },
   mutations: {
     setToken(state, val) {
@@ -81,6 +82,9 @@ export default new Vuex.Store({
     },
     changeCurrentPath(state, val) {
       state.currentPath = val
+    },
+    changeViewGird(state, val) {
+      state.isViewGird = val
     }
   },
   actions: {

@@ -2,15 +2,15 @@
  * @Author: JerryK
  * @Date: 2022-01-20 13:21:12
  * @LastEditors: JerryK
- * @LastEditTime: 2022-01-21 16:56:50
+ * @LastEditTime: 2022-03-09 16:04:51
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/Storage/StorageItem.vue
+ * @FilePath: \CasaOS-UI\src\components\Storage\StorageItem.vue
 -->
 <template>
   <div class="mb-5 mt-2">
     <div class="is-flex mb-2">
       <div class="header-icon">
-        <b-image :src="require('@/assets/img/storage.png')" class="is-64x64"></b-image>
+        <b-image :src="require('@/assets/img/storage/storage.png')" class="is-64x64"></b-image>
       </div>
       <div class="ml-3 is-flex-grow-1 is-flex is-align-items-center">
         <div>

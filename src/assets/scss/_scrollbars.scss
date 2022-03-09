@@ -87,3 +87,27 @@
   border-radius: 10px;
   outline: none;
 }
+
+.CodeMirror-vscrollbar::-webkit-scrollbar-track-piece ,
+.CodeMirror-hscrollbar::-webkit-scrollbar-track-piece {
+  width: 8px;
+  background-color: rgba(140, 130, 130, .3);
+}
+
+.CodeMirror-vscrollbar::-webkit-scrollbar,
+.CodeMirror-hscrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.CodeMirror-vscrollbar::-webkit-scrollbar-track,
+.CodeMirror-hscrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
+.CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+  outline: none;
+}

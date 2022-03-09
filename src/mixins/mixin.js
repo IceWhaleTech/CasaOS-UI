@@ -2,32 +2,63 @@
  * @Author: JerryK
  * @Date: 2022-01-20 12:01:07
  * @LastEditors: JerryK
- * @LastEditTime: 2022-03-01 16:08:22
+ * @LastEditTime: 2022-03-08 17:18:59
  * @Description: 
- * @FilePath: /CasaOS-UI/src/mixins/mixin.js
+ * @FilePath: \CasaOS-UI\src\mixins\mixin.js
  */
 import qs from 'qs'
+import has from 'lodash/has'
+import union from 'lodash/union'
+import copy from 'clipboard-copy'
+import dayjs from 'dayjs'
+const typeMap = {
+    "image-x-generic": ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'svg', 'tiff'],
+    "video-x-generic": ['mkv', 'mp4', '3gp', 'avi', 'm2ts', 'webm', 'flv', 'vob', 'ts', 'mts', 'mov', 'wmv', 'rm', 'rmvb', 'asf', 'wmv', 'mpg', 'm4v', 'mpeg', 'f4v'],
+    "audio-x-generic": ['aac', 'aiff', 'alac', 'amr', 'ape', 'flac', 'm4a', 'mp3', 'ogg', 'opus', 'wma', 'wav'],
+    "text-x-generic": ['txt', 'log', 'pages', 'md', 'conf', 'list', 'ini'],
+    "text-css": ['php', 'css', 'less', 'scss', 'sass', 'aspx', 'lua', 'vue', 'js', 'go', 'asp', 'bat', 'c', 'cpp', 'cs', 'json', 'py', 'perl', 'sh', 'xml', 'yaml', 'vb', 'vbs', 'sql', 'swift', 'rust', 'rs', 'jsp', 'yml'],
+    "text-html": ['html', 'htm', 'shtml', 'shtm'],
+    "application-vnd.ms-word": ['doc', 'docx', 'wps'],
+    "application-vnd.ms-excel": ['xls', 'xlsx', 'csv'],
+    "application-vnd.ms-powerpoint": ['ppt', 'pptx'],
+    "application-pdf": ['pdf'],
+    "application-photoshop": ['psd', 'psb'],
+    "application-illustrator": ['ai', 'eps'],
+    "application-x-wine-extension-cpl": ['exe'],
+    "application-apk": ['apk'],
+    "application-x-zip": ['zip', 'rar', '7z', 'gz', 'ace', 'xz'],
+    "application-x-cd-image": ['iso', 'img', 'vmdk', 'raw', 'vhd'],
+    "application-x-apple": ['dmg', 'ipa', 'pkg'],
+    "application-x-pem-key": ['pem', 'crt', 'ca-bundle', 'p7b', 'p7s', 'der', 'cer', 'pfx', 'p12'],
+    "text-x-cmake": ['makefile', 'cmake', 'dockerfile'],
+    "text-dockerfile": ['dockerfile'],
+}
 
+// eslint-disable-next-line no-unused-vars
+const filePanelMap = {
+    'code-editor': union(typeMap['text-x-generic'], typeMap['text-css'], typeMap['text-html'], typeMap['text-x-cmake'], typeMap['text-dockerfile']),
+    "video-player": union(typeMap['video-x-generic'], typeMap['audio-x-generic']),
+    "image-viewer": typeMap['image-x-generic'],
+    "pdf-viewer": typeMap['application-pdf'],
+}
 
 export const mixin = {
+    mounted() {
+        this.typeMap = typeMap;
+    },
 
     methods: {
         /**
          * @description: Format size output
-         * @param {int} value size value
+         * @param {int} bytes size value
          * @return {String} 
          */
-        renderSize(value) {
-            if (null == value || value == '') {
-                return "0 Bytes";
-            }
-            var unitArr = new Array("Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB");
-            var index = 0,
-                srcsize = parseFloat(value);
-            index = Math.floor(Math.log(srcsize) / Math.log(1024));
-            var size = srcsize / Math.pow(1024, index);
-            size = size.toFixed(2);
-            return size + unitArr[index];
+        renderSize(bytes) {
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+            if (bytes === 0) return '0 Bytes'
+            const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10)
+            if (i === 0) return `${bytes} ${sizes[i]})`
+            return `${parseFloat((bytes / (1024 ** i)).toFixed(2))} ${sizes[i]}`
         },
 
 
@@ -61,33 +92,60 @@ export const mixin = {
          */
         // 
         getIconFile(item) {
-            if (item.is_dir) {
-                return require("@/assets/img/folder-icon-230-180.png")
-            } else {
-                const ext = item.name.substring(item.name.lastIndexOf('.') + 1);
-                // Check Images
-                if (['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'psd', 'svg', 'tiff', 'ai'].indexOf(ext.toLowerCase()) !== -1) {
-                    return require("@/assets/img/icon-image.png")
-                    // Check Videos
-                } else if (['mkv', 'mp4', '3gp', 'avi', 'm2ts', 'webm', 'flv', 'vob', 'ts', 'mts', 'mov', 'wmv', 'rm', 'rmvb', 'asf', 'wmv', 'mpg', 'm4v', 'mpeg', 'f4v'].indexOf(ext.toLowerCase()) !== -1) {
-                    return require("@/assets/img/icon-video.png")
-                    // Check Audios
-                } else if (['aac', 'aiff', 'alac', 'amr', 'ape', 'flac', 'm4a', 'mp3', 'ogg', 'opus', 'wma', 'wav'].indexOf(ext.toLowerCase()) !== -1) {
-                    return require("@/assets/img/icon-audio.png")
-                    // Check Documents
-                } else if (['txt', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pdf', 'html', 'css', 'scss', 'less', 'log', 'pages', 'wps', 'csv', 'json', 'xml'].indexOf(ext.toLowerCase()) !== -1) {
-                    return require("@/assets/img/icon-document.png")
-                    // Check Zip files
-                } else if (['zip', 'rar', '7z', 'gz', 'ace'].indexOf(ext.toLowerCase()) !== -1) {
-                    return require("@/assets/img/icon-document.png")
-                    // Check Archiving files
-                } else if (['iso', 'img', 'vmdk', 'raw', 'vhd'].indexOf(ext.toLowerCase()) !== -1) {
-                    return require("@/assets/img/icon-document.png")
-                } else {
-                    return require("@/assets/img/icon-unknown.png")
-                }
-
+            let isDir = false
+            if (has(item, 'is_dir')) {
+                isDir = item.is_dir
+            } else if (has(item, "isFolder")) {
+                isDir = item.isFolder
             }
+            if (isDir) {
+                let folder = "folder-default"
+                if (item.type == "application") {
+                    folder = "folder-application"
+                } else if (item.type == "usb") {
+                    folder = "folder-usb"
+                } else if (item.type == "home") {
+                    folder = "folder-root"
+                } else if (item.name == "Media") {
+                    folder = "folder-video"
+                } else if (item.name == "Downloads") {
+                    folder = "folder-download"
+                } else if (item.name == "Documents") {
+                    folder = "folder-documents"
+                } else if (item.name == "Gallery") {
+                    folder = "folder-pictures"
+                } else if (item.name == "AppData") {
+                    folder = "folder-application"
+                } else {
+                    folder = "folder-default"
+                }
+                return require(`@/assets/img/filebrowser/${folder}.svg`)
+            } else {
+                const ext = this.getFileExt(item);
+                let type = "unknown"
+                Object.keys(typeMap).forEach((_type) => {
+                    const extensions = typeMap[_type]
+                    if (extensions.indexOf(ext.toLowerCase()) > -1) {
+                        type = _type
+                    }
+                })
+                return require(`@/assets/img/filebrowser/${type}.svg`)
+            }
+        },
+        getPanelType(item) {
+            const ext = this.getFileExt(item);
+            let type = null
+            Object.keys(filePanelMap).forEach((_type) => {
+                const extensions = filePanelMap[_type]
+                if (extensions.indexOf(ext.toLowerCase()) > -1) {
+                    type = _type
+                }
+            })
+
+            return type
+        },
+        getFileExt(item) {
+            return item.name.substring(item.name.lastIndexOf('.') + 1);
         },
         /**
          * @description: Download File
@@ -96,20 +154,37 @@ export const mixin = {
          */
         downloadFile(item) {
             this.$buefy.toast.open({
-                message: 'Download in preparation',
+                message: this.$t('Download in preparation...'),
                 type: 'is-light'
             })
+            let url = this.getFileUrl(item)
+            window.open(url, '_self');
+        },
+        playVideo(item, player) {
+            let url = player + this.getFileUrl(item)
+            window.open(url, '_self');
+        },
+        getFileUrl(item) {
             let base_url = (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${this.$store.state.devPort}/v1/file/download?` : `http://${document.location.host}/v1/file/download?`;
             let url = {
                 path: item.path,
                 token: this.$store.state.token
             }
-            window.open(base_url + qs.stringify(url), '_self');
+            return base_url + qs.stringify(url)
         },
         // Download Button Action
         download() {
             this.$refs.dropDown.toggle()
             this.downloadFile(this.item)
+        },
+        // Copy Path
+        copyPath() {
+            this.$refs.dropDown.toggle()
+            copy(this.item.path)
+            this.$buefy.toast.open({
+                message: this.$t('Copied to clipboard'),
+                type: 'is-success'
+            })
         },
         /**
          * @description: Download File
@@ -122,10 +197,8 @@ export const mixin = {
                 return false
             }
             if (item.is_dir) {
-                console.log("Open folder:", item.path);
                 this.$emit('gotoFolder', item.path)
             } else {
-                console.log("Click:", item.path);
                 this.$emit('showDetailModal', item)
             }
         },
@@ -179,7 +252,7 @@ export const mixin = {
          * @param {} 
          * @return {void} 
          */
-        
+
         /**
          * @description: Check file or folder state
          * @param {} 
@@ -191,7 +264,9 @@ export const mixin = {
             } else {
                 return false
             }
-        }
+        },
+
+
     },
 
 
@@ -220,17 +295,12 @@ export const mixin = {
          * @param {int} value size value
          * @return {String} 
          */
-        renderSize(value) {
-            if (null == value || value == '') {
-                return "0 Bytes";
-            }
-            var unitArr = new Array("Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB");
-            var index = 0,
-                srcsize = parseFloat(value);
-            index = Math.floor(Math.log(srcsize) / Math.log(1024));
-            var size = srcsize / Math.pow(1024, index);
-            size = size.toFixed(2);
-            return size + unitArr[index];
+        renderSize(bytes) {
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+            if (bytes === 0) return '0 Bytes'
+            const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10)
+            if (i === 0) return `${bytes} ${sizes[i]})`
+            return `${parseFloat((bytes / (1024 ** i)).toFixed(2))} ${sizes[i]}`
         },
 
 
@@ -266,7 +336,11 @@ export const mixin = {
         },
 
         dateFmt: function (value) {
-            return new Date(value).toLocaleString();
+            if (dayjs().isSame(value, 'year')) {
+                return dayjs(value).format('DD/MM hh:mm')
+            } else {
+                return dayjs(value).format('DD/MM/YYYY hh:mm')
+            }
         },
         coverType: function (item) {
             return item.is_dir ? "folder-cover" : "file-cover"

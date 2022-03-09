@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-14 14:08:40
  * @LastEditors: JerryK
- * @LastEditTime: 2021-10-20 17:03:30
+ * @LastEditTime: 2022-03-07 11:18:29
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/fileList/FilePanel.vue
+ * @FilePath: \CasaOS-UI\src\components\fileList\FilePanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -166,7 +166,7 @@ export default {
         trapFocus: true,
         canCancel: ['escape'],
         scroll: "keep",
-        animation: "zoom-out",
+        animation: "zoom-in",
         events: {
           'reloadPath': (path) => {
 

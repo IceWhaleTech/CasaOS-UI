@@ -55,11 +55,22 @@
 }
 .slide1-enter-to,
 .slide1-leave {
-  max-height: 512px;
+  max-height: 464px;
   overflow: hidden;
 }
 .slide1-enter,
 .slide1-leave-to {
   overflow: hidden;
   max-height: 0;
+}
+
+// custom Zoom in
+.c-zoom-in-enter-active,
+.c-zoom-in-leave-active {
+  transition: opacity $speed-slow $easing, transform $speed-slow $easing;
+}
+.c-zoom-in-enter,
+.c-zoom-in-leave-to {
+  transform: scale(0.95);
+  opacity: 0;
 }

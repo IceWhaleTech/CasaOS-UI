@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-03-01 15:20:39
+ * @LastEditTime: 2022-03-08 15:17:12
  * @Description: File API
- * @FilePath: /CasaOS-UI/src/service/file.js
+ * @FilePath: \CasaOS-UI\src\service\file.js
  */
 import { api } from "./service.js";
 
@@ -38,6 +38,21 @@ const file = {
         }
         return api.post('/file/create', data)
     },
+    // Download File
+    download(path) {
+        let data = {
+            path: path
+        }
+        return api.get('/file/download', data);
+    },
+    // Update File
+    update(path, content) {
+        let data = {
+            path: path,
+            content: content
+        }
+        return api.put('/file/update', data);
+    },
     // Copy or Move File
     operate(from, to, type) {
         let data = {
@@ -55,8 +70,8 @@ const file = {
         return api.delete('/file/delete', data);
     },
     // Upload File
-    upload(){
-        
+    upload() {
+
     }
 }
 

@@ -1,7 +1,10 @@
 <template>
   <div class="widget has-text-white clock">
-    <div class="time">{{timeText}}</div>
-    <div class="data">{{dateText}}</div>
+    <div class="blur-background"></div>
+    <div class="widget-content">
+      <div class="time">{{timeText}}</div>
+      <div class="data">{{dateText}}</div>
+    </div>
   </div>
 </template>
 
@@ -52,7 +55,7 @@ export default {
 
 <style lang="scss">
 .clock {
-  font-family: Roboto;
+
   font-style: normal;
   font-weight: 300;
   text-align: left;

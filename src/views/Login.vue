@@ -2,16 +2,16 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:30:26
  * @LastEditors: JerryK
- * @LastEditTime: 2022-01-28 11:24:46
+ * @LastEditTime: 2022-03-09 15:52:48
  * @Description: 
- * @FilePath: /CasaOS-UI/src/views/Login.vue
+ * @FilePath: \CasaOS-UI\src\views\Login.vue
 -->
 <template>
   <div id="login-page" class="is-flex is-justify-content-center is-align-items-center ">
     <div class="login-panel step4 is-shadow" v-if="!isLoading">
       <div class="is-flex is-justify-content-center ">
         <div class="has-text-centered">
-          <b-image :src="require('@/assets/img/Account.png')" class="is-128x128" rounded></b-image>
+          <b-image :src="require('@/assets/img/account/default-avatar.svg')" class="is-128x128" rounded></b-image>
           <p class="is-size-5 has-text-weight-bold mt-3">{{username}}</p>
         </div>
 

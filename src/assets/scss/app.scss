@@ -47,7 +47,7 @@ $colors: map-merge($colors, $addColors);
 @import "~buefy/src/scss/buefy";
 
 $backDropColor: rgba(123, 123, 123, 0.16);
-$backDropBlur: blur(1rem);
+$backDropBlur: none;
 $backDropBorderRadius: 0.5rem;
 
 @import "buttons";
@@ -67,7 +67,9 @@ $backDropBorderRadius: 0.5rem;
 body,
 html {
   overflow: hidden;
-  font-family: "Roboto", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Roboto, "Segoe UI",
+    "Helvetica Neue", "PingFang SC", "Noto Sans", "Noto Sans CJK SC",
+    "Microsoft YaHei", "微软雅黑", sans-serif;
   background-color: #000;
   color: #5a5a5a;
 }
@@ -75,7 +77,10 @@ html {
 #app {
   width: 100vw;
   height: 100vh;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Roboto, "Segoe UI",
+    "Helvetica Neue", "PingFang SC", "Noto Sans", "Noto Sans CJK SC",
+    "Microsoft YaHei", "微软雅黑", sans-serif;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -137,9 +142,13 @@ html {
   background: rgba(221, 221, 221, 0.95);
 
   .navbar-brand {
+    .picon {
+      cursor: pointer;
+    }
     .dropdown-menu {
       margin-top: 0.5rem;
       min-width: 20rem;
+
       .dropdown-content {
         background: rgba(255, 255, 255, 0.72);
         backdrop-filter: blur(1rem);
@@ -455,7 +464,8 @@ html {
     height: 80%;
     background-color: black;
   }
-  &:hover {
+  &:hover,
+  &:active {
     background-color: transparent;
   }
 }
@@ -685,10 +695,10 @@ html {
   -khtml-user-select: none; /*早期浏览器*/
   user-select: none;
   &.folder {
-    background-image: url(../img/folder.png);
+    background-image: url(../img/filebrowser/folder.png);
   }
   &.file {
-    background-image: url(../img/xfile.png);
+    background-image: url(../img/filebrowser/xfile.png);
   }
 }
 .fileModal {
@@ -823,6 +833,14 @@ html {
   display: -webkit-box;
   word-break: normal;
   -webkit-line-clamp: 2; //行数
+  -webkit-box-orient: vertical;
+}
+.one-line {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  word-break: normal;
+  -webkit-line-clamp: 1; //行数
   -webkit-box-orient: vertical;
 }
 

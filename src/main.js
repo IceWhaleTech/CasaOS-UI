@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-22 14:24:43
  * @LastEditors: JerryK
- * @LastEditTime: 2022-03-02 11:13:59
+ * @LastEditTime: 2022-03-08 18:26:29
  * @Description: 
- * @FilePath: /CasaOS-UI/src/main.js
+ * @FilePath: \CasaOS-UI\src\main.js
  */
 import Vue from 'vue'
 import App from '@/App.vue'
@@ -15,7 +15,7 @@ import api from '@/service/api.js'
 import Buefy from 'buefy'
 import VueFullscreen from 'vue-fullscreen'
 import Vue2TouchEvents from 'vue2-touch-events'
-import uploader from 'vue-simple-uploader'
+// import uploader from 'vue-simple-uploader'
 // import VueTour from 'vue-tour'
 import '@/assets/scss/app.scss'
 // import 'vue-tour/dist/vue-tour.css'
@@ -27,7 +27,7 @@ Vue.use(Buefy)
 Vue.use(VueFullscreen)
 Vue.use(VAnimateCss)
 Vue.use(Vue2TouchEvents)
-Vue.use(uploader)
+// Vue.use(uploader)
 // Vue.use(VueTour)
 
 Vue.config.productionTip = false

@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-29 15:38:35
  * @LastEditors: JerryK
- * @LastEditTime: 2022-01-20 11:57:01
+ * @LastEditTime: 2022-03-08 20:56:10
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/Apps/AppTerminalPanel.vue
+ * @FilePath: \CasaOS-UI\src\components\Apps\AppTerminalPanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -33,8 +33,8 @@
 </template>
 
 <script>
-import TerminalCard from '@/components/TerminalCard.vue';
-import LogsCard from '@/components/LogsCard.vue'
+import TerminalCard from '@/components/logsAndTerminal/TerminalCard.vue';
+import LogsCard from '@/components/logsAndTerminal/LogsCard.vue'
 export default {
   name: 'app-terminal-panel',
   components: {
