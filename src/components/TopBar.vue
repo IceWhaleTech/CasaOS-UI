@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-03-09 15:53:40
+ * @LastEditTime: 2022-03-10 12:44:42
  * @Description: Top bar 
  * @FilePath: \CasaOS-UI\src\components\TopBar.vue
 -->
@@ -98,6 +98,8 @@
                   <option value="fr_fr">Français</option>
                   <option value="it_it">Italiano</option>
                   <option value="ru_ru">Русский</option>
+                  <option value="pl_pl">Polska</option>
+                  <option value="pt_br">Português (Brasil)</option>
                   <option value="zh_cn">简体中文</option>
                 </b-select>
 

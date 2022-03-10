@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-02-18 12:42:06
  * @LastEditors: JerryK
- * @LastEditTime: 2022-03-09 15:41:32
+ * @LastEditTime: 2022-03-10 11:37:14
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\FilePanel.vue
 -->
@@ -230,7 +230,7 @@ export default {
         testChunks: true,
         uploadMethod: "POST",
         successStatuses: [200, 201, 202, 2002],
-        chunkSize: 1024 * 1024 * 1024 * 1024
+        // chunkSize: 1024 * 1024 * 1024 * 1024
       },
       attrs: {
         accept: '*'

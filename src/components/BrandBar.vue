@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-03-09 16:11:42
+ * @LastEditTime: 2022-03-10 09:31:33
  * @Description: The left bottom brand bar
  * @FilePath: \CasaOS-UI\src\components\BrandBar.vue
 -->

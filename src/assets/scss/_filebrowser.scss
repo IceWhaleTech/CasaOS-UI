@@ -727,17 +727,20 @@
       background: #f8f8f8;
       border-radius: 10px;
       transition: all 0.3s ease;
-
+      
       &:hover {
         background-color: rgb(235, 235, 235);
       }
       span {
         pointer-events: none;
+        padding: 0 0.5rem;
+        display: block;
+        
       }
       .image {
         pointer-events: none;
         position: absolute;
-        top: 50px;
+        top: 60px;
         left: 25px;
         width: 56px;
         height: 56px;
@@ -819,7 +822,7 @@
   .dropdown-menu {
     min-width: 8rem;
     .dropdown-content {
-      width: 150px;
+      width: 11.5rem;
       border-radius: 10px;
       padding: 4px !important;
       .dropdown-divider {

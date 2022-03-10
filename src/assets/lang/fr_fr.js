@@ -27,7 +27,7 @@ export default {
     "This field confirmation does not match": "La confirmation de ce champ ne correspond pas",
     "This field must have 2 options": "Ce champ doit avoir 2 options",
     "This field must have more than 5 characters": "Ce champ doit comporter plus de 5 caractères",
-    "You entered an invalid RFC1123 hostname": "You entered an invalid RFC1123 hostname",
+    "You entered an invalid RFC1123 hostname": "Vous avez saisi un nom d'hôte RFC1123 invalide.",
 
     // Init Page
     "Welcome to CasaOS": "Bienvenue à CasaOS",
@@ -157,7 +157,7 @@ export default {
     "No volumes now, click “+” to add one.": "Aucun volume pour le moment, cliquez sur “+” pour en ajouter un.",
     "No environment variables now, click “+” to add one.": "Pas de variables d'environnement maintenant, cliquez sur “+” pour en ajouter une.",
     "No devices now, click “+” to add one.": "Aucun appareil pour le moment, cliquez sur “+” pour en ajouter un.",
-    "No commands now, click “+” to add one.": "No commands now, click “+” to add one.",
+    "No commands now, click “+” to add one.": "Aucun commande pour le moment, cliquez sur “+” pour en ajouter un.",
     "e.g.,hello-world:latest": "e.g.,hello-world:latest",
     "Your custom App Name": "Votre nom d'application personnalisé",
     "Your custom icon URL": "URL de l'icône personnalisée",
@@ -231,7 +231,6 @@ export default {
     "Describe the bug": "Décrivez l'erreur",
     "A clear and concise description of what the bug is.": "Une description claire et concise de l'erreur.",
     "System infomation": "Information système",
-
 
     // Files
     "Files": "Fichiers",

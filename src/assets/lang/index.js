@@ -5,7 +5,9 @@ import fr_fr from './fr_fr'
 import es_es from './es_es'
 import de_de from './de_de'
 import it_it from './it_it'
+import pl_pl from './pl_pl'
+import pt_br from './pt_br'
 
 export default {
-    zh_cn, en_us, ru_ru, fr_fr, es_es, de_de, it_it
+    zh_cn, en_us, ru_ru, fr_fr, es_es, de_de, it_it, pt_br, pl_pl
 }
