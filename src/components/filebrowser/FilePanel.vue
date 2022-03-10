@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-02-18 12:42:06
  * @LastEditors: JerryK
- * @LastEditTime: 2022-03-10 11:37:14
+ * @LastEditTime: 2022-03-10 14:42:25
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\FilePanel.vue
 -->
@@ -261,7 +261,6 @@ export default {
     this.init();
     this.setUploaderOpts();
     document.addEventListener('contextmenu', this.hideContextMenu);
-
     // Listen to ESC button to exit preview
     document.onkeyup = (e) => {
 
@@ -313,6 +312,7 @@ export default {
             path: this.currentPath,
           }
           this.$store.commit('changeCurrentPath', path)
+          console.log(res.data.data);
           this.listData = orderBy(res.data.data, ['is_dir'], ['desc'])
         }
       })

@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-01-20 12:01:07
  * @LastEditors: JerryK
- * @LastEditTime: 2022-03-08 17:18:59
+ * @LastEditTime: 2022-03-10 15:23:16
  * @Description: 
  * @FilePath: \CasaOS-UI\src\mixins\mixin.js
  */
@@ -104,6 +104,8 @@ export const mixin = {
                     folder = "folder-application"
                 } else if (item.type == "usb") {
                     folder = "folder-usb"
+                } else if (["sata", "nvme", "spi", "sas"].includes(item.type)) {
+                    folder = "folder-hdd"
                 } else if (item.type == "home") {
                     folder = "folder-root"
                 } else if (item.name == "Media") {
