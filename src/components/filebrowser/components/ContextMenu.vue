@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-02-23 17:08:21
  * @LastEditors: JerryK
- * @LastEditTime: 2022-03-08 22:46:03
+ * @LastEditTime: 2022-03-10 12:18:46
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\components\ContextMenu.vue
 -->
@@ -131,7 +131,7 @@ export default {
         this.$nextTick(() => {
           this.x = event.clientX
           this.y = event.clientY
-          const rightOffset = window.innerWidth - event.clientX - 150
+          const rightOffset = window.innerWidth - event.clientX - 184
           this.horizontalPos = rightOffset > 0 ? "right" : "left"
           this.$refs.dropDown.isActive = true;
         })

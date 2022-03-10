@@ -20,7 +20,7 @@ export default {
     "Low": "Basso",
     "Medium": "Medio",
     "High": "Alto",
-    "Language": "Language",
+    "Language": "Lingua",
 
     "This field is required": "Questo campo è obbligatorio",
     "This field must be a valid email": "Questo campo deve avere un e-mail valida",

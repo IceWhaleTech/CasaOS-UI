@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-03-04 18:55:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-03-09 15:14:21
+ * @LastEditTime: 2022-03-10 12:05:23
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\viewers\VideoPlayer.vue
 -->
@@ -42,7 +42,6 @@
             <source :src="getFileUrl(item)" :type="'audio/'+ext" />
           </audio>
         </vue-plyr>
-        {{item.size}}
       </div>
     </div>
     <!-- Player Start -->
