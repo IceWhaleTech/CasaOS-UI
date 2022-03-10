@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-03-09 16:06:29
+ * @LastEditTime: 2022-03-10 15:36:34
  * @Description: App Card item
  * @FilePath: \CasaOS-UI\src\components\Apps\AppCard.vue
 -->
@@ -222,7 +222,6 @@ export default {
             ariaModal: true
           })
         }
-
       })
     },
 

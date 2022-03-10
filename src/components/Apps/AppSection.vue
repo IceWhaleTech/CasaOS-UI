@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-03-09 16:05:40
+ * @LastEditTime: 2022-03-10 14:48:16
  * @Description: App module
  * @FilePath: \CasaOS-UI\src\components\Apps\AppSection.vue
 -->
@@ -22,24 +22,27 @@
     <!-- App List Start -->
     <div class="columns is-variable is-2 is-multiline app-list ">
       <template v-if="!isLoading">
-        <!-- If None Apps Start -->
-        <div class="column is-narrow is-3" v-if="appList.length == 0">
-          <div class="wuji-card is-flex is-align-items-center is-justify-content-center p-55 app-card">
-            <!-- Card Content Start -->
-            <div class="has-text-centered is-flex is-justify-content-center is-flex-direction-column p-55  img-c">
-              <a class="is-flex is-justify-content-center" @click="showInstall">
-                <b-image :src="require('@/assets/img/app/add_button.svg')" class="is-72x72"></b-image>
-              </a>
-            </div>
-            <!-- Card Content End -->
-          </div>
-        </div>
-
-        <!-- If None Apps End -->
 
         <!-- FileFrowser Entry Start -->
         <file-entry-card></file-entry-card>
         <!-- FileFrowser Entry  -->
+        
+        <!-- If None Apps Start -->
+        <div class="column is-narrow is-3" v-if="appList.length == 0">
+          <div class="wuji-card is-flex is-align-items-center is-justify-content-center p-55 app-card">
+            <div class="blur-background"></div>
+            <div class="cards-content">
+              <!-- Card Content Start -->
+              <div class="has-text-centered is-flex is-justify-content-center is-flex-direction-column p-55  img-c">
+                <a class="is-flex is-justify-content-center" @click="showInstall">
+                  <b-image :src="require('@/assets/img/app/add_button.svg')" class="is-72x72"></b-image>
+                </a>
+              </div>
+              <!-- Card Content End -->
+            </div>
+          </div>
+        </div>
+        <!-- If None Apps End -->
 
         <div class="column is-narrow is-3" v-for="(item,index) in appList" :key="'app-'+index+item.icon+item.port">
           <app-card :item="item" @updateState="getList" @configApp="showConfigPanel"></app-card>
