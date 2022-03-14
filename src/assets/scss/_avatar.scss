@@ -1,0 +1,40 @@
+.avatar {
+  border: 1px solid $avatar-border-color;
+  border-radius: 50%;
+  position: relative;
+  &.size-44 {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  &.size-32 {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  &.badge {
+    &::after {
+      content: "";
+      width: 11px;
+      height: 11px;
+      border: 1px solid #fff;
+      border-radius: 6px;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      z-index: 2;
+      transition: all 0.3s;
+    }
+
+    &.success::after {
+      background-color: $success;
+    }
+
+    &.secondary::after {
+      background-color: #82868b;
+    }
+    &.danger::after {
+      background-color: $danger;
+    }
+  }
+}

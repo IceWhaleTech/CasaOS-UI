@@ -49,6 +49,7 @@
     "vue-fullscreen": "^2.6.1",
     "vue-i18n": "8",
     "vue-markdown": "^2.2.4",
+    "vue-multipane": "^0.9.5",
     "vue-pdf": "^4.3.0",
     "vue-plyr": "^7.0.0",
     "vue-router": "^3.2.0",

@@ -2,31 +2,29 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2022-01-28 16:05:56
+ * @LastEditTime: 2022-03-11 14:12:32
  * @Description: Main entry of application
- * @FilePath: /CasaOS-UI/src/App.vue
+ * @FilePath: \CasaOS-UI\src\App.vue
 -->
 
 <template>
   <div id="app" class="is-flex is-flex-direction-column">
+    <template v-if="isNotSharing">
+      <!-- Background Layer Start -->
+      <div id="background" v-animate-css="isWelcome?initAni:noneAni" :style="backgroundStyleObj"></div>
+      <!-- Background Layer End -->
 
-    <!-- Background Layer Start -->
-    <div v-if="isWelcome" id="background" v-animate-css="initAni" :style="{'background-image': 'url(' + require('./assets/background/bg3.jpg') + ')'}"></div>
-    <div v-if="!isWelcome" id="background" :style="{'background-image': 'url(' + require('./assets/background/bg3.jpg') + ')'}"></div>
-
-    <!-- Background Layer End -->
+      <!-- BrandBar Start -->
+      <brand-bar v-animate-css="brandAni"></brand-bar>
+      <!-- BrandBar End -->
+      <!-- ContactBar Start -->
+      <contact-bar v-animate-css="contactAni"></contact-bar>
+      <!-- ContactBar End -->
+    </template>
 
     <!-- Router View Start -->
     <router-view />
     <!-- Router View End -->
-
-    <!-- BrandBar Start -->
-    <brand-bar v-animate-css="brandAni"></brand-bar>
-    <!-- BrandBar End -->
-
-    <!-- ContactBar Start -->
-    <contact-bar v-animate-css="contactAni"></contact-bar>
-    <!-- ContactBar End -->
 
     <!-- <v-tour name="myTour" :steps="steps"></v-tour> -->
   </div>
@@ -59,6 +57,13 @@ export default {
         // }
       ],
       isWelcome: false,
+      backgroundStyleObj: {
+        backgroundImage: `url(${require('@/assets/background/bg3.jpg')})`
+      },
+      noneAni: {
+        classes: 'fadeIn',
+        duration: 500
+      },
       initAni: {
         classes: 'zoomOutIn',
         duration: 2500
@@ -71,18 +76,23 @@ export default {
         classes: "fadeInRight",
         duration: 700
       },
+      isNotSharing: true
     }
   },
 
   computed: {
     isLoading() {
       return this.$store.state.siteLoading
+    },
+  },
+  watch: {
+    $route() {
+      this.isNotSharing = this.$route.path != "/a-sharing"
     }
   },
 
   created() {
     this.checkInit();
-
   },
   mounted() {
     this.setInitLang();
