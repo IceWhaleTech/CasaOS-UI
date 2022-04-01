@@ -60,7 +60,7 @@ export default {
     "Dashboard Setting": "Réglage du tableau de bord",
     "Search Engine": "Moteur de recherche",
     "WebUI Port": "Port de l'interface Web",
-    "Currently the latest version": "La dernière version en date",
+    "Currently the latest version": "Vous êtes à jour",
     "A new version is available!": "Une nouvelle version est disponible !",
     "Edit Web UI port": "Editer le port WebUI",
 
@@ -132,7 +132,7 @@ export default {
     "Uninstall": "Désinstaller",
     "Attention": "Attention",
     "Data cannot be recovered after deletion! <br>Continue on to uninstall this application?": "Les données ne peuvent pas être récupérées après la suppression ! <br>Continuer pour désinstaller cette application ?",
-    "Featured Apps": "Apps à la une",
+    "Featured Apps": "Apps à la Une",
     "Custom Install": "Installation personnalisée",
     "Continue in background": "Continuer en arrière-plan",
     "Install a new App manually": "Installer une nouvelle application manuellement",
