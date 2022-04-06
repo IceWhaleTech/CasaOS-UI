@@ -21,15 +21,16 @@
       <div class="node-card">
         <div class="is-flex is-flex-grow-1 is-align-items-center">
           <div class="avatar size-44 is-flex-shrink-0">
-            <b-image :src="require('@/assets/img/avatars/1-small.png')" rounded></b-image>
+            <avatar :username="user.nick_name" :size="44"></avatar>
+            
           </div>
           <div class="ml-2 is-flex-grow-1 has-text-left">
-            <h1 class="is-size-65 mb-0 one-line has-text-weight-medium has-text-black">Kristin Watson</h1>
+            <h1 class="is-size-6 title mb-0 one-line  has-text-black">{{userIntroduction}}</h1>
+            <h2 class="subtitle is-7 mt-0 one-line has-text-grey">{{user.profile}}</h2>
           </div>
         </div>
         <b-field class="mb-3 mt-3 has-text-light" :type="errorType" :message="errors" expanded>
-          <b-input v-model="userIntroduction" v-on:keyup.enter.native="saveIntroduction"
-            placeholder="Please enter friend's ID to add friend to share list."></b-input>
+          <b-input v-model="userIntroduction" v-on:keyup.enter.native="saveIntroduction" :placeholder="$t('Please enter the remark.')"></b-input>
         </b-field>
       </div>
 
@@ -47,6 +48,7 @@
 </template>
 
 <script>
+import Avatar from 'vue-avatar'
 export default {
   data() {
     return {
@@ -55,9 +57,35 @@ export default {
       errors: ""
     }
   },
+  components: {
+    Avatar,
+  },
+  props: {
+    user: {},
+  },
+  created() {
+    this.userIntroduction = this.user.mark != "" ? this.user.mark : this.user.nick_name;
+  },
   methods: {
     saveIntroduction() {
+      this.$api.person.updateFriendRemarks(this.user.token, this.userIntroduction).then(res => {
+        let message = ""
+        let type = ""
+        if (res.data.success == 200) {
+          message = this.$t('Remark saved')
+          type = "is-success"
+          this.$emit("reloadFriendList")
+          this.$emit("close")
+        } else {
+          message = this.$t('Remark save failed')
+          type = "is-danger"
+        }
+        this.$buefy.toast.open({
+          message: message,
+          type: type
+        })
 
+      })
     }
   },
 }

@@ -75,10 +75,24 @@ instance.interceptors.response.use(response => {
     return Promise.reject(error)
 })
 
+const CancelToken = axios.CancelToken;
 //按照请求类型对axios进行封装
 const api = {
-    get(url, data) {
-        return instance.get(url, { params: data })
+
+    get(url, data, _this) {
+        if (_this) {
+            return instance.get(url, {
+                params: data,
+                cancelToken: new CancelToken(function executor(c) {
+                    _this.cancelRequest = c
+                })
+            })
+        } else {
+            return instance.get(url, {
+                params: data
+            })
+        }
+
     },
     post(url, data) {
         let newData = (url.indexOf("install") > 0 || url.indexOf("sys") > 0) ? JSON.stringify(data) : qs.stringify(data)

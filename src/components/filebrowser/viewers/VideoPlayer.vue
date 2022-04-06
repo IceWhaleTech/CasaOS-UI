@@ -31,13 +31,13 @@
     <!-- Player Start -->
     <div class="is-flex is-justify-content-center is-align-items-center is-flex-grow-1 v-container video">
       <div class="video-container">
-        <vue-plyr key="video-player" v-if="isVideo">
+        <vue-plyr key="video-player" v-if="isVideo" ref="plyr">
           <video controls crossorigin playsinline>
             <source :src="getFileUrl(item)" type="video/mp4" />
           </video>
 
         </vue-plyr>
-        <vue-plyr key="audio-player" v-if="isAudio">
+        <vue-plyr key="audio-player" v-if="isAudio" ref="plyr">
           <audio controls crossorigin playsinline>
             <source :src="getFileUrl(item)" :type="'audio/'+ext" />
           </audio>
@@ -89,7 +89,8 @@ export default {
   data() {
     return {
       type: "",
-      ext: ""
+      ext: "",
+      player: null
     }
   },
   computed: {
@@ -116,7 +117,10 @@ export default {
     close() {
       this.$emit("close");
     }
-  }
+  },
+  beforeDestroy () {
+    this.$refs.plyr.player.destroy();
+  },
 }
 </script>
 

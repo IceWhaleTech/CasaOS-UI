@@ -54,7 +54,7 @@ export default {
     }
   },
   watch: {
-    '$store.state.currentPath': {
+    '$store.state.currentSharePath': {
       handler(val) {
         this.pathCollection = this.buildPathArray(val)
         this.onResize()
@@ -68,7 +68,7 @@ export default {
     }
   },
   created() {
-    this.pathCollection = this.buildPathArray(this.$store.state.currentPath)
+    this.pathCollection = this.buildPathArray(this.$store.state.currentSharePath)
   },
   mounted() {
 
@@ -79,10 +79,10 @@ export default {
         this.$refs.breadDrop[0].isActive = !this.$refs.breadDrop[0].isActive
         return false
       }
-      this.filePanel.getFileList(item.path);
+      this.filePanel.getUserFiles(this.filePanel.currentUser, item.path);
     },
     subOpen(item) {
-      this.filePanel.getFileList(item.path);
+      this.filePanel.getUserFiles(this.filePanel.currentUser, item.path);
       // this.onResize(this.pathArray)
     },
     checkActive(index) {
@@ -112,19 +112,19 @@ export default {
             return !item.show
           })
         }
+
       })
+
     },
 
     buildPathArray(path) {
-      if (path == "/") {
-        path = path.substr(1);
-      }
+      path = path.substr(1);
       let arr = path.split("/")
       let collection = arr.map((item, index) => {
         return {
-          name: item == "" ? "Root" : item,
+          name: item,
           show: true,
-          path: item == "" ? "/" : slice(arr, 0, index + 1).join("/")
+          path: "/" + slice(arr, 0, index + 1).join("/")
         }
       })
       return collection

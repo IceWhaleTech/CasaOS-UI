@@ -8,7 +8,7 @@
 -->
 <template>
   <div class="wsettings">
-    <b-dropdown aria-role="list" class="navbar-item" animation="slide-fade" :mobile-modal="false" :position="position">
+    <b-dropdown aria-role="list" class="navbar-item" animation="fade1" :mobile-modal="false" :position="position">
       <template #trigger>
         <b-button icon-left="menu" class="circle-btn" rounded></b-button>
       </template>

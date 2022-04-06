@@ -8,7 +8,7 @@ import FilePanel from '../fileList/FilePanel.vue'
 const DATA_PATH = "/DATA"
 const DEV_PATH = "/dev"
 export default {
-  name: "iconinput",
+  name: "iconInput",
   props: {
     vdata: String,
     type: String,

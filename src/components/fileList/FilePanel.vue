@@ -32,8 +32,8 @@
           </li>
         </ul>
       </nav>
-      <ul class="filelist">
-        <list-item v-for="(item,index) in fileList" :id="item.path" :key="item.path" :name="item.name" :IsDir="item.is_dir" :path="item.path" :state="checkActive(item.path)" @active="activeFile" @expand="getFileList"></list-item>
+      <ul class="filelist scrollbars-light">
+        <list-item v-for="(item) in fileList" :item="item" :id="item.path" :key="item.path" :name="item.name" :IsDir="item.is_dir" :path="item.path" :state="checkActive(item.path)" @active="activeFile" @expand="getFileList"></list-item>
       </ul>
     </section>
     <!-- Modal-Card Body End -->
@@ -41,13 +41,13 @@
     <footer class="modal-card-foot is-flex is-align-items-center">
       <div class="flex1">
         <div v-if="rootPath == '/DATA'">
-          <b-tooltip label="Create Folder" type="is-dark">
+          <b-tooltip label="Create Folder" type="is-dark" position="is-right">
             <a class="add-button" @click="showCreatePanel(true)">
               <b-icon icon="folder-plus"></b-icon>
             </a>
           </b-tooltip>
-          <template v-if="rootPath != path">
-            <b-tooltip label="Create File" type="is-dark">
+          <template v-if="rootPath != path && showFile">
+            <b-tooltip label="Create File" type="is-dark" position="is-right">
               <a class="add-button" @click="showCreatePanel(false)">
                 <b-icon icon="file-plus-outline"></b-icon>
               </a>
@@ -84,7 +84,11 @@ export default {
   },
   props: {
     initPath: String,
-    rootPath: String
+    rootPath: String,
+    showFile: {
+      type: Boolean,
+      default: true
+    },
   },
   computed: {
     // get Last foler name for breadcrumb
@@ -105,36 +109,38 @@ export default {
     },
   },
   created() {
-    // let i = this.path.endsWith("/") ? 2 : 1;
     this.path = (this.path == this.rootPath) ? this.path : dropRight(this.path.split("/"), 1).join("/")
-    this.getFileList(this.path);
-  },
-
-  mounted() {
-
-
+    this.getFileList(this.path, true);
   },
 
   methods: {
     // get file list from api
-    getFileList(path) {
+    getFileList(path, locate = false) {
       this.$api.file.dirPath(path).then(res => {
         if (res.data.success == 200) {
           this.path = path
-          this.fileList = res.data.data;
-          this.locateFile();
+          if (this.showFile) {
+            this.fileList = res.data.data;
+          } else {
+            this.fileList = res.data.data.filter((item) => {
+              return item.is_dir
+            });
+          }
+          if (locate) {
+            this.locateFile();
+          } else {
+            this.activePath = path
+          }
         }
       })
     },
 
     locateFile() {
       this.$nextTick(() => {
-        try {
-          document.getElementById(this.activePath).scrollIntoView()
-        } catch (error) {
-          console.log(error);
+        const activeItem = document.getElementById(this.activePath)
+        if (activeItem != null) {
+          activeItem.scrollIntoView()
         }
-        
       })
     },
 

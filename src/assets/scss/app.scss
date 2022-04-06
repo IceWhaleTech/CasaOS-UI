@@ -27,17 +27,13 @@ $loading-icon-size: 2.5rem;
 @import "~bulma/sass/utilities/derived-variables";
 
 // 3. Add new color variables to the color map.
-$addColors: (
-  "twitter": (
-    $twitter,
+$addColors: ("twitter": ($twitter,
     $twitter-invert,
   ),
-  "linkedin": (
-    $linkedin,
+  "linkedin": ($linkedin,
     $linkedin-invert,
   ),
-  "github": (
-    $github,
+  "github": ($github,
     $github-invert,
   ),
 );
@@ -127,9 +123,11 @@ html {
     box-shadow: none;
   }
 }
+
 .icon {
   overflow: hidden;
 }
+
 .level-item {
   .icon {
     overflow: initial;
@@ -147,6 +145,7 @@ html {
     .picon {
       cursor: pointer;
     }
+
     .dropdown-menu {
       margin-top: 0.5rem;
       min-width: 20rem;
@@ -154,9 +153,11 @@ html {
       .dropdown-content {
         background: rgba(255, 255, 255, 0.72);
         backdrop-filter: blur(1rem);
+
         .dropdown-item {
           padding: 0.875rem 1.25rem;
           text-align: left;
+
           .item {
             height: 2rem;
           }
@@ -171,6 +172,7 @@ html {
         border-color: #000 !important;
       }
     }
+
     select {
       background-color: transparent !important;
       border-color: #000 !important;
@@ -180,6 +182,7 @@ html {
   .field {
     line-height: 1rem;
   }
+
   .switch {
     &.is-flex-direction-row-reverse {
       .control-label {
@@ -188,6 +191,7 @@ html {
       }
     }
   }
+
   .update-container {
     .button.is-rounded {
       border-radius: 9999px !important;
@@ -195,6 +199,7 @@ html {
       padding-right: calc(1em + 0.25em);
     }
   }
+
   .button {
     &.is-small {
       height: 2em;
@@ -218,11 +223,13 @@ html {
   backdrop-filter: blur(24px);
   border-radius: 4px;
   font-size: 1.5rem;
+
   a {
     color: $white;
     margin: 0.5rem;
     display: flex;
     align-items: center;
+
     &:hover {
       color: #fff;
     }
@@ -264,27 +271,35 @@ html {
 .pt-55 {
   padding-top: 2rem;
 }
+
 .p-55 {
   padding: 2rem !important;
 }
+
 .mt-55 {
   margin-top: 2.5rem !important;
 }
+
 .ml-7 {
   margin-left: 5.5rem;
 }
+
 .pl-55 {
   padding-left: 1.75rem;
 }
+
 .is-size-66 {
   font-size: 0.875rem;
 }
+
 .pl-7 {
   padding-left: 4.75rem;
 }
+
 .is-size-65 {
   font-size: 0.875rem !important;
 }
+
 .is-abs {
   position: absolute;
 }
@@ -292,13 +307,16 @@ html {
 .auto-height {
   height: auto !important;
 }
+
 .z-20 {
   position: relative;
   z-index: 20;
 }
+
 .z-30 {
   z-index: 20;
 }
+
 .border-8 {
   border-radius: 8px;
   overflow: hidden;
@@ -312,6 +330,7 @@ html {
   z-index: 0;
   pointer-events: none;
 }
+
 .label {
   font-size: 0.875rem;
   margin-bottom: 0.5rem;
@@ -321,10 +340,12 @@ html {
 .modal-background {
   background: rgba(0, 0, 0, 0.8);
 }
+
 .modal-card {
   background: rgba(255, 255, 255, 1);
   //backdrop-filter: $backDropBlur;
   border-radius: $backDropBorderRadius;
+
   .close-container {
     position: absolute;
     right: 2rem;
@@ -337,6 +358,7 @@ html {
     position: relative;
     height: 100%;
   }
+
   .modal-close-container-line {
     &:before {
       content: "";
@@ -346,6 +368,7 @@ html {
       left: 0;
     }
   }
+
   .modal-card-head,
   .modal-card-body,
   .modal-card-foot {
@@ -353,11 +376,14 @@ html {
     background-color: transparent;
     border: none;
   }
+
   .modal-card-head {
     padding: 2rem 2rem 1.5rem 2rem;
   }
+
   .modal-card-body {
     padding: 0 2rem;
+
     .loading-overlay .loading-icon:after {
       -webkit-animation: spinAround 500ms infinite linear;
       animation: spinAround 500ms infinite linear;
@@ -377,6 +403,7 @@ html {
       height: 2.5rem;
       border-width: 0.2 em;
     }
+
     .button.is-static,
     .input,
     .textarea,
@@ -391,24 +418,30 @@ html {
       height: 2.714em;
       border: 1px solid #cfcfcf !important;
       border-radius: 4px;
+
       &:focus {
         box-shadow: none;
       }
     }
+
     .media {
       padding: 0rem;
     }
+
     .media-content {
       p {
         word-wrap: break-word;
       }
     }
+
     .title {
       overflow: hidden;
     }
+
     .field:last-child {
       margin-bottom: 0.5rem;
     }
+
     .field-body {
       .field:last-child {
         margin-bottom: 0rem;
@@ -421,8 +454,10 @@ html {
       }
     }
   }
+
   .modal-card-foot {
     padding: 1rem 2rem 2rem 2rem;
+
     .button {
       border-radius: 9999px;
       padding-left: calc(1em + 0.25em);
@@ -458,14 +493,17 @@ html {
   position: relative;
   vertical-align: top;
   width: 20px;
+
   &::before {
     width: 80%;
     background-color: black;
   }
+
   &::after {
     height: 80%;
     background-color: black;
   }
+
   &:hover,
   &:active {
     background-color: transparent;
@@ -476,6 +514,7 @@ html {
   .modal-card-head1 {
     padding: 1.5rem 1.5rem 0.5rem 1.5rem;
   }
+
   .input {
     background: rgba(255, 255, 255, 0.32);
     border-color: transparent;
@@ -489,10 +528,12 @@ html {
   display: flex;
   align-items: center;
 }
+
 // Common Tabs
 .tabs {
   ul {
     border-bottom: 1px solid transparent;
+
     li {
       font-size: 1rem;
 
@@ -501,12 +542,14 @@ html {
           margin-left: 0;
         }
       }
+
       a {
         color: $primary;
         border-bottom: transparent 2px solid !important;
         padding: 0.5rem 0 0.1rem 0;
         margin: 0 0.5rem;
       }
+
       &.is-active {
         a {
           font-weight: 700;
@@ -516,22 +559,35 @@ html {
     }
   }
 }
+
 .storage-modal {
+
   .modal-card-body {
+    overflow-y: hidden;
     transition: height 0.3s;
     padding: 2rem 2rem 2rem 2rem;
+    position: relative;
+
+    .tab-item {
+      max-height: calc(100vh - 15rem);
+      overflow-y: overlay;
+    }
   }
+
   .modal-card-foot {
     padding-top: 0;
   }
+
   .close-container {
     position: absolute;
     right: 2rem;
     top: 2rem;
   }
+
   .tab-content {
     padding: 0;
   }
+
   .status {
     min-width: 7.75rem;
   }
@@ -543,6 +599,7 @@ html {
 
 .update-icon-dot {
   position: relative;
+
   &::after {
     content: "";
     position: absolute;
@@ -554,8 +611,10 @@ html {
     top: 0;
   }
 }
+
 .update-text-dot {
   position: relative;
+
   &::after {
     content: "";
     position: absolute;
@@ -576,11 +635,13 @@ html {
   .modal-card-body {
     padding: 2rem 2rem 2rem 2rem;
   }
+
   .close-container {
     position: absolute;
     right: 2rem;
     top: 2rem;
   }
+
   .tab-content {
     padding: 0;
   }
@@ -588,6 +649,7 @@ html {
   // Tabs
   .tabs {
     width: 14rem !important;
+
     &.is-toggle {
       ul {
         background: rgba(60, 60, 67, 0.05);
@@ -596,16 +658,19 @@ html {
 
         li {
           flex: none;
+
           a {
             font-size: 0.875rem;
             padding: 0.2rem 1.5rem;
             min-width: 7rem;
             border-radius: 6px;
             border: none;
+
             &:hover {
               background-color: transparent;
             }
           }
+
           &.is-active {
             a {
               background: #ffffff;
@@ -651,10 +716,12 @@ html {
 .tabs li.is-active a {
   color: #2276f3;
   border-bottom-color: #2276f3;
+
   &:focus {
     border-bottom-color: #2276f3;
   }
 }
+
 .is-size-6-5 {
   font-size: 0.875rem !important;
 }
@@ -670,15 +737,18 @@ html {
   height: 19.6875rem;
   overflow-x: hidden;
   overflow-y: auto;
+
   li {
     border-bottom: #e4e4e4 1px solid;
-    line-height: 1.75rem;
+    line-height: 1.5rem;
     border-radius: 4px;
     transition: background-color 0.2s;
     cursor: pointer;
+
     &:hover {
       background-color: #e0e0e0;
     }
+
     &.active {
       background-color: #b6e0ff;
     }
@@ -686,35 +756,35 @@ html {
 }
 
 .ficon {
-  background-size: 1.75rem;
-  background-repeat: no-repeat;
-  background-position: left center;
-  padding: 0.5rem 0.5rem 0.5rem 2rem;
+  padding: 0.5rem 0.5rem 0.5rem 0.8rem;
   -webkit-touch-callout: none;
-  -moz-user-select: none; /*火狐*/
-  -webkit-user-select: none; /*webkit浏览器*/
-  -ms-user-select: none; /*IE10*/
-  -khtml-user-select: none; /*早期浏览器*/
   user-select: none;
-  &.folder {
-    background-image: url(../img/filebrowser/folder.png);
-  }
-  &.file {
-    background-image: url(../img/filebrowser/xfile.png);
+  font-size: 0.875rem;
+
+  .cover {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: 0.5rem;
   }
 }
+
 .fileModal {
   .breadcrumb {
+    margin-bottom: 0.5rem;
+
     a {
       color: #0e9aff;
     }
+
     ul {
       overflow: hidden;
       flex-wrap: nowrap;
       flex-direction: row;
       justify-content: flex-start;
+
       li {
         white-space: nowrap;
+
         div {
           max-width: 100%;
           padding: 0 0.5em;
@@ -722,18 +792,22 @@ html {
           white-space: nowrap;
           text-overflow: ellipsis;
         }
+
         &:first-child {
           a {
             padding-right: 0;
+
             .icon {
               margin-left: 0;
             }
           }
         }
+
         &:last-child {
           min-width: 0;
           width: 100%;
         }
+
         &:nth-child(2) {
           &::before {
             content: "|";
@@ -768,12 +842,14 @@ html {
   min-height: 7.5rem;
   position: relative;
 }
+
 // Login Page
 
 #login-page {
   height: calc(100% - 5.5rem);
   position: relative;
   z-index: 500;
+
   .login-panel {
     text-align: left;
     background: rgba(255, 255, 255, 0.46);
@@ -784,6 +860,7 @@ html {
     .label {
       color: #dfdfdf;
     }
+
     .input {
       background: rgba(255, 255, 255, 0.32);
       border-color: transparent;
@@ -821,9 +898,11 @@ html {
 .b-line {
   border-bottom: #cfcfcf 1px solid;
 }
+
 .list-icon {
   width: 72px;
 }
+
 .icon-shadow {
   border-radius: 6px;
   box-sizing: border-box;
@@ -837,6 +916,7 @@ html {
   -webkit-line-clamp: 2; //行数
   -webkit-box-orient: vertical;
 }
+
 .one-line {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -864,18 +944,28 @@ html {
 .fade-leave-active {
   transition: opacity 0.5s;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+
+.fade-enter,
+.fade-leave-to
+
+/* .fade-leave-active below version 2.1.8 */
+  {
   opacity: 0;
 }
 
 .slide-fade-enter-active {
   transition: all 0.25s ease-out;
 }
+
 .slide-fade-leave-active {
   transition: all 0.25s ease-out;
 }
-.slide-fade-enter, .slide-fade-leave-to
-/* .slide-fade-leave-active for below version 2.1.8 */ {
+
+.slide-fade-enter,
+.slide-fade-leave-to
+
+/* .slide-fade-leave-active for below version 2.1.8 */
+  {
   transform: translateY(10px);
   opacity: 0;
 }
@@ -884,6 +974,7 @@ html {
   .image {
     transition: all 0.3s;
   }
+
   &:hover {
     .image {
       transform: scale3d(1.1, 1.1, 1.1);
@@ -902,6 +993,7 @@ html {
   z-index: 19;
   opacity: 0;
   visibility: hidden;
+
   &.open {
     opacity: 1;
     visibility: visible;
@@ -917,20 +1009,25 @@ html {
   top: 0;
   z-index: 15;
   pointer-events: none;
+
   &.no-event {
     pointer-events: all;
   }
+
   &.h-100 {
     height: 100% !important;
   }
+
   &.w-100 {
     width: 100% !important;
   }
+
   .sidebar-content {
     position: relative;
     height: 100%;
   }
 }
+
 .op65 {
   opacity: 0.65;
 }
@@ -938,6 +1035,7 @@ html {
 .app-detial {
   overflow: auto;
   height: 100%;
+
   .app-header {
     position: relative;
   }
@@ -947,44 +1045,72 @@ html {
     right: -20px;
     left: auto;
   }
+
   .swiper-button-prev,
   .swiper-rtl .swiper-button-next {
     left: -20px;
     right: auto;
   }
 }
+
 .featured-app {
+
   .swiper-button-next,
   .swiper-rtl .swiper-button-prev {
     right: -20px;
     top: calc(50% - 2.25rem);
     left: auto;
   }
+
   .swiper-button-prev,
   .swiper-rtl .swiper-button-next {
     left: -20px;
     top: calc(50% - 2.25rem);
     right: auto;
   }
+
   .button {
     box-sizing: border-box !important;
   }
 }
+
 .app-select {
   .dropdown-menu {
     min-width: 1rem !important;
   }
+
+  .dropdown-content {
+    border-radius: 0.5rem;
+    overflow-y: overlay !important;
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      outline: none;
+    }
+
+  }
+
   a.dropdown-item {
     padding-right: 1.5rem;
     font-size: 0.875rem;
   }
 }
+
 a.dropdown-item.is-active,
 .dropdown .dropdown-menu .has-link a.is-active,
 button.dropdown-item.is-active {
   background-color: $primary;
   color: #fff;
 }
+
 .button {
   -webkit-tap-highlight-color: transparent;
 }
@@ -994,11 +1120,13 @@ button.dropdown-item.is-active {
   .modal-card {
     width: 50rem;
   }
+
   .steps {
     .column {
       padding: 1.5rem 0;
     }
   }
+
   .dot {
     padding-left: 2.5rem;
     position: relative;
@@ -1006,6 +1134,7 @@ button.dropdown-item.is-active {
     opacity: 0.5;
     font-weight: bold;
     transition: all 0.3s;
+
     &:before {
       display: flex;
       content: attr(data-title);
@@ -1029,12 +1158,14 @@ button.dropdown-item.is-active {
       opacity: 1;
     }
   }
+
   .ok-dot {
     &:before {
       font: normal normal normal 24px/1 "Material Design Icons" !important;
       content: "\F012C" !important;
     }
   }
+
   .modal-card-body {
     overflow-x: hidden;
     overflow-y: auto;
@@ -1056,31 +1187,39 @@ button.dropdown-item.is-active {
   position: relative;
   font-size: 0.875rem;
   line-height: 1.6em;
+
   ol {
     padding-left: 1rem;
   }
+
   .t-img {
     margin-bottom: 1rem;
+
     img {
       max-width: 60%;
       width: auto;
     }
   }
+
   .t-img-1 img {
     max-width: 5rem;
   }
+
   .t-img-2 img {
     max-width: 13rem;
   }
+
   .t-img-3 img {
     max-width: 18rem;
   }
 }
+
 @keyframes load8 {
   0% {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
+
   100% {
     -webkit-transform: rotate(-360deg);
     transform: rotate(-360deg);
@@ -1093,6 +1232,7 @@ button.dropdown-item.is-active {
 
 // File Modals
 @media screen and (min-width: 769px) {
+
   .fileModal,
   .account-modal {
     .modal-card {
@@ -1105,13 +1245,16 @@ button.dropdown-item.is-active {
       width: 50rem;
     }
   }
+
   .app-panel {
     .animation-content {
       max-width: 90% !important;
     }
+
     .modal-card {
       width: 90vw;
       transition: all 0.3s;
+
       &.narrow {
         width: 50rem !important;
       }
@@ -1139,21 +1282,25 @@ button.dropdown-item.is-active {
   .container {
     margin: 0 1rem;
   }
+
   .f-list {
     .is-one-quarter {
       width: 50% !important;
     }
   }
 }
+
 @media screen and (min-width: 481px) {
   #sidebar-btn {
     display: none !important;
   }
 }
+
 @media screen and (max-width: 768px) {
   .main-content {
     .app-list {
       display: flex;
+
       .column {
         flex: none;
         width: 50%;
@@ -1184,6 +1331,7 @@ button.dropdown-item.is-active {
     display: block !important;
     width: 5rem;
     margin-left: 0.5rem;
+
     .ml-2 {
       margin-left: 0 !important;
       margin-top: 0.5rem !important;
@@ -1197,28 +1345,35 @@ button.dropdown-item.is-active {
     border-radius: 8px;
     margin: 0 2rem;
     padding: 2rem !important;
+
     .label {
       color: #dfdfdf;
     }
+
     .input {
       background: rgba(255, 255, 255, 0.32);
       border-color: transparent;
     }
+
     .is-128x128 {
       height: 96px;
       width: 96px;
     }
+
     .is-3 {
       font-size: 1.5rem;
     }
+
     &.step1 {
       .is-2 {
         font-size: 1.5rem;
       }
+
       .subtitle {
         font-size: 1rem;
       }
     }
+
     &.step3 {
       padding: 4rem !important;
     }
@@ -1231,10 +1386,12 @@ button.dropdown-item.is-active {
     width: 100%;
     display: flex;
     justify-content: center;
+
     .image.is-32x32 {
       height: 24px;
       width: 24px;
     }
+
     .is-size-4 {
       font-size: 1.25rem !important;
     }
@@ -1257,6 +1414,7 @@ button.dropdown-item.is-active {
     z-index: 20;
     width: auto;
     margin: 0 1rem !important;
+
     &.open {
       transform: translateX(0);
     }
@@ -1267,24 +1425,28 @@ button.dropdown-item.is-active {
 
     .app-list {
       display: flex;
+
       .column {
         flex: none;
         width: 50%;
       }
     }
   }
+
   .t-img {
     img {
       max-width: 100% !important;
       width: auto;
     }
   }
+
   .sync-panel {
     .steps {
       .column {
         padding: 1.5rem 0;
       }
     }
+
     .dot {
       padding-left: 2.5rem;
       position: relative;
@@ -1292,6 +1454,7 @@ button.dropdown-item.is-active {
       opacity: 0.5;
       font-weight: bold;
       transition: all 0.3s;
+
       &:before {
         display: flex;
         content: attr(data-title);
@@ -1315,26 +1478,32 @@ button.dropdown-item.is-active {
         opacity: 1;
       }
     }
+
     .ok-dot {
       &:before {
         font: normal normal normal 24px/1 "Material Design Icons" !important;
         content: "\F012C" !important;
       }
     }
+
     .modal-card-body {
       overflow-x: hidden;
       overflow-y: auto;
       padding-bottom: 1rem;
+
       .image.is-176x176 {
         height: 128px;
         width: 128px;
       }
+
       .is-offset-2 {
         margin-left: 0 !important;
       }
+
       .is-8 {
         width: 100% !important;
       }
+
       .button.is-dark {
         font-size: 0.75rem !important;
       }
@@ -1350,40 +1519,50 @@ button.dropdown-item.is-active {
   .app-detial {
     overflow: auto;
     height: 100%;
+
     .modal-card-head {
       .button {
         -webkit-tap-highlight-color: transparent;
       }
     }
+
     .app-header {
       position: relative;
+
       .header-icon {
         .is-128x128 {
           height: 96px;
           width: 96px;
         }
       }
+
       .store-title {
         font-size: 1.125rem;
       }
+
       .subtitle {
         font-size: 0.75rem;
         margin-bottom: 0.75rem;
       }
+
       .description {
         .button {
           font-size: 0.75rem;
         }
       }
     }
+
     .level {
+
       .mdi-36px.mdi-set,
       .mdi-36px.mdi:before {
         font-size: 24px;
       }
+
       .title {
         font-size: 24px;
       }
+
       .footing {
         font-size: 0.6rem !important;
       }
@@ -1401,4 +1580,21 @@ button.dropdown-item.is-active {
 
 .taginput .taginput-container .autocomplete input {
   border: none !important;
+}
+
+.v-step {
+  border-radius: 10px !important;
+  box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02) !important;
+  background-color: $primary !important;
+
+  .v-step__header {
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+    background-color: $primary-dark !important;
+  }
+
+  .v-step__content {
+    font-size: 1rem;
+    text-align: left;
+  }
 }

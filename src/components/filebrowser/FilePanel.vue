@@ -13,8 +13,7 @@
     <section class="modal-card-body is-flex">
 
       <transition name="c-zoom-in">
-        <component :is="panelType" v-if="isShowDetial" @close="isShowDetial = false" :item="currentItem"
-          ref="previewPanel"></component>
+        <component :is="panelType" v-if="isShowDetial" @close="isShowDetial = false; isModalOpen = false" :item="currentItem" ref="previewPanel"></component>
       </transition>
       <template>
         <!-- NavBar Start -->
@@ -39,18 +38,15 @@
 
                 <!-- Paste Button Start -->
                 <transition name="fade">
-                  <b-button icon-left="content-paste" type="is-success" size="is-small" :label="$t('Paste')"
-                    class="mr-3" @click.once="paste" v-if="hasPasteData" rounded />
+                  <b-button icon-left="content-paste" type="is-success" size="is-small" :label="$t('Paste')" class="mr-3" @click.once="paste" v-if="hasPasteData" rounded />
                 </transition>
                 <!-- Paste Button End -->
 
                 <!-- Upload Button Start -->
                 <div class="action-btn">
-                  <b-dropdown aria-role="list" ref="moreBtn" :triggers="['click','context']" class="file-dropdown"
-                    position="is-bottom-left" animation="fade1" :mobile-modal="false" append-to-body close-on-click>
+                  <b-dropdown aria-role="list" ref="moreBtn" :triggers="['click','context']" class="file-dropdown" position="is-bottom-left" animation="fade1" :mobile-modal="false" append-to-body close-on-click>
                     <template #trigger>
-                      <b-button icon-left="book-arrow-up" size="is-small" type="is-primary"
-                        :label="$t('Upload or Create')" class="mr-2" rounded />
+                      <b-button icon-left="book-arrow-up" size="is-small" type="is-primary" :label="$t('Upload or Create')" class="mr-2" rounded />
 
                     </template>
                     <b-dropdown-item id="upfile-btn" aria-role="menuitem" class="is-flex is-align-items-center">
@@ -62,13 +58,11 @@
                       {{ $t('Upload Folder') }}
                     </b-dropdown-item>
                     <hr class="dropdown-divider">
-                    <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center"
-                      @click="showNewFileModal">
+                    <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center" @click="showNewFileModal">
                       <b-icon icon="file-plus-outline" class="mr-1" custom-size="mdi-18px"></b-icon>
                       {{ $t('New File') }}
                     </b-dropdown-item>
-                    <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center"
-                      @click="showNewFolderModal">
+                    <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center" @click="showNewFolderModal">
                       <b-icon icon="folder-plus-outline" class="mr-1" custom-size="mdi-18px"></b-icon>
                       {{ $t('New Folder') }}
                     </b-dropdown-item>
@@ -115,9 +109,8 @@
               </div>
               <!-- Drag and Drop Mask End -->
 
-              <component :is="listView" v-model="listData" @showDetailModal="showDetailModal" @gotoFolder="getFileList"
-                @reload="reload" :isLoading="isLoading">
-                <empty-holder  @newFolder="showNewFolderModal" @newFile="showNewFileModal"></empty-holder>
+              <component :is="listView" v-model="listData" @showDetailModal="showDetailModal" @gotoFolder="getFileList" @reload="reload" :isLoading="isLoading">
+                <empty-holder @newFolder="showNewFolderModal" @newFile="showNewFileModal"></empty-holder>
               </component>
 
             </div>
@@ -211,11 +204,12 @@ export default {
   data() {
     return {
       isLoading: true,
+      isModalOpen: false,
       isDragIn: false,
       isShowDetial: false,
       panelType: null,
       currentItem: null,
-      rootPath: "/DATA",
+      rootPath: "/",
       currentPath: "",
       currentPathName: "",
       isViewGird: true,
@@ -303,6 +297,7 @@ export default {
     // Get Tree List
     getFileList(path) {
       this.isLoading = true;
+      // path = path.replace("//", "/")
       this.$api.file.dirPath(path).then(res => {
         if (res.data.success == 200) {
           this.isLoading = false;
@@ -312,7 +307,6 @@ export default {
             path: this.currentPath,
           }
           this.$store.commit('changeCurrentPath', path)
-          console.log(res.data.data);
           this.listData = orderBy(res.data.data, ['is_dir'], ['desc'])
         }
       })
@@ -329,6 +323,7 @@ export default {
       this.$store.commit('changeViewGird', this.isViewGird)
     },
     backLevel() {
+      if (this.isModalOpen) return false
       let pathArr = this.$store.state.currentPath.substr(1).split("/")
       if (pathArr.length == 1) {
         return false
@@ -382,6 +377,7 @@ export default {
 
     // Show Detail Modal
     showDetailModal(item) {
+      this.isModalOpen = true
       this.panelType = this.getPanelType(item)
       if (this.panelType !== null) {
         this.currentItem = item
@@ -398,6 +394,11 @@ export default {
           animation: "zoom-in",
           props: {
             item: item,
+          },
+          events: {
+            'close': () => {
+              this.isModalOpen = false
+            }
           }
         })
       }
@@ -405,6 +406,7 @@ export default {
 
     // Show New Folder Modal
     showNewFolderModal() {
+      this.isModalOpen = true
       this.$buefy.modal.open({
         parent: this,
         component: NewFolderModal,
@@ -419,7 +421,10 @@ export default {
         },
         events: {
           'reload': () => {
-            this.reload()
+            this.reload();
+          },
+          'close': () => {
+            this.isModalOpen = false
           }
         }
       })
@@ -427,6 +432,7 @@ export default {
 
     // Show New File Modal
     showNewFileModal() {
+      this.isModalOpen = true
       this.$buefy.modal.open({
         parent: this,
         component: NewFileModal,
@@ -441,7 +447,11 @@ export default {
         },
         events: {
           'reload': () => {
+
             this.reload()
+          },
+          'close': () => {
+            this.isModalOpen = false
           }
         }
       })

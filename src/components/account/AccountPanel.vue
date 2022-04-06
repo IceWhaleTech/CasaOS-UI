@@ -149,7 +149,7 @@ export default {
     },
     savePassword() {
       this.isLoading = true;
-      this.$api.user.changePassword({ pwd: this.password, oldpwd: this.oriPassword }).then(res => {
+      this.$api.user.changePassword({ pwd: this.password, old_pwd: this.oriPassword }).then(res => {
         this.isLoading = false;
         if (res.data.success == 200) {
           this.updateUserInfo();

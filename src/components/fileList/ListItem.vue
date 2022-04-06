@@ -7,18 +7,31 @@
  * @FilePath: /CasaOS-UI/src/components/fileList/ListItem.vue
 -->
 <template>
-  <li class="ficon" :class="[icon,{active:state}]" @click="activeSelf" @dblclick="expandDir">{{name}}</li>
+  <li class="ficon is-flex is-align-items-center" :class="[{active:state}]" @click="activeSelf" @dblclick="expandDir">
+    <div class="cover">
+      <div :class="item | coverType">
+        <img alt="folder" :src="getIconFile(item)" :class="item | iconType" />
+      </div>
+    </div>
+    <div class="one-line">
+      {{name}}
+    </div>
+
+  </li>
 </template>
 
 <script>
+import { mixin } from '@/mixins/mixin';
 export default {
   name: "list-item",
+  mixins: [mixin],
   data() {
     return {
       isActive: this.state
     }
   },
   props: {
+    item:{},
     name: String,
     path: String,
     state: Boolean,

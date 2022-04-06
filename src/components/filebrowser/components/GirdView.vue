@@ -15,19 +15,16 @@
     <!-- Empty Content Slot End -->
     <div class="content-components">
       <div class="card-container" id="card-container">
-        <div v-for="(item,index) in listData" :key="'list-'+index+item.name" class="grid-card rdata" :data-rel="index"
-          :style="colStyle">
+        <div v-for="(item,index) in listData" :key="'list-'+index+item.name" class="grid-card rdata" :data-rel="index" :style="colStyle">
           <div class="file-card">
             <div class="file-card-item">
               <div class="node-card-container">
                 <div class="outer-wrapper">
                   <!-- Action Button Start -->
-                  <action-button :cols="cols" :index="index" :item="item"
-                    @showDetailModal="$emit('showDetailModal', item)" @reload="$emit('reload')"></action-button>
+                  <action-button :cols="cols" :index="index" :item="item" @showDetailModal="$emit('showDetailModal', item)" @reload="$emit('reload')"></action-button>
                   <!-- Action Button End -->
 
-                  <div class="node-card is-unselectable" :class="{'isCutting':getCardState(item)}"
-                    @click="clickItem($event,item)" @contextmenu.prevent="openContextMenu($event,item)">
+                  <div class="node-card is-unselectable" :class="{'isCutting':getCardState(item)}" @click="clickItem($event,item)" @contextmenu.prevent="openContextMenu($event,item)">
                     <div class="cover">
                       <div :class="item | coverType">
                         <img alt="folder" :src="getIconFile(item)" :class="item | iconType" />
@@ -84,7 +81,7 @@ export default {
   },
   props: {
     listData: Array,
-    isLoading:Boolean
+    isLoading: Boolean
   },
 
   mounted() {

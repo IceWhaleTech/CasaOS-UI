@@ -21,10 +21,10 @@
             <b-button size="is-small" type="is-link is-light" rounded @click="showCreate">{{ $t('Create Storage') }}</b-button>
           </div>
           <b-tabs :animated="false" v-model="activeTab">
-            <b-tab-item :label="$t('Storage')">
+            <b-tab-item :label="$t('Storage')" class="scrollbars-light-auto tab-item">
               <storage-item v-for="(item,index) in storageData" :key="'storage'+index" :item="item" @getDiskList="getDiskList"></storage-item>
             </b-tab-item>
-            <b-tab-item :label="$t('Drive')">
+            <b-tab-item :label="$t('Drive')" class="scrollbars-light-auto tab-item">
               <drive-item v-for="(item,index) in diskData" :key="'disk'+index" :item="item"></drive-item>
             </b-tab-item>
           </b-tabs>

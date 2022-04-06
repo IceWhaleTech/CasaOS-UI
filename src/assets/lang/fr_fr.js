@@ -60,7 +60,7 @@ export default {
     "Dashboard Setting": "Réglage du tableau de bord",
     "Search Engine": "Moteur de recherche",
     "WebUI Port": "Port de l'interface Web",
-    "Currently the latest version": "La dernière version en date",
+    "Currently the latest version": "Actuellement la dernière version",
     "A new version is available!": "Une nouvelle version est disponible !",
     "Edit Web UI port": "Editer le port WebUI",
 
@@ -112,7 +112,7 @@ export default {
     "Copy the Device ID": "Copier l'ID du périphérique",
     "There you go!": "Et voilà !",
     "Your data has started to sync.It may take some minutes to fulfill synchronization.": "Vos données ont commencé à se synchroniser.<br>La synchronisation peut prendre quelques minutes.",
-    "Up to Date": "A jour",
+    "Up to Date": "À jour",
     "Synchronizing": "Synchronisation",
     "Synchronized": "Synchronisé",
     "Total": "Total",
@@ -132,7 +132,7 @@ export default {
     "Uninstall": "Désinstaller",
     "Attention": "Attention",
     "Data cannot be recovered after deletion! <br>Continue on to uninstall this application?": "Les données ne peuvent pas être récupérées après la suppression ! <br>Continuer pour désinstaller cette application ?",
-    "Featured Apps": "Apps à la une",
+    "Featured Apps": "Apps à la Une",
     "Custom Install": "Installation personnalisée",
     "Continue in background": "Continuer en arrière-plan",
     "Install a new App manually": "Installer une nouvelle application manuellement",
@@ -270,5 +270,115 @@ export default {
     "Play in PotPlayer": "Lire dans PotPlayer",
     "Play in VLC": "Lire dans VLC",
     "Download in preparation...": "Téléchargement en préparation...",
-    "Copied to clipboard": "Copié dans le presse-papier"
+    "Copied to clipboard": "Copié dans le presse-papier",
+
+    /* ******************************
+    * Share Section
+    ********************************/
+    "Share module name": "CasaConnect",
+    // Main
+    "More info": "Plus d'informations",
+    "Edit Info": "Modifier les informations",
+    "Copy My Share ID": "Copier mon identifiant de partage",
+    "Add Friend": "Ajouter un ami",
+    "Friends": "Amis",
+    "Downloads": "Téléchargements",
+    "Notification": "Notification",
+    "Upload not supported!": "Importation non prise en charge!",
+    "Select a friend to view his share.": "Sélectionnez un ami pour voir son partage.", //
+    "There are no files in the current folder.": "Il n'y a pas de fichiers dans le dossier actuel.",
+    "has been copied to the clipboard": "a été copié dans le presse-papiers",
+    "is offline": "est hors-ligne",
+    "Home": "Accueil",
+    "Forward": "Transmettre",
+    // User Context
+    "Edit remark": "Modifier la remarque",
+    "Unblock this friend": "Débloquer cet ami",
+    "Block this friend": "Bloquer cet ami",
+    "Delete friend": "Supprimer un ami",
+    "Blocked this friend": "Ami bloqué",
+    "Unblocked this friend": "Ami débloqué",
+    "Blocked failed": "Échec du blocage",
+    "Deleted this friend": "À supprimé cet ami",
+    "Delete failed": "Échec de la suppression",
+
+    // Tour
+    "Skip": "Passer",
+    "Prev": "Précédent",
+    "Let's Go": "Allons-y!",
+    "Here is your avatar, where you can change your personal information and get your ID to share with your friends.": "Voici votre avatar, où vous pouvez modifier vos informations personnelles et obtenir votre identifiant à partager avec vos amis.",
+    "Click \"+\" and enter your friend's ID to send a friend request.": "Cliquez sur \"+\" et entrez l'identifiant de votre ami pour envoyer une demande d'ami.",
+    "Browse your download progress and download history here.": "Parcourez votre progression de téléchargement et votre historique de téléchargement ici.",
+    "Modify your shared folders, and default download path here.": "Modifiez vos dossiers partagés et le chemin de téléchargement par défaut ici.",
+    "Well, let's start using it!": "Bien, commençons à l'utiliser !",
+
+    // Download List
+    "Downloading": "Téléchargement",
+    "D-Completed": "Complété",
+    "D-Total": "Total",
+    "D-Name": "Nom",
+    "D-Size": "Taille",
+    "D-Progress": "Progression",
+    "D-Retry": "Réessayez",
+    "Cancel Download": "Annuler le téléchargement",
+    "Delete this record": "Supprimer cet enregistrement",
+    "Finishing": "Fini",
+    "Error": "Erreur",
+    "Download was cancelled": "Le téléchargement a été annulé",
+    "Cancel download failed": "Échec de l'annulation du téléchargement",
+    "Record deleted": "Enregistrement supprimé",
+    "Delete record failed": "Échec de la suppression de l'enregistrement",
+
+
+    // Init Modal
+
+    "Share Initialization Wizard": "Assistant d'initialisation de partage",
+    "Welcome to CasaConnect": "Bienvenue sur CasaConnect",
+    "With this feature you can easily create peer-to-peer file sharing transfers between you and your friends.": "Avec cette fonctionnalité, vous pouvez facilement créer des transferts de partage de fichiers peer-to-peer entre vous et vos amis.",
+    "You need to do some simple setup.": "Vous devez effectuer une configuration simple.",
+    "Let's Start": "Commençons!",
+    "Share-Account": "Compte",
+    "Share-Setting": "Réglage",
+    "Share-Recommend": "Recommander",
+    "Share-Finish": "Finir",
+    "Nickname": "Pseudo",
+    "Please enter your nickname.": "S'il vous plaît, entrez votre speudo.",
+    "Description": "Description",
+    "Please enter your Description.": "Veuillez entrer votre description.",
+    "Shared folders": "Dossiers partagés",
+    "Default download path": "Chemin de téléchargement par défaut",
+    "Need to add at least one directory.": "Besoin d'ajouter au moins un répertoire.",
+    "Change": "Changement",
+    "We have prepared some public servers.": "Nous avons préparé quelques serveurs publics.",
+    "You need to choose one of them to start with.": "Vous devez en choisir un pour commencer.",
+    "At least one must be selected.": "Au moins un doit être sélectionné.",
+    "Share is ready!": "Le partage est prêt!",
+    "You have completed the initial setup.": "Vous avez terminé la configuration initiale.",
+    "Next you can follow the use guide to learn how to use it.": "Ensuite, vous pouvez suivre le guide d'utilisation pour apprendre à l'utiliser.",
+    "Share-Go": "Go",
+
+    // Add Friend Modal
+    "Send Friend Request": "Envoyer une demande d'ami",
+    "Friend's ID": "Identifiant de l'ami",
+    "Please enter friend's Share ID.": "Veuillez saisir l'identifiant de partage d'un ami.",
+    "Friend Request Sent.": "Demande d'ami envoyée.",
+    "is already your friend.": "est déjà ton ami.",
+
+    // Download Modal
+    "Download to": "Enregistrer {file} sous",
+    "Download path": "Chemin de téléchargement",
+    "Set as default download path": "Définir comme chemin de téléchargement par défaut",
+    "Download has started": "Le téléchargement a commencé",
+    "Download failed": "Échec du téléchargement",
+
+    // Remark Modal
+    "Please enter the remark.": "Veuillez entrer la remarque.",
+    "Remark saved": "Remarque sauvée",
+    "Remark save failed": "La sauvegarde de la remarque a échoué",
+
+    // Profile Modal 
+    "Edit My Info": "Modifier mes informations",
+    "My ID": "Mo identifiant",
+    "Update successful": "Mise à jour réussie",
+    "Update failed": "Mise à jour a échoué",
 }

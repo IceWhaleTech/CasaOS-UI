@@ -1,3 +1,4 @@
+/* eslint-disable vue/multi-word-component-names */
 <!--
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
@@ -27,17 +28,14 @@
             <!-- App Info Header Start -->
             <div class="app-header is-flex pb-4 b-line">
               <div class="header-icon mr-5">
-                <b-image :src="detailData.icon" :key="detailData.icon"
-                  :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg"
-                  class="is-128x128 icon-shadow"></b-image>
+                <b-image :src="detailData.icon" :key="detailData.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-128x128 icon-shadow"></b-image>
               </div>
               <div class="flex1 is-flex is-align-items-center">
                 <div>
                   <h4 class="title store-title is-4 ">{{detailData.title}}</h4>
                   <p class="subtitle is-size-66 two-line">{{detailData.tagline}}</p>
                   <p class="description">
-                    <b-button type="is-primary" size="is-normal" @click="qucikInstall(detailData.id)"
-                      :loading="detailData.id == currentInstallId" rounded>{{$t('Install')}}</b-button>
+                    <b-button type="is-primary" size="is-normal" @click="qucikInstall(detailData.id)" :loading="detailData.id == currentInstallId" rounded>{{$t('Install')}}</b-button>
                   </p>
                 </div>
               </div>
@@ -85,16 +83,13 @@
               <swiper class="swiper swiper-responsive-breakpoints" ref="infoSwiper" :options="swiperOptions">
                 <swiper-slide v-for="item in detailData.screenshot_link" :key="'sc'+item">
                   <div class="gap">
-                    <b-image :src="item" :src-fallback="require('@/assets/img/app/swiper_placeholder.png')" placeholder
-                      ratio="16by9" class="border-8"></b-image>
+                    <b-image :src="item" :src-fallback="require('@/assets/img/app/swiper_placeholder.png')" placeholder ratio="16by9" class="border-8"></b-image>
                   </div>
                 </swiper-slide>
 
               </swiper>
-              <div class="swiper-button-prev" :class="{'swiper-button-disabled':disPrev}"
-                @click="$refs.infoSwiper.$swiper.slidePrev()"></div>
-              <div class="swiper-button-next" :class="{'swiper-button-disabled':disNext}"
-                @click="$refs.infoSwiper.$swiper.slideNext()"></div>
+              <div class="swiper-button-prev" :class="{'swiper-button-disabled':disPrev}" @click="$refs.infoSwiper.$swiper.slidePrev()"></div>
+              <div class="swiper-button-next" :class="{'swiper-button-disabled':disNext}" @click="$refs.infoSwiper.$swiper.slideNext()"></div>
             </div>
 
             <!-- App Info Slider End -->
@@ -120,8 +115,7 @@
         <h3 class="title is-4 has-text-weight-normal">{{panelTitle}}</h3>
       </div>
       <div class="is-flex is-align-items-center">
-        <b-button v-if="currentSlide == 0" icon-left="view-grid-plus" size="is-small" type="is-primary"
-          :label="$t('Custom Install')" @click="currentSlide = 1" class="mr-2" rounded />
+        <b-button v-if="currentSlide == 0" icon-left="view-grid-plus" size="is-small" type="is-primary" :label="$t('Custom Install')" @click="currentSlide = 1" class="mr-2" rounded />
 
         <b-tooltip :label="$t('Import')" position="is-bottom" type="is-dark" v-if="showImportButton">
           <button type="button" class="icon-button mdi mdi-import" @click="showImportPanel" />
@@ -134,8 +128,7 @@
         <b-tooltip :label="$t('Export AppFile')" position="is-bottom" type="is-dark" v-if="showExportButton">
           <button type="button" class="icon-button mdi mdi-export-variant" @click="exportJSON" />
         </b-tooltip>
-        <div v-if="currentSlide < 2"
-          class="is-flex is-align-items-center modal-close-container modal-close-container-line">
+        <div v-if="currentSlide < 2" class="is-flex is-align-items-center modal-close-container modal-close-container-line">
           <button type="button" class="delete" @click="$emit('close')" />
         </div>
 
@@ -154,31 +147,25 @@
             <swiper class="swiper " ref="featureSwiper" :options="featureSwiperOptions">
               <swiper-slide v-for="(item,index) in recommendList " :key="index+item.title+item.id">
                 <div class="gap" @click="showAppDetial(item.id)">
-                  <b-image :src="item.thumbnail" ratio="16by9" class="border-8 is-clickable"
-                    :src-fallback="require('@/assets/img/app/swiper_placeholder.png')"
-                    :placeholder="require('@/assets/img/app/swiper_placeholder.png')"></b-image>
+                  <b-image :src="item.thumbnail" ratio="16by9" class="border-8 is-clickable" :src-fallback="require('@/assets/img/app/swiper_placeholder.png')" :placeholder="require('@/assets/img/app/swiper_placeholder.png')"></b-image>
                 </div>
                 <div class="is-flex pt-5 is-align-items-center">
                   <div class=" mr-3" @click="showAppDetial(item.id)">
-                    <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')"
-                      :placeholder="require('@/assets/img/app/default.png')" class="is-48x48 is-clickable"></b-image>
+                    <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" :placeholder="require('@/assets/img/app/default.png')" class="is-48x48 is-clickable"></b-image>
                   </div>
                   <div class="flex1 mr-4 is-clickable" @click="showAppDetial(item.id)">
                     <h6 class="title is-6 mb-2 ">{{item.title}}</h6>
                     <p class="is-size-7 two-line">{{item.tagline}}</p>
                   </div>
                   <div>
-                    <b-button type="is-primary is-light" size="is-small" rounded @click="qucikInstall(item.id)"
-                      :loading="item.id == currentInstallId">{{$t('Install')}}</b-button>
+                    <b-button type="is-primary is-light" size="is-small" rounded @click="qucikInstall(item.id)" :loading="item.id == currentInstallId">{{$t('Install')}}</b-button>
                   </div>
                 </div>
               </swiper-slide>
 
             </swiper>
-            <div class="swiper-button-prev" :class="{'swiper-button-disabled':disFeaturedPrev}"
-              @click="$refs.featureSwiper.$swiper.slidePrev()"></div>
-            <div class="swiper-button-next" :class="{'swiper-button-disabled':disFeaturedNext}"
-              @click="$refs.featureSwiper.$swiper.slideNext()"></div>
+            <div class="swiper-button-prev" :class="{'swiper-button-disabled':disFeaturedPrev}" @click="$refs.featureSwiper.$swiper.slidePrev()"></div>
+            <div class="swiper-button-next" :class="{'swiper-button-disabled':disFeaturedNext}" @click="$refs.featureSwiper.$swiper.slideNext()"></div>
           </div>
         </template>
         <!-- Featured Slider End -->
@@ -187,17 +174,15 @@
         <div class="is-flex mt-5 mb-5">
           <!-- Cate Start -->
           <div class="flex1">
-            <b-dropdown aria-role="list" class="app-select" position="is-bottom-right" v-model="currentCate"
-              animation="slide" :mobile-modal="false">
-              <template #trigger="{ active }">
+            <b-dropdown aria-role="list" class="app-select" position="is-bottom-right" v-model="currentCate" scrollable animation="fade1" :mobile-modal="false" append-to-body>
+              <template #trigger="{  }">
                 <div class="button is-text auto-height pl-0 pt-0 pb-0 ">
                   <b-icon :icon="currentCate.font" size="is-small" class="mr-1 ml-0"></b-icon>
                   {{currentCate.name}}
                   <b-icon icon="menu-down" size="is-normal" class="ml-1"></b-icon>
                 </div>
               </template>
-              <b-dropdown-item v-for="menu in cateMenu" :key="menu.id" :value="menu" aria-role="listitem"
-                :class="menu.id == currentCate.id?'is-active':''" :data-title="menu.count">
+              <b-dropdown-item v-for="menu in cateMenu" :key="menu.id" :value="menu" aria-role="listitem" :class="menu.id == currentCate.id?'is-active':''" :data-title="menu.count">
                 <div class="media is-align-items-center is-flex">
                   <b-icon :icon="menu.font" size="is-small" class="mr-1"></b-icon>
                   <div class="media-content">
@@ -213,17 +198,15 @@
           <!-- Sort Start -->
           <div>
             {{ $t('Sort by') }}:
-            <b-dropdown aria-role="list" class="app-select" position="is-bottom-left" v-model="currentSort"
-              animation="slide" :mobile-modal="false">
-              <template #trigger="{ active }">
+            <b-dropdown aria-role="list" class="app-select"  v-model="currentSort" animation="fade1" :mobile-modal="false">
+              <template #trigger="{  }">
                 <div class="button is-text auto-height pl-0 pt-0 pb-0 is-size-65">
                   {{currentSort.name}}
                   <b-icon icon="menu-down" size="is-normal" class="ml-1"></b-icon>
                 </div>
 
               </template>
-              <b-dropdown-item v-for="(menu,index) in sortMenu" :key="'sort_'+index" :value="menu" aria-role="listitem"
-                :class="menu.slash == currentSort.slash?'is-active':''">
+              <b-dropdown-item v-for="(menu,index) in sortMenu" :key="'sort_'+index" :value="menu" aria-role="listitem" :class="menu.slash == currentSort.slash?'is-active':''">
                 <div class="media align-items-center is-flex">
                   <div class="media-content">
                     <h3>{{menu.name}}</h3>
@@ -241,8 +224,7 @@
           <div class="column is-one-quarter" v-for="(item,index) in pageList" :key="index+item.title+item.id">
             <div class="is-flex  is-align-items-center">
               <div class="list-icon mr-4 is-clickable" @click="showAppDetial(item.id)">
-                <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg"
-                  class="is-72x72 icon-shadow"></b-image>
+                <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-72x72 icon-shadow"></b-image>
               </div>
               <div class="flex1 mr-4 is-clickable" @click="showAppDetial(item.id)">
                 <h6 class="title is-6 mb-2">{{item.title}}</h6>
@@ -252,8 +234,7 @@
             </div>
             <div class="mt-1 ml-7 is-flex is-align-items-center">
               <div class="flex1 is-size-7 has-text-grey-light	">{{item.category}}</div>
-              <b-button type="is-primary is-light" size="is-small" rounded @click="qucikInstall(item.id)"
-                :loading="item.id == currentInstallId">{{$t('Install')}}</b-button>
+              <b-button type="is-primary is-light" size="is-small" rounded @click="qucikInstall(item.id)" :loading="item.id == currentInstallId">{{$t('Install')}}</b-button>
             </div>
           </div>
         </div>
@@ -270,8 +251,7 @@
             <div class="column is-one-quarter" v-for="(item,index) in communityList " :key="index+item.title+item.id">
               <div class="is-flex  is-align-items-center">
                 <div class="list-icon mr-4 is-clickable" @click="showAppDetial(item.id)">
-                  <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg"
-                    class="is-72x72 icon-shadow"></b-image>
+                  <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-72x72 icon-shadow"></b-image>
                 </div>
                 <div class="flex1 mr-4 is-clickable" @click="showAppDetial(item.id)">
                   <h6 class="title is-6 mb-2">{{item.title}}</h6>
@@ -281,8 +261,7 @@
               </div>
               <div class="mt-1 ml-7 is-flex is-align-items-center">
                 <div class="flex1 is-size-7 has-text-grey-light	">{{item.category}}</div>
-                <b-button type="is-primary is-light" size="is-small" rounded @click="qucikInstall(item.id)"
-                  :loading="item.id == currentInstallId">{{$t('Install')}}</b-button>
+                <b-button type="is-primary is-light" size="is-small" rounded @click="qucikInstall(item.id)" :loading="item.id == currentInstallId">{{$t('Install')}}</b-button>
               </div>
             </div>
           </div>
@@ -297,16 +276,13 @@
       <section v-if="currentSlide == 1">
         <ValidationObserver ref="ob1">
           <ValidationProvider rules="required" name="Image" v-slot="{ errors, valid }">
-            <b-field :label="$t('Docker Image')+' *'" :type="{ 'is-danger': errors[0], 'is-success': valid }"
-              :message="$t(errors)">
-              <b-input v-model="initData.image" :placeholder="$t('e.g.,hello-world:latest')"
-                :readonly="state == 'update'" @input="changeIcon"></b-input>
+            <b-field :label="$t('Docker Image')+' *'" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="$t(errors)">
+              <b-input v-model="initData.image" :placeholder="$t('e.g.,hello-world:latest')" :readonly="state == 'update'" @input="changeIcon"></b-input>
               <!-- <b-autocomplete :data="data" placeholder="e.g. hello-world:latest" field="image" :loading="isFetching" @typing="getAsyncData" @select="option => selected = option" v-model="initData.image" :readonly="state == 'update'"></b-autocomplete> -->
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required" name="Name" v-slot="{ errors, valid }">
-            <b-field :label="$t('App name')+' *'" :type="{ 'is-danger': errors[0], 'is-success': valid }"
-              :message="errors">
+            <b-field :label="$t('App name')+' *'" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
               <b-input value="" v-model="initData.label" :placeholder="$t('Your custom App Name')"></b-input>
             </b-field>
           </ValidationProvider>
@@ -333,14 +309,10 @@
           </b-field>
 
           <ports v-model="initData.ports" :showHostPost="showHostPort" v-if="showPorts"></ports>
-          <input-group v-model="initData.volumes" type="volume" :label="$t('Volumes')"
-            :message="$t('No volumes now, click “+” to add one.')"></input-group>
-          <env-input-group v-model="initData.envs" :label="$t('Environment Variables')"
-            :message="$t('No environment variables now, click “+” to add one.')"></env-input-group>
-          <input-group v-model="initData.devices" type="device" :label="$t('Devices')"
-            :message="$t('No devices now, click “+” to add one.')"></input-group>
-          <commands-input v-model="initData.cmd" :label="$t('Container Command')"
-            :message="$t('No commands now, click “+” to add one.')"></commands-input>
+          <input-group v-model="initData.volumes" type="volume" :label="$t('Volumes')" :message="$t('No volumes now, click “+” to add one.')"></input-group>
+          <env-input-group v-model="initData.envs" :label="$t('Environment Variables')" :message="$t('No environment variables now, click “+” to add one.')"></env-input-group>
+          <input-group v-model="initData.devices" type="device" :label="$t('Devices')" :message="$t('No devices now, click “+” to add one.')"></input-group>
+          <commands-input v-model="initData.cmd" :label="$t('Container Command')" :message="$t('No commands now, click “+” to add one.')"></commands-input>
 
           <b-field :label="$t('Privileged')">
             <b-switch v-model="initData.privileged"></b-switch>
@@ -367,8 +339,7 @@
           </b-field>
 
           <b-field :label="$t('Container Capabilities (cap-add)')">
-            <b-taginput v-model="initData.cap_add" :data="capArray" autocomplete ref="taginput" :allow-new="false"
-              :open-on-focus="false" @typing="getFilteredTags">
+            <b-taginput v-model="initData.cap_add" :data="capArray" autocomplete ref="taginput" :allow-new="false" :open-on-focus="false" @typing="getFilteredTags">
               <template slot-scope="props">
                 {{props.option}}
               </template>
@@ -376,8 +347,7 @@
                 There are no items
               </template>
               <template #selected="props">
-                <b-tag v-for="(tag, index) in props.tags" :key="index" :tabstop="false" closable
-                  @close="$refs.taginput.removeTag(index, $event)">
+                <b-tag v-for="(tag, index) in props.tags" :key="index" :tabstop="false" closable @close="$refs.taginput.removeTag(index, $event)">
                   {{tag}}
                 </b-tag>
               </template>
@@ -385,8 +355,7 @@
           </b-field>
 
           <ValidationProvider rules="rfc1123" name="Name" v-slot="{ errors, valid }">
-            <b-field :label="$t('Container Hostname')" :type="{ 'is-danger': errors[0], 'is-success': valid }"
-              :message="$t(errors)">
+            <b-field :label="$t('Container Hostname')" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="$t(errors)">
               <b-input value="" v-model="initData.hostname" :placeholder="$t('Hostname of app container')"></b-input>
             </b-field>
           </ValidationProvider>
@@ -403,11 +372,9 @@
       <section v-if="currentSlide == 2">
         <div class="installing-warpper">
           <div class="is-flex is-align-items-center is-justify-content-center">
-            <lottie-animation class="install-animation" :animationData="require('@/assets/ani/rocket-launching.json')"
-              :loop="true" :autoPlay="true"></lottie-animation>
+            <lottie-animation class="install-animation" :animationData="require('@/assets/ani/rocket-launching.json')" :loop="true" :autoPlay="true"></lottie-animation>
           </div>
-          <h3 class="title is-6 has-text-centered"
-            :class="{'has-text-danger':errorType == 3,'has-text-black':errorType != 3}" v-html="installText"></h3>
+          <h3 class="title is-6 has-text-centered" :class="{'has-text-danger':errorType == 3,'has-text-black':errorType != 3}" v-html="installText"></h3>
         </div>
       </section>
       <!-- App Install Process End -->
@@ -416,8 +383,7 @@
     <!-- Modal-Card Body End -->
 
     <!-- Modal-Card Footer Start-->
-    <footer class="modal-card-foot is-flex is-align-items-center "
-      :class="{'is-justify-content-center':currentSlide == 0}">
+    <footer class="modal-card-foot is-flex is-align-items-center " :class="{'is-justify-content-center':currentSlide == 0}">
       <template>
         <div class="flex1">
           <!-- <div v-if="currentSlide == 0">
@@ -429,12 +395,9 @@
           <!-- <b-button v-if="currentSlide < 2" label="Cancel" @click="$emit('close')"  rounded /> -->
           <!-- <b-button v-if="currentSlide == 0" :label="$t('Custom Install')" @click="currentSlide = 1" type="is-primary" rounded /> -->
           <b-button v-if="currentSlide == 2 && errorType == 3 " :label="$t('Back')" @click="prevStep" rounded />
-          <b-button v-if="currentSlide == 1 && state == 'install'" :label="$t('Install')" type="is-primary"
-            @click="installApp()" rounded :loading="isLoading" />
-          <b-button v-if="currentSlide == 1 && state == 'update'" :label="$t('Save')" type="is-primary"
-            @click="updateApp()" rounded :loading="isLoading" />
-          <b-button v-if="currentSlide == 2 && (errorType == 1 || errorType == 4)" :label="$t(cancelButtonText)"
-            type="is-primary" @click="$emit('close')" rounded />
+          <b-button v-if="currentSlide == 1 && state == 'install'" :label="$t('Install')" type="is-primary" @click="installApp()" rounded :loading="isLoading" />
+          <b-button v-if="currentSlide == 1 && state == 'update'" :label="$t('Save')" type="is-primary" @click="updateApp()" rounded :loading="isLoading" />
+          <b-button v-if="currentSlide == 2 && (errorType == 1 || errorType == 4)" :label="$t(cancelButtonText)" type="is-primary" @click="$emit('close')" rounded />
         </div>
       </template>
 
@@ -870,7 +833,8 @@ export default {
           this.initData.host_name = respData.host_name
           this.initData.cmd = isNull(respData.cmd) ? [] : respData.cmd
           this.currentInstallId = 0
-          if (respData.tip !== "null") {
+          console.log(respData.tip);
+          if (respData.tip !== "null" && respData.tip !== "[]") {
             this.$buefy.dialog.confirm({
               title: this.$t('Attention'),
               message: this.formatTips(respData.tip),
@@ -894,13 +858,15 @@ export default {
      */
     formatTips(data) {
       let html = "";
-      JSON.parse(data).forEach(item => {
-        html += "<span class=' is-size-65 un-break-word'>" + item.content + "</span>"
-        if (item.value != '') {
-          html += "<span class='tag is-primary '>" + item.value + "</span>"
-        }
-        html += "<br/>"
-      })
+      if (data != null) {
+        JSON.parse(data).forEach(item => {
+          html += "<span class=' is-size-65 un-break-word'>" + item.content + "</span>"
+          if (item.value != '') {
+            html += "<span class='tag is-primary '>" + item.value + "</span>"
+          }
+          html += "<br/>"
+        })
+      }
       return html
     },
 

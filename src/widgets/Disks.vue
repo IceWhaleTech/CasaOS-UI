@@ -14,14 +14,9 @@
                 <b-image :src="require('@/assets/img/storage/storage.png')" class="is-64x64"></b-image>
               </div>
               <div class="ml-3 is-flex-grow-1 ">
-                <h4
-                  class="title is-size-6-5 mb-2 mt-1 has-text-left has-text-white one-line is-align-items-center is-flex">
+                <h4 class="title is-size-6-5 mb-2 mt-1 has-text-left has-text-white one-line is-align-items-center is-flex">
                   {{ $t('Storage') }}
-
-                  <b class="has-text-success is-size-7 has-text-weight-normal ml-3"
-                    v-if="health">{{ $t('Healthy') }}</b><b
-                    class="has-text-danger is-size-7 has-text-weight-normal ml-3" v-else>{{ $t('Damage') }}</b>
-
+                  <b class="has-text-success is-size-7 has-text-weight-normal ml-3" v-if="health">{{ $t('Healthy') }}</b><b class="has-text-danger is-size-7 has-text-weight-normal ml-3" v-else>{{ $t('Damage') }}</b>
                 </h4>
                 <p class="has-text-left is-size-7 mt-1 op65">{{ $t('Used') }}: {{renderSize(totalUsed)}}<br>
                   {{ $t('Total') }}: {{renderSize(totalSize)}}</p>
@@ -39,25 +34,22 @@
       <div class="blur-background"></div>
       <div class="widget-content">
         <div class="columns is-mobile is-multiline pt-2 ">
-          <div class="column is-full pb-1" v-for="(item,index) in usbDisks" :key="'usb_'+item.name">
+          <div class="column is-full pb-1" v-for="(item) in usbDisks" :key="'usb_'+item.name">
             <div class="is-flex">
-              <div class="header-icon">
+              <div class="header-icon is-flex-shrink-0">
                 <b-image :src="require('@/assets/img/storage/USB.png')" class="is-64x64"></b-image>
               </div>
               <div class="ml-3 is-flex-grow-1 ">
-                <h4
-                  class="title is-size-6-5 mb-2 mt-1 has-text-left has-text-white one-line is-align-items-center is-flex">
+                <h4 class="title is-size-6-5 mb-2 mt-1 has-text-left has-text-white one-line ">
                   {{ item.model }}</h4>
                 <p class="has-text-left is-size-7 mt-1 op65">
-                  <span v-if="item.mount">{{ $t('Used') }}: {{renderSize(item.use)}}</span>
-                  <span v-else>{{ $t('Used') }}: N/A</span>
+                  <span>{{ $t('Used') }}: {{item.mount?renderSize(item.use):N/A}}</span>
                   <br>
                   {{ $t('Total') }}: {{renderSize(item.size)}}
                 </p>
               </div>
             </div>
-            <b-progress v-if="item.mount" :type="(Math.floor(item.use * 100 / item.size)) | getProgressType"
-              size="is-small" :value=" Math.floor(item.use * 100 / item.size)" class="mt-2"></b-progress>
+            <b-progress v-if="item.mount" :type="(Math.floor(item.use * 100 / item.size)) | getProgressType" size="is-small" :value=" Math.floor(item.use * 100 / item.size)" class="mt-2"></b-progress>
             <b-progress v-else type="is-dark" size="is-small" :value="0" class="mt-2"></b-progress>
           </div>
         </div>
@@ -133,12 +125,6 @@ export default {
 
 <style lang="scss">
 .disk {
-  .one-line {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1;
-    overflow: hidden;
-  }
   .progress {
     border-radius: 6px;
     height: 12px;

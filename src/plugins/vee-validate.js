@@ -1,6 +1,7 @@
 import { required, confirmed, length, email, min } from "vee-validate/dist/rules";
 import { extend } from "vee-validate";
 import isValidHostname from 'is-valid-hostname';
+import validate from 'uuid-validate';
 
 extend("required", {
     ...required,
@@ -30,4 +31,9 @@ extend("min", {
 extend('rfc1123', {
     validate: (value) => isValidHostname(value),
     message: 'You entered an invalid RFC1123 hostname',
+});
+
+extend('uuid', {
+    validate: (value) => validate(value),
+    message: 'You entered an invalid share ID',
 });

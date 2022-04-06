@@ -11,7 +11,7 @@
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
       <div class="flex1">
-        <h3 class="title is-4 has-text-weight-normal">{{$t('Add friend')}}</h3>
+        <h3 class="title is-4 has-text-weight-normal">{{$t('Send Friend Request')}}</h3>
       </div>
       <div><button type="button" class="delete" @click="$emit('close')" /></div>
     </header>
@@ -19,10 +19,13 @@
     <!-- Modal-Card Body Start -->
     <section class="modal-card-body ">
       <div class="node-card">
-
-        <b-field class="mb-3 mt-5 has-text-light" label="Friend ID" :type="errorType" :message="errors" expanded>
-          <b-input v-model="userName" v-on:keyup.enter.native="addFriend"></b-input>
-        </b-field>
+        <ValidationObserver ref="uuidValid" v-slot="{ addFriend }">
+          <ValidationProvider rules="required|uuid" name="uuid" v-slot="{ errors, valid }">
+            <b-field class="mb-3 mt-5 has-text-light" :label="$t('Friend\'s ID')" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="$t(errors)">
+              <b-input v-model="shardId" v-on:keyup.enter.native="addFriend" :placeholder="$t('Please enter friend\'s Share ID.')"></b-input>
+            </b-field>
+          </ValidationProvider>
+        </ValidationObserver>
       </div>
 
     </section>
@@ -31,7 +34,7 @@
     <footer class="modal-card-foot is-flex is-align-items-center">
       <div class="flex1"></div>
       <div>
-        <b-button :label="$t('OK')" type="is-primary" rounded expaned @click="addFriend" />
+        <b-button :label="$t('Send Friend Request')" type="is-primary" rounded expaned @click="addFriend" :loading="isLoading" />
       </div>
     </footer>
     <!-- Modal-Card Footer End -->
@@ -39,17 +42,58 @@
 </template>
 
 <script>
+import { ValidationObserver, ValidationProvider } from "vee-validate";
+import "@/plugins/vee-validate";
 export default {
   data() {
     return {
-      userName: "",
+      shardId: "",
       errorType: "is-success",
-      errors: ""
+      errors: "",
+      isLoading: false
     }
   },
+  components: {
+    ValidationObserver,
+    ValidationProvider,
+  },
   methods: {
-    addFriend() {
+    /**
+     * @description: Validate form async
+     * @param {Object} ref ref of component
+     * @return {Boolean} 
+     */
+    async checkValid(ref) {
+      let isValid = await ref.validate()
+      return isValid
+    },
 
+    addFriend() {
+      this.isLoading = true
+      this.checkValid(this.$refs.uuidValid).then(val => {
+        if (val) {
+          this.$api.person.addFriend(this.shardId).then(res => {
+            let message = ""
+            let type = ""
+            if (res.data.success == 200) {
+              message = this.$t('Friend Request Sent.')
+              type = "is-success"
+              this.$emit("reloadFriendList")
+              this.$emit('close')
+            } else {
+              this.isLoading = false
+              message = this.shardId + " " + this.$t('is already your friend.')
+              type = "is-danger"
+            }
+            this.$buefy.toast.open({
+              message: message,
+              type: type
+            })
+          })
+        } else {
+          this.isLoading = false
+        }
+      })
     }
   },
 }
