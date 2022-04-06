@@ -72,6 +72,12 @@ const file = {
     // Upload File
     upload() {
 
+    },
+    getFileShare() {
+        return api.get('/file/share')
+    },
+    setFileShare(data) {
+        return api.post('/file/share', data)
     }
 }
 

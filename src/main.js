@@ -15,10 +15,9 @@ import api from '@/service/api.js'
 import Buefy from 'buefy'
 import VueFullscreen from 'vue-fullscreen'
 import Vue2TouchEvents from 'vue2-touch-events'
-// import uploader from 'vue-simple-uploader'
-// import VueTour from 'vue-tour'
+import VueTour from 'vue-tour'
 import '@/assets/scss/app.scss'
-// import 'vue-tour/dist/vue-tour.css'
+import 'vue-tour/dist/vue-tour.css'
 
 
 
@@ -27,8 +26,7 @@ Vue.use(Buefy)
 Vue.use(VueFullscreen)
 Vue.use(VAnimateCss)
 Vue.use(Vue2TouchEvents)
-// Vue.use(uploader)
-// Vue.use(VueTour)
+Vue.use(VueTour)
 
 Vue.config.productionTip = false
 Vue.prototype.$api = api;

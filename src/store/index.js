@@ -38,6 +38,9 @@ export default new Vuex.Store({
     operateObject: null,
     currentPath: "",
     isViewGird: true,
+    // Acc  Share
+    isShareViewGird: true,
+    currentSharePath: "",
   },
   mutations: {
     setToken(state, val) {
@@ -85,7 +88,13 @@ export default new Vuex.Store({
     },
     changeViewGird(state, val) {
       state.isViewGird = val
-    }
+    },
+    changeShareViewGird(state, val) {
+      state.isShareViewGird = val
+    },
+    changeCurrentSharePath(state, val) {
+      state.currentSharePath = val
+    },
   },
   actions: {
   },

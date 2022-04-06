@@ -269,6 +269,117 @@ export default {
     "Play in IINA": "在IINA中播放",
     "Play in PotPlayer": "在PotPlayer中播放",
     "Play in VLC": "在VLC中播放",
-    "Download in preparation...":"下载准备中...",
-    "Copied to clipboard":"已复制到剪贴板"
+    "Download in preparation...": "下载准备中...",
+    "Copied to clipboard": "已复制到剪贴板",
+
+    /* ******************************
+    * Share Section
+    ********************************/
+    "Share module name": "CasaConnect",
+    // Main
+    "More info": "更多信息",
+    "Edit Info": "编辑信息",
+    "Copy My Share ID": "复制我的分享ID",
+    "Add Friend": "添加好友",
+    "Friends": "好友",
+    "Downloads": "下载",
+    "Notification": "通知",
+    "Upload not supported!": "不支持上传！",
+    "Select a friend to view his share.": "选择一个好友查看他的分享。",
+    "There are no files in the current folder.": "当前文件夹中没有文件。",
+    "has been copied to the clipboard": "已复制到剪贴板",
+    "is offline": "已离线",
+    "Home": "主页",
+    "Forward": "前进",
+    // User Context
+    "Edit remark": "编辑备注",
+    "Unblock this friend": "解除屏蔽这个好友",
+    "Block this friend": "屏蔽这个好友",
+    "Delete friend": "删除好友",
+    "Blocked this friend": "已屏蔽这个好友。",
+    "Unblocked this friend": "已解除屏蔽这个好友。",
+    "Blocked failed": "屏蔽失败。",
+    "Deleted this friend": "已删除这个好友。",
+    "Delete failed": "删除失败",
+
+    // Tour
+    "Skip": "跳过",
+    "Prev": "上一步",
+    "Let's Go": "Let's Go",
+    "Here is your avatar, where you can change your personal information and get your ID to share with your friends.": "这里是你的头像，你可以在这里修改你的个人信息，获取你的ID分享给你的好友。",
+    "Click \"+\" and enter your friend's ID to send a friend request.": "点击“+”，输入你好友的ID，发送好友请求。",
+    "Browse your download progress and download history here.": "在这里浏览你的下载进度和下载记录。",
+    "Modify your shared folders, and default download path here.": "在这里修改你分享的文件夹以及默认下载路径",
+    "Well, let's start using it!": "好了，开始使用吧！",
+
+    // Download List
+    "Downloading": "下载中",
+    "D-Completed": "已完成",
+    "D-Total": "总计",
+    "D-Name": "名称",
+    "D-Size": "大小",
+    "D-Progress": "进度",
+    "D-Retry": "重试",
+    "Cancel Download": "取消下载",
+    "Delete this record": "删除这条记录",
+    "Finishing": "正在完成",
+    "Error": "错误",
+    "Download was cancelled": "下载已取消",
+    "Cancel download failed": "取消下载失败",
+    "Record deleted": "记录已删除",
+    "Delete record failed": "删除记录失败",
+
+
+    // Init Modal
+
+    "Share Initialization Wizard": "分享初始化向导",
+    "Welcome to acquaintance sharing": "欢迎使用熟人分享",
+    "With this feature you can easily create peer-to-peer file sharing transfers between you and your friends.": "通过这个功能，你可以方便在你和你的好友之间进行点对点的文件共享传输。",
+    "You need to do some simple setup.": "你需要进行一些简单的设置。",
+    "Let's Start": "开始吧",
+    "Share-Account": "账户",
+    "Share-Setting": "设置",
+    "Share-Recommend": "推荐",
+    "Share-Finish": "搞定",
+    "Nickname": "昵称",
+    "Please enter your nickname.": "请输入你的昵称。",
+    "Description": "描述",
+    "Please enter your Description.": "请输入你的描述。",
+    "Shared folders": "分享的文件夹",
+    "Default download path": "默认下载路径",
+    "Need to add at least one directory.": "需要添加至少一个文件夹。",
+    "Change": "修改",
+    "We have prepared some public servers.": "我们准备了一些公共服务器。",
+    "You need to choose one of them to start with.": "你需要选择一个服务器来开始使用。",
+    "At least one must be selected.": "至少需要选择一个。",
+    "Share is ready!": "分享已经就绪",
+    "You have completed the initial setup.": "你已经完成了初始化设置。",
+    "Next you can follow the use guide to learn how to use it.": "接下来可以跟随使用引导来了解如何使用。",
+    "Share-Go": "开始",
+
+    // Add Friend Modal
+    "Send Friend Request": "发送好友请求",
+    "Friend's ID": "好友的 ID",
+    "Please enter friend's Share ID.": "请输入好友的 ID。",
+    "Friend Request Sent.": "已发送好友请求",
+    "is already your friend.": "已经是你的好友了。",
+
+    // Download Modal
+    "Download to": "下载 {file} 到",
+    "Download path": "下载路径",
+    "Set as default download path": "设置为默认下载路径",
+    "Download has started": "已开始下载",
+    "Download failed": "下载失败",
+
+    // Remark Modal
+    "Please enter the remark.": "请输入好友的备注。",
+    "Remark saved": "备注已保存",
+    "Remark save failed": "备注保存失败",
+
+    // Profile Modal 
+    "Edit My Info": "编辑我的信息",
+    "My ID": "我的 ID",
+    "Update successful": "更新成功",
+    "Update failed": "更新失败",
+
 }

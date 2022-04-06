@@ -13,8 +13,7 @@
     <div class="title-bar is-flex is-align-items-center">
       <h1 class="title is-4  has-text-white is-flex-shrink-1">{{$t('Apps')}}</h1>
       <div class="buttons ">
-        <b-button id="v-step-0" icon-left="apps" type="is-dark" size="is-small" :loading="isShowing" rounded
-          @click="showInstall">{{$t('App Store')}}</b-button>
+        <b-button id="v-step-0" icon-left="apps" type="is-dark" size="is-small" :loading="isShowing" rounded @click="showInstall">{{$t('App Store')}}</b-button>
       </div>
     </div>
     <!-- Title Bar End -->
@@ -26,7 +25,11 @@
         <!-- FileFrowser Entry Start -->
         <file-entry-card></file-entry-card>
         <!-- FileFrowser Entry  -->
-        
+
+        <!-- AcquaintanceShare Entry Start -->
+        <acquaintance-entry-card></acquaintance-entry-card>
+        <!-- AcquaintanceShare Entry  -->
+
         <!-- If None Apps Start -->
         <div class="column is-narrow is-3" v-if="appList.length == 0">
           <div class="wuji-card is-flex is-align-items-center is-justify-content-center p-55 app-card">
@@ -59,6 +62,7 @@
 import AppCard from './AppCard.vue'
 import Panel from './Panel.vue'
 import FileEntryCard from '../filebrowser/FileEntryCard.vue'
+import AcquaintanceEntryCard from '../AcquaintanceShare/AcquaintanceEntryCard.vue'
 export default {
   data() {
     return {
@@ -70,7 +74,8 @@ export default {
   },
   components: {
     AppCard,
-    FileEntryCard
+    FileEntryCard,
+    AcquaintanceEntryCard
   },
   created() {
     this.getList();
@@ -109,9 +114,9 @@ export default {
             scroll: "keep",
             animation: "zoom-in",
             events: {
-              // 'updateState': () => {
-              //   this.getList()
-              // }
+              'updateState': () => {
+                this.getList()
+              }
             },
             props: {
               id: "0",

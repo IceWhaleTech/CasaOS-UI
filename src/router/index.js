@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: JerryK
- * @LastEditTime: 2021-12-08 13:50:33
+ * @LastEditTime: 2022-03-11 13:38:06
  * @Description: 
- * @FilePath: /CasaOS-UI/src/router/index.js
+ * @FilePath: \CasaOS-UI\src\router\index.js
  */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -25,6 +25,13 @@ const routes = [
     hidden: true,
     component: () => import('@/views/Welcome.vue'),
     meta: { requireAuth: false }
+  },
+  {
+    path: '/a-sharing',
+    name: 'Acquaintance Sharing',
+    hidden: true,
+    component: () => import('@/views/AcquaintanceSharing.vue'),
+    meta: { requireAuth: true }
   },
   {
     path: '/',

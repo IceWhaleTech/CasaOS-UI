@@ -9,19 +9,16 @@
 <template>
   <div>
     <b-breadcrumb size="is-medium">
-      <b-breadcrumb-item v-for="(item,index) in pathCollection" :key="item+index" :active="checkActive(index)"
-        @click.stop="open(item)" v-show="item.show || item == activeHide">
+      <b-breadcrumb-item v-for="(item,index) in pathCollection" :key="item+index" :active="checkActive(index)" @click.stop="open(item)" v-show="item.show || item == activeHide">
         <template v-if="item == activeHide">
-          <b-dropdown aria-role="list" append-to-body :triggers="['']" ref="breadDrop" class="file-dropdown"
-            animation="fade1" :mobile-modal="false">
+          <b-dropdown aria-role="list" append-to-body :triggers="['']" ref="breadDrop" class="file-dropdown" animation="fade1" :mobile-modal="false">
             <template #trigger>
               <p role="button">
                 <b-icon icon="dots-horizontal" custom-size="mdi-18px" id="das">
                 </b-icon>
               </p>
             </template>
-            <b-dropdown-item aria-role="menuitem" :key="'ff'+index" v-for="(sitem,index) in hideItems"
-              @click="subOpen(sitem)">
+            <b-dropdown-item aria-role="menuitem" :key="'ff'+index" v-for="(sitem,index) in hideItems" @click="subOpen(sitem)">
               {{sitem.name}}
             </b-dropdown-item>
 
@@ -115,19 +112,19 @@ export default {
             return !item.show
           })
         }
-
       })
-
     },
 
     buildPathArray(path) {
-      path = path.substr(1);
+      if (path == "/") {
+        path = path.substr(1);
+      }
       let arr = path.split("/")
       let collection = arr.map((item, index) => {
         return {
-          name: item,
+          name: item == "" ? "Root" : item,
           show: true,
-          path: "/" + slice(arr, 0, index + 1).join("/")
+          path: item == "" ? "/" : slice(arr, 0, index + 1).join("/")
         }
       })
       return collection

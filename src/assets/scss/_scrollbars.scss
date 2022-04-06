@@ -88,10 +88,10 @@
   outline: none;
 }
 
-.CodeMirror-vscrollbar::-webkit-scrollbar-track-piece ,
+.CodeMirror-vscrollbar::-webkit-scrollbar-track-piece,
 .CodeMirror-hscrollbar::-webkit-scrollbar-track-piece {
   width: 8px;
-  background-color: rgba(140, 130, 130, .3);
+  background-color: rgba(140, 130, 130, 0.3);
 }
 
 .CodeMirror-vscrollbar::-webkit-scrollbar,
@@ -110,4 +110,25 @@
   background-color: rgba(255, 255, 255, 0.4);
   border-radius: 10px;
   outline: none;
+}
+
+.scrollbars-light-auto::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbars-light-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbars-light-auto {
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0);
+    border-radius: 10px;
+    outline: none;
+  }
+  &:hover {
+    &::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.2);
+    }
+  }
 }

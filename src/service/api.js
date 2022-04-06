@@ -15,6 +15,7 @@ import info from './info.js';
 import task from './task.js';
 import sync from './sync.js';
 import user from "./user.js";
+import person from "./person.js";
 
 
 export default {
@@ -25,5 +26,6 @@ export default {
     file,
     user,
     task,
-    sync
+    sync,
+    person
 }

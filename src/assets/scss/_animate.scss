@@ -74,3 +74,23 @@
   transform: scale(0.95);
   opacity: 0;
 }
+
+
+/* Zoom Fade */
+
+
+/* fade-transform */
+.fade-transform-leave-active,
+.fade-transform-enter-active {
+  transition: all .3s !important;
+}
+
+.fade-transform-enter {
+  opacity: 0;
+  transform: translateX(2rem);
+}
+
+.fade-transform-leave-to {
+  opacity: 0;
+  transform: translateX(-2rem);
+}

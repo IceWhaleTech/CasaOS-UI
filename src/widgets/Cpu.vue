@@ -20,11 +20,10 @@
         <div class="more-info pt-3 pb-1">
           <b-tabs v-model="activeTab">
             <b-tab-item label="CPU">
-              <div v-for="(item,index) in containerCpuList" :key="index+'-cpu'">
+              <div v-for="(item) in containerCpuList" :key="item.title+item.id+'-cpu'">
                 <div class="is-flex is-size-7 is-align-items-center mb-2" v-if="!isNaN(item.usage)">
                   <div class="is-flex-grow-1 is-flex is-align-items-center">
-                    <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg"
-                      class="is-16x16 mr-2"></b-image>
+                    <b-image :lazy="false" :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" class="is-16x16 mr-2"></b-image>
                     <span>{{item.title}}</span>
                   </div>
                   <div>{{item.usage}}%</div>
@@ -33,11 +32,10 @@
             </b-tab-item>
 
             <b-tab-item label="RAM">
-              <div v-for="(item,index) in containerRamList" :key="index+'-rem'">
+              <div v-for="(item) in containerRamList" :key="item.title+item.id+'-rem'">
                 <div class="is-flex is-size-7 is-align-items-center mb-2" v-if="!isNaN(item.usage)">
                   <div class="is-flex-grow-1 is-flex is-align-items-center">
-                    <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg"
-                      class="is-16x16 mr-2"></b-image>
+                    <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" class="is-16x16 mr-2"></b-image>
                     <span>{{item.title}}</span>
                   </div>
                   <div>{{item.usage | renderSize}}</div>
@@ -207,6 +205,7 @@ export default {
      */
     getDockerUsage() {
       this.$api.app.getAppUsage().then(res => {
+        let id = 0
         this.containerCpuList = res.data.data.map(item => {
           let usage = 0;
           if (item.pre == null) {
@@ -217,8 +216,10 @@ export default {
             const number_cpus = item.data.cpu_stats.online_cpus
             usage = ((cpu_delta / system_cpu_delta) * number_cpus * 100).toFixed(1)
           }
+          id++
           return {
-            usage: usage,
+            id: id,
+            usage: isNaN(usage) ? 0 : usage,
             icon: item.icon,
             title: item.title
           };
@@ -227,6 +228,7 @@ export default {
         this.containerRamList = res.data.data.map(item => {
 
           let cache = 0
+          let id = 0
           if (has(item.data.memory_stats.stats, 'inactive_file')) {
             cache = item.data.memory_stats.stats.inactive_file
           } else {
@@ -237,8 +239,10 @@ export default {
             }
           }
           const used_memory = ("stats" in item.data.memory_stats) ? (item.data.memory_stats.usage - cache) : NaN
+          id++
           return {
-            usage: used_memory,
+            id: id,
+            usage: isNaN(used_memory) ? 0 : used_memory,
             icon: item.icon,
             title: item.title
           };

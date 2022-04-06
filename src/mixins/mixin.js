@@ -57,7 +57,7 @@ export const mixin = {
             const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
             if (bytes === 0) return '0 Bytes'
             const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10)
-            if (i === 0) return `${bytes} ${sizes[i]})`
+            if (i === 0) return `${bytes} ${sizes[i]}`
             return `${parseFloat((bytes / (1024 ** i)).toFixed(2))} ${sizes[i]}`
         },
 
@@ -167,11 +167,12 @@ export const mixin = {
             window.open(url, '_self');
         },
         getFileUrl(item) {
-            let base_url = (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${this.$store.state.devPort}/v1/file/download?` : `http://${document.location.host}/v1/file/download?`;
+            let base_url = (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${this.$store.state.devPort}/v1/file/new/download?` : `http://${document.location.host}/v1/file/new/download?`;
             let url = {
                 path: item.path,
                 token: this.$store.state.token
             }
+            console.log(base_url + qs.stringify(url));
             return base_url + qs.stringify(url)
         },
         // Download Button Action
@@ -301,7 +302,7 @@ export const mixin = {
             const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
             if (bytes === 0) return '0 Bytes'
             const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10)
-            if (i === 0) return `${bytes} ${sizes[i]})`
+            if (i === 0) return `${bytes} ${sizes[i]}`
             return `${parseFloat((bytes / (1024 ** i)).toFixed(2))} ${sizes[i]}`
         },
 

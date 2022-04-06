@@ -8,30 +8,25 @@
 -->
 <template>
   <ul>
-    <li>
-      <div class="is-flex list-item" :class="{'active': isHome()}" @click="open">
-        <div class="cover mr-2 is-flex-shrink-0">
-          <div :class="homeItem | coverType">
-            <img alt="folder" :src="getIconFile(homeItem)" :class="homeItem | iconType" />
-          </div>
+    <li v-for="item in initFolders" :key="item.path">
+      <div class="is-flex list-item new-list-item" :class="{'active':checkActive(item)}" @click="open(item.path)">
+        <div class="cover mr-4 is-flex-shrink-0">
+          <b-icon :icon="item.icon"></b-icon>
         </div>
-        <span>{{homeItem.name}}</span>
+        <span>{{item.name}}</span>
       </div>
     </li>
 
-    <tree-list-item v-for="(item,index) in dirListData" :key="item.name+index" :item="item" :level="level"></tree-list-item>
   </ul>
 </template>
 
 <script>
-import filter from 'lodash/filter'
+
 import { mixin } from '@/mixins/mixin';
 export default {
   mixins: [mixin],
   inject: ['filePanel'],
-  components: {
-    TreeListItem: () => import('./TreeListItem.vue')
-  },
+
   props: {
     path: {
       type: String,
@@ -45,42 +40,65 @@ export default {
   data() {
     return {
       dirListData: [],
-      homeItem: {
-        path: "/DATA",
-        is_dir: true,
-        type: "home",
-        name: "DATA"
-      }
+      initFolders: [
+        {
+          name: 'Root',
+          icon: 'folder-home-outline',
+          path: '/'
+        },
+        {
+          name: 'DATA',
+          icon: 'folder-pound-outline',
+          path: '/DATA'
+        },
+        {
+          name: 'Documents',
+          icon: 'folder-text-outline',
+          path: '/DATA/Documents'
+        },
+        {
+          name: 'Downloads',
+          icon: 'folder-download-outline',
+          path: '/DATA/Downloads'
+        },
+        {
+          name: 'Gallery',
+          icon: 'folder-star-outline',
+          path: '/DATA/Gallery'
+        },
+        {
+          name: 'Media',
+          icon: 'folder-music-outline',
+          path: '/DATA/Media'
+        },
+
+      ]
     }
   },
-  computed: {
-    level() {
-      return this.path.split("/").length + 1
-    }
-  },
+
   mounted() {
-    if (this.autoLoad) {
-      this.getDirList();
-    }
+
 
   },
   methods: {
-    isHome() {
-      return this.homeItem.path == this.$store.state.currentPath
+
+    open(path) {
+      this.filePanel.getFileList(path);
     },
-    open() {
-      this.filePanel.getFileList(this.homeItem.path);
-    },
-    getDirList() {
-      this.$api.file.dirPath("/DATA").then(res => {
-        if (res.data.success == 200) {
-          this.dirListData = filter(res.data.data, (o) => {
-            return o.is_dir;
-          })
-          this.$emit("update", this.dirListData.length)
+    checkActive(item) {
+      if (item.path == this.$store.state.currentPath) {
+        return true
+      } else if (item.path != this.$store.state.currentPath && item.path != "/" && item.path != "/DATA") {
+        if (this.$store.state.currentPath.indexOf(item.path) != -1) {
+          return true
+        } else {
+          return false
         }
-      })
-    }
+      } else {
+        return false
+      }
+    },
+
   },
 }
 </script>

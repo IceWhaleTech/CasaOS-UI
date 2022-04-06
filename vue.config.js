@@ -8,12 +8,13 @@
  */
 const webpack = require('webpack')
 // const CompressionWebpackPlugin = require('compression-webpack-plugin')
-// const UselessFile = require('useless-files-webpack-plugin')
-// const path = require("path")
+const UselessFile = require('useless-files-webpack-plugin')
+const path = require("path")
 module.exports = {
     publicPath: '/ui/',
     runtimeCompiler: true,
     lintOnSave: false,
+
     productionSourceMap: false,
     pluginOptions: {
 
@@ -38,13 +39,13 @@ module.exports = {
         //             }
         //         )
         //     );
-        // config.plugin('uselessFile')
-        //     .use(
-        //         new UselessFile({
-        //             root: path.resolve(__dirname, './src/assets/images'),
-        //             clean: true,
-        //             exclude: /node_modules/
-        //         })
-        //     )
+        config.plugin('uselessFile')
+            .use(
+                new UselessFile({
+                    root: path.resolve(__dirname, './src/assets/images'),
+                    clean: true,
+                    exclude: /node_modules/
+                })
+            )
     }
 }
