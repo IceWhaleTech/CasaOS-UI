@@ -449,8 +449,6 @@ export default {
         } else {
           this.getMyFriendList(true)
         }
-
-        this.showInitModal()
       })
     },
 
