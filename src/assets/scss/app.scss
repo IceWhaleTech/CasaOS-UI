@@ -223,6 +223,7 @@ html {
   backdrop-filter: blur(24px);
   border-radius: 4px;
   font-size: 1.5rem;
+  z-index: 50;
 
   a {
     color: $white;
