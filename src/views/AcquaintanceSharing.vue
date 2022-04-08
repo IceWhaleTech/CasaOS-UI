@@ -61,7 +61,7 @@
           <!-- Top Section End -->
           <!-- Middle Section Start -->
           <ul class="is-flex-grow-1 user-list scrollbars-light-auto">
-            <user-context-menu ref="userContextMenu" @reloadFriendList="getMyFriendList"></user-context-menu>
+            <user-context-menu ref="userContextMenu" @reloadFriendList="getMyFriendList(true)"></user-context-menu>
             <li class="is-flex is-align-items-center p-40-10 user-list-item" v-for="user,index in myFriendsList" :key="`user${index}`" :class="(currentUser.token === user.token)?'active':''" @contextmenu.prevent="showContext($event,user)" @click="getUserFiles(user,rootPath,2)">
               <div class="avatar size-44 is-flex-shrink-0 badge " :class="[user.on_line ? 'success' : 'danger']">
                 <avatar :username="user.nick_name==''?'casa':user.nick_name" :size="42"></avatar>
