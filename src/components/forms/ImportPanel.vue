@@ -15,6 +15,11 @@
             <b-input maxlength="800" type="textarea" class="import-area" v-model="dockerCliCommands"></b-input>
           </b-field>
         </b-tab-item>
+        <b-tab-item label="Docker Compose">
+          <b-field :type="{ 'is-danger': parseError}" :message="errors">
+            <b-input maxlength="800" type="textarea" class="import-area" v-model="dockerComposeCommands" :placeholder="$t('Notice: If there are multiple services, only the first set can be analyzed correctly')"></b-input>
+          </b-field>
+        </b-tab-item>
         <b-tab-item :label="$t('AppFile')">
           <b-field :type="{ 'is-danger': parseError}" :message="errors">
             <b-upload v-model="dropFiles" drag-drop expanded accept="application/json" @input="onSelect">
@@ -50,6 +55,9 @@
 import upperFirst from 'lodash/upperFirst'
 import lowerFirst from 'lodash/lowerFirst'
 import parser from 'yargs-parser'
+import concat from 'lodash/concat'
+import YAML from 'yamljs'
+
 
 export default {
   data() {
@@ -58,6 +66,7 @@ export default {
       file: {},
       dropFiles: {},
       dockerCliCommands: "",
+      dockerComposeCommands: "",
       parseError: false,
       appFileLoaded: false,
       errors: "",
@@ -73,9 +82,9 @@ export default {
   },
   created() {
     //console.log(this.oriNetWorks);
+
   },
   methods: {
-
     /**
      * @description: Emit Event to tell parent Update
      * @param {*}
@@ -92,6 +101,16 @@ export default {
           this.parseError = true;
         }
       } else if (this.activeTab == 1) {
+
+        if (this.parseComposeYaml()) {
+          this.errors = ""
+          this.$emit('update', this.updateData)
+          this.$emit('close')
+        } else {
+          this.errors = this.$t('Please fill correct compose YAML')
+          this.parseError = true;
+        }
+      } else if (this.activeTab == 2) {
         if (this.appFileLoaded) {
           this.errors = ""
           this.$emit('update', this.updateData)
@@ -150,12 +169,13 @@ export default {
       return finalHostPath
     },
 
+
     /**
      * @description: Parse Import Docker Cli Commands
      * @return {Boolean} 
      */
     parseCli() {
-      const formattedInput = this.dockerCliCommands.replace(/<[^>]*>/g, 'Custom_data').replace(/[\r\n]/g, "").replace(/\\/g, "\\ ").replace("-d", "").replace(/[\\]/g,'').trim();
+      const formattedInput = this.dockerCliCommands.replace(/<[^>]*>/g, 'Custom_data').replace(/[\r\n]/g, "").replace(/\\/g, "\\ ").replace("-d", "").replace(/[\\]/g, '').trim();
       const parsedInput = parser(formattedInput)
       const { _: command } = parsedInput;
       if (command[0] !== 'docker' || (command[1] !== 'run' && command[1] !== 'create')) {
@@ -164,7 +184,6 @@ export default {
 
         //Image
         this.updateData.image = [...command].pop()
-        console.log(parsedInput);
         //Label
         if (parsedInput.name != undefined) {
           this.updateData.label = upperFirst(parsedInput.name)
@@ -175,7 +194,8 @@ export default {
         }
 
         //Envs
-        this.updateData.envs = this.makeArray(parsedInput.e).map(item => {
+        let env = concat(this.makeArray(parsedInput.e), this.makeArray(parsedInput.env))
+        this.updateData.envs = env.map(item => {
           let ii = item.split("=");
           return {
             host: ii[1].replace(/"/g, ""),
@@ -183,7 +203,8 @@ export default {
           }
         })
         //Ports
-        this.updateData.ports = this.makeArray(parsedInput.p).map(item => {
+        let ports = concat(this.makeArray(parsedInput.p), this.makeArray(parsedInput.publish))
+        this.updateData.ports = ports.map(item => {
           let pArray = item.split(":")
           let endArray = pArray[1].split("/")
           let protocol = (endArray[1]) ? endArray[1] : 'tcp';
@@ -194,7 +215,8 @@ export default {
           }
         })
         //Volume
-        this.updateData.volumes = this.makeArray(parsedInput.v).map(item => {
+        let volumes = concat(this.makeArray(parsedInput.v), this.makeArray(parsedInput.volume))
+        this.updateData.volumes = volumes.map(item => {
           let ii = item.split(":");
           if (ii.length > 1) {
             // console.log(this.volumeAutoCheck(ii[1],ii[0], _.lowerFirst(this.updateData.label)));
@@ -220,8 +242,9 @@ export default {
         })
 
         //Network
-        if (parsedInput.network != undefined) {
-          let network = (parsedInput.network == 'physical') ? 'macvlan' : parsedInput.network;
+        let pnetwork = (parsedInput.network != undefined) ? parsedInput.network : parsedInput.net
+        if (pnetwork != undefined) {
+          let network = (pnetwork == 'physical') ? 'macvlan' : pnetwork;
           let seletNetworks = this.netWorks.filter(item => {
             if (item.driver == network) {
               return true
@@ -233,8 +256,20 @@ export default {
         }
 
         //privileged
-
         this.updateData.privileged = parsedInput.privileged != undefined
+        //cap-add
+        this.updateData.cap_add = this.makeArray(parsedInput.capAdd)
+
+        //hostname
+        if (parsedInput.hostname != undefined) {
+          this.updateData.host_name = parsedInput.hostname
+        } else {
+          if (parsedInput.h != undefined) {
+            this.updateData.host_name = parsedInput.h
+          } else {
+            this.updateData.host_name = ""
+          }
+        }
 
         //Restart
         if (parsedInput.restart != undefined) {
@@ -254,6 +289,110 @@ export default {
       return (newArray == undefined) ? [] : newArray
     },
 
+    /**
+     * @description: Parse Import Docker Compose Commands
+     * @return {Boolean} 
+     */
+    parseComposeYaml() {
+
+      try {
+        const yaml = YAML.parse(this.dockerComposeCommands)
+        if (yaml.version === undefined) {
+          return false
+        }
+        const parsedInput = Object.values(yaml.services)[0]
+        // Image
+        this.updateData.image = parsedInput.image
+        // Label
+        if (parsedInput.container_name != undefined) {
+          this.updateData.label = upperFirst(parsedInput.container_name)
+        } else {
+          const imageArray = parsedInput.image.split("/")
+          const lastNode = [...imageArray].pop()
+          this.updateData.label = upperFirst(lastNode.split(":")[0])
+        }
+        // Envs
+        let envArray = Array.isArray(parsedInput.environment) ? parsedInput.environment : Object.entries(parsedInput.environment)
+        this.updateData.envs = envArray.map(item => {
+          let ii = typeof item === "object" ? Array.from(item) : item.split("=");
+          return {
+            host: ii[1].replace(/"/g, ""),
+            container: ii[0]
+          }
+        })
+
+        //Ports
+        this.updateData.ports = this.makeArray(parsedInput.ports).map(item => {
+          let pArray = item.split(":")
+          let endArray = pArray[1].split("/")
+          let protocol = (endArray[1]) ? endArray[1] : 'tcp';
+          return {
+            container: endArray[0],
+            host: pArray[0],
+            protocol: protocol
+          }
+        })
+
+        //Volume
+        this.updateData.volumes = this.makeArray(parsedInput.volumes).map(item => {
+          let ii = item.split(":");
+          if (ii.length > 1) {
+            return {
+              container: ii[1],
+              host: this.volumeAutoCheck(ii[1], ii[0], lowerFirst(this.updateData.label))
+            }
+          } else {
+            return {
+              container: ii[0],
+              host: this.volumeAutoCheck(ii[0], "", lowerFirst(this.updateData.label))
+            }
+          }
+        })
+
+        // Devices
+        this.updateData.devices = this.makeArray(parsedInput.device).map(item => {
+          let ii = item.split(":");
+          return {
+            container: ii[1],
+            host: ii[0]
+          }
+        })
+
+        //Network
+        let pnetwork = (parsedInput.network_mode != undefined) ? parsedInput.network_mode : (parsedInput.network != undefined) ? parsedInput.network[0] : undefined
+        if (pnetwork != undefined) {
+          let network = (pnetwork == 'physical') ? 'macvlan' : pnetwork;
+          let seletNetworks = this.netWorks.filter(item => {
+            if (item.driver == network) {
+              return true
+            }
+          })
+          if (seletNetworks.length > 0) {
+            this.updateData.network_model = seletNetworks[0].networks[0].name;
+          }
+        }
+
+        //hostname
+        this.updateData.host_name = parsedInput.hostname != undefined ? parsedInput.hostname : ""
+        // privileged
+        this.updateData.privileged = parsedInput.privileged != undefined
+
+        //cap-add
+        if (parsedInput.cap_add != undefined) {
+          this.updateData.cap_add = parsedInput.cap_add
+        }
+        //Restart
+        if (parsedInput.restart != undefined) {
+          this.updateData.restart = parsedInput.restart
+        }
+
+        return true
+      } catch (error) {
+        console.log(error);
+        return false
+      }
+    },
+    // Delete Drop file
     deleteDropFile(index) {
       this.dropFiles.splice(index, 1);
     },

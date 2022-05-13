@@ -106,7 +106,7 @@
   &:before {
     transition: all 0.2s;
     position: relative;
-    font-size: 1.25rem;
+    font-size: 1.25rem !important;
   }
   &:hover {
     background-color: #363636;

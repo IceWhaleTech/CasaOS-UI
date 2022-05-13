@@ -1,10 +1,10 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-03-11 13:36:11
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-13 15:39:11
+ * @LastEditors: 老竭力 jerrykuku@qq.com
+ * @LastEditTime: 2022-05-11 14:35:52
  * @Description: 
- * @FilePath: \CasaOS-UI\src\views\AcquaintanceSharing.vue
+ * @FilePath: \CasaOS-UI\src\views\CasaConnect.vue
 -->
 <template>
   <div class="acquaintance-share is-flex ">
@@ -275,6 +275,9 @@
         <transition name="fade">
           <v-step v-if="tour.steps[tour.currentStep]" :key="tour.currentStep" :step="tour.steps[tour.currentStep]" :previous-step="tour.previousStep" :next-step="tour.nextStep" :stop="tour.stop" :skip="tour.skip" :is-first="tour.isFirst" :is-last="tour.isLast" :labels="tour.labels">
             <template>
+              <div slot="content" class="v-step__content">
+                {{$t(tour.steps[tour.currentStep].content)}}
+              </div>
               <div slot="actions" class="buttons mb-0 columns is-gapless">
                 <div class="column has-text-left">
                   <b-button size="is-small" class=" mb-0" @click="tour.previousStep" v-if="!tour.isFirst && !tour.isLast" rounded>{{ $t('Prev') }}</b-button>
@@ -288,7 +291,6 @@
                   <b-button size="is-small" class=" mb-0" @click="tour.nextStep" v-if="!tour.isLast" rounded>{{ $t('Next') }}</b-button>
                   <b-button size="is-small" class=" mb-0" type="is-success" @click="tour.skip" v-if="tour.isLast" rounded>{{ $t(`Let's Go`)}}</b-button>
                 </div>
-
               </div>
             </template>
           </v-step>
@@ -370,25 +372,20 @@ export default {
       steps: [
         {
           target: '#v-step-0',
-          content: this.$t('Here is your avatar, where you can change your personal information and get your ID to share with your friends.')
+          content: 'Here is your avatar, where you can change your personal information and get your ID to share with your friends.'
         },
         {
           target: '#v-step-1',
-          content: this.$t("Click \"+\" and enter your friend's ID to send a friend request.")
+          content: "Click \"+\" and enter your friend's ID to send a friend request."
         },
         {
           target: '#v-step-2',
-          content: this.$t('Browse your download progress and download history here.'),
+          content: 'Browse your download progress and download history here.'
         },
         {
           target: '#v-step-3',
-          content: this.$t('Modify your shared folders, and default download path here.'),
+          content: 'Modify your shared folders, and default download path here.'
         }
-        ,
-        // {
-        //   target: '#v-step-4',
-        //   content: 'Okay, you\'ve got the basics and can start experiencing them right away!',
-        // }
       ]
     }
   },
@@ -450,6 +447,7 @@ export default {
           this.getMyFriendList(true)
         }
       })
+      
     },
 
     //   Get MyID
@@ -745,6 +743,7 @@ export default {
     // Close websocket
     websocketClose(e) {
       console.log('disconnect', e);
+      this.initWebSocket();
     },
 
     /*************************************************

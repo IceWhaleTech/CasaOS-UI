@@ -43,7 +43,7 @@
                 <h4 class="title is-size-6-5 mb-2 mt-1 has-text-left has-text-white one-line ">
                   {{ item.model }}</h4>
                 <p class="has-text-left is-size-7 mt-1 op65">
-                  <span>{{ $t('Used') }}: {{item.mount?renderSize(item.use):N/A}}</span>
+                  <span>{{ $t('Used') }}: {{item.mount?renderSize(item.use):"N/A"}}</span>
                   <br>
                   {{ $t('Total') }}: {{renderSize(item.size)}}
                 </p>

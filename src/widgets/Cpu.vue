@@ -9,11 +9,11 @@
       <div class="columns is-mobile ">
         <div class="column is-half has-text-centered">
           <apexchart type="radialBar" :height="barHeight" :options="chartOptions" :series="cpuSeries"></apexchart>
-          <p class="is-size-6-5">CPU <span class="is-size-7">({{cpuCores}} {{ $t('Cores') }})</span></p>
+          <p class="is-size-6-5 one-line">CPU <span class="is-size-7">({{cpuCores}} {{ $t('Cores') }})</span></p>
         </div>
         <div class="column is-half has-text-centered">
           <apexchart type="radialBar" :height="barHeight" :options="chartOptions" :series="ramSeries"></apexchart>
-          <p class="is-size-6-5">RAM <span class="is-size-7">({{totalMemory | renderSize}})</span></p>
+          <p class="is-size-6-5 one-line">RAM <span class="is-size-7">({{totalMemory | renderSize}})</span></p>
         </div>
       </div>
       <div v-if="showMore">
@@ -24,9 +24,9 @@
                 <div class="is-flex is-size-7 is-align-items-center mb-2" v-if="!isNaN(item.usage)">
                   <div class="is-flex-grow-1 is-flex is-align-items-center">
                     <b-image :lazy="false" :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" class="is-16x16 mr-2"></b-image>
-                    <span>{{item.title}}</span>
+                    <span class="one-line">{{item.title}}</span>
                   </div>
-                  <div>{{item.usage}}%</div>
+                  <div class=" is-flex-shrink-0">{{item.usage}}%</div>
                 </div>
               </div>
             </b-tab-item>
@@ -36,9 +36,9 @@
                 <div class="is-flex is-size-7 is-align-items-center mb-2" v-if="!isNaN(item.usage)">
                   <div class="is-flex-grow-1 is-flex is-align-items-center">
                     <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" class="is-16x16 mr-2"></b-image>
-                    <span>{{item.title}}</span>
+                    <span class="one-line">{{item.title}}</span>
                   </div>
-                  <div>{{item.usage | renderSize}}</div>
+                  <div class=" is-flex-shrink-0">{{item.usage | renderSize}}</div>
                 </div>
               </div>
             </b-tab-item>
@@ -82,7 +82,7 @@ export default {
           type: 'radialBar',
           width: '100%'
         },
-        colors: ["#01FFC2"],
+
         grid: {
           padding: {
             left: 0,
@@ -141,16 +141,10 @@ export default {
           }
         },
         fill: {
-          type: 'gradient',
-          gradient: {
-            shade: 'dark',
-            type: 'diagonal2',
-            shadeIntensity: 0.5,
-            gradientToColors: ['#06FF03'],
-            inverseColors: true,
-            opacityFrom: 1,
-            opacityTo: 1,
-            stops: [0, 100]
+          type: 'image',
+          image: {
+            src: [require('@/assets/img/widgets/gradient.png')],
+            
           }
         },
         stroke: {

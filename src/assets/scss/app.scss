@@ -4,7 +4,7 @@
 //    variables in _variables.scss
 @import "variables";
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap");
-// @import "~@mdi/font/css/materialdesignicons.min.css";
+
 // 2. Setup your Custom Colors
 $linkedin: #0077b5;
 $linkedin-invert: findColorInvert($linkedin);
@@ -25,7 +25,7 @@ $ghost-invert: findColorInvert($ghost);
 $loading-icon-size: 2.5rem;
 
 @import "~bulma/sass/utilities/derived-variables";
-
+@import "~@mdi/font/css/materialdesignicons.min.css";
 // 3. Add new color variables to the color map.
 $addColors: ("twitter": ($twitter,
     $twitter-invert,
@@ -223,7 +223,7 @@ html {
   backdrop-filter: blur(24px);
   border-radius: 4px;
   font-size: 1.5rem;
-  z-index: 50;
+  z-index: 10;
 
   a {
     color: $white;
@@ -316,6 +316,10 @@ html {
 
 .z-30 {
   z-index: 20;
+}
+
+.h-30 {
+  height: 30px;
 }
 
 .border-8 {
@@ -727,10 +731,19 @@ html {
   font-size: 0.875rem !important;
 }
 
+.has-absolute {
+  position: absolute;
+}
+
+
 .control {
   .button {
     font-size: 0.875rem;
     height: 2.714em;
+  }
+
+  .container-icon {
+    padding: 0 0.5rem;
   }
 }
 
@@ -1041,6 +1054,12 @@ html {
     position: relative;
   }
 
+  .level {
+    .footing {
+      color: hsl(0, 0%, 48%);
+    }
+  }
+
   .swiper-button-next,
   .swiper-rtl .swiper-button-prev {
     right: -20px;
@@ -1083,6 +1102,7 @@ html {
   .dropdown-content {
     border-radius: 0.5rem;
     overflow-y: overlay !important;
+
     &::-webkit-scrollbar {
       width: 8px;
     }
@@ -1110,6 +1130,15 @@ a.dropdown-item.is-active,
 button.dropdown-item.is-active {
   background-color: $primary;
   color: #fff;
+}
+
+.app-item {
+  border-radius: 0.5rem;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background-color: hsl(0, 0%, 97%);
+  }
 }
 
 .button {
@@ -1597,5 +1626,52 @@ button.dropdown-item.is-active {
   .v-step__content {
     font-size: 1rem;
     text-align: left;
+  }
+}
+
+.update-info-container {
+  font-size: 14px;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: bold;
+    margin-bottom: 0.4rem;
+  }
+
+  h1 {
+    font-size: 2em;
+  }
+
+  h2 {
+    font-size: 1.5em;
+  }
+
+  h3 {
+    font-size: 1.17em;
+  }
+
+  h4 {
+    font-size: 1em;
+  }
+
+  h5 {
+    font-size: 0.83em;
+  }
+
+  h6 {
+    font-size: 0.67em;
+  }
+
+  ul {
+    margin-bottom: 0.5em;
+
+    li {
+      list-style: disc;
+      margin-left: 1rem;
+    }
   }
 }

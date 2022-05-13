@@ -6,6 +6,7 @@
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\DetailModal.vue
 -->
+
 <template>
   <div class="modal-card">
     <!-- Header Start -->

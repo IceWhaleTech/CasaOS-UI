@@ -33,6 +33,10 @@ const info = {
     systemInfo() {
         return api.get('/zima/sysinfo');
     },
+    // Hardware Info
+    hardwareInfo() {
+        return api.get('sys/hardware/info')
+    },
     //Get CasaOS Config
     systemConfig() {
         return api.get('/sys/config')
@@ -82,6 +86,18 @@ const info = {
     //Kill System
     killSystem() {
         return api.post('/sys/kill');
+    },
+    // Get Usb mount State
+    getUsbMountState() {
+        return api.get("/sys/usb")
+    },
+    // Set usb mount off
+    setUsbMountOff() {
+        return api.put('/sys/usb/off')
+    },
+    // Set usb mount on
+    setUsbMountOn() {
+        return api.put('/sys/usb/on')
     },
     //Check web ui Port
     checkUiPort(url) {

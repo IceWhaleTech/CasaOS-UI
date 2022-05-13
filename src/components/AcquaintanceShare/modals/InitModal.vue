@@ -87,7 +87,7 @@
           </div>
         </b-step-item>
 
-        <b-step-item step="3" :label="$t('Share-Recommend')" icon="server-network" disabled>
+        <!-- <b-step-item step="3" :label="$t('Share-Recommend')" icon="server-network" disabled>
           <h3 class="subtitle has-text-centered is-6 mt-2 mb-0">{{ $t('We have prepared some public servers.') }}</h3>
           <h3 class="subtitle has-text-centered is-6 mt-0 mb-5">{{ $t('You need to choose one of them to start with.') }}</h3>
 
@@ -107,7 +107,7 @@
               </div>
             </div>
           </div>
-        </b-step-item>
+        </b-step-item> -->
 
         <b-step-item step="4" :label="$t('Share-Finish')" icon="check" disabled>
           <h1 class="title has-text-centered is-3 mt-6">{{ $t('Share is ready!') }}</h1>

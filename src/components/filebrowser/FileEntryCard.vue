@@ -26,13 +26,15 @@
         <!-- Card Content End -->
       </div>
     </div>
+
   </div>
 </template>
 
 <script>
-import FilePanel from './FilePanel.vue'
+
 export default {
 
+  inject: ["homeShowFiles"],
   methods: {
     /**
    * @description: SHow FileBrowser Panel
@@ -45,25 +47,7 @@ export default {
         this.$api.analyse.analyseAppAction(appName, action)
         // eslint-disable-next-line no-empty
       } catch (err) { }
-
-      this.$buefy.modal.open({
-        parent: this,
-        component: FilePanel,
-        hasModalCard: true,
-        customClass: 'file-panel',
-        trapFocus: true,
-        canCancel: [''],
-        scroll: "clip",
-        animation: "zoom-in",
-        props: {
-
-        },
-        events: {
-          'afterLeave': () => {
-            console.log('enter');
-          }
-        }
-      })
+      this.homeShowFiles()
     }
   },
 }

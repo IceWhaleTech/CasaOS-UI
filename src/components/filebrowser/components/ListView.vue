@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-02-21 11:06:26
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-09 15:41:08
+ * @LastEditors: 老竭力 jerrykuku@qq.com
+ * @LastEditTime: 2022-05-11 15:28:12
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\components\ListView.vue
 -->
@@ -33,9 +33,8 @@
             @click.capture="clickItem($event,item)" @contextmenu.prevent="openContextMenu($event,item)">
             <div class="td">
               <div class="cover">
-                <div :class="item | coverType">
-                  <img alt="folder" :src="getIconFile(item)" :class="item | iconType" />
-                </div>
+                <list-icon-container :item="item"></list-icon-container>
+                
               </div>
               <p class="text">
                 {{item.name}}
@@ -69,8 +68,9 @@
 import { mixin } from '@/mixins/mixin';
 import ActionButton from './ActionButton.vue';
 import ContextMenu from './ContextMenu.vue';
+import ListIconContainer from "./ListIconContainer.vue"
 export default {
-  components: { ActionButton, ContextMenu },
+  components: { ActionButton, ContextMenu,ListIconContainer },
   mixins: [mixin],
 
   data() {

@@ -54,7 +54,7 @@ const app = {
     },
     //My App List
     myAppList(data) {
-        return api.get('/app/mylist', data);
+        return api.get('/app/my/list', data);
     },
     //Container info
     getContainerInfo(id) {
@@ -80,6 +80,16 @@ const app = {
     getAppUsage() {
         return api.get('/app/usage');
     },
-    
+
+    // Get App list order
+    getAppListOrder() {
+        return api.get('/app/order');
+    },
+
+    // Save App list order
+    saveAppListOrder(data) {
+        return api.post('/app/order', data)
+    }
+
 }
 export default app;

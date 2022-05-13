@@ -12,13 +12,16 @@
     <!-- Modal-Card Body Start -->
     <section class="modal-card-body is-flex">
 
+      <!-- Viewer Start -->
       <transition name="c-zoom-in">
-        <component :is="panelType" v-if="isShowDetial" @close="isShowDetial = false; isModalOpen = false" :item="currentItem" ref="previewPanel"></component>
+        <component :is="panelType" v-if="isShowDetial" @close="isShowDetial = false; isModalOpen = false" :item="currentItem" :list="listData" ref="previewPanel"></component>
       </transition>
+      <!-- Viewer End -->
+
       <template>
         <!-- NavBar Start -->
         <div class="nav-bar">
-          <h2 class="title is-4 mb-0 pb-3">{{ $t('Files') }}</h2>
+          <h2 class="title is-4 mb-0 pb-3 has-text-left">{{ $t('Files') }}</h2>
           <div class="list-container scrollbars-light pt-0">
             <tree-list ref="navBar" :path="rootPath" :autoLoad="true"></tree-list>
           </div>
@@ -117,7 +120,7 @@
             <!-- List View End -->
 
             <!-- Upload List Start-->
-            <div class="upload-list" v-if="showUploadList">
+            <div class="upload-list" v-show="showUploadList">
               <b-collapse class="card" ref="uploadList" animation="slide1" aria-id="contentIdForA11y3">
                 <template #trigger="props">
                   <div class="card-header" role="button" aria-controls="contentIdForA11y3" :aria-expanded="props.open">
@@ -209,7 +212,7 @@ export default {
       isShowDetial: false,
       panelType: null,
       currentItem: null,
-      rootPath: "/",
+      rootPath: "/DATA",
       currentPath: "",
       currentPathName: "",
       isViewGird: true,
@@ -315,7 +318,6 @@ export default {
     // Reload current folder
     reload() {
       this.getFileList(this.currentPath);
-      this.$refs.navBar.getDirList();
     },
     // Change View
     changeView() {
@@ -360,10 +362,6 @@ export default {
 
       })
 
-      // this.uploaderInstance.on('catchAll', (evt,a,b,c) => {
-      //   console.log(evt,a,b,c);
-
-      // })
     },
     closeUploaderList() {
       this.showUploadList = false

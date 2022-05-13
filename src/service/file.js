@@ -45,6 +45,15 @@ const file = {
         }
         return api.get('/file/download', data);
     },
+    // Thumbnail Data
+    getThumb(path) {
+        let data = {
+            path: path,
+            type: "thumbnail",
+            responseType: 'arraybuffer'
+        }
+        return api.get('/file/image', data);
+    },
     // Update File
     update(path, content) {
         let data = {

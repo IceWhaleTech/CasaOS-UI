@@ -1,23 +1,22 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-03-07 13:47:45
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-08 21:03:56
+ * @LastEditors: 老竭力 jerrykuku@qq.com
+ * @LastEditTime: 2022-05-09 13:42:59
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\viewers\ImageViewer.vue
 -->
 <template>
-  <div class="overlay" >
+  <div class="overlay" @mousemove="onMouseMove" id="image_viewer">
     <header class="modal-card-head">
       <div class="flex1 is-flex ">
         <!-- Title Start -->
-        <h3 class="title is-5 one-line">{{item.name}}</h3>
+        <h3 class="title is-6 one-line">{{currentItem.name}}</h3>
         <!-- Title End -->
       </div>
       <div class="is-flex is-align-items-center">
         <!-- Download File Button Start -->
-        <b-button icon-left="download" type="is-primary" size="is-small" :label="$t('Download')" class="mr-2" rounded
-          @click="download" />
+        <b-button icon-left="download" type="is-primary" size="is-small" :label="$t('Download')" class="mr-2" rounded @click="download" />
         <!-- Download File Button End -->
 
         <!-- Close Button Start -->
@@ -28,23 +27,74 @@
       </div>
     </header>
 
+    <!-- Toolbar Start -->
+    <div class="img-toolbar is-flex" v-if="isMoving">
+      <b-tooltip :label="$t('Previous')" type="is-dark">
+        <div class="toolbar-item" :class="{disabled : disablePrev}" @click="prev">
+          <span class="has-text-white block">
+            <b-icon icon="arrow-left-thin" size="is-small"></b-icon>
+          </span>
+        </div>
+      </b-tooltip>
+
+      <b-tooltip :label="$t('Zoom in')" type="is-dark">
+        <div class="toolbar-item" @click="viewer.zoom(0.1)">
+          <span class="has-text-white block">
+            <b-icon icon="magnify-plus-outline" size="is-small"></b-icon>
+          </span>
+        </div>
+      </b-tooltip>
+      <b-tooltip :label="$t('Rotate')" type="is-dark">
+        <div class="toolbar-item" @click="viewer.rotate(90)">
+          <span class="has-text-white block">
+            <b-icon icon="format-rotate-90" size="is-small" custom-class="mdi-flip-h"></b-icon>
+          </span>
+        </div>
+      </b-tooltip>
+      <b-tooltip :label="$t('Reset')" type="is-dark">
+        <div class="toolbar-item" @click="viewer.reset()">
+          <span class="has-text-white block">
+            <b-icon icon="restore" size="is-small"></b-icon>
+          </span>
+        </div>
+      </b-tooltip>
+      <b-tooltip :label="$t('Zoom out')" type="is-dark">
+        <div class="toolbar-item" @click="viewer.zoom(-0.1)">
+          <span class="has-text-white block">
+            <b-icon icon="magnify-minus-outline" size="is-small"></b-icon>
+          </span>
+        </div>
+      </b-tooltip>
+
+      <b-tooltip :label="$t('INext')" type="is-dark">
+        <div class="toolbar-item" :class="{disabled : disableNext}" @click="next">
+          <span class="has-text-white block">
+            <b-icon icon="arrow-right-thin" size="is-small"></b-icon>
+          </span>
+        </div>
+      </b-tooltip>
+
+    </div>
+    <!-- Toolbar End -->
+
     <!-- Player Start -->
-    <div class="is-flex is-justify-content-center is-align-items-center is-flex-grow-1 v-container video">
-      <div class="image-container" :style="{backgroundImage: 'url(' + bgUrl + ')'}"></div>
+    <div class=" v-container pl-4 pr-4">
+      <viewer :options="viewerOptions" :images="currentItemArray" @inited="inited" class="viewer" ref="viewer">
+        <template #default="scope">
+          <img v-for="src in scope.images" :src="src" :key="src">
+        </template>
+      </viewer>
     </div>
     <!-- Player Start -->
 
-    <!-- Player Footer Start -->
-    <div class="v-footer is-flex is-justify-content-center">
-
-    </div>
-    <!-- Player Footer End -->
   </div>
 </template>
 
 <script>
 import { mixin } from '@/mixins/mixin';
-import svg64 from 'svg64'
+import 'viewerjs/dist/viewer.css'
+import { component as Viewer } from "v-viewer"
+const XIMAGES = ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'svg', 'tiff']
 export default {
   mixins: [mixin],
   props: {
@@ -52,40 +102,116 @@ export default {
       type: Object,
       default: () => {
         return {
-          path: '/DATA/1.png',
-          name: '1.png'
+          path: '',
+          name: ''
         }
       }
     },
+
+    list: []
   },
   components: {
-
+    Viewer
   },
   data() {
     return {
-      type: "",
-      ext: "",
-      bgUrl: "",
+      isMoving: false,
+      timeout: null,
+      itemList: [],
+      currentItem: this.item,
+      currentItemIndex: 0,
+      currentItemArray: [],
+      viewer: {},
+      viewerOptions: {
+        button: false,    //Hide FullScreen Button
+        toolbar: false,   //Hide Toolbar
+        title: false,     //Hide Title
+        navbar: false,    //Hide Navbar
+        backdrop: false,  //Hide Background
+        transition: false,//Without css3 animation
+        inline: true,
+        initialViewIndex: 0,
+      },
     }
+  },
+  computed: {
+    disableNext() {
+      return this.currentItemIndex == this.itemList.length - 1
+    },
+    disablePrev() {
+      return this.currentItemIndex == 0
+    },
+  },
+  created() {
+    this.filterImages()
+    this.getCurrentImageIndex()
+    this.setSourceImageURLs()
   },
   mounted() {
-    let ext = this.getFileExt(this.item)
-    if (ext == "svg") {
-      this.$api.file.download(this.item.path).then(res => {
+    window.onkeyup = (e) => {
+      switch (e.code) {
 
-        this.bgUrl = svg64(res.data)
-        console.log(this.bgUrl);
-      })
-    } else {
-      this.bgUrl = this.getFileUrl(this.item)
-    }
+        case 'ArrowRight':
+          this.next()
+          break;
+        case 'ArrowLeft':
+          this.prev()
+          break;
+      }
+    };
   },
+
   methods: {
     download() {
-      this.downloadFile(this.item);
+      this.downloadFile(this.currentItem);
     },
     close() {
       this.$emit("close");
+    },
+    inited(viewer) {
+      this.viewer = viewer
+      this.viewer.show()
+      this.onMouseMove()
+    },
+    next() {
+      if (this.currentItemIndex < this.itemList.length - 1) {
+        this.currentItemIndex++
+        this.setSourceImageURLs()
+      }
+    },
+    prev() {
+      if (this.currentItemIndex > 0) {
+        this.currentItemIndex--
+        this.setSourceImageURLs()
+      }
+    },
+    filterImages() {
+      this.itemList = this.list.filter(item => {
+        const ext = this.getFileExt(item)
+        return (!item.is_dir && XIMAGES.indexOf(ext.toLowerCase()) > -1)
+      })
+    },
+    getCurrentImageIndex() {
+      this.itemList.forEach((item, index) => {
+        if (item == this.currentItem) {
+          this.currentItemIndex = index
+        }
+      })
+    },
+    setSourceImageURLs() {
+      this.currentItem = this.itemList[this.currentItemIndex]
+      this.currentItemArray = [this.getFileUrl(this.currentItem)]
+    },
+    // Hide Toolbar after 5 seconds
+    onMouseMove() {
+      this.isMoving = true;
+      if (this.timeout !== null) {
+        clearTimeout(this.timeout);
+      }
+      this.timeout = setTimeout(() => {
+        this.isMoving = false;
+        this.timeout = null;
+      }, 5000);
     }
   }
 }

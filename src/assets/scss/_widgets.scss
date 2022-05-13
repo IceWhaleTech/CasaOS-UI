@@ -96,13 +96,22 @@
       outline: none;
       background-color: transparent;
     }
+
+    span {
+      
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+      overflow: hidden;
+      max-width: 3rem;
+    }
   }
 
   .dropdown-menu {
-    min-width: 8rem;
+    min-width: 5rem;
 
     .dropdown-content {
-      width: 7rem;
+      max-width: 7rem;
       border-radius: 10px;
       padding: 4px !important;
       background: rgba(0, 0, 0, 0.48);
@@ -114,7 +123,7 @@
 
       .dropdown-item {
 
-        padding: 0.25rem 0 0.25rem 0.5rem;
+        padding: 0.25rem 0.5rem 0.25rem 0.5rem;
         border-radius: 5px;
         transition: all 0.25s;
         overflow: hidden;
@@ -143,14 +152,13 @@
 .blur-background {
   width: 100%;
   height: 100%;
-  background-color: rgba(59, 59, 59, 0.3);
+  background-color: rgba(129, 129, 129, 0.5);
   background-size: cover;
   background-position: bottom center;
   background-attachment: fixed;
   border-radius: $backDropBorderRadius;
   position: absolute;
   z-index: 0;
-  background-image: url(../background/bg3_blur.jpg);
 }
 
 .wuji-content {
@@ -162,6 +170,10 @@
 .cards-content {
   position: relative;
   z-index: 10;
+}
+
+.ghost{
+  opacity: 0;
 }
 
 // Cards

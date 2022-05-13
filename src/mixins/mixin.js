@@ -1,8 +1,8 @@
 /*
  * @Author: JerryK
  * @Date: 2022-01-20 12:01:07
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-10 15:23:16
+ * @LastEditors: 老竭力 jerrykuku@qq.com
+ * @LastEditTime: 2022-05-06 16:30:16
  * @Description: 
  * @FilePath: \CasaOS-UI\src\mixins\mixin.js
  */
@@ -33,6 +33,7 @@ const typeMap = {
     "text-x-cmake": ['makefile', 'cmake', 'dockerfile'],
     "text-dockerfile": ['dockerfile'],
 }
+const hasThumbType = ['png', 'jpg', 'jpeg', 'bmp', 'gif']
 
 // eslint-disable-next-line no-unused-vars
 const filePanelMap = {
@@ -42,7 +43,14 @@ const filePanelMap = {
     "pdf-viewer": typeMap['application-pdf'],
 }
 
+
+
 export const mixin = {
+    data() {
+        return {
+            baseUrl: (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${this.$store.state.devPort}/v1/` : `http://${document.location.host}/v1/`
+        }
+    },
     mounted() {
         this.typeMap = typeMap;
     },
@@ -75,7 +83,7 @@ export const mixin = {
 
         /**
          * @description: Set Default Lang from browser
-         * @param {String} lang value
+         * @param {String} lang 
          * @return {void} 
          */
         // 
@@ -93,10 +101,8 @@ export const mixin = {
         // 
         getIconFile(item) {
             let isDir = false
-            if (has(item, 'is_dir')) {
+            if (has(item, 'is_dir') || has(item, "isFolder")) {
                 isDir = item.is_dir
-            } else if (has(item, "isFolder")) {
-                isDir = item.isFolder
             }
             if (isDir) {
                 let folder = "folder-default"
@@ -143,7 +149,6 @@ export const mixin = {
                     type = _type
                 }
             })
-
             return type
         },
         getFileExt(item) {
@@ -160,20 +165,43 @@ export const mixin = {
                 type: 'is-light'
             })
             let url = this.getFileUrl(item)
-            window.open(url, '_self');
+            window.open(url, '_blank');
         },
         playVideo(item, player) {
             let url = player + this.getFileUrl(item)
             window.open(url, '_self');
         },
+
+        // Get File Download URL
         getFileUrl(item) {
-            let base_url = (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${this.$store.state.devPort}/v1/file/new/download?` : `http://${document.location.host}/v1/file/new/download?`;
-            let url = {
+            let apiUrl = `${this.baseUrl}file/new/download?`;
+            let parameters = {
                 path: item.path,
                 token: this.$store.state.token
             }
-            console.log(base_url + qs.stringify(url));
-            return base_url + qs.stringify(url)
+            return apiUrl + qs.stringify(parameters)
+        },
+
+        // check if has thumb
+        hasThumb(item) {
+            if (item.is_dir) {
+                return false
+            } else {
+                const ext = this.getFileExt(item);
+                return hasThumbType.indexOf(ext.toLowerCase()) > -1
+            }
+
+        },
+
+        // Get Image Thumb URL
+        getThumbUrl(item) {
+            let apiUrl = `${this.baseUrl}file/image?`;
+            let parameters = {
+                path: item.path,
+                token: this.$store.state.token,
+                type: "thumbnail"
+            }
+            return apiUrl + qs.stringify(parameters)
         },
         // Download Button Action
         download() {
@@ -251,14 +279,8 @@ export const mixin = {
         },
 
         /**
-         * @description: Rename Button Action
-         * @param {} 
-         * @return {void} 
-         */
-
-        /**
          * @description: Check file or folder state
-         * @param {} 
+         * @param {object}  item
          * @return {void} 
          */
         getCardState(item) {

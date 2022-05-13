@@ -34,7 +34,7 @@
 export default {
   data() {
     return {
-      url: `${window.location.origin}/ui/#/a-sharing`
+      url: `${window.location.origin}/ui/#/connect`
     }
   },
 

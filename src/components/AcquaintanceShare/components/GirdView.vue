@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-03-11 22:14:41
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-11 22:14:41
+ * @LastEditors: 老竭力 jerrykuku@qq.com
+ * @LastEditTime: 2022-05-07 23:08:32
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\AcquaintanceShare\components\GirdView.vue
 -->
@@ -30,7 +30,7 @@
                       <div :class="item | coverType">
                         <img alt="folder" :src="getIconFile(item)" :class="item | iconType" />
                       </div>
-                      <div class="friendly-name" v-if="item.is_dir && item.type == 'application'">{{item.label}}</div>
+                      <!-- <div class="friendly-name" v-if="item.is_dir && item.type == 'application'">{{item.label}}</div> -->
                     </div>
                     <div class="info">
                       <p class="title">{{item.name}}</p>

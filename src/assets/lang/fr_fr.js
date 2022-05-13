@@ -62,7 +62,9 @@ export default {
     "WebUI Port": "Port de l'interface Web",
     "Currently the latest version": "Actuellement la dernière version",
     "A new version is available!": "Une nouvelle version est disponible !",
-    "Edit Web UI port": "Editer le port WebUI",
+    "Automount USB Drive": "Automount USB Drive",
+    "Upgrade Now": "Upgrade Now",
+    "Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB": "Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB",
 
     // Terminal & Logs
     "Terminal & Logs": "Terminal & journaux",
@@ -186,13 +188,22 @@ export default {
     "Using localhost or 127.0.0.1 will cause the application to be inaccessible, please use the real ip to access.": "L'utilisation de localhost ou 127.0.0.1 rendra l'application inaccessible, veuillez utiliser l'ip réelle pour accéder.",
     "CATEGORY": "CATÉGORIE",
     "DEVELOPER": "DÉVELOPPEUR",
-    "REQUIRE": "EXIGER",
+    "REQUIRE": "REQUIS",
     "MEMORY": "MÉMOIRE",
     "DISK": "DISQUE",
     "App Store": "Magasin d'applications",
     "Community Apps": "Applications communautaires",
     "From community contributors, not optimized for CasaOS, but provides a basic App experience.": "De la part des contributeurs de la communauté, pas optimisé pour CasaOS, mais fournit une expérience d'application de base.",
     "Sort by": "Trier par",
+    "Click icon to import apps into CasaOS": "Click icon to import apps into CasaOS",
+    "Drag icons to sort": "Drag icons to sort",
+    "Import to CasaOS": "Import to CasaOS",
+    "Existing Docker Apps": "Existing Docker Apps",
+    "Port [Please add a ports set first]": "Port [Please add a ports set first]",
+    "[Optional]": "[Optional]",
+    "Notice: If there are multiple services, only the first set can be analyzed correctly": "Notice: If there are multiple services, only the first set can be analyzed correctly",
+    "No need": "No need",
+
 
     //Storage
     "Create Storage": "Créer un stockage",
@@ -271,6 +282,12 @@ export default {
     "Play in VLC": "Lire dans VLC",
     "Download in preparation...": "Téléchargement en préparation...",
     "Copied to clipboard": "Copié dans le presse-papier",
+    "Previous": "Previous",
+    "Zoom in": "Zoom in",
+    "Rotate": "Rotate",
+    "Reset": "Reset",
+    "Zoom out": "Zoom out",
+    "INext": "Next",
 
     /* ******************************
     * Share Section
@@ -301,6 +318,7 @@ export default {
     "Blocked failed": "Échec du blocage",
     "Deleted this friend": "À supprimé cet ami",
     "Delete failed": "Échec de la suppression",
+    "Copy friend's ID": "Copy friend's ID",
 
     // Tour
     "Skip": "Passer",
@@ -310,7 +328,7 @@ export default {
     "Click \"+\" and enter your friend's ID to send a friend request.": "Cliquez sur \"+\" et entrez l'identifiant de votre ami pour envoyer une demande d'ami.",
     "Browse your download progress and download history here.": "Parcourez votre progression de téléchargement et votre historique de téléchargement ici.",
     "Modify your shared folders, and default download path here.": "Modifiez vos dossiers partagés et le chemin de téléchargement par défaut ici.",
-    "Well, let's start using it!": "Bien, commençons à l'utiliser !",
+    "Well, let's start using it!": "Bien, commençons à l'utiliser !",
 
     // Download List
     "Downloading": "Téléchargement",

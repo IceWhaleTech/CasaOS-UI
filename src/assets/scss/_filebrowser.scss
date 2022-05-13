@@ -1,11 +1,12 @@
 .file-panel {
   .animation-content {
-    max-width: 90% !important;
-    width: 90% !important;
+
 
     .modal-card {
       width: 100%;
       height: calc(100vh - 40px);
+      border-radius: 0;
+      background-color: white !important;
 
       .modal-card-head {
         padding: 1.5rem;
@@ -109,7 +110,8 @@
                     overflow: hidden;
                   }
                 }
-                .new-list-item{
+
+                .new-list-item {
                   font-size: 0.875rem;
                   font-weight: lighter;
                 }
@@ -124,6 +126,7 @@
                 width: 24px;
                 height: 24px;
               }
+
             }
           }
         }
@@ -153,11 +156,61 @@
           padding: 0 1.5rem 0.75rem 1.5rem;
         }
 
+        .img-toolbar {
+          position: absolute;
+          bottom: 50px;
+          left: 50%;
+          transform: translateX(-50%);
+          background-color: rgb(49, 49, 54);
+          z-index: 100;
+          padding: 0.5rem 1rem;
+          border-radius: 10px;
+
+          .b-tooltip {
+            .toolbar-item {
+
+              padding: 0.25rem 0.5rem;
+              border-radius: 5px;
+              cursor: pointer;
+              transition: background 0.3s;
+              margin-left: 0.5rem;
+
+              &.disabled {
+                pointer-events: none;
+
+                .block {
+                  color: #b5b5b5 !important;
+                }
+
+              }
+
+              &:hover {
+                background-color: rgb(86, 86, 90);
+              }
+
+            }
+
+            &:first-child {
+              .toolbar-item {
+                margin-left: 0;
+              }
+            }
+          }
+
+
+
+        }
+
+
         .v-container {
           flex: 1 1 auto;
           position: relative;
 
           overflow: hidden;
+
+          .viewer {
+            display: none;
+          }
 
           .vue-codemirror {
             padding: 0 1.5rem;
@@ -172,9 +225,9 @@
           }
 
           .video-container {
-            padding: 0 13%;
+            padding: 0 5rem;
             width: 100%;
-            max-width: 1800px;
+
             position: relative;
           }
 
@@ -217,6 +270,20 @@
         }
       }
     }
+  }
+
+  .thumb-w {
+    max-width: 100px;
+    border-radius: 5px;
+    height: auto;
+    z-index: 2;
+  }
+
+  .thumb-h {
+    max-height: 96px;
+    border-radius: 5px;
+    width: auto;
+    z-index: 2;
   }
 
   .breadcrumb-container {
@@ -339,7 +406,7 @@
       visibility: hidden;
       position: absolute;
       z-index: 0;
-      
+
 
       ul {
         li {
@@ -359,7 +426,7 @@
     min-width: 8rem;
 
     .dropdown-content {
-      width: 11.5rem;
+
       border-radius: 10px;
       padding: 4px !important;
 
@@ -368,13 +435,14 @@
       }
 
       .dropdown-item {
-        padding-right: 0;
+        padding-right: 0.5rem;
         padding-left: 0.5rem;
         border-radius: 5px;
         transition: all 0.25s;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+        text-align: left;
 
         &.has-text-danger {
           &:hover {
@@ -387,6 +455,7 @@
 }
 
 .file-modal {
+
   .modal-card {
     max-width: 28rem;
 
@@ -408,6 +477,7 @@
               width: 80px;
               height: 80px;
             }
+
           }
         }
 
@@ -468,13 +538,39 @@
 
   .scroll-container {
     // height: auto;
-    height: calc(100vh - 9.125rem);
+    height: calc(100vh - 6.625rem);
     overflow-y: auto;
   }
 
   .node-list {
     .scroll-container {
-      height: calc(100vh - 11.75rem);
+      height: calc(100vh - 9.25rem);
+
+      .cover {
+        .file-cover {
+          height: 32px;
+          overflow: hidden;
+          position: relative;
+          border-radius: 0.25rem;
+
+          .thumb-w {
+            border-radius: 0;
+            max-height: 32px;
+            width: auto;
+            left: 50%;
+            transform: translateX(-50%);
+          }
+
+          .thumb-h {
+            border-radius: 0;
+            max-width: 32px;
+            height: auto;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+          }
+        }
+      }
     }
   }
 
@@ -525,6 +621,7 @@
                   opacity: 0;
                   visibility: hidden;
                   cursor: pointer;
+                  z-index: 3;
                 }
 
                 &:hover {
@@ -642,7 +739,8 @@
     width: 375px;
     right: 32px;
     bottom: 28px;
-    .content{
+
+    .content {
       max-width: initial !important;
     }
 

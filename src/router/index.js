@@ -27,10 +27,17 @@ const routes = [
     meta: { requireAuth: false }
   },
   {
-    path: '/a-sharing',
-    name: 'Acquaintance Sharing',
+    path: '/connect',
+    name: 'CasaConnect',
     hidden: true,
-    component: () => import('@/views/AcquaintanceSharing.vue'),
+    component: () => import('@/views/CasaConnect.vue'),
+    meta: { requireAuth: true }
+  },
+  {
+    path: '/a-sharing',
+    name: 'CasaConnect1',
+    hidden: true,
+    component: () => import('@/views/CasaConnect.vue'),
     meta: { requireAuth: true }
   },
   {

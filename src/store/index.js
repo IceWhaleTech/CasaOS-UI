@@ -16,7 +16,7 @@ export default new Vuex.Store({
   // plugins: [createPersistedState()],
   state: {
     token: "",
-    devIp: "192.168.2.10",
+    devIp: "192.168.2.233",
     devPort: "80",
     serviceError: false,
     userinfo: {},

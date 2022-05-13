@@ -11,8 +11,8 @@
     <div class="blur-background"></div>
 
     <div class="network">
-      <div class="is-flex  pt-4">
-        <div class="ml-4  is-flex-grow-1">
+      <div class="is-flex  pt-4 ">
+        <div class="ml-5  is-flex-grow-1">
           <b-dropdown aria-role="list" class="netowrk-dropdown" animation="fade1" v-model="networkId">
             <template #trigger="{ active }">
               <b-button :label="initNetwork[networkId].name" type="is-primary" :icon-right="active ? 'chevron-up' : 'chevron-down'" />
@@ -20,7 +20,7 @@
             <b-dropdown-item aria-role="listitem" v-for="(item,index) in initNetwork" :key="'net'+index" :value="index">{{item.name}}</b-dropdown-item>
           </b-dropdown>
         </div>
-        <div class=" is-flex-shrink-0  mr-4 is-size-7 is-flex is-align-items-center">
+        <div class=" is-flex-shrink-0  mr-5 is-size-7 is-flex is-align-items-center">
           <div>
             <b-icon icon="arrow-up-bold" size="is-small" class="up">
             </b-icon> {{currentUpSpeed*1024 | renderSize}}/s
@@ -29,12 +29,10 @@
           </div>
         </div>
       </div>
-      <div class="chart-container">
+      <div class="chart-container ml-2 mr-2">
         <vue-apex-charts type="area" ref="chart" height="130" :options="chartOptions" :series="networks[networkId]" />
       </div>
-
     </div>
-
   </div>
 </template>
 
@@ -201,8 +199,10 @@ export default {
       });
 
       this.$refs.chart.updateSeries(this.networks[this.networkId])
-      this.currentUpSpeed = this.networks[this.networkId][0].data[this.networks[this.networkId][0].data.length - 1]
-      this.currentDownSpeed = this.networks[this.networkId][1].data[this.networks[this.networkId][1].data.length - 1]
+      let cus = this.networks[this.networkId][0].data[this.networks[this.networkId][0].data.length - 1]
+      let cds = this.networks[this.networkId][1].data[this.networks[this.networkId][1].data.length - 1]
+      this.currentUpSpeed = isNaN(cus) ? 0 : cus
+      this.currentDownSpeed = isNaN(cds) ? 0 : cds
     },
     covertToKB(bytes) {
       return (bytes / 1024).toFixed(0);
