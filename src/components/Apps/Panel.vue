@@ -1,9 +1,8 @@
-/* eslint-disable vue/multi-word-component-names */
 <!--
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-09 16:07:52
+ * @LastEditors: 老竭力 jerrykuku@qq.com
+ * @LastEditTime: 2022-05-11 16:33:38
  * @Description: Install Panel of Docker
  * @FilePath: \CasaOS-UI\src\components\Apps\Panel.vue
 -->
@@ -64,14 +63,14 @@
               <div class="level-item has-text-centered">
                 <div>
                   <p class="heading "><span class="is-hidden-mobile">{{ $t('REQUIRE') }} </span>{{ $t('MEMORY') }}</p>
-                  <p class="title">{{detailData.min_memory}}</p>
+                  <p class="title has-text-weight-normal">{{detailData.min_memory}}</p>
                   <p class="footing is-size-65">MB</p>
                 </div>
               </div>
               <div class="level-item has-text-centered">
                 <div>
                   <p class="heading"><span class="is-hidden-mobile">{{ $t('REQUIRE') }} </span>{{ $t('DISK') }}</p>
-                  <p class="title">{{detailData.min_disk}}</p>
+                  <p class="title has-text-weight-normal">{{detailData.min_disk}}</p>
                   <p class="footing is-size-65">MB</p>
                 </div>
               </div>
@@ -174,12 +173,12 @@
         <div class="is-flex mt-5 mb-5">
           <!-- Cate Start -->
           <div class="flex1">
-            <b-dropdown aria-role="list" class="app-select" position="is-bottom-right" v-model="currentCate" scrollable animation="fade1" :mobile-modal="false" append-to-body>
-              <template #trigger="{  }">
+            <b-dropdown aria-role="list" class="app-select file-dropdown" position="is-bottom-right" v-model="currentCate" scrollable animation="fade1" :mobile-modal="false">
+              <template #trigger="{ active }">
                 <div class="button is-text auto-height pl-0 pt-0 pb-0 ">
                   <b-icon :icon="currentCate.font" size="is-small" class="mr-1 ml-0"></b-icon>
                   {{currentCate.name}}
-                  <b-icon icon="menu-down" size="is-normal" class="ml-1"></b-icon>
+                  <b-icon :icon="active ? 'chevron-up' : 'chevron-down'" size="is-normal" class="ml-1"></b-icon>
                 </div>
               </template>
               <b-dropdown-item v-for="menu in cateMenu" :key="menu.id" :value="menu" aria-role="listitem" :class="menu.id == currentCate.id?'is-active':''" :data-title="menu.count">
@@ -198,11 +197,11 @@
           <!-- Sort Start -->
           <div>
             {{ $t('Sort by') }}:
-            <b-dropdown aria-role="list" class="app-select"  v-model="currentSort" animation="fade1" :mobile-modal="false">
-              <template #trigger="{  }">
+            <b-dropdown aria-role="list" class="app-select file-dropdown" position="is-bottom-right" v-model="currentSort" animation="fade1" :mobile-modal="false">
+              <template #trigger="{ active }">
                 <div class="button is-text auto-height pl-0 pt-0 pb-0 is-size-65">
                   {{currentSort.name}}
-                  <b-icon icon="menu-down" size="is-normal" class="ml-1"></b-icon>
+                  <b-icon :icon="active ? 'chevron-up' : 'chevron-down'" size="is-normal" class="ml-1"></b-icon>
                 </div>
 
               </template>
@@ -221,7 +220,7 @@
         <!-- List condition End -->
         <!-- App list Start-->
         <div class="columns f-list is-multiline is-mobile pb-3 mb-5">
-          <div class="column is-one-quarter" v-for="(item,index) in pageList" :key="index+item.title+item.id">
+          <div class="column app-item is-one-quarter" v-for="(item,index) in pageList" :key="index+item.title+item.id">
             <div class="is-flex  is-align-items-center">
               <div class="list-icon mr-4 is-clickable" @click="showAppDetial(item.id)">
                 <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-72x72 icon-shadow"></b-image>
@@ -275,6 +274,7 @@
       <!-- App Install Form Start -->
       <section v-if="currentSlide == 1">
         <ValidationObserver ref="ob1">
+
           <ValidationProvider rules="required" name="Image" v-slot="{ errors, valid }">
             <b-field :label="$t('Docker Image')+' *'" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="$t(errors)">
               <b-input v-model="initData.image" :placeholder="$t('e.g.,hello-world:latest')" :readonly="state == 'update'" @input="changeIcon"></b-input>
@@ -283,86 +283,97 @@
           </ValidationProvider>
           <ValidationProvider rules="required" name="Name" v-slot="{ errors, valid }">
             <b-field :label="$t('App name')+' *'" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
-              <b-input value="" v-model="initData.label" :placeholder="$t('Your custom App Name')"></b-input>
+              <b-input v-model="initData.label" :placeholder="$t('Your custom App Name')" maxlength="40" ></b-input>
             </b-field>
           </ValidationProvider>
-
           <b-field :label="$t('Icon URL')">
-            <b-input value="" v-model="initData.icon" :placeholder="$t('Your custom icon URL')"></b-input>
+            <p class="control">
+              <span class="button is-static container-icon">
+                <b-image :src="appIcon" :src-fallback="require('@/assets/img/app/default.png')" class="is-32x32" :key="appIcon" ratio="1by1"></b-image>
+              </span>
+            </p>
+            <b-input v-model="initData.icon" :placeholder="$t('Your custom icon URL')" expanded></b-input>
           </b-field>
 
           <b-field label="Web UI">
             <p class="control">
               <span class="button is-static">{{baseUrl}}</span>
             </p>
-            <b-input v-model="webui" placeholder="port[/path/to/index.html]" expanded></b-input>
-          </b-field>
-
-          <b-field :label="$t('Network')">
-            <b-select v-model="initData.network_model" placeholder="Select" expanded>
-              <optgroup v-for="net in networks" :key="net.driver" :label="net.driver">
-                <option v-for="(option,index) in net.networks" :value="option.name" :key="option.name+index">
-                  {{ option.name}}
-                </option>
-              </optgroup>
+            <b-input v-model="initData.port_map" placeholder="port" expanded v-if="initData.network_model == 'host'"></b-input>
+            <b-select :placeholder="$t('Port [Please add a ports set first]')" v-model="initData.port_map" expanded v-else>
+              <option value="">{{ $t('No need') }}</option>
+              <option v-for="port in bridgePorts" :value="port.host" :key="port.host+port.protocol">{{port.host}}</option>
             </b-select>
+            <b-input v-model="initData.index" :placeholder="'/index.html '+ $t('[Optional]')"></b-input>
           </b-field>
+          <template v-if="isCasa">
 
-          <ports v-model="initData.ports" :showHostPost="showHostPort" v-if="showPorts"></ports>
-          <input-group v-model="initData.volumes" type="volume" :label="$t('Volumes')" :message="$t('No volumes now, click “+” to add one.')"></input-group>
-          <env-input-group v-model="initData.envs" :label="$t('Environment Variables')" :message="$t('No environment variables now, click “+” to add one.')"></env-input-group>
-          <input-group v-model="initData.devices" type="device" :label="$t('Devices')" :message="$t('No devices now, click “+” to add one.')"></input-group>
-          <commands-input v-model="initData.cmd" :label="$t('Container Command')" :message="$t('No commands now, click “+” to add one.')"></commands-input>
-
-          <b-field :label="$t('Privileged')">
-            <b-switch v-model="initData.privileged"></b-switch>
-          </b-field>
-
-          <b-field :label="$t('Memory Limit')">
-            <vue-slider :min="256" :max="totalMemory" v-model="initData.memory"></vue-slider>
-          </b-field>
-
-          <b-field :label="$t('CPU Shares')">
-            <b-select v-model="initData.cpu_shares" :placeholder="$t('Select')" expanded>
-              <option value="10">{{$t('Low')}}</option>
-              <option value="50">{{$t('Medium')}}</option>
-              <option value="90">{{$t('High')}}</option>
-            </b-select>
-          </b-field>
-
-          <b-field :label="$t('Restart Policy')">
-            <b-select v-model="initData.restart" :placeholder="$t('Select')" expanded>
-              <option value="on-failure">on-failure</option>
-              <option value="always">always</option>
-              <option value="unless-stopped">unless-stopped</option>
-            </b-select>
-          </b-field>
-
-          <b-field :label="$t('Container Capabilities (cap-add)')">
-            <b-taginput v-model="initData.cap_add" :data="capArray" autocomplete ref="taginput" :allow-new="false" :open-on-focus="false" @typing="getFilteredTags">
-              <template slot-scope="props">
-                {{props.option}}
-              </template>
-              <template #empty>
-                There are no items
-              </template>
-              <template #selected="props">
-                <b-tag v-for="(tag, index) in props.tags" :key="index" :tabstop="false" closable @close="$refs.taginput.removeTag(index, $event)">
-                  {{tag}}
-                </b-tag>
-              </template>
-            </b-taginput>
-          </b-field>
-
-          <ValidationProvider rules="rfc1123" name="Name" v-slot="{ errors, valid }">
-            <b-field :label="$t('Container Hostname')" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="$t(errors)">
-              <b-input value="" v-model="initData.hostname" :placeholder="$t('Hostname of app container')"></b-input>
+            <b-field :label="$t('Network')">
+              <b-select v-model="initData.network_model" placeholder="Select" expanded>
+                <optgroup v-for="net in networks" :key="net.driver" :label="net.driver">
+                  <option v-for="(option,index) in net.networks" :value="option.name" :key="option.name+index">
+                    {{ option.name}}
+                  </option>
+                </optgroup>
+              </b-select>
             </b-field>
-          </ValidationProvider>
 
-          <b-field :label="$t('App Description')">
-            <b-input v-model="initData.description"></b-input>
-          </b-field>
+            <ports v-model="initData.ports" :showHostPost="showHostPort" v-if="showPorts"></ports>
+            <input-group v-model="initData.volumes" type="volume" :label="$t('Volumes')" :message="$t('No volumes now, click “+” to add one.')"></input-group>
+            <env-input-group v-model="initData.envs" :label="$t('Environment Variables')" :message="$t('No environment variables now, click “+” to add one.')"></env-input-group>
+            <input-group v-model="initData.devices" type="device" :label="$t('Devices')" :message="$t('No devices now, click “+” to add one.')"></input-group>
+            <commands-input v-model="initData.cmd" :label="$t('Container Command')" :message="$t('No commands now, click “+” to add one.')"></commands-input>
+
+            <b-field :label="$t('Privileged')">
+              <b-switch v-model="initData.privileged"></b-switch>
+            </b-field>
+
+            <b-field :label="$t('Memory Limit')">
+              <vue-slider :min="256" :max="totalMemory" v-model="initData.memory"></vue-slider>
+            </b-field>
+
+            <b-field :label="$t('CPU Shares')">
+              <b-select v-model="initData.cpu_shares" :placeholder="$t('Select')" expanded>
+                <option value="10">{{$t('Low')}}</option>
+                <option value="50">{{$t('Medium')}}</option>
+                <option value="90">{{$t('High')}}</option>
+              </b-select>
+            </b-field>
+
+            <b-field :label="$t('Restart Policy')">
+              <b-select v-model="initData.restart" :placeholder="$t('Select')" expanded>
+                <option value="on-failure">on-failure</option>
+                <option value="always">always</option>
+                <option value="unless-stopped">unless-stopped</option>
+              </b-select>
+            </b-field>
+
+            <b-field :label="$t('Container Capabilities (cap-add)')">
+              <b-taginput v-model="initData.cap_add" :data="capArray" autocomplete ref="taginput" :allow-new="false" :open-on-focus="false" @typing="getFilteredTags">
+                <template slot-scope="props">
+                  {{props.option}}
+                </template>
+                <template #empty>
+                  There are no items
+                </template>
+                <template #selected="props">
+                  <b-tag v-for="(tag, index) in props.tags" :key="index" :tabstop="false" closable @close="$refs.taginput.removeTag(index, $event)">
+                    {{tag}}
+                  </b-tag>
+                </template>
+              </b-taginput>
+            </b-field>
+
+            <ValidationProvider rules="rfc1123" name="Name" v-slot="{ errors, valid }">
+              <b-field :label="$t('Container Hostname')" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="$t(errors)">
+                <b-input value="" v-model="initData.host_name" :placeholder="$t('Hostname of app container')"></b-input>
+              </b-field>
+            </ValidationProvider>
+
+            <b-field :label="$t('App Description')">
+              <b-input v-model="initData.description"></b-input>
+            </b-field>
+          </template>
 
         </ValidationObserver>
       </section>
@@ -423,7 +434,6 @@ import "@/plugins/vee-validate";
 import debounce from 'lodash/debounce'
 import find from 'lodash/find';
 import uniq from 'lodash/uniq';
-// import upperFirst from 'lodash/upperFirst'
 import isNull from 'lodash/isNull'
 import orderBy from 'lodash/orderBy';
 import cloneDeep from 'lodash/cloneDeep';
@@ -474,6 +484,20 @@ export default {
     Swiper,
     SwiperSlide
   },
+  props: {
+    id: String,
+    state: String,
+    isCasa: {
+      type: Boolean,
+      default: true
+    },
+    runningStatus: String,
+    configData: Object,
+    initDatas: {
+      type: Object
+    }
+  },
+
   data() {
     return {
       timer: 0,
@@ -482,9 +506,9 @@ export default {
       isFetching: false,
       isFirst: true,
       errorType: 1,
+      appIcon: "",
       sidebarOpen: false,
       cancelButtonText: "Cancel",
-      webui: "",
       baseUrl: "",
       totalMemory: 0,
       networks: [],
@@ -493,7 +517,7 @@ export default {
       installPercent: 0,
       installText: "",
       initData: {
-        port_map: "",
+        port_map: null,
         cpu_shares: 10,
         memory: 300,
         restart: "always",
@@ -588,15 +612,6 @@ export default {
       detailData: {}
     }
   },
-  props: {
-    id: String,
-    state: String,
-    runningStatus: String,
-    configData: Object,
-    initDatas: {
-      type: Object
-    }
-  },
 
   created() {
 
@@ -624,28 +639,16 @@ export default {
     //If it is edit, Init data
     if (this.initDatas != undefined) {
       this.isLoading = false
-      this.initData = this.initDatas
-
-      this.webui = this.initDatas.port_map + this.initDatas.index
+      this.initData = this.preProcessData(this.initDatas)
       this.currentSlide = 1
-    } else {
 
+    } else {
       let gg = find(this.tempNetworks, (o) => {
         return o.driver == "bridge"
       })
       this.initData.network_model = gg.length > 0 ? gg[0].name : "bridge";
-      // let appData = localStorage.getItem("app_data")
-      // if (!isNull(appData)) {
-      //   this.initData = JSON.parse(appData)
-      // }
-      // this.getStoreList()
+      this.getCategoryList();
     }
-
-    //loading app store list data from server
-    this.getCategoryList();
-
-
-
   },
 
   computed: {
@@ -664,6 +667,11 @@ export default {
         return true
       }
     },
+    bridgePorts() {
+      return this.initData.ports.filter(function (item) {
+        return item.host != ""
+      })
+    },
     showImportButton() {
       return this.currentSlide == 1 && this.state == 'install'
     },
@@ -678,7 +686,12 @@ export default {
       if (this.currentSlide == 0) {
         return this.$t("App Store");
       } else if (this.currentSlide == 1) {
-        return (this.initDatas != undefined) ? this.initData.label + " " + this.$t("Setting") : this.$t("Install a new App manually")
+        if (!this.isCasa) {
+          return this.$t("Import") + " " + this.initData.label
+        } else {
+          return (this.initDatas != undefined) ? this.initData.label + " " + this.$t("Setting") : this.$t("Install a new App manually")
+        }
+
       } else {
         return this.$t("Installing") + " " + this.initData.image
       }
@@ -689,12 +702,19 @@ export default {
 
   },
   watch: {
+    // Watch if Icon url has changed
+    'initData.icon'(val) {
+      this.updateIconUrl(val)
+    },
+    'initData.label'(val) {
+      let newLabel = val.replace(/[^a-zA-Z0-9_.-]/g, "")
+      this.updateLabel(newLabel)
+    },
     // Watch if Section index changes
     currentSlide(val) {
       if (val == 1) {
         this.isLoading = false;
       }
-      // this.getStoreList()
     },
     // Watch if initData changes
     initData: {
@@ -732,6 +752,24 @@ export default {
     }
   },
   methods: {
+    /**
+     * @description: 
+     * @param {*} function
+     * @return {*}
+     */
+    updateIconUrl: debounce(function (string) {
+      this.appIcon = string
+    }, 300),
+
+    updateLabel: debounce(function (string) {
+      this.initData.label = string
+    }, 50),
+
+    /**
+     * @description: 
+     * @param {*} text
+     * @return {*}
+     */
     getFilteredTags(text) {
       this.capArray = data.filter((option) => {
         return option
@@ -740,10 +778,20 @@ export default {
       })
     },
 
+    /**
+     * @description: 
+     * @param {*} swiper
+     * @return {*}
+     */
     handleInfoSlide(swiper) {
       this.disPrev = (swiper.activeIndex == 0) ? true : false;
       this.disNext = swiper.isEnd;
     },
+    /**
+     * @description: 
+     * @param {*} swiper
+     * @return {*}
+     */
     handleFeaturedSlide(swiper) {
       this.disFeaturedPrev = (swiper.activeIndex == 0) ? true : false;
       this.disFeaturedNext = swiper.isEnd;
@@ -802,10 +850,10 @@ export default {
       })
     },
     /**
-         * @description: Quick Install App from app store
-         * @param {*}
-         * @return {*} void
-         */
+     * @description: Quick Install App from app store
+     * @param {*}
+     * @return {*} void
+     */
     qucikInstall(id) {
       this.currentInstallId = id
       this.$api.app.storeAppInfo(id).then(resp => {
@@ -829,12 +877,13 @@ export default {
           this.initData.envs = isNull(respData.envs) ? [] : respData.envs
           this.initData.devices = isNull(respData.devices) ? [] : respData.devices
           this.initData.cap_add = isNull(respData.cap_add) ? [] : respData.cap_add
+          this.initData.cmd = isNull(respData.cmd) ? [] : respData.cmd
           this.initData.privileged = respData.privileged
           this.initData.host_name = respData.host_name
-          this.initData.cmd = isNull(respData.cmd) ? [] : respData.cmd
+
+
           this.currentInstallId = 0
-          console.log(respData.tip);
-          if (respData.tip !== "null" && respData.tip !== "[]") {
+          if (respData.tip !== "null" && respData.tip !== "[]" && respData.tip !== "") {
             this.$buefy.dialog.confirm({
               title: this.$t('Attention'),
               message: this.formatTips(respData.tip),
@@ -858,7 +907,7 @@ export default {
      */
     formatTips(data) {
       let html = "";
-      if (data != null) {
+      if (!isNull(data) && data != "") {
         JSON.parse(data).forEach(item => {
           html += "<span class=' is-size-65 un-break-word'>" + item.content + "</span>"
           if (item.value != '') {
@@ -870,6 +919,28 @@ export default {
       return html
     },
 
+    /**
+     * @description: Pre-processed data before setting
+     * @param {ConfigObject} data
+     * @return {ConfigObject} data
+     */
+    preProcessData(data) {
+      data.ports = isNull(data.ports) ? [] : data.ports
+      data.volumes = isNull(data.volumes) ? [] : data.volumes
+      data.envs = isNull(data.envs) ? [] : data.envs
+      data.devices = isNull(data.devices) ? [] : data.devices
+      data.cap_add = isNull(data.cap_add) ? [] : data.cap_add
+      data.cmd = isNull(data.cmd) ? [] : data.cmd
+      data.port_map = data.port_map === "" ? null : data.port_map
+      data.cpu_shares = (data.cpu_shares === 0 || data.cpu_shares > 99) ? 90 : data.cpu_shares
+      data.memory = data.memory === 0 ? this.totalMemory : data.memory
+      data.restart = data.restart === "no" ? "unless-stopped" : data.restart
+      data.network_model = data.network_model === "default" ? "bridge" : data.network_model
+      data.icon = data.icon === "" ? this.getIconFromImage(data.image) : data.icon
+
+      return data
+    },
+
 
     /**
      * @description: Process the datas before submit
@@ -877,12 +948,7 @@ export default {
      * @return {*} void
      */
     processData() {
-      // GET port map and index
-      if (this.webui != "") {
-        let slashArr = this.webui.split("/")
-        this.initData.port_map = slashArr[0]
-        this.initData.index = "/" + slashArr.slice(1).join("/");
-      }
+
       this.initData.cpu_shares = Number(this.initData.cpu_shares)
       let model = this.initData.network_model.split("-");
       this.initData.network_model = model[0]
@@ -923,7 +989,7 @@ export default {
     installAppData(id) {
       this.processData();
       this.isLoading = true;
-      console.log(this.initData);
+      // console.log(this.initData);
       this.$api.app.install(id, this.initData).then((res) => {
         this.isLoading = false;
         if (res.data.success == 200) {
@@ -1044,7 +1110,6 @@ export default {
           'update': (e) => {
             //localStorage.removeItem("app_data")
             this.initData = e
-            this.webui = this.initData.port_map + this.initData.index
             this.changeIcon(this.initData.image)
             this.$buefy.dialog.alert({
               title: '⚠️ ' + this.$t('Attention'),
@@ -1145,17 +1210,26 @@ export default {
     },
 
     /**
+     * @description: Get App icon form image
+     * @param {*} image
+     * @return {*}
+     */
+    getIconFromImage(image) {
+      if (image == "") {
+        return ""
+      } else {
+        let appIcon = image.split(":")[0].split("/").pop();
+        return `https://cdn.jsdelivr.net/gh/IceWhaleTech/AppIcon@main/all/${appIcon}.png`;
+      }
+    },
+
+    /**
      * @description: Change App icon when image changed
-     * @param {*} function
+     * @param {String} image
      * @return {*} void
      */
-    changeIcon(e) {
-      if (e == "") {
-        this.initData.icon = "";
-      } else {
-        let appIcon = e.split(":")[0].split("/").pop();
-        this.initData.icon = `https://cdn.jsdelivr.net/gh/IceWhaleTech/AppIcon@main/all/${appIcon}.png`;
-      }
+    changeIcon(image) {
+      this.initData.icon = this.getIconFromImage(image)
     },
 
     /**

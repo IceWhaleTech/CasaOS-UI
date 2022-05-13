@@ -63,6 +63,9 @@ export default {
     "Currently the latest version": "Atualmente a versão mais recente",
     "A new version is available!": "Uma nova versão está disponível!",
     "Edit Web UI port": "Editar a porta da WebUI",
+    "Automount USB Drive": "Automount USB Drive",
+    "Upgrade Now": "Upgrade Now",
+    "Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB": "Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB",
 
     // Terminal & Logs
     "Terminal & Logs": "Terminal & Logs",
@@ -193,6 +196,14 @@ export default {
     "Community Apps": "Apps da Comunidade",
     "From community contributors, not optimized for CasaOS, but provides a basic App experience.": "Para contribuidores da comunidade, não otimizado para o CasaOS, mas fornece uma experiência básica do App.",
     "Sort by": "Ordenar por",
+    "Click icon to import apps into CasaOS": "Click icon to import apps into CasaOS",
+    "Drag icons to sort": "Drag icons to sort",
+    "Import to CasaOS": "Import to CasaOS",
+    "Existing Docker Apps": "Existing Docker Apps",
+    "Port [Please add a ports set first]": "Port [Please add a ports set first]",
+    "[Optional]": "[Optional]",
+    "Notice: If there are multiple services, only the first set can be analyzed correctly": "Notice: If there are multiple services, only the first set can be analyzed correctly",
+    "No need": "No need",
 
 
     //Storage
@@ -272,6 +283,12 @@ export default {
     "Play in VLC": "Play in VLC",
     "Download in preparation...": "Download in preparation...",
     "Copied to clipboard": "Copied to clipboard",
+    "Previous": "Previous",
+    "Zoom in": "Zoom in",
+    "Rotate": "Rotate",
+    "Reset": "Reset",
+    "Zoom out": "Zoom out",
+    "INext": "Next",
 
     /* ******************************
     * Share Section
@@ -302,6 +319,7 @@ export default {
     "Blocked failed": "Blocked failed",
     "Deleted this friend": "Deleted this friend",
     "Delete failed": "Delete failed",
+    "Copy friend's ID": "Copy friend's ID",
 
     // Tour
     "Skip": "Skip",

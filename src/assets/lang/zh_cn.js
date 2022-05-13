@@ -63,6 +63,9 @@ export default {
     "Currently the latest version": "当前已经是最新版",
     "A new version is available!": "有新的可用版本！",
     "Edit Web UI port": "修改网页界面端口",
+    "Automount USB Drive": "自动挂载USB磁盘",
+    "Upgrade Now": "立刻升级",
+    "Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB": "当 Raspberry Pi 设备使用USB启动时，启用此项可能会导致启动故障。",
 
     // Terminal & Logs
     "Terminal & Logs": "终端与日志",
@@ -193,7 +196,14 @@ export default {
     "Community Apps": "社区App",
     "From community contributors, not optimized for CasaOS, but provides a basic App experience.": "来自社区贡献者。提供了基础的App体验，但不是专门为CasaOS优化的。",
     "Sort by": "排序",
-
+    "Click icon to import apps into CasaOS": "你可以通过点击图标来将应用导入到 CasaOS",
+    "Drag icons to sort": "你可以拖动图标来进行排序",
+    "Import to CasaOS": "导入到 CasaOS",
+    "Existing Docker Apps": "原有的 Docker Apps",
+    "Port [Please add a ports set first]": "端口 [请先添加一组端口]",
+    "[Optional]": "[可选]",
+    "Notice: If there are multiple services, only the first set can be analyzed correctly": "注意：如果存在多个服务只有第一组服务能够被正确的解析",
+    "No need": "不需要",
 
     //Storage
     "Create Storage": "创建存储空间",
@@ -271,6 +281,12 @@ export default {
     "Play in VLC": "在VLC中播放",
     "Download in preparation...": "下载准备中...",
     "Copied to clipboard": "已复制到剪贴板",
+    "Previous": "上一张",
+    "Zoom in": "放大",
+    "Rotate": "旋转",
+    "Reset": "复位",
+    "Zoom out": "缩小",
+    "INext": "下一张",
 
     /* ******************************
     * Share Section
@@ -301,6 +317,7 @@ export default {
     "Blocked failed": "屏蔽失败。",
     "Deleted this friend": "已删除这个好友。",
     "Delete failed": "删除失败",
+    "Copy friend's ID": "复制朋友的 ID",
 
     // Tour
     "Skip": "跳过",

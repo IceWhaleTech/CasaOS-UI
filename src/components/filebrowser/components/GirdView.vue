@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-02-21 11:06:18
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-09 15:40:39
+ * @LastEditors: 老竭力 jerrykuku@qq.com
+ * @LastEditTime: 2022-05-07 23:08:36
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\components\GirdView.vue
 -->
@@ -26,10 +26,8 @@
 
                   <div class="node-card is-unselectable" :class="{'isCutting':getCardState(item)}" @click="clickItem($event,item)" @contextmenu.prevent="openContextMenu($event,item)">
                     <div class="cover">
-                      <div :class="item | coverType">
-                        <img alt="folder" :src="getIconFile(item)" :class="item | iconType" />
-                      </div>
-                      <div class="friendly-name" v-if="item.is_dir && item.type == 'application'">{{item.label}}</div>
+                      <icon-container :item="item"></icon-container>
+                      <!-- <div class="friendly-name" v-if="item.is_dir && item.type == 'application'">{{item.label}}</div> -->
                     </div>
                     <div class="info">
                       <p class="title">{{item.name}}</p>
@@ -55,12 +53,13 @@
 import { mixin } from '@/mixins/mixin';
 import ActionButton from './ActionButton.vue';
 import ContextMenu from './ContextMenu.vue'
-
+import IconContainer from "./IconContainer.vue"
 const cardWidth = 144;
 export default {
   components: {
     ActionButton,
     ContextMenu,
+    IconContainer,
 
   },
   mixins: [mixin],

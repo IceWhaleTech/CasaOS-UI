@@ -63,6 +63,9 @@ export default {
     "Currently the latest version": "Aktualnie najnowsza wersja",
     "A new version is available!": "Dostępna jest nowa wersja!",
     "Edit Web UI port": "Edycja portu WebUI",
+    "Automount USB Drive": "Automount USB Drive",
+    "Upgrade Now": "Upgrade Now",
+    "Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB": "Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB",
 
     // Terminal & Logs
     "Terminal & Logs": "Terminal i logi",
@@ -193,7 +196,14 @@ export default {
     "Community Apps": "Aplikacje społeczności",
     "From community contributors, not optimized for CasaOS, but provides a basic App experience.": "Od społeczności , nie zoptymalizowane dla CasaOS, ale zapewnia podstawową obsługę.",
     "Sort by": "Sortuj według",
-
+    "Click icon to import apps into CasaOS": "Click icon to import apps into CasaOS",
+    "Drag icons to sort": "Drag icons to sort",
+    "Import to CasaOS": "Import to CasaOS",
+    "Existing Docker Apps": "Existing Docker Apps",
+    "Port [Please add a ports set first]": "Port [Please add a ports set first]",
+    "[Optional]": "[Optional]",
+    "Notice: If there are multiple services, only the first set can be analyzed correctly": "Notice: If there are multiple services, only the first set can be analyzed correctly",
+    "No need": "No need",
 
     //Storage
     "Create Storage": "Utwórz miejsce przechowywania",
@@ -272,6 +282,12 @@ export default {
     "Play in VLC": "Play in VLC",
     "Download in preparation...": "Download in preparation...",
     "Copied to clipboard": "Copied to clipboard",
+    "Previous": "Previous",
+    "Zoom in": "Zoom in",
+    "Rotate": "Rotate",
+    "Reset": "Reset",
+    "Zoom out": "Zoom out",
+    "INext": "Next",
 
     /* ******************************
     * Share Section
@@ -302,6 +318,7 @@ export default {
     "Blocked failed": "Blocked failed",
     "Deleted this friend": "Deleted this friend",
     "Delete failed": "Delete failed",
+    "Copy friend's ID": "Copy friend's ID",
 
     // Tour
     "Skip": "Skip",

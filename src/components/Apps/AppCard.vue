@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-10 15:36:34
+ * @LastEditors: 老竭力 jerrykuku@qq.com
+ * @LastEditTime: 2022-05-11 19:47:12
  * @Description: App Card item
  * @FilePath: \CasaOS-UI\src\components\Apps\AppCard.vue
 -->
@@ -11,7 +11,7 @@
   <div class="wuji-card is-flex is-align-items-center is-justify-content-center p-55 app-card" @mouseover="hover = true" @mouseleave="hover = true">
 
     <!-- Action Button Start -->
-    <div class="action-btn">
+    <div class="action-btn" v-if="item.type != 'system' && isCasa ">
       <b-dropdown aria-role="list" :triggers="['contextmenu','click']" position="is-bottom-left" class="app-card-drop" ref="dro" animation="fade1" @active-change="setDropState" :mobile-modal="false" append-to-body>
         <template #trigger>
           <p role="button">
@@ -47,17 +47,19 @@
     <div class="blur-background"></div>
     <div class="cards-content">
       <!-- Card Content Start -->
-      <div class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-3 pb-3 img-c">
-        <a class="is-flex is-justify-content-center" @click="openApp(item)">
-          <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-72x72" :class="item.state | dotClass"></b-image>
-        </a>
-        <p class="mt-4 one-line">
-          <a class="one-line" @click="openApp(item)">
-            {{item.name}}
+      <b-tooltip :label="tooltipLable" type="is-dark" :triggers="tooltipTriger" animation="fade1" :animated="true">
+        <div class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-3 pb-3 img-c">
+          <a class="is-flex is-justify-content-center" @click="openApp(item)">
+            <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-72x72" :class="item.state | dotClass"></b-image>
           </a>
-        </p>
+          <p class="mt-4 one-line">
+            <a class="one-line" @click="openApp(item)">
+              {{item.name}}
+            </a>
+          </p>
 
-      </div>
+        </div>
+      </b-tooltip>
       <!-- Card Content End -->
 
       <!-- Loading Bar Start -->
@@ -72,6 +74,7 @@
 
 export default {
   name: "app-card",
+  inject: ["homeShowFiles"],
   data() {
     return {
       hover: false,
@@ -87,9 +90,35 @@ export default {
     item: {
       type: Object
     },
+    isCasa: {
+      type: Boolean
+    }
+  },
+  computed: {
+    tooltipLable() {
+      if (!this.isCasa) {
+        return this.$t('Import to CasaOS')
+      } else {
+        if (this.item.type === "system" || this.item.port != "" && this.item.state == 'running') {
+          return this.$t('Open')
+        } else {
+          return this.$t('Setting')
+        }
+      }
+    },
+    tooltipTriger() {
+      if (!this.isCasa) {
+        return ['hover']
+      } else {
+        if (this.item.type === "system" || this.item.port != "" && this.item.state == 'running') {
+          return ['hover']
+        } else {
+          return []
+        }
+      }
+    }
   },
   methods: {
-
     /**
      * @description: Open app in new windows
      * @param {String} state App state
@@ -98,21 +127,52 @@ export default {
      * @return {*} void
      */
     openApp(item) {
-      this.$refs.dro.isActive = false
-      if (item.port != "" && item.state == 'running') {
-        try {
-          const appName = item.name
-          const action = "open"
-          this.$api.analyse.analyseAppAction(appName, action)
-          // eslint-disable-next-line no-empty
-        } catch (err) { }
-        let url = (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${item.port}${item.index}` : `http://${window.location.hostname}:${item.port}${item.index}`
-        if (item.image.toLowerCase().indexOf("qbittorrent") == -1) {
-          window.open(url, '_blank');
-        } else {
+      if (!this.isCasa) {
+        this.$emit("importApp", item.id, item.state, false)
+        return false
+      }
+
+      if (item.type === "system") {
+        this.openSystemApps(item)
+      } else {
+        this.$refs.dro.isActive = false
+        if (item.port != "" && item.state == 'running') {
+          try {
+            const appName = item.name
+            const action = "open"
+            this.$api.analyse.analyseAppAction(appName, action)
+            // eslint-disable-next-line no-empty
+          } catch (err) { }
+          const url = (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${item.port}${item.index}` : `http://${window.location.hostname}:${item.port}${item.index}`
+          if (item.image.toLowerCase().indexOf("qbittorrent") == -1) {
+            window.open(url, '_blank');
+          } else {
+            var arg = '\u003cscript\u003elocation.replace("' + url + '")\u003c/script\u003e';
+            window.open('javascript:window.name;', arg);
+          }
+        }
+      }
+    },
+
+    openSystemApps(item) {
+      try {
+        const appName = item.name
+        const action = "open"
+        this.$api.analyse.analyseAppAction(appName, action)
+        // eslint-disable-next-line no-empty
+      } catch (error) { }
+
+      switch (item.name) {
+        case "Files":
+          this.homeShowFiles()
+          break;
+        case "CasaConnect":
+          var url = `${window.location.origin}/ui/#/connect`
           var arg = '\u003cscript\u003elocation.replace("' + url + '")\u003c/script\u003e';
           window.open('javascript:window.name;', arg);
-        }
+          break;
+        default:
+          break;
       }
     },
 
@@ -131,7 +191,7 @@ export default {
      */
     restartApp() {
       this.isRestarting = true
-      this.$api.app.startContainer(this.item.custom_id, { state: "restart" }).then((res) => {
+      this.$api.app.startContainer(this.item.id, { state: "restart" }).then((res) => {
         if (res.data.success == 200) {
           this.updateState()
         }
@@ -170,7 +230,7 @@ export default {
      */
     uninstallApp() {
       this.isUninstalling = true
-      this.$api.app.uninstall(this.item.custom_id).then((res) => {
+      this.$api.app.uninstall(this.item.id).then((res) => {
         if (res.data.success == 200) {
           // this.updateState()
         }
@@ -193,7 +253,7 @@ export default {
      */
     configApp() {
       this.$refs.dro.isActive = false
-      this.$emit("configApp", this.item.custom_id, this.item.state)
+      this.$emit("configApp", this.item.id, this.item.state, true)
     },
 
     /**
@@ -206,7 +266,7 @@ export default {
       let data = {
         state: item.state == "running" ? "stop" : "start"
       }
-      this.$api.app.startContainer(item.custom_id, data).then((res) => {
+      this.$api.app.startContainer(item.id, data).then((res) => {
         this.isStarting = false
         if (res.data.success == 200) {
           item.state = res.data.data
@@ -237,7 +297,12 @@ export default {
      * @return {String}
      */
     dotClass(state) {
-      return state == 'running' ? 'start' : 'stop'
+      if (state === "0") {
+        return "start"
+      } else {
+        return state == 'running' ? 'start' : 'stop'
+      }
+
     },
   }
 }

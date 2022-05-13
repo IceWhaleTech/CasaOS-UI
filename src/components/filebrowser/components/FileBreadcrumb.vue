@@ -9,7 +9,7 @@
 <template>
   <div>
     <b-breadcrumb size="is-medium">
-      <b-breadcrumb-item v-for="(item,index) in pathCollection" :key="item+index" :active="checkActive(index)" @click.stop="open(item)" v-show="item.show || item == activeHide">
+      <b-breadcrumb-item v-for="(item,index) in pathCollection" :key="item+index" :active="checkActive(index)" @click="open(item)" v-show="item.show || item == activeHide">
         <template v-if="item == activeHide">
           <b-dropdown aria-role="list" append-to-body :triggers="['']" ref="breadDrop" class="file-dropdown" animation="fade1" :mobile-modal="false">
             <template #trigger>

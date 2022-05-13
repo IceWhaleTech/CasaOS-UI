@@ -11,7 +11,7 @@
       </span>
 
     </div>
-    <div class="port-item" v-for="(item,index) in vdata" :key="'port'+index">
+    <div class="port-item" v-for="(item,index) in vdata" :key="'port'+index+item.protocol">
       <b-icon icon="close" size="is-small" class="is-clickable" @click.native="removeItem(index)"></b-icon>
       <template v-if="index < 1">
         <b-field grouped>

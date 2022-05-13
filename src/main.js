@@ -6,6 +6,7 @@
  * @Description: 
  * @FilePath: \CasaOS-UI\src\main.js
  */
+import 'intersection-observer'
 import Vue from 'vue'
 import App from '@/App.vue'
 import router from '@/router'
@@ -18,7 +19,6 @@ import Vue2TouchEvents from 'vue2-touch-events'
 import VueTour from 'vue-tour'
 import '@/assets/scss/app.scss'
 import 'vue-tour/dist/vue-tour.css'
-
 
 
 import VAnimateCss from 'v-animate-css';

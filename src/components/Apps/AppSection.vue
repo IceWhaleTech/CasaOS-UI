@@ -1,17 +1,20 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-10 14:48:16
+ * @LastEditors: 老竭力 jerrykuku@qq.com
+ * @LastEditTime: 2022-05-09 14:16:49
  * @Description: App module
  * @FilePath: \CasaOS-UI\src\components\Apps\AppSection.vue
 -->
-
 <template>
   <div class="home-section has-text-left mt-6">
     <!-- Title Bar Start -->
     <div class="title-bar is-flex is-align-items-center">
-      <h1 class="title is-4  has-text-white is-flex-shrink-1">{{$t('Apps')}}</h1>
+      <h1 class="title is-4  has-text-white is-flex-shrink-1">{{$t('Apps')}}
+        <b-tooltip :label="$t(appHelpText)" type="is-dark" multilined>
+          <b-icon icon="help-circle-outline" custom-size="mdi-18px"></b-icon>
+        </b-tooltip>
+      </h1>
       <div class="buttons ">
         <b-button id="v-step-0" icon-left="apps" type="is-dark" size="is-small" :loading="isShowing" rounded @click="showInstall">{{$t('App Store')}}</b-button>
       </div>
@@ -19,80 +22,156 @@
     <!-- Title Bar End -->
 
     <!-- App List Start -->
-    <div class="columns is-variable is-2 is-multiline app-list ">
+    <draggable class="columns is-variable is-2 is-multiline app-list" tag="div" v-model="appList" v-bind="dragOptions" @start="drag = true" @end="onSortEnd" draggable=".handle">
       <template v-if="!isLoading">
 
-        <!-- FileFrowser Entry Start -->
-        <file-entry-card></file-entry-card>
-        <!-- FileFrowser Entry  -->
-
-        <!-- AcquaintanceShare Entry Start -->
-        <acquaintance-entry-card></acquaintance-entry-card>
-        <!-- AcquaintanceShare Entry  -->
-
-        <!-- If None Apps Start -->
-        <div class="column is-narrow is-3" v-if="appList.length == 0">
-          <div class="wuji-card is-flex is-align-items-center is-justify-content-center p-55 app-card">
-            <div class="blur-background"></div>
-            <div class="cards-content">
-              <!-- Card Content Start -->
-              <div class="has-text-centered is-flex is-justify-content-center is-flex-direction-column p-55  img-c">
-                <a class="is-flex is-justify-content-center" @click="showInstall">
-                  <b-image :src="require('@/assets/img/app/add_button.svg')" class="is-72x72"></b-image>
-                </a>
-              </div>
-              <!-- Card Content End -->
-            </div>
-          </div>
+        <!-- App Icon Card Start -->
+        <div class="column is-narrow is-3 handle" v-for="(item) in appList" :key="'app-'+item.name">
+          <app-card :item="item" @updateState="getList" @configApp="showConfigPanel" :isCasa="true"></app-card>
         </div>
+        <!-- App Icon Card End -->
+        <!-- If None Apps Start -->
+        <app-new-button-card v-if="appList.length == 0" slot="header" @showInstall="showInstall"></app-new-button-card>
         <!-- If None Apps End -->
 
-        <div class="column is-narrow is-3" v-for="(item,index) in appList" :key="'app-'+index+item.icon+item.port">
-          <app-card :item="item" @updateState="getList" @configApp="showConfigPanel"></app-card>
-        </div>
       </template>
-      <b-loading :is-full-page="false" v-model="isLoading"></b-loading>
-    </div>
 
-    <!-- Title Bar End -->
+      <b-loading :is-full-page="false" v-model="isLoading" slot="footer"></b-loading>
+    </draggable>
+    <!-- App List End -->
+    <template v-if="notImportedList.length > 0">
+      <!-- Title Bar Start -->
+      <div class="title-bar is-flex is-align-items-center mt-5">
+        <h1 class="title is-4  has-text-white is-flex-shrink-1">{{$t('Existing Docker Apps')}}
+          <b-tooltip :label="$t(importHelpText)" type="is-dark" multilined>
+            <b-icon icon="help-circle-outline" custom-size="mdi-18px"></b-icon>
+          </b-tooltip>
+        </h1>
+      </div>
+      <!-- Title Bar End -->
+
+      <!-- App List Start -->
+      <div class="columns is-variable is-2 is-multiline app-list">
+        <!-- Application not imported Start -->
+        <div class="column is-narrow is-3" v-for="(item) in notImportedList" :key="'app-'+item.name">
+          <app-card :item="item" @updateState="getList" @configApp="showConfigPanel" @importApp="showConfigPanel" :isCasa="false"></app-card>
+        </div>
+        <!-- Application not imported End -->
+      </div>
+      <!-- App List End -->
+    </template>
   </div>
 </template>
 
 <script>
 import AppCard from './AppCard.vue'
 import Panel from './Panel.vue'
-import FileEntryCard from '../filebrowser/FileEntryCard.vue'
-import AcquaintanceEntryCard from '../AcquaintanceShare/AcquaintanceEntryCard.vue'
+import draggable from 'vuedraggable'
+import AppNewButtonCard from './AddNewButtonCard.vue'
+import xor from 'lodash/xor'
+import concat from 'lodash/concat'
 export default {
   data() {
     return {
       appList: [],
+      notImportedList: [],
       appConfig: {},
+      drag: false,
       isLoading: true,
-      isShowing: false
+      isShowing: false,
+      importHelpText: "Click icon to import apps into CasaOS",
+      appHelpText: 'Drag icons to sort'
     }
   },
   components: {
     AppCard,
-    FileEntryCard,
-    AcquaintanceEntryCard
+    AppNewButtonCard,
+    draggable
+  },
+  computed: {
+    dragOptions() {
+      return {
+        animation: 300,
+        group: "description",
+        disabled: false,
+        ghostClass: "ghost"
+      };
+    }
   },
   created() {
     this.getList();
   },
   methods: {
-
+    onChange(e) {
+      console.log(e);
+    },
     /**
      * @description: Fetch the list of installed apps
      * @return {*} void
      */
-    getList() {
-      this.$api.app.myAppList().then(res => {
-        if (res.data.success == 200) {
-          this.appList = res.data.data;
-          this.isLoading = false;
+    async getList() {
+      let listRes = await this.$api.app.myAppList()
+      if (listRes.data.success == 200) {
+        let casaAppList = listRes.data.data.list
+        let sortRes = await this.$api.app.getAppListOrder()
+        if (sortRes.data.success == 200) {
+          let sortList = sortRes.data.data
+          let newList = casaAppList.map((item) => {
+            return item.custom_id
+          })
+          if (sortList != "") {
+            // Resort list
+            sortList = this.getNewSortList(sortList, newList)
+            casaAppList.sort((a, b) => {
+              return sortList.indexOf(a.custom_id) - sortList.indexOf(b.custom_id);
+            });
+          }
+          this.appList = casaAppList;
+          if (xor(sortList, newList).length > 0) {
+            this.saveSortData()
+          }
+        } else {
+          this.appList = casaAppList;
         }
+        this.notImportedList = listRes.data.data.local
+        this.isLoading = false;
+      }
+    },
+
+    /**
+     * @description: 
+     * @param {Array} oriList
+     * @param {Array} newList
+     * @return {*}
+     */
+    getNewSortList(oriList, newList) {
+      let xorList = xor(oriList, newList)
+      xorList.reverse()
+      return concat(oriList, xorList)
+    },
+
+    /**
+     * @description: Save Sort Table
+     * @param {*}
+     * @return {*}
+     */
+    saveSortData() {
+      let newList = this.appList.map((item) => {
+        return item.custom_id
       })
+      let data = {
+        data: JSON.stringify(newList)
+      }
+      this.$api.app.saveAppListOrder(data)
+    },
+    /**
+     * @description: Handle on Sort End
+     * @param {*}
+     * @return {*}
+     */
+    onSortEnd() {
+      this.drag = false
+      this.saveSortData()
     },
 
     /**
@@ -130,9 +209,12 @@ export default {
 
     /**
      * @description: Show Settings Panel Programmatic
-     * @return {*} void
+     * @param {String} id
+     * @param {String} status
+     * @param {Boolean} isCasa 
+     * @return {*}
      */
-    showConfigPanel(id, status) {
+    showConfigPanel(id, status, isCasa) {
       this.$api.app.getContainerSettingdata(id).then(ret => {
         console.log(ret.data.data);
         this.$api.app.appConfig().then(res => {
@@ -154,6 +236,7 @@ export default {
               props: {
                 id: id,
                 state: "update",
+                isCasa: isCasa,
                 runningStatus: status,
                 configData: res.data.data,
                 initDatas: ret.data.data
