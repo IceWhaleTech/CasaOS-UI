@@ -1,11 +1,14 @@
 <!--
- * @Author: JerryK
- * @Date: 2021-09-18 21:32:13
- * @LastEditors: 老竭力 jerrykuku@qq.com
- * @LastEditTime: 2022-05-11 16:33:38
- * @Description: Install Panel of Docker
+ * @Author: Jerryk jerry@icewhale.org
+ * @Date: 2022-03-01 21:10:57
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-05-16 15:03:49
  * @FilePath: \CasaOS-UI\src\components\Apps\Panel.vue
+ * @Description: 
+ * 
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
 -->
+
 
 <template>
   <div class="modal-card app-card" :class="{'narrow': currentSlide > 0}">

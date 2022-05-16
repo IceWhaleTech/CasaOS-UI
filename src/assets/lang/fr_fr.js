@@ -113,7 +113,7 @@ export default {
     'Choose "Show device ID"': 'Choisissez "Afficher l\'ID du périphérique".',
     "Copy the Device ID": "Copier l'ID du périphérique",
     "There you go!": "Et voilà !",
-    "Your data has started to sync.It may take some minutes to fulfill synchronization.": "Vos données ont commencé à se synchroniser.<br>La synchronisation peut prendre quelques minutes.",
+    "Your data has started to sync.It may take some minutes to fulfill synchronization.": "Vos données ont commencé à se synchroniser. La synchronisation peut prendre quelques minutes.",
     "Up to Date": "À jour",
     "Synchronizing": "Synchronisation",
     "Synchronized": "Synchronisé",

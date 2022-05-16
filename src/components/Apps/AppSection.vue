@@ -1,17 +1,20 @@
 <!--
- * @Author: JerryK
- * @Date: 2021-09-18 21:32:13
- * @LastEditors: 老竭力 jerrykuku@qq.com
- * @LastEditTime: 2022-05-09 14:16:49
- * @Description: App module
+ * @Author: Jerryk jerry@icewhale.org
+ * @Date: 2022-02-18 10:20:10
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-05-16 15:06:45
  * @FilePath: \CasaOS-UI\src\components\Apps\AppSection.vue
+ * @Description: 
+ * 
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
 -->
+
 <template>
   <div class="home-section has-text-left mt-6">
     <!-- Title Bar Start -->
     <div class="title-bar is-flex is-align-items-center">
       <h1 class="title is-4  has-text-white is-flex-shrink-1">{{$t('Apps')}}
-        <b-tooltip :label="$t(appHelpText)" type="is-dark" multilined>
+        <b-tooltip :label="$t(appHelpText)" type="is-dark" multilined v-if="showDragTip">
           <b-icon icon="help-circle-outline" custom-size="mdi-18px"></b-icon>
         </b-tooltip>
       </h1>
@@ -22,7 +25,7 @@
     <!-- Title Bar End -->
 
     <!-- App List Start -->
-    <draggable class="columns is-variable is-2 is-multiline app-list" tag="div" v-model="appList" v-bind="dragOptions" @start="drag = true" @end="onSortEnd" draggable=".handle">
+    <draggable class="columns is-variable is-2 is-multiline app-list" tag="div" v-model="appList" v-bind="dragOptions" @start="drag = true" @end="onSortEnd" :draggable="draggable">
       <template v-if="!isLoading">
 
         <!-- App Icon Card Start -->
@@ -60,6 +63,7 @@
       </div>
       <!-- App List End -->
     </template>
+
   </div>
 </template>
 
@@ -80,7 +84,8 @@ export default {
       isLoading: true,
       isShowing: false,
       importHelpText: "Click icon to import apps into CasaOS",
-      appHelpText: 'Drag icons to sort'
+      appHelpText: 'Drag icons to sort',
+      draggable: ".handle"
     }
   },
   components: {
@@ -96,14 +101,22 @@ export default {
         disabled: false,
         ghostClass: "ghost"
       };
+    },
+    showDragTip() {
+      return this.draggable == ".handle"
     }
   },
   created() {
     this.getList();
+    this.draggable = this.isMobile() ? "" : ".handle"
   },
   methods: {
     onChange(e) {
       console.log(e);
+    },
+    isMobile() {
+      let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
+      return flag
     },
     /**
      * @description: Fetch the list of installed apps

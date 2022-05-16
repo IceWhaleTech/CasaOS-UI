@@ -1,13 +1,14 @@
 /*
- * @Author: 老竭力 jerrykuku@qq.com
+ * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
- * @LastEditors: 老竭力 jerrykuku@qq.com
- * @LastEditTime: 2022-05-13 20:12:39
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-05-16 14:56:14
  * @FilePath: \CasaOS-UI\public\static.go
  * @Description:
  *
- * Copyright (c) 2022 by 老竭力 jerrykuku@qq.com, All Rights Reserved.
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
  */
+
 package web
 
 import "embed"

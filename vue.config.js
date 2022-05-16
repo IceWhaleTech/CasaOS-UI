@@ -1,11 +1,14 @@
 /*
- * @Author: JerryK
- * @Date: 2021-09-22 10:10:10
- * @LastEditors: JerryK
- * @LastEditTime: 2022-01-21 17:46:29
+ * @Author: Jerryk jerry@icewhale.org
+ * @Date: 2022-02-18 10:20:10
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-05-16 14:56:04
+ * @FilePath: \CasaOS-UI\vue.config.js
  * @Description: 
- * @FilePath: /CasaOS-UI/vue.config.js
+ * 
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
  */
+
 const webpack = require('webpack')
 // const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const UselessFile = require('useless-files-webpack-plugin')
