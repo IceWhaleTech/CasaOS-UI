@@ -80,7 +80,7 @@
     "compression-webpack-plugin": "5.0.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^8.5.0",
-    "node-sass": "^4.9.0",
+    "sass": "^1.51.0",
     "sass-loader": "10.1.1",
     "terser-webpack-plugin": "^5.3.1",
     "useless-files-webpack-plugin": "^1.0.1",
