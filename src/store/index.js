@@ -1,11 +1,14 @@
 /*
- * @Author: JerryK
- * @Date: 2021-09-18 21:32:13
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-10 16:22:37
- * @Description: 
+ * @Author: Jerryk jerry@icewhale.org
+ * @Date: 2022-03-02 22:48:28
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-05-16 14:56:30
  * @FilePath: \CasaOS-UI\src\store\index.js
+ * @Description: 
+ * 
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
  */
+
 import Vue from 'vue'
 import Vuex from 'vuex'
 // import createPersistedState from "vuex-persistedstate";

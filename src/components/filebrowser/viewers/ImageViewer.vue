@@ -1,11 +1,14 @@
 <!--
- * @Author: JerryK
+ * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-03-07 13:47:45
- * @LastEditors: 老竭力 jerrykuku@qq.com
- * @LastEditTime: 2022-05-09 13:42:59
- * @Description: 
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-05-16 15:04:13
  * @FilePath: \CasaOS-UI\src\components\filebrowser\viewers\ImageViewer.vue
+ * @Description: 
+ * 
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
 -->
+
 <template>
   <div class="overlay" @mousemove="onMouseMove" id="image_viewer">
     <header class="modal-card-head">
