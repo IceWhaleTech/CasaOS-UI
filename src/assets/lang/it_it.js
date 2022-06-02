@@ -109,7 +109,7 @@ export default {
 
     "Open Syncthing in the Launchpad": "Apri Syncthing nel Launchpad",
     "Find the Syncthing icon in the menubar": "Trova l'icona Syncthing nella barra dei menu",
-    "Open Syncthing": "Opri Syncthing",
+    "Open Syncthing": "Apri Syncthing",
     "Open the menu": "Apri il menu",
     'Choose "Show device ID"': 'Scegli "Mostra ID dispositivo"',
     "Copy the Device ID": "Copia l'ID del dispositivo",
@@ -130,7 +130,7 @@ export default {
     // Apps
     "Apps": "Apps",
     "App": "App",
-    "Open": "Opri",
+    "Open": "Apri",
     "Setting": "Impostazione",
     "Uninstall": "Disinstalla",
     "Attention": "Attenzione",
