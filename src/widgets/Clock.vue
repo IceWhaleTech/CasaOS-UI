@@ -1,3 +1,13 @@
+<!--
+ * @Author: Jerryk jerry@icewhale.org
+ * @Date: 2022-03-01 21:10:57
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-05-25 20:02:34
+ * @FilePath: \CasaOS-UI\src\widgets\Clock.vue
+ * @Description: 
+ * 
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+-->
 <template>
   <div class="widget has-text-white clock">
     <div class="blur-background"></div>
@@ -12,6 +22,7 @@
 import dateFormat from "dateformat";
 
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
   name: "clock",
   icon: "clock-outline",
   title: "Time",
@@ -32,6 +43,8 @@ export default {
     this.timer = setInterval(() => {
       this.updateClock()
     }, 1000)
+    
+    
   },
   watch: {
     '$i18n.locale': {
@@ -50,12 +63,12 @@ export default {
       this.dateText = today.toLocaleDateString(this.lang, { weekday: "long", year: "numeric", month: "long", day: "numeric" })
     }
   },
+
 }
 </script>
 
 <style lang="scss">
 .clock {
-
   font-style: normal;
   font-weight: 300;
   text-align: left;

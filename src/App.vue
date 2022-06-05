@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-11 14:12:32
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-05-30 14:51:28
  * @Description: Main entry of application
  * @FilePath: \CasaOS-UI\src\App.vue
 -->
@@ -46,15 +46,6 @@ export default {
     return {
       //isLoading: true,
       steps: [
-        // {
-        //   target: '#v-step-0',  // We're using document.querySelector() under the hood
-
-        //   content: `Add your first App!`
-        // },
-        // {
-        //   target: '#v-step-1',  // We're using document.querySelector() under the hood
-        //   content: `Add your first App!`
-        // }
       ],
       isWelcome: false,
       backgroundStyleObj: {
@@ -87,11 +78,19 @@ export default {
   },
   watch: {
     $route() {
-      this.isNotSharing = this.$route.path != "/a-sharing"
+      this.isNotSharing = this.$route.path != "/connect"
     }
   },
 
   created() {
+    console.log(`%c
+_____             _____ _____ 
+|     |___ ___ ___|     |   __|
+|   --| .'|_ -| .'|  |  |__   |
+|_____|__,|___|__,|_____|_____|
+-- Made by IceWhale with YOU --
+`, `font-family: monospace`);
+
     this.checkInit();
   },
   mounted() {
@@ -125,6 +124,12 @@ export default {
       this.setLang(lang);
     }
 
+  },
+  sockets: {
+    connect() {
+      console.log('socket connected');
+    },
+    
   },
 }
 </script>

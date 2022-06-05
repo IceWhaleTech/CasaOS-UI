@@ -1,10 +1,10 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
- * @LastEditors: JerryK
- * @LastEditTime: 2021-09-19 09:23:49
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-05-17 00:33:07
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\Shortcuts.vue
+ * @FilePath: \CasaOS-UI\src\bak\Shortcuts.vue
 -->
 <template>
   <div class="has-text-left mt-6">
@@ -47,7 +47,7 @@
 
 <script>
 export default {
-  name: 'shortcuts'
+  name: 'shortcuts-section'
 
 }
 </script>

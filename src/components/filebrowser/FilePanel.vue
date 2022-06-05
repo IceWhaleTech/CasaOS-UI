@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-02-18 12:42:06
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-10 14:42:25
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-02 18:16:21
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\FilePanel.vue
 -->
@@ -29,12 +29,13 @@
         <!-- NavBar Start -->
 
         <!-- Main Content Start -->
-        <div class="content flex1">
+        <div class="content is-flex-grow-1">
           <uploader ref="uploader" :options="options" class="uploader-example">
             <uploader-unsupport></uploader-unsupport>
             <!-- Header Start -->
             <header class="modal-card-head">
-              <div class="flex1 is-flex ">
+              <div class="is-flex-grow-1 is-flex breadcrumb-container" id="bread-container">
+                <file-breadcrumb></file-breadcrumb>
                 <!-- <b-input placeholder="Search in folder..." size="is-small" rounded></b-input> -->
               </div>
               <div class="is-flex is-align-items-center">
@@ -45,50 +46,34 @@
                 </transition>
                 <!-- Paste Button End -->
 
+                <!-- Operation Status Start-->
+                <operation-status-bar></operation-status-bar>
+                <!-- Operation Status End-->
+
                 <!-- Upload Button Start -->
-                <div class="action-btn">
-                  <b-dropdown aria-role="list" ref="moreBtn" :triggers="['click','context']" class="file-dropdown" position="is-bottom-left" animation="fade1" :mobile-modal="false" append-to-body close-on-click>
-                    <template #trigger>
-                      <b-button icon-left="book-arrow-up" size="is-small" type="is-primary" :label="$t('Upload or Create')" class="mr-2" rounded />
+                <global-action-button @showNewFileModal="showNewFileModal" @showNewFolderModal="showNewFolderModal"></global-action-button>
+                <!-- Upload Button End -->
 
-                    </template>
-                    <b-dropdown-item id="upfile-btn" aria-role="menuitem" class="is-flex is-align-items-center">
-                      <b-icon icon="file-upload-outline" class="mr-1" custom-size="mdi-18px"></b-icon>
-                      {{ $t('Upload Files') }}
-                    </b-dropdown-item>
-                    <b-dropdown-item id="upfolder-btn" aria-role="menuitem" class="is-flex is-align-items-center">
-                      <b-icon icon="folder-upload-outline" class="mr-1" custom-size="mdi-18px"></b-icon>
-                      {{ $t('Upload Folder') }}
-                    </b-dropdown-item>
-                    <hr class="dropdown-divider">
-                    <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center" @click="showNewFileModal">
-                      <b-icon icon="file-plus-outline" class="mr-1" custom-size="mdi-18px"></b-icon>
-                      {{ $t('New File') }}
-                    </b-dropdown-item>
-                    <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center" @click="showNewFolderModal">
-                      <b-icon icon="folder-plus-outline" class="mr-1" custom-size="mdi-18px"></b-icon>
-                      {{ $t('New Folder') }}
-                    </b-dropdown-item>
-
-                  </b-dropdown>
-                </div>
-
+                <!--  Close Button Start -->
                 <div class="is-flex is-align-items-center modal-close-container modal-close-container-line ">
                   <button type="button" class="delete" @click="$emit('close')" />
                 </div>
+                <!--  Close Button End -->
 
               </div>
             </header>
             <!-- Header End -->
 
             <!-- Tool Bar Start -->
-            <div class="tool-bar is-flex">
-              <div class="breadcrumb-container  flex1" id="bread-container">
-                <file-breadcrumb></file-breadcrumb>
+            <div class="tool-bar is-flex mb-2">
+              <div class=" is-flex-grow-1 has-text-left is-flex  is-align-items-center">
+                <b-field class="ml-3 is-flex is-size-65 mb-0">
+                  <b-checkbox size="is-small" v-model="isSelectAll" :class="selectState" @input="handleSelect">{{selectLabel}}</b-checkbox>
+                </b-field>
               </div>
               <div class="view-btns is-flex-shrink-0">
                 <b-tooltip :label="$t('Change View')" position="is-left" type="is-dark">
-                  <p role="button" class="is-clickable" @click="changeView">
+                  <p role="button" class="is-clickable none-line-height" @click="changeView">
                     <b-icon :icon="viewIcon"></b-icon>
                   </p>
                 </b-tooltip>
@@ -112,7 +97,7 @@
               </div>
               <!-- Drag and Drop Mask End -->
 
-              <component :is="listView" v-model="listData" @showDetailModal="showDetailModal" @gotoFolder="getFileList" @reload="reload" :isLoading="isLoading">
+              <component :is="listView" v-model="listData" ref="listview" @showDetailModal="showDetailModal" @gotoFolder="getFileList" @reload="reload" @change="handelListChange" :isLoading="isLoading">
                 <empty-holder @newFolder="showNewFolderModal" @newFile="showNewFileModal"></empty-holder>
               </component>
 
@@ -145,9 +130,13 @@
             <!-- Upload List End-->
 
           </uploader>
+          <!-- Toolbar Start -->
+          <operation-toolbar v-model="isToolbarShow" @download="handleDownload" @copy="handleCopy" @move="handleMove" @remove="handleRemove" @close="handleClose"></operation-toolbar>
+          <!-- Toolbar End -->
         </div>
       </template>
       <!-- Main Content End -->
+
     </section>
     <!-- Modal-Card Body End -->
   </div>
@@ -170,20 +159,19 @@ import EmptyHolder from './components/EmptyHolder.vue';
 import DetailModal from './modals/DetailModal.vue'
 import NewFolderModal from './modals/NewFolderModal.vue'
 import NewFileModal from './modals/NewFileModal.vue'
-
-
-import VideoPlayer from './viewers/VideoPlayer.vue'
-import CodeEditor from './viewers/CodeEditor.vue';
-import ImageViewer from './viewers/ImageViewer.vue';
-import PdfViewer from './viewers/PdfViewer.vue';
+import RenameModal from './modals/RenameModal.vue';
 
 import Uploader from './uploader/components/uploader.vue'
 import UploaderUnsupport from './uploader/components/unsupport.vue'
 import UploaderList from './uploader/components/list.vue'
+import OperationToolbar from './components/OperationToolbar.vue';
+import OperationStatusBar from './components/OperationStatusBar.vue';
+import GlobalActionButton from './components/GlobalActionButton.vue';
 
 
 
 export default {
+  name: "file-panel",
   mixins: [mixin],
   provide() {
     return {
@@ -198,11 +186,14 @@ export default {
     Uploader,
     UploaderUnsupport,
     UploaderList,
-    CodeEditor,
-    VideoPlayer,
-    ImageViewer,
-    PdfViewer,
-    EmptyHolder
+    CodeEditor: () => import("./viewers/CodeEditor.vue"),
+    VideoPlayer: () => import("./viewers/VideoPlayer.vue"),
+    ImageViewer: () => import("./viewers/ImageViewer.vue"),
+    EmptyHolder,
+    OperationToolbar,
+    RenameModal,
+    OperationStatusBar,
+    GlobalActionButton
   },
   data() {
     return {
@@ -217,11 +208,16 @@ export default {
       currentPathName: "",
       isViewGird: true,
       listData: [],
+      selectedArray: [],
       file: null,
       timeout: null,
       uploadPercentage: 0,
       hasPasteData: this.$store.state.operateObject != null,
       uploaderInstance: {},
+      selectState: "none",
+      isSelectAll: false,
+      selectLabel: "",
+      isToolbarShow: false,
       options: {
         target: this.getTargetUrl(),
         testChunks: true,
@@ -244,7 +240,7 @@ export default {
     },
     listView() {
       return this.$store.state.isViewGird ? "gird-view" : "list-view"
-    }
+    },
   },
   watch: {
     '$store.state.operateObject': {
@@ -253,6 +249,7 @@ export default {
       },
       deep: true
     },
+
   },
   mounted() {
     this.init();
@@ -260,7 +257,6 @@ export default {
     document.addEventListener('contextmenu', this.hideContextMenu);
     // Listen to ESC button to exit preview
     document.onkeyup = (e) => {
-
       switch (e.code) {
         case 'Escape':
           if (this.isShowDetial) {
@@ -281,7 +277,6 @@ export default {
     document.onpaste = () => {
       this.paste()
     }
-
   },
   destroyed() {
     this.uploaderInstance.off('dragover')
@@ -293,11 +288,23 @@ export default {
   },
 
   methods: {
-    //   Init Funtion
+    /*************************************************
+     * PART 0  Self
+    **************************************************/
+
+    /**
+     * @description: Init Funtion
+     * @return {*}
+     */
     init() {
       this.getFileList(this.rootPath);
     },
-    // Get Tree List
+
+    /**
+     * @description: Get File Tree List
+     * @param {String} path
+     * @return {*}
+     */
     getFileList(path) {
       this.isLoading = true;
       // path = path.replace("//", "/")
@@ -310,20 +317,93 @@ export default {
             path: this.currentPath,
           }
           this.$store.commit('changeCurrentPath', path)
-          this.listData = orderBy(res.data.data, ['is_dir'], ['desc'])
+          const fileList = res.data.data
+          const newFileList = fileList.map(item => {
+            return {
+              date: item.data,
+              isSelected: false,
+              is_dir: item.is_dir,
+              name: item.name,
+              path: item.path,
+              size: item.size,
+              write: item.write
+            }
+          })
+          this.listData = orderBy(newFileList, ['is_dir'], ['desc'])
+          this.handelListChange(this.listData)
         }
       })
     },
 
-    // Reload current folder
+    /**
+     * @description: Reload current folder
+     * @return {*}
+     */
     reload() {
       this.getFileList(this.currentPath);
     },
-    // Change View
+
+    /**
+     * @description: Change View List/Gird
+     * @return {*}
+     */
     changeView() {
       this.isViewGird = !this.$store.state.isViewGird
       this.$store.commit('changeViewGird', this.isViewGird)
     },
+
+    /**
+     * @description: Handle Select All Action
+     * @param {*} bool
+     * @return {*}
+     */
+    handleSelect(bool) {
+      if (bool) {
+        this.listData.forEach((item, index) => {
+          item.isSelected = true
+          this.$refs.listview.selectList.push(index)
+        })
+      } else {
+        this.listData.forEach(item => {
+          item.isSelected = false
+        })
+        this.$refs.listview.selectList = []
+      }
+      this.handelListChange(this.listData)
+    },
+
+
+    /**
+     * @description: Handle List data change (Selected State)
+     * @param {*} list
+     * @return {*}
+     */
+    handelListChange(list) {
+      this.selectedArray = list.filter(item => {
+        return item.isSelected
+      })
+      if (this.selectedArray.length == list.length && list.length > 0) {
+        this.selectState = "all"
+        this.isSelectAll = true
+        this.selectLabel = this.$t("select-items", { num: list.length })
+        this.isToolbarShow = true
+      } else if (this.selectedArray.length < list.length && this.selectedArray.length > 0) {
+        this.selectState = "part"
+        this.isSelectAll = false
+        this.selectLabel = this.$t("select-items", { num: this.selectedArray.length })
+        this.isToolbarShow = true
+      } else {
+        this.selectState = "none"
+        this.isSelectAll = false
+        this.selectLabel = this.$t("total-items", { num: list.length })
+        this.isToolbarShow = false
+      }
+    },
+
+    /**
+     * @description: Handle Backspace Event Back to upper level
+     * @return {*}
+     */
     backLevel() {
       if (this.isModalOpen) return false
       let pathArr = this.$store.state.currentPath.substr(1).split("/")
@@ -333,9 +413,57 @@ export default {
       let newPath = "/" + dropRight(pathArr).join("/")
       this.getFileList(newPath)
     },
+
+    /**
+     * @description: Paste Files
+     * @return {*}
+     */
+    paste() {
+      let operateObject = this.$store.state.operateObject
+      operateObject.to = this.$store.state.currentPath
+
+      this.$api.file.operate(operateObject).then(res => {
+        if (res.data.success == 200) {
+          this.$store.commit('changeOperateObject', null)
+        } else {
+          this.$buefy.toast.open({
+            message: res.data.message,
+            type: 'is-danger'
+          })
+        }
+      })
+    },
+
+    /**
+     * @description: Hide Context Menu
+     * @return {*}
+     */
+    hideContextMenu() {
+      if (this.$refs.moreBtn) {
+        this.$refs.moreBtn.isActive = false
+      }
+    },
+
+    /*************************************************
+     * PART 1  Uploader
+    **************************************************/
+
+    /**
+     * @description: Get Uploader Target URL
+     * @return {*}
+     */
+    getTargetUrl() {
+      return `http://${this.$baseURL}/v1/file/upload?token=${this.$store.state.token}`
+    },
+
+    /**
+     * @description: Set Uploader Options
+     * @return {*}
+     */
     setUploaderOpts() {
       this.uploaderInstance = this.$refs.uploader.uploader
       this.assignUploadButtons();
+
       // Drag Over
       this.uploaderInstance.on('dragover', (event) => {
         this.isDragIn = true;
@@ -359,21 +487,38 @@ export default {
       this.uploaderInstance.on('complete', () => {
         this.getFileList(this.currentPath)
         this.uploaderListHeaderText = "Completed"
-
       })
-
     },
+
+    /**
+     * @description: Close Uploader List 
+     * @return {*}
+     */
     closeUploaderList() {
       this.showUploadList = false
       this.uploaderInstance.cancel()
     },
+
+
+    /**
+     * @description: Assig nUpload Buttons
+     * @return {*}
+     */
     assignUploadButtons() {
+
       this.uploaderInstance.assignDrop(document.getElementById('dropTarget'));
-      this.uploaderInstance.assignBrowse(document.getElementById('upfile-btn'));
-      this.uploaderInstance.assignBrowse(document.getElementById('upfolder-btn'), true);
+
     },
 
-    // Show Detail Modal
+    /*************************************************
+     * PART 2  Modals
+    **************************************************/
+
+    /**
+     * @description: Show Detail Modal
+     * @param {Object} item
+     * @return {*}
+     */
     showDetailModal(item) {
       this.isModalOpen = true
       this.panelType = this.getPanelType(item)
@@ -402,7 +547,10 @@ export default {
       }
     },
 
-    // Show New Folder Modal
+    /**
+     * @description: Show New Folder Modal
+     * @return {*}
+     */
     showNewFolderModal() {
       this.isModalOpen = true
       this.$buefy.modal.open({
@@ -428,7 +576,10 @@ export default {
       })
     },
 
-    // Show New File Modal
+    /**
+     * @description: Show New File Modal
+     * @return {*}
+     */
     showNewFileModal() {
       this.isModalOpen = true
       this.$buefy.modal.open({
@@ -445,7 +596,6 @@ export default {
         },
         events: {
           'reload': () => {
-
             this.reload()
           },
           'close': () => {
@@ -455,35 +605,106 @@ export default {
       })
     },
 
-    paste() {
-      let form = this.$store.state.operateObject.from
-      let to = this.$store.state.currentPath
-      let type = this.$store.state.operateObject.type
-      this.$api.file.operate(form, to, type).then(res => {
-        if (res.data.success == 200) {
-          this.$store.commit('changeOperateObject', null)
-          this.getFileList(this.currentPath)
-        } else {
-          this.$buefy.toast.open({
-            message: res.data.message,
-            type: 'is-danger'
-          })
+    /**
+     * @description: Show Rename Modal
+     * @param {Object} item
+     * @return {*}
+     */
+    showRenameModal(item) {
+      this.isModalOpen = true
+      this.$buefy.modal.open({
+        parent: this,
+        component: RenameModal,
+        hasModalCard: true,
+        customClass: 'rename-panel file-modal',
+        trapFocus: true,
+        canCancel: [''],
+        scroll: "keep",
+        animation: "zoom-in",
+        events: {
+          'reload': () => {
+            this.reload()
+          },
+          'close': () => {
+            this.isModalOpen = false
+          }
+        },
+        props: {
+          item: item
         }
       })
     },
 
-    hideContextMenu() {
-      this.$refs.moreBtn.isActive = false
+    /*************************************************
+     * PART 3  Toolbar Action
+    **************************************************/
+
+    /**
+     * @description: handle Toolbar Close
+     * @return {*}
+     */
+    handleClose() {
+      this.isSelectAll = false
+      this.handleSelect(this.isSelectAll)
     },
-    getTargetUrl() {
-      if (process.env.NODE_ENV === "'dev'") {
-        return `http://${this.$store.state.devIp}:${this.$store.state.devPort}/v1/file/upload?token=${this.$store.state.token}`
-      } else {
-        return `http://${document.location.host}/v1/file/upload?token=${this.$store.state.token}`
-      }
+
+    /**
+     * @description: handle Toolbar Remove
+     * @return {*}
+     */
+    handleRemove() {
+      this.$buefy.dialog.confirm({
+        title: this.$t('Deleting files'),
+        message: this.$t('Are you sure you want to <b>delete</b> these files? This action cannot be undone.'),
+        confirmText: this.$t('Delete'),
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => {
+          this.deleteItem(this.selectedArray)
+          this.handleClose()
+        }
+      })
+    },
+
+    /**
+     * @description: Handle Toolbar Move
+     * @return {*}
+     */
+    handleMove() {
+      console.log('move');
+      this.operate('move', this.selectedArray)
+      this.handleClose()
+    },
+
+    /**
+     * @description: Handle Toolbar copy
+     * @return {*}
+     */
+    handleCopy() {
+      console.log('copy');
+      this.operate('copy', this.selectedArray)
+      this.handleClose()
+    },
+
+    /**
+     * @description: handle Toolbar Download
+     * @return {*}
+     */
+    handleDownload() {
+      this.downloadFile(this.selectedArray)
+      this.handleClose()
     }
   },
-
+  sockets: {
+    file_operate(data) {
+      const taskList = data.body.file_operate.data
+      taskList.forEach(task => {
+        if (task.finished && task.to === this.currentPath) {
+          this.reload()
+        }
+      })
+    }
+  }
 
 }
 </script>

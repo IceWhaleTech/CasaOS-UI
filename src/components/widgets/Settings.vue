@@ -1,10 +1,10 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-10-09 18:41:15
- * @LastEditors: JerryK
- * @LastEditTime: 2021-12-07 15:38:21
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-05-17 00:33:57
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/Settings.vue
+ * @FilePath: \CasaOS-UI\src\components\widgets\Settings.vue
 -->
 <template>
   <div class="wsettings">
@@ -37,6 +37,7 @@ const widgetsComponents = require.context(
 
 
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
   name: "settings",
   data() {
     return {

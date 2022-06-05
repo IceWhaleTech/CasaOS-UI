@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-03-01 21:10:57
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-05-16 15:03:49
- * @FilePath: \CasaOS-UI\src\components\Apps\Panel.vue
+ * @LastEditTime: 2022-06-02 17:12:36
+ * @FilePath: \CasaOS-UI\src\components\Apps\AppPanel.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -30,14 +30,14 @@
             <!-- App Info Header Start -->
             <div class="app-header is-flex pb-4 b-line">
               <div class="header-icon mr-5">
-                <b-image :src="detailData.icon" :key="detailData.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-128x128 icon-shadow"></b-image>
+                <b-image :src="appDetailData.icon" :key="appDetailData.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-128x128 icon-shadow"></b-image>
               </div>
               <div class="flex1 is-flex is-align-items-center">
                 <div>
-                  <h4 class="title store-title is-4 ">{{detailData.title}}</h4>
-                  <p class="subtitle is-size-66 two-line">{{detailData.tagline}}</p>
+                  <h4 class="title store-title is-4 ">{{appDetailData.title}}</h4>
+                  <p class="subtitle is-size-66 two-line">{{appDetailData.tagline}}</p>
                   <p class="description">
-                    <b-button type="is-primary" size="is-normal" @click="qucikInstall(detailData.id)" :loading="detailData.id == currentInstallId" rounded>{{$t('Install')}}</b-button>
+                    <b-button type="is-primary" size="is-normal" @click="qucikInstall(appDetailData.id)" :loading="appDetailData.id == currentInstallId" rounded>{{$t('Install')}}</b-button>
                   </p>
                 </div>
               </div>
@@ -49,9 +49,9 @@
                 <div>
                   <p class="heading">{{ $t('CATEGORY') }}</p>
                   <p class="title">
-                    <b-icon :icon="detailData.category_font" custom-size="mdi-36px"></b-icon>
+                    <b-icon :icon="appDetailData.category_font" custom-size="mdi-36px"></b-icon>
                   </p>
-                  <p class="footing is-size-65">{{detailData.category}}</p>
+                  <p class="footing is-size-65">{{appDetailData.category}}</p>
                 </div>
               </div>
               <div class="level-item has-text-centered">
@@ -60,20 +60,20 @@
                   <p class="title">
                     <b-icon icon="account-circle-outline" custom-size="mdi-36px"></b-icon>
                   </p>
-                  <p class="footing is-size-65">{{detailData.developer}}</p>
+                  <p class="footing is-size-65">{{appDetailData.developer}}</p>
                 </div>
               </div>
               <div class="level-item has-text-centered">
                 <div>
                   <p class="heading "><span class="is-hidden-mobile">{{ $t('REQUIRE') }} </span>{{ $t('MEMORY') }}</p>
-                  <p class="title has-text-weight-normal">{{detailData.min_memory}}</p>
+                  <p class="title has-text-weight-normal">{{appDetailData.min_memory}}</p>
                   <p class="footing is-size-65">MB</p>
                 </div>
               </div>
               <div class="level-item has-text-centered">
                 <div>
                   <p class="heading"><span class="is-hidden-mobile">{{ $t('REQUIRE') }} </span>{{ $t('DISK') }}</p>
-                  <p class="title has-text-weight-normal">{{detailData.min_disk}}</p>
+                  <p class="title has-text-weight-normal">{{appDetailData.min_disk}}</p>
                   <p class="footing is-size-65">MB</p>
                 </div>
               </div>
@@ -83,7 +83,7 @@
             <!-- App Info Slider Start -->
             <div class="is-relative" v-if="showDetailSwiper">
               <swiper class="swiper swiper-responsive-breakpoints" ref="infoSwiper" :options="swiperOptions">
-                <swiper-slide v-for="item in detailData.screenshot_link" :key="'sc'+item">
+                <swiper-slide v-for="item in appDetailData.screenshot_link" :key="'sc'+item">
                   <div class="gap">
                     <b-image :src="item" :src-fallback="require('@/assets/img/app/swiper_placeholder.png')" placeholder ratio="16by9" class="border-8"></b-image>
                   </div>
@@ -98,9 +98,9 @@
 
             <!-- App Info  Start -->
             <div class="app-desc mt-4 mb-6">
-              <p class="is-size-66 mb-2 un-break-word">{{detailData.tagline}}</p>
-              <p class="is-size-66 un-break-word">{{detailData.description}}</p>
-              <!-- <p class="is-size-66 " v-html="detailData.tip"></p> -->
+              <p class="is-size-66 mb-2 un-break-word">{{appDetailData.tagline}}</p>
+              <p class="is-size-66 un-break-word">{{appDetailData.description}}</p>
+              <!-- <p class="is-size-66 " v-html="appDetailData.tip"></p> -->
             </div>
             <!-- App Info  End -->
 
@@ -281,12 +281,12 @@
           <ValidationProvider rules="required" name="Image" v-slot="{ errors, valid }">
             <b-field :label="$t('Docker Image')+' *'" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="$t(errors)">
               <b-input v-model="initData.image" :placeholder="$t('e.g.,hello-world:latest')" :readonly="state == 'update'" @input="changeIcon"></b-input>
-              <!-- <b-autocomplete :data="data" placeholder="e.g. hello-world:latest" field="image" :loading="isFetching" @typing="getAsyncData" @select="option => selected = option" v-model="initData.image" :readonly="state == 'update'"></b-autocomplete> -->
+              <!-- <b-autocomplete :data="data" placeholder="e.g. hello-world:latest" field="image" :loading="isFetching" @typing="getAsyncData" @select="option => portSelected = option" v-model="initData.image" :readonly="state == 'update'"></b-autocomplete> -->
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required" name="Name" v-slot="{ errors, valid }">
             <b-field :label="$t('App name')+' *'" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="errors">
-              <b-input v-model="initData.label" :placeholder="$t('Your custom App Name')" maxlength="40" ></b-input>
+              <b-input v-model="initData.label" :placeholder="$t('Your custom App Name')" maxlength="40"></b-input>
             </b-field>
           </ValidationProvider>
           <b-field :label="$t('Icon URL')">
@@ -299,15 +299,16 @@
           </b-field>
 
           <b-field label="Web UI">
-            <p class="control">
+            <!-- <p class="control">
               <span class="button is-static">{{baseUrl}}</span>
-            </p>
-            <b-input v-model="initData.port_map" placeholder="port" expanded v-if="initData.network_model == 'host'"></b-input>
-            <b-select :placeholder="$t('Port [Please add a ports set first]')" v-model="initData.port_map" expanded v-else>
-              <option value="">{{ $t('No need') }}</option>
-              <option v-for="port in bridgePorts" :value="port.host" :key="port.host+port.protocol">{{port.host}}</option>
+            </p> -->
+            <b-select v-model="initData.protocol" expanded>
+              <option value="http">http://</option>
+              <option value="https">https://</option>
             </b-select>
-            <b-input v-model="initData.index" :placeholder="'/index.html '+ $t('[Optional]')"></b-input>
+            <b-input v-model="initData.host" :placeholder="baseUrl" expanded></b-input>
+            <b-autocomplete class="has-colon" :placeholder="$t('Port')" v-model="initData.port_map" :data="bridgePorts" :open-on-focus="true" field="host" @select="option => (portSelected = option)" expanded></b-autocomplete>
+            <b-input v-model="initData.index" :placeholder="'/index.html '+ $t('[Optional]')" expanded></b-input>
           </b-field>
           <template v-if="isCasa">
 
@@ -359,7 +360,7 @@
                 <template #empty>
                   There are no items
                 </template>
-                <template #selected="props">
+                <template #portSelected="props">
                   <b-tag v-for="(tag, index) in props.tags" :key="index" :tabstop="false" closable @close="$refs.taginput.removeTag(index, $event)">
                     {{tag}}
                   </b-tag>
@@ -388,7 +389,7 @@
           <div class="is-flex is-align-items-center is-justify-content-center">
             <lottie-animation class="install-animation" :animationData="require('@/assets/ani/rocket-launching.json')" :loop="true" :autoPlay="true"></lottie-animation>
           </div>
-          <h3 class="title is-6 has-text-centered" :class="{'has-text-danger':errorType == 3,'has-text-black':errorType != 3}" v-html="installText"></h3>
+          <h3 class="title is-6 has-text-centered" :class="currentInstallAppTextClass" v-html="currentInstallAppText"></h3>
         </div>
       </section>
       <!-- App Install Process End -->
@@ -406,12 +407,10 @@
           </div> -->
         </div>
         <div>
-          <!-- <b-button v-if="currentSlide < 2" label="Cancel" @click="$emit('close')"  rounded /> -->
-          <!-- <b-button v-if="currentSlide == 0" :label="$t('Custom Install')" @click="currentSlide = 1" type="is-primary" rounded /> -->
-          <b-button v-if="currentSlide == 2 && errorType == 3 " :label="$t('Back')" @click="prevStep" rounded />
+          <b-button v-if="currentSlide == 2 && currentInstallAppError " :label="$t('Back')" @click="prevStep" rounded />
           <b-button v-if="currentSlide == 1 && state == 'install'" :label="$t('Install')" type="is-primary" @click="installApp()" rounded :loading="isLoading" />
           <b-button v-if="currentSlide == 1 && state == 'update'" :label="$t('Save')" type="is-primary" @click="updateApp()" rounded :loading="isLoading" />
-          <b-button v-if="currentSlide == 2 && (errorType == 1 || errorType == 4)" :label="$t(cancelButtonText)" type="is-primary" @click="$emit('close')" rounded />
+          <b-button v-if="currentSlide == 2 && !currentInstallAppError" :label="$t(cancelButtonText)" type="is-primary" @click="$emit('close')" rounded />
         </div>
       </template>
 
@@ -440,6 +439,7 @@ import uniq from 'lodash/uniq';
 import isNull from 'lodash/isNull'
 import orderBy from 'lodash/orderBy';
 import cloneDeep from 'lodash/cloneDeep';
+import last from 'lodash/last';
 import FileSaver from 'file-saver';
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 
@@ -496,7 +496,7 @@ export default {
     },
     runningStatus: String,
     configData: Object,
-    initDatas: {
+    settingData: {
       type: Object
     }
   },
@@ -509,6 +509,11 @@ export default {
       isFetching: false,
       isFirst: true,
       errorType: 1,
+      currentInstallAppName: null,
+      currentInstallAppError: false,
+      currentInstallAppType: null,
+      currentInstallAppText: "",
+
       appIcon: "",
       sidebarOpen: false,
       cancelButtonText: "Cancel",
@@ -517,9 +522,9 @@ export default {
       networks: [],
       tempNetworks: [],
       networkModes: [],
-      installPercent: 0,
-      installText: "",
       initData: {
+        host: "",
+        protocol: "http",
         port_map: null,
         cpu_shares: 10,
         memory: 300,
@@ -542,6 +547,7 @@ export default {
         host_name: "",
 
       },
+      portSelected: null,
       capArray: data,
       pageIndex: 1,
       pageSize: 5,
@@ -612,15 +618,15 @@ export default {
         key: this.searchKey
       },
       //  App Detail info
-      detailData: {}
+      appDetailData: {}
     }
   },
 
   created() {
 
     // Set Front-end base url
-    this.baseUrl = `${window.location.protocol}//${document.domain}:`;
-
+    this.baseUrl = `${document.domain}`;
+    // this.initData.host = `${document.domain}:`
     //Get Max memory info form device
     this.totalMemory = Math.floor(this.configData.memory.total / 1048576);
     this.initData.memory = this.totalMemory
@@ -640,9 +646,9 @@ export default {
     })
     this.networks = orderBy(this.networks, ['driver'], ['asc']);
     //If it is edit, Init data
-    if (this.initDatas != undefined) {
+    if (this.settingData != undefined) {
       this.isLoading = false
-      this.initData = this.preProcessData(this.initDatas)
+      this.initData = this.preProcessData(this.settingData)
       this.currentSlide = 1
 
     } else {
@@ -675,6 +681,13 @@ export default {
         return item.host != ""
       })
     },
+    filteredBeidgePort() {
+      return this.bridgePorts.filter(port => {
+        console.log(port.host);
+        return port.host.indexOf(this.initData.port_map) >= 0
+      })
+
+    },
     showImportButton() {
       return this.currentSlide == 1 && this.state == 'install'
     },
@@ -692,7 +705,7 @@ export default {
         if (!this.isCasa) {
           return this.$t("Import") + " " + this.initData.label
         } else {
-          return (this.initDatas != undefined) ? this.initData.label + " " + this.$t("Setting") : this.$t("Install a new App manually")
+          return (this.settingData != undefined) ? this.initData.label + " " + this.$t("Setting") : this.$t("Install a new App manually")
         }
 
       } else {
@@ -700,7 +713,10 @@ export default {
       }
     },
     showDetailSwiper() {
-      return (!this.detailData.screenshot_link) ? false : true;
+      return (!this.appDetailData.screenshot_link) ? false : true;
+    },
+    currentInstallAppTextClass() {
+      return this.currentInstallAppError ? 'has-text-danger' : 'has-text-black'
     }
 
   },
@@ -755,6 +771,15 @@ export default {
     }
   },
   methods: {
+
+    analyse(data) {
+      try {
+        const appName = data.label
+        const action = "install"
+        this.$api.analyse.analyseAppAction(appName, action)
+        // eslint-disable-next-line no-empty
+      } catch (err) { }
+    },
     /**
      * @description: 
      * @param {*} function
@@ -808,7 +833,6 @@ export default {
     getCategoryList() {
       this.$api.app.storeCategoryList().then((res) => {
         this.cateMenu = res.data.data.filter((item) => {
-
           return item.count > 0
         })
         this.currentCate = this.cateMenu[0]
@@ -816,8 +840,6 @@ export default {
         if (this.isFirst) {
           this.isFirst = false
         }
-
-        //this.getStoreList();
       })
     },
 
@@ -831,7 +853,7 @@ export default {
       this.$api.app.storeAppInfo(id).then(resp => {
         this.isLoading = false;
         this.sidebarOpen = true;
-        this.detailData = resp.data.data
+        this.appDetailData = resp.data.data
       })
     },
 
@@ -863,6 +885,8 @@ export default {
         if (resp.data.success == 200) {
 
           let respData = resp.data.data
+          this.initData.protocol = respData.protocol
+          this.initData.host = respData.host
           this.initData.port_map = respData.port_map
           this.initData.cpu_shares = 50
           this.initData.memory = respData.max_memory
@@ -893,12 +917,12 @@ export default {
               type: 'is-dark',
               onConfirm: () => {
                 this.sidebarOpen = false;
-                this.installAppData(id)
+                this.installAppData()
               }
             })
           } else {
             this.sidebarOpen = false;
-            this.installAppData(id)
+            this.installAppData()
           }
         }
       })
@@ -914,7 +938,7 @@ export default {
         JSON.parse(data).forEach(item => {
           html += "<span class=' is-size-65 un-break-word'>" + item.content + "</span>"
           if (item.value != '') {
-            html += "<span class='tag is-primary '>" + item.value + "</span>"
+            html += "<span class='tag is-primary ml-1'>" + item.value + "</span>"
           }
           html += "<br/>"
         })
@@ -989,17 +1013,18 @@ export default {
       })
     },
 
-    installAppData(id) {
+    installAppData() {
       this.processData();
       this.isLoading = true;
       // console.log(this.initData);
-      this.$api.app.install(id, this.initData).then((res) => {
+      this.$api.app.install(this.initData).then((res) => {
         this.isLoading = false;
         if (res.data.success == 200) {
+          this.currentInstallAppName = res.data.data
           this.analyse(this.initData)
           this.currentSlide = 2;
-          this.cancelButtonText = this.$t('Continue in background')
-          this.checkInstallState(res.data.data)
+          this.currentInstallAppText = "Start Installation..."
+          this.cancelButtonText = 'Continue in background'
         } else {
           this.$buefy.toast.open({
             message: res.data.message,
@@ -1008,70 +1033,8 @@ export default {
         }
       })
     },
-    analyse(data) {
-      try {
-        const appName = data.label
-        const action = "install"
-        this.$api.analyse.analyseAppAction(appName, action)
-        // eslint-disable-next-line no-empty
-      } catch (err) { }
-    },
 
-    /**
-     * @description: Check the installation process every 250 milliseconds
-     * @param {String} appId
-     * @return {*} void
-     */
-    checkInstallState(appId) {
-      this.timer = setInterval(() => {
-        this.updateInstallState(appId)
-      }, 250)
-    },
 
-    /**
-     * @description: Update the installation status to the UI
-     * @param {String} appId
-     * @return {*} void
-     */
-    updateInstallState(appId) {
-      this.$api.app.state(appId).then((res) => {
-        let resData = res.data.data;
-        this.installPercent = resData.speed;
-        this.errorType = resData.type;
-        if (this.errorType == 4) {
-          try {
-            let info = JSON.parse(resData.message)
-            let id = (info.id != undefined) ? info.id : "";
-            let progress = ""
-            if (info.progressDetail != undefined) {
-              let progressDetail = info.progressDetail
-              if (!isNaN(progressDetail.current / progressDetail.total)) {
-                progress = `[ ${String(Math.floor((progressDetail.current / progressDetail.total) * 100))}% ]`
-              }
-            }
-            let status = info.status
-            this.installText = status + ":" + id + " " + progress
-          } catch (error) {
-            console.log(error);
-          }
-        } else {
-          this.installText = resData.message
-          if (this.errorType == 3) {
-            clearInterval(this.timer)
-          }
-        }
-
-        if (resData.message == "installed") {
-          localStorage.removeItem("app_data")
-          clearInterval(this.timer)
-          let _this = this
-          setTimeout(() => {
-            _this.$emit('updateState')
-            _this.$emit('close')
-          }, 1000)
-        }
-      })
-    },
 
     /**
      * @description: Save edit update
@@ -1169,7 +1132,6 @@ export default {
        * @return {*} void
        */
     exportJSON() {
-      // 将json转换成字符串
       let exportData = cloneDeep(this.initData);
       exportData.network_model = this.getNetworkName(this.initData.network_model);
       exportData.version = "1.0"
@@ -1222,7 +1184,7 @@ export default {
         return ""
       } else {
         let appIcon = image.split(":")[0].split("/").pop();
-        return `https://cdn.jsdelivr.net/gh/IceWhaleTech/AppIcon@main/all/${appIcon}.png`;
+        return `https://icon.casaos.io/main/all/${appIcon}.png`;
       }
     },
 
@@ -1261,5 +1223,49 @@ export default {
   destroyed() {
     clearInterval(this.timer)
   },
+
+  sockets: {
+    app_install(res) {
+      const resData = res.body.data
+      if (this.currentInstallAppName != resData.name) {
+        return false
+      }
+      if (!resData.finished) {
+        this.currentInstallAppError = !resData.success;
+        if (resData.success) {
+          this.currentInstallAppType = resData.type;
+          if (resData.message !== "") {
+            const messageArray = resData.message.split(/[(\r\n)\r\n]+/);
+            messageArray.forEach((item, index) => {
+              if (!item) {
+                messageArray.splice(index, 1);
+              }
+            })
+            const lastMessage = last(messageArray)
+            const info = JSON.parse(lastMessage)
+            const id = (info.id != undefined) ? info.id : "";
+            let progress = ""
+            if (info.progressDetail != undefined) {
+              let progressDetail = info.progressDetail
+              if (!isNaN(progressDetail.current / progressDetail.total)) {
+                progress = `[ ${String(Math.floor((progressDetail.current / progressDetail.total) * 100))}% ]`
+              }
+            }
+            let status = info.status
+            this.currentInstallAppText = status + ":" + id + " " + progress
+          }
+        } else {
+          this.currentInstallAppText = resData.message
+        }
+      } else {
+        localStorage.removeItem("app_data")
+        let _this = this
+        setTimeout(() => {
+          _this.$emit('updateState')
+          _this.$emit('close')
+        }, 500)
+      }
+    },
+  }
 }
 </script>

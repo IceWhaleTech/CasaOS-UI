@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-03-07 17:10:25
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-09 16:02:39
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-05-27 08:59:57
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\components\EmptyHolder.vue
 -->
@@ -11,7 +11,8 @@
 
     <h5 class="title is-65">{{ $t('Drop your files here to upload') }}</h5>
     <p class="is-size-7">{{ $t('or') }}</p>
-    <ul class="is-flex upload-btns">
+
+    <ul class="is-flex upload-btns is-justify-content-center">
       <li class="e-btn" @click="$emit('newFile')">
         <span>{{ $t('New File') }}</span>
         <b-image :src="require('@/assets/img/filebrowser/newFile.svg')"></b-image>

@@ -33,6 +33,7 @@
   transform-origin: top;
   transition: opacity $speed-slow $easing, transform $speed-slow $easing;
 }
+
 .fade1-enter,
 .fade1-leave-to {
   transform: scaleY(0.9);
@@ -49,15 +50,18 @@
   transition: 0.66s $easing;
   transition-timing-function: cubic-bezier(0.66, 0, 0.01, 1);
 }
+
 .slide1-leave-active {
   transition: 0.66s $easing;
   transition-timing-function: cubic-bezier(0.66, 0, 0.01, 1);
 }
+
 .slide1-enter-to,
 .slide1-leave {
   max-height: 464px;
   overflow: hidden;
 }
+
 .slide1-enter,
 .slide1-leave-to {
   overflow: hidden;
@@ -69,6 +73,7 @@
 .c-zoom-in-leave-active {
   transition: opacity $speed-slow $easing, transform $speed-slow $easing;
 }
+
 .c-zoom-in-enter,
 .c-zoom-in-leave-to {
   transform: scale(0.95);
@@ -93,4 +98,19 @@
 .fade-transform-leave-to {
   opacity: 0;
   transform: translateX(-2rem);
+}
+
+
+/* toolbar-transform */
+
+.up-fade-enter-active,
+.up-fade-leave-active {
+  transform-origin: top;
+  transition: opacity $speed-slow $easing, transform $speed-slow $easing;
+}
+
+.up-fade-enter,
+.up-fade-leave-to {
+  transform: translateY(50px);
+  opacity: 0;
 }

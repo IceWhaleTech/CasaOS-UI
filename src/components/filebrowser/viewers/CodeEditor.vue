@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-03-03 21:48:17
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-08 22:33:26
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-02 14:27:13
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\viewers\CodeEditor.vue
 -->

@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-03-11 22:16:00
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-14 12:14:43
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-02 20:14:17
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\AcquaintanceShare\components\DownloadList.vue
 -->
@@ -99,7 +99,7 @@ export default {
       },
       timer: 0,
       timeGap: 1,
-      listData: require('@/assets/testData.json'),
+      listData: [],
       downloadingList: [],
       completedList: [],
       page: "downloading"

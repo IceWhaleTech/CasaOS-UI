@@ -1,10 +1,10 @@
 /*
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
- * @LastEditors: JerryK
- * @LastEditTime: 2022-01-24 16:36:09
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-05-30 19:54:51
  * @Description: System HardWare Info API
- * @FilePath: /CasaOS-UI/src/service/info.js
+ * @FilePath: \CasaOS-UI\src\service\info.js
  */
 import { api } from "./service.js";
 
@@ -48,6 +48,10 @@ const info = {
     // Check Verison
     checkVersion() {
         return api.get('/sys/check');
+    },
+    // Get websocket port
+    getSocketPort() {
+        return api.get('/sys/socket/port');
     },
     //Update System
     updateSystem() {

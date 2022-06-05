@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
- * @LastEditors: 老竭力 jerrykuku@qq.com
- * @LastEditTime: 2022-05-11 19:47:12
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-02 09:34:15
  * @Description: App Card item
  * @FilePath: \CasaOS-UI\src\components\Apps\AppCard.vue
 -->
@@ -131,7 +131,6 @@ export default {
         this.$emit("importApp", item.id, item.state, false)
         return false
       }
-
       if (item.type === "system") {
         this.openSystemApps(item)
       } else {
@@ -143,7 +142,9 @@ export default {
             this.$api.analyse.analyseAppAction(appName, action)
             // eslint-disable-next-line no-empty
           } catch (err) { }
-          const url = (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${item.port}${item.index}` : `http://${window.location.hostname}:${item.port}${item.index}`
+          const hostIp = item.host || this.$baseIp 
+          const protocol = item.protocol || 'http'
+          const url = `${protocol}://${hostIp}:${item.port}${item.index}`
           if (item.image.toLowerCase().indexOf("qbittorrent") == -1) {
             window.open(url, '_blank');
           } else {

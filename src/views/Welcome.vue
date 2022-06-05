@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-10-20 16:30:26
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-09 16:09:38
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-05-25 16:03:12
  * @Description: 
  * @FilePath: \CasaOS-UI\src\views\Welcome.vue
 -->
@@ -64,7 +64,7 @@ import LottieAnimation from "lottie-web-vue";
 import smoothReflow from 'vue-smooth-reflow'
 export default {
 
-  name: "Welcome",
+  name: "welcome-page",
   mixins: [smoothReflow],
   data() {
     return {

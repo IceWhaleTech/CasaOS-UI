@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-10-29 15:38:35
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-08 20:56:10
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-05-25 16:31:41
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\Apps\AppTerminalPanel.vue
 -->
@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       isLoading: false,
-      wsUrl: (process.env.NODE_ENV === "'dev'") ? `ws://${this.$store.state.devIp}:${this.$store.state.devPort}/v1/app/terminal/${this.appid}?token=${this.$store.state.token}` : `ws://${document.location.host}/v1/app/terminal/${this.appid}?token=${this.$store.state.token}`,
+      wsUrl: `ws://${this.$baseURL}/v1/app/terminal/${this.appid}?token=${this.$store.state.token}`,
       logData: ""
     }
   },

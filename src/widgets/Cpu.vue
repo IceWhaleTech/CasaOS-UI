@@ -20,7 +20,7 @@
         <div class="more-info pt-3 pb-1">
           <b-tabs v-model="activeTab">
             <b-tab-item label="CPU">
-              <div v-for="(item) in containerCpuList" :key="item.title+item.id+'-cpu'">
+              <div v-for="(item,index) in containerCpuList" :key="item.title+index+'-cpu'">
                 <div class="is-flex is-size-7 is-align-items-center mb-2" v-if="!isNaN(item.usage)">
                   <div class="is-flex-grow-1 is-flex is-align-items-center">
                     <b-image :lazy="false" :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" class="is-16x16 mr-2"></b-image>
@@ -32,7 +32,7 @@
             </b-tab-item>
 
             <b-tab-item label="RAM">
-              <div v-for="(item) in containerRamList" :key="item.title+item.id+'-rem'">
+              <div v-for="(item,index) in containerRamList" :key="item.title+index+'-rem'">
                 <div class="is-flex is-size-7 is-align-items-center mb-2" v-if="!isNaN(item.usage)">
                   <div class="is-flex-grow-1 is-flex is-align-items-center">
                     <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" class="is-16x16 mr-2"></b-image>
@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import VueApexCharts from 'vue-apexcharts'
+// import VueApexCharts from 'vue-apexcharts'
 import smoothReflow from 'vue-smooth-reflow'
 import orderBy from 'lodash/orderBy';
 import has from 'lodash/has';
@@ -59,13 +59,14 @@ import slice from 'lodash/slice';
 import { mixin } from '../mixins/mixin';
 
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
   name: 'cpu',
   icon: "cog",
   title: "System Status",
   initShow: true,
   mixins: [smoothReflow, mixin],
   components: {
-    apexchart: VueApexCharts,
+    apexchart:()=>import("vue-apexcharts"),
   },
 
   data() {
@@ -144,7 +145,7 @@ export default {
           type: 'image',
           image: {
             src: [require('@/assets/img/widgets/gradient.png')],
-            
+
           }
         },
         stroke: {
@@ -157,25 +158,17 @@ export default {
       containerRamList: []
     }
   },
-  mounted() {
+  created() {
     this.cpuCores = this.$store.state.hardwareInfo.cpu.num
     this.totalMemory = this.$store.state.hardwareInfo.mem.total
     this.updateCharts(this.$store.state.hardwareInfo)
     this.getDockerUsage()
-
+  },
+  mounted() {
     this.$smoothReflow({
       el: '.widget',
       property: ['height'],
     })
-  },
-  watch: {
-    // Watch if Hardware info changes in the store
-    '$store.state.hardwareInfo': {
-      handler(val) {
-        this.updateCharts(val)
-      },
-      deep: true
-    },
   },
   methods: {
     /**
@@ -255,6 +248,19 @@ export default {
       this.showMore = !this.showMore;
     }
   },
+  sockets: {
+    sys_cpu(data) {
+      this.cpuCores = data.body.data.num
+      this.cpuSeries = [data.body.data.percent]
+      if (this.showMore) {
+        this.getDockerUsage()
+      }
+    },
+    sys_mem(data) {
+      this.totalMemory = data.body.data.total
+      this.ramSeries = [data.body.data.usedPercent]
+    }
+  }
 
 
 }

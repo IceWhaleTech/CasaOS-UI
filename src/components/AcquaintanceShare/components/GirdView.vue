@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-03-11 22:14:41
- * @LastEditors: 老竭力 jerrykuku@qq.com
- * @LastEditTime: 2022-05-07 23:08:32
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-02 20:14:29
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\AcquaintanceShare\components\GirdView.vue
 -->
@@ -66,7 +66,6 @@ export default {
   mixins: [mixin],
   data() {
     return {
-      // listData: require('@/assets/testData.json'),
       min: 0,
       cols: 1,
       contextIsShow: false,

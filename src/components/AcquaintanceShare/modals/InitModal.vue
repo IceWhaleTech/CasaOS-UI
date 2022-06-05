@@ -147,7 +147,7 @@ import "@/plugins/vee-validate";
 import smoothReflow from 'vue-smooth-reflow'
 import FilePanel from '@/components/fileList/FilePanel.vue'
 import remove from 'lodash/remove'
-import Avatar from 'vue-avatar'
+// import Avatar from 'vue-avatar'
 export default {
   mixins: [smoothReflow],
   props: {
@@ -172,7 +172,7 @@ export default {
   components: {
     ValidationObserver,
     ValidationProvider,
-    Avatar
+    // Avatar
   },
   watch: {
     shareFolders(val) {

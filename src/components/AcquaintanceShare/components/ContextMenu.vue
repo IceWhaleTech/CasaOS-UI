@@ -1,3 +1,13 @@
+<!--
+ * @Author: Jerryk jerry@icewhale.org
+ * @Date: 2022-03-11 22:15:13
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-05-30 17:28:54
+ * @FilePath: \CasaOS-UI\src\components\AcquaintanceShare\components\ContextMenu.vue
+ * @Description: 
+ * 
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+-->
 
 <template>
   <div>
@@ -44,7 +54,7 @@ export default {
       ani: "fade1",
       item: {},
       user: {},
-      hasPasteData: this.$store.state.operateObject != null
+      
     }
   },
 
@@ -53,17 +63,7 @@ export default {
       return this.item == undefined
     }
   },
-  watch: {
-    '$store.state.operateObject': {
-      handler(val) {
-        this.hasPasteData = (val != null)
-      },
-      deep: true
-    },
-  },
-  mounted() {
 
-  },
   methods: {
     open(event, item) {
       let bounced = event.target.getAttribute('class').includes('dropdown-menu')

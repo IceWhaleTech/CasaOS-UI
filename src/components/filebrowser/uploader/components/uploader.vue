@@ -19,8 +19,8 @@
   import UploaderDrop from './drop.vue'
   import UploaderUnsupport from './unsupport.vue'
   import UploaderList from './list.vue'
-  import UploaderFiles from './files.vue'
-  import UploaderFile from './file.vue'
+  // import UploaderFiles from './files.vue'
+  // import UploaderFile from './file.vue'
 
   const COMPONENT_NAME = 'uploader'
   const FILE_ADDED_EVENT = 'fileAdded'
@@ -83,11 +83,11 @@
           return false
         }
       },
-      fileRemoved (file) {
+      fileRemoved () {
         this.files = this.uploader.files
         this.fileList = this.uploader.fileList
       },
-      filesSubmitted (files, fileList) {
+      filesSubmitted () {
         this.files = this.uploader.files
         this.fileList = this.uploader.fileList
         if (this.autoStart) {
@@ -113,6 +113,7 @@
       }
     },
     created () {
+      // eslint-disable-next-line vue/no-mutating-props
       this.options.initialPaused = !this.autoStart
       const uploader = new Uploader(this.options)
       this.uploader = uploader
@@ -137,8 +138,8 @@
       UploaderDrop,
       UploaderUnsupport,
       UploaderList,
-      UploaderFiles,
-      UploaderFile
+      // UploaderFiles,
+      // UploaderFile
     }
   }
 </script>

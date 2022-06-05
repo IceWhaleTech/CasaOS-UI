@@ -8,7 +8,7 @@
       :formated-time-remaining="formatedTimeRemaining" :type="type" :extension="extension"
       :file-category="fileCategory">
       <div class="task is-flex">
-        <div class="task-progress normal task-progress" :class="progressingClass" :style="progressStyle"
+        <div class="task-progress normal" :class="progressingClass" :style="progressStyle"
           v-if="status != 'success'"></div>
         <div class="task-info">
           <div class="cover">

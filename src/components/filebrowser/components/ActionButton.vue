@@ -1,14 +1,14 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-02-23 17:08:21
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-08 20:43:16
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-05-30 17:46:52
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\components\ActionButton.vue
 -->
 <template>
   <div class="action-btn">
-    <b-dropdown aria-role="list" append-to-body :close-on-click="false" :triggers="['click']" ref="dropDown" :id="'dr-'+index" class="file-dropdown" :position="'is-'+verticalPos+'-'+horizontalPos" animation="fade1" :mobile-modal="false" @active-change="dorpActiveChange($event,'dr-'+index)">
+    <b-dropdown aria-role="list" append-to-body :close-on-click="false" :triggers="['click']" ref="dropDown" :id="'dr-'+index" class="file-dropdown" :position="'is-'+verticalPos+'-'+horizontalPos" animation="fade1" @active-change="dorpActiveChange($event,'dr-'+index)">
       <template #trigger>
         <p role="button">
           <b-icon icon="dots-horizontal" custom-size="mdi-18px" id="das">
@@ -25,17 +25,17 @@
       <b-dropdown-item aria-role="menuitem" @click="rename">
         {{ $t('Rename') }}
       </b-dropdown-item>
-      <b-dropdown-item aria-role="menuitem" @click="operate('move')">
+      <b-dropdown-item aria-role="menuitem" @click="operate('move',item)">
         {{ $t('Cut') }}
       </b-dropdown-item>
-      <b-dropdown-item aria-role="menuitem" @click="operate('copy')">
+      <b-dropdown-item aria-role="menuitem" @click="operate('copy',item)">
         {{ $t('Copy') }}
       </b-dropdown-item>
       <hr class="dropdown-divider">
       <b-dropdown-item aria-role="menuitem" class="has-text-danger" @click="isConfirmed = true" v-if="!isConfirmed">
         {{ $t('Delete') }}
       </b-dropdown-item>
-      <b-dropdown-item aria-role="menuitem" class="has-text-danger" @click="deleteItem" v-else>
+      <b-dropdown-item aria-role="menuitem" class="has-text-danger" @click="deleteItem(item)" v-else>
         {{ $t('Are you sure?') }}
       </b-dropdown-item>
     </b-dropdown>

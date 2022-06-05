@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-11-10 17:48:25
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-09 15:57:43
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-05-25 16:40:13
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\syncthing\SyncBlock.vue
 -->
@@ -119,7 +119,7 @@ export default {
     }
   },
   created() {
-    this.syncBaseURL = (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${this.$store.state.syncthingPort}` : `${document.location.protocol}//${document.location.hostname}:${this.$store.state.syncthingPort}`
+    this.syncBaseURL = (process.env.NODE_ENV === "dev") ? `http://${this.$baseIp}:${this.$store.state.syncthingPort}` : `${document.location.protocol}//${document.location.hostname}:${this.$store.state.syncthingPort}`
     this.syncXhr = axios.create({
       baseURL: this.syncBaseURL
     });
@@ -139,20 +139,20 @@ export default {
     if (this.timer) {
       clearInterval(this.timer)
     }
-    if (this.$store.state.syncthingKey.length != 32) {
-      return false
-    }
-    // Get Events
-    this.syncXhr.get(`/rest/events?limit=1`).then(res => {
-      let lastEvent = res.data[0]
-      this.getFolderCompletion(res)
-      this.getEvents(lastEvent.id);
-    })
+    if (this.$store.state.syncthingKey.length == 32) {
+      // Get Events
+      this.syncXhr.get(`/rest/events?limit=1`).then(res => {
+        let lastEvent = res.data[0]
+        this.getFolderCompletion(res)
+        this.getEvents(lastEvent.id);
+      })
 
-    this.init();
-    this.timer = setInterval(() => {
       this.init();
-    }, this.timeGap * 1000);
+      this.timer = setInterval(() => {
+        this.init();
+      }, this.timeGap * 1000);
+    }
+
 
   },
   destroyed() {
