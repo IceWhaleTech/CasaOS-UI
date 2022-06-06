@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-02-18 12:42:06
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-02 18:16:21
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-06-06 17:22:03
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\FilePanel.vue
 -->
@@ -223,6 +223,7 @@ export default {
         testChunks: true,
         uploadMethod: "POST",
         successStatuses: [200, 201, 202, 2002],
+        allowDuplicateUploads: true,
         // chunkSize: 1024 * 1024 * 1024 * 1024
       },
       attrs: {
@@ -505,7 +506,6 @@ export default {
      * @return {*}
      */
     assignUploadButtons() {
-
       this.uploaderInstance.assignDrop(document.getElementById('dropTarget'));
 
     },
@@ -691,7 +691,8 @@ export default {
      * @return {*}
      */
     handleDownload() {
-      this.downloadFile(this.selectedArray)
+      const downItem = (this.selectedArray.length == 1) ? this.selectedArray[0] : this.selectedArray
+      this.downloadFile(downItem)
       this.handleClose()
     }
   },

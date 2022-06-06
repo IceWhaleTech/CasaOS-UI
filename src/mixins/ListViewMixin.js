@@ -1,8 +1,8 @@
 /*
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-05-20 19:18:19
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-05-30 09:14:40
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-06-06 16:42:56
  * @FilePath: \CasaOS-UI\src\mixins\ListViewMixin.js
  * @Description: 
  * 
@@ -177,6 +177,7 @@ export default {
          * @return {*}
          */
         onCardClick(event, item, index) {
+            
             // If SHIFT key is down
             if (this.isShift) {
                 if (this.selectList.indexOf(index) == -1) {

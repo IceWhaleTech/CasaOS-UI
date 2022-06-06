@@ -1,8 +1,8 @@
 /*
  * @Author: JerryK
  * @Date: 2022-01-20 12:01:07
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-02 17:14:08
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-06-06 16:58:39
  * @Description: 
  * @FilePath: \CasaOS-UI\src\mixins\mixin.js
  */
@@ -179,9 +179,8 @@ export const mixin = {
             let parameters = {
                 token: this.$store.state.token
             }
-
             if (items.constructor === Object) {
-                if (isStream) {
+                if (isStream || items.is_dir) {
                     path = items.path
                     parameters.files = path
                     return apiUrl + "?" + qs.stringify(parameters)
@@ -239,7 +238,6 @@ export const mixin = {
          * @return {void} 
          */
         clickItem(event, item) {
-            console.log(event.target);
             let bounced = event.target.getAttribute('class').includes('mdi-dots')
             if (bounced) {
                 return false

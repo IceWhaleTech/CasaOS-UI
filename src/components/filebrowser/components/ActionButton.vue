@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-02-23 17:08:21
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-05-30 17:46:52
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-06-06 17:31:03
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\components\ActionButton.vue
 -->
@@ -15,13 +15,13 @@
           </b-icon>
         </p>
       </template>
-      <b-dropdown-item aria-role="menuitem" v-if="!item.is_dir" @click="download">
+      <b-dropdown-item aria-role="menuitem" @click="download">
         {{ $t('Download') }}
       </b-dropdown-item>
       <b-dropdown-item aria-role="menuitem" @click="copyPath">
         {{ $t('Copy Path') }}
       </b-dropdown-item>
-      <hr class="dropdown-divider" v-if="!item.is_dir">
+      <hr class="dropdown-divider" >
       <b-dropdown-item aria-role="menuitem" @click="rename">
         {{ $t('Rename') }}
       </b-dropdown-item>

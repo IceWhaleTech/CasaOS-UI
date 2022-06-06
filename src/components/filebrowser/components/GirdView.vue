@@ -1,13 +1,13 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-02-21 11:06:18
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-05-30 09:15:51
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-06-06 16:19:14
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\components\GirdView.vue
 -->
 <template>
-  <div class="scroll-container scrollbars-light is-relative" id="select-container" @contextmenu.prevent="openContextMenu" @mousedown.stop="onDragSelectionStart">
+  <div class="scroll-container scrollbars-light is-relative" id="select-container" @contextmenu.prevent="openContextMenu" @mousedown.left.stop="onDragSelectionStart">
     <!-- Empty Content Slot Start -->
     <div class="is-flex is-align-items-center is-justify-content-center empty-container" v-if="listData.length == 0 && !isLoading">
       <slot></slot>

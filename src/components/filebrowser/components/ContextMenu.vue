@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-02-23 17:08:21
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-05-30 18:41:46
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-06-06 17:15:35
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\components\ContextMenu.vue
 -->
@@ -41,27 +41,27 @@
 
         <!-- Item Start -->
         <template v-else>
-          <b-dropdown-item aria-role="menuitem" key="file-context1" v-if="!item.is_dir" @click="download">
+          <b-dropdown-item aria-role="menuitem" key="file-context1" @click="download">
             {{ $t('Download') }}
           </b-dropdown-item>
-          <b-dropdown-item aria-role="menuitem" key="file-context2" @click="copyPath">
+          <b-dropdown-item aria-role="menuitem" key="file-context2" v-if="showSingleEdit" @click="copyPath">
             {{ $t('Copy Path') }}
           </b-dropdown-item>
-          <hr class="dropdown-divider" v-if="!item.is_dir">
-          <b-dropdown-item aria-role="menuitem" key="file-context3" @click="rename">
+          <hr class="dropdown-divider">
+          <b-dropdown-item aria-role="menuitem" key="file-context3" v-if="showSingleEdit" @click="rename">
             {{ $t('Rename') }}
           </b-dropdown-item>
-          <b-dropdown-item aria-role="menuitem" key="file-context4" @click="operate('move',item)">
+          <b-dropdown-item aria-role="menuitem" key="file-context4" @click="operate('move',items)">
             {{ $t('Cut') }}
           </b-dropdown-item>
-          <b-dropdown-item aria-role="menuitem" key="file-context5" @click="operate('copy',item)">
+          <b-dropdown-item aria-role="menuitem" key="file-context5" @click="operate('copy',items)">
             {{ $t('Copy') }}
           </b-dropdown-item>
           <hr class="dropdown-divider">
           <b-dropdown-item aria-role="menuitem" class="has-text-danger" @click="isConfirmed = true" v-if="!isConfirmed">
             {{ $t('Delete') }}
           </b-dropdown-item>
-          <b-dropdown-item aria-role="menuitem" class="has-text-danger" @click="deleteItem(item)" v-else>
+          <b-dropdown-item aria-role="menuitem" class="has-text-danger" @click="deleteItem(items)" v-else>
             {{ $t('Are you sure?') }}
           </b-dropdown-item>
         </template>
@@ -85,8 +85,10 @@ export default {
       x: Number,
       y: Number,
       showDetial: false,
+      showSingleEdit: true,
       ani: "fade1",
       item: {},
+      items: [],
       hasPasteData: this.$store.state.operateObject != null
     }
   },
@@ -117,7 +119,17 @@ export default {
       let bounced = event.target.getAttribute('class').includes('dropdown-menu')
       if (!bounced) {
         this.showDetial = (item != undefined)
-        this.item = item
+        const isInSelected = this.filePanel.selectedArray.some(obj => {
+          return item.path == obj.path
+        })
+        if (this.filePanel.selectedArray.length > 1 && isInSelected) {
+          this.items = this.filePanel.selectedArray
+          this.showSingleEdit = false
+        } else {
+          this.items = [item]
+          this.item = item
+          this.showSingleEdit = true
+        }
         this.$refs.dropDown.isActive = false
         this.$nextTick(() => {
           this.x = event.clientX
@@ -151,6 +163,11 @@ export default {
     paste() {
       this.$refs.dropDown.toggle()
       this.filePanel.paste()
+    },
+    download() {
+      this.$refs.dropDown.toggle()
+      const downItem = (this.items.length == 1) ? this.items[0] : this.items
+      this.downloadFile(downItem);
     }
 
   },
