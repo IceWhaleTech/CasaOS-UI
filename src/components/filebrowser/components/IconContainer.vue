@@ -1,3 +1,13 @@
+<!--
+ * @Author: Jerryk jerry@icewhale.org
+ * @Date: 2022-05-04 17:01:10
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-05-30 09:22:51
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\components\IconContainer.vue
+ * @Description: 
+ * 
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+-->
 <template>
   <div :class="item | coverType">
     <transition name="fade">
@@ -9,71 +19,9 @@
 
 <script>
 import { mixin } from '@/mixins/mixin';
+import IconContainerMixin from '@/mixins/IconContainerMixin'
 export default {
-  mixins: [mixin],
-
-  props: {
-    item: {}
-  },
-  data() {
-    return {
-      isLoaded: false,
-      imageData: "",
-      isWide: true,
-      io: {},
-      inViewPort: false
-    }
-  },
-
-  computed: {
-    showThumb() {
-      return this.isLoaded && this.hasThumb(this.item)
-    }
-  },
-  watch: {
-    inViewPort(value) {
-      if (value) {
-        this.loadImage();
-      }
-    }
-  },
-  created() {
-    this.io = new IntersectionObserver((events) => {
-      const { target, isIntersecting } = events[0]
-      if (isIntersecting && !this.inViewPort) {
-        this.inViewPort = true
-        this.io.unobserve(target)
-      }
-    })
-  },
-  mounted() {
-    if (this.hasThumb(this.item)) {
-      this.io.observe(this.$el);
-    }
-  },
-
-  methods: {
-    loadImage() {
-      var imgUrl = this.getThumbUrl(this.item) //  带有参数的的ajax接口url
-      var img = new Image();
-      img.crossOrigin = location.host;
-      img.src = imgUrl;
-      img.onload = () => {
-        var canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        var ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, img.width, img.height);
-        this.isWide = img.width > img.height
-        this.isLoaded = true
-        this.imageData = canvas.toDataURL('image/png');
-      };
-      img.onerror = (e, s) => {
-        console.log(e, s);
-      }
-
-    }
-  },
+  mixins: [mixin, IconContainerMixin],
 }
 </script>
 

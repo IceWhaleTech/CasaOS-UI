@@ -1,12 +1,44 @@
 .file-panel {
   .animation-content {
 
+    .is-absolute {
+      position: absolute;
+    }
 
     .modal-card {
       width: 100%;
       height: calc(100vh - 40px);
       border-radius: 0;
       background-color: white !important;
+
+      // operation-status
+      .operation-status-bar {
+        position: relative;
+        z-index: 500;
+        .popper {
+          box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%), 0 0px 0 1px rgb(10 10 10 / 2%);
+          background-color: white;
+          border: none;
+          border-radius: 0.25rem;
+          text-align: initial;
+          padding: 0 0 0.5rem 0;
+          width: 20rem;
+        }
+
+        .operation-status-item {
+          position: relative;
+          width: 20rem;
+          padding: 0.5rem 1rem;
+          .task-info {
+            position: relative;
+            z-index: 2;
+          }
+        }
+      }
+
+      .none-line-height {
+        line-height: initial;
+      }
 
       .modal-card-head {
         padding: 1.5rem;
@@ -137,8 +169,56 @@
 
         .content {
           max-width: calc(100% - 15rem);
+          overflow: hidden;
         }
 
+      }
+
+      .toolbar-container {
+        position: relative;
+        z-index: 100;
+      }
+
+      .img-toolbar,
+      .operation-toolbar {
+        position: absolute;
+        bottom: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgb(49, 49, 54);
+        z-index: 100;
+        padding: 0.5rem 1rem;
+        border-radius: 10px;
+
+        .b-tooltip {
+          .toolbar-item {
+
+            padding: 0.25rem 0.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-left: 0.5rem;
+
+            &.disabled {
+              pointer-events: none;
+
+              .block {
+                color: #b5b5b5 !important;
+              }
+            }
+
+            &:hover {
+              background-color: rgb(86, 86, 90);
+            }
+
+          }
+
+          &:first-child {
+            .toolbar-item {
+              margin-left: 0;
+            }
+          }
+        }
       }
 
       .overlay {
@@ -156,56 +236,9 @@
           padding: 0 1.5rem 0.75rem 1.5rem;
         }
 
-        .img-toolbar {
-          position: absolute;
-          bottom: 50px;
-          left: 50%;
-          transform: translateX(-50%);
-          background-color: rgb(49, 49, 54);
-          z-index: 100;
-          padding: 0.5rem 1rem;
-          border-radius: 10px;
-
-          .b-tooltip {
-            .toolbar-item {
-
-              padding: 0.25rem 0.5rem;
-              border-radius: 5px;
-              cursor: pointer;
-              transition: background 0.3s;
-              margin-left: 0.5rem;
-
-              &.disabled {
-                pointer-events: none;
-
-                .block {
-                  color: #b5b5b5 !important;
-                }
-
-              }
-
-              &:hover {
-                background-color: rgb(86, 86, 90);
-              }
-
-            }
-
-            &:first-child {
-              .toolbar-item {
-                margin-left: 0;
-              }
-            }
-          }
-
-
-
-        }
-
-
         .v-container {
           flex: 1 1 auto;
           position: relative;
-
           overflow: hidden;
 
           .viewer {
@@ -269,6 +302,7 @@
           }
         }
       }
+
     }
   }
 
@@ -296,9 +330,10 @@
     margin: 0 0 10rem 0;
     padding: 0;
     list-style: none;
+    flex-wrap: wrap;
 
     li {
-      margin: 0 0.5rem;
+      margin: 0.5rem;
       position: relative;
       overflow: hidden;
       cursor: pointer;
@@ -337,8 +372,18 @@
 
 }
 
-.file-panel,
-.acquaintance-share {
+#selection {
+  position: absolute;
+  background: rgba(34, 118, 243, 0.2);
+  border: $primary 1px solid;
+  width: 0px;
+  height: 0px;
+  overflow: hidden;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.file-panel {
   .breadcrumb {
     margin-bottom: 0;
 
@@ -460,6 +505,7 @@
     max-width: 28rem;
 
     .modal-card-body {
+
       .node-card {
         .cover {
           width: 80px;
@@ -538,13 +584,36 @@
 
   .scroll-container {
     // height: auto;
-    height: calc(100vh - 6.625rem);
+    height: calc(100vh - 7.125rem);
     overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  // Re-style Checkbox
+  input[type=checkbox]+.check {
+    border-radius: 50% !important;
+    border: 2px solid rgb(201, 201, 201) !important;
+    transition: all 0.3s !important;
+
+    &:hover {
+      border: 2px solid #2276f3 !important;
+    }
+  }
+
+  input[type=checkbox]:checked+.check {
+    border: 2px solid #2276f3 !important;
+  }
+
+  .part {
+    input[type=checkbox]+.check {
+      border: 2px solid #2276f3 !important;
+      background: #2276f3 url("data:image/svg+xml;utf8,%3C?xml version='1.0' encoding='UTF-8'?%3E%3C!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' width='15' height='15' viewBox='0 0 24 24'%3E %3Cpath fill='%23ffffff' d='M19,13H5V11H19V13Z' /%3E%3C/svg%3E") no-repeat center center !important;
+    }
   }
 
   .node-list {
     .scroll-container {
-      height: calc(100vh - 9.25rem);
+      height: calc(100vh - 9.75rem);
 
       .cover {
         .file-cover {
@@ -609,6 +678,33 @@
               .outer-wrapper {
                 position: relative;
 
+                .checkbox-container {
+                  position: absolute;
+                  width: 24px;
+                  height: 24px;
+                  left: 4px;
+                  top: 4px;
+                  border-radius: 5px;
+                  background-color: white;
+                  transition: all 0.25s;
+                  margin-bottom: 0;
+                  opacity: 0;
+                  visibility: hidden;
+                  z-index: 3;
+
+                  .b-checkbox {
+                    margin-right: 0 !important;
+                    left: 4px;
+                  }
+
+                  &.show {
+                    opacity: 1;
+                    visibility: visible;
+                  }
+
+
+                }
+
                 .action-btn {
                   position: absolute;
                   width: 24px;
@@ -621,11 +717,21 @@
                   opacity: 0;
                   visibility: hidden;
                   cursor: pointer;
-                  z-index: 3;
+                  z-index: auto;
+
+                  &.show {
+                    opacity: 1;
+                    visibility: visible;
+                  }
                 }
 
                 &:hover {
                   .action-btn {
+                    opacity: 1;
+                    visibility: visible;
+                  }
+
+                  .checkbox-container {
                     opacity: 1;
                     visibility: visible;
                   }
@@ -635,11 +741,27 @@
                   }
                 }
 
+                &.active {
+                  .checkbox-container {
+                    opacity: 1;
+                    visibility: visible;
+                    transition: all 0.25s;
+                  }
+
+                  .node-card {
+                    background-color: $primary-light;
+                  }
+
+
+                }
+
                 .node-card {
                   border-radius: 10px;
                   transition: all 0.25s;
                   cursor: pointer;
                   padding: 8px 0 10px;
+                  position: relative;
+                  z-index: 0;
 
                   &.isCutting {
                     opacity: 0.5;
@@ -975,7 +1097,6 @@
     justify-content: space-between;
     position: relative;
     padding: 0 2.5rem;
-    z-index: 5;
 
     .tr {
       display: flex;
@@ -984,6 +1105,8 @@
       align-items: center;
       border-top: #f8f8f8 1px solid;
       border-bottom: #f8f8f8 1px solid;
+      margin-left: -0.25rem;
+      margin-right: -0.25rem;
 
       .th,
       .td {
@@ -1039,6 +1162,10 @@
       transition: all 0.25s;
       cursor: pointer;
 
+      &.active {
+        background-color: $primary-light !important;
+      }
+
       &.isCutting {
         opacity: 0.5;
       }
@@ -1080,6 +1207,20 @@
           padding-left: 48px;
           padding-right: 24px;
           pointer-events: none;
+          line-height: 1.2em;
+        }
+
+        .checkbox-container {
+
+          opacity: 0;
+          visibility: hidden;
+          transition: all 0.25s;
+
+          &.show {
+            opacity: 1 !important;
+            visibility: visible !important;
+          }
+
         }
 
         .action-btn {
@@ -1093,6 +1234,11 @@
           top: 4px;
           border-radius: 5px;
 
+          &.show {
+            opacity: 1 !important;
+            visibility: visible !important;
+          }
+
           &:hover {
             opacity: 1;
             background-color: white;
@@ -1103,6 +1249,11 @@
       &:hover {
         background-color: #f8f8f8;
 
+        .checkbox-container {
+          opacity: 1;
+          visibility: visible;
+        }
+
         .action-btn {
           opacity: 0.7;
           visibility: visible;
@@ -1111,6 +1262,182 @@
     }
   }
 }
+
+
+// New List View
+.fliebroswer {
+  .table-thead {
+    .tr-wrapper {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      padding: 0 2rem;
+
+      .tr {
+        display: flex;
+
+        .th,
+        .td {
+          height: 40px;
+          font-size: 14px;
+          line-height: 1.6;
+          justify-content: space-between;
+          display: flex;
+          align-items: center;
+
+          &:nth-child(1) {
+            width: 24px !important;
+            min-width: auto;
+            margin-left: 0;
+            flex-grow: 0;
+            flex-shrink: 0;
+          }
+
+          &:nth-child(2) {
+            text-align: left;
+            margin-left: 0.4rem;
+            padding-left: 0;
+            flex-grow: 1;
+            min-width: 80px;
+          }
+
+          &:nth-child(3) {
+            margin-left: 1rem;
+            padding-left: 0;
+            width: 140px;
+            flex-grow: 0;
+            flex-shrink: 1;
+          }
+
+          &:nth-child(4) {
+            margin-left: 1rem;
+            padding-left: 0;
+            width: 80px;
+            flex-grow: 0;
+            flex-shrink: 1;
+          }
+        }
+      }
+    }
+  }
+
+  .tbody {
+    .scroll-container {
+      overflow-y: overlay;
+    }
+
+    .tr-wrapper {
+      padding: 0 2rem;
+
+      .action-wrapper {
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        right: 0;
+      }
+
+      .tr {
+        transition: all 0.25s;
+        cursor: pointer;
+
+        &.isCutting {
+          opacity: 0.5;
+        }
+
+        .td {
+          position: relative;
+          justify-content: initial;
+          box-sizing: border-box;
+          height: 52px;
+          border-top: 0;
+
+          &:nth-child(1) {
+            width: 24px !important;
+            min-width: auto;
+            margin-left: 0;
+            flex-grow: 0;
+            flex-shrink: 0;
+          }
+
+          &:nth-child(2) {
+            text-align: left;
+            margin-left: 0.4rem;
+            padding-left: 0;
+            flex-grow: 1;
+            min-width: 80px;
+          }
+
+          &:nth-child(3) {
+            margin-left: 1rem;
+            padding-left: 0;
+            width: 140px;
+            flex-grow: 0;
+            flex-shrink: 1;
+          }
+
+          &:nth-child(4) {
+            margin-left: 1rem;
+            padding-left: 0;
+            width: 80px;
+            flex-grow: 0;
+            flex-shrink: 1;
+          }
+
+          .cover {
+            width: 32px;
+            height: 32px;
+            margin-right: 20px;
+            flex-shrink: 0;
+            flex-grow: 0;
+            pointer-events: none;
+          }
+
+          .text {
+            text-align: left;
+            max-width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            margin-bottom: 0;
+            position: absolute;
+            padding-left: 48px;
+            padding-right: 24px;
+            pointer-events: none;
+          }
+
+          .action-btn {
+            transition: all 0.25s;
+            opacity: 0;
+            visibility: hidden;
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            right: 4px;
+            top: 4px;
+            border-radius: 5px;
+
+            &:hover {
+              opacity: 1;
+              background-color: white;
+            }
+          }
+        }
+
+        &:hover {
+          background-color: #f8f8f8;
+
+          .action-btn {
+            opacity: 0.7;
+            visibility: visible;
+          }
+        }
+      }
+    }
+  }
+}
+
+
 
 // Video Player
 :root {

@@ -1,10 +1,10 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
- * @LastEditors: JerryK
- * @LastEditTime: 2021-10-22 14:57:06
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-05-17 00:33:01
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/Suggestion.vue
+ * @FilePath: \CasaOS-UI\src\bak\Suggestion.vue
 -->
 <template>
   <div class=" home-section has-text-left ">
@@ -40,7 +40,7 @@
 
 <script>
 export default {
-  name: 'suggestion',
+  name: 'suggestion-section',
   data() {
     return {
       isLoading: true,

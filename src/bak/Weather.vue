@@ -1,3 +1,13 @@
+<!--
+ * @Author: Jerryk jerry@icewhale.org
+ * @Date: 2021-10-27 15:44:17
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-05-17 00:33:24
+ * @FilePath: \CasaOS-UI\src\bak\Weather.vue
+ * @Description: 
+ * 
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+-->
 <template>
   <div class="widget has-text-white">
     <a class="weatherwidget-io" href="https://forecast7.com/en/31d23121d47/shanghai/" data-label_1="SHANGHAI" data-mode="Current" data-theme="original" data-basecolor=""></a>
@@ -6,7 +16,7 @@
 
 <script>
 export default {
-  name: "weather",
+  name: "weather-widgets",
   icon: "white-balance-sunny",
   title: "Weather",
   initShow: false,

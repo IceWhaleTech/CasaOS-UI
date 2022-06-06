@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-05-16 15:06:45
+ * @LastEditTime: 2022-06-01 18:36:13
  * @FilePath: \CasaOS-UI\src\components\Apps\AppSection.vue
  * @Description: 
  * 
@@ -69,7 +69,7 @@
 
 <script>
 import AppCard from './AppCard.vue'
-import Panel from './Panel.vue'
+import AppPanel from './AppPanel.vue'
 import draggable from 'vuedraggable'
 import AppNewButtonCard from './AddNewButtonCard.vue'
 import xor from 'lodash/xor'
@@ -198,7 +198,7 @@ export default {
         if (res.data.success == 200) {
           this.$buefy.modal.open({
             parent: this,
-            component: Panel,
+            component: AppPanel,
             hasModalCard: true,
             customClass: 'app-panel',
             trapFocus: true,
@@ -234,7 +234,7 @@ export default {
           if (res.data.success == 200) {
             this.$buefy.modal.open({
               parent: this,
-              component: Panel,
+              component: AppPanel,
               hasModalCard: true,
               customClass: '',
               trapFocus: true,
@@ -252,13 +252,24 @@ export default {
                 isCasa: isCasa,
                 runningStatus: status,
                 configData: res.data.data,
-                initDatas: ret.data.data
+                settingData: ret.data.data
               }
             })
           }
         })
       })
     }
+  },
+  sockets: {
+    app_install(res) {
+      const data = res.body.data
+      if (data.finished) {
+        this.getList();
+      }
+    },
+    app_uninstall() {
+      this.getList();
+    },
   }
 }
 </script>

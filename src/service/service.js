@@ -1,10 +1,10 @@
 /*
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
- * @LastEditors: JerryK
- * @LastEditTime: 2022-01-19 18:09:14
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-02 11:06:25
  * @Description: 
- * @FilePath: /CasaOS-UI/src/service/service.js
+ * @FilePath: \CasaOS-UI\src\service\service.js
  */
 import axios from 'axios'
 import qs from 'qs'
@@ -13,8 +13,8 @@ import store from '@/store'
 // Set Post Headers
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 axios.defaults.withCredentials = false;
-if (process.env.NODE_ENV === "'dev'") {
-    axios.defaults.baseURL = `http://${store.state.devIp}:${store.state.devPort}/v1`;
+if (process.env.NODE_ENV === "dev") {
+    axios.defaults.baseURL = `${document.location.protocol}//${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}/v1`;
 } else {
     axios.defaults.baseURL = `${document.location.protocol}//${document.location.host}/v1`
 }
@@ -24,8 +24,14 @@ const instance = axios.create({
     timeout: 60000,
 });
 
+const getLangFromBrowser = () => {
+    var lang = navigator.language || navigator.userLanguage;
+    lang = lang.toLowerCase().replace("-", "_");
+    return lang
+}
+
 const getInitLang = () => {
-    let lang = localStorage.getItem('lang') ? localStorage.getItem('lang') : this.getLangFromBrowser()
+    let lang = localStorage.getItem('lang') || getLangFromBrowser()
     return lang
 }
 
@@ -39,7 +45,6 @@ instance.interceptors.request.use((config) => {
     config.headers.Authorization = token
     config.headers.common["Language"] = getInitLang()
     store.commit('setToken', token)
-    //console.log("请求拦截", config);
     return config;
 }, (error) => {
     // Do something with request error
@@ -95,25 +100,28 @@ const api = {
 
     },
     post(url, data) {
-        let newData = (url.indexOf("install") > 0 || url.indexOf("sys") > 0) ? JSON.stringify(data) : qs.stringify(data)
-        if (url.indexOf("install") > 0) {
-            axios.defaults.headers.post['Content-Type'] = 'application/json';
-        } else {
-            axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
-        }
-        return instance.post(url, newData)
+        return instance.post(url, this._processData(url, data))
     },
     put(url, data) {
-        let newData = (url.indexOf("setting") > 0) ? JSON.stringify(data) : qs.stringify(data)
-        if (url.indexOf("setting") > 0) {
-            axios.defaults.headers.post['Content-Type'] = 'application/json';
-        } else {
-            axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
-        }
-        return instance.put(url, newData)
+        return instance.put(url, this._processData(url, data))
     },
     delete(url, data) {
-        return instance.delete(url, { params: data })
+        return instance.delete(url, { data: data })
+    },
+    _processData(url, data) {
+        const isJSON = (url.indexOf("setting") > 0 || url.indexOf("install") > 0 || url.indexOf("sys") > 0 || url.indexOf("file") > 0)
+
+        let payload,
+            contentType
+        if (isJSON) {
+            contentType = 'application/json';
+            payload = JSON.stringify(data)
+        } else {
+            contentType = 'application/x-www-form-urlencoded;charset=UTF-8';
+            payload = qs.stringify(data)
+        }
+        axios.defaults.headers.post['Content-Type'] = contentType;
+        return payload
     }
 }
 export { api }

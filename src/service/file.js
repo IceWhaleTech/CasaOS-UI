@@ -1,15 +1,19 @@
 /*
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-08 15:17:12
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-05-30 19:02:12
  * @Description: File API
  * @FilePath: \CasaOS-UI\src\service\file.js
  */
 import { api } from "./service.js";
 
 const file = {
-    // get Path list
+    /**
+     * @description: get Path list
+     * @param {String} path
+     * @return {*}
+     */
     dirPath(path) {
         let data = {
             path: path
@@ -41,7 +45,7 @@ const file = {
     // Download File
     download(path) {
         let data = {
-            path: path
+            files: path
         }
         return api.get('/file/download', data);
     },
@@ -63,20 +67,12 @@ const file = {
         return api.put('/file/update', data);
     },
     // Copy or Move File
-    operate(from, to, type) {
-        let data = {
-            from: from,
-            to: to,
-            type: type
-        }
+    operate(data) {
         return api.post('/file/operate', data);
     },
     // Delete file or folder
-    delete(path) {
-        let data = {
-            path: path
-        }
-        return api.delete('/file/delete', data);
+    delete(pathArray) {
+        return api.delete('/file/delete', pathArray);
     },
     // Upload File
     upload() {

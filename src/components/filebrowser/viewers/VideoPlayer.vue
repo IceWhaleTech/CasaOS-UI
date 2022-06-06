@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-03-04 18:55:13
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-10 12:05:23
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-02 14:38:10
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\viewers\VideoPlayer.vue
 -->
@@ -67,7 +67,7 @@
 
 <script>
 import { mixin } from '@/mixins/mixin';
-import VuePlyr from 'vue-plyr'
+// import VuePlyr from 'vue-plyr'
 import 'vue-plyr/dist/vue-plyr.css'
 
 export default {
@@ -84,7 +84,7 @@ export default {
     },
   },
   components: {
-    VuePlyr
+    VuePlyr:()=>import("vue-plyr")
   },
   data() {
     return {

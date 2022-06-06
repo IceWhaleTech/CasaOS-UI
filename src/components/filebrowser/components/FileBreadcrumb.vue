@@ -1,17 +1,17 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-03-01 15:40:34
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-07 16:04:41
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-05-26 23:13:48
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\filebrowser\FileBreadcrumb.vue
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\components\FileBreadcrumb.vue
 -->
 <template>
   <div>
     <b-breadcrumb size="is-medium">
       <b-breadcrumb-item v-for="(item,index) in pathCollection" :key="item+index" :active="checkActive(index)" @click="open(item)" v-show="item.show || item == activeHide">
         <template v-if="item == activeHide">
-          <b-dropdown aria-role="list" append-to-body :triggers="['']" ref="breadDrop" class="file-dropdown" animation="fade1" :mobile-modal="false">
+          <b-dropdown aria-role="list" append-to-body :triggers="['']" ref="breadDrop" class="file-dropdown" animation="fade1" >
             <template #trigger>
               <p role="button">
                 <b-icon icon="dots-horizontal" custom-size="mdi-18px" id="das">

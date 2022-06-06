@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-03-07 13:47:45
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-05-16 15:04:13
+ * @LastEditTime: 2022-05-26 22:33:41
  * @FilePath: \CasaOS-UI\src\components\filebrowser\viewers\ImageViewer.vue
  * @Description: 
  * 
@@ -10,14 +10,14 @@
 -->
 
 <template>
-  <div class="overlay" @mousemove="onMouseMove" id="image_viewer">
+  <div class="overlay" @mousemove="onMouseMove" @touchmove="onMouseMove" id="image_viewer">
     <header class="modal-card-head">
-      <div class="flex1 is-flex ">
+      <div class="is-flex  is-flex-grow-1 is-flex-shrink-1">
         <!-- Title Start -->
         <h3 class="title is-6 one-line">{{currentItem.name}}</h3>
         <!-- Title End -->
       </div>
-      <div class="is-flex is-align-items-center">
+      <div class="is-flex is-align-items-center is-flex-shrink-0">
         <!-- Download File Button Start -->
         <b-button icon-left="download" type="is-primary" size="is-small" :label="$t('Download')" class="mr-2" rounded @click="download" />
         <!-- Download File Button End -->

@@ -1,10 +1,10 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-12-06 18:29:48
- * @LastEditors: JerryK
- * @LastEditTime: 2021-12-08 13:49:02
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-05-25 16:44:15
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/PortPanel.vue
+ * @FilePath: \CasaOS-UI\src\components\settings\PortPanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -80,11 +80,12 @@ export default {
     checkUpdate() {
 
       this.timer = setInterval(() => {
-        let checkUrl = (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${this.port}` : `http://${document.domain}:${this.port}`
+        const domain = (process.env.NODE_ENV === "dev") ? `http://${this.$baseIp}` : `http://${document.domain}`
+        const checkUrl = `http://${domain}:${this.port}`
         this.$api.info.checkUiPort(checkUrl + '/v1/sys/port').then(res => {
           if (res.data.success == 200) {
             clearInterval(this.timer);
-            let url = (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${res.data.data}` : `http://${document.domain}:${res.data.data}`
+            const url = `http://${domain}:${res.data.data}`
             window.open(url, '_self');
           }
         })

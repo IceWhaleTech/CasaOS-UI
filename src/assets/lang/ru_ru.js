@@ -203,7 +203,7 @@ export default {
     "Port [Please add a ports set first]": "Port [Please add a ports set first]",
     "[Optional]": "[Optional]",
     "Notice: If there are multiple services, only the first set can be analyzed correctly": "Notice: If there are multiple services, only the first set can be analyzed correctly",
-    "No need": "No need",
+    "Port": "Port",
 
     //Storage
     "Create Storage": "Create Storage",
@@ -288,6 +288,12 @@ export default {
     "Reset": "Reset",
     "Zoom out": "Zoom out",
     "INext": "Next",
+    "Move": "Move",
+    "Current Tasks": "Current Tasks",
+    "Deleting files": "Deleting files",
+    "Are you sure you want to <b>delete</b> these files? This action cannot be undone.": "Are you sure you want to <b>delete</b> these files? This action cannot be undone.",
+    "select-items": "Select {num} items",
+    "total-items": "Total {num} items",
 
     /* ******************************
     * Share Section

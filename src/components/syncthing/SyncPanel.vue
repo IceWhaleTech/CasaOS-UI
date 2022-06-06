@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-11-10 18:22:36
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-09 16:01:01
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-05-25 18:03:51
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\syncthing\SyncPanel.vue
 -->
@@ -11,7 +11,7 @@
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
       <div class="flex1">
-        <h3 class="title is-4 has-text-weight-normal">{{$t('Sync Guide')}}</h3>
+        <h3 class="title is-4 has-text-weight-normal">Sync Guide</h3>
       </div>
       <div class="is-flex is-align-items-center">
 
@@ -44,6 +44,7 @@
       <!-- Steps End -->
 
       <div>
+        <!-- Step-1 Start -->
         <div class="step1 has-text-centered " v-if="step == 1">
           <h1 class="title is-5 has-text-weight-normal">{{$t('Download Syncthing on the device you want to sync with CasaOS')}}</h1>
           <div class="is-flex is-justify-content-center mt-6">
@@ -98,11 +99,15 @@
             <b-icon icon="information" class="mr-2" style="color:#F8D149" /> {{$t('Install and open the downloaded application, then click the "Next" button.')}}
           </p>
         </div>
+        <!-- Step-1 End -->
+
+        <!-- Step-2 Start -->
+
         <div class="step2" v-if="step == 2 ">
           <b-field :label="$t('Device ID')" expanded>
-            <b-input :placeholder="$t('Fill in your Device ID to continue')" v-model="deviceId" @input="checkDeviceId" :disabled="isSubmited" expanded></b-input>
+            <b-input :placeholder="$t('Fill in your Device ID to continue')" v-model="deviceId" :disabled="isSubmited" expanded></b-input>
             <p class="control">
-              <b-button type="is-primary" :label="$t('Submit')" @click="submitNewDevice" :loading="isSubmiting" :disabled="!isValId || isSubmited" />
+              <b-button type="is-primary" :label="$t('Submit')" @click="submitNewDevice" :loading="isSubmiting" :disabled=" isSubmited" />
             </p>
           </b-field>
 
@@ -191,14 +196,13 @@
                 </div>
               </div>
             </b-tab-item>
-            <!-- <b-tab-item label="Ubuntu" icon="ubuntu" key="ubuntu" value="ubuntu">
-              <div class="t-box">
-                dsadas
-              </div>
-            </b-tab-item> -->
           </b-tabs>
 
         </div>
+
+        <!-- Step-2 End -->
+
+        <!-- Step-3 Start -->
         <div class="step3" v-if="step == 3">
           <div class="mt-6">
             <h3 class="title is-4 has-text-centered has-text-weight-normal">{{$t('There you go!')}}</h3>
@@ -208,6 +212,7 @@
             </div>
           </div>
         </div>
+        <!-- Step-3 End -->
       </div>
 
     </section>
@@ -282,31 +287,18 @@ export default {
   },
 
   created() {
-    this.syncBaseURL = (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${this.$store.state.syncthingPort}` : `${document.location.protocol}//${document.location.hostname}:${this.$store.state.syncthingPort}`
+
+    this.syncBaseURL = (process.env.NODE_ENV === "dev") ? `http://${this.$baseIp}:${this.$store.state.syncthingPort}` : `${document.location.protocol}//${document.location.hostname}:${this.$store.state.syncthingPort}`
+    console.log(this.syncBaseURL);
     this.syncXhr = axios.create({
-      baseURL: this.syncBaseURL
+      baseURL: this.syncBaseURL,
+      timeout: 1000
     });
     this.syncXhr.defaults.headers.common['X-API-Key'] = this.$store.state.syncthingKey;
 
     const parser = new UAParser();
     this.broswerUA = parser.getResult();
     this.getOSIcon()
-    // axios.get(SYNCTHING_GITURL)
-    //   .then(({ data }) => {
-    //     this.isLoading = false;
-    //     const tagName = data.tag_name;
-    //     this.getOS(tagName)
-    //     this.syncthingMacDlUrl = `${SYNCTHING_GIT_RELEASE_URL}${tagName}/syncthing-macos-universal-${tagName}.zip`
-    //     this.syncthingWindows64DlUrl = `${SYNCTHING_GIT_RELEASE_URL}${tagName}/syncthing-windows-amd64-${tagName}.zip`
-    //     this.syncthingWindows32DlUrl = `${SYNCTHING_GIT_RELEASE_URL}${tagName}/syncthing-windows-386-${tagName}.zip`
-    //     this.syncthingAndroidDlUrl = SYNCTHING_GOOGLEPLAY_URL
-    //     this.syncthingAndroidDlUrl1 = SYNCTHING_APK_URL
-    //   })
-    //   .catch((error) => {
-    //     throw error
-    //   })
-    //   .finally(() => {
-    //   })
   },
   mounted() {
     this.$smoothReflow({
@@ -314,7 +306,6 @@ export default {
       property: ['height', 'width'],
       transition: 'height .25s ease, width .75s ease-out'
     })
-
   },
 
   methods: {
@@ -344,7 +335,6 @@ export default {
         default:
           this.platform = this.icon = "linux";
           this.osName = "Linux";
-
           break;
       }
     },
@@ -379,26 +369,7 @@ export default {
           break;
       }
     },
-    // getOS(tagName) {
-    //   switch (this.broswerUA.os.name) {
-    //     case "Mac OS":
-    //       this.syncthingDownloadUrl = `${SYNCTHING_GIT_RELEASE_URL}${tagName}/syncthing-${this.platform}-${this.getArchitecture()}-${tagName}.zip`
-    //       break;
-    //     case "Windows":
-    //       this.syncthingDownloadUrl = `${SYNCTHING_GIT_RELEASE_URL}${tagName}/syncthing-${this.platform}-${this.getArchitecture()}-${tagName}.zip`
-    //       break;
-    //     case "Android":
-    //       this.syncthingAndroidDlUrl = SYNCTHING_GOOGLEPLAY_URL
-    //       this.syncthingAndroidDlUrl1 = SYNCTHING_APK_URL
-    //       break;
-    //     case "iOS":
-    //       this.syncthingDownloadUrl = ``
-    //       break;
-    //     default:
-    //       this.syncthingDownloadUrl = `${SYNCTHING_GIT_RELEASE_URL}${tagName}/syncthing-${this.platform}-${this.getArchitecture()}-${tagName}.tar.gz`
-    //       break;
-    //   }
-    // },
+
     getArchitecture() {
 
       let arch = ""
@@ -424,29 +395,42 @@ export default {
       this.showMore = true;
     },
     checkDeviceId() {
-      this.syncXhr.get(`/rest/svc/deviceid?id=${this.deviceId}`).then(res => {
-        if (res.data.id) {
-          this.isValId = true;
-        } else {
-          this.isValId = false;
-        }
-      })
+
     },
     submitNewDevice() {
       this.isSubmiting = true
-      this.syncXhr.get(`/rest/config`).then(res => {
-        this.syncConfig = res.data
-        let newDevice = this.genNewDevice(this.deviceId)
-        this.syncConfig.devices.push(newDevice);
-        this.syncConfig.folders = this.createShareFolder(this.syncConfig.folders)
-        this.syncXhr.put(`/rest/config`, this.syncConfig).then(res => {
+      this.syncXhr.get(`/rest/svc/deviceid?id=${this.deviceId}`).then(res => {
+        if (res.data.id) {
+          this.syncXhr.get(`/rest/config`).then(res => {
+            this.syncConfig = res.data
+            let newDevice = this.genNewDevice(this.deviceId)
+            this.syncConfig.devices.push(newDevice);
+            this.syncConfig.folders = this.createShareFolder(this.syncConfig.folders)
+            this.syncXhr.put(`/rest/config`, this.syncConfig).then(res => {
+              this.isSubmiting = false;
+              if (res.status == 200) {
+                this.isSubmited = true;
+                this.helpTitle = "What do I need to do on my device?";
+              }
+            })
+          })
+        } else {
           this.isSubmiting = false;
-          if (res.status == 200) {
-            this.isSubmited = true;
-            this.helpTitle = "What do I need to do on my device?";
-          }
+          this.$buefy.toast.open({
+            message: `Unable to link this device.`,
+            position: 'is-bottom',
+            type: 'is-danger'
+          })
+        }
+      }).catch(() => {
+        this.isSubmiting = false;
+        this.$buefy.toast.open({
+          message: `Unable to link this device.`,
+          position: 'is-bottom',
+          type: 'is-danger'
         })
       })
+
     },
     // Create Share folder for new device
     createShareFolder(folders) {

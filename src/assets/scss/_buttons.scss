@@ -6,6 +6,7 @@
 
 .c-button {
   border-radius: 4px;
+
   &:hover {
     background-color: #cfcfcf;
   }
@@ -25,6 +26,7 @@
 .button.is-iina {
   background-color: #0088cc;
   color: white;
+
   &:hover {
     background: findDarkColor(#0088cc);
   }
@@ -33,26 +35,32 @@
 .button.is-potplayer {
   background-color: #ecc94b;
   color: $black;
+
   &:hover {
     background: findDarkColor(#ecc94b);
     color: $white;
   }
 }
+
 .button.is-vlc {
   background-color: #dd6b20;
   color: $white;
+
   &:hover {
     background: findDarkColor(#dd6b20);
     color: $white;
   }
 }
+
 .button.is-ghost {
   color: $ghost;
 }
+
 .button.is-text {
   color: #000;
   text-decoration: none;
   background: transparent;
+
   &:hover {
     background: transparent;
   }
@@ -62,9 +70,11 @@
   color: #0e9aff;
   margin: 0 0.25rem;
 }
+
 .top-button {
   margin-left: 0.5em;
 }
+
 .fullscreen-button {
   position: absolute;
   z-index: 100;
@@ -103,13 +113,16 @@
   padding: 0;
   transition: all 0.2s;
   margin: 0 0.25rem;
+
   &:before {
     transition: all 0.2s;
     position: relative;
     font-size: 1.25rem !important;
   }
+
   &:hover {
     background-color: #363636;
+
     &:before {
       color: #fff;
     }
@@ -145,15 +158,22 @@
   padding: 0;
   transition: all 0.2s;
   margin: 0 0.25rem;
+
   &:before {
     transition: all 0.2s;
     position: relative;
     font-size: 1.25rem;
     color: #fff;
   }
+
   &:hover {
     &:before {
       color: #fff;
     }
   }
+}
+
+.half-padding {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }

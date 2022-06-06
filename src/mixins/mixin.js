@@ -1,8 +1,8 @@
 /*
  * @Author: JerryK
  * @Date: 2022-01-20 12:01:07
- * @LastEditors: 老竭力 jerrykuku@qq.com
- * @LastEditTime: 2022-05-06 16:30:16
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-06-06 16:58:39
  * @Description: 
  * @FilePath: \CasaOS-UI\src\mixins\mixin.js
  */
@@ -40,7 +40,7 @@ const filePanelMap = {
     'code-editor': union(typeMap['text-x-generic'], typeMap['text-css'], typeMap['text-html'], typeMap['text-x-cmake'], typeMap['text-dockerfile']),
     "video-player": union(typeMap['video-x-generic'], typeMap['audio-x-generic']),
     "image-viewer": typeMap['image-x-generic'],
-    "pdf-viewer": typeMap['application-pdf'],
+    // "pdf-viewer": typeMap['application-pdf'],
 }
 
 
@@ -48,7 +48,7 @@ const filePanelMap = {
 export const mixin = {
     data() {
         return {
-            baseUrl: (process.env.NODE_ENV === "'dev'") ? `http://${this.$store.state.devIp}:${this.$store.state.devPort}/v1/` : `http://${document.location.host}/v1/`
+            baseUrl: `http://${this.$baseURL}/v1/`
         }
     },
     mounted() {
@@ -156,15 +156,15 @@ export const mixin = {
         },
         /**
          * @description: Download File
-         * @param {Object} item 
+         * @param {Object,Array} items
          * @return {void} 
          */
-        downloadFile(item) {
+        downloadFile(items) {
             this.$buefy.toast.open({
                 message: this.$t('Download in preparation...'),
                 type: 'is-light'
             })
-            let url = this.getFileUrl(item)
+            let url = this.getFileUrl(items,false)
             window.open(url, '_blank');
         },
         playVideo(item, player) {
@@ -173,13 +173,28 @@ export const mixin = {
         },
 
         // Get File Download URL
-        getFileUrl(item) {
-            let apiUrl = `${this.baseUrl}file/new/download?`;
+        getFileUrl(items, isStream = true) {
+            let apiUrl = `${this.baseUrl}file/download`;
+            let path = ""
             let parameters = {
-                path: item.path,
                 token: this.$store.state.token
             }
-            return apiUrl + qs.stringify(parameters)
+            if (items.constructor === Object) {
+                if (isStream || items.is_dir) {
+                    path = items.path
+                    parameters.files = path
+                    return apiUrl + "?" + qs.stringify(parameters)
+                } else {
+                    return apiUrl + items.path + "?" + qs.stringify(parameters)
+                }
+            } else if (items.constructor === Array) {
+                const pathArray = items.map(o => {
+                    return o.path
+                })
+                path = pathArray.join(",")
+                parameters.files = path
+                return apiUrl + "?" + qs.stringify(parameters)
+            }
         },
 
         // check if has thumb
@@ -248,27 +263,61 @@ export const mixin = {
         /**
          * @description: Copy Or Cut File
          * @param {String} type
+         * @param {Object,Array} items
          * @return {void} 
          */
-        operate(type) {
-            const operateObject = {
-                from: this.item.path,
+        operate(type, items) {
+            let operateObject = {
                 type: type
             }
+            if (items.constructor === Object) {
+                operateObject.item = [
+                    {
+                        from: items.path,
+
+                    }
+                ]
+            } else if (items.constructor === Array) {
+                operateObject.item = items.map(o => {
+                    return {
+                        from: o.path,
+                    }
+                })
+            }
             this.$store.commit('changeOperateObject', operateObject)
-            this.$refs.dropDown.toggle()
+            if (this.$refs.dropDown !== undefined) {
+                this.$refs.dropDown.toggle()
+            }
+
         },
 
         /**
          * @description: Delete File
-         * @param {} 
+         * @param {Object,Array} items
          * @return {void} 
          */
-        deleteItem() {
-            this.$api.file.delete(this.item.path).then(res => {
+        deleteItem(items) {
+            let path = ""
+            if (items.constructor === Object) {
+                path = [items.path]
+            } else if (items.constructor === Array) {
+                path = items.map(o => {
+                    return o.path
+                })
+            }
+            this.$api.file.delete(JSON.stringify(path)).then(res => {
                 if (res.data.success == 200) {
-                    this.$refs.dropDown.toggle()
-                    this.$emit("reload")
+                    if (this.$refs.dropDown !== undefined) {
+                        this.$refs.dropDown.toggle()
+                        this.$emit("reload")
+                    }
+                    try {
+                        if (typeof eval(this.reload) === "function") {
+                            this.reload()
+                        }
+                    } catch (e) {
+                        console.log("Delete Error");
+                    }
                 } else {
                     this.$buefy.toast.open({
                         message: res.data.message,
@@ -290,6 +339,13 @@ export const mixin = {
                 return false
             }
         },
+
+
+        /***********************
+         * 
+         * File Views
+         * 
+         ************************/
 
 
     },

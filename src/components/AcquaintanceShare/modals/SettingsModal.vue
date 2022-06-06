@@ -70,7 +70,8 @@
 
 <script>
 import FilePanel from '@/components/fileList/FilePanel.vue'
-import { remove, delay } from 'lodash'
+import remove from 'lodash/remove'
+import delay from 'lodash/delay'
 
 import smoothReflow from 'vue-smooth-reflow'
 export default {

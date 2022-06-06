@@ -217,12 +217,91 @@
           background-color: $primary-light;
         }
       }
+    }
+  }
+
+  .breadcrumb {
+    margin-bottom: 0;
+
+    ul {
+      margin-top: 0;
+      margin-left: 0;
+      flex-wrap: nowrap;
+
+      li {
+        margin-top: 0;
+        flex-shrink: 0;
+        font-weight: normal;
+        padding: 0 0.25rem 0 0;
+
+        a {
+          color: rgb(90, 90, 90);
+          padding-right: 0.5em;
+          padding-left: 0.5em;
+          margin-left: 0.25em;
+          transition: color 0.2s, background-color 0.2s;
+
+          &:hover {
+            color: $primary;
+            border-radius: 4px;
+            background-color: $primary-light;
+          }
+        }
+
+        &:first-child {
+          padding-right: 0.25em;
+          padding-left: 0;
+        }
+
+        &+li::before {
+          color: #b5b5b5;
+          content: ">";
+        }
+
+        &:last-child {
+          overflow: hidden;
+          flex-shrink: 1;
+
+          a {
+            font-weight: bolder;
+            display: block;
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+        }
+
+        .icon {
+          margin: 0 !important;
+        }
+      }
+    }
+
+    &.is-medium {
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    &.shadow {
+      visibility: hidden;
+      position: absolute;
+      z-index: 0;
 
 
-
+      ul {
+        li {
+          &:last-child {
+            overflow: auto;
+            flex-shrink: 0;
+          }
+        }
+      }
     }
   }
 }
+
+
 
 .download-cover {
   font-size: 0.875rem;
@@ -461,4 +540,3 @@
     }
   }
 }
-

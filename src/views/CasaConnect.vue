@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-03-11 13:36:11
- * @LastEditors: 老竭力 jerrykuku@qq.com
- * @LastEditTime: 2022-05-11 14:35:52
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-05-31 18:49:46
  * @Description: 
  * @FilePath: \CasaOS-UI\src\views\CasaConnect.vue
 -->
@@ -323,6 +323,7 @@ import UserContextMenu from '../components/AcquaintanceShare/components/UserCont
 import copy from 'clipboard-copy'
 
 export default {
+  name: "casa-connect",
   provide() {
     return {
       filePanel: this
@@ -350,7 +351,7 @@ export default {
       isDownloadShow: false,
       isDragIn: false,
       timeout: null,
-      websock: null,
+
       rootPath: "/",
       currentPath: "",
       currentPathName: "",
@@ -368,7 +369,7 @@ export default {
       currentUserFileList: {},
       cancelRequest: null,
       downloadListLen: 0,
-      wsUrl: (process.env.NODE_ENV === "'dev'") ? `ws://${this.$store.state.devIp}:${this.$store.state.devPort}/v1/notify/ws?token=${this.$store.state.token}` : `ws://${document.location.host}/v1/notify/ws?token=${this.$store.state.token}`,
+      wsUrl: `ws://${this.$baseURL}/v1/notify/ws?token=${this.$store.state.token}`,
       steps: [
         {
           target: '#v-step-0',
@@ -406,7 +407,7 @@ export default {
     }
   },
   created() {
-    this.initWebSocket();
+
   },
   mounted() {
     this.getMyInfo()
@@ -427,10 +428,7 @@ export default {
     tranlatePath.addEventListener("drop", this.onDrop, false);
 
   },
-  beforeDestroy() {
-    // clearInterval(this.timer);
-    this.websock.close()
-  },
+
   methods: {
 
 
@@ -447,7 +445,7 @@ export default {
           this.getMyFriendList(true)
         }
       })
-      
+
     },
 
     //   Get MyID
@@ -473,7 +471,7 @@ export default {
     getMyFriendList(showFirst = false) {
       this.$api.person.getFriendsList().then(res => {
         this.myFriendsList = orderBy(res.data.data, ['on_line'], ['desc'])
-        if (showFirst) {
+        if (showFirst && this.myFriendsList.length > 0) {
           let user = find(this.myFriendsList, (o) => { return o.on_line; });
           this.getUserFiles(user, this.rootPath)
         }
@@ -697,57 +695,7 @@ export default {
 
 
     /*************************************************
-     * PART 4  WebSocket to sync user online state
-    **************************************************/
-
-    // Init websocket
-    initWebSocket() {
-      this.websock = new WebSocket(this.wsUrl);
-      this.websock.onmessage = this.websocketOnMessage;
-      this.websock.onopen = this.websocketOnOpen;
-      this.websock.onerror = this.websocketOnError;
-      this.websock.onclose = this.websocketClose;
-    },
-    // Send a message to server after connect
-    websocketOnOpen() {
-      console.log('connected');
-      const sendData = { type: "app", data: "" }
-      this.websocketSend(JSON.stringify(sendData))
-    },
-    // Handle when connect failed
-    websocketOnError() {
-      this.initWebSocket();
-    },
-    // Recevie message
-    websocketOnMessage(e) {
-      const redata = JSON.parse(e.data);
-      redata.forEach((item) => {
-        if (item.type == 5 || item.type == 6) {
-          let isOnline = item.type == 5 ? false : true
-          this.handelUserOnline(isOnline, item.custom_id)
-        }
-      })
-    },
-    // Handle user online state
-    handelUserOnline(isOnline, token) {
-      this.myFriendsList.forEach(item => {
-        if (item.token == token) {
-          item.on_line = isOnline
-        }
-      })
-    },
-    // Send data
-    websocketSend(Data) {
-      this.websock.send(Data);
-    },
-    // Close websocket
-    websocketClose(e) {
-      console.log('disconnect', e);
-      this.initWebSocket();
-    },
-
-    /*************************************************
-     * PART 5  Drag and Drop
+     * PART 4  Drag and Drop
     **************************************************/
     onDrag: function (e) {
       this.isDragIn = true;
@@ -769,6 +717,16 @@ export default {
 
 
   },
+  sockets: {
+    person_status(data) {
+      let isOnline = data.type == "OFFLINE" ? false : true
+      this.myFriendsList.forEach(item => {
+        if (item.token == data.share_id) {
+          item.on_line = isOnline
+        }
+      })
+    }
+  }
 }
 </script>
 

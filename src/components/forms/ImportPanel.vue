@@ -9,15 +9,15 @@
     <!-- Modal-Card Header End -->
     <!-- Modal-Card Body Start -->
     <section class="modal-card-body">
-      <b-tabs v-model="activeTab">
+      <b-tabs v-model="activeTab" :animated="false">
         <b-tab-item label="Docker CLI">
           <b-field :type="{ 'is-danger': parseError}" :message="errors">
-            <b-input maxlength="800" type="textarea" class="import-area" v-model="dockerCliCommands"></b-input>
+            <b-input type="textarea" class="import-area" v-model="dockerCliCommands"></b-input>
           </b-field>
         </b-tab-item>
         <b-tab-item label="Docker Compose">
           <b-field :type="{ 'is-danger': parseError}" :message="errors">
-            <b-input maxlength="800" type="textarea" class="import-area" v-model="dockerComposeCommands" :placeholder="$t('Notice: If there are multiple services, only the first set can be analyzed correctly')"></b-input>
+            <b-input type="textarea" class="import-area" v-model="dockerComposeCommands" :placeholder="$t('Notice: If there are multiple services, only the first set can be analyzed correctly')"></b-input>
           </b-field>
         </b-tab-item>
         <b-tab-item :label="$t('AppFile')">
@@ -312,14 +312,19 @@ export default {
           this.updateData.label = upperFirst(lastNode.split(":")[0])
         }
         // Envs
-        let envArray = Array.isArray(parsedInput.environment) ? parsedInput.environment : Object.entries(parsedInput.environment)
-        this.updateData.envs = envArray.map(item => {
-          let ii = typeof item === "object" ? Array.from(item) : item.split("=");
-          return {
-            host: ii[1].replace(/"/g, ""),
-            container: ii[0]
-          }
-        })
+        if (parsedInput.environment) {
+          let envArray = Array.isArray(parsedInput.environment) ? parsedInput.environment : Object.entries(parsedInput.environment)
+          this.updateData.envs = envArray.map(item => {
+            let ii = typeof item === "object" ? Array.from(item) : item.split("=");
+            return {
+              host: ii[1].replace(/"/g, ""),
+              container: ii[0]
+            }
+          })
+        } else {
+          this.updateData.envs = []
+        }
+
 
         //Ports
         this.updateData.ports = this.makeArray(parsedInput.ports).map(item => {

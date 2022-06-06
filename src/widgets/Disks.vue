@@ -65,6 +65,7 @@
 import StorageManagerPanel from '@/components/Storage/StorageManagerPanel.vue'
 import { mixin } from '../mixins/mixin';
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
   name: 'disks',
   icon: "harddisk",
   title: "Storage Status",
@@ -76,7 +77,7 @@ export default {
       totalSize: 0,
       totalUsed: 0,
       totalPercent: 0,
-      health: "",
+      health: "Healthy",
       usbDisks: []
     }
   },
@@ -85,18 +86,6 @@ export default {
     this.getDiskInfo(this.$store.state.hardwareInfo.disk)
     this.usbDisks = this.$store.state.hardwareInfo.usb
   },
-
-  watch: {
-    // Watch if Hardware info changes in the store
-    '$store.state.hardwareInfo': {
-      handler(data) {
-        this.getDiskInfo(data.disk)
-        this.usbDisks = data.usb
-      },
-      deep: true
-    },
-  },
-
   methods: {
     getDiskInfo(diskInfo) {
       this.totalSize = diskInfo.size
@@ -117,9 +106,15 @@ export default {
         animation: "zoom-in",
       })
     },
-
-
   },
+  sockets: {
+    sys_disk(data) {
+      this.getDiskInfo(data.body.data)
+    },
+    sys_usb(data) {
+      this.usbDisks = data.body.data
+    }
+  }
 }
 </script>
 

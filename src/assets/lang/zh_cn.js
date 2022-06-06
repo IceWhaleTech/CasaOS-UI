@@ -203,7 +203,7 @@ export default {
     "Port [Please add a ports set first]": "端口 [请先添加一组端口]",
     "[Optional]": "[可选]",
     "Notice: If there are multiple services, only the first set can be analyzed correctly": "注意：如果存在多个服务只有第一组服务能够被正确的解析",
-    "No need": "不需要",
+    "Port": "端口",
 
     //Storage
     "Create Storage": "创建存储空间",
@@ -287,6 +287,12 @@ export default {
     "Reset": "复位",
     "Zoom out": "缩小",
     "INext": "下一张",
+    "Move": "Move",
+    "Current Tasks": "当前任务",
+    "Deleting files": "删除文件",
+    "Are you sure you want to <b>delete</b> these files? This action cannot be undone.": "你确定要<b>删除</b>这些文件吗？这个动作无法撤销。",
+    "select-items": "选择 {num} 项",
+    "total-items": "共 {num} 项",
 
     /* ******************************
     * Share Section

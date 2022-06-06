@@ -1,3 +1,13 @@
+<!--
+ * @Author: Jerryk jerry@icewhale.org
+ * @Date: 2022-02-18 10:20:10
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-05-25 16:32:09
+ * @FilePath: \CasaOS-UI\src\components\logsAndTerminal\TerminalPanel.vue
+ * @Description: 
+ * 
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+-->
 <template>
   <div class="modal-card">
 
@@ -37,7 +47,7 @@ export default {
   data() {
     return {
       isLoading: false,
-      wsUrl: (process.env.NODE_ENV === "'dev'") ? `ws://${this.$store.state.devIp}:${this.$store.state.devPort}/v1/sys/wsssh?token=${this.$store.state.token}` : `ws://${document.location.host}/v1/sys/wsssh?token=${this.$store.state.token}`,
+      wsUrl: `ws://${this.$baseURL}/v1/sys/wsssh?token=${this.$store.state.token}`,
       logData: ""
     }
   },
