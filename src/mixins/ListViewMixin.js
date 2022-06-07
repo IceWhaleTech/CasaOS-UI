@@ -1,8 +1,8 @@
 /*
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-05-20 19:18:19
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-06-06 16:42:56
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-07 13:58:11
  * @FilePath: \CasaOS-UI\src\mixins\ListViewMixin.js
  * @Description: 
  * 
@@ -177,7 +177,7 @@ export default {
          * @return {*}
          */
         onCardClick(event, item, index) {
-            
+
             // If SHIFT key is down
             if (this.isShift) {
                 if (this.selectList.indexOf(index) == -1) {
@@ -260,7 +260,21 @@ export default {
         updateDatas() {
             // this.$forceUpdate()
             this.$emit("change", this.listData)
-        }
+        },
+        /**
+         * @description: Check file or folder state
+         * @param {object}  item
+         * @return {void} 
+         */
+        getCardState(item) {
+            if (this.$store.state.operateObject != null && this.$store.state.operateObject.type == "move") {
+                return this.$store.state.operateObject.item.some(obj => {
+                    return obj.from == item.path
+                })
+            } else {
+                return false
+            }
+        },
     },
 
     beforeDestroy() {

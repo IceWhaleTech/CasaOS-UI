@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-03-03 21:48:17
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-02 14:27:13
+ * @LastEditTime: 2022-06-07 12:04:56
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\viewers\CodeEditor.vue
 -->
@@ -210,7 +210,6 @@ export default {
       } else if (ext.toLowerCase() == "vue") {
         mode = 'text/x-vue'
       }
-      console.log(mode);
       this.codemirror.setOption("mode", mode);
 
       this.$api.file.download(this.item.path).then(res => {
@@ -228,7 +227,7 @@ export default {
       let content = this.codemirror.getValue()
       this.$api.file.update(this.item.path, content).then(res => {
         if (res.data.success == 200) {
-          this.readFile();
+          // this.readFile();
           this.isChange = false
           this.$buefy.toast.open({
             message: this.$t('Saved'),

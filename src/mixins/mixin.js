@@ -1,8 +1,8 @@
 /*
  * @Author: JerryK
  * @Date: 2022-01-20 12:01:07
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-06-06 16:58:39
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-07 15:06:00
  * @Description: 
  * @FilePath: \CasaOS-UI\src\mixins\mixin.js
  */
@@ -164,7 +164,7 @@ export const mixin = {
                 message: this.$t('Download in preparation...'),
                 type: 'is-light'
             })
-            let url = this.getFileUrl(items,false)
+            let url = this.getFileUrl(items)
             window.open(url, '_blank');
         },
         playVideo(item, player) {
@@ -173,14 +173,14 @@ export const mixin = {
         },
 
         // Get File Download URL
-        getFileUrl(items, isStream = true) {
+        getFileUrl(items) {
             let apiUrl = `${this.baseUrl}file/download`;
             let path = ""
             let parameters = {
                 token: this.$store.state.token
             }
             if (items.constructor === Object) {
-                if (isStream || items.is_dir) {
+                if (items.is_dir) {
                     path = items.path
                     parameters.files = path
                     return apiUrl + "?" + qs.stringify(parameters)
@@ -327,18 +327,7 @@ export const mixin = {
             })
         },
 
-        /**
-         * @description: Check file or folder state
-         * @param {object}  item
-         * @return {void} 
-         */
-        getCardState(item) {
-            if (this.$store.state.operateObject != null && this.$store.state.operateObject.type == "move") {
-                return this.$store.state.operateObject.from == item.path
-            } else {
-                return false
-            }
-        },
+        
 
 
         /***********************
