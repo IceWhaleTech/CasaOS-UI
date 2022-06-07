@@ -212,7 +212,6 @@ export default {
     },
     chooseServer(id) {
       if (this.choosePublicServer.indexOf(id) == -1) {
-        console.log(id);
         this.choosePublicServer.push(id)
       } else {
         this.choosePublicServer = remove(this.choosePublicServer, (o) => {
