@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-02-18 12:42:06
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-06-06 17:22:03
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-07 11:58:48
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\FilePanel.vue
 -->
@@ -262,9 +262,7 @@ export default {
         case 'Escape':
           if (this.isShowDetial) {
             this.$refs.previewPanel.close();
-          } else {
-            this.$emit('close')
-          }
+          } 
           break;
         case 'Backspace':
           this.backLevel()

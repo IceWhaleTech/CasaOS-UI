@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-03-01 21:10:57
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-02 17:12:36
+ * @LastEditTime: 2022-06-07 12:09:32
  * @FilePath: \CasaOS-UI\src\components\Apps\AppPanel.vue
  * @Description: 
  * 
@@ -302,12 +302,12 @@
             <!-- <p class="control">
               <span class="button is-static">{{baseUrl}}</span>
             </p> -->
-            <b-select v-model="initData.protocol" expanded>
+            <b-select v-model="initData.protocol" >
               <option value="http">http://</option>
               <option value="https">https://</option>
             </b-select>
             <b-input v-model="initData.host" :placeholder="baseUrl" expanded></b-input>
-            <b-autocomplete class="has-colon" :placeholder="$t('Port')" v-model="initData.port_map" :data="bridgePorts" :open-on-focus="true" field="host" @select="option => (portSelected = option)" expanded></b-autocomplete>
+            <b-autocomplete class="has-colon" :placeholder="$t('Port')" v-model="initData.port_map" :data="bridgePorts" :open-on-focus="true" field="host" @select="option => (portSelected = option)" ></b-autocomplete>
             <b-input v-model="initData.index" :placeholder="'/index.html '+ $t('[Optional]')" expanded></b-input>
           </b-field>
           <template v-if="isCasa">

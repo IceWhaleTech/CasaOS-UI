@@ -23,7 +23,7 @@
               <div v-for="(item,index) in containerCpuList" :key="item.title+index+'-cpu'">
                 <div class="is-flex is-size-7 is-align-items-center mb-2" v-if="!isNaN(item.usage)">
                   <div class="is-flex-grow-1 is-flex is-align-items-center">
-                    <b-image :lazy="false" :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" class="is-16x16 mr-2"></b-image>
+                    <b-image :lazy="false" :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" class="is-16x16 mr-2 is-flex-shrink-0"></b-image>
                     <span class="one-line">{{item.title}}</span>
                   </div>
                   <div class=" is-flex-shrink-0">{{item.usage}}%</div>
@@ -35,7 +35,7 @@
               <div v-for="(item,index) in containerRamList" :key="item.title+index+'-rem'">
                 <div class="is-flex is-size-7 is-align-items-center mb-2" v-if="!isNaN(item.usage)">
                   <div class="is-flex-grow-1 is-flex is-align-items-center">
-                    <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" class="is-16x16 mr-2"></b-image>
+                    <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" class="is-16x16 mr-2 is-flex-shrink-0"></b-image>
                     <span class="one-line">{{item.title}}</span>
                   </div>
                   <div class=" is-flex-shrink-0">{{item.usage | renderSize}}</div>
@@ -198,10 +198,13 @@ export default {
           if (item.pre == null) {
             usage = 0;
           } else {
+
+            // Look at here  https://docs.docker.com/engine/api/v1.41/#operation/ContainerStats
+            
             const cpu_delta = item.data.cpu_stats.cpu_usage.total_usage - item.pre.cpu_stats.cpu_usage.total_usage
             const system_cpu_delta = item.data.cpu_stats.system_cpu_usage - item.pre.cpu_stats.system_cpu_usage + 1
-            const number_cpus = item.data.cpu_stats.online_cpus
-            usage = ((cpu_delta / system_cpu_delta) * number_cpus * 100).toFixed(1)
+            // const number_cpus = item.data.cpu_stats.online_cpus
+            usage = Math.floor((cpu_delta / system_cpu_delta) * 1000) / 100
           }
           id++
           return {
