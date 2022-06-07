@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-02-21 11:06:26
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-05-31 14:51:58
+ * @LastEditTime: 2022-06-07 21:41:06
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\components\ListView.vue
 -->
@@ -35,7 +35,7 @@
         <div class="select-parent">
           <div class="card-container">
             <div class="tr-wrapper rdata" :data-rel="index" v-for="(item,index) in listData" :key="'list-'+index+item.name">
-              <div class="tr is-unselectable" :class="{'isCutting':getCardState(item),'active':item.isSelected}" @click="onCardClick($event,item,index)" @contextmenu.prevent="openContextMenu($event,item)">
+              <div class="tr is-unselectable" :class="{'isCutting':getCardState(item),'active':item.isSelected}" @click="onCardClick($event,item,index)" @contextmenu.prevent="openContextMenu($event,item)" @mousedown.stop="">
 
                 <div class="td">
                   <!-- CheckBox Start -->

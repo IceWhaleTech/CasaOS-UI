@@ -1,13 +1,13 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-02-21 11:06:18
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-06-06 16:19:14
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-07 20:30:09
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\components\GirdView.vue
 -->
 <template>
-  <div class="scroll-container scrollbars-light is-relative" id="select-container" @contextmenu.prevent="openContextMenu" @mousedown.left.stop="onDragSelectionStart">
+  <div class="scroll-container scrollbars-light is-relative" id="select-container" @contextmenu.prevent="openContextMenu" @mousedown.left.prevent="onDragSelectionStart">
     <!-- Empty Content Slot Start -->
     <div class="is-flex is-align-items-center is-justify-content-center empty-container" v-if="listData.length == 0 && !isLoading">
       <slot></slot>
@@ -17,7 +17,7 @@
       <div class="card-container" id="card-container">
         <div v-for="(item,index) in listData" :key="'list-'+index+item.name" class="grid-card rdata selectable" :data-rel="index" :style="colStyle">
           <div class="file-card">
-            <div class="file-card-item" :data-rel="index">
+            <div class="file-card-item" :data-rel="index" @mousedown.stop="">
               <div class="node-card-container">
                 <div class="outer-wrapper" :class="{'active':item.isSelected}">
                   <div class="node-card is-unselectable" :class="{'isCutting':getCardState(item)}" @click.stop="onCardClick($event,item,index)" @contextmenu.prevent="openContextMenu($event,item)">
