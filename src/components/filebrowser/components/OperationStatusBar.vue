@@ -1,8 +1,8 @@
 <!--
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-05-30 20:15:05
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-02 20:29:40
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-06-08 16:35:30
  * @FilePath: \CasaOS-UI\src\components\filebrowser\components\OperationStatusBar.vue
  * @Description: 
  * 
