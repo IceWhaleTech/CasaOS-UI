@@ -295,6 +295,7 @@ export default {
     "Are you sure you want to <b>delete</b> these files? This action cannot be undone.": "Are you sure you want to <b>delete</b> these files? This action cannot be undone.",
     "select-items": "Select {num} items",
     "total-items": "Total {num} items",
+    "cancel-all": "Cancel All",
 
     /* ******************************
     * Share Section
