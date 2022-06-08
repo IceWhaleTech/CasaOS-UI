@@ -1,8 +1,8 @@
 /*
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-05-30 19:02:12
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-06-08 19:15:22
  * @Description: File API
  * @FilePath: \CasaOS-UI\src\service\file.js
  */
@@ -69,6 +69,10 @@ const file = {
     // Copy or Move File
     operate(data) {
         return api.post('/file/operate', data);
+    },
+    // cancel operate
+    cancel(id) {
+        return api.delete(`/file/operate/${id}`);
     },
     // Delete file or folder
     delete(pathArray) {

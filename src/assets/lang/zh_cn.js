@@ -293,6 +293,7 @@ export default {
     "Are you sure you want to <b>delete</b> these files? This action cannot be undone.": "你确定要<b>删除</b>这些文件吗？这个动作无法撤销。",
     "select-items": "选择 {num} 项",
     "total-items": "共 {num} 项",
+    "cancel-all": "全部取消",
 
     /* ******************************
     * Share Section
