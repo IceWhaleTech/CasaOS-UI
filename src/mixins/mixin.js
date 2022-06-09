@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-01-20 12:01:07
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-07 15:06:00
+ * @LastEditTime: 2022-06-09 15:26:10
  * @Description: 
  * @FilePath: \CasaOS-UI\src\mixins\mixin.js
  */
@@ -268,7 +268,7 @@ export const mixin = {
          */
         operate(type, items) {
             let operateObject = {
-                type: type
+                type: type,
             }
             if (items.constructor === Object) {
                 operateObject.item = [
@@ -327,7 +327,7 @@ export const mixin = {
             })
         },
 
-        
+
 
 
         /***********************

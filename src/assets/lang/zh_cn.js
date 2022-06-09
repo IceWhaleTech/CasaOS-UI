@@ -294,6 +294,8 @@ export default {
     "select-items": "选择 {num} 项",
     "total-items": "共 {num} 项",
     "cancel-all": "全部取消",
+    "Paste - Overwrite": "粘贴 - 覆盖",
+    "Paste - Skip": "粘贴 - 忽略",
 
     /* ******************************
     * Share Section
