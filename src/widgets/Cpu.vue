@@ -66,7 +66,7 @@ export default {
   initShow: true,
   mixins: [smoothReflow, mixin],
   components: {
-    apexchart:()=>import("vue-apexcharts"),
+    apexchart: () => import("vue-apexcharts"),
   },
 
   data() {
@@ -200,7 +200,7 @@ export default {
           } else {
 
             // Look at here  https://docs.docker.com/engine/api/v1.41/#operation/ContainerStats
-            
+
             const cpu_delta = item.data.cpu_stats.cpu_usage.total_usage - item.pre.cpu_stats.cpu_usage.total_usage
             const system_cpu_delta = item.data.cpu_stats.system_cpu_usage - item.pre.cpu_stats.system_cpu_usage + 1
             // const number_cpus = item.data.cpu_stats.online_cpus
@@ -262,6 +262,17 @@ export default {
     sys_mem(data) {
       this.totalMemory = data.body.data.total
       this.ramSeries = [data.body.data.usedPercent]
+    },
+    sys_hardware_status(data) {
+      // CPU
+      this.cpuCores = data.body.sys_cpu.num
+      this.cpuSeries = [data.body.sys_cpu.percent]
+      if (this.showMore) {
+        this.getDockerUsage()
+      }
+      // Memory
+      this.totalMemory = data.body.sys_mem.total
+      this.ramSeries = [data.body.sys_mem.usedPercent]
     }
   }
 

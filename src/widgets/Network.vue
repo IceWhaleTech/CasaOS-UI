@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-12-06 13:52:11
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-02 14:18:21
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-06-10 12:21:39
  * @Description: 
  * @FilePath: \CasaOS-UI\src\widgets\Network.vue
 -->
@@ -47,7 +47,7 @@ export default {
   title: "Network Status",
   initShow: true,
   components: {
-    VueApexCharts:()=>import("vue-apexcharts")
+    VueApexCharts: () => import("vue-apexcharts")
   },
   data() {
     return {
@@ -200,6 +200,10 @@ export default {
   sockets: {
     sys_net(data) {
       this.initNetwork = data.body.data
+      this.buildDatas(this.initNetwork)
+    },
+    sys_hardware_status(data) {
+      this.initNetwork = data.body.sys_net
       this.buildDatas(this.initNetwork)
     }
   }
