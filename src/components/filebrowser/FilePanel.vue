@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-02-18 12:42:06
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-07 11:58:48
+ * @LastEditTime: 2022-06-09 20:52:56
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\FilePanel.vue
 -->
@@ -41,9 +41,7 @@
               <div class="is-flex is-align-items-center">
 
                 <!-- Paste Button Start -->
-                <transition name="fade">
-                  <b-button icon-left="content-paste" type="is-success" size="is-small" :label="$t('Paste')" class="mr-3" @click.once="paste" v-if="hasPasteData" rounded />
-                </transition>
+                <b-button icon-left="content-paste" type="is-success" size="is-small" :label="$t('Paste')" class="mr-3" :loading="isPasting" @click="paste('overwrite')" v-if="hasPasteData" rounded />
                 <!-- Paste Button End -->
 
                 <!-- Operation Status Start-->
@@ -200,6 +198,7 @@ export default {
       isLoading: true,
       isModalOpen: false,
       isDragIn: false,
+      isPasting: false,
       isShowDetial: false,
       panelType: null,
       currentItem: null,
@@ -262,7 +261,7 @@ export default {
         case 'Escape':
           if (this.isShowDetial) {
             this.$refs.previewPanel.close();
-          } 
+          }
           break;
         case 'Backspace':
           this.backLevel()
@@ -274,7 +273,7 @@ export default {
     }
     // paste
     document.onpaste = () => {
-      this.paste()
+      this.paste('overwrite')
     }
   },
   destroyed() {
@@ -417,11 +416,14 @@ export default {
      * @description: Paste Files
      * @return {*}
      */
-    paste() {
+    paste(style = "overwrite") {
+      this.isPasting = true
       let operateObject = this.$store.state.operateObject
       operateObject.to = this.$store.state.currentPath
+      operateObject.style = style
 
       this.$api.file.operate(operateObject).then(res => {
+        this.isPasting = false
         if (res.data.success == 200) {
           this.$store.commit('changeOperateObject', null)
         } else {

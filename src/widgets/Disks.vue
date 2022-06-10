@@ -113,6 +113,13 @@ export default {
     },
     sys_usb(data) {
       this.usbDisks = data.body.data
+    },
+    sys_hardware_status(data) {
+      // DISK
+      this.getDiskInfo(data.body.sys_disk)
+      // USB
+      this.usbDisks = data.body.sys_usb
+      
     }
   }
 }

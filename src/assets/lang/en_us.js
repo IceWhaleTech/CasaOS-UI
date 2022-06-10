@@ -297,6 +297,8 @@ export default {
     "select-items": "Select {num} items",
     "total-items": "Total {num} items",
     "cancel-all": "Cancel All",
+    "Paste - Overwrite": "Paste - Overwrite",
+    "Paste - Skip": "Paste - Skip",
 
     /* ******************************
     * Share Section

@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-02-23 17:08:21
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-06-06 17:15:35
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-09 15:29:59
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\components\ContextMenu.vue
 -->
@@ -27,10 +27,14 @@
           <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center " key="system-context3" id="upfolderBtn" @click="$refs.dropDown.toggle();">
             <b-icon icon="folder-upload-outline" class="mr-1" custom-size="mdi-18px"></b-icon> {{ $t('Upload Folder') }}
           </b-dropdown-item>
-
-          <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center" key="system-context4" @click="paste" v-if="hasPasteData">
-            <b-icon icon="content-paste" class="mr-1" custom-size="mdi-18px"></b-icon> {{ $t('Paste') }}
-          </b-dropdown-item>
+          <template v-if="hasPasteData">
+            <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center" key="system-context4" @click="paste('overwrite')">
+              <b-icon icon="content-paste" class="mr-1" custom-size="mdi-18px"></b-icon> {{ $t('Paste - Overwrite') }}
+            </b-dropdown-item>
+            <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center" key="system-context4-1" @click="paste('skip')">
+              <b-icon icon="content-paste" class="mr-1" custom-size="mdi-18px"></b-icon> {{ $t('Paste - Skip') }}
+            </b-dropdown-item>
+          </template>
 
           <hr class="dropdown-divider">
           <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center" key="system-context5" @click="$refs.dropDown.toggle();filePanel.reload()">
@@ -160,9 +164,9 @@ export default {
     },
 
     // Paste File
-    paste() {
+    paste(style = "overwrite") {
       this.$refs.dropDown.toggle()
-      this.filePanel.paste()
+      this.filePanel.paste(style)
     },
     download() {
       this.$refs.dropDown.toggle()

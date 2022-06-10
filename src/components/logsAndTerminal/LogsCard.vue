@@ -1,10 +1,10 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-10-28 13:56:32
- * @LastEditors: JerryK
- * @LastEditTime: 2021-10-29 18:06:47
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-09 09:34:52
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/LogsCard.vue
+ * @FilePath: \CasaOS-UI\src\components\logsAndTerminal\LogsCard.vue
 -->
 <template>
   <fullscreen class="fullScreen  pl-2 pt-2 pb-2" :class="{'mt-5':!fullscreen}" :fullscreen.sync="fullscreen" :teleport="true" :page-only="true" @change="onWindowResize">
@@ -12,7 +12,7 @@
       <b-icon :icon="buttonIcon"></b-icon>
     </a>
     <div id="logs" class="logs scrollbars">
-      <div v-html="data"></div>
+      <div v-html="data" contenteditable></div>
     </div>
   </fullscreen>
 
