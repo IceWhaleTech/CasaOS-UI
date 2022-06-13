@@ -2,36 +2,16 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-05-30 19:54:51
+ * @LastEditTime: 2022-06-13 19:31:31
  * @Description: System HardWare Info API
  * @FilePath: \CasaOS-UI\src\service\info.js
  */
 import { api } from "./service.js";
 
 const info = {
-    //CPU info
-    cpuInfo() {
-        return api.get("/zima/getcpuinfo");
-    },
-    //Memory Info
-    memoryInfo() {
-        return api.get("/zima/getmeminfo");
-    },
-    //Network Info
-    networkInfo() {
-        return api.get('/zima/getnetinfo');
-    },
-    //Disk Info
-    diskInfo() {
-        return api.get('/zima/getdiskinfo');
-    },
     //All Info
-    allInfo() {
-        return api.get('/sys/info');
-    },
-    // System Info
-    systemInfo() {
-        return api.get('/zima/sysinfo');
+    utilization() {
+        return api.get('/sys/utilization');
     },
     // Hardware Info
     hardwareInfo() {
@@ -47,7 +27,7 @@ const info = {
     },
     // Check Verison
     checkVersion() {
-        return api.get('/sys/check');
+        return api.get('/sys/version/check');
     },
     // Get websocket port
     getSocketPort() {
@@ -70,10 +50,7 @@ const info = {
         return api.post('/sys/widget/config', data)
     },
 
-    // Get System state
-    guideCheck() {
-        return api.get('/guide/check');
-    },
+    
     // Get System logs
     systemLogs() {
         return api.get('/sys/error/logs');
@@ -87,13 +64,13 @@ const info = {
     saveSystemPort(data) {
         return api.put('/sys/port', data);
     },
-    //Kill System
-    killSystem() {
-        return api.post('/sys/kill');
+    //Stop CasaOS
+    stopCasaOS() {
+        return api.post('/sys/stop');
     },
     // Get Usb mount State
     getUsbMountState() {
-        return api.get("/sys/usb")
+        return api.get("/sys/usb/status")
     },
     // Set usb mount off
     setUsbMountOff() {
@@ -110,7 +87,11 @@ const info = {
     //Get Debug Info
     getDebugInfo() {
         return api.get('debug');
-    }
+    },
+    // Get System state
+    guideCheck() {
+        return api.get('/guide/check');
+    },
 
 
 }

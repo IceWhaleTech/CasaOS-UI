@@ -1,8 +1,7 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-12-06 18:29:48
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-05-25 16:44:15
+ * @LastEditTime: 2022-06-13 19:30:53
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\settings\PortPanel.vue
 -->
@@ -67,7 +66,7 @@ export default {
         if (res.data.success == 200) {
           this.errorType = "is-success";
           this.errors = "";
-          this.$api.info.killSystem();
+          this.$api.info.stopCasaOS();
           this.checkUpdate();
         } else {
           this.isLoading = false;
@@ -80,12 +79,12 @@ export default {
     checkUpdate() {
 
       this.timer = setInterval(() => {
-        const domain = (process.env.NODE_ENV === "dev") ? `http://${this.$baseIp}` : `http://${document.domain}`
-        const checkUrl = `http://${domain}:${this.port}`
+        const protocol = document.location.protocol
+        const checkUrl = `${protocol}//${this.$baseIp}:${this.port}`
         this.$api.info.checkUiPort(checkUrl + '/v1/sys/port').then(res => {
           if (res.data.success == 200) {
             clearInterval(this.timer);
-            const url = `http://${domain}:${res.data.data}`
+            const url = `http://${this.$baseIp}:${res.data.data}`
             window.open(url, '_self');
           }
         })

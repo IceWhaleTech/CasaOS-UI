@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-06-08 11:37:36
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-13 19:31:23
  * @Description: 
  * @FilePath: \CasaOS-UI\src\views\Home.vue
 -->
@@ -148,7 +148,7 @@ export default {
      */
 
     getHardwareInfo() {
-      this.$api.info.allInfo().then(res => {
+      this.$api.info.utilization().then(res => {
         if (res.data.success === 200) {
           this.hardwareInfoLoading = false
           this.$store.commit('changeHardwareInfo', res.data.data);
