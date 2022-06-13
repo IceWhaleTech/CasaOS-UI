@@ -204,7 +204,7 @@ export default {
             const cpu_delta = item.data.cpu_stats.cpu_usage.total_usage - item.pre.cpu_stats.cpu_usage.total_usage
             const system_cpu_delta = item.data.cpu_stats.system_cpu_usage - item.pre.cpu_stats.system_cpu_usage + 1
             // const number_cpus = item.data.cpu_stats.online_cpus
-            usage = Math.floor((cpu_delta / system_cpu_delta) * 1000) / 100
+            usage = Math.floor((cpu_delta / system_cpu_delta) * 1000) / 10
           }
           id++
           return {
