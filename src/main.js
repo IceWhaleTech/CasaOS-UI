@@ -1,8 +1,8 @@
 /*
  * @Author: JerryK
  * @Date: 2021-09-22 14:24:43
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-02 19:23:45
+ *  * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-13 19:30:41
  * @Description: 
  * @FilePath: \CasaOS-UI\src\main.js
  */
@@ -28,7 +28,7 @@ api.info.getSocketPort().then(res => {
   const wsPort = res.data.data
   const devIp = process.env.VUE_APP_DEV_IP
   const devPort = process.env.VUE_APP_DEV_PORT
-  const localhost = document.location.host
+  const localhost = document.location.hostname
   const baseIp = process.env.NODE_ENV === "dev" ? `${devIp}` : `${localhost}`
   const baseURL = process.env.NODE_ENV === "dev" ? `${devIp}:${devPort}` : `${localhost}`
   const baseWsURL = process.env.NODE_ENV === "dev" ? `${devIp}` : `${localhost}`
