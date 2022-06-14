@@ -71,6 +71,7 @@ export default {
 
   data() {
     return {
+      timmer: null,
       activeTab: 0,
       showMore: false,
       cpuCores: 0,
@@ -178,12 +179,20 @@ export default {
     this.totalMemory = this.$store.state.hardwareInfo.mem.total
     this.updateCharts(this.$store.state.hardwareInfo)
     this.getDockerUsage()
+    this.timer = setInterval(() => {
+      if (this.showMore) {
+        this.getDockerUsage()
+      }
+    }, 1000)
   },
   mounted() {
     this.$smoothReflow({
       el: '.widget',
       property: ['height'],
     })
+  },
+  beforeDestroy() {
+    clearInterval(this.timer);
   },
   methods: {
     /**
@@ -192,10 +201,8 @@ export default {
      * @return {*} void
      */
     updateCharts(hardwareInfo) {
-
       this.cpuSeries = [hardwareInfo.cpu.percent]
       this.ramSeries = [hardwareInfo.mem.usedPercent]
-
       if (this.showMore) {
         this.getDockerUsage()
       }
@@ -224,14 +231,13 @@ export default {
           id++
           return {
             id: id,
-            usage: isNaN(usage) ? 0 : usage,
+            usage: isNaN(usage) || (usage < 0) ? 0 : usage,
             icon: item.icon,
             title: item.title
           };
         })
 
         this.containerRamList = res.data.data.map(item => {
-
           let cache = 0
           let id = 0
           if (has(item.data.memory_stats.stats, 'inactive_file')) {
@@ -282,9 +288,7 @@ export default {
       // CPU
       this.cpuCores = data.body.sys_cpu.num
       this.cpuSeries = [data.body.sys_cpu.percent]
-      if (this.showMore) {
-        this.getDockerUsage()
-      }
+
       // Memory
       this.totalMemory = data.body.sys_mem.total
       this.ramSeries = [data.body.sys_mem.usedPercent]
