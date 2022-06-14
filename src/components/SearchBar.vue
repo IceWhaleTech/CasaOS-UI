@@ -1,10 +1,10 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
- * @LastEditors: JerryK
- * @LastEditTime: 2021-12-07 16:38:34
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-14 13:47:36
  * @Description: Top Search bar
- * @FilePath: /CasaOS-UI/src/components/SearchBar.vue
+ * @FilePath: \CasaOS-UI\src\components\SearchBar.vue
 -->
 
 <template>
@@ -63,8 +63,8 @@ export default {
   input {
     transition: all 0.2s;
     appearance: none;
-    background: rgba(123, 123, 123, 0.16);
-    backdrop-filter: blur(0.875rem);
+    background: rgba(129, 129, 129, 0.5);
+    // backdrop-filter: blur(0.875rem);
     border-radius: 8px;
     border: none;
     outline: none;

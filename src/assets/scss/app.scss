@@ -103,6 +103,8 @@ html {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: bottom center;
+  overflow: hidden;
+  transition: background-image 0.5s linear;
 }
 
 .is-shadow {
@@ -148,10 +150,11 @@ html {
         z-index: 10;
         color: hsl(0deg, 0%, 21%);
       }
-      .input{
+
+      .input {
         padding-left: 0.75rem;
       }
-      
+
     }
 
   }
@@ -876,8 +879,14 @@ html {
   word-break: normal;
 }
 
-.home-section .loading-background {
-  background-color: transparent !important;
+.home-section{
+  .loading-background {
+    background-color: transparent !important;
+  }
+  .column{
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
 }
 
 .app-list {
@@ -1036,7 +1045,7 @@ html {
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 1);
   z-index: 19;
   opacity: 0;
   visibility: hidden;
@@ -1385,6 +1394,10 @@ button.dropdown-item.is-active {
 }
 
 @media screen and (max-width: 480px) {
+  .contents {
+    height: calc(100vh - 4rem) !important;
+  }
+
   #sidebar-btn {
     display: flex !important;
   }
@@ -1471,7 +1484,7 @@ button.dropdown-item.is-active {
   }
 
   .side-bar {
-    transition: all 0.3s ease-out;
+    transition: all 0.3s ease-in-out;
     left: 0rem;
     transform: translateX(-100vw);
     z-index: 20;
@@ -1707,4 +1720,6 @@ button.dropdown-item.is-active {
       margin-left: 1rem;
     }
   }
+
+
 }

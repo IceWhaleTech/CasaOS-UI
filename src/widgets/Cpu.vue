@@ -1,7 +1,7 @@
 <template>
   <div class="widget has-text-white clock">
     <div class="blur-background"></div>
-    <div class="widget-content">
+    <div class="widget-content  pb-1">
       <div class="arrow-btn" @click="showMoreInfo">
         <b-icon icon="chevron-right" :class="{'open':showMore}"></b-icon>
       </div>
