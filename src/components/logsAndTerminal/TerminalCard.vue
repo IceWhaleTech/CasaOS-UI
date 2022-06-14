@@ -86,7 +86,7 @@ export default {
     },
     socketOnError() {
       this.socket.onerror = () => {
-        console.log('socket 链接失败')
+        console.log('socket failure')
       }
     },
     onWindowResize() {

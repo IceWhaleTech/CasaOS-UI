@@ -378,6 +378,9 @@ html {
 }
 
 //Panel
+.modal{
+  z-index: 100;
+}
 .modal-background {
   background: rgba(0, 0, 0, 0.8);
 }
