@@ -92,12 +92,26 @@ export default {
             bottom: -10
           }
         },
+        states: {
+          hover: {
+            filter: {
+              type: 'none',
+            }
+          },
+          active: {
+            filter: {
+              type: 'none',
+            }
+          },
+        },
         plotOptions: {
+
           radialBar: {
             startAngle: 0,
             endAngle: 360,
             offsetX: 0,
             offsetY: 0,
+
             hollow: {
               margin: 0,
               size: '60%',
@@ -138,7 +152,8 @@ export default {
                 fontSize: '18px',
                 show: true,
               }
-            }
+            },
+
           }
         },
         fill: {
