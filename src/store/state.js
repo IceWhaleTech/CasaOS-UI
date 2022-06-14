@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-06-02 19:48:26
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-02 19:48:54
- * @FilePath: \CasaOS-UI\src\store\states.js
+ * @LastEditTime: 2022-06-14 13:08:46
+ * @FilePath: \CasaOS-UI\src\store\state.js
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -18,13 +18,8 @@ const state = {
     searchEngine: '',
     siteLoading: true,
     needInitialization: false,
-    widgetsSwitch: {
-        clock: true,
-        weather: true,
-        cpu: true,
-        disk: true
-    },
     hardwareInfo: {},
+    isMobile:false,
     // Files
     pasteFiles: "",
     operateObject: null,

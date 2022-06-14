@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-06-02 19:49:36
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-02 19:50:00
+ * @LastEditTime: 2022-06-14 13:10:38
  * @FilePath: \CasaOS-UI\src\store\mutations.js
  * @Description: 
  * 
@@ -14,9 +14,6 @@ const mutations = {
     },
     setServiceError(state, val) {
         state.serviceError = val
-    },
-    setWidgets(state, val) {
-        state.widgetsSwitch[val.k] = val.v;
     },
     changeUserInfo(state, val) {
         state.userinfo = val
@@ -61,5 +58,9 @@ const mutations = {
     changeCurrentSharePath(state, val) {
         state.currentSharePath = val
     },
+    // Set if isMobile or not
+    setIsMobile(state, val) {
+        state.isMobile = val
+    }
 }
 export default mutations

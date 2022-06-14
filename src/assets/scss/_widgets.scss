@@ -8,7 +8,7 @@
   backdrop-filter: $backDropBlur;
   border-radius: $backDropBorderRadius;
   position: relative;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
   transition: all 0.3s;
 
   .columns {
@@ -98,7 +98,7 @@
     }
 
     span {
-      
+
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 1;
@@ -159,12 +159,15 @@
   border-radius: $backDropBorderRadius;
   position: absolute;
   z-index: 0;
+  
+
 }
 
 .wuji-content {
   position: relative;
   z-index: 10;
   padding: 1.5rem;
+
 }
 
 .cards-content {
@@ -172,7 +175,7 @@
   z-index: 10;
 }
 
-.ghost{
+.ghost {
   opacity: 0;
 }
 

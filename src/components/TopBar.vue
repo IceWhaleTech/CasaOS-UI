@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
- * @LastEditors: 老竭力 jerrykuku@qq.com
- * @LastEditTime: 2022-05-10 20:44:10
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-14 13:40:51
  * @Description: Top bar 
  * @FilePath: \CasaOS-UI\src\components\TopBar.vue
 -->
@@ -13,7 +13,7 @@
 
       <!-- SideBar Button Start -->
       <div class="is-flex is-align-items-center mr-3 ml-3" id="sidebar-btn">
-        <b-tooltip :label="sidebarIconLabel" position="is-right" type="is-dark">
+        <b-tooltip :label="sidebarIconLabel" :active="!$store.state.isMobile" position="is-right" type="is-dark">
           <p role="button" @click="showSideBar">
             <b-icon :icon="sidebarIcon"></b-icon>
           </p>
@@ -24,7 +24,7 @@
       <!-- Account Dropmenu Start -->
       <b-dropdown aria-role="list" class="navbar-item " animation="fade1" @active-change="getUserInfo">
         <template #trigger>
-          <b-tooltip :label="$t('Account')" position="is-right" type="is-dark">
+          <b-tooltip :label="$t('Account')" :active="!$store.state.isMobile" position="is-right" type="is-dark">
             <p role="button">
               <b-icon class="picon" icon="account-circle"></b-icon>
             </p>
@@ -61,7 +61,7 @@
       <!-- Settings Dropmenu Start -->
       <b-dropdown aria-role="list" class="navbar-item" animation="fade1" @active-change="onOpen">
         <template #trigger>
-          <b-tooltip :label="$t('Settings')" position="is-right" type="is-dark">
+          <b-tooltip :label="$t('Settings')" :active="!$store.state.isMobile" position="is-right" type="is-dark">
             <p role="button">
               <b-icon icon="tune" class="picon" :class="{'update-icon-dot': updateInfo.is_need }"></b-icon>
             </p>
@@ -157,7 +157,7 @@
 
       <!-- Terminal  Start -->
       <div class="is-flex is-align-items-center ml-3">
-        <b-tooltip :label="$t('Terminal & Logs')" position="is-right" type="is-dark">
+        <b-tooltip :label="$t('Terminal & Logs')" :active="!$store.state.isMobile" position="is-right" type="is-dark">
           <p role="button" @click="showTerminalPanel">
             <b-icon class="picon" icon="console"></b-icon>
           </p>
@@ -303,6 +303,7 @@ export default {
      */
     onOpen(isOpen) {
       if (isOpen) {
+        this.$store.commit('closeSideBar')
         this.checkVersion()
       }
     },
@@ -473,6 +474,7 @@ export default {
      * @return {*} void
      */
     getUserInfo() {
+      this.$store.commit('closeSideBar')
       this.$api.user.getUserInfo().then((res) => {
         if (res.data.success == 200) {
           this.$store.commit('changeUserInfo', res.data.data)
@@ -512,6 +514,7 @@ export default {
      * @return {*} void
      */
     showTerminalPanel() {
+      this.$store.commit('closeSideBar')
       this.$buefy.modal.open({
         parent: this,
         component: TerminalPanel,

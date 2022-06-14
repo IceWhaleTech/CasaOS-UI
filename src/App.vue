@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-05-30 14:51:28
+ * @LastEditTime: 2022-06-14 13:23:13
  * @Description: Main entry of application
  * @FilePath: \CasaOS-UI\src\App.vue
 -->
@@ -15,10 +15,10 @@
       <!-- Background Layer End -->
 
       <!-- BrandBar Start -->
-      <brand-bar v-animate-css="brandAni"></brand-bar>
+      <brand-bar v-animate-css="brandAni" v-if="!$store.state.isMobile"></brand-bar>
       <!-- BrandBar End -->
       <!-- ContactBar Start -->
-      <contact-bar v-animate-css="contactAni"></contact-bar>
+      <contact-bar v-animate-css="contactAni" v-if="!$store.state.isMobile"></contact-bar>
       <!-- ContactBar End -->
     </template>
 
@@ -95,6 +95,8 @@ _____             _____ _____
   },
   mounted() {
     this.setInitLang();
+    window.addEventListener('resize', this.onWindowResize);
+    this.onWindowResize();
   },
   methods: {
     /**
@@ -122,14 +124,27 @@ _____             _____ _____
       let lang = localStorage.getItem('lang') ? localStorage.getItem('lang') : this.getLangFromBrowser()
       lang = lang.includes("_") ? lang : "en_us";
       this.setLang(lang);
-    }
+    },
+    /**
+     * @description: Handle on Window reize
+     * @return {*}
+     */
+    onWindowResize() {
+      if (document.body.clientWidth >= 480) {
+        this.$store.commit('setIsMobile', false)
+      } else {
+        this.$store.commit('setIsMobile', true)
+      }
+
+      console.log(this.$store.state.isMobile);
+    },
 
   },
   sockets: {
     connect() {
       console.log('socket connected');
     },
-    
+
   },
 }
 </script>

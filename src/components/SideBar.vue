@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-08 20:48:08
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-14 13:37:50
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\SideBar.vue
 -->
@@ -193,5 +193,11 @@ export default {
 .ps__rail-y:focus > .ps__thumb-y,
 .ps__rail-y.ps--clicking .ps__thumb-y {
   width: 6px;
+}
+
+@media screen and (max-width: 480px) {
+  .scroll-area {
+    height: 100% !important;
+  }
 }
 </style>

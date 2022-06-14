@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-01 18:36:13
+ * @LastEditTime: 2022-06-14 14:04:27
  * @FilePath: \CasaOS-UI\src\components\Apps\AppSection.vue
  * @Description: 
  * 
@@ -14,9 +14,9 @@
     <!-- Title Bar Start -->
     <div class="title-bar is-flex is-align-items-center">
       <h1 class="title is-4  has-text-white is-flex-shrink-1">{{$t('Apps')}}
-        <b-tooltip :label="$t(appHelpText)" type="is-dark" multilined v-if="showDragTip">
+        <!-- <b-tooltip :label="$t(appHelpText)" type="is-dark" multilined v-if="showDragTip">
           <b-icon icon="help-circle-outline" custom-size="mdi-18px"></b-icon>
-        </b-tooltip>
+        </b-tooltip> -->
       </h1>
       <div class="buttons ">
         <b-button id="v-step-0" icon-left="apps" type="is-dark" size="is-small" :loading="isShowing" rounded @click="showInstall">{{$t('App Store')}}</b-button>
@@ -44,11 +44,11 @@
     <!-- App List End -->
     <template v-if="notImportedList.length > 0">
       <!-- Title Bar Start -->
-      <div class="title-bar is-flex is-align-items-center mt-5">
+      <div class="title-bar is-flex is-align-items-center mt-6">
         <h1 class="title is-4  has-text-white is-flex-shrink-1">{{$t('Existing Docker Apps')}}
-          <b-tooltip :label="$t(importHelpText)" type="is-dark" multilined>
+          <!-- <b-tooltip :label="$t(importHelpText)" type="is-dark" multilined>
             <b-icon icon="help-circle-outline" custom-size="mdi-18px"></b-icon>
-          </b-tooltip>
+          </b-tooltip> -->
         </h1>
       </div>
       <!-- Title Bar End -->

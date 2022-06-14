@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-11-10 18:14:56
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-09 16:03:42
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-14 14:17:25
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\smartHome\SmartBlock.vue
 -->
@@ -18,7 +18,7 @@
               {{$t('We want to give you a smart home experience with privacy, high speed, and localized storage.')}}
             </div>
           </div>
-          <b-image :src="require('@/assets/img/smart/smart_icon.png')" class="is-64x64"></b-image>
+          <b-image :src="require('@/assets/img/smart/smart_icon.png')" class="is-54x54"></b-image>
         </div>
         <div class="buttons">
           <b-button type="is-primary" size="is-small" @click="goToDiscord" rounded>{{$t('In development')}}</b-button>
