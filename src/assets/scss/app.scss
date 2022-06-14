@@ -1493,6 +1493,11 @@ button.dropdown-item.is-active {
 
     &.open {
       transform: translateX(0);
+      width: calc( 100% - 2rem );
+      .wsettings{
+        display: flex;
+        justify-content: right;
+      }
     }
   }
 

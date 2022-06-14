@@ -114,7 +114,7 @@ export default {
 
             hollow: {
               margin: 0,
-              size: '60%',
+              size: '55%',
               image: undefined,
               imageOffsetX: 0,
               imageOffsetY: 0,
