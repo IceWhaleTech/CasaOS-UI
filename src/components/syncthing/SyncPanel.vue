@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-11-10 18:22:36
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-05-25 18:03:51
+ * @LastEditTime: 2022-06-15 18:18:08
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\syncthing\SyncPanel.vue
+ * @FilePath: /CasaOS-UI/src/components/syncthing/SyncPanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -288,7 +288,7 @@ export default {
 
   created() {
 
-    this.syncBaseURL = (process.env.NODE_ENV === "dev") ? `http://${this.$baseIp}:${this.$store.state.syncthingPort}` : `${document.location.protocol}//${document.location.hostname}:${this.$store.state.syncthingPort}`
+    this.syncBaseURL = `http://${this.$baseIp}:${this.$store.state.syncthingPort}`
     console.log(this.syncBaseURL);
     this.syncXhr = axios.create({
       baseURL: this.syncBaseURL,

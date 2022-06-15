@@ -1,10 +1,10 @@
 /*
  * @Author: JerryK
  * @Date: 2021-09-22 14:24:43
- *  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-13 19:30:41
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-15 18:14:09
  * @Description: 
- * @FilePath: \CasaOS-UI\src\main.js
+ * @FilePath: /CasaOS-UI/src/main.js
  */
 import 'intersection-observer'
 import Vue from 'vue'
@@ -28,11 +28,11 @@ api.info.getSocketPort().then(res => {
   const wsPort = res.data.data
   const devIp = process.env.VUE_APP_DEV_IP
   const devPort = process.env.VUE_APP_DEV_PORT
-  const localhost = document.location.hostname
-  const baseIp = process.env.NODE_ENV === "dev" ? `${devIp}` : `${localhost}`
+  const localhost = document.location.host
+  const localhostName = document.location.hostname
+  const baseIp = process.env.NODE_ENV === "dev" ? `${devIp}` : `${localhostName}`
   const baseURL = process.env.NODE_ENV === "dev" ? `${devIp}:${devPort}` : `${localhost}`
-  const baseWsURL = process.env.NODE_ENV === "dev" ? `${devIp}` : `${localhost}`
-  const wsURL = `ws://${baseWsURL}:${wsPort}`;
+  const wsURL = `ws://${baseIp}:${wsPort}`
 
   const socket = io(wsURL, {
     transports: ['websocket', 'polling']

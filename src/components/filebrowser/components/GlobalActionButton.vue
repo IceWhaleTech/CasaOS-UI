@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-05-31 13:57:21
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-02 18:06:46
- * @FilePath: \CasaOS-UI\src\components\filebrowser\components\GlobalActionButton.vue
+ * @LastEditTime: 2022-06-15 18:44:43
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/components/GlobalActionButton.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 

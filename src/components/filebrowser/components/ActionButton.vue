@@ -2,13 +2,13 @@
  * @Author: JerryK
  * @Date: 2022-02-23 17:08:21
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-07 15:14:15
+ * @LastEditTime: 2022-06-15 18:41:35
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\filebrowser\components\ActionButton.vue
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/components/ActionButton.vue
 -->
 <template>
   <div class="action-btn">
-    <b-dropdown aria-role="list" append-to-body :close-on-click="false" :triggers="['click']" ref="dropDown" :id="'dr-'+index" class="file-dropdown" :position="'is-'+verticalPos+'-'+horizontalPos" animation="fade1" @active-change="dorpActiveChange($event,'dr-'+index)">
+    <b-dropdown aria-role="list" append-to-body :close-on-click="false"   ref="dropDown" :id="'dr-'+index" class="file-dropdown" :position="'is-'+verticalPos+'-'+horizontalPos" animation="fade1" @active-change="dorpActiveChange($event,'dr-'+index)">
       <template #trigger>
         <p role="button">
           <b-icon icon="dots-horizontal" custom-size="mdi-18px" id="das">

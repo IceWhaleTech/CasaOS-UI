@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-03-11 13:36:11
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-05-31 18:49:46
+ * @LastEditTime: 2022-06-15 18:15:46
  * @Description: 
- * @FilePath: \CasaOS-UI\src\views\CasaConnect.vue
+ * @FilePath: /CasaOS-UI/src/views/CasaConnect.vue
 -->
 <template>
   <div class="acquaintance-share is-flex ">
@@ -369,7 +369,6 @@ export default {
       currentUserFileList: {},
       cancelRequest: null,
       downloadListLen: 0,
-      wsUrl: `ws://${this.$baseURL}/v1/notify/ws?token=${this.$store.state.token}`,
       steps: [
         {
           target: '#v-step-0',
