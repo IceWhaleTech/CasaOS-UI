@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-05-25 16:32:09
- * @FilePath: \CasaOS-UI\src\components\logsAndTerminal\TerminalPanel.vue
+ * @LastEditTime: 2022-06-15 17:48:08
+ * @FilePath: /CasaOS-UI/src/components/logsAndTerminal/TerminalPanel.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 

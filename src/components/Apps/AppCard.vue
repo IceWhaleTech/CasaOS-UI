@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-02 09:34:15
+ * @LastEditTime: 2022-06-15 18:47:25
  * @Description: App Card item
- * @FilePath: \CasaOS-UI\src\components\Apps\AppCard.vue
+ * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
 -->
 
 <template>
@@ -142,7 +142,7 @@ export default {
             this.$api.analyse.analyseAppAction(appName, action)
             // eslint-disable-next-line no-empty
           } catch (err) { }
-          const hostIp = item.host || this.$baseIp 
+          const hostIp = item.host || this.$baseIp
           const protocol = item.protocol || 'http'
           const url = `${protocol}://${hostIp}:${item.port}${item.index}`
           if (item.image.toLowerCase().indexOf("qbittorrent") == -1) {
@@ -273,6 +273,7 @@ export default {
           item.state = res.data.data
           this.updateState()
         } else {
+          this.$refs.dro.isActive = false
           this.$buefy.dialog.alert({
             title: 'Error',
             message: res.data.data,

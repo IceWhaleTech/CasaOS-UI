@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-02 11:06:25
+ * @LastEditTime: 2022-06-15 18:11:51
  * @Description: 
- * @FilePath: \CasaOS-UI\src\service\service.js
+ * @FilePath: /CasaOS-UI/src/service/service.js
  */
 import axios from 'axios'
 import qs from 'qs'
@@ -16,7 +16,7 @@ axios.defaults.withCredentials = false;
 if (process.env.NODE_ENV === "dev") {
     axios.defaults.baseURL = `${document.location.protocol}//${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}/v1`;
 } else {
-    axios.defaults.baseURL = `${document.location.protocol}//${document.location.host}/v1`
+    axios.defaults.baseURL = `/v1`
 }
 
 //Create a axios instance, And set timeout to 30s

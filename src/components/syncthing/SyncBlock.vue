@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-11-10 17:48:25
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-05-25 16:40:13
+ * @LastEditTime: 2022-06-15 18:18:28
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\syncthing\SyncBlock.vue
+ * @FilePath: /CasaOS-UI/src/components/syncthing/SyncBlock.vue
 -->
 <template>
   <div class="column is-one-half">
@@ -21,7 +21,7 @@
                 {{$t(`Follow the guide to start syncing your files across multiple devices.`)}}
               </div>
             </div>
-            <b-image :src="require('@/assets/img/syncthing/sync_icon.png')" class="is-64x64"></b-image>
+            <b-image :src="require('@/assets/img/syncthing/sync_icon.png')" class="is-54x54"></b-image>
           </div>
           <div class="buttons">
             <b-button type="is-primary" size="is-small" rounded @click="openSyncPanel">{{$t(`Go !`)}}</b-button>
@@ -119,7 +119,7 @@ export default {
     }
   },
   created() {
-    this.syncBaseURL = (process.env.NODE_ENV === "dev") ? `http://${this.$baseIp}:${this.$store.state.syncthingPort}` : `${document.location.protocol}//${document.location.hostname}:${this.$store.state.syncthingPort}`
+    this.syncBaseURL = `http://${this.$baseIp}:${this.$store.state.syncthingPort}`
     this.syncXhr = axios.create({
       baseURL: this.syncBaseURL
     });
