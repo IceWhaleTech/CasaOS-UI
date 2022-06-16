@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-02-18 12:42:06
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-09 20:52:56
+ * @LastEditTime: 2022-06-16 22:12:02
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\FilePanel.vue
 -->
@@ -612,6 +612,7 @@ export default {
      */
     showRenameModal(item) {
       this.isModalOpen = true
+      console.log(this.isModalOpen);
       this.$buefy.modal.open({
         parent: this,
         component: RenameModal,

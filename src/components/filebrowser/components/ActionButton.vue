@@ -2,13 +2,13 @@
  * @Author: JerryK
  * @Date: 2022-02-23 17:08:21
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-15 18:41:35
+ * @LastEditTime: 2022-06-16 22:15:54
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/filebrowser/components/ActionButton.vue
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\components\ActionButton.vue
 -->
 <template>
   <div class="action-btn">
-    <b-dropdown aria-role="list" append-to-body :close-on-click="false"   ref="dropDown" :id="'dr-'+index" class="file-dropdown" :position="'is-'+verticalPos+'-'+horizontalPos" animation="fade1" @active-change="dorpActiveChange($event,'dr-'+index)">
+    <b-dropdown aria-role="list" append-to-body :close-on-click="false" ref="dropDown" :id="'dr-'+index" class="file-dropdown" :position="'is-'+verticalPos+'-'+horizontalPos" animation="fade1" @active-change="dorpActiveChange($event,'dr-'+index)">
       <template #trigger>
         <p role="button">
           <b-icon icon="dots-horizontal" custom-size="mdi-18px" id="das">
@@ -21,7 +21,7 @@
       <b-dropdown-item aria-role="menuitem" @click="copyPath">
         {{ $t('Copy Path') }}
       </b-dropdown-item>
-      <hr class="dropdown-divider" >
+      <hr class="dropdown-divider">
       <b-dropdown-item aria-role="menuitem" @click="rename">
         {{ $t('Rename') }}
       </b-dropdown-item>
@@ -44,9 +44,10 @@
 
 <script>
 import { mixin } from '@/mixins/mixin';
-import RenameModal from '../modals/RenameModal.vue';
+
 export default {
   mixins: [mixin],
+  inject: ['filePanel'],
   props: {
     cols: Number,
     index: Number,
@@ -84,24 +85,7 @@ export default {
     },
     rename() {
       this.$refs.dropDown.toggle()
-      this.$buefy.modal.open({
-        parent: this,
-        component: RenameModal,
-        hasModalCard: true,
-        customClass: 'rename-panel file-modal',
-        trapFocus: true,
-        canCancel: [''],
-        scroll: "keep",
-        animation: "zoom-in",
-        events: {
-          'reload': () => {
-            this.$emit("reload")
-          }
-        },
-        props: {
-          item: this.item
-        }
-      })
+      this.filePanel.showRenameModal(this.item)
     },
 
   },

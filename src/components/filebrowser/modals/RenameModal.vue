@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-02-25 11:03:08
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-08 21:15:39
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-16 22:16:53
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\modals\RenameModal.vue
 -->
@@ -25,8 +25,7 @@
           </div>
         </div>
         <b-field class="mb-3 mt-5 has-text-light" :type="errorType" :message="errors" expanded>
-          <b-input ref="rinput" v-model="fileName" v-on:keyup.enter.native="saveNewName"
-            @input.native="fileName = fileName.replace(/\//g,'')"></b-input>
+          <b-input ref="rinput" v-model="fileName" v-on:keyup.enter.native="saveNewName" @input.native="fileName = fileName.replace(/\//g,'')"></b-input>
         </b-field>
       </div>
 
