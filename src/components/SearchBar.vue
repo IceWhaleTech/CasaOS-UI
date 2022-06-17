@@ -2,14 +2,14 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-14 13:47:36
+ * @LastEditTime: 2022-06-17 18:46:47
  * @Description: Top Search bar
- * @FilePath: \CasaOS-UI\src\components\SearchBar.vue
+ * @FilePath: /CasaOS-UI/src/components/SearchBar.vue
 -->
 
 <template>
   <b-field position="is-centered " class="search-bar has-text-white">
-    <b-input :placeholder="$t('Search...')" v-model="keyText" icon="magnify" icon-right="magnify" icon-right-clickable @icon-right-click="gotoSearch" @keyup.enter.native="gotoSearch" size="is-large" :class="['ovh',isFocus?'fo':'']" expanded @focus="onFocus" @blur="onBlur">
+    <b-input :placeholder="$t('Search...')" v-model="keyText" icon="magnify" icon-right="magnify" icon-right-clickable @icon-right-click="gotoSearch" @keyup.enter.native="gotoSearch" size="is-medium" :class="['ovh',isFocus?'fo':'']" expanded @focus="onFocus" @blur="onBlur">
     </b-input>
   </b-field>
 </template>
@@ -63,19 +63,20 @@ export default {
   input {
     transition: all 0.2s;
     appearance: none;
-    background: rgba(129, 129, 129, 0.5);
-    // backdrop-filter: blur(0.875rem);
+    background: rgba(115, 120, 128, 0.35);
     border-radius: 8px;
     border: none;
     outline: none;
-    font-size: 1.5rem;
-    color: white;
+    font-size: 0.875rem !important;
+    color: rgba(255, 255, 255, 0.6);
+    height: 3rem;
     &:focus {
       border: none;
       box-shadow: none;
     }
     &::placeholder {
-      color: white;
+      padding-left: 0.5625rem;
+      color: rgba(255, 255, 255, 0.6);
     }
   }
   .ovh {

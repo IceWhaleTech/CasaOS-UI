@@ -174,8 +174,8 @@ html {
   position: relative;
   z-index: 20;
 
-  height: 3rem;
-  background: rgba(221, 221, 221, 0.95);
+  height: 3.75rem;
+  background: rgba(255, 255, 255, 1);
 
   .navbar-brand {
     .picon {
@@ -187,7 +187,7 @@ html {
       min-width: 20rem;
 
       .dropdown-content {
-        background: rgba(255, 255, 255, 0.72);
+        background: rgba(255, 255, 255, 1);
         backdrop-filter: blur(1rem);
 
         .dropdown-item {

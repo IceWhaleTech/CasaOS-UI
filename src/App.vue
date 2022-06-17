@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-14 13:23:13
+ * @LastEditTime: 2022-06-17 18:20:11
  * @Description: Main entry of application
- * @FilePath: \CasaOS-UI\src\App.vue
+ * @FilePath: /CasaOS-UI/src/App.vue
 -->
 
 <template>
@@ -49,7 +49,7 @@ export default {
       ],
       isWelcome: false,
       backgroundStyleObj: {
-        backgroundImage: `url(${require('@/assets/background/bg3.jpg')})`
+        backgroundImage: `url(${require('@/assets/background/background.png')})`
       },
       noneAni: {
         classes: 'fadeIn',

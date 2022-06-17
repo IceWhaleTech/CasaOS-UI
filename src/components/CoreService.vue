@@ -2,12 +2,12 @@
  * @Author: JerryK
  * @Date: 2021-11-10 17:50:18
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-14 14:04:39
+ * @LastEditTime: 2022-06-17 18:48:10
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\CoreService.vue
+ * @FilePath: /CasaOS-UI/src/components/CoreService.vue
 -->
 <template>
-  <div class=" home-section has-text-left mt-6">
+  <div class=" home-section has-text-left mt-5">
     <div class="columns is-variable is-2 is-multiline suggestion-list">
       <template v-if="!isLoading">
         <sync-block v-if="isSyncConfigLoaded"></sync-block>
