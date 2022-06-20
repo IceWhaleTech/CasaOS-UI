@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-03-01 21:10:57
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-07 12:09:32
- * @FilePath: \CasaOS-UI\src\components\Apps\AppPanel.vue
+ * @LastEditTime: 2022-06-20 18:22:32
+ * @FilePath: /CasaOS-UI/src/components/Apps/AppPanel.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -35,7 +35,7 @@
               <div class="flex1 is-flex is-align-items-center">
                 <div>
                   <h4 class="title store-title is-4 ">{{appDetailData.title}}</h4>
-                  <p class="subtitle is-size-66 two-line">{{appDetailData.tagline}}</p>
+                  <p class="subtitle is-size-65 two-line">{{appDetailData.tagline}}</p>
                   <p class="description">
                     <b-button type="is-primary" size="is-normal" @click="qucikInstall(appDetailData.id)" :loading="appDetailData.id == currentInstallId" rounded>{{$t('Install')}}</b-button>
                   </p>
@@ -98,9 +98,9 @@
 
             <!-- App Info  Start -->
             <div class="app-desc mt-4 mb-6">
-              <p class="is-size-66 mb-2 un-break-word">{{appDetailData.tagline}}</p>
-              <p class="is-size-66 un-break-word">{{appDetailData.description}}</p>
-              <!-- <p class="is-size-66 " v-html="appDetailData.tip"></p> -->
+              <p class="is-size-65 mb-2 un-break-word">{{appDetailData.tagline}}</p>
+              <p class="is-size-65 un-break-word">{{appDetailData.description}}</p>
+              <!-- <p class="is-size-65 " v-html="appDetailData.tip"></p> -->
             </div>
             <!-- App Info  End -->
 
@@ -1259,10 +1259,9 @@ export default {
         }
       } else {
         localStorage.removeItem("app_data")
-        let _this = this
         setTimeout(() => {
-          _this.$emit('updateState')
-          _this.$emit('close')
+          this.$emit('updateState')
+          this.$emit('close')
         }, 500)
       }
     },

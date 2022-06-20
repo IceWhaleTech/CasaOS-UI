@@ -1,9 +1,7 @@
 .file-panel {
   .animation-content {
 
-    .is-absolute {
-      position: absolute;
-    }
+   
 
     .modal-card {
       width: 100%;
@@ -1437,12 +1435,6 @@
   }
 }
 
-
-
-// Video Player
-:root {
-  --plyr-color-main: #2276f3;
-}
 
 @media screen and (max-width: 480px) {
   .file-panel .animation-content {

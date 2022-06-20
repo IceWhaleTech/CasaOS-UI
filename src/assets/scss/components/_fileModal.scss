@@ -1,0 +1,55 @@
+/************************************
+*
+* File Modal
+*
+*************************************/
+
+.fileModal {
+    .breadcrumb {
+        margin-bottom: 0.5rem;
+
+        a {
+            color: #0e9aff;
+        }
+
+        ul {
+            overflow: hidden;
+            flex-wrap: nowrap;
+            flex-direction: row;
+            justify-content: flex-start;
+
+            li {
+                white-space: nowrap;
+
+                div {
+                    max-width: 100%;
+                    padding: 0 0.5em;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                }
+
+                &:first-child {
+                    a {
+                        padding-right: 0;
+
+                        .icon {
+                            margin-left: 0;
+                        }
+                    }
+                }
+
+                &:last-child {
+                    min-width: 0;
+                    width: 100%;
+                }
+
+                &:nth-child(2) {
+                    &::before {
+                        content: "|";
+                    }
+                }
+            }
+        }
+    }
+}

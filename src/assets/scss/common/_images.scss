@@ -46,3 +46,16 @@
     width: 75px;
   }
 }
+
+.img-c {
+  .image {
+    transition: all 0.3s;
+  }
+
+  &:hover {
+    .image {
+      transform: scale3d(1.1, 1.1, 1.1);
+    }
+  }
+}
+

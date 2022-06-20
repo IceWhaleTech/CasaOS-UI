@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-19 20:45:17
+ * @LastEditTime: 2022-06-20 18:28:45
  * @Description: Top bar 
- * @FilePath: \CasaOS-UI\src\components\TopBar.vue
+ * @FilePath: /CasaOS-UI/src/components/TopBar.vue
 -->
 
 <template>
@@ -530,3 +530,88 @@ export default {
 
 }
 </script>
+
+<style lang="scss" >
+.top-bar {
+  position: relative;
+  z-index: 20;
+  height: 3.75rem;
+  background: rgba(255, 255, 255, 1);
+
+  .navbar-brand {
+    height: 3.75rem;
+
+    .picon {
+      cursor: pointer;
+    }
+
+    .dropdown + .dropdown {
+      margin-left: 0;
+    }
+
+    .dropdown-trigger,
+    .tooltip-trigger {
+      height: 1.5rem;
+    }
+
+    .dropdown-menu {
+      margin-top: 0.5rem;
+      min-width: 20rem;
+
+      .dropdown-content {
+        background: rgba(255, 255, 255, 1);
+        backdrop-filter: blur(1rem);
+
+        .dropdown-item {
+          padding: 0.875rem 1.25rem;
+          text-align: left;
+
+          .item {
+            height: 2rem;
+          }
+        }
+      }
+    }
+  }
+
+  .set-select {
+    .select {
+      &::after {
+        border-color: #000 !important;
+      }
+    }
+
+    select {
+      background-color: transparent !important;
+      border-color: #000 !important;
+    }
+  }
+
+  .field {
+    line-height: 1rem;
+  }
+
+  .switch {
+    &.is-flex-direction-row-reverse {
+      .control-label {
+        padding-left: 0;
+        padding-right: calc(0.75em - 1px);
+      }
+    }
+  }
+
+  .update-container {
+    .button.is-rounded {
+      padding-left: calc(1em + 0.25em);
+      padding-right: calc(1em + 0.25em);
+      border-radius: 9999px !important;
+    }
+  }
+
+  .button {
+    &.is-small {
+      height: 2em;
+    }
+  }
+}
+</style>

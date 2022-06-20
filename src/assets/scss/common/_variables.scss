@@ -1,6 +1,6 @@
 // Included below are all the defined variables from Bulma
 // Modify as needed, removing the !default attribute.
-
+// Bulma Variables
 // Colors
 
 $black: hsl(0, 0%, 4%) !default;
@@ -21,6 +21,7 @@ $orange: hsl(14, 100%, 53%) !default;
 $yellow: hsl(48, 100%, 67%) !default;
 $green: hsl(141, 71%, 48%) !default;
 $turquoise: hsl(171, 100%, 41%) !default;
+$casablue:hsl(216, 90%, 54%) !default;
 $cyan: hsl(204, 86%, 53%) !default;
 $blue: hsl(216, 90%, 54%) !default;
 $purple: hsl(271, 100%, 71%) !default;
@@ -29,18 +30,16 @@ $pot: rgb(214, 167, 56) !default;
 
 // Typography
 
-$family-sans-serif: BlinkMacSystemFont,
--apple-system,
+$family-sans-serif: -apple-system,
+BlinkMacSystemFont,
+Roboto,
 "Segoe UI",
-"Roboto",
-"Oxygen",
-"Ubuntu",
-"Cantarell",
-"Fira Sans",
-"Droid Sans",
 "Helvetica Neue",
-"Helvetica",
-"Arial",
+"PingFang SC",
+"Noto Sans",
+"Noto Sans CJK SC",
+"Microsoft YaHei",
+"微软雅黑",
 sans-serif !default;
 $family-monospace: monospace !default;
 $render-mode: optimizeLegibility !default;
@@ -155,6 +154,9 @@ $link-focus-border: $blue !default;
 $link-active: $grey-darker !default;
 $link-active-border: $grey-dark !default;
 
+$link-light:findLightColor($link);
+$link-dark:findDarkColor($link);
+
 // Typography
 
 $family-primary: $family-sans-serif !default;
@@ -166,9 +168,91 @@ $size-medium: $size-5 !default;
 $size-large: $size-4 !default;
 
 
-$avatar-border-color:#E3E3E3;
+// CasaOS Variables
 
-$modal-background-background-color: rgba(0, 0, 0, 0.5);
-$sidebar-width: 22.5rem;
+// Colors
+$casablue:hsl(216, 90%, 54%) !default;
 
+$primary: $casablue;
+$primary-light: findLightColor($primary);
+$primary-dark: findDarkColor($primary);
+$primary-invert: findColorInvert($primary);
+$ghost: $casablue;
+$ghost-light: findLightColor($ghost);
+$ghost-dark: findDarkColor($ghost);
+$ghost-invert: findColorInvert($ghost);
+
+
+// Lists and maps
+$custom-colors: null !default;
+$custom-shades: null !default;
+
+// Setup $colors to use as bulma classes (e.g. 'is-twitter')
+$colors: mergeColorMaps(("white": ($white,
+            $black,
+        ),
+        "black": ($black,
+            $white,
+        ),
+        "light": ($light,
+            $light-invert,
+        ),
+        "dark": ($dark,
+            $dark-invert,
+        ),
+        "primary": ($primary,
+            $primary-invert,
+            $primary-light,
+            $primary-dark,
+        ),
+        "link": ($link,
+            $link-invert,
+            $link-light,
+            $link-dark,
+        ),
+        "info": ($info,
+            $info-invert,
+            $info-light,
+            $info-dark,
+        ),
+        "success": ($success,
+            $success-invert,
+            $success-light,
+            $success-dark,
+        ),
+        "warning": ($warning,
+            $warning-invert,
+            $warning-light,
+            $warning-dark,
+        ),
+        "danger": ($danger,
+            $danger-invert,
+            $danger-light,
+            $danger-dark,
+        ),
+    ),
+    $custom-colors);
+
+// Links
+$link: $primary;
+$link-invert: $primary-invert;
+$link-focus-border: $primary;
+
+
+// BackDrop 
+$backDropColor: rgba(123, 123, 123, 0.16);
+$backDropBlur: none;
+$backDropBorderRadius: 0.5rem;
+
+// Avatar
+$avatar-border-color:hsl(0, 0%, 89%);
+
+// Loading
+$loading-icon-size: 2.5rem;
 // $loading-background:rgba(255, 255, 255, 0);
+
+// Modal
+$modal-background-background-color: rgba(0, 0, 0, 0.5);
+
+// SideBar
+$sidebar-width: 22.5rem;

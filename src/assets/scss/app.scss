@@ -1,144 +1,53 @@
-@import "~bulma/sass/utilities/initial-variables";
-@import "~bulma/sass/utilities/functions";
-// 1. Set your own initial variables and derived
-//    variables in _variables.scss
-@import "variables";
+// Import Font
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap");
 
-// 2. Setup your Custom Colors
-$linkedin: #0077b5;
-$linkedin-invert: findColorInvert($linkedin);
-$twitter: #55acee;
-$twitter-invert: findColorInvert($twitter);
-$github: #333;
-$github-invert: findColorInvert($github);
-
-$primary: #2276f3;
-$primary-light: findLightColor($primary);
-$primary-dark: findDarkColor($primary);
-$primary-invert: findColorInvert($primary);
-$ghost: #2276f3;
-$ghost-light: findLightColor($ghost);
-$ghost-dark: findDarkColor($ghost);
-$ghost-invert: findColorInvert($ghost);
-
-$loading-icon-size: 2.5rem;
-
-@import "~bulma/sass/utilities/derived-variables";
+// Import materialdesignicons
 @import "~@mdi/font/css/materialdesignicons.min.css";
-// 3. Add new color variables to the color map.
-$addColors: ("twitter": ($twitter,
-    $twitter-invert,
-  ),
-  "linkedin": ($linkedin,
-    $linkedin-invert,
-  ),
-  "github": ($github,
-    $github-invert,
-  ),
-);
-$colors: map-merge($colors, $addColors);
 
+// Import Swiper Style
+@import "~swiper/swiper-bundle.min.css";
+
+// Import CasaOS IconFont
+@import "common/iconfont";
+
+// Import Bulma's core
+@import "~bulma/sass/utilities/_all";
+
+// Custom Variables
+@import "common/variables";
+
+// Import Bulma and Buefy styles
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
 
-$backDropColor: rgba(123, 123, 123, 0.16);
-$backDropBlur: none;
-$backDropBorderRadius: 0.5rem;
+// Import CasaOS Styles
+// Commons
+@import "common/root";
+@import "common/spacing";
+@import "common/buttons";
+@import "common/title";
+@import "common/size";
+@import "common/images";
+@import "common/icon";
+@import "common/tabs";
+@import "common/scrollbars";
+@import "common/animate";
+@import "common/avatar";
+@import "common/modal";
 
-
-
-@import "buttons";
-@import "title";
-@import "size";
-@import "images";
-@import "widgets";
-@import "scrollbars";
-@import "animate";
-@import "avatar";
-@import "filebrowser";
-@import "acquaintanceShare";
-@import "iconfont";
-@import "~swiper/swiper-bundle.min.css";
-
-// 4. Provide custom buefy overrides and site styles here
-
-:root {
-  --swiper-navigation-size: 24px !important;
-}
-
-* {
-  -webkit-tap-highlight-color: transparent;
-}
-
-body,
-html {
-  overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, Roboto, "Segoe UI",
-    "Helvetica Neue", "PingFang SC", "Noto Sans", "Noto Sans CJK SC",
-    "Microsoft YaHei", "微软雅黑", sans-serif;
-  background-color: #000;
-  color: #5a5a5a;
-
-}
-
-#app {
-  width: 100vw;
-  height: 100vh;
-  font-family: -apple-system, BlinkMacSystemFont, Roboto, "Segoe UI",
-    "Helvetica Neue", "PingFang SC", "Noto Sans", "Noto Sans CJK SC",
-    "Microsoft YaHei", "微软雅黑", sans-serif;
-  font-weight: 400;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  overflow-y: hidden;
-}
-
-#background {
-  position: fixed;
-  z-index: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: bottom center;
-  overflow: hidden;
-  transition: background-image 0.5s linear;
-}
-
-.is-shadow {
-  -webkit-box-shadow: 0px 0px 17px -2px rgba(0, 0, 0, 0.47);
-  box-shadow: 0px 0px 17px -2px rgba(0, 0, 0, 0.47);
-}
+// Pages and Components
+@import "components/widgets";
+@import "components/syncthing";
+@import "components/filebrowser";
+@import "components/acquaintanceShare";
+@import "components/fileModal";
+@import "components/updateModal";
 
 .b-checkbox.checkbox input[type=checkbox]:focus:checked+.check,
 .b-checkbox.checkbox input[type=checkbox]:focus+.check {
   box-shadow: none !important;
 }
 
-.is-size-65 {
-  font-size: 0.875rem;
-}
-
-.button,
-.input,
-.textarea,
-.taginput .taginput-container.is-focusable,
-.select select,
-.file-cta,
-.file-name,
-.pagination-previous,
-.pagination-next,
-.pagination-link,
-.pagination-ellipsis {
-  &:focus {
-    box-shadow: none;
-  }
-}
 
 .autocomplete {
   &.has-colon {
@@ -163,14 +72,7 @@ html {
   }
 }
 
-.icon {
-  overflow: hidden;
 
-  &.is-20 {
-    width: 1.25rem;
-    height: 1.25rem;
-  }
-}
 
 .level-item {
   .icon {
@@ -178,123 +80,10 @@ html {
   }
 }
 
-.top-bar {
-  position: relative;
-  z-index: 20;
 
-  height: 3.75rem;
-  background: rgba(255, 255, 255, 1);
 
-  .navbar-brand {
-    height: 3.75rem;
 
-    .picon {
-      cursor: pointer;
-    }
 
-    .dropdown+.dropdown {
-      margin-left: 0;
-    }
-
-    .dropdown-trigger,
-    .tooltip-trigger {
-      height: 1.5rem;
-    }
-
-    .dropdown-menu {
-      margin-top: 0.5rem;
-      min-width: 20rem;
-
-      .dropdown-content {
-        background: rgba(255, 255, 255, 1);
-        backdrop-filter: blur(1rem);
-
-        .dropdown-item {
-          padding: 0.875rem 1.25rem;
-          text-align: left;
-
-          .item {
-            height: 2rem;
-          }
-        }
-      }
-    }
-  }
-
-  .set-select {
-    .select {
-      &::after {
-        border-color: #000 !important;
-      }
-    }
-
-    select {
-      background-color: transparent !important;
-      border-color: #000 !important;
-    }
-  }
-
-  .field {
-    line-height: 1rem;
-  }
-
-  .switch {
-    &.is-flex-direction-row-reverse {
-      .control-label {
-        padding-left: 0;
-        padding-right: calc(0.75em - 1px);
-      }
-    }
-  }
-
-  .update-container {
-    .button.is-rounded {
-      border-radius: 9999px !important;
-      padding-left: calc(1em + 0.25em);
-      padding-right: calc(1em + 0.25em);
-    }
-  }
-
-  .button {
-    &.is-small {
-      height: 2em;
-    }
-  }
-}
-
-.brand-bar {
-  position: fixed;
-  z-index: 0;
-  left: 2rem;
-  bottom: 1.125rem;
-  pointer-events: none;
-
-  .logo-text {
-    font-size: 1.125rem;
-  }
-
-  .intro-text {
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.6);
-  }
-}
-
-.contact-bar {
-  position: fixed;
-  right: 0.875rem;
-  bottom: 0.5rem;
-  z-index: 10;
-
-  a {
-    color: $white;
-    margin: 0.625rem;
-    display: flex;
-    align-items: center;
-    &:hover {
-      color: #fff;
-    }
-  }
-}
 
 .out-container {
   position: relative;
@@ -324,67 +113,7 @@ html {
   z-index: 10;
 }
 
-.pt-7 {
-  padding-top: 4rem;
-}
 
-.pt-55 {
-  padding-top: 2rem;
-}
-
-.p-55 {
-  padding: 2rem !important;
-}
-
-.mt-55 {
-  margin-top: 2.5rem !important;
-}
-
-.ml-7 {
-  margin-left: 5.5rem;
-}
-
-.pl-55 {
-  padding-left: 1.75rem;
-}
-
-.is-size-66 {
-  font-size: 0.875rem;
-}
-
-.pl-7 {
-  padding-left: 4.75rem;
-}
-
-.is-size-65 {
-  font-size: 0.875rem !important;
-}
-
-.is-abs {
-  position: absolute;
-}
-
-.auto-height {
-  height: auto !important;
-}
-
-.z-20 {
-  position: relative;
-  z-index: 20;
-}
-
-.z-30 {
-  z-index: 20;
-}
-
-.h-30 {
-  height: 30px;
-}
-
-.border-8 {
-  border-radius: 8px;
-  overflow: hidden;
-}
 
 .powered-con {
   width: 100%;
@@ -398,189 +127,6 @@ html {
 .label {
   font-size: 0.875rem;
   margin-bottom: 0.5rem;
-}
-
-//Panel
-
-.modal-background {
-  background: rgba(0, 0, 0, 0.8);
-}
-
-.modal-card {
-  background: rgba(255, 255, 255, 1);
-  //backdrop-filter: $backDropBlur;
-  border-radius: $backDropBorderRadius;
-
-  .close-container {
-    position: absolute;
-    right: 2rem;
-    top: 2rem;
-  }
-
-  .modal-close-container {
-    padding-left: 1rem;
-    margin-left: 0.5rem;
-    position: relative;
-    height: 100%;
-  }
-
-  .modal-close-container-line {
-    &:before {
-      content: "";
-      position: absolute;
-      border-left: #363636 2px solid;
-      height: 1rem;
-      left: 0;
-    }
-  }
-
-  .modal-card-head,
-  .modal-card-body,
-  .modal-card-foot {
-    position: relative;
-    background-color: transparent;
-    border: none;
-  }
-
-  .modal-card-head {
-    padding: 2rem 2rem 1.5rem 2rem;
-  }
-
-  .modal-card-body {
-    padding: 0 2rem;
-
-    .loading-overlay .loading-icon:after {
-      -webkit-animation: spinAround 500ms infinite linear;
-      animation: spinAround 500ms infinite linear;
-      border: 4px solid #000;
-      border-radius: 9999px;
-      border-right-color: transparent;
-      border-top-color: transparent;
-      content: "";
-      display: block;
-      height: 1em;
-      position: relative;
-      width: 1em;
-      position: absolute;
-      top: calc(50% - 1.25rem);
-      left: calc(50% - 1.25rem);
-      width: 2.5rem;
-      height: 2.5rem;
-      border-width: 0.2 em;
-    }
-
-    .button.is-static,
-    .input,
-    .textarea,
-    .select select,
-    .file-cta,
-    .file-name,
-    .pagination-previous,
-    .pagination-next,
-    .pagination-link,
-    .pagination-ellipsis {
-      font-size: 0.875rem;
-      height: 2.714em;
-      border: 1px solid #cfcfcf !important;
-      border-radius: 4px;
-
-      &:focus {
-        box-shadow: none;
-      }
-    }
-
-    .media {
-      padding: 0rem;
-    }
-
-    .media-content {
-      p {
-        word-wrap: break-word;
-
-        div {
-          word-wrap: break-word;
-        }
-      }
-    }
-
-    .tab-content {
-      overflow: hidden;
-    }
-
-    .title {
-      overflow: hidden;
-    }
-
-    .field:last-child {
-      margin-bottom: 0.5rem;
-    }
-
-    .field-body {
-      .field:last-child {
-        margin-bottom: 0rem;
-      }
-    }
-
-    .port-item:not(:last-child) {
-      .field {
-        margin-bottom: 0;
-      }
-    }
-  }
-
-  .modal-card-foot {
-    padding: 1rem 2rem 2rem 2rem;
-
-    .button {
-      border-radius: 9999px;
-      padding-left: calc(1em + 0.25em);
-      padding-right: calc(1em + 0.25em);
-    }
-  }
-}
-
-.delete,
-.modal-close {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  background-color: transparent;
-  border: none;
-  border-radius: 9999px;
-  cursor: pointer;
-  pointer-events: auto;
-  display: inline-block;
-  flex-grow: 0;
-  flex-shrink: 0;
-  font-size: 0;
-  height: 20 px;
-  max-height: 20px;
-  max-width: 20px;
-  min-height: 20px;
-  min-width: 20px;
-  outline: none;
-  position: relative;
-  vertical-align: top;
-  width: 20px;
-
-  &::before {
-    width: 80%;
-    background-color: black;
-  }
-
-  &::after {
-    height: 80%;
-    background-color: black;
-  }
-
-  &:hover,
-  &:active {
-    background-color: transparent;
-  }
 }
 
 .account-modal {
@@ -600,37 +146,6 @@ html {
   right: 0;
   display: flex;
   align-items: center;
-}
-
-// Common Tabs
-.tabs {
-  ul {
-    border-bottom: 1px solid transparent;
-
-    li {
-      font-size: 1rem;
-
-      &:first-child {
-        a {
-          margin-left: 0;
-        }
-      }
-
-      a {
-        color: $primary;
-        border-bottom: transparent 2px solid !important;
-        padding: 0.5rem 0 0.1rem 0;
-        margin: 0 0.5rem;
-      }
-
-      &.is-active {
-        a {
-          font-weight: 700;
-          border-bottom: $primary 2px solid !important;
-        }
-      }
-    }
-  }
 }
 
 .storage-modal {
@@ -698,10 +213,6 @@ html {
     right: -0.5rem;
     top: 0rem;
   }
-}
-
-.is-size-7 {
-  word-break: keep-all;
 }
 
 .terminal-modal {
@@ -850,66 +361,10 @@ html {
   }
 }
 
-.fileModal {
-  .breadcrumb {
-    margin-bottom: 0.5rem;
 
-    a {
-      color: #0e9aff;
-    }
 
-    ul {
-      overflow: hidden;
-      flex-wrap: nowrap;
-      flex-direction: row;
-      justify-content: flex-start;
 
-      li {
-        white-space: nowrap;
 
-        div {
-          max-width: 100%;
-          padding: 0 0.5em;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        }
-
-        &:first-child {
-          a {
-            padding-right: 0;
-
-            .icon {
-              margin-left: 0;
-            }
-          }
-        }
-
-        &:last-child {
-          min-width: 0;
-          width: 100%;
-        }
-
-        &:nth-child(2) {
-          &::before {
-            content: "|";
-          }
-        }
-      }
-    }
-  }
-}
-
-.fullScreen {
-  z-index: 1000;
-  background-color: #1e1e1e !important;
-  border-radius: 4px;
-  position: relative;
-}
-
-.nobrk {
-  word-break: normal;
-}
 
 .home-section {
   .loading-background {
@@ -934,45 +389,7 @@ html {
 
 // Login Page
 
-#login-page {
-  height: calc(100% - 5.5rem);
-  position: relative;
-  z-index: 500;
 
-  .login-panel {
-    text-align: left;
-    background: rgba(255, 255, 255, 0.46);
-    backdrop-filter: blur(1rem);
-    border-radius: 8px;
-    padding: 2.5rem 4rem;
-
-    .label {
-      color: #dfdfdf;
-    }
-
-    .input {
-      background: rgba(255, 255, 255, 0.32);
-      border-color: transparent;
-    }
-
-    &.step1 {
-      padding: 4rem 6rem;
-    }
-
-    &.step2 {
-      padding: 2.5rem 4rem;
-      width: 32rem;
-    }
-
-    &.step3 {
-      padding: 4rem 8rem;
-    }
-
-    &.step4 {
-      width: 28rem;
-    }
-  }
-}
 
 .install-animation {
   width: 200px;
@@ -984,36 +401,7 @@ html {
   height: 16rem;
 }
 
-.b-line {
-  border-bottom: #cfcfcf 1px solid;
-}
 
-.list-icon {
-  width: 72px;
-}
-
-.icon-shadow {
-  border-radius: 6px;
-  box-sizing: border-box;
-}
-
-.two-line {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  word-break: normal;
-  -webkit-line-clamp: 2; //行数
-  -webkit-box-orient: vertical;
-}
-
-.one-line {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  word-break: break-all;
-  -webkit-line-clamp: 1; //行数
-  -webkit-box-orient: vertical;
-}
 
 .pagination-link.is-current {
   background-color: hsl(216, 90%, 54%);
@@ -1021,55 +409,6 @@ html {
   color: #fff;
 }
 
-.b-tabs .tab-content {
-  position: relative;
-  overflow: visible;
-  display: flex;
-  flex-direction: column;
-  padding: 1rem 0 0 0;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-
-.fade-enter,
-.fade-leave-to
-
-/* .fade-leave-active below version 2.1.8 */
-  {
-  opacity: 0;
-}
-
-.slide-fade-enter-active {
-  transition: all 0.25s ease-out;
-}
-
-.slide-fade-leave-active {
-  transition: all 0.25s ease-out;
-}
-
-.slide-fade-enter,
-.slide-fade-leave-to
-
-/* .slide-fade-leave-active for below version 2.1.8 */
-  {
-  transform: translateY(10px);
-  opacity: 0;
-}
-
-.img-c {
-  .image {
-    transition: all 0.3s;
-  }
-
-  &:hover {
-    .image {
-      transform: scale3d(1.1, 1.1, 1.1);
-    }
-  }
-}
 
 .dark-bg {
   position: fixed;
@@ -1117,9 +456,7 @@ html {
   }
 }
 
-.op65 {
-  opacity: 0.65;
-}
+
 
 .app-detial {
   overflow: auto;
@@ -1216,67 +553,6 @@ button.dropdown-item.is-active {
   }
 }
 
-.button {
-  -webkit-tap-highlight-color: transparent;
-}
-
-// Sync Panel
-.sync-panel {
-  .modal-card {
-    width: 50rem;
-  }
-
-  .steps {
-    .column {
-      padding: 1.5rem 0;
-    }
-  }
-
-  .dot {
-    padding-left: 2.5rem;
-    position: relative;
-    color: #383b46;
-    opacity: 0.5;
-    font-weight: bold;
-    transition: all 0.3s;
-
-    &:before {
-      display: flex;
-      content: attr(data-title);
-      position: absolute;
-      width: 1.75rem;
-      height: 1.75rem;
-      border-radius: 50%;
-      background-color: #2276f3;
-      transition: all 0.3s;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      left: 0;
-      top: -0.25rem;
-      z-index: 1;
-      box-shadow: 0px 0px 0.875rem rgba(34, 118, 243, 0.75);
-    }
-
-    &.active {
-      color: #2276f3;
-      opacity: 1;
-    }
-  }
-
-  .ok-dot {
-    &:before {
-      font: normal normal normal 24px/1 "Material Design Icons" !important;
-      content: "\F012C" !important;
-    }
-  }
-
-  .modal-card-body {
-    overflow-x: hidden;
-    overflow-y: auto;
-    padding-bottom: 1rem;
-  }
-}
 
 .un-break-word {
   word-break: keep-all;
@@ -1488,33 +764,9 @@ button.dropdown-item.is-active {
     }
   }
 
-  .brand-bar {
-    bottom: 3rem;
-    font-size: 0.875rem;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: center;
+ 
 
-    .image.is-32x32 {
-      height: 24px;
-      width: 24px;
-    }
-
-    .is-size-4 {
-      font-size: 1.25rem !important;
-    }
-  }
-
-  .contact-bar {
-    right: 0;
-    bottom: 0rem;
-    background-color: transparent;
-    backdrop-filter: none;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-  }
+  
 
   .side-bar {
     transition: all 0.3s ease-in-out;
@@ -1712,53 +964,4 @@ button.dropdown-item.is-active {
     font-size: 1rem;
     text-align: left;
   }
-}
-
-.update-info-container {
-  font-size: 14px;
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-weight: bold;
-    margin-bottom: 0.4rem;
-  }
-
-  h1 {
-    font-size: 2em;
-  }
-
-  h2 {
-    font-size: 1.5em;
-  }
-
-  h3 {
-    font-size: 1.17em;
-  }
-
-  h4 {
-    font-size: 1em;
-  }
-
-  h5 {
-    font-size: 0.83em;
-  }
-
-  h6 {
-    font-size: 0.67em;
-  }
-
-  ul {
-    margin-bottom: 0.5em;
-
-    li {
-      list-style: disc;
-      margin-left: 1rem;
-    }
-  }
-
-
 }

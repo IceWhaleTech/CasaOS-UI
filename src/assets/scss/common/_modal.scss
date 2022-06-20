@@ -1,0 +1,142 @@
+/************************************
+*
+* Modal
+*
+*************************************/
+
+.modal-card {
+    background: rgba(255, 255, 255, 1);
+    //backdrop-filter: $backDropBlur;
+    border-radius: $backDropBorderRadius;
+
+    .close-container {
+        position: absolute;
+        right: 2rem;
+        top: 2rem;
+    }
+
+    .modal-close-container {
+        padding-left: 1rem;
+        margin-left: 0.5rem;
+        position: relative;
+        height: 100%;
+    }
+
+    .modal-close-container-line {
+        &:before {
+            content: "";
+            position: absolute;
+            border-left: #363636 2px solid;
+            height: 1rem;
+            left: 0;
+        }
+    }
+
+    .modal-card-head,
+    .modal-card-body,
+    .modal-card-foot {
+        position: relative;
+        background-color: transparent;
+        border: none;
+    }
+
+    .modal-card-head {
+        padding: 2rem 2rem 1.5rem 2rem;
+    }
+
+    .modal-card-body {
+        padding: 0 2rem;
+
+        .loading-overlay .loading-icon:after {
+            -webkit-animation: spinAround 500ms infinite linear;
+            animation: spinAround 500ms infinite linear;
+            border: 4px solid #000;
+            border-radius: 9999px;
+            border-right-color: transparent;
+            border-top-color: transparent;
+            content: "";
+            display: block;
+            height: 1em;
+            position: relative;
+            width: 1em;
+            position: absolute;
+            top: calc(50% - 1.25rem);
+            left: calc(50% - 1.25rem);
+            width: 2.5rem;
+            height: 2.5rem;
+            border-width: 0.2 em;
+        }
+
+        .button.is-static,
+        .input,
+        .textarea,
+        .select select,
+        .file-cta,
+        .file-name,
+        .pagination-previous,
+        .pagination-next,
+        .pagination-link,
+        .pagination-ellipsis {
+            font-size: 0.875rem;
+            height: 2.714em;
+            border: 1px solid #cfcfcf !important;
+            border-radius: 4px;
+
+            &:focus {
+                box-shadow: none;
+            }
+        }
+
+        .media {
+            padding: 0rem;
+        }
+
+        .media-content {
+            p {
+                word-wrap: break-word;
+
+                div {
+                    word-wrap: break-word;
+                }
+            }
+        }
+
+        .tab-content {
+            overflow: hidden;
+        }
+
+        .title {
+            overflow: hidden;
+        }
+
+        .field:last-child {
+            margin-bottom: 0.5rem;
+        }
+
+        .field-body {
+            .field:last-child {
+                margin-bottom: 0rem;
+            }
+        }
+
+        .port-item:not(:last-child) {
+            .field {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    .modal-card-foot {
+        padding: 1rem 2rem 2rem 2rem;
+
+        .button {
+            border-radius: 9999px;
+            padding-left: calc(1em + 0.25em);
+            padding-right: calc(1em + 0.25em);
+        }
+    }
+}
+
+.modal-background {
+    background: rgba(0, 0, 0, 0.8);
+}

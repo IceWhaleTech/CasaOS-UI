@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:30:26
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-05-25 16:03:22
+ * @LastEditTime: 2022-06-20 18:29:12
  * @Description: 
- * @FilePath: \CasaOS-UI\src\views\Login.vue
+ * @FilePath: /CasaOS-UI/src/views/Login.vue
 -->
 <template>
   <div id="login-page" class="is-flex is-justify-content-center is-align-items-center ">
@@ -108,5 +108,44 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+#login-page {
+  height: calc(100% - 5.5rem);
+  position: relative;
+  z-index: 500;
+
+  .login-panel {
+    text-align: left;
+    background: rgba(255, 255, 255, 0.46);
+    backdrop-filter: blur(1rem);
+    border-radius: 8px;
+    padding: 2.5rem 4rem;
+
+    .label {
+      color: #dfdfdf;
+    }
+
+    .input {
+      background: rgba(255, 255, 255, 0.32);
+      border-color: transparent;
+    }
+
+    &.step1 {
+      padding: 4rem 6rem;
+    }
+
+    &.step2 {
+      padding: 2.5rem 4rem;
+      width: 32rem;
+    }
+
+    &.step3 {
+      padding: 4rem 8rem;
+    }
+
+    &.step4 {
+      width: 28rem;
+    }
+  }
+}
 </style>

@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-19 21:04:45
+ * @LastEditTime: 2022-06-20 18:21:41
  * @Description: Main entry of application
- * @FilePath: \CasaOS-UI\src\App.vue
+ * @FilePath: /CasaOS-UI/src/App.vue
 -->
 
 <template>
@@ -180,3 +180,30 @@ _____             _____ _____
   },
 }
 </script>
+
+<style lang="scss" scoped>
+#app {
+  width: 100vw;
+  height: 100vh;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  overflow-y: hidden;
+}
+
+#background {
+  position: fixed;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  overflow: hidden;
+  transition: background-image 0.5s linear;
+}
+</style>

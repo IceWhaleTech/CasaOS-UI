@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-19 21:49:05
+ * @LastEditTime: 2022-06-20 18:05:23
  * @Description: The right bottom contact bar
- * @FilePath: \CasaOS-UI\src\components\ContactBar.vue
+ * @FilePath: /CasaOS-UI/src/components/ContactBar.vue
 -->
 
 <template>
@@ -48,3 +48,35 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.contact-bar {
+  position: fixed;
+  right: 0.875rem;
+  bottom: 0.5rem;
+  z-index: 10;
+
+  a {
+    color: #fff;
+    margin: 0.625rem;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .contact-bar {
+    right: 0;
+    bottom: 0rem;
+    background-color: transparent;
+    backdrop-filter: none;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+}
+</style>
