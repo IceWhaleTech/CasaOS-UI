@@ -2,9 +2,16 @@
   <div class="widget has-text-white clock">
     <div class="blur-background"></div>
     <div class="widget-content  pb-1">
-      <div class="arrow-btn" @click="showMoreInfo">
-        <b-icon icon="chevron-right" :class="{'open':showMore}"></b-icon>
+      <!-- Header Start -->
+      <div class="widget-header is-flex">
+        <div class="widget-title is-flex-grow-1">
+          System Status
+        </div>
+        <div class="widget-icon-button is-flex-shrink-0" @click="showMoreInfo">
+          <b-icon pack="casa" icon="arrow-right" size="is-20" :class="{'open':showMore}"></b-icon>
+        </div>
       </div>
+      <!-- Header End -->
 
       <div class="columns is-mobile ">
         <div class="column is-half has-text-centered">
@@ -76,7 +83,7 @@ export default {
       showMore: false,
       cpuCores: 0,
       totalMemory: 0,
-      barHeight: 120,
+      barHeight: 132,
       cpuSeries: [0],
       ramSeries: [0],
       chartOptions: {
@@ -89,8 +96,8 @@ export default {
           padding: {
             left: 0,
             right: 0,
-            top: -8,
-            bottom: -10
+            top: -6,
+            bottom: -15
           }
         },
         states: {
@@ -115,13 +122,13 @@ export default {
 
             hollow: {
               margin: 0,
-              size: '55%',
+              size: '60%',
               image: undefined,
               imageOffsetX: 0,
               imageOffsetY: 0,
               position: 'front',
               dropShadow: {
-                enabled: true,
+                enabled: false,
                 top: 3,
                 left: 0,
                 blur: 4,
@@ -133,13 +140,7 @@ export default {
               strokeWidth: '100%',
               margin: 0, // margin is in pixels
               opacity: 0.4,
-              dropShadow: {
-                enabled: true,
-                top: -3,
-                left: 0,
-                blur: 4,
-                opacity: 0.35
-              }
+              
             },
 
             dataLabels: {
@@ -150,7 +151,7 @@ export default {
                 },
                 offsetY: -10,
                 color: '#fff',
-                fontSize: '18px',
+                fontSize: '20px',
                 show: true,
               }
             },

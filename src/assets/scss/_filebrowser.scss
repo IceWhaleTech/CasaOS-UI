@@ -814,8 +814,8 @@
                     .title {
                       width: 100%;
                       text-align: center;
-                      font-size: 14px;
-                      line-height: 1.5;
+                      font-size: 0.875rem;
+                      line-height: 1.5em;
                       max-width: 100%;
                       display: -webkit-box;
                       -webkit-line-clamp: 2;
@@ -835,8 +835,8 @@
                     .desc {
                       width: 100%;
                       text-align: center;
-                      font-size: 12px;
-                      line-height: 1.6;
+                      font-size: 0.75rem;
+                      line-height: 1.5em;
                       color: rgba(37, 38, 43, 0.36);
                       max-width: 100%;
                       overflow: hidden;
@@ -1279,8 +1279,8 @@
         .th,
         .td {
           height: 40px;
-          font-size: 14px;
-          line-height: 1.6;
+          font-size: 0.875rem;
+          line-height: 1.5em;
           justify-content: space-between;
           display: flex;
           align-items: center;

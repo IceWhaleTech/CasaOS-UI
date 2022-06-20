@@ -20,9 +20,23 @@
   }
 
   .widget-content {
-    padding: 0.875rem 1.5rem;
+    padding:1rem 1.25rem;
     position: relative;
     z-index: 10;
+  }
+
+  .widget-header{
+    margin-right: -0.5rem;
+    .widget-title{
+      font-size: 1rem;
+      font-weight: 400;
+    }
+
+    .widget-icon-button{
+      width: 1.25rem;
+      height: 1.25rem;
+      cursor: pointer;
+    }
   }
 
   .tabs {
@@ -71,6 +85,7 @@
   .chart-container {
     height: 130px;
     overflow: hidden;
+    margin: 0 -0.875rem;
   }
 }
 
@@ -167,7 +182,6 @@
   position: relative;
   z-index: 10;
   padding: 1.5rem;
-
 }
 
 .cards-content {

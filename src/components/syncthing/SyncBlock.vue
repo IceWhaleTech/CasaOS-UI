@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-11-10 17:48:25
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-15 18:18:28
+ * @LastEditTime: 2022-06-19 23:06:26
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/syncthing/SyncBlock.vue
+ * @FilePath: \CasaOS-UI\src\components\syncthing\SyncBlock.vue
 -->
 <template>
   <div class="column is-one-half">
@@ -14,14 +14,14 @@
       <div class="wuji-content">
         <!-- Init State Start -->
         <template v-if="state == 1">
-          <h6 class="title is-6 mb-2 has-text-white">{{$t(`Sync your data`)}}</h6>
+          <h6 class="title is-4 mb-0 has-text-white">{{$t(`Sync your data`)}}</h6>
           <div class="is-flex is-align-items-center">
             <div class="info ">
-              <div class="des two-line">
+              <div class="des two-line is-size-14px">
                 {{$t(`Follow the guide to start syncing your files across multiple devices.`)}}
               </div>
             </div>
-            <b-image :src="require('@/assets/img/syncthing/sync_icon.png')" class="is-54x54"></b-image>
+            <b-image :src="require('@/assets/img/syncthing/sync_icon.svg')" class="is-80x80"></b-image>
           </div>
           <div class="buttons">
             <b-button type="is-primary" size="is-small" rounded @click="openSyncPanel">{{$t(`Go !`)}}</b-button>

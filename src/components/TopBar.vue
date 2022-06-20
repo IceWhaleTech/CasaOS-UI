@@ -2,21 +2,21 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-14 13:40:51
+ * @LastEditTime: 2022-06-19 20:45:17
  * @Description: Top bar 
  * @FilePath: \CasaOS-UI\src\components\TopBar.vue
 -->
 
 <template>
   <div class="navbar top-bar is-flex is-align-items-center">
-    <div class="navbar-brand ml-3">
+    <div class="navbar-brand ml-4">
 
       <!-- SideBar Button Start -->
       <div class="is-flex is-align-items-center mr-3 ml-3" id="sidebar-btn">
         <b-tooltip :label="sidebarIconLabel" :active="!$store.state.isMobile" position="is-right" type="is-dark">
-          <p role="button" @click="showSideBar">
+          <div role="button" @click="showSideBar">
             <b-icon :icon="sidebarIcon"></b-icon>
-          </p>
+          </div>
         </b-tooltip>
       </div>
       <!-- SideBar Button Start -->
@@ -26,7 +26,7 @@
         <template #trigger>
           <b-tooltip :label="$t('Account')" :active="!$store.state.isMobile" position="is-right" type="is-dark">
             <p role="button">
-              <b-icon class="picon" icon="account-circle"></b-icon>
+              <b-icon pack="casa" class="picon" icon="account"></b-icon>
             </p>
           </b-tooltip>
         </template>
@@ -63,7 +63,7 @@
         <template #trigger>
           <b-tooltip :label="$t('Settings')" :active="!$store.state.isMobile" position="is-right" type="is-dark">
             <p role="button">
-              <b-icon icon="tune" class="picon" :class="{'update-icon-dot': updateInfo.is_need }"></b-icon>
+              <b-icon pack="casa" icon="tune" class="picon" :class="{'update-icon-dot': updateInfo.is_need }"></b-icon>
             </p>
           </b-tooltip>
         </template>
@@ -156,10 +156,10 @@
       <!-- Settings Dropmenu End -->
 
       <!-- Terminal  Start -->
-      <div class="is-flex is-align-items-center ml-3">
+      <div class="is-flex is-align-items-center ml-2">
         <b-tooltip :label="$t('Terminal & Logs')" :active="!$store.state.isMobile" position="is-right" type="is-dark">
           <p role="button" @click="showTerminalPanel">
-            <b-icon class="picon" icon="console"></b-icon>
+            <b-icon pack="casa" class="picon" icon="terminal"></b-icon>
           </p>
         </b-tooltip>
       </div>

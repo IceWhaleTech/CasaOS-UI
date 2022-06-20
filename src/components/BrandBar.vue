@@ -1,19 +1,19 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-10 09:31:33
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-19 21:22:17
  * @Description: The left bottom brand bar
  * @FilePath: \CasaOS-UI\src\components\BrandBar.vue
 -->
 
 <template>
   <div class="brand-bar is-flex is-align-items-center has-text-white">
-    <figure class="image is-32x32">
+    <figure class="image is-24x24">
       <img :src="require('@/assets/img/logo/casa-white.svg')">
     </figure>
-    <span class="is-size-4 mr-3 ml-3">CasaOS</span>
-    <span>Made by IceWhale with ❤ and you!️</span>
+    <span class="logo-text mr-3 ml-1">CasaOS</span>
+    <span class="intro-text">Made by IceWhale with ❤ and you!️</span>
   </div>
 </template>
 

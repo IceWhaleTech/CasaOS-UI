@@ -2,29 +2,47 @@
  * @Author: JerryK
  * @Date: 2021-10-09 18:41:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-05-17 00:33:57
+ * @LastEditTime: 2022-06-19 22:02:19
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\widgets\Settings.vue
 -->
 <template>
-  <div class="wsettings">
-    <b-dropdown aria-role="list" class="navbar-item" animation="fade1" :mobile-modal="false" :position="position">
-      <template #trigger>
-        <b-button icon-left="menu" class="circle-btn" rounded></b-button>
-      </template>
-      <b-dropdown-item aria-role="menu-item" :focusable="false" custom class="has-text-white has-text-left">
-        <h2 class="title is-5 has-text-white">{{$t('Widgets Settings')}}</h2>
-        <div class="is-flex is-align-items-center item" v-for="(item,index) in settingsData" :key="`setting_${index}`">
-          <div class="is-flex is-align-items-center flex1">
-            <b-icon :icon="getIcon(item.name)" class="mr-2"></b-icon> <b>{{$t(getTitle(item.name))}}</b>
+
+  <div class="widget has-text-white clock is-relative pb-1">
+    <div class="blur-background"></div>
+
+    <div class="wsettings">
+      <b-dropdown aria-role="list" animation="fade1" :mobile-modal="false" :position="position">
+        <template #trigger>
+          <div class=" widget-content">
+            <!-- Header Start -->
+            <div class="widget-header is-flex">
+              <div class="widget-title is-flex-grow-1">
+                {{ $t('Widgets Setting') }}
+              </div>
+              <div class="widget-icon-button is-flex-shrink-0">
+                <b-icon pack="casa" icon="arrow-right" size="is-20"></b-icon>
+              </div>
+            </div>
+            <!-- Header End -->
           </div>
-          <b-field>
-            <b-switch type="is-dark" v-model="item.show" size="is-small" class="is-flex-direction-row-reverse mr-0" @input="handleInput"></b-switch>
-          </b-field>
-        </div>
-      </b-dropdown-item>
-    </b-dropdown>
+        </template>
+        <b-dropdown-item aria-role="menu-item" :focusable="false" custom class="has-text-white has-text-left">
+          <h2 class="title is-5 has-text-white">{{$t('Widgets Settings')}}</h2>
+          <div class="is-flex is-align-items-center item" v-for="(item,index) in settingsData" :key="`setting_${index}`">
+            <div class="is-flex is-align-items-center flex1">
+              <b-icon :icon="getIcon(item.name)" class="mr-2"></b-icon> <b>{{$t(getTitle(item.name))}}</b>
+            </div>
+            <b-field>
+              <b-switch type="is-dark" v-model="item.show" size="is-small" class="is-flex-direction-row-reverse mr-0" @input="handleInput"></b-switch>
+            </b-field>
+          </div>
+        </b-dropdown-item>
+      </b-dropdown>
+    </div>
+
   </div>
+
 </template>
 
 <script>

@@ -2,28 +2,36 @@
   <div>
     <!-- Disk Info Start -->
     <div class="widget has-text-white disk is-relative">
-      <div class="arrow-btn" @click="showDiskManagement">
-        <b-icon icon="cog-outline" custom-size="mdi-18px"></b-icon>
-      </div>
       <div class="blur-background"></div>
       <div class="widget-content">
+        <!-- Header Start -->
+        <div class="widget-header is-flex">
+          <div class="widget-title is-flex-grow-1">
+            {{ $t('Storage') }}
+          </div>
+          <div class="widget-icon-button is-flex-shrink-0" @click="showDiskManagement">
+            <b-icon pack="casa" icon="setting" size="is-20" :class="{'open':showMore}"></b-icon>
+          </div>
+        </div>
+        <!-- Header End -->
         <div class="columns is-mobile is-multiline pt-2 ">
           <div class="column is-full pb-1">
-            <div class="is-flex">
+            <div class="is-flex is-align-items-center">
               <div class="header-icon">
-                <b-image :src="require('@/assets/img/storage/storage.png')" class="is-64x64"></b-image>
+                <b-image :src="require('@/assets/img/storage/storage.svg')" class="is-68x68"></b-image>
               </div>
               <div class="ml-3 is-flex-grow-1 ">
                 <h4 class="title is-size-6-5 mb-2 mt-1 has-text-left has-text-white one-line is-align-items-center is-flex">
-                  {{ $t('Storage') }}
-                  <b class="has-text-success is-size-7 has-text-weight-normal ml-3" v-if="health">{{ $t('Healthy') }}</b><b class="has-text-danger is-size-7 has-text-weight-normal ml-3" v-else>{{ $t('Damage') }}</b>
+                  <b-tag type="is-success" v-if="health">{{ $t('Healthy') }}</b-tag>
+                  <b-tag type="is-danger" v-else>{{ $t('Damage') }}</b-tag>
                 </h4>
-                <p class="has-text-left is-size-7 mt-1 op65">{{ $t('Used') }}: {{renderSize(totalUsed)}}<br>
-                  {{ $t('Total') }}: {{renderSize(totalSize)}}</p>
+                <p class="has-text-left is-size-65 mt-1">
+                  <span class="op65">{{ $t('Used') }}: </span>{{renderSize(totalUsed)}}<br>
+                  <span class="op65">{{ $t('Total') }}: </span>{{renderSize(totalSize)}}
+                </p>
               </div>
             </div>
-            <b-progress :type="totalPercent | getProgressType" size="is-small" :value="totalPercent" class="mt-2">
-            </b-progress>
+            <b-progress :type="totalPercent | getProgressType" size="is-small" :value="totalPercent" class="mt-2"></b-progress>
           </div>
         </div>
       </div>
@@ -37,15 +45,15 @@
           <div class="column is-full pb-1" v-for="(item) in usbDisks" :key="'usb_'+item.name">
             <div class="is-flex">
               <div class="header-icon is-flex-shrink-0">
-                <b-image :src="require('@/assets/img/storage/USB.png')" class="is-64x64"></b-image>
+                <b-image :src="require('@/assets/img/storage/USB.png')" class="is-68x68"></b-image>
               </div>
               <div class="ml-3 is-flex-grow-1 ">
                 <h4 class="title is-size-6-5 mb-2 mt-1 has-text-left has-text-white one-line ">
                   {{ item.model }}</h4>
-                <p class="has-text-left is-size-7 mt-1 op65">
-                  <span>{{ $t('Used') }}: {{item.mount?renderSize(item.use):"N/A"}}</span>
+                <p class="has-text-left is-size-6 mt-1 ">
+                  <span class="op65">{{ $t('Used') }}:</span> {{item.mount?renderSize(item.use):"N/A"}}
                   <br>
-                  {{ $t('Total') }}: {{renderSize(item.size)}}
+                  <span class="op65"> {{ $t('Total') }}:</span> {{renderSize(item.size)}}
                 </p>
               </div>
             </div>
@@ -119,7 +127,7 @@ export default {
       this.getDiskInfo(data.body.sys_disk)
       // USB
       this.usbDisks = data.body.sys_usb
-      
+
     }
   }
 }

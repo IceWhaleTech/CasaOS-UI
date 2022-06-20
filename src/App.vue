@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-17 18:20:11
+ * @LastEditTime: 2022-06-19 21:04:45
  * @Description: Main entry of application
- * @FilePath: /CasaOS-UI/src/App.vue
+ * @FilePath: \CasaOS-UI\src\App.vue
 -->
 
 <template>
@@ -35,6 +35,36 @@ import BrandBar from './components/BrandBar.vue'
 import ContactBar from './components/ContactBar.vue'
 import { mixin } from './mixins/mixin';
 
+const customIconConfig = {
+  customIconPacks: {
+    'casa': {
+      sizes: {
+        'default': 'is-size-4',
+        'is-20': 'is-size-5',
+        'is-small': '',
+        'is-medium': 'is-size-3',
+        'is-large': 'is-size-1'
+      },
+      iconPrefix: 'casa-',
+      internalIcons: {
+        'check': 'checkmark',
+        'information': 'information',
+        'check-circle': 'checkmark-circle-outline',
+        'alert': 'alert',
+        'alert-circle': 'alert',
+        'arrow-up': 'arrow-up',
+        'chevron-right': 'arrow-right',
+        'chevron-left': 'arrow-back',
+        'chevron-down': 'arrow-down',
+        'eye': 'eye',
+        'eye-off': 'eye-off',
+        'menu-down': 'arrow-dropdown',
+        'menu-up': 'arrow-dropup',
+        'close-circle': 'close-circle-outline'
+      }
+    },
+  }
+}
 
 export default {
   components: {
@@ -71,6 +101,7 @@ export default {
     }
   },
 
+
   computed: {
     isLoading() {
       return this.$store.state.siteLoading
@@ -91,6 +122,7 @@ _____             _____ _____
 -- Made by IceWhale with YOU --
 `, `font-family: monospace`);
 
+    this.$buefy.config.setOptions(customIconConfig)
     this.checkInit();
   },
   mounted() {
