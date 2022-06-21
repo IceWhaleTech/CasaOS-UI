@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-20 18:28:45
+ * @LastEditTime: 2022-06-21 22:56:51
  * @Description: Top bar 
- * @FilePath: /CasaOS-UI/src/components/TopBar.vue
+ * @FilePath: \CasaOS-UI\src\components\TopBar.vue
 -->
 
 <template>
@@ -35,7 +35,7 @@
           <h2 class="title is-4">{{$t('Account')}}</h2>
 
           <div class="is-flex is-align-items-center item">
-            <div class="is-flex is-align-items-center flex1">
+            <div class="is-flex is-align-items-center is-flex-grow-1">
               <b-image :src="require('@/assets/img/account/default-avatar.svg')" class="is-40x40 mr-3" rounded></b-image>
               <b>{{userInfo.user_name}}</b>
             </div>
@@ -47,7 +47,7 @@
           </div>
 
           <div class="is-flex is-align-items-center item mt-2">
-            <div class="is-flex is-align-items-center flex1">
+            <div class="is-flex is-align-items-center  is-flex-grow-1">
             </div>
             <div>
               <b-button type="is-dark" size="is-small" class="ml-2 " rounded @click="logout">{{$t('Logout')}}</b-button>
@@ -59,7 +59,7 @@
       <!-- Account Dropmenu End -->
 
       <!-- Settings Dropmenu Start -->
-      <b-dropdown aria-role="list" class="navbar-item" animation="fade1" @active-change="onOpen">
+      <b-dropdown aria-role="list" ref="settingsDrop" class="navbar-item" animation="fade1" @active-change="onOpen">
         <template #trigger>
           <b-tooltip :label="$t('Settings')" :active="!$store.state.isMobile" position="is-right" type="is-dark">
             <p role="button">
@@ -73,7 +73,7 @@
 
           <!-- Search Engine Start -->
           <div class="is-flex is-align-items-center mb-2 h-30">
-            <div class="is-flex is-align-items-center flex1">
+            <div class="is-flex is-align-items-center is-flex-grow-1">
               <b-icon icon="magnify" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{$t('Search Engine')}}</b>
             </div>
             <div>
@@ -88,7 +88,7 @@
 
           <!-- Language Start -->
           <div class="is-flex is-align-items-center mb-2 h-30">
-            <div class="is-flex is-align-items-center flex1">
+            <div class="is-flex is-align-items-center is-flex-grow-1">
               <b-icon icon="translate" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{ $t('Language') }}</b>
             </div>
             <div>
@@ -103,7 +103,7 @@
 
           <!-- WebUI Port Start -->
           <div class="is-flex is-align-items-center mb-2 h-30">
-            <div class="is-flex is-align-items-center flex1">
+            <div class="is-flex is-align-items-center is-flex-grow-1">
               <b-icon icon="view-dashboard-outline" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{$t('WebUI Port')}}</b>
             </div>
             <div>
@@ -115,9 +115,20 @@
           </div>
           <!-- WebUI Port End -->
 
+          <!-- Background Start -->
+          <div class="is-flex is-align-items-center mb-2 h-30">
+            <div class="is-flex is-align-items-center is-flex-grow-1">
+              <b-icon icon="wallpaper" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{$t('Wallpaper')}}</b>
+            </div>
+            <div class="ml-2">
+              <b-button type="is-dark" size="is-small" rounded @click="showBackgroundModal">{{$t('Change')}}</b-button>
+            </div>
+          </div>
+          <!-- Background End -->
+
           <!-- Automount USB Drive Start  -->
           <div class="is-flex is-align-items-center mb-2 h-30">
-            <div class="is-flex is-align-items-center flex1">
+            <div class="is-flex is-align-items-center is-flex-grow-1">
               <b-icon icon="usb-flash-drive-outline" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{$t('Automount USB Drive')}}</b>
               <b-tooltip :label="$t('Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB')" type="is-dark" multilined v-if="isRaspberryPi">
                 <b-icon icon="help-circle-outline" size="is-small" class="ml-1"></b-icon>
@@ -133,7 +144,7 @@
 
           <!-- Update Start -->
           <div class="is-flex is-align-items-center h-30">
-            <div class="is-flex is-align-items-center flex1">
+            <div class="is-flex is-align-items-center is-flex-grow-1">
               <b-icon icon="sync" class="mr-1" custom-size="mdi-18px"></b-icon> <b :class="{'update-text-dot': updateInfo.is_need}">{{$t('Update')}}</b>
             </div>
             <div>
@@ -146,7 +157,7 @@
             <b-icon type="is-success" icon="check" class="ml-1" custom-size="mdi-18px"></b-icon>
           </div>
           <div class="is-flex is-align-items-center is-justify-content-end update-container pl-5 " v-else>
-            <div class="flex1 is-size-7">{{$t(updateText)}}</div>
+            <div class="is-flex-grow-1 is-size-7">{{$t(updateText)}}</div>
             <b-button type="is-dark" size="is-small" class="ml-2" rounded @click="showUpdateModal">{{$t('Update')}}</b-button>
           </div>
           <!-- Update End -->
@@ -366,6 +377,7 @@ export default {
      * @return {*} 
      */
     showPortPanel() {
+      this.$refs.settingsDrop.toggle()
       this.$buefy.modal.open({
         parent: this,
         component: PortPanel,
@@ -379,6 +391,10 @@ export default {
           initPort: this.port
         }
       })
+    },
+    showBackgroundModal() {
+      this.$EventBus.$emit("showBackgroundModal");
+      this.$refs.settingsDrop.toggle()
     },
 
 
@@ -526,6 +542,8 @@ export default {
         animation: "zoom-in",
       })
     },
+
+
   },
 
 }
@@ -612,6 +630,45 @@ export default {
     &.is-small {
       height: 2em;
     }
+  }
+}
+
+.update-text-dot {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: $danger;
+    right: -0.5rem;
+    top: 0rem;
+  }
+}
+
+.update-icon-dot {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: $danger;
+    right: 0;
+    top: 0;
+  }
+}
+
+#sidebar-btn {
+  display: none !important;
+}
+@media screen and (max-width: 480px) {
+  #sidebar-btn {
+    display: flex !important;
   }
 }
 </style>

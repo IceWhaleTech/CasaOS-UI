@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-01-20 12:01:07
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-09 15:26:10
+ * @LastEditTime: 2022-06-21 19:02:28
  * @Description: 
  * @FilePath: \CasaOS-UI\src\mixins\mixin.js
  */
@@ -306,7 +306,7 @@ export const mixin = {
                 })
             }
             this.$api.file.delete(JSON.stringify(path)).then(res => {
-                if (res.data.success == 200) {
+                if (res.data.success === 200) {
                     if (this.$refs.dropDown !== undefined) {
                         this.$refs.dropDown.toggle()
                         this.$emit("reload")
@@ -326,16 +326,6 @@ export const mixin = {
                 }
             })
         },
-
-
-
-
-        /***********************
-         * 
-         * File Views
-         * 
-         ************************/
-
 
     },
 

@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-03-11 13:36:11
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-15 18:15:46
+ * @LastEditTime: 2022-06-21 11:33:54
  * @Description: 
- * @FilePath: /CasaOS-UI/src/views/CasaConnect.vue
+ * @FilePath: \CasaOS-UI\src\views\CasaConnect.vue
 -->
 <template>
   <div class="acquaintance-share is-flex ">
@@ -159,7 +159,7 @@
           <b-loading :is-full-page="false" v-model="isLoading"></b-loading>
           <!-- Tool Bar Start -->
           <div class="tool-bar is-flex pt-4 pb-2">
-            <div class="breadcrumb-container  flex1" id="bread-container">
+            <div class="breadcrumb-container  is-flex-grow-1" id="bread-container">
               <history-button ref="historyBar" :user="currentUser"></history-button>
             </div>
             <div class="view-btns is-flex-shrink-0 is-flex is-align-items-center">
@@ -237,7 +237,7 @@
                   <b-image :src="require('@/assets/img/avatars/1-small.png')" rounded></b-image>
                 </div>
                 <div class="ml-2 is-flex-grow-1 has-text-left">
-                  <h1 class="is-size-65 mb-0 one-line has-text-weight-medium has-text-black">Kristin Watson</h1>
+                  <h1 class="is-size-14px mb-0 one-line has-text-weight-medium has-text-black">Kristin Watson</h1>
                 </div>
               </div>
               <div class="is-flex is-flex-shrink-0 is-size-7 time">

@@ -1,10 +1,10 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-12-14 11:52:36
- * @LastEditors: JerryK
- * @LastEditTime: 2021-12-15 17:23:00
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-21 12:29:44
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/Apps/AppSideBar.vue
+ * @FilePath: \CasaOS-UI\src\components\Apps\AppSideBar.vue
 -->
 <template>
   <div class="app-sidebar" :class="{'no-event':isOpen}">
@@ -182,5 +182,31 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.app-sidebar {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  z-index: 15;
+  pointer-events: none;
+
+  &.no-event {
+    pointer-events: all;
+  }
+
+  &.h-100 {
+    height: 100% !important;
+  }
+
+  &.w-100 {
+    width: 100% !important;
+  }
+
+  .sidebar-content {
+    position: relative;
+    height: 100%;
+  }
+}
 </style>

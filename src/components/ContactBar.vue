@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-20 18:05:23
+ * @LastEditTime: 2022-06-21 16:49:05
  * @Description: The right bottom contact bar
- * @FilePath: /CasaOS-UI/src/components/ContactBar.vue
+ * @FilePath: \CasaOS-UI\src\components\ContactBar.vue
 -->
 
 <template>
@@ -38,7 +38,7 @@ export default {
         parent: this,
         component: FeedbackPanel,
         hasModalCard: true,
-        customClass: 'storage-modal',
+        customClass: 'feedback-modal',
         trapFocus: true,
         canCancel: [],
         scroll: "keep",

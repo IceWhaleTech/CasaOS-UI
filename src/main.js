@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-22 14:24:43
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-15 18:14:09
+ * @LastEditTime: 2022-06-21 22:25:38
  * @Description: 
- * @FilePath: /CasaOS-UI/src/main.js
+ * @FilePath: \CasaOS-UI\src\main.js
  */
 import 'intersection-observer'
 import Vue from 'vue'
@@ -49,6 +49,9 @@ api.info.getSocketPort().then(res => {
   Vue.prototype.$api = api;
   Vue.prototype.$baseIp = baseIp;
   Vue.prototype.$baseURL = baseURL;
+
+  // Create an EventBus
+  Vue.prototype.$EventBus = new Vue();
   new Vue({
     router,
     i18n,

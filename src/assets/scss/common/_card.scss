@@ -1,0 +1,146 @@
+/************************************
+*
+* Cards
+*
+*************************************/
+
+
+.common-card {
+    backdrop-filter: $backDropBlur;
+    border-radius: $backDropBorderRadius;
+
+    color: $white;
+    position: relative;
+
+    transition: all 0.3s;
+
+    .buttons {
+        min-height: 2.375rem;
+    }
+
+    &:hover {
+        box-shadow: 0px 0px 17px 0px rgba(0, 0, 0, 0.2);
+    }
+
+    .info {
+        flex: 1;
+        margin-right: 1rem;
+        color: white;
+    }
+
+    .simg {
+        img {
+            border-radius: 4px;
+        }
+    }
+
+    .icon-img {
+        position: relative;
+
+        &.stop img {
+            filter: grayscale(100%);
+        }
+
+        &.stop::after {
+            position: absolute;
+            content: "";
+            width: 0.75rem;
+            height: 0.75rem;
+            background-color: #ff1616;
+            border-radius: 50%;
+            right: -0.375rem;
+            top: -0.375rem;
+        }
+
+        img {
+            border-radius: 8px;
+            margin: 0 auto;
+        }
+    }
+
+    .b-image-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &.stop img {
+            filter: grayscale(100%);
+        }
+
+        &.stop::after {
+            position: absolute;
+            content: "";
+            width: 0.75rem;
+            height: 0.75rem;
+            background-color: #ff1616;
+            border-radius: 50%;
+            right: -0.375rem;
+            top: -0.375rem;
+        }
+
+        img {
+            border-radius: 8px;
+            margin: 0 auto;
+        }
+    }
+
+    .action-btn {
+        position: absolute;
+        right: 0.5rem;
+        top: 1rem;
+        visibility: hidden;
+        opacity: 0;
+        transition: all 0.2s;
+        outline: none;
+        z-index: 20;
+    }
+
+    p {
+        font-weight: 300;
+    }
+
+    .one-line {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        overflow: hidden;
+    }
+
+    .two-line {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+    }
+
+    &:hover {
+        .action-btn {
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+
+    a {
+        color: white;
+
+        p {
+            color: white;
+        }
+    }
+}
+
+.app-card {
+    .loading-background {
+        background: none !important;
+        border-radius: $backDropBorderRadius;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.is-noscroll,
+.is-clipped {
+    .common-card {
+        backdrop-filter: none !important;
+    }
+}

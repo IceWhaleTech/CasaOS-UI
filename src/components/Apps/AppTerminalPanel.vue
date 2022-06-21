@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-29 15:38:35
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-05-25 16:31:41
+ * @LastEditTime: 2022-06-21 11:26:48
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\Apps\AppTerminalPanel.vue
 -->
@@ -13,7 +13,7 @@
     <section class="modal-card-body ">
       <div class="close-container"><button type="button" class="delete" @click="$emit('close')" /></div>
       <h2 class="title is-4">{{appName}}</h2>
-      <div class="flex1">
+      <div class="is-flex-grow-1">
         <b-tabs  :animated="false" @input="onInput">
           <b-tab-item :label="$t('Terminal')" value="terminal">
             <terminal-card ref="terminal" :wsUrl="wsUrl"></terminal-card>

@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-12-06 13:52:11
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-19 22:12:08
+ * @LastEditTime: 2022-06-21 11:15:34
  * @Description: 
  * @FilePath: \CasaOS-UI\src\widgets\Network.vue
 -->
@@ -221,5 +221,100 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.network {
+  position: relative;
+  z-index: 10;
+
+  .up {
+    color: rgb(0, 143, 251);
+  }
+
+  .down {
+    color: rgb(0, 227, 150);
+  }
+
+  .chart-container {
+    height: 130px;
+    overflow: hidden;
+    margin: 0 -0.875rem;
+  }
+}
+</style>
+
+<style lang="scss">
+.network {
+  .netowrk-dropdown {
+    .button {
+      margin: 0;
+      padding: 0;
+      height: initial;
+      background-color: transparent;
+      font-weight: bold;
+      font-size: 0.875rem;
+      position: relative;
+      z-index: 200;
+      outline: none;
+      border: 0;
+
+      &:focus:not(:active) {
+        box-shadow: 0 0 0 0 !important;
+      }
+
+      &:hover,
+      &:active {
+        outline: none;
+        background-color: transparent;
+      }
+
+      span {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        overflow: hidden;
+        max-width: 3rem;
+      }
+    }
+
+    .dropdown-menu {
+      min-width: 5rem;
+
+      .dropdown-content {
+        max-width: 7rem;
+        border-radius: 10px;
+        padding: 4px !important;
+        background: rgba(0, 0, 0, 0.48);
+        backdrop-filter: blur(1rem);
+
+        .dropdown-divider {
+          margin: 4px;
+        }
+
+        .dropdown-item {
+          padding: 0.25rem 0.5rem 0.25rem 0.5rem;
+          border-radius: 5px;
+          transition: all 0.25s;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          color: #fff;
+          font-size: 0.75rem;
+          margin-bottom: 0.25rem;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+
+          &:hover {
+            background: rgba(0, 0, 0, 0.2) !important;
+          }
+
+          &.is-active {
+            background: rgba(0, 0, 0, 0.2) !important;
+          }
+        }
+      }
+    }
+  }
+}
 </style>

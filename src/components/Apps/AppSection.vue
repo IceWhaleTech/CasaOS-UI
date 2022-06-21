@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-14 14:04:27
+ * @LastEditTime: 2022-06-21 22:42:13
  * @FilePath: \CasaOS-UI\src\components\Apps\AppSection.vue
  * @Description: 
  * 
@@ -12,8 +12,8 @@
 <template>
   <div class="home-section has-text-left mt-6">
     <!-- Title Bar Start -->
-    <div class="title-bar is-flex is-align-items-center">
-      <h1 class="title is-4  has-text-white is-flex-shrink-1">{{$t('Apps')}}
+    <div class=" is-flex is-align-items-center mb-5">
+      <h1 class="title is-4  has-text-white is-flex-shrink-1 is-flex-grow-1 mb-0 contextmenu-canvas">{{$t('Apps')}}
         <!-- <b-tooltip :label="$t(appHelpText)" type="is-dark" multilined v-if="showDragTip">
           <b-icon icon="help-circle-outline" custom-size="mdi-18px"></b-icon>
         </b-tooltip> -->
@@ -25,11 +25,11 @@
     <!-- Title Bar End -->
 
     <!-- App List Start -->
-    <draggable class="columns is-variable is-2 is-multiline app-list" tag="div" v-model="appList" v-bind="dragOptions" @start="drag = true" @end="onSortEnd" :draggable="draggable">
+    <draggable class="columns is-variable is-2 is-multiline app-list contextmenu-canvas" tag="div" v-model="appList" v-bind="dragOptions" @start="drag = true" @end="onSortEnd" :draggable="draggable">
       <template v-if="!isLoading">
 
         <!-- App Icon Card Start -->
-        <div class="column is-narrow is-3 handle" v-for="(item) in appList" :key="'app-'+item.name">
+        <div class="column is-narrow is-3 handle" v-for="(item) in appList" :key="'app-'+item.name" >
           <app-card :item="item" @updateState="getList" @configApp="showConfigPanel" :isCasa="true"></app-card>
         </div>
         <!-- App Icon Card End -->
@@ -45,7 +45,7 @@
     <template v-if="notImportedList.length > 0">
       <!-- Title Bar Start -->
       <div class="title-bar is-flex is-align-items-center mt-6">
-        <h1 class="title is-4  has-text-white is-flex-shrink-1">{{$t('Existing Docker Apps')}}
+        <h1 class="title is-4  has-text-white is-flex-shrink-1 is-flex-grow-1 mb-0 contextmenu-canvas">{{$t('Existing Docker Apps')}}
           <!-- <b-tooltip :label="$t(importHelpText)" type="is-dark" multilined>
             <b-icon icon="help-circle-outline" custom-size="mdi-18px"></b-icon>
           </b-tooltip> -->
@@ -54,7 +54,7 @@
       <!-- Title Bar End -->
 
       <!-- App List Start -->
-      <div class="columns is-variable is-2 is-multiline app-list">
+      <div class="columns is-variable is-2 is-multiline app-list contextmenu-canvas">
         <!-- Application not imported Start -->
         <div class="column is-narrow is-3" v-for="(item) in notImportedList" :key="'app-'+item.name">
           <app-card :item="item" @updateState="getList" @configApp="showConfigPanel" @importApp="showConfigPanel" :isCasa="false"></app-card>
@@ -274,5 +274,31 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.app-list {
+  min-height: 14rem;
+  position: relative;
+}
+
+@media screen and (max-width: 768px) {
+  .app-list {
+    display: flex;
+
+    .column {
+      flex: none;
+      width: 50%;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .app-list {
+    display: flex;
+
+    .column {
+      flex: none;
+      width: 50%;
+    }
+  }
+}
 </style>

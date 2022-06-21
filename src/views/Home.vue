@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-13 19:31:23
+ * @LastEditTime: 2022-06-21 22:38:16
  * @Description: 
  * @FilePath: \CasaOS-UI\src\views\Home.vue
 -->
@@ -13,7 +13,7 @@
     <!-- NavBar End -->
 
     <!-- Content Start -->
-    <div class="contents  pt-55">
+    <div class="contents  pt-55 contextmenu-canvas" @contextmenu.prevent="openHomeContaxtMenu">
       <div class="container">
         <div class="is-flex">
           <!-- SideBar Start -->
@@ -22,19 +22,18 @@
           <!-- SideBar End -->
 
           <!-- MainContent Start -->
-          <div class="main-content">
+          <div class="main-content contextmenu-canvas">
             <!-- SearchBar Start -->
             <section>
               <search-bar></search-bar>
             </section>
             <!-- SearchBar End -->
 
-            <!-- Suggestions For You Start -->
+            <!-- core-service Start -->
             <section>
-              <!-- <suggestion></suggestion> -->
               <core-service></core-service>
             </section>
-            <!-- Suggestions For You End -->
+            <!-- core-service End -->
 
             <!-- Apps Start -->
             <section>
@@ -72,6 +71,7 @@ import CoreService from '../components/CoreService.vue'
 import AppSection from '../components/Apps/AppSection.vue'
 //import Shortcuts from '@/components/Shortcuts.vue'
 import FilePanel from '@/components/filebrowser/FilePanel.vue'
+
 export default {
   name: "home-page",
   components: {
@@ -81,7 +81,7 @@ export default {
     TopBar,
     CoreService,
     //Shortcuts,
-    FilePanel
+    FilePanel,
   },
   data() {
     return {
@@ -156,6 +156,11 @@ export default {
       })
     },
 
+    openHomeContaxtMenu(e) {
+      // console.log(e.target);
+      this.$EventBus.$emit("showHomeContextMenu", e);
+    }
+
   },
   beforeDestroy() {
     window.removeEventListener("resize", this.onResize);
@@ -164,5 +169,54 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+.out-container {
+  position: relative;
+  height: 100%;
+}
+
+.contents {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: calc(100% - 8rem);
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 17.5rem;
+  position: relative;
+  z-index: 10;
+}
+
+.dark-bg {
+  position: fixed;
+  transition: all 0.3s ease;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 1);
+  z-index: 19;
+  opacity: 0;
+  visibility: hidden;
+
+  &.open {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .contents {
+    height: calc(100vh - 4rem) !important;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+}
+</style>
+
+<style lang="scss">
 </style>

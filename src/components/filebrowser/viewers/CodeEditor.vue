@@ -2,14 +2,14 @@
  * @Author: JerryK
  * @Date: 2022-03-03 21:48:17
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-07 12:04:56
+ * @LastEditTime: 2022-06-21 11:28:40
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\viewers\CodeEditor.vue
 -->
 <template>
   <div class="overlay">
     <header class="modal-card-head">
-      <div class="flex1 is-flex ">
+      <div class="is-flex-grow-1 is-flex ">
         <!-- Title Start -->
         <h3 class="title is-5">{{ $t('Code Editor') }}</h3>
         <!-- Title End -->

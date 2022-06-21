@@ -65,7 +65,7 @@
             <!-- Tool Bar Start -->
             <div class="tool-bar is-flex mb-2">
               <div class=" is-flex-grow-1 has-text-left is-flex  is-align-items-center">
-                <b-field class="ml-3 is-flex is-size-65 mb-0">
+                <b-field class="ml-3 is-flex is-size-14px mb-0">
                   <b-checkbox size="is-small" v-model="isSelectAll" :class="selectState" @input="handleSelect">{{selectLabel}}</b-checkbox>
                 </b-field>
               </div>

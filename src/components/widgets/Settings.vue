@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-09 18:41:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-19 22:02:19
+ * @LastEditTime: 2022-06-21 11:33:49
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\widgets\Settings.vue
 -->
@@ -30,7 +30,7 @@
         <b-dropdown-item aria-role="menu-item" :focusable="false" custom class="has-text-white has-text-left">
           <h2 class="title is-5 has-text-white">{{$t('Widgets Settings')}}</h2>
           <div class="is-flex is-align-items-center item" v-for="(item,index) in settingsData" :key="`setting_${index}`">
-            <div class="is-flex is-align-items-center flex1">
+            <div class="is-flex is-align-items-center is-flex-grow-1">
               <b-icon :icon="getIcon(item.name)" class="mr-2"></b-icon> <b>{{$t(getTitle(item.name))}}</b>
             </div>
             <b-field>

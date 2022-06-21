@@ -21,11 +21,11 @@
                 <b-image :src="require('@/assets/img/storage/storage.svg')" class="is-68x68"></b-image>
               </div>
               <div class="ml-3 is-flex-grow-1 ">
-                <h4 class="title is-size-6-5 mb-2 mt-1 has-text-left has-text-white one-line is-align-items-center is-flex">
+                <h4 class="title is-size-14px mb-2 mt-1 has-text-left has-text-white one-line is-align-items-center is-flex">
                   <b-tag type="is-success" v-if="health">{{ $t('Healthy') }}</b-tag>
                   <b-tag type="is-danger" v-else>{{ $t('Damage') }}</b-tag>
                 </h4>
-                <p class="has-text-left is-size-65 mt-1">
+                <p class="has-text-left is-size-14px mt-1">
                   <span class="op65">{{ $t('Used') }}: </span>{{renderSize(totalUsed)}}<br>
                   <span class="op65">{{ $t('Total') }}: </span>{{renderSize(totalSize)}}
                 </p>
@@ -48,7 +48,7 @@
                 <b-image :src="require('@/assets/img/storage/USB.png')" class="is-68x68"></b-image>
               </div>
               <div class="ml-3 is-flex-grow-1 ">
-                <h4 class="title is-size-6-5 mb-2 mt-1 has-text-left has-text-white one-line ">
+                <h4 class="title is-size-14px mb-2 mt-1 has-text-left has-text-white one-line ">
                   {{ item.model }}</h4>
                 <p class="has-text-left is-size-6 mt-1 ">
                   <span class="op65">{{ $t('Used') }}:</span> {{item.mount?renderSize(item.use):"N/A"}}
@@ -136,13 +136,13 @@ export default {
 <style lang="scss">
 .disk {
   .progress {
-    border-radius: 6px;
+    border-radius: 2px;
     height: 12px;
     &::-webkit-progress-bar {
-      background: rgba(0, 0, 0, 0.56);
+      background: rgba(255, 255, 255, 0.4);
     }
     &::-webkit-progress-value {
-      opacity: 0.7;
+      opacity: 1;
     }
   }
 }

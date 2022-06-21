@@ -2,16 +2,16 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-20 18:21:41
+ * @LastEditTime: 2022-06-21 22:14:42
  * @Description: Main entry of application
- * @FilePath: /CasaOS-UI/src/App.vue
+ * @FilePath: \CasaOS-UI\src\App.vue
 -->
 
 <template>
   <div id="app" class="is-flex is-flex-direction-column">
     <template v-if="isNotSharing">
       <!-- Background Layer Start -->
-      <div id="background" v-animate-css="isWelcome?initAni:noneAni" :style="backgroundStyleObj"></div>
+      <casa-background :animate="isWelcome?initAni:noneAni"></casa-background>
       <!-- Background Layer End -->
 
       <!-- BrandBar Start -->
@@ -33,6 +33,7 @@
 <script>
 import BrandBar from './components/BrandBar.vue'
 import ContactBar from './components/ContactBar.vue'
+import CasaBackground from './components/background/CasaBackground.vue'
 import { mixin } from './mixins/mixin';
 
 const customIconConfig = {
@@ -70,6 +71,7 @@ export default {
   components: {
     BrandBar,
     ContactBar,
+    CasaBackground
   },
   mixins: [mixin],
   data() {
@@ -171,6 +173,8 @@ _____             _____ _____
       console.log(this.$store.state.isMobile);
     },
 
+   
+
   },
   sockets: {
     connect() {
@@ -193,17 +197,5 @@ _____             _____ _____
   background-repeat: no-repeat;
   background-position: center center;
   overflow-y: hidden;
-}
-
-#background {
-  position: fixed;
-  z-index: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: bottom center;
-  overflow: hidden;
-  transition: background-image 0.5s linear;
 }
 </style>

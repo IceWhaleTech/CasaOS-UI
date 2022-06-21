@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-03-08 11:09:50
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-08 21:04:04
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-21 11:29:23
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\viewers\PdfViewer.vue
 -->
@@ -10,7 +10,7 @@
   <div class="overlay">
     <b-loading :is-full-page="false" v-model="isLoading"></b-loading>
     <header class="modal-card-head">
-      <div class="flex1 is-flex ">
+      <div class="is-flex-grow-1 is-flex ">
         <!-- Title Start -->
         <h3 class="title is-5 one-line">{{item.name}}</h3>
         <!-- Title End -->

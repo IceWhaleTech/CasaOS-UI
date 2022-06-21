@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-01-17 15:16:11
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-08 21:00:06
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-21 16:48:19
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\Storage\StorageManagerPanel.vue
 -->
@@ -16,7 +16,7 @@
         <div class="close-container"><button type="button" class="delete" @click="$emit('close')" /></div>
 
         <!-- Storage and Disk List Start -->
-        <div class="flex1 is-relative" v-if="!creatIsShow">
+        <div class="is-flex-grow-1 is-relative" v-if="!creatIsShow">
           <div class="create-container" v-if="activeTab == 0 && unDiskData.length > 0">
             <b-button size="is-small" type="is-link is-light" rounded @click="showCreate">{{ $t('Create Storage') }}</b-button>
           </div>
@@ -33,7 +33,7 @@
         <!-- Storage and Disk List End -->
 
         <!-- Create Storage Start -->
-        <div class="flex1 is-relative" v-if="creatIsShow">
+        <div class="is-flex-grow-1 is-relative" v-if="creatIsShow">
           <ValidationObserver ref="ob1">
             <ValidationProvider rules="required" name="StorageName" v-slot="{ errors, valid }">
               <b-field :label="$t('Storage Name')" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="$t(errors)">
@@ -59,7 +59,7 @@
                 </div>
                 <div class="media-content">
                   <h3 class="is-size-5">{{ $t('Warning') }}</h3>
-                  <p class="is-size-65">
+                  <p class="is-size-14px">
                     {{ $t("The selected drive will be emptied.") }}<br>
                     {{ $t("Please make sure again that there is no important data on the selected drive that needs to be backed up.") }}
                   </p>
@@ -76,7 +76,7 @@
                 </div>
                 <div class="media-content">
                   <h3 class="is-size-5">{{ $t('Attention') }}</h3>
-                  <p class="is-size-65">
+                  <p class="is-size-14px">
                     {{ $t("The drive you select can be used directly as storage.") }}<br>
                     {{ $t("You can also choose to create it after formatting. If formatted, the selected drive will be emptied.") }}<br>
                     {{ $t("Please make sure again that there is no important data on the selected drive that needs to be backed up.") }}
@@ -104,7 +104,7 @@
     <!-- Modal-Card Footer Start-->
     <footer class="modal-card-foot is-flex is-align-items-center " v-if="creatIsShow && !isCreating">
       <template>
-        <div class="flex1"></div>
+        <div class="is-flex-grow-1"></div>
         <div>
           <b-button :label="$t('Cancel')" @click="showDefault" rounded />
           <b-button :label="$t('Format and Create')" :type="createStorageType == 'format'?'is-primary':''" @click="createStorge(true)" rounded :loading="isValiding" />
@@ -309,3 +309,45 @@ export default {
   }
 }
 </script>
+
+
+<style lang="scss" scoped>
+.create-container {
+  height: 2.25rem;
+  position: absolute;
+  right: 0;
+  display: flex;
+  align-items: center;
+}
+.storage-modal {
+  .modal-card-body {
+    overflow-y: hidden;
+    transition: height 0.3s;
+    padding: 2rem 2rem 2rem 2rem;
+    position: relative;
+
+    .tab-item {
+      max-height: calc(100vh - 15rem);
+      overflow-y: overlay;
+    }
+  }
+
+  .modal-card-foot {
+    padding-top: 0;
+  }
+
+  .close-container {
+    position: absolute;
+    right: 2rem;
+    top: 2rem;
+  }
+
+  .tab-content {
+    padding: 0;
+  }
+
+  .status {
+    min-width: 7.75rem;
+  }
+}
+</style>

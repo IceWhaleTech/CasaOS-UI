@@ -2,13 +2,13 @@
  * @Author: JerryK
  * @Date: 2021-11-10 17:48:25
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-19 23:06:26
+ * @LastEditTime: 2022-06-21 11:33:30
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\syncthing\SyncBlock.vue
 -->
 <template>
   <div class="column is-one-half">
-    <div class="wuji-card">
+    <div class="common-card">
 
       <div class="blur-background"></div>
       <div class="wuji-content">
@@ -32,7 +32,7 @@
         <!-- Status State Start -->
         <template v-if="state == 2">
           <div class="is-flex is-align-items-center">
-            <div class="flex1">
+            <div class="is-flex-grow-1">
               <h6 class="title is-6 mb-2 has-text-white">{{$t(`Sync your data`)}}</h6>
             </div>
             <div class="is-flex is-align-items-center">
@@ -48,25 +48,25 @@
           <div class="columns mb-0 mt-2 is-mobile">
             <div class="column is-flex  is-align-items-center">
               <b-image :src="require('@/assets/img/syncthing/device.png')" class="is-32x32"></b-image>
-              <div class="flex1">
-                <p class="is-size-65 ml-2 one-line">{{ $t('Up to Date') }} {{activeDevice}}/{{totalDevice}}</p>
+              <div class="is-flex-grow-1">
+                <p class="is-size-14px ml-2 one-line">{{ $t('Up to Date') }} {{activeDevice}}/{{totalDevice}}</p>
               </div>
             </div>
             <div class="column is-flex  is-align-items-center">
               <b-image :src="require('@/assets/img/syncthing/folder1.png')" class="is-32x32"></b-image>
-              <div class="flex1">
-                <p class="is-size-65 ml-2 one-line">{{ $t('Up to Date') }} {{activeFolders.length}}/{{folders}}</p>
+              <div class="is-flex-grow-1">
+                <p class="is-size-14px ml-2 one-line">{{ $t('Up to Date') }} {{activeFolders.length}}/{{folders}}</p>
               </div>
             </div>
           </div>
 
           <div class="columns mb-0 mt-1 is-mobile">
-            <div class="column pt-0 pb-0 is-flex  is-align-items-center is-size-65">
+            <div class="column pt-0 pb-0 is-flex  is-align-items-center is-size-14px">
               <b-icon :icon="syncIcon" class="mr-1" type="is-success" custom-size="mdi-18px" :custom-class="spinner">
               </b-icon>
               {{ $t(syncState) }}
             </div>
-            <div class="column pt-0 pb-0 is-flex  is-align-items-center is-size-65 is-justify-content-end ">
+            <div class="column pt-0 pb-0 is-flex  is-align-items-center is-size-14px is-justify-content-end ">
               <b class="one-line" v-if="syncState == 'Synchronized'">{{ $t('Total') }}：{{totalSize | renderSize}}</b>
               <p class="one-line is-flex  is-align-items-center" v-if="syncState == 'Synchronizing'">
                 <b-icon icon="cloud-upload-outline" class="mr-1" custom-size="mdi-18px"></b-icon>

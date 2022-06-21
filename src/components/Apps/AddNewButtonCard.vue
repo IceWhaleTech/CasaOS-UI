@@ -10,7 +10,7 @@
 -->
 <template>
   <div class="column is-narrow is-3">
-    <div class="wuji-card is-flex is-align-items-center is-justify-content-center p-55 app-card">
+    <div class="common-card is-flex is-align-items-center is-justify-content-center p-55 app-card">
       <div class="blur-background"></div>
       <div class="cards-content">
         <!-- Card Content Start -->

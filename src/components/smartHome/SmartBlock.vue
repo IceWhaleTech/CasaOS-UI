@@ -8,7 +8,7 @@
 -->
 <template>
   <div class="column is-one-half">
-    <div class="wuji-card">
+    <div class="common-card">
       <div class="blur-background"></div>
       <div class="wuji-content">
         <h6 class="title is-4 mb-0 has-text-white">{{$t('Smarten up your home')}}</h6>

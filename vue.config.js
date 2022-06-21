@@ -1,8 +1,8 @@
 /*
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-06-08 19:28:05
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-21 18:44:46
  * @FilePath: \CasaOS-UI\vue.config.js
  * @Description: 
  * 
@@ -25,6 +25,16 @@ module.exports = {
         extract: true
     },
     chainWebpack: config => {
+        const oneOfsMap = config.module.rule("scss").oneOfs.store;
+        oneOfsMap.forEach(item => {
+            item
+                .use("style-resources-loader")
+                .loader("style-resources-loader")
+                .options({
+                    patterns: ["./src/assets/scss/common/_variables.scss"]
+                })
+                .end()
+        })
         config.plugin('ignore')
             .use(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
 

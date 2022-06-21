@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-03-11 22:13:30
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-11 22:13:30
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-21 11:24:09
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\AcquaintanceShare\modals\DownloadModal.vue
 -->
@@ -10,7 +10,7 @@
   <div class="modal-card">
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
-      <div class="flex1">
+      <div class="is-flex-grow-1">
         <h3 class="title is-4 has-text-weight-normal">{{$t('Download')}}</h3>
       </div>
       <div><button type="button" class="delete" @click="$emit('close')" /></div>
@@ -42,7 +42,7 @@
     <!-- Modal-Card Body End -->
     <!-- Modal-Card Footer Start-->
     <footer class="modal-card-foot is-flex is-align-items-center">
-      <div class="flex1">
+      <div class="is-flex-grow-1">
         <b-field>
           <b-radio size="is-small" v-model="isDefault" :native-value="true">
             {{ $t('Set as default download path') }}
@@ -121,7 +121,7 @@ export default {
         parent: this,
         component: FilePanel,
         hasModalCard: true,
-        customClass: 'fileModal',
+        customClass: 'file-sel-modal',
         trapFocus: true,
         canCancel: ['escape'],
         scroll: "keep",

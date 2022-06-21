@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-02-25 11:03:08
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-16 22:16:53
+ * @LastEditTime: 2022-06-21 11:28:07
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\modals\RenameModal.vue
 -->
@@ -10,7 +10,7 @@
   <div class="modal-card">
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
-      <div class="flex1">
+      <div class="is-flex-grow-1">
         <h3 class="title is-4 has-text-weight-normal">{{$t('Rename')}}</h3>
       </div>
       <div><button type="button" class="delete" @click="$emit('close')" /></div>
@@ -33,7 +33,7 @@
     <!-- Modal-Card Body End -->
     <!-- Modal-Card Footer Start-->
     <footer class="modal-card-foot is-flex is-align-items-center">
-      <div class="flex1"></div>
+      <div class="is-flex-grow-1"></div>
       <div>
         <b-button :label="$t('Submit')" type="is-primary" rounded expaned @click="saveNewName" />
       </div>

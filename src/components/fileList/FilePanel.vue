@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-10-14 14:08:40
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-07 11:18:29
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-21 17:31:14
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\fileList\FilePanel.vue
 -->
@@ -10,7 +10,7 @@
   <div class="modal-card">
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
-      <div class="flex1">
+      <div class="is-flex-grow-1">
         <h3 class="title is-4 has-text-weight-normal">Select</h3>
       </div>
     </header>
@@ -32,14 +32,14 @@
           </li>
         </ul>
       </nav>
-      <ul class="filelist scrollbars-light">
+      <ul class="file-list scrollbars-light">
         <list-item v-for="(item) in fileList" :item="item" :id="item.path" :key="item.path" :name="item.name" :IsDir="item.is_dir" :path="item.path" :state="checkActive(item.path)" @active="activeFile" @expand="getFileList"></list-item>
       </ul>
     </section>
     <!-- Modal-Card Body End -->
     <!-- Modal-Card Footer Start-->
     <footer class="modal-card-foot is-flex is-align-items-center">
-      <div class="flex1">
+      <div class="is-flex-grow-1">
         <div v-if="rootPath == '/DATA'">
           <b-tooltip label="Create Folder" type="is-dark" position="is-right">
             <a class="add-button" @click="showCreatePanel(true)">
@@ -168,7 +168,7 @@ export default {
         parent: this,
         component: CreatePanel,
         hasModalCard: true,
-        customClass: 'fileModal',
+        customClass: 'file-sel-modal',
         trapFocus: true,
         canCancel: ['escape'],
         scroll: "keep",
@@ -189,6 +189,80 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+.file-sel-modal {
+  .breadcrumb {
+    margin-bottom: 0.5rem;
 
-<style>
+    a {
+      color: #0e9aff;
+    }
+
+    ul {
+      overflow: hidden;
+      flex-wrap: nowrap;
+      flex-direction: row;
+      justify-content: flex-start;
+
+      li {
+        white-space: nowrap;
+
+        div {
+          max-width: 100%;
+          padding: 0 0.5em;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+
+        &:first-child {
+          a {
+            padding-right: 0;
+
+            .icon {
+              margin-left: 0;
+            }
+          }
+        }
+
+        &:last-child {
+          min-width: 0;
+          width: 100%;
+        }
+
+        &:nth-child(2) {
+          &::before {
+            content: "|";
+          }
+        }
+      }
+    }
+  }
+
+  .modal-card {
+    width: 30rem;
+  }
+
+  .file-list {
+    height: 19.6875rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    li {
+      border-bottom: #e4e4e4 1px solid;
+      line-height: 1.5em;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #e0e0e0;
+      }
+
+      &.active {
+        background-color: #b6e0ff;
+      }
+    }
+  }
+}
 </style>

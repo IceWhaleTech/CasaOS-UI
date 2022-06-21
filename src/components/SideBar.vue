@@ -2,13 +2,13 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-14 13:37:50
+ * @LastEditTime: 2022-06-21 22:34:19
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\SideBar.vue
 -->
 <template>
   <div class="side-bar mr-5" :class="{'open':sidebarOpen}" v-if="!isLoading">
-    <vue-custom-scrollbar class="scroll-area" :settings="scrollSettings">
+    <vue-custom-scrollbar class="scroll-area contextmenu-canvas" :settings="scrollSettings">
       <div v-for="(item,index) in activeApps" :key="`widgets_${index}`">
         <component :is="item.app" v-if="checkShow(item.app.name,widgetsSettings)"></component>
       </div>
@@ -159,7 +159,16 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" >
+.side-bar {
+  width: 16rem;
+  position: fixed;
+  z-index: 10;
+  height: calc(100% - 6rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 .scroll-area {
   position: relative;
   margin: auto;
@@ -196,6 +205,24 @@ export default {
 }
 
 @media screen and (max-width: 480px) {
+  .side-bar {
+    transition: all 0.3s ease-in-out;
+    left: 0rem;
+    transform: translateX(-100vw);
+    z-index: 20;
+    width: auto;
+    margin: 0 1rem !important;
+
+    &.open {
+      transform: translateX(0);
+      width: calc(100% - 2rem);
+
+      .wsettings {
+        display: flex;
+        justify-content: right;
+      }
+    }
+  }
   .scroll-area {
     height: 100% !important;
   }

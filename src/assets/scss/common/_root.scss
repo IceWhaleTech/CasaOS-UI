@@ -33,3 +33,23 @@ html {
         box-shadow: none;
     }
 }
+
+@media screen and (max-width: 1024px) {
+    .container {
+        margin: 0 1rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .b-group {
+        align-items: initial !important;
+        display: block !important;
+        width: 5rem;
+        margin-left: 0.5rem;
+
+        .ml-2 {
+            margin-left: 0 !important;
+            margin-top: 0.5rem !important;
+        }
+    }
+}

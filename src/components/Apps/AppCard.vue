@@ -2,13 +2,13 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-15 18:47:25
+ * @LastEditTime: 2022-06-21 11:44:09
  * @Description: App Card item
- * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
+ * @FilePath: \CasaOS-UI\src\components\Apps\AppCard.vue
 -->
 
 <template>
-  <div class="wuji-card is-flex is-align-items-center is-justify-content-center p-55 app-card" @mouseover="hover = true" @mouseleave="hover = true">
+  <div class="common-card is-flex is-align-items-center is-justify-content-center p-55 app-card" @mouseover="hover = true" @mouseleave="hover = true" >
 
     <!-- Action Button Start -->
     <div class="action-btn" v-if="item.type != 'system' && isCasa ">
@@ -310,5 +310,90 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+.app-card-drop {
+  .dropdown-menu {
+    min-width: 10rem;
+
+    .dropdown-content {
+      padding: 4px !important;
+      width: 160px;
+      background: none;
+      padding: 0;
+      background: rgba(255, 255, 255, 0.88);
+      border-radius: 10px;
+
+      .dropdown-item {
+        padding: 0;
+      }
+
+      .button {
+        border-radius: 0;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        border-radius: 5px;
+
+        &.is-text {
+          text-decoration: none;
+          justify-content: flex-start;
+          outline: none;
+          transition: all 0.2s;
+          border: none !important;
+          height: 2rem;
+          font-size: 0.875rem;
+
+          &.running {
+            color: #779e2a !important;
+          }
+
+          &.exited {
+            color: #ff1616 !important;
+          }
+        }
+
+        &:active {
+          background: none;
+          outline: none;
+        }
+
+        &:focus {
+          background: none;
+          box-shadow: none;
+          outline: none;
+        }
+
+        &:hover {
+          background-color: hsl(0, 0%, 86%);
+        }
+      }
+
+      .gap {
+        margin-left: -4px;
+        margin-right: -4px;
+      }
+
+      .bbor {
+        border-top: #2c3e50 1px solid;
+
+        .is-text {
+          text-decoration: none;
+          justify-content: center !important;
+        }
+
+        .column {
+          margin-bottom: -4px;
+
+          .button {
+            margin: 4px;
+            height: 2rem;
+          }
+        }
+
+        .column:first-child {
+          border-right: #2c3e50 1px solid;
+        }
+      }
+    }
+  }
+}
 </style>

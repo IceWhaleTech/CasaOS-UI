@@ -2,14 +2,14 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-05-17 00:33:07
+ * @LastEditTime: 2022-06-21 11:42:00
  * @Description: 
  * @FilePath: \CasaOS-UI\src\bak\Shortcuts.vue
 -->
 <template>
   <div class="has-text-left mt-6">
-    <div class="title-bar is-flex is-align-items-center">
-      <h1 class="title is-4  has-text-white is-flex-shrink-1">Shortcuts</h1>
+    <div class="is-flex is-align-items-center mb-5">
+      <h1 class="title is-4  has-text-white is-flex-shrink-1 is-flex-grow-1 mb-0">Shortcuts</h1>
       <div class="buttons ">
         <b-button icon-left="plus" type="is-dark" size="is-small" rounded>Add shortcut</b-button>
       </div>
@@ -17,12 +17,12 @@
 
     <div class="columns is-variable is-2 is-multiline ">
       <div class="column is-narrow is-3" v-for="n in 10" :key="n">
-        <div class="wuji-card is-flex is-align-items-center ">
+        <div class="common-card is-flex is-align-items-center ">
 
           <figure class="image is-32x32 simg">
             <img :src="require('@/assets/img/icon.png')">
           </figure>
-          <p class="ml-4 flex1 one-line">Test</p>
+          <p class="ml-4 is-flex-grow-1 one-line">Test</p>
           <div class="action-btn1">
             <b-dropdown aria-role="list" position="is-bottom-left" append-to-body>
               <template #trigger>

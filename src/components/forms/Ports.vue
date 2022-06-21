@@ -1,7 +1,7 @@
 <template>
   <div class="mb-5">
     <div class="field is-flex is-align-items-center mb-2">
-      <label class="label mb-0 flex1">{{$t('Ports')}}</label>
+      <label class="label mb-0 is-flex-grow-1">{{$t('Ports')}}</label>
       <b-button icon-left="plus" size="is-small" rounded @click="addItem">{{$t('Add')}}</b-button>
     </div>
     <div class="is-flex is-align-items-center mb-5 info" v-if="vdata.length == 0">
