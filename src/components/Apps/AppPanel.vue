@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-03-01 21:10:57
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 17:54:17
- * @FilePath: \CasaOS-UI\src\components\Apps\AppPanel.vue
+ * @LastEditTime: 2022-06-22 19:18:05
+ * @FilePath: /CasaOS-UI/src/components/Apps/AppPanel.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -114,7 +114,7 @@
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
       <div class="is-flex-grow-1">
-        <h3 class="title is-4 has-text-weight-normal">{{panelTitle}}</h3>
+        <h3 class="title is-3">{{panelTitle}}</h3>
       </div>
       <div class="is-flex is-align-items-center">
         <b-button v-if="currentSlide == 0" icon-left="view-grid-plus" size="is-small" type="is-primary" :label="$t('Custom Install')" @click="currentSlide = 1" class="mr-2" rounded />

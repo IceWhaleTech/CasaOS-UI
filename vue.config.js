@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 18:44:46
- * @FilePath: \CasaOS-UI\vue.config.js
+ * @LastEditTime: 2022-06-22 13:48:24
+ * @FilePath: /CasaOS-UI/vue.config.js
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 

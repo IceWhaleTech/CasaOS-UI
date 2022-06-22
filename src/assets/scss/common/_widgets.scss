@@ -27,7 +27,9 @@
 
   .widget-header {
     margin-right: -0.5rem;
-
+    align-items: center;
+    position: relative;
+    z-index: 4;
     .widget-title {
       font-size: 1rem;
       font-weight: 400;
@@ -37,9 +39,23 @@
       width: 1.25rem;
       height: 1.25rem;
       cursor: pointer;
+      margin-top: 2px;
     }
   }
 }
+
+.last-block {
+  margin-bottom: 0;
+
+  &.widget {
+    margin-bottom: 0;
+  }
+
+  .widget {
+    margin-bottom: 0;
+  }
+}
+
 
 .is-noscroll,
 .is-clipped {

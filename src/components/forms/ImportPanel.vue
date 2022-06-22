@@ -3,7 +3,7 @@
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
       <div class="is-flex-grow-1">
-        <h3 class="title is-4 has-text-weight-normal">{{ $t('Import') }}</h3>
+        <h3 class="title is-3">{{ $t('Import') }}</h3>
       </div>
     </header>
     <!-- Modal-Card Header End -->

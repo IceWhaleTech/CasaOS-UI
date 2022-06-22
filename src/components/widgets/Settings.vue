@@ -2,13 +2,13 @@
  * @Author: JerryK
  * @Date: 2021-10-09 18:41:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 11:33:49
+ * @LastEditTime: 2022-06-22 17:36:14
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\widgets\Settings.vue
+ * @FilePath: /CasaOS-UI/src/components/widgets/Settings.vue
 -->
 <template>
 
-  <div class="widget has-text-white clock is-relative pb-1">
+  <div class="widget has-text-white clock is-relative  mt-4">
     <div class="blur-background"></div>
 
     <div class="wsettings">
@@ -16,9 +16,9 @@
         <template #trigger>
           <div class=" widget-content">
             <!-- Header Start -->
-            <div class="widget-header is-flex">
+            <div class="widget-header is-flex is-clickable	">
               <div class="widget-title is-flex-grow-1">
-                {{ $t('Widgets Setting') }}
+                {{ $t('Widgets Settings') }}
               </div>
               <div class="widget-icon-button is-flex-shrink-0">
                 <b-icon pack="casa" icon="arrow-right" size="is-20"></b-icon>
@@ -116,6 +116,7 @@ export default {
 </script>
 <style lang="scss" >
 .wsettings {
+  width: 100%;
   .item {
     margin: 1.25rem 0;
   }
@@ -142,18 +143,21 @@ export default {
       box-shadow: none;
     }
   }
-  .dropdown-content {
-    background: rgba(0, 0, 0, 0.48);
-    backdrop-filter: blur(1rem);
-    width: 16rem;
-    border-radius: 0.5rem;
-    .dropdown-item {
-      padding: 1rem 1.5rem 0 1.5rem;
-    }
+  .dropdown {
+    display: block !important;
+    .dropdown-content {
+      background: rgba(0, 0, 0, 0.48);
+      backdrop-filter: blur(1rem);
+      width: 16rem;
+      border-radius: 0.5rem;
+      .dropdown-item {
+        padding: 1rem 1.5rem 0 1.5rem;
+      }
 
-    .switch input[type="checkbox"] + .check {
-      background: transparent;
-      border: #fff 1px solid;
+      .switch input[type="checkbox"] + .check {
+        background: transparent;
+        border: #fff 1px solid;
+      }
     }
   }
 }

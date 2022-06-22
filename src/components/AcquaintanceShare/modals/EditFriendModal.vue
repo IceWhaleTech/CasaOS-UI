@@ -2,16 +2,16 @@
  * @Author: JerryK
  * @Date: 2022-03-11 22:12:51
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 11:24:14
+ * @LastEditTime: 2022-06-22 19:23:12
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\AcquaintanceShare\modals\EditFriendModal.vue
+ * @FilePath: /CasaOS-UI/src/components/AcquaintanceShare/modals/EditFriendModal.vue
 -->
 <template>
   <div class="modal-card">
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
       <div class="is-flex-grow-1">
-        <h3 class="title is-4 has-text-weight-normal">{{$t('Modify remarks')}}</h3>
+        <h3 class="title is-3">{{$t('Modify remarks')}}</h3>
       </div>
       <div><button type="button" class="delete" @click="$emit('close')" /></div>
     </header>

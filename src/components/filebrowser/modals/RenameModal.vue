@@ -2,16 +2,16 @@
  * @Author: JerryK
  * @Date: 2022-02-25 11:03:08
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 11:28:07
+ * @LastEditTime: 2022-06-22 19:24:23
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\filebrowser\modals\RenameModal.vue
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/modals/RenameModal.vue
 -->
 <template>
   <div class="modal-card">
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
       <div class="is-flex-grow-1">
-        <h3 class="title is-4 has-text-weight-normal">{{$t('Rename')}}</h3>
+        <h3 class="title is-3">{{$t('Rename')}}</h3>
       </div>
       <div><button type="button" class="delete" @click="$emit('close')" /></div>
     </header>

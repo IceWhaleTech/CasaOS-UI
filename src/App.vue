@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 22:14:42
+ * @LastEditTime: 2022-06-22 13:30:55
  * @Description: Main entry of application
- * @FilePath: \CasaOS-UI\src\App.vue
+ * @FilePath: /CasaOS-UI/src/App.vue
 -->
 
 <template>
@@ -173,7 +173,7 @@ _____             _____ _____
       console.log(this.$store.state.isMobile);
     },
 
-   
+
 
   },
   sockets: {
@@ -190,6 +190,7 @@ _____             _____ _____
   width: 100vw;
   height: 100vh;
   font-weight: 400;
+  font-size: 0.875rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;

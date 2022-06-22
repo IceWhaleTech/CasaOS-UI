@@ -2,16 +2,16 @@
  * @Author: JerryK
  * @Date: 2021-11-10 18:22:36
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 16:46:11
+ * @LastEditTime: 2022-06-22 19:27:00
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\syncthing\SyncPanel.vue
+ * @FilePath: /CasaOS-UI/src/components/syncthing/SyncPanel.vue
 -->
 <template>
   <div class="modal-card">
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
       <div class="is-flex-grow-1">
-        <h3 class="title is-4 has-text-weight-normal">Sync Guide</h3>
+        <h3 class="title is-3">Sync Guide</h3>
       </div>
       <div class="is-flex is-align-items-center">
 

@@ -2,15 +2,15 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 22:42:13
- * @FilePath: \CasaOS-UI\src\components\Apps\AppSection.vue
+ * @LastEditTime: 2022-06-22 18:51:49
+ * @FilePath: /CasaOS-UI/src/components/Apps/AppSection.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
 -->
 
 <template>
-  <div class="home-section has-text-left mt-6">
+  <div class="home-section has-text-left mt-2rem">
     <!-- Title Bar Start -->
     <div class=" is-flex is-align-items-center mb-5">
       <h1 class="title is-4  has-text-white is-flex-shrink-1 is-flex-grow-1 mb-0 contextmenu-canvas">{{$t('Apps')}}
@@ -18,9 +18,9 @@
           <b-icon icon="help-circle-outline" custom-size="mdi-18px"></b-icon>
         </b-tooltip> -->
       </h1>
-      <div class="buttons ">
+      <!-- <div class="buttons ">
         <b-button id="v-step-0" icon-left="apps" type="is-dark" size="is-small" :loading="isShowing" rounded @click="showInstall">{{$t('App Store')}}</b-button>
-      </div>
+      </div> -->
     </div>
     <!-- Title Bar End -->
 
@@ -29,13 +29,10 @@
       <template v-if="!isLoading">
 
         <!-- App Icon Card Start -->
-        <div class="column is-narrow is-3 handle" v-for="(item) in appList" :key="'app-'+item.name" >
+        <div class="column is-narrow is-3 handle" v-for="(item) in appList" :key="'app-'+item.name">
           <app-card :item="item" @updateState="getList" @configApp="showConfigPanel" :isCasa="true"></app-card>
         </div>
         <!-- App Icon Card End -->
-        <!-- If None Apps Start -->
-        <app-new-button-card v-if="appList.length == 0" slot="header" @showInstall="showInstall"></app-new-button-card>
-        <!-- If None Apps End -->
 
       </template>
 
@@ -44,7 +41,7 @@
     <!-- App List End -->
     <template v-if="notImportedList.length > 0">
       <!-- Title Bar Start -->
-      <div class="title-bar is-flex is-align-items-center mt-6">
+      <div class="title-bar is-flex is-align-items-center mt-2rem">
         <h1 class="title is-4  has-text-white is-flex-shrink-1 is-flex-grow-1 mb-0 contextmenu-canvas">{{$t('Existing Docker Apps')}}
           <!-- <b-tooltip :label="$t(importHelpText)" type="is-dark" multilined>
             <b-icon icon="help-circle-outline" custom-size="mdi-18px"></b-icon>
@@ -71,9 +68,35 @@
 import AppCard from './AppCard.vue'
 import AppPanel from './AppPanel.vue'
 import draggable from 'vuedraggable'
-import AppNewButtonCard from './AddNewButtonCard.vue'
 import xor from 'lodash/xor'
 import concat from 'lodash/concat'
+
+const builtInApplications = [
+  {
+    id: "4",
+    name: "App Store",
+    icon: require(`@/assets/img/app/appstore.svg`),
+    state: "0",
+    custom_id: "4",
+    type: "system"
+  },
+  {
+    id: "5",
+    name: "Files",
+    icon: require(`@/assets/img/app/files.svg`),
+    state: "0",
+    custom_id: "5",
+    type: "system"
+  },
+  {
+    id: "6",
+    name: "Connect",
+    icon: require(`@/assets/img/share/folder-publicshare.svg`),
+    state: "0",
+    custom_id: "6",
+    type: "system"
+  },
+]
 export default {
   data() {
     return {
@@ -90,8 +113,12 @@ export default {
   },
   components: {
     AppCard,
-    AppNewButtonCard,
     draggable
+  },
+  provide() {
+    return {
+      openAppStore: this.showInstall,
+    };
   },
   computed: {
     dragOptions() {
@@ -125,7 +152,9 @@ export default {
     async getList() {
       let listRes = await this.$api.app.myAppList()
       if (listRes.data.success == 200) {
-        let casaAppList = listRes.data.data.list
+        const orgAppList = listRes.data.data.list
+        let casaAppList = concat(builtInApplications, orgAppList)
+
         let sortRes = await this.$api.app.getAppListOrder()
         if (sortRes.data.success == 200) {
           let sortList = sortRes.data.data
@@ -276,11 +305,10 @@ export default {
 
 <style lang="scss" scoped>
 .app-list {
-  min-height: 14rem;
   position: relative;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 480px) {
   .app-list {
     display: flex;
 
@@ -291,13 +319,36 @@ export default {
   }
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (min-width: $tablet) {
   .app-list {
-    display: flex;
-
     .column {
       flex: none;
       width: 50%;
+    }
+  }
+}
+@media screen and (min-width: $desktop) {
+  .app-list {
+    .column {
+      flex: none;
+      width: 33.333333%;
+    }
+  }
+}
+@media screen and (min-width: $widescreen) {
+  .app-list {
+    .column {
+      flex: none;
+      width: 25%;
+    }
+  }
+}
+
+@media screen and (min-width: $fullhd) {
+  .app-list {
+    .column {
+      flex: none;
+      width: 20%;
     }
   }
 }

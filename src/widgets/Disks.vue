@@ -10,7 +10,7 @@
             {{ $t('Storage') }}
           </div>
           <div class="widget-icon-button is-flex-shrink-0" @click="showDiskManagement">
-            <b-icon pack="casa" icon="setting" size="is-20" ></b-icon>
+            <b-icon pack="casa" icon="setting" size="is-20"></b-icon>
           </div>
         </div>
         <!-- Header End -->
@@ -144,6 +144,12 @@ export default {
     &::-webkit-progress-value {
       opacity: 1;
     }
+  }
+  .tag {
+    height: 1.125rem;
+    border-radius: 2px;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
   }
 }
 </style>

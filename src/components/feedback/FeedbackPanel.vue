@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-01-24 11:57:35
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 16:48:57
+ * @LastEditTime: 2022-06-22 19:21:34
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\feedback\FeedbackPanel.vue
+ * @FilePath: /CasaOS-UI/src/components/feedback/FeedbackPanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -12,7 +12,7 @@
     <!-- Modal-Card Body Start -->
     <section class="modal-card-body ">
 
-      <h2 class="title is-4">{{ $t('Bug report') }}</h2>
+      <h3 class="title is-3">{{ $t('Bug report') }}</h3>
       <div class="close-container"><button type="button" class="delete" @click="$emit('close')" /></div>
 
       <div class="is-flex-grow-1 is-relative">

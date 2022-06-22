@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-25 18:19:17
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 17:30:04
+ * @LastEditTime: 2022-06-22 19:22:01
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\account\AccountPanel.vue
+ * @FilePath: /CasaOS-UI/src/components/account/AccountPanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -12,7 +12,7 @@
       <!-- Modal-Card Header Start -->
       <header class="modal-card-head" :class="{'modal-card-head1':state == 1}">
         <div class="is-flex-grow-1">
-          <h3 class="title is-4 has-text-weight-normal">{{title}}</h3>
+          <h3 class="title is-3">{{title}}</h3>
         </div>
         <div><button type="button" class="delete" @click="$emit('close')" /></div>
       </header>

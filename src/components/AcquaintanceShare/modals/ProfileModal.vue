@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-03-11 22:12:01
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 11:24:49
+ * @LastEditTime: 2022-06-22 19:23:31
  * @Description: 
 -->
 <template>
@@ -10,7 +10,7 @@
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
       <div class="is-flex-grow-1">
-        <h3 class="title is-4 has-text-weight-normal">{{$t('Edit My Info')}}</h3>
+        <h3 class="title is-3">{{$t('Edit My Info')}}</h3>
       </div>
       <div><button type="button" class="delete" @click="$emit('close')" /></div>
     </header>

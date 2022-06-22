@@ -3,7 +3,7 @@
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
       <div class="is-flex-grow-1">
-        <h3 class="title is-4 has-text-weight-normal" v-if="!isWelcomeShow">{{$t('Share Initialization Wizard')}}</h3>
+        <h3 class="title is-3" v-if="!isWelcomeShow">{{$t('Share Initialization Wizard')}}</h3>
       </div>
 
     </header>

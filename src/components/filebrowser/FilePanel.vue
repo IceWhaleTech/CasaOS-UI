@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-02-18 12:42:06
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-16 22:12:02
+ * @LastEditTime: 2022-06-22 19:25:44
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\filebrowser\FilePanel.vue
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/FilePanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -21,7 +21,7 @@
       <template>
         <!-- NavBar Start -->
         <div class="nav-bar">
-          <h2 class="title is-4 mb-0 pb-3 has-text-left">{{ $t('Files') }}</h2>
+          <h3 class="title is-3 mb-0 pb-3 has-text-left">{{ $t('Files') }}</h3>
           <div class="list-container scrollbars-light pt-0">
             <tree-list ref="navBar" :path="rootPath" :autoLoad="true"></tree-list>
           </div>

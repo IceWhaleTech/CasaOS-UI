@@ -2,16 +2,16 @@
  * @Author: JerryK
  * @Date: 2022-02-25 14:26:30
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 11:27:57
+ * @LastEditTime: 2022-06-22 19:24:18
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\filebrowser\modals\NewFolderModal.vue
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/modals/NewFolderModal.vue
 -->
 <template>
   <div class="modal-card">
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
       <div class="is-flex-grow-1">
-        <h3 class="title is-4 has-text-weight-normal">{{$t('New Folder')}}</h3>
+        <h3 class="title is-3">{{$t('New Folder')}}</h3>
       </div>
       <div><button type="button" class="delete" @click="$emit('close')" /></div>
     </header>

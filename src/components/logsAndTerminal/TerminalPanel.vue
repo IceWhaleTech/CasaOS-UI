@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 16:52:15
- * @FilePath: \CasaOS-UI\src\components\logsAndTerminal\TerminalPanel.vue
+ * @LastEditTime: 2022-06-22 19:20:21
+ * @FilePath: /CasaOS-UI/src/components/logsAndTerminal/TerminalPanel.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -13,7 +13,7 @@
 
     <!-- Modal-Card Body Start -->
     <section class="modal-card-body ">
-      <h2 class="title is-4">CasaOS</h2>
+      <h3 class="title is-3">CasaOS</h3>
       <div class="close-container"><button type="button" class="delete" @click="$emit('close')" /></div>
       <div class="is-flex-grow-1">
         <b-tabs :animated="false" @input="onInput">

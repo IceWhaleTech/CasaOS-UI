@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 11:44:09
+ * @LastEditTime: 2022-06-22 18:51:20
  * @Description: App Card item
- * @FilePath: \CasaOS-UI\src\components\Apps\AppCard.vue
+ * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
 -->
 
 <template>
@@ -50,9 +50,9 @@
       <b-tooltip :label="tooltipLable" type="is-dark" :triggers="tooltipTriger" animation="fade1" :animated="true">
         <div class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-3 pb-3 img-c">
           <a class="is-flex is-justify-content-center" @click="openApp(item)">
-            <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-72x72" :class="item.state | dotClass"></b-image>
+            <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-64x64" :class="item.state | dotClass"></b-image>
           </a>
-          <p class="mt-4 one-line">
+          <p class="mt-3 one-line">
             <a class="one-line" @click="openApp(item)">
               {{item.name}}
             </a>
@@ -74,7 +74,7 @@
 
 export default {
   name: "app-card",
-  inject: ["homeShowFiles"],
+  inject: ["homeShowFiles","openAppStore"],
   data() {
     return {
       hover: false,
@@ -162,12 +162,15 @@ export default {
         this.$api.analyse.analyseAppAction(appName, action)
         // eslint-disable-next-line no-empty
       } catch (error) { }
-
+      console.log(item.name);
       switch (item.name) {
+        case "App Store":
+          this.openAppStore()
+          break;
         case "Files":
           this.homeShowFiles()
           break;
-        case "CasaConnect":
+        case "Connect":
           var url = `${window.location.origin}/ui/#/connect`
           var arg = '\u003cscript\u003elocation.replace("' + url + '")\u003c/script\u003e';
           window.open('javascript:window.name;', arg);

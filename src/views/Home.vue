@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 22:38:16
+ * @LastEditTime: 2022-06-22 17:56:37
  * @Description: 
- * @FilePath: \CasaOS-UI\src\views\Home.vue
+ * @FilePath: /CasaOS-UI/src/views/Home.vue
 -->
 <template>
   <div v-if="!isLoading" class="out-container">
@@ -18,11 +18,11 @@
         <div class="is-flex">
           <!-- SideBar Start -->
           <side-bar v-if="!hardwareInfoLoading"></side-bar>
-          <div class="dark-bg" :class="{'open':sidebarOpen}"></div>
+          <!-- <div class="dark-bg" :class="{'open':sidebarOpen}"></div> -->
           <!-- SideBar End -->
 
           <!-- MainContent Start -->
-          <div class="main-content contextmenu-canvas">
+          <div class="main-content contextmenu-canvas" :class="{'open':sidebarOpen}">
             <!-- SearchBar Start -->
             <section>
               <search-bar></search-bar>
@@ -179,11 +179,11 @@ export default {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  height: calc(100% - 8rem);
+  height: calc(100% - 7rem);
 }
 
 .main-content {
-  flex: 1;
+
   margin-left: 17.5rem;
   position: relative;
   z-index: 10;
@@ -214,6 +214,11 @@ export default {
 
   .main-content {
     margin-left: 0;
+    transition: all 0.3s;
+    &.open{
+      transform: scale(0.9);
+      opacity: 0;
+    }
   }
 }
 </style>

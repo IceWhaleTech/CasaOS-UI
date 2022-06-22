@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-01-17 15:16:11
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 16:48:19
+ * @LastEditTime: 2022-06-22 19:19:57
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\Storage\StorageManagerPanel.vue
+ * @FilePath: /CasaOS-UI/src/components/Storage/StorageManagerPanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -12,7 +12,7 @@
     <!-- Modal-Card Body Start -->
     <section class="modal-card-body ">
       <template v-if="!isCreating">
-        <h2 class="title is-4">{{title}}</h2>
+        <h3 class="title is-3">{{title}}</h3>
         <div class="close-container"><button type="button" class="delete" @click="$emit('close')" /></div>
 
         <!-- Storage and Disk List Start -->

@@ -6,6 +6,18 @@
 
 .button {
   -webkit-tap-highlight-color: transparent;
+  height: auto;
+  font-size: 0.875rem;
+  padding-top: calc(0.34375rem - 1px);
+  padding-bottom: calc(0.34375rem - 1px);
+
+  &.is-small {
+    padding-top: calc(0.1875rem - 1px);
+    padding-bottom: calc(0.1875rem - 1px);
+    font-size: 0.75rem;
+
+  }
+
 }
 
 .c-button {

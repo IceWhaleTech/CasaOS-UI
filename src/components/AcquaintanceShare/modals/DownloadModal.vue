@@ -2,16 +2,16 @@
  * @Author: JerryK
  * @Date: 2022-03-11 22:13:30
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 11:24:09
+ * @LastEditTime: 2022-06-22 19:23:05
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\AcquaintanceShare\modals\DownloadModal.vue
+ * @FilePath: /CasaOS-UI/src/components/AcquaintanceShare/modals/DownloadModal.vue
 -->
 <template>
   <div class="modal-card">
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
       <div class="is-flex-grow-1">
-        <h3 class="title is-4 has-text-weight-normal">{{$t('Download')}}</h3>
+        <h3 class="title is-3">{{$t('Download')}}</h3>
       </div>
       <div><button type="button" class="delete" @click="$emit('close')" /></div>
     </header>

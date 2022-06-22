@@ -2,12 +2,12 @@
  * @Author: JerryK
  * @Date: 2021-12-06 13:52:11
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 11:15:34
+ * @LastEditTime: 2022-06-22 18:08:23
  * @Description: 
- * @FilePath: \CasaOS-UI\src\widgets\Network.vue
+ * @FilePath: /CasaOS-UI/src/widgets/Network.vue
 -->
 <template>
-  <div class="widget has-text-white clock is-relative pb-1">
+  <div class="widget has-text-white clock is-relative">
     <div class="blur-background"></div>
 
     <div class="network widget-content">
@@ -26,7 +26,7 @@
       <!-- Status Start -->
       <div class="is-flex ">
         <div class=" is-flex-grow-1">
-          <b-dropdown aria-role="list" position="is-top-right" class="netowrk-dropdown" animation="fade1" v-model="networkId">
+          <b-dropdown aria-role="list" position="is-top-right" class="netowrk-dropdown" animation="fade1" v-model="networkId" :mobile-modal="false">
             <template #trigger="{ active }">
               <b-button :label="initNetwork[networkId].name" type="is-primary" :icon-right="active ? 'chevron-up' : 'chevron-down'" />
             </template>

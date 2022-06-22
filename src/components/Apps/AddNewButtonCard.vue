@@ -1,9 +1,9 @@
 <!--
  * @Author: 老竭力 jerrykuku@qq.com
  * @Date: 2022-05-07 17:06:30
- * @LastEditors: 老竭力 jerrykuku@qq.com
- * @LastEditTime: 2022-05-07 17:07:52
- * @FilePath: \CasaOS-UI\src\components\Apps\AddNewButtonCard.vue
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-22 18:26:23
+ * @FilePath: /CasaOS-UI/src/components/Apps/AddNewButtonCard.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by 老竭力 jerrykuku@qq.com, All Rights Reserved. 
@@ -12,13 +12,22 @@
   <div class="column is-narrow is-3">
     <div class="common-card is-flex is-align-items-center is-justify-content-center p-55 app-card">
       <div class="blur-background"></div>
+      
       <div class="cards-content">
         <!-- Card Content Start -->
-        <div class="has-text-centered is-flex is-justify-content-center is-flex-direction-column p-55  img-c">
-          <a class="is-flex is-justify-content-center" @click="emit('showInstall') ">
-            <b-image :src="require('@/assets/img/app/add_button.svg')" class="is-72x72"></b-image>
-          </a>
-        </div>
+        <b-tooltip :label="$t('Open')" type="is-dark" animation="fade1" :animated="true">
+          <div class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-3 pb-3 img-c">
+            <a class="is-flex is-justify-content-center">
+              <b-image :src="require('@/assets/img/app/appstore.svg')" class="is-64x64"></b-image>
+            </a>
+            <p class="mt-3 one-line">
+              <a class="one-line">
+                {{ $t('App Store') }}
+              </a>
+            </p>
+
+          </div>
+        </b-tooltip>
         <!-- Card Content End -->
       </div>
     </div>
