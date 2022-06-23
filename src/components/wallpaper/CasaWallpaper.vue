@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-06-21 19:03:39
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 22:42:53
- * @FilePath: \CasaOS-UI\src\components\background\CasaBackground.vue
+ * @LastEditTime: 2022-06-22 22:45:36
+ * @FilePath: \CasaOS-UI\src\components\wallpaper\CasaWallpaper.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -35,6 +35,27 @@ export default {
       backgroundStyleObj: {
         backgroundImage: `url(${require('@/assets/background/background.png')})`
       },
+    }
+  },
+  mounted() {
+    this.$EventBus.$on("showChangeWallpaperModal", () => {
+      this.showChangeWallpaperModal()
+    });
+  },
+  methods: {
+    showChangeWallpaperModal() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: () => import('@/components/wallpaper/WallpaperModal.vue'),
+        hasModalCard: true,
+        customClass: '',
+        trapFocus: true,
+        canCancel: [''],
+        scroll: "keep",
+        animation: "zoom-in",
+        events: {
+        },
+      })
     }
   },
 }

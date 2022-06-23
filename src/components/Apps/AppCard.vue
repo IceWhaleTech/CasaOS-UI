@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-22 18:51:20
+ * @LastEditTime: 2022-06-23 23:43:19
  * @Description: App Card item
- * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
+ * @FilePath: \CasaOS-UI\src\components\Apps\AppCard.vue
 -->
 
 <template>
@@ -136,12 +136,6 @@ export default {
       } else {
         this.$refs.dro.isActive = false
         if (item.port != "" && item.state == 'running') {
-          try {
-            const appName = item.name
-            const action = "open"
-            this.$api.analyse.analyseAppAction(appName, action)
-            // eslint-disable-next-line no-empty
-          } catch (err) { }
           const hostIp = item.host || this.$baseIp
           const protocol = item.protocol || 'http'
           const url = `${protocol}://${hostIp}:${item.port}${item.index}`
@@ -156,12 +150,6 @@ export default {
     },
 
     openSystemApps(item) {
-      try {
-        const appName = item.name
-        const action = "open"
-        this.$api.analyse.analyseAppAction(appName, action)
-        // eslint-disable-next-line no-empty
-      } catch (error) { }
       console.log(item.name);
       switch (item.name) {
         case "App Store":
@@ -208,12 +196,6 @@ export default {
      * @return {*} void
      */
     uninstallConfirm() {
-      try {
-        const appName = this.item.name
-        const action = "uninstall"
-        this.$api.analyse.analyseAppAction(appName, action)
-        // eslint-disable-next-line no-empty
-      } catch (err) { }
       this.$refs.dro.isActive = false
       this.$buefy.dialog.confirm({
         title: this.$t('Attention'),

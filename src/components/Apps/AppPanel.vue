@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-03-01 21:10:57
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-22 19:18:05
- * @FilePath: /CasaOS-UI/src/components/Apps/AppPanel.vue
+ * @LastEditTime: 2022-06-22 23:42:09
+ * @FilePath: \CasaOS-UI\src\components\Apps\AppPanel.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -772,14 +772,6 @@ export default {
   },
   methods: {
 
-    analyse(data) {
-      try {
-        const appName = data.label
-        const action = "install"
-        this.$api.analyse.analyseAppAction(appName, action)
-        // eslint-disable-next-line no-empty
-      } catch (err) { }
-    },
     /**
      * @description: 
      * @param {*} function
@@ -1021,7 +1013,6 @@ export default {
         this.isLoading = false;
         if (res.data.success == 200) {
           this.currentInstallAppName = res.data.data
-          this.analyse(this.initData)
           this.currentSlide = 2;
           this.currentInstallAppText = "Start Installation..."
           this.cancelButtonText = 'Continue in background'

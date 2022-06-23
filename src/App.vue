@@ -2,16 +2,16 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-22 13:30:55
+ * @LastEditTime: 2022-06-22 22:44:12
  * @Description: Main entry of application
- * @FilePath: /CasaOS-UI/src/App.vue
+ * @FilePath: \CasaOS-UI\src\App.vue
 -->
 
 <template>
   <div id="app" class="is-flex is-flex-direction-column">
     <template v-if="isNotSharing">
       <!-- Background Layer Start -->
-      <casa-background :animate="isWelcome?initAni:noneAni"></casa-background>
+      <casa-wallpaper :animate="isWelcome?initAni:noneAni"></casa-wallpaper>
       <!-- Background Layer End -->
 
       <!-- BrandBar Start -->
@@ -33,7 +33,7 @@
 <script>
 import BrandBar from './components/BrandBar.vue'
 import ContactBar from './components/ContactBar.vue'
-import CasaBackground from './components/background/CasaBackground.vue'
+import CasaWallpaper from './components/wallpaper/CasaWallpaper.vue'
 import { mixin } from './mixins/mixin';
 
 const customIconConfig = {
@@ -71,7 +71,7 @@ export default {
   components: {
     BrandBar,
     ContactBar,
-    CasaBackground
+    CasaWallpaper
   },
   mixins: [mixin],
   data() {

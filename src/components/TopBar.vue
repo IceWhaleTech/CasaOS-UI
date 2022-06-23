@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 22:56:51
+ * @LastEditTime: 2022-06-22 23:44:37
  * @Description: Top bar 
  * @FilePath: \CasaOS-UI\src\components\TopBar.vue
 -->
@@ -71,10 +71,23 @@
         <b-dropdown-item aria-role="menu-item" :focusable="false" custom>
           <h2 class="title is-4">{{$t('Dashboard Setting')}}</h2>
 
+          <!-- Search Engine Switch Start  -->
+          <div class="is-flex is-align-items-center mb-2 h-30">
+            <div class="is-flex is-align-items-center is-flex-grow-1">
+              <b-icon pack="casa" icon="magnifier" class="mr-1" ></b-icon> <b>{{$t('Show search bar ')}}</b>
+            </div>
+            <div>
+              <b-field>
+                <b-switch type="is-dark" class="is-flex-direction-row-reverse mr-0"></b-switch>
+              </b-field>
+            </div>
+          </div>
+          <!-- Search Engine Switch End  -->
+
           <!-- Search Engine Start -->
           <div class="is-flex is-align-items-center mb-2 h-30">
             <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon icon="magnify" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{$t('Search Engine')}}</b>
+              <b-icon pack="casa" icon="magnifier" class="mr-1" ></b-icon> <b>{{$t('Search Engine')}}</b>
             </div>
             <div>
               <b-field>
@@ -121,10 +134,23 @@
               <b-icon icon="wallpaper" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{$t('Wallpaper')}}</b>
             </div>
             <div class="ml-2">
-              <b-button type="is-dark" size="is-small" rounded @click="showBackgroundModal">{{$t('Change')}}</b-button>
+              <b-button type="is-dark" size="is-small" rounded @click="showChangeWallpaperModal">{{$t('Change')}}</b-button>
             </div>
           </div>
           <!-- Background End -->
+
+          <!--  Recommended modules Switch Start  -->
+          <div class="is-flex is-align-items-center mb-2 h-30">
+            <div class="is-flex is-align-items-center is-flex-grow-1">
+              <b-icon icon="magnify" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{$t('Show Recommended Apps ')}}</b>
+            </div>
+            <div>
+              <b-field>
+                <b-switch type="is-dark" class="is-flex-direction-row-reverse mr-0"></b-switch>
+              </b-field>
+            </div>
+          </div>
+          <!-- Recommended modules Switch End  -->
 
           <!-- Automount USB Drive Start  -->
           <div class="is-flex is-align-items-center mb-2 h-30">
@@ -392,8 +418,8 @@ export default {
         }
       })
     },
-    showBackgroundModal() {
-      this.$EventBus.$emit("showBackgroundModal");
+    showChangeWallpaperModal() {
+      this.$EventBus.$emit("showChangeWallpaperModal");
       this.$refs.settingsDrop.toggle()
     },
 

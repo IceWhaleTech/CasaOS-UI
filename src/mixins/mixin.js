@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-01-20 12:01:07
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 19:02:28
+ * @LastEditTime: 2022-06-23 17:33:16
  * @Description: 
  * @FilePath: \CasaOS-UI\src\mixins\mixin.js
  */
@@ -42,6 +42,7 @@ const filePanelMap = {
     "image-viewer": typeMap['image-x-generic'],
     // "pdf-viewer": typeMap['application-pdf'],
 }
+export const wallpaperType = ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'svg']
 
 
 
@@ -326,6 +327,14 @@ export const mixin = {
                 }
             })
         },
+        /**
+         * @description: Set an image as wallpaper
+         * @param {*} item
+         * @return {*}
+         */
+        setAsWallpaper(item) {
+            console.log(item);
+        }
 
     },
 

@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-02-23 17:08:21
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 22:59:38
+ * @LastEditTime: 2022-06-22 22:36:51
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\background\ContextMenu.vue
 -->
@@ -12,7 +12,7 @@
       <b-dropdown aria-role="list" close-on-click ref="dropDown" id="dr1" class="file-dropdown" :position="'is-'+verticalPos+'-'+horizontalPos" :animation="ani" :mobile-modal="false">
         <!-- Blank Start -->
         <template>
-          <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center" key="system-context11" @click="showBackgroundModal">
+          <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center" key="system-context11" @click="showChangeWallpaperModal">
             <b-icon icon="wallpaper" class="mr-1" custom-size="mdi-18px"></b-icon> {{ $t('Change wallpaper') }}
           </b-dropdown-item>
         </template>
@@ -46,9 +46,7 @@ export default {
       this.open(data)
     });
 
-    this.$EventBus.$on("showBackgroundModal", () => {
-      this.showBackgroundModal()
-    });
+
   },
   methods: {
     open(event) {
@@ -64,9 +62,10 @@ export default {
         })
       }
     },
-    showBackgroundModal() {
-      console.log("show modal");
+    showChangeWallpaperModal() {
+      this.$EventBus.$emit("showChangeWallpaperModal");
     }
+
   },
 }
 </script>

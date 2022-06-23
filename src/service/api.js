@@ -2,13 +2,12 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 19:13:08
+ * @LastEditTime: 2022-06-22 23:43:04
  * @Description: 
  * @FilePath: \CasaOS-UI\src\service\api.js
  */
 
 import app from './app.js';
-import analyse from './analyse.js';
 import disk from './disk.js';
 import file from './file.js';
 import info from './info.js';
@@ -19,7 +18,6 @@ import person from "./person.js";
 
 export default {
     app,
-    analyse,
     info,
     disk,
     file,

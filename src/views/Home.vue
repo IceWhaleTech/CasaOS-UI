@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-22 17:56:37
+ * @LastEditTime: 2022-06-22 23:40:44
  * @Description: 
- * @FilePath: /CasaOS-UI/src/views/Home.vue
+ * @FilePath: \CasaOS-UI\src\views\Home.vue
 -->
 <template>
   <div v-if="!isLoading" class="out-container">
@@ -159,7 +159,7 @@ export default {
     openHomeContaxtMenu(e) {
       // console.log(e.target);
       this.$EventBus.$emit("showHomeContextMenu", e);
-    }
+    },
 
   },
   beforeDestroy() {
@@ -183,7 +183,6 @@ export default {
 }
 
 .main-content {
-
   margin-left: 17.5rem;
   position: relative;
   z-index: 10;
@@ -215,7 +214,7 @@ export default {
   .main-content {
     margin-left: 0;
     transition: all 0.3s;
-    &.open{
+    &.open {
       transform: scale(0.9);
       opacity: 0;
     }

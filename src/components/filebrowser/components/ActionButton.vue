@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-02-23 17:08:21
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-16 22:15:54
+ * @LastEditTime: 2022-06-23 17:33:40
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\components\ActionButton.vue
 -->
@@ -31,6 +31,9 @@
       <b-dropdown-item aria-role="menuitem" @click="operate('copy',item)">
         {{ $t('Copy') }}
       </b-dropdown-item>
+      <b-dropdown-item aria-role="menuitem" @click="setAsWallpaper(item)" v-if="isWallpaperType">
+        {{ $t('Set as wallpaper') }}
+      </b-dropdown-item>
       <hr class="dropdown-divider">
       <b-dropdown-item aria-role="menuitem" class="has-text-danger" @click="isConfirmed = true" v-if="!isConfirmed">
         {{ $t('Delete') }}
@@ -43,7 +46,7 @@
 </template>
 
 <script>
-import { mixin } from '@/mixins/mixin';
+import { mixin, wallpaperType } from '@/mixins/mixin';
 
 export default {
   mixins: [mixin],
@@ -62,10 +65,14 @@ export default {
   computed: {
     horizontalPos() {
       return (this.index + 1) % this.cols == 0 ? "left" : "right"
+    },
+    isWallpaperType() {
+      return this.item.is_dir ? false : wallpaperType.includes(this.getFileExt(this.item))
     }
   },
   mounted() {
     document.addEventListener('contextmenu', this.hideContextMenu);
+    console.log(this.isWallpaperType);
   },
   destroyed() {
     document.removeEventListener('contextmenu', this.hideContextMenu)
