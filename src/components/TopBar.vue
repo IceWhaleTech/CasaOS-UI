@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-22 23:44:37
+ * @LastEditTime: 2022-06-24 15:50:43
  * @Description: Top bar 
- * @FilePath: \CasaOS-UI\src\components\TopBar.vue
+ * @FilePath: /CasaOS-UI/src/components/TopBar.vue
 -->
 
 <template>
@@ -74,7 +74,7 @@
           <!-- Search Engine Switch Start  -->
           <div class="is-flex is-align-items-center mb-2 h-30">
             <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon pack="casa" icon="magnifier" class="mr-1" ></b-icon> <b>{{$t('Show search bar ')}}</b>
+              <b-icon pack="casa" icon="magnifier" class="mr-1"></b-icon> <b>{{$t('Show search bar ')}}</b>
             </div>
             <div>
               <b-field>
@@ -87,7 +87,7 @@
           <!-- Search Engine Start -->
           <div class="is-flex is-align-items-center mb-2 h-30">
             <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon pack="casa" icon="magnifier" class="mr-1" ></b-icon> <b>{{$t('Search Engine')}}</b>
+              <b-icon pack="casa" icon="magnifier" class="mr-1"></b-icon> <b>{{$t('Search Engine')}}</b>
             </div>
             <div>
               <b-field>
@@ -517,12 +517,15 @@ export default {
      */
     getUserInfo() {
       this.$store.commit('closeSideBar')
-      this.$api.user.getUserInfo().then((res) => {
-        if (res.data.success == 200) {
-          this.$store.commit('changeUserInfo', res.data.data)
-          this.userInfo = res.data.data
-        }
-      })
+      if (!this.$store.userinfo) {
+        console.log("get user info");
+        this.$api.user.getUserInfo(localStorage.getItem("user_id")).then((res) => {
+          if (res.data.success == 200) {
+            this.$store.commit('changeUserInfo', res.data.data)
+            this.userInfo = res.data.data
+          }
+        })
+      }
     },
 
     /**

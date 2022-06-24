@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-22 22:44:12
+ * @LastEditTime: 2022-06-24 17:25:36
  * @Description: Main entry of application
- * @FilePath: \CasaOS-UI\src\App.vue
+ * @FilePath: /CasaOS-UI/src/App.vue
 -->
 
 <template>
@@ -169,12 +169,7 @@ _____             _____ _____
       } else {
         this.$store.commit('setIsMobile', true)
       }
-
-      console.log(this.$store.state.isMobile);
     },
-
-
-
   },
   sockets: {
     connect() {

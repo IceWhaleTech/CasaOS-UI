@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-03-11 13:36:11
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 11:33:54
+ * @LastEditTime: 2022-06-24 15:27:50
  * @Description: 
- * @FilePath: \CasaOS-UI\src\views\CasaConnect.vue
+ * @FilePath: /CasaOS-UI/src/views/CasaConnect.vue
 -->
 <template>
   <div class="acquaintance-share is-flex ">
@@ -436,7 +436,7 @@ export default {
     **************************************************/
     // Get My Info
     getMyInfo() {
-      this.$api.user.getUserInfo().then(res => {
+      this.$api.user.getUserInfo(localStorage.getItem("user_id")).then(res => {
         this.myInfo = res.data.data
         if (!this.isInit) {
           this.showInitModal()

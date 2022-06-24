@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-22 18:51:49
+ * @LastEditTime: 2022-06-24 16:34:17
  * @FilePath: /CasaOS-UI/src/components/Apps/AppSection.vue
  * @Description: 
  * 
@@ -73,33 +73,37 @@ import concat from 'lodash/concat'
 
 const builtInApplications = [
   {
-    id: "4",
+    id: "1",
     name: "App Store",
     icon: require(`@/assets/img/app/appstore.svg`),
     state: "0",
-    custom_id: "4",
+    custom_id: "1",
     type: "system"
   },
   {
-    id: "5",
+    id: "2",
     name: "Files",
     icon: require(`@/assets/img/app/files.svg`),
     state: "0",
-    custom_id: "5",
+    custom_id: "2",
     type: "system"
   },
   {
-    id: "6",
+    id: "3",
     name: "Connect",
     icon: require(`@/assets/img/share/folder-publicshare.svg`),
     state: "0",
-    custom_id: "6",
+    custom_id: "3",
     type: "system"
   },
 ]
+
+const orderConfig = "app_order"
+
 export default {
   data() {
     return {
+      user_id: localStorage.getItem("user_id"),
       appList: [],
       notImportedList: [],
       appConfig: {},
@@ -134,6 +138,7 @@ export default {
     }
   },
   created() {
+    console.log(this.$store.state.userinfo.id);
     this.getList();
     this.draggable = this.isMobile() ? "" : ".handle"
   },
@@ -154,10 +159,10 @@ export default {
       if (listRes.data.success == 200) {
         const orgAppList = listRes.data.data.list
         let casaAppList = concat(builtInApplications, orgAppList)
-
-        let sortRes = await this.$api.app.getAppListOrder()
+        casaAppList.reverse()
+        let sortRes = await this.$api.user.getCustomConfig(this.user_id, orderConfig)
         if (sortRes.data.success == 200) {
-          let sortList = sortRes.data.data
+          let sortList = sortRes.data.data.data
           let newList = casaAppList.map((item) => {
             return item.custom_id
           })
@@ -202,9 +207,9 @@ export default {
         return item.custom_id
       })
       let data = {
-        data: JSON.stringify(newList)
+        data: newList
       }
-      this.$api.app.saveAppListOrder(data)
+      this.$api.user.postCustomConfig(this.user_id, orderConfig, data)
     },
     /**
      * @description: Handle on Sort End

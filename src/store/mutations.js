@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-06-02 19:49:36
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-14 13:10:38
- * @FilePath: \CasaOS-UI\src\store\mutations.js
+ * @LastEditTime: 2022-06-24 14:41:13
+ * @FilePath: /CasaOS-UI/src/store/mutations.js
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -61,6 +61,11 @@ const mutations = {
     // Set if isMobile or not
     setIsMobile(state, val) {
         state.isMobile = val
+    },
+
+    // Set new Wallpaper Object
+    changeWallpaper(state, val) {
+        state.wallpaperObject = val
     }
 }
 export default mutations

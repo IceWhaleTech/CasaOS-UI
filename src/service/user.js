@@ -1,17 +1,22 @@
 /*
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
- * @LastEditors: JerryK
- * @LastEditTime: 2021-09-19 09:26:47
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-24 15:35:44
  * @Description: User API
- * @FilePath: \CasaOS-UI\src\service\user.js
+ * @FilePath: /CasaOS-UI/src/service/user.js
  */
 import { api } from "./service.js";
 
 const user = {
+    // Get All User Name
+    getAllUserName() {
+        return api.get(`/user/all/name`);
+    },
+
     //login
     login(data) {
-        return api.post("user/login", data);
+        return api.post("/user/login", data);
     },
 
     // Create UserName and Password
@@ -35,8 +40,8 @@ const user = {
     },
 
     // Get user info
-    getUserInfo() {
-        return api.get("/user/info");
+    getUserInfo(id) {
+        return api.get(`/user/info/${id}`);
     },
 
     // Change User Info
@@ -68,7 +73,24 @@ const user = {
             nick_name: nickname,
             description: description
         }
-        return api.post(`user/person/info`, data);
+        return api.post(`/user/person/info`, data);
+    },
+
+    getCustomConfig(id, key) {
+        return api.get(`/user/custom/${id}/${key}`)
+    },
+    postCustomConfig(id, key, data) {
+        return api.post(`/user/custom/${id}/${key}`, data)
+    },
+    deleteCustomConfig(id, key) {
+        return api.delete(`/user/custom/${id}/${key}`)
+    },
+
+    postFileImage(id, key, data) {
+        return api.post(`/user/file/image/${id}/${key}`, data)
+    },
+    deletePostImage(id, data) {
+        return api.delete(`/user/image/${id}`, data)
     }
 }
 export default user;

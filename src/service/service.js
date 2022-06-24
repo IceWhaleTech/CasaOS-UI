@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-15 18:11:51
+ * @LastEditTime: 2022-06-24 11:05:55
  * @Description: 
  * @FilePath: /CasaOS-UI/src/service/service.js
  */
@@ -109,7 +109,7 @@ const api = {
         return instance.delete(url, { data: data })
     },
     _processData(url, data) {
-        const isJSON = (url.indexOf("setting") > 0 || url.indexOf("install") > 0 || url.indexOf("sys") > 0 || url.indexOf("file") > 0)
+        const isJSON = (url.indexOf("setting") > 0 || url.indexOf("install") > 0 || url.indexOf("sys") > 0 || url.indexOf("file") > 0 || url.indexOf("user") > 0)
 
         let payload,
             contentType

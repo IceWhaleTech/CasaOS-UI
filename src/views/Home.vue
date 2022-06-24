@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-22 23:40:44
+ * @LastEditTime: 2022-06-24 17:42:34
  * @Description: 
- * @FilePath: \CasaOS-UI\src\views\Home.vue
+ * @FilePath: /CasaOS-UI/src/views/Home.vue
 -->
 <template>
   <div v-if="!isLoading" class="out-container">
@@ -72,6 +72,8 @@ import AppSection from '../components/Apps/AppSection.vue'
 //import Shortcuts from '@/components/Shortcuts.vue'
 import FilePanel from '@/components/filebrowser/FilePanel.vue'
 
+const wallpaperConfig = "wallpaper"
+
 export default {
   name: "home-page",
   components: {
@@ -87,6 +89,7 @@ export default {
     return {
       isLoading: true,
       hardwareInfoLoading: true,
+      user_id: localStorage.getItem("user_id"),
       isFileActive: false,
       topBarAni: {
         classes: 'fadeInDown',
@@ -105,11 +108,16 @@ export default {
       return this.$store.state.sidebarOpen
     }
   },
+  created() {
+    this.getHardwareInfo();
+    this.getWallpaperConfig();
+  },
   mounted() {
     this.isLoading = false
-    this.getHardwareInfo();
+
     window.addEventListener("resize", this.onResize);
     this.onResize()
+
   },
   methods: {
     /**
@@ -160,6 +168,18 @@ export default {
       // console.log(e.target);
       this.$EventBus.$emit("showHomeContextMenu", e);
     },
+
+    getWallpaperConfig() {
+      this.$api.user.getCustomConfig(this.user_id, wallpaperConfig).then(res => {
+        console.log(res.data.data);
+        if (res.data.success === 200 && res.data.data != "") {
+          this.$store.commit('changeWallpaper', {
+            path: res.data.data.path,
+            from: res.data.data.from
+          })
+        }
+      })
+    }
 
   },
   beforeDestroy() {

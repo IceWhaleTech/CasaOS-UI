@@ -13,7 +13,7 @@
       <img :src="require('@/assets/img/logo/casa-white.svg')">
     </figure>
     <span class="logo-text mr-3 ml-1">CasaOS</span>
-    <span class="intro-text">Made by IceWhale with ❤ and you!️</span>
+    <span class="intro-text">Made with ❤️ by IceWhale and YOU!</span>
   </div>
 </template>
 

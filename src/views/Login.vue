@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:30:26
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 12:41:34
+ * @LastEditTime: 2022-06-24 15:17:05
  * @Description: 
- * @FilePath: \CasaOS-UI\src\views\Login.vue
+ * @FilePath: /CasaOS-UI/src/views/Login.vue
 -->
 <template>
   <div id="login-page" class="is-flex is-justify-content-center is-align-items-center ">
@@ -64,8 +64,9 @@ export default {
     }
   },
   mounted() {
-    this.$api.user.getUserInfo().then(user => {
-      this.username = user.data.data.user_name;
+    this.$api.user.getAllUserName().then(users => {
+      this.username = users.data.data[0];
+      console.log(users.data);
     })
   },
 
@@ -89,14 +90,11 @@ export default {
       }).then((res) => {
         if (res.data.success == 200) {
           localStorage.setItem("user_token", res.data.data.token)
+          localStorage.setItem("user_id", res.data.data.user.id)
           localStorage.setItem("version", res.data.data.version)
           this.$store.commit('setToken', res.data.data.token)
-          this.$api.user.getUserInfo().then((res) => {
-            if (res.data.success == 200) {
-              this.$store.commit('changeUserInfo', res.data.data)
-              this.$router.push('/')
-            }
-          })
+          this.$store.commit('changeUserInfo', res.data.data)
+          this.$router.push('/')
         } else {
           this.notificationShow = true;
           this.message = this.$t("Password error!")

@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-03-11 22:12:01
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-22 19:23:31
+ * @LastEditTime: 2022-06-24 15:27:44
  * @Description: 
 -->
 <template>
@@ -69,7 +69,7 @@ export default {
     ValidationProvider,
   },
   created() {
-    this.$api.user.getUserInfo().then(res => {
+    this.$api.user.getUserInfo(localStorage.getItem("user_id")).then(res => {
       this.nickname = res.data.data.nick_name
       this.description = res.data.data.description
     });

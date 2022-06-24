@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-06-21 19:03:39
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-22 22:45:36
- * @FilePath: \CasaOS-UI\src\components\wallpaper\CasaWallpaper.vue
+ * @LastEditTime: 2022-06-24 17:08:16
+ * @FilePath: /CasaOS-UI/src/components/wallpaper/CasaWallpaper.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -33,9 +33,18 @@ export default {
     return {
       isWelcome: false,
       backgroundStyleObj: {
-        backgroundImage: `url(${require('@/assets/background/background.png')})`
+        backgroundImage: `url(${this.$store.state.wallpaperObject.path})`
       },
     }
+  },
+  watch: {
+    '$store.state.wallpaperObject': {
+      handler(val) {
+        this.backgroundStyleObj.backgroundImage = `url(${val.path})`
+      },
+      deep: true
+    },
+
   },
   mounted() {
     this.$EventBus.$on("showChangeWallpaperModal", () => {
@@ -60,7 +69,7 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss" >
 #background {
   position: fixed;
   z-index: 0;
@@ -68,8 +77,8 @@ export default {
   height: 100%;
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: bottom center;
+  background-position: center center;
   overflow: hidden;
-  transition: background-image 0.5s linear;
+  transition: background-image 0.3s ease;
 }
 </style>

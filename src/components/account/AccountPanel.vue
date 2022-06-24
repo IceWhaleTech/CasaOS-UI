@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-25 18:19:17
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-22 19:22:01
+ * @LastEditTime: 2022-06-24 15:36:56
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/account/AccountPanel.vue
 -->
@@ -131,7 +131,7 @@ export default {
       }
     },
     updateUserInfo() {
-      this.$api.user.getUserInfo().then((res) => {
+      this.$api.user.getUserInfo(this.userInfo.id).then((res) => {
         if (res.data.success == 200) {
           this.$store.commit('changeUserInfo', res.data.data);
           this.goto(1);
@@ -140,7 +140,7 @@ export default {
     },
     saveUser() {
       this.isLoading = true;
-      this.$api.user.changeUserName({ username: this.username, oldname: this.userInfo.user_name }).then(res => {
+      this.$api.user.changeUserName({ user_id: this.userInfo.id, username: this.username, oldname: this.userInfo.user_name }).then(res => {
         this.isLoading = false;
         if (res.data.success == 200) {
           this.updateUserInfo();
@@ -149,7 +149,7 @@ export default {
     },
     savePassword() {
       this.isLoading = true;
-      this.$api.user.changePassword({ pwd: this.password, old_pwd: this.oriPassword }).then(res => {
+      this.$api.user.changePassword({ user_id: this.userInfo.id, pwd: this.password, old_pwd: this.oriPassword }).then(res => {
         this.isLoading = false;
         if (res.data.success == 200) {
           this.updateUserInfo();
