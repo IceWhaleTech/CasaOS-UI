@@ -2,14 +2,14 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-24 17:42:34
+ * @LastEditTime: 2022-06-27 16:09:46
  * @Description: 
  * @FilePath: /CasaOS-UI/src/views/Home.vue
 -->
 <template>
   <div v-if="!isLoading" class="out-container">
     <!-- NavBar Start -->
-    <top-bar v-animate-css="topBarAni" @showSideBar="showSideBar"></top-bar>
+    <top-bar v-animate-css="topBarAni" @showSideBar="showSideBar" :initBarData="barData"></top-bar>
     <!-- NavBar End -->
 
     <!-- Content Start -->
@@ -18,20 +18,23 @@
         <div class="is-flex">
           <!-- SideBar Start -->
           <side-bar v-if="!hardwareInfoLoading"></side-bar>
-          <!-- <div class="dark-bg" :class="{'open':sidebarOpen}"></div> -->
           <!-- SideBar End -->
 
           <!-- MainContent Start -->
-          <div class="main-content contextmenu-canvas" :class="{'open':sidebarOpen}">
+          <div class="main-content contextmenu-canvas is-flex-grow-1" :class="{'open':sidebarOpen}">
             <!-- SearchBar Start -->
             <section>
-              <search-bar></search-bar>
+              <transition name="fade">
+                <search-bar v-if="searchbarShow"></search-bar>
+              </transition>
             </section>
             <!-- SearchBar End -->
 
             <!-- core-service Start -->
             <section>
-              <core-service></core-service>
+              <transition name="fade">
+                <core-service v-if="recommendShow"></core-service>
+              </transition>
             </section>
             <!-- core-service End -->
 
@@ -89,8 +92,9 @@ export default {
     return {
       isLoading: true,
       hardwareInfoLoading: true,
-      user_id: localStorage.getItem("user_id"),
+      user_id: localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 1,
       isFileActive: false,
+      barData: {},
       topBarAni: {
         classes: 'fadeInDown',
         duration: 800
@@ -106,20 +110,69 @@ export default {
   computed: {
     sidebarOpen() {
       return this.$store.state.sidebarOpen
+    },
+    searchbarShow() {
+      return this.$store.state.searchEngineSwitch
+    },
+    recommendShow() {
+      return this.$store.state.recommendSwitch
     }
+  },
+  watch: {
+    '$store.state.siteLoading': {
+      handler(val) {
+        console.log(val);
+      },
+      deep: true
+    },
   },
   created() {
     this.getHardwareInfo();
     this.getWallpaperConfig();
+    this.getConfig()
   },
   mounted() {
-    this.isLoading = false
+
 
     window.addEventListener("resize", this.onResize);
     this.onResize()
 
   },
   methods: {
+
+    /**
+     * @description: Get CasaOS Configs
+     * @param {*}
+     * @return {*}
+     */
+    async getConfig() {
+      let systemConfig = await this.$api.user.getCustomConfig(this.user_id, "system")
+      if (systemConfig.data.success != 200 || systemConfig.data.data == "") {
+        const oldData = systemConfig.data.data
+        systemConfig = await this.$api.info.systemConfig()
+        if (oldData == "") {
+          const barData = {
+            lang: systemConfig.data.data.lang,
+            search_engine: systemConfig.data.data.search_engine,
+            search_switch: true,
+            recommend_switch: true,
+            shortcuts_switch: systemConfig.data.data.shortcuts_switch,
+            widgets_switch: systemConfig.data.data.widgets_switch,
+          }
+          // save
+          const saveRes = await this.$api.user.postCustomConfig(this.user_id, "system", barData)
+          if (saveRes.data.success === 200) {
+            this.barData = saveRes.data.data
+          }
+        }
+      }
+      this.$store.commit('changeSearchEngineSwitch', systemConfig.data.data.search_switch);
+      this.$store.commit('changeRecommendSwitch', systemConfig.data.data.recommend_switch);
+      this.barData = systemConfig.data.data
+      this.isLoading = false
+
+    },
+
     /**
      * @description: Show SideBar
      * @param {*}

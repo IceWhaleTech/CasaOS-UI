@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-25 11:54:34
+ * @LastEditTime: 2022-06-27 16:09:58
  * @Description: Top bar 
- * @FilePath: \CasaOS-UI\src\components\TopBar.vue
+ * @FilePath: /CasaOS-UI/src/components/TopBar.vue
 -->
 
 <template>
@@ -78,7 +78,7 @@
             </div>
             <div>
               <b-field>
-                <b-switch type="is-dark" class="is-flex-direction-row-reverse mr-0"></b-switch>
+                <b-switch type="is-dark" class="is-flex-direction-row-reverse mr-0" v-model="barData.search_switch" @input="saveData"></b-switch>
               </b-field>
             </div>
           </div>
@@ -146,7 +146,7 @@
             </div>
             <div>
               <b-field>
-                <b-switch type="is-dark" class="is-flex-direction-row-reverse mr-0"></b-switch>
+                <b-switch type="is-dark" class="is-flex-direction-row-reverse mr-0" v-model="barData.recommend_switch" @input="saveData"></b-switch>
               </b-field>
             </div>
           </div>
@@ -219,21 +219,22 @@ import PortPanel from './settings/PortPanel.vue'
 import UpdateModal from './settings/UpdateModal.vue'
 import { mixin } from '../mixins/mixin';
 
+const systemConfigName = "system"
+
 export default {
   name: "top-bar",
   mixins: [mixin],
   data() {
     return {
       timer: 0,
+      user_id: localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 1,
       barData: {
-        auto_update: false,
-        background: "",
-        background_type: "",
-        search_engine: "https://duckduckgo.com/?q=",
-        search_switch: false,
-        shortcuts_switch: false,
-        widgets_switch: false,
         lang: this.getInitLang(),
+        search_engine: "https://duckduckgo.com/?q=",
+        search_switch: true,
+        recommend_switch: true,
+        shortcuts_switch: false, // Not used
+        widgets_switch: false, // Not used
       },
       updateInfo: {
         current_version: '0',
@@ -267,6 +268,11 @@ export default {
       ]
     }
   },
+  props: {
+    initBarData: {
+      type: Object
+    },
+  },
   computed: {
     sidebarIcon() {
       return this.$store.state.sidebarOpen ? "close" : "menu"
@@ -278,10 +284,38 @@ export default {
       return this.deviceModel.toLowerCase().indexOf("raspberry") >= 0
     }
   },
-  created() {
-    this.getConfig();
-    this.getPort();
+  watch: {
+    'barData.lang': {
+      handler(val) {
+        const lang = val.includes("_") ? val : "en_us";
+        this.setLang(lang)
+      },
+      deep: true
+    },
+    'barData.search_engine': {
+      handler(val) {
+        this.$store.commit('changeSearchEngine', val);
+      },
+      deep: true
+    },
+    'barData.search_switch': {
+      handler(val) {
+        this.$store.commit('changeSearchEngineSwitch', val);
+      },
+      deep: true
+    },
+    'barData.recommend_switch': {
+      handler(val) {
+        this.$store.commit('changeRecommendSwitch', val);
+      },
+      deep: true
+    },
 
+  },
+  created() {
+    this.barData = this.initBarData
+    // this.getConfig();
+    this.getPort();
   },
   mounted() {
     this.checkVersion();
@@ -295,42 +329,15 @@ export default {
     * PART 0  Common
     **************************************************/
     /**
-     * @description: Get CasaOs Configs
-     * @param {*}
-     * @return {*}
-     */
-    getConfig() {
-      this.$api.info.systemConfig().then(res => {
-        if (res.data == undefined || res.data == '') {
-          this.barData.lang = this.getLangFromBrowser()
-          this.$api.info.saveSystemConfig(this.barData).then(res => {
-            if (res.data.success == 200) {
-              this.getConfig()
-            }
-          });
-        }
-        if (res.data.success == 200) {
-          this.barData = res.data.data
-          let lang = res.data.data.lang
-          lang = lang.includes("_") ? lang : "en_us";
-          this.setLang(lang)
-          this.updateStoreSearchEngine()
-          this.$emit('changeSiteLoading')
-        }
-      })
-    },
-
-    /**
      * @description: Save CasaOs Configs
      * @param {*}
      * @return {*}
      */
-    saveData() {
-      this.$api.info.saveSystemConfig(this.barData);
-      let lang = this.barData.lang
-      lang = lang.includes("_") ? lang : "en_us";
-      this.setLang(lang);
-      this.updateStoreSearchEngine();
+    async saveData() {
+      const saveRes = await this.$api.user.postCustomConfig(this.user_id, systemConfigName, this.barData)
+      if (saveRes.data.success === 200) {
+        this.barData = saveRes.data.data
+      }
     },
 
     /**
@@ -354,18 +361,6 @@ export default {
       this.$store.commit('changeSideBarState')
     },
 
-
-    /*************************************************
-    * PART 1-1  Dashboard Setting - Search Engine
-    **************************************************/
-    /**
-     * @description: Update search Engine in store
-     * @param {*}
-     * @return {*}
-     */
-    updateStoreSearchEngine() {
-      this.$store.commit('changeSearchEngine', this.barData.search_engine);
-    },
 
     /*************************************************
     * PART 1-2  Dashboard Setting - Language

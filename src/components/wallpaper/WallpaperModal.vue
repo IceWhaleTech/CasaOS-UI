@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-06-22 22:20:20
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-24 17:56:45
+ * @LastEditTime: 2022-06-27 18:15:53
  * @FilePath: /CasaOS-UI/src/components/wallpaper/WallpaperModal.vue
  * @Description: 
  * 
@@ -35,10 +35,12 @@
         </div>
 
         <div class="column is-relative is-one-quarter">
-          <div class="upload-button-container is-clickable" :class="{active:checkActiveFrom('Upload')}" @click="changeCustomWallpaper">
-            <div class="upload-button is-flex is-align-items-center is-justify-content-center ">
+          <div class="upload-button-container is-clickable" :class="{active:checkActiveFrom('Upload')}">
+            <div class="upload-button is-flex is-align-items-center is-justify-content-center " id="upload-wallpaper">
               <b-icon pack="casa" icon="picture-upload" size="is-large"></b-icon>
+
             </div>
+            <b-loading :is-full-page="false" v-model="isUpLoading" :can-cancel="false"></b-loading>
           </div>
 
         </div>
@@ -59,10 +61,17 @@
 
 <script>
 const wallpaperConfig = "wallpaper"
+import Uploader from 'simple-uploader.js'
+
 export default {
   data() {
     return {
       isLoading: false,
+      isUpLoading: false,
+      uploader: null,
+      attributes: {
+        accept: 'image/png, image/jpeg, image/svg+xml, image/bmp, image/png, image/gif'
+      },
       user_id: localStorage.getItem("user_id"),
       wallpaperItems: [
         {
@@ -84,8 +93,49 @@ export default {
   components: {
 
   },
+  created() {
+    this.uploader = new Uploader({
+      target: this.getTargetUrl(),
+      singleFile: true,
+      testChunks: false,
+      uploadMethod: "POST",
+      allowDuplicateUploads: true,
+      chunkSize: 1024 * 1024 * 1024 * 1024
+    });
+
+  },
   mounted() {
-    console.log(this.wallpaperItems);
+    console.log("assgin");
+    this.uploader.assignBrowse(document.getElementById('upload-wallpaper'), false, true, this.attributes)
+    this.uploader.on('filesSubmitted', () => {
+      this.isUpLoading = true
+      this.uploader.upload()
+    })
+    this.uploader.on('fileError', () => {
+      this.isUpLoading = false
+      this.$buefy.toast.open({
+        message: this.$t('Upload failed, please try again1!'),
+        type: 'is-danger'
+      })
+    })
+    this.uploader.on('fileSuccess', (rootFile, file, message) => {
+      this.isUpLoading = false
+      const res = JSON.parse(message)
+
+      if (res.success === 200) {
+        const uploadPath = "http://" + this.$baseURL + res.data.online_path + "&time=" + new Date().getTime()
+        this.backgroundStyleObj.backgroundImage = `url(${uploadPath})`
+        this.path = uploadPath
+        this.from = "Upload"
+
+      } else {
+        this.$buefy.toast.open({
+          message: res.message,
+          type: 'is-danger'
+        })
+      }
+    })
+
   },
   methods: {
     saveChange() {
@@ -131,7 +181,10 @@ export default {
     },
     checkActiveFrom(from) {
       return this.from == from
-    }
+    },
+    getTargetUrl() {
+      return `http://${this.$baseURL}/v1/user/upload/image/${this.user_id}/${wallpaperConfig}?token=${this.$store.state.token}`
+    },
   }
 }
 </script>

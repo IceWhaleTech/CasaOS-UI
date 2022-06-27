@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-24 16:34:17
+ * @LastEditTime: 2022-06-27 16:00:44
  * @FilePath: /CasaOS-UI/src/components/Apps/AppSection.vue
  * @Description: 
  * 
@@ -10,7 +10,7 @@
 -->
 
 <template>
-  <div class="home-section has-text-left mt-2rem">
+  <div class="home-section has-text-left">
     <!-- Title Bar Start -->
     <div class=" is-flex is-align-items-center mb-5">
       <h1 class="title is-4  has-text-white is-flex-shrink-1 is-flex-grow-1 mb-0 contextmenu-canvas">{{$t('Apps')}}

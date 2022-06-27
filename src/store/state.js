@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-06-02 19:48:26
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-24 14:40:18
+ * @LastEditTime: 2022-06-27 15:25:44
  * @FilePath: /CasaOS-UI/src/store/state.js
  * @Description: 
  * 
@@ -15,7 +15,11 @@ const state = {
     sidebarOpen: false,
     syncthingKey: '',
     syncthingPort: '',
+    // System Config
     searchEngine: '',
+    searchEngineSwitch: true,
+    recommendSwitch: true,
+
     siteLoading: true,
     needInitialization: false,
     hardwareInfo: {},

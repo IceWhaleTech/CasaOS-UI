@@ -2,13 +2,13 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-27 09:23:40
+ * @LastEditTime: 2022-06-27 15:58:28
  * @Description: Top Search bar
- * @FilePath: \CasaOS-UI\src\components\SearchBar.vue
+ * @FilePath: /CasaOS-UI/src/components/SearchBar.vue
 -->
 
 <template>
-  <b-field position="is-centered " class="search-bar has-text-white">
+  <b-field position="is-centered " class="search-bar has-text-white mb-5">
     <b-input :placeholder="$t('Search...')" v-model="keyText" icon-pack="casa" icon="magnifier" icon-right="magnifier" icon-right-clickable @icon-right-click="gotoSearch" @keyup.enter.native="gotoSearch" size="is-medium" :class="['ovh',isFocus?'fo':'']" expanded @focus="onFocus" @blur="onBlur">
     </b-input>
   </b-field>
