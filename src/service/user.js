@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-24 15:35:44
+ * @LastEditTime: 2022-06-25 11:43:30
  * @Description: User API
- * @FilePath: /CasaOS-UI/src/service/user.js
+ * @FilePath: \CasaOS-UI\src\service\user.js
  */
 import { api } from "./service.js";
 
@@ -91,6 +91,6 @@ const user = {
     },
     deletePostImage(id, data) {
         return api.delete(`/user/image/${id}`, data)
-    }
+    },
 }
 export default user;

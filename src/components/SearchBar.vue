@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-19 20:50:46
+ * @LastEditTime: 2022-06-27 09:23:40
  * @Description: Top Search bar
  * @FilePath: \CasaOS-UI\src\components\SearchBar.vue
 -->
@@ -63,8 +63,9 @@ export default {
   input {
     transition: all 0.2s;
     appearance: none;
-    background: rgba(115, 120, 128, 0.35);
-    border-radius: 8px;
+    border-radius: $backDropBorderRadius;
+    background: $backDropColor;
+    backdrop-filter: $backDropBlur;
     border: none;
     outline: none;
     font-size: 0.875rem !important;

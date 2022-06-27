@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-24 15:50:43
+ * @LastEditTime: 2022-06-25 11:54:34
  * @Description: Top bar 
- * @FilePath: /CasaOS-UI/src/components/TopBar.vue
+ * @FilePath: \CasaOS-UI\src\components\TopBar.vue
 -->
 
 <template>
@@ -519,7 +519,9 @@ export default {
       this.$store.commit('closeSideBar')
       if (!this.$store.userinfo) {
         console.log("get user info");
-        this.$api.user.getUserInfo(localStorage.getItem("user_id")).then((res) => {
+        const user_id = localStorage.getItem('user_id') ? localStorage.getItem('user_id') : 1;
+        localStorage.setItem("user_id", user_id)
+        this.$api.user.getUserInfo(user_id).then((res) => {
           if (res.data.success == 200) {
             this.$store.commit('changeUserInfo', res.data.data)
             this.userInfo = res.data.data

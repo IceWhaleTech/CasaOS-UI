@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-01-20 12:01:07
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-23 17:33:16
+ * @LastEditTime: 2022-06-27 09:14:50
  * @Description: 
  * @FilePath: \CasaOS-UI\src\mixins\mixin.js
  */
@@ -43,7 +43,7 @@ const filePanelMap = {
     // "pdf-viewer": typeMap['application-pdf'],
 }
 export const wallpaperType = ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'svg']
-
+const wallpaperConfig = "wallpaper"
 
 
 export const mixin = {
@@ -333,8 +333,46 @@ export const mixin = {
          * @return {*}
          */
         setAsWallpaper(item) {
-            console.log(item);
-        }
+            const user_id = localStorage.getItem('user_id')
+            const postData = {
+                path: item.path,
+            }
+            this.$api.user.postFileImage(user_id, wallpaperConfig, postData).then(res => {
+                if (res.data.success === 200) {
+                    const resData = res.data.data
+                    let wallpaperData = {
+                        path: "http://" + this.$baseURL + resData.online_path + "&time=" + new Date().getTime(),
+                        from: "Files"
+                    }
+                    this.$api.user.postCustomConfig(user_id, wallpaperConfig, wallpaperData).then(res => {
+                        if (res.data.success === 200) {
+                            this.$store.commit('changeWallpaper', {
+                                path: res.data.data.path,
+                                from: res.data.data.from
+                            })
+                            this.$buefy.toast.open({
+                                message: this.$t('Set wallpaper successfully.'),
+                                type: 'is-success'
+                            })
+                        } else {
+                            this.$buefy.toast.open({
+                                message: this.$t('Save failed, please try again!'),
+                                type: 'is-danger'
+                            })
+                        }
+
+                    })
+                } else {
+                    this.$buefy.toast.open({
+                        message: this.$t('Save failed, please try again!'),
+                        type: 'is-danger'
+                    })
+                }
+            })
+            if (this.$refs.dropDown !== undefined) {
+                this.$refs.dropDown.toggle()
+            }
+        },
 
     },
 

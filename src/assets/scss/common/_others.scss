@@ -82,8 +82,8 @@
     background-position: bottom center;
     background-attachment: fixed;
     border-radius: $backDropBorderRadius;
-    background: rgba(115, 120, 128, 0.35);
-
+    background: $backDropColor;
+    backdrop-filter: $backDropBlur;
     position: absolute;
     z-index: 0;
     overflow: hidden;
