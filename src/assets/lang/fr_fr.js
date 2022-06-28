@@ -63,6 +63,10 @@ export default {
     "Currently the latest version": "Actuellement la dernière version",
     "A new version is available!": "Une nouvelle version est disponible !",
     "Automount USB Drive": "Automount USB Drive",
+    "Wallpaper": "Wallpaper",
+    "Change wallpaper": "Change wallpaper",
+    "Show Search Bar": "Show Search Bar",
+    "Show Recommended Apps": "Show Recommended Apps",
     "Upgrade Now": "Upgrade Now",
     "Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB": "Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB",
 
@@ -195,8 +199,8 @@ export default {
     "Community Apps": "Applications communautaires",
     "From community contributors, not optimized for CasaOS, but provides a basic App experience.": "De la part des contributeurs de la communauté, pas optimisé pour CasaOS, mais fournit une expérience d'application de base.",
     "Sort by": "Trier par",
-    "Click icon to import apps into CasaOS": "Click icon to import apps into CasaOS",
-    "Drag icons to sort": "Drag icons to sort",
+    "Click icon to import.": "Click icon to import.",
+    "Drag icons to sort.": "Drag icons to sort.",
     "Import to CasaOS": "Import to CasaOS",
     "Existing Docker Apps": "Existing Docker Apps",
     "Port [Please add a ports set first]": "Port [Please add a ports set first]",
@@ -297,6 +301,10 @@ export default {
     "cancel-all": "Cancel All",
     "Paste - Overwrite": "Paste - Overwrite",
     "Paste - Skip": "Paste - Skip",
+    "Set as wallpaper": "Set as wallpaper",
+    "Set wallpaper successfully.": "Set wallpaper successfully.",
+    "Save failed, please try again!": "Save failed, please try again!",
+    "Upload failed, please try again!": "Upload failed, please try again!",
 
     /* ******************************
     * Share Section

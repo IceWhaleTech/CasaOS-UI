@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-03-11 13:36:11
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-24 15:27:50
+ * @LastEditTime: 2022-06-28 09:30:54
  * @Description: 
- * @FilePath: /CasaOS-UI/src/views/CasaConnect.vue
+ * @FilePath: \CasaOS-UI\src\views\CasaConnect.vue
 -->
 <template>
   <div class="acquaintance-share is-flex ">
@@ -502,7 +502,6 @@ export default {
           this.currentPathName = path.split("/").pop()
           this.listData = orderBy(res.data.data, ['is_dir'], ['desc'])
           if (type == 2) {
-            console.log(path);
             this.$refs.historyBar.clearHistory();
           } else if (type == 1) {
             this.$refs.historyBar.addHistory(path);
@@ -510,7 +509,6 @@ export default {
 
         } else {
           this.listData = []
-          console.log(res.data.message);
         }
         this.$store.commit('changeCurrentSharePath', path)
 
@@ -627,11 +625,6 @@ export default {
         canCancel: ['escape'],
         scroll: "keep",
         animation: "zoom-in",
-        events: {
-          'after-enter': () => {
-            console.log("enter");
-          }
-        }
       })
     },
 

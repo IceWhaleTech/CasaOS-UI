@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-27 16:09:58
+ * @LastEditTime: 2022-06-28 14:55:06
  * @Description: Top bar 
- * @FilePath: /CasaOS-UI/src/components/TopBar.vue
+ * @FilePath: \CasaOS-UI\src\components\TopBar.vue
 -->
 
 <template>
@@ -15,7 +15,7 @@
       <div class="is-flex is-align-items-center mr-3 ml-3" id="sidebar-btn">
         <b-tooltip :label="sidebarIconLabel" :active="!$store.state.isMobile" position="is-right" type="is-dark">
           <div role="button" @click="showSideBar">
-            <b-icon :icon="sidebarIcon"></b-icon>
+            <b-icon :icon="sidebarIcon" class="picon"></b-icon>
           </div>
         </b-tooltip>
       </div>
@@ -74,7 +74,7 @@
           <!-- Search Engine Switch Start  -->
           <div class="is-flex is-align-items-center mb-2 h-30">
             <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon pack="casa" icon="magnifier" class="mr-1"></b-icon> <b>{{$t('Show search bar ')}}</b>
+              <b-icon pack="casa" icon="search-manage" class="mr-1"></b-icon> <b>{{$t('Show Search Bar')}}</b>
             </div>
             <div>
               <b-field>
@@ -85,7 +85,7 @@
           <!-- Search Engine Switch End  -->
 
           <!-- Search Engine Start -->
-          <div class="is-flex is-align-items-center mb-2 h-30">
+          <div class="is-flex is-align-items-center mb-2 h-30" v-if="barData.search_switch">
             <div class="is-flex is-align-items-center is-flex-grow-1">
               <b-icon pack="casa" icon="magnifier" class="mr-1"></b-icon> <b>{{$t('Search Engine')}}</b>
             </div>
@@ -123,7 +123,7 @@
               {{port}}
             </div>
             <div class="ml-2">
-              <b-button type="is-dark" size="is-small" rounded @click="showPortPanel">{{$t('Edit')}}</b-button>
+              <b-button type="is-dark" size="is-small" rounded @click="showPortPanel">{{$t('Change')}}</b-button>
             </div>
           </div>
           <!-- WebUI Port End -->
@@ -131,7 +131,7 @@
           <!-- Background Start -->
           <div class="is-flex is-align-items-center mb-2 h-30">
             <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon icon="wallpaper" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{$t('Wallpaper')}}</b>
+              <b-icon pack="casa" icon="picture" class="mr-1"></b-icon> <b>{{$t('Wallpaper')}}</b>
             </div>
             <div class="ml-2">
               <b-button type="is-dark" size="is-small" rounded @click="showChangeWallpaperModal">{{$t('Change')}}</b-button>
@@ -142,7 +142,7 @@
           <!--  Recommended modules Switch Start  -->
           <div class="is-flex is-align-items-center mb-2 h-30">
             <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon icon="magnify" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{$t('Show Recommended Apps ')}}</b>
+              <b-icon icon="application-outline" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{$t('Show Recommended Apps')}}</b>
             </div>
             <div>
               <b-field>
@@ -513,7 +513,6 @@ export default {
     getUserInfo() {
       this.$store.commit('closeSideBar')
       if (!this.$store.userinfo) {
-        console.log("get user info");
         const user_id = localStorage.getItem('user_id') ? localStorage.getItem('user_id') : 1;
         localStorage.setItem("user_id", user_id)
         this.$api.user.getUserInfo(user_id).then((res) => {
@@ -543,6 +542,7 @@ export default {
     },
 
     logout() {
+      this.$store.commit('setDefaultWallpaper')
       this.$router.push("/logout");
     },
 
@@ -657,6 +657,9 @@ export default {
       height: 2em;
     }
   }
+  .icon {
+    color: rgb(74, 74, 74);
+  }
 }
 
 .update-text-dot {
@@ -695,6 +698,15 @@ export default {
 @media screen and (max-width: 480px) {
   #sidebar-btn {
     display: flex !important;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .top-bar {
+    background: rgba(53, 54, 58, 1);
+    .picon {
+      color: #fff;
+    }
   }
 }
 </style>

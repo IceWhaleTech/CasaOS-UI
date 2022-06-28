@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-12-06 13:52:11
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-22 18:08:23
+ * @LastEditTime: 2022-06-27 22:47:13
  * @Description: 
- * @FilePath: /CasaOS-UI/src/widgets/Network.vue
+ * @FilePath: \CasaOS-UI\src\widgets\Network.vue
 -->
 <template>
   <div class="widget has-text-white clock is-relative">
@@ -283,7 +283,7 @@ export default {
         max-width: 7rem;
         border-radius: 10px;
         padding: 4px !important;
-        background: rgba(0, 0, 0, 0.48);
+        background: rgba(0, 0, 0, 0.8);
         backdrop-filter: blur(1rem);
 
         .dropdown-divider {

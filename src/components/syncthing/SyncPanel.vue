@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-11-10 18:22:36
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-22 19:27:00
+ * @LastEditTime: 2022-06-28 09:30:58
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/syncthing/SyncPanel.vue
+ * @FilePath: \CasaOS-UI\src\components\syncthing\SyncPanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -289,7 +289,6 @@ export default {
   created() {
 
     this.syncBaseURL = `http://${this.$baseIp}:${this.$store.state.syncthingPort}`
-    console.log(this.syncBaseURL);
     this.syncXhr = axios.create({
       baseURL: this.syncBaseURL,
       timeout: 1000
@@ -383,7 +382,6 @@ export default {
     downloadSyncthing(url, isSelf = true) {
 
       let target = (isSelf) ? "_self" : "_blank"
-      console.log(url);
       if (url == SYNCTHING_GOOGLEPLAY_URL) {
         target = "_blank"
       }

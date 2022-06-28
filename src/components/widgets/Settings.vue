@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-09 18:41:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-22 17:36:14
+ * @LastEditTime: 2022-06-27 22:35:57
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/widgets/Settings.vue
+ * @FilePath: \CasaOS-UI\src\components\widgets\Settings.vue
 -->
 <template>
 
@@ -146,7 +146,7 @@ export default {
   .dropdown {
     display: block !important;
     .dropdown-content {
-      background: rgba(0, 0, 0, 0.48);
+      background: rgba(0, 0, 0, 0.8);
       backdrop-filter: blur(1rem);
       width: 16rem;
       border-radius: 0.5rem;

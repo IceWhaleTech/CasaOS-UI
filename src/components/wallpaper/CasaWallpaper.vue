@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-06-21 19:03:39
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-24 17:08:16
- * @FilePath: /CasaOS-UI/src/components/wallpaper/CasaWallpaper.vue
+ * @LastEditTime: 2022-06-28 14:34:10
+ * @FilePath: \CasaOS-UI\src\components\wallpaper\CasaWallpaper.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -33,7 +33,7 @@ export default {
     return {
       isWelcome: false,
       backgroundStyleObj: {
-        backgroundImage: `url(${this.$store.state.wallpaperObject.path})`
+        backgroundImage: localStorage.getItem("wallpaper") ? `url(${localStorage.getItem("wallpaper")})` : `url(${this.$store.state.wallpaperObject.path})`
       },
     }
   },

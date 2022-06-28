@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2021-10-27 15:44:17
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 11:29:39
+ * @LastEditTime: 2022-06-28 09:31:10
  * @FilePath: \CasaOS-UI\src\components\fileList\CreatePanel.vue
  * @Description: 
  * 
@@ -89,9 +89,6 @@ export default {
       this.errorType = "is-danger"
       this.message = message
     },
-    btKeyUp(e){
-        console.log(e);
-    }
   },
 }
 </script>

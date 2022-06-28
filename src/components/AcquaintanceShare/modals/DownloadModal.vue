@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-03-11 22:13:30
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-22 19:23:05
+ * @LastEditTime: 2022-06-28 09:25:32
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/AcquaintanceShare/modals/DownloadModal.vue
+ * @FilePath: \CasaOS-UI\src\components\AcquaintanceShare\modals\DownloadModal.vue
 -->
 <template>
   <div class="modal-card">
@@ -79,7 +79,6 @@ export default {
 
   watch: {
     savePath(val) {
-      console.log("dpath", val);
       this.isDefault = val == this.initPath ? true : false
     }
   },

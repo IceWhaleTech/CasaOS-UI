@@ -182,7 +182,6 @@ export default {
     }
   },
   created() {
-    console.log(this.myInfo);
     this.nickname = this.myInfo.user_name
     this.description = this.myInfo.description
     this.getPublicServers()
@@ -223,7 +222,6 @@ export default {
     getPublicServers() {
       this.$api.person.publicServer().then(res => {
         if (res.data.success == 200) {
-          console.log(res.data.data);
           this.publicServer = res.data.data
         }
       })

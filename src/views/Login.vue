@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:30:26
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-24 15:17:05
+ * @LastEditTime: 2022-06-28 09:31:07
  * @Description: 
- * @FilePath: /CasaOS-UI/src/views/Login.vue
+ * @FilePath: \CasaOS-UI\src\views\Login.vue
 -->
 <template>
   <div id="login-page" class="is-flex is-justify-content-center is-align-items-center ">
@@ -66,7 +66,6 @@ export default {
   mounted() {
     this.$api.user.getAllUserName().then(users => {
       this.username = users.data.data[0];
-      console.log(users.data);
     })
   },
 

@@ -163,7 +163,6 @@ export default {
     },
     // show create folder or file panel
     showCreatePanel(isFolder) {
-      console.log("create panel");
       this.$buefy.modal.open({
         parent: this,
         component: CreatePanel,

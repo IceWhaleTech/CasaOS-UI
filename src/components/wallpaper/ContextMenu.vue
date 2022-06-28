@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-02-23 17:08:21
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-22 22:36:51
+ * @LastEditTime: 2022-06-27 22:33:39
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\background\ContextMenu.vue
+ * @FilePath: \CasaOS-UI\src\components\wallpaper\ContextMenu.vue
 -->
 <template>
   <div>
@@ -13,7 +13,7 @@
         <!-- Blank Start -->
         <template>
           <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center" key="system-context11" @click="showChangeWallpaperModal">
-            <b-icon icon="wallpaper" class="mr-1" custom-size="mdi-18px"></b-icon> {{ $t('Change wallpaper') }}
+            <b-icon pack="casa" icon="picture" class="mr-1" ></b-icon> {{ $t('Change wallpaper') }}
           </b-dropdown-item>
         </template>
         <!-- Blank End -->

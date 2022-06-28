@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-27 16:00:44
- * @FilePath: /CasaOS-UI/src/components/Apps/AppSection.vue
+ * @LastEditTime: 2022-06-28 13:46:22
+ * @FilePath: \CasaOS-UI\src\components\Apps\AppSection.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -13,14 +13,8 @@
   <div class="home-section has-text-left">
     <!-- Title Bar Start -->
     <div class=" is-flex is-align-items-center mb-5">
-      <h1 class="title is-4  has-text-white is-flex-shrink-1 is-flex-grow-1 mb-0 contextmenu-canvas">{{$t('Apps')}}
-        <!-- <b-tooltip :label="$t(appHelpText)" type="is-dark" multilined v-if="showDragTip">
-          <b-icon icon="help-circle-outline" custom-size="mdi-18px"></b-icon>
-        </b-tooltip> -->
-      </h1>
-      <!-- <div class="buttons ">
-        <b-button id="v-step-0" icon-left="apps" type="is-dark" size="is-small" :loading="isShowing" rounded @click="showInstall">{{$t('App Store')}}</b-button>
-      </div> -->
+
+      <app-section-title-tip title="Apps" label="Drag icons to sort." id="appTitle1"></app-section-title-tip>
     </div>
     <!-- Title Bar End -->
 
@@ -42,11 +36,7 @@
     <template v-if="notImportedList.length > 0">
       <!-- Title Bar Start -->
       <div class="title-bar is-flex is-align-items-center mt-2rem">
-        <h1 class="title is-4  has-text-white is-flex-shrink-1 is-flex-grow-1 mb-0 contextmenu-canvas">{{$t('Existing Docker Apps')}}
-          <!-- <b-tooltip :label="$t(importHelpText)" type="is-dark" multilined>
-            <b-icon icon="help-circle-outline" custom-size="mdi-18px"></b-icon>
-          </b-tooltip> -->
-        </h1>
+        <app-section-title-tip title="Existing Docker Apps" label="Click icon to import." id="appTitle2"></app-section-title-tip>
       </div>
       <!-- Title Bar End -->
 
@@ -67,6 +57,7 @@
 <script>
 import AppCard from './AppCard.vue'
 import AppPanel from './AppPanel.vue'
+import AppSectionTitleTip from './AppSectionTitleTip.vue'
 import draggable from 'vuedraggable'
 import xor from 'lodash/xor'
 import concat from 'lodash/concat'
@@ -110,14 +101,15 @@ export default {
       drag: false,
       isLoading: true,
       isShowing: false,
-      importHelpText: "Click icon to import apps into CasaOS",
-      appHelpText: 'Drag icons to sort',
+      importHelpText: "Click icon to import.",
+      appHelpText: 'Drag icons to sort.',
       draggable: ".handle"
     }
   },
   components: {
     AppCard,
-    draggable
+    draggable,
+    AppSectionTitleTip
   },
   provide() {
     return {
@@ -138,14 +130,11 @@ export default {
     }
   },
   created() {
-    console.log(this.$store.state.userinfo.id);
     this.getList();
     this.draggable = this.isMobile() ? "" : ".handle"
   },
   methods: {
-    onChange(e) {
-      console.log(e);
-    },
+
     isMobile() {
       let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
       return flag
@@ -263,7 +252,6 @@ export default {
      */
     showConfigPanel(id, status, isCasa) {
       this.$api.app.getContainerSettingdata(id).then(ret => {
-        console.log(ret.data.data);
         this.$api.app.appConfig().then(res => {
           if (res.data.success == 200) {
             this.$buefy.modal.open({

@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-02-18 12:42:06
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-22 19:25:44
+ * @LastEditTime: 2022-06-28 09:26:59
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/filebrowser/FilePanel.vue
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\FilePanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -612,7 +612,6 @@ export default {
      */
     showRenameModal(item) {
       this.isModalOpen = true
-      console.log(this.isModalOpen);
       this.$buefy.modal.open({
         parent: this,
         component: RenameModal,
@@ -672,7 +671,6 @@ export default {
      * @return {*}
      */
     handleMove() {
-      console.log('move');
       this.operate('move', this.selectedArray)
       this.handleClose()
     },
@@ -682,7 +680,6 @@ export default {
      * @return {*}
      */
     handleCopy() {
-      console.log('copy');
       this.operate('copy', this.selectedArray)
       this.handleClose()
     },

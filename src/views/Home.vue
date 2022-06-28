@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-27 16:09:46
+ * @LastEditTime: 2022-06-28 09:30:56
  * @Description: 
- * @FilePath: /CasaOS-UI/src/views/Home.vue
+ * @FilePath: \CasaOS-UI\src\views\Home.vue
 -->
 <template>
   <div v-if="!isLoading" class="out-container">
@@ -118,14 +118,6 @@ export default {
       return this.$store.state.recommendSwitch
     }
   },
-  watch: {
-    '$store.state.siteLoading': {
-      handler(val) {
-        console.log(val);
-      },
-      deep: true
-    },
-  },
   created() {
     this.getHardwareInfo();
     this.getWallpaperConfig();
@@ -224,7 +216,6 @@ export default {
 
     getWallpaperConfig() {
       this.$api.user.getCustomConfig(this.user_id, wallpaperConfig).then(res => {
-        console.log(res.data.data);
         if (res.data.success === 200 && res.data.data != "") {
           this.$store.commit('changeWallpaper', {
             path: res.data.data.path,

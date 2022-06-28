@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-06-02 19:49:36
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-27 15:28:37
- * @FilePath: /CasaOS-UI/src/store/mutations.js
+ * @LastEditTime: 2022-06-28 14:41:25
+ * @FilePath: \CasaOS-UI\src\store\mutations.js
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -73,7 +73,14 @@ const mutations = {
 
     // Set new Wallpaper Object
     changeWallpaper(state, val) {
+        localStorage.setItem('wallpaper', val.path)
         state.wallpaperObject = val
+    },
+    setDefaultWallpaper(state) {
+        state.wallpaperObject = {
+            path: require('@/assets/background/default_wallpaper.jpg'),
+            from: "Built-in" //Built-in, Upload, Files
+        }
     }
 }
 export default mutations

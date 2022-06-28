@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-23 23:43:19
+ * @LastEditTime: 2022-06-28 13:50:04
  * @Description: App Card item
  * @FilePath: \CasaOS-UI\src\components\Apps\AppCard.vue
 -->
@@ -15,7 +15,7 @@
       <b-dropdown aria-role="list" :triggers="['contextmenu','click']" position="is-bottom-left" class="app-card-drop" ref="dro" animation="fade1" @active-change="setDropState" :mobile-modal="false" append-to-body>
         <template #trigger>
           <p role="button">
-            <b-icon icon="dots-vertical"></b-icon>
+            <b-icon icon="dots-vertical" class="is-clickable"></b-icon>
           </p>
         </template>
 
@@ -150,7 +150,6 @@ export default {
     },
 
     openSystemApps(item) {
-      console.log(item.name);
       switch (item.name) {
         case "App Store":
           this.openAppStore()

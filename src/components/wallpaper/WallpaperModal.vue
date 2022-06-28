@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-06-22 22:20:20
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-27 18:15:53
- * @FilePath: /CasaOS-UI/src/components/wallpaper/WallpaperModal.vue
+ * @LastEditTime: 2022-06-28 14:14:08
+ * @FilePath: \CasaOS-UI\src\components\wallpaper\WallpaperModal.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -13,7 +13,7 @@
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
       <div class="is-flex-grow-1">
-        <h3 class="title is-3">{{$t('Change Wallpaper')}}</h3>
+        <h3 class="title is-3">{{$t('Change wallpaper')}}</h3>
       </div>
 
     </header>
@@ -105,7 +105,6 @@ export default {
 
   },
   mounted() {
-    console.log("assgin");
     this.uploader.assignBrowse(document.getElementById('upload-wallpaper'), false, true, this.attributes)
     this.uploader.on('filesSubmitted', () => {
       this.isUpLoading = true
@@ -114,7 +113,7 @@ export default {
     this.uploader.on('fileError', () => {
       this.isUpLoading = false
       this.$buefy.toast.open({
-        message: this.$t('Upload failed, please try again1!'),
+        message: this.$t('Upload failed, please try again!'),
         type: 'is-danger'
       })
     })
@@ -170,12 +169,7 @@ export default {
       this.path = path
       this.from = "Built-in"
     },
-    changeCustomWallpaper() {
-      const uploadPath = require('@/assets/background/1.png')
-      this.backgroundStyleObj.backgroundImage = `url(${uploadPath})`
-      this.path = uploadPath
-      this.from = "Upload"
-    },
+
     checkActive(path) {
       return this.path == path
     },

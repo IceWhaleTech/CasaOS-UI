@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-03-01 21:10:57
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-22 23:42:09
+ * @LastEditTime: 2022-06-28 09:26:07
  * @FilePath: \CasaOS-UI\src\components\Apps\AppPanel.vue
  * @Description: 
  * 
@@ -683,7 +683,6 @@ export default {
     },
     filteredBeidgePort() {
       return this.bridgePorts.filter(port => {
-        console.log(port.host);
         return port.host.indexOf(this.initData.port_map) >= 0
       })
 
@@ -1067,7 +1066,9 @@ export default {
           'update': (e) => {
             //localStorage.removeItem("app_data")
             this.initData = e
-            this.changeIcon(this.initData.image)
+            if (this.initData.icon == "") {
+              this.changeIcon(this.initData.image)
+            }
             this.$buefy.dialog.alert({
               title: '⚠️ ' + this.$t('Attention'),
               message: '<div class="nobrk"><h4 class="title is-5">' + this.$t('AutoFill only helps you to complete most of the configuration.') + '</h4>' +

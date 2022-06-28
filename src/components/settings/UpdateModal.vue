@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-05-02 17:44:02
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-22 19:21:03
- * @FilePath: /CasaOS-UI/src/components/settings/UpdateModal.vue
+ * @LastEditTime: 2022-06-28 09:30:42
+ * @FilePath: \CasaOS-UI\src\components\settings\UpdateModal.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -64,11 +64,7 @@ export default {
      */
     updateSystem() {
       this.isUpdating = true;
-      this.$api.info.updateSystem().then(res => {
-        if (res.data.success == 200) {
-          console.log(res.data.data);
-        }
-      });
+      this.$api.info.updateSystem();
       this.checkUpdateState();
     },
     /**

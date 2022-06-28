@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-24 17:25:36
+ * @LastEditTime: 2022-06-28 14:16:46
  * @Description: Main entry of application
- * @FilePath: /CasaOS-UI/src/App.vue
+ * @FilePath: \CasaOS-UI\src\App.vue
 -->
 
 <template>
@@ -80,9 +80,6 @@ export default {
       steps: [
       ],
       isWelcome: false,
-      backgroundStyleObj: {
-        backgroundImage: `url(${require('@/assets/background/background.png')})`
-      },
       noneAni: {
         classes: 'fadeIn',
         duration: 500

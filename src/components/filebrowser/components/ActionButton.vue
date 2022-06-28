@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-02-23 17:08:21
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-23 17:33:40
+ * @LastEditTime: 2022-06-28 09:27:16
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\components\ActionButton.vue
 -->
@@ -72,7 +72,7 @@ export default {
   },
   mounted() {
     document.addEventListener('contextmenu', this.hideContextMenu);
-    console.log(this.isWallpaperType);
+
   },
   destroyed() {
     document.removeEventListener('contextmenu', this.hideContextMenu)

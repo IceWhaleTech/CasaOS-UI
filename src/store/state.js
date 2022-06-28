@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-06-02 19:48:26
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-27 15:25:44
- * @FilePath: /CasaOS-UI/src/store/state.js
+ * @LastEditTime: 2022-06-28 14:16:20
+ * @FilePath: \CasaOS-UI\src\store\state.js
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -34,7 +34,7 @@ const state = {
     currentSharePath: "",
     // Wallpaper
     wallpaperObject: {
-        path: require('@/assets/background/wallpaper01.jpg'),
+        path: require('@/assets/background/default_wallpaper.jpg'),
         from: "Built-in" //Built-in, Upload, Files
     }
 }

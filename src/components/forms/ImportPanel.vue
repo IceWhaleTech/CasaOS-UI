@@ -56,6 +56,7 @@ import upperFirst from 'lodash/upperFirst'
 import lowerFirst from 'lodash/lowerFirst'
 import parser from 'yargs-parser'
 import concat from 'lodash/concat'
+import has from 'lodash/has'
 import YAML from 'yamljs'
 
 
@@ -428,6 +429,9 @@ export default {
             delete _this.updateData.versison
             _this.updateData.network_model = _this.getNetworkModel(_this.updateData.network_model)
             _this.updateData.memory = _this.deviceMemory
+            if (!has(_this.updateData, 'protocol')) {
+              _this.updateData.protocol = "http"
+            }
             _this.dropText = val.name + " " + _this.$t('has been selected')
             _this.appFileLoaded = true
             return true

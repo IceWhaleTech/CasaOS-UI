@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-22 17:53:32
+ * @LastEditTime: 2022-06-28 09:24:53
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/SideBar.vue
+ * @FilePath: \CasaOS-UI\src\components\SideBar.vue
 -->
 <template>
   <div class="side-bar contextmenu-canvas mr-5" :class="{'open':sidebarOpen}" v-if="!isLoading">
@@ -127,7 +127,6 @@ export default {
      */
     getInitData() {
       return this.apps.map(item => {
-        //console.log(item);
         return {
           name: item.app.name,
           show: item.app.initShow
