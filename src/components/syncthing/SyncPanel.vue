@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-11-10 18:22:36
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-28 09:30:58
+ * @LastEditTime: 2022-06-29 19:01:47
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\syncthing\SyncPanel.vue
+ * @FilePath: /CasaOS-UI/src/components/syncthing/SyncPanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -472,7 +472,7 @@ export default {
 </script>
 
 
-<style lang="scss" scoped>
+<style lang="scss" >
 .animation {
   width: 350px;
   height: 350px;
