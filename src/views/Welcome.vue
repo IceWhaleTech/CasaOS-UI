@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:30:26
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-29 15:37:56
+ * @LastEditTime: 2022-06-29 19:00:41
  * @Description: 
  * @FilePath: /CasaOS-UI/src/views/Welcome.vue
 -->
@@ -141,6 +141,7 @@ export default {
         pwd: this.password
       }).then(res => {
         if (res.data.success == 200) {
+          this.$store.commit('changeInitialization', true)
           this.goToStep(3);
         }
       })
