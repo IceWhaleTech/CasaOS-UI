@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-28 14:55:06
+ * @LastEditTime: 2022-06-29 14:26:52
  * @Description: Top bar 
- * @FilePath: \CasaOS-UI\src\components\TopBar.vue
+ * @FilePath: /CasaOS-UI/src/components/TopBar.vue
 -->
 
 <template>
@@ -309,6 +309,9 @@ export default {
         this.$store.commit('changeRecommendSwitch', val);
       },
       deep: true
+    },
+    initBarData(val) {
+      this.barData = val
     },
 
   },

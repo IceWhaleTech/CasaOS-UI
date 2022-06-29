@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-28 09:30:56
+ * @LastEditTime: 2022-06-29 14:33:55
  * @Description: 
- * @FilePath: \CasaOS-UI\src\views\Home.vue
+ * @FilePath: /CasaOS-UI/src/views/Home.vue
 -->
 <template>
   <div v-if="!isLoading" class="out-container">
@@ -155,9 +155,11 @@ export default {
           const saveRes = await this.$api.user.postCustomConfig(this.user_id, "system", barData)
           if (saveRes.data.success === 200) {
             this.barData = saveRes.data.data
+            systemConfig = saveRes
           }
         }
       }
+      console.log(systemConfig.data.data);
       this.$store.commit('changeSearchEngineSwitch', systemConfig.data.data.search_switch);
       this.$store.commit('changeRecommendSwitch', systemConfig.data.data.recommend_switch);
       this.barData = systemConfig.data.data

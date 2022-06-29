@@ -5,7 +5,7 @@
       <!-- Header Start -->
       <div class="widget-header is-flex">
         <div class="widget-title is-flex-grow-1">
-          System Status
+          {{ $t('System Status') }}
         </div>
         <div class="widget-icon-button is-flex-shrink-0" @click="showMoreInfo">
           <b-icon pack="casa" icon="arrow-right" size="is-20" :class="{'open':showMore}" class="arrow-btn"></b-icon>
