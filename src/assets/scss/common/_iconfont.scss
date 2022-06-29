@@ -1,0 +1,95 @@
+@font-face {
+    font-family: 'casaos';
+    src: url('../fonts/casaos.eot?1iv3nq');
+    src: url('../fonts/casaos.eot?1iv3nq#iefix') format('embedded-opentype'),
+        url('../fonts/casaos.ttf?1iv3nq') format('truetype'),
+        url('../fonts/casaos.woff?1iv3nq') format('woff'),
+        url('../fonts/casaos.svg?1iv3nq#casaos') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+[class^="casa-"],
+[class*=" casa-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'casaos' !important;
+    speak: never;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.casa-close-xs:before {
+    content: "\e910";
+}
+
+.casa-thumb-up:before {
+    content: "\e90e";
+}
+
+.casa-search-manage:before {
+    content: "\e90f";
+}
+
+.casa-sync:before {
+    content: "\e90a";
+}
+
+.casa-bug:before {
+    content: "\e900";
+}
+
+.casa-discord:before {
+    content: "\e901";
+}
+
+.casa-github:before {
+    content: "\e902";
+}
+
+.casa-picture:before {
+    content: "\e903";
+}
+
+.casa-close:before {
+    content: "\e904";
+}
+
+.casa-arrow-right:before {
+    content: "\e905";
+}
+
+.casa-tune:before {
+    content: "\e906";
+}
+
+.casa-setting:before {
+    content: "\e907";
+}
+
+.casa-magnifier:before {
+    content: "\e908";
+}
+
+.casa-plus:before {
+    content: "\e909";
+}
+
+.casa-picture-upload:before {
+    content: "\e90b";
+}
+
+.casa-account:before {
+    content: "\e90c";
+}
+
+.casa-terminal:before {
+    content: "\e90d";
+}

@@ -1,16 +1,16 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-12-06 18:29:48
- * @LastEditTime: 2022-06-13 19:30:53
+ * @LastEditTime: 2022-06-22 19:26:15
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\settings\PortPanel.vue
+ * @FilePath: /CasaOS-UI/src/components/settings/PortPanel.vue
 -->
 <template>
   <div class="modal-card">
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
-      <div class="flex1">
-        <h3 class="title is-4 has-text-weight-normal">{{$t('Edit Web UI port')}}</h3>
+      <div class="is-flex-grow-1">
+        <h3 class="title is-3">{{$t('Edit Web UI port')}}</h3>
       </div>
       <div><button type="button" class="delete" @click="$emit('close')" /></div>
     </header>
@@ -24,7 +24,7 @@
     <!-- Modal-Card Body End -->
     <!-- Modal-Card Footer Start-->
     <footer class="modal-card-foot is-flex is-align-items-center">
-      <div class="flex1"></div>
+      <div class="is-flex-grow-1"></div>
       <div>
         <b-button :label="$t('Cancel')" @click="$emit('close')" rounded />
         <b-button :label="$t('Submit')" type="is-primary" rounded expaned @click="savePort" />

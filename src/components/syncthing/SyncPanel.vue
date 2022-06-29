@@ -2,16 +2,16 @@
  * @Author: JerryK
  * @Date: 2021-11-10 18:22:36
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-15 18:18:08
+ * @LastEditTime: 2022-06-28 09:30:58
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/syncthing/SyncPanel.vue
+ * @FilePath: \CasaOS-UI\src\components\syncthing\SyncPanel.vue
 -->
 <template>
   <div class="modal-card">
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
-      <div class="flex1">
-        <h3 class="title is-4 has-text-weight-normal">Sync Guide</h3>
+      <div class="is-flex-grow-1">
+        <h3 class="title is-3">Sync Guide</h3>
       </div>
       <div class="is-flex is-align-items-center">
 
@@ -95,7 +95,7 @@
             <b-button type="is-ghost" :label="$t('Show all Platforms')" rounded @click="showMorePlatform" />
           </p>
 
-          <p class="is-flex is-align-items-top is-size-65 is-justify-content-center">
+          <p class="is-flex is-align-items-top is-size-14px is-justify-content-center">
             <b-icon icon="information" class="mr-2" style="color:#F8D149" /> {{$t('Install and open the downloaded application, then click the "Next" button.')}}
           </p>
         </div>
@@ -220,7 +220,7 @@
 
     <!-- Modal-Card Footer Start-->
     <footer class="modal-card-foot is-flex is-align-items-center ">
-      <div class="flex1 is-flex is-align-items-center is-justify-content-center " :class="{'pl-7':!(step == 2 && !isSubmited)}">
+      <div class="is-flex-grow-1 is-flex is-align-items-center is-justify-content-center " :class="{'pl-7':!(step == 2 && !isSubmited)}">
         <p class="is-size-7 has-text-grey	mr-2">Powered by</p>
         <b-image :src="require('@/assets/img/syncthing/syncthing-logo.svg')" class="syncthing-logo"></b-image>
       </div>
@@ -289,7 +289,6 @@ export default {
   created() {
 
     this.syncBaseURL = `http://${this.$baseIp}:${this.$store.state.syncthingPort}`
-    console.log(this.syncBaseURL);
     this.syncXhr = axios.create({
       baseURL: this.syncBaseURL,
       timeout: 1000
@@ -383,7 +382,6 @@ export default {
     downloadSyncthing(url, isSelf = true) {
 
       let target = (isSelf) ? "_self" : "_blank"
-      console.log(url);
       if (url == SYNCTHING_GOOGLEPLAY_URL) {
         target = "_blank"
       }
@@ -473,9 +471,196 @@ export default {
 }
 </script>
 
-<style>
+
+<style lang="scss" scoped>
 .animation {
   width: 350px;
   height: 350px;
+}
+.t-box {
+  background: #eeeeee;
+  border-radius: 4px;
+  height: 20rem;
+  padding: 1rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  font-size: 0.875rem;
+  line-height: 1.5em;
+
+  ol {
+    padding-left: 1rem;
+  }
+
+  .t-img {
+    margin-bottom: 1rem;
+
+    img {
+      max-width: 60%;
+      width: auto;
+    }
+  }
+
+  .t-img-1 img {
+    max-width: 5rem;
+  }
+
+  .t-img-2 img {
+    max-width: 13rem;
+  }
+
+  .t-img-3 img {
+    max-width: 18rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .t-box {
+    .t-img {
+      img {
+        max-width: 100% !important;
+        width: auto;
+      }
+    }
+  }
+}
+</style>
+
+<style lang="scss">
+.sync-panel {
+  .modal-card {
+    width: 50rem;
+  }
+
+  .steps {
+    .column {
+      padding: 1.5rem 0;
+    }
+  }
+
+  .dot {
+    padding-left: 2.5rem;
+    position: relative;
+    color: #383b46;
+    opacity: 0.5;
+    font-weight: bold;
+    transition: all 0.3s;
+
+    &:before {
+      display: flex;
+      content: attr(data-title);
+      position: absolute;
+      width: 1.75rem;
+      height: 1.75rem;
+      border-radius: 50%;
+      background-color: #2276f3;
+      transition: all 0.3s;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      left: 0;
+      top: -0.25rem;
+      z-index: 1;
+      box-shadow: 0px 0px 0.875rem rgba(34, 118, 243, 0.75);
+    }
+
+    &.active {
+      color: #2276f3;
+      opacity: 1;
+    }
+  }
+
+  .ok-dot {
+    &:before {
+      font: normal normal normal 24px/1 "Material Design Icons" !important;
+      content: "\F012C" !important;
+    }
+  }
+
+  .modal-card-body {
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-bottom: 1rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .sync-panel {
+    .modal-card {
+      width: auto !important;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .sync-panel {
+    .steps {
+      .column {
+        padding: 1.5rem 0;
+      }
+    }
+
+    .dot {
+      padding-left: 2.5rem;
+      position: relative;
+      color: #383b46;
+      opacity: 0.5;
+      font-weight: bold;
+      transition: all 0.3s;
+
+      &:before {
+        display: flex;
+        content: attr(data-title);
+        position: absolute;
+        width: 1.75rem;
+        height: 1.75rem;
+        border-radius: 50%;
+        background-color: #2276f3;
+        transition: all 0.3s;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        left: 0;
+        top: -0.25rem;
+        z-index: 1;
+        box-shadow: 0px 0px 0.875rem rgba(34, 118, 243, 0.75);
+      }
+
+      &.active {
+        color: #2276f3;
+        opacity: 1;
+      }
+    }
+
+    .ok-dot {
+      &:before {
+        font: normal normal normal 24px/1 "Material Design Icons" !important;
+        content: "\F012C" !important;
+      }
+    }
+
+    .modal-card-body {
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding-bottom: 1rem;
+
+      .image.is-176x176 {
+        height: 128px;
+        width: 128px;
+      }
+
+      .is-offset-2 {
+        margin-left: 0 !important;
+      }
+
+      .is-8 {
+        width: 100% !important;
+      }
+
+      .button.is-dark {
+        font-size: 0.75rem !important;
+      }
+    }
+  }
 }
 </style>

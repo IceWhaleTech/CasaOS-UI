@@ -1,26 +1,39 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-12-06 13:52:11
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-06-10 12:21:39
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-27 22:47:13
  * @Description: 
  * @FilePath: \CasaOS-UI\src\widgets\Network.vue
 -->
 <template>
-  <div class="widget has-text-white clock is-relative pb-1">
+  <div class="widget has-text-white clock is-relative">
     <div class="blur-background"></div>
 
-    <div class="network">
-      <div class="is-flex  pt-4 ">
-        <div class="ml-5  is-flex-grow-1">
-          <b-dropdown aria-role="list" class="netowrk-dropdown" animation="fade1" v-model="networkId">
+    <div class="network widget-content">
+      <!-- Header Start -->
+      <div class="widget-header is-flex">
+        <div class="widget-title is-flex-grow-1">
+          {{ $t('Network Status') }}
+        </div>
+      </div>
+      <!-- Header End -->
+      <!-- Chart Start -->
+      <div class="chart-container">
+        <vue-apex-charts type="area" ref="chart" height="130" :options="chartOptions" :series="networks[networkId]" />
+      </div>
+      <!-- Chart End -->
+      <!-- Status Start -->
+      <div class="is-flex ">
+        <div class=" is-flex-grow-1">
+          <b-dropdown aria-role="list" position="is-top-right" class="netowrk-dropdown" animation="fade1" v-model="networkId" :mobile-modal="false">
             <template #trigger="{ active }">
               <b-button :label="initNetwork[networkId].name" type="is-primary" :icon-right="active ? 'chevron-up' : 'chevron-down'" />
             </template>
             <b-dropdown-item aria-role="listitem" v-for="(item,index) in initNetwork" :key="'net'+index" :value="index">{{item.name}}</b-dropdown-item>
           </b-dropdown>
         </div>
-        <div class=" is-flex-shrink-0  mr-5 is-size-7 is-flex is-align-items-center">
+        <div class=" is-flex-shrink-0 is-size-7 is-flex is-align-items-center">
           <div>
             <b-icon icon="arrow-up-bold" size="is-small" class="up">
             </b-icon> {{currentUpSpeed*1024 | renderSize}}/s
@@ -29,9 +42,7 @@
           </div>
         </div>
       </div>
-      <div class="chart-container ml-2 mr-2">
-        <vue-apex-charts type="area" ref="chart" height="130" :options="chartOptions" :series="networks[networkId]" />
-      </div>
+      <!-- Status End -->
     </div>
   </div>
 </template>
@@ -210,5 +221,100 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.network {
+  position: relative;
+  z-index: 10;
+
+  .up {
+    color: rgb(0, 143, 251);
+  }
+
+  .down {
+    color: rgb(0, 227, 150);
+  }
+
+  .chart-container {
+    height: 130px;
+    overflow: hidden;
+    margin: 0 -0.875rem;
+  }
+}
+</style>
+
+<style lang="scss">
+.network {
+  .netowrk-dropdown {
+    .button {
+      margin: 0;
+      padding: 0;
+      height: initial;
+      background-color: transparent;
+      font-weight: bold;
+      font-size: 0.875rem;
+      position: relative;
+      z-index: 200;
+      outline: none;
+      border: 0;
+
+      &:focus:not(:active) {
+        box-shadow: 0 0 0 0 !important;
+      }
+
+      &:hover,
+      &:active {
+        outline: none;
+        background-color: transparent;
+      }
+
+      span {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        overflow: hidden;
+        max-width: 3rem;
+      }
+    }
+
+    .dropdown-menu {
+      min-width: 5rem;
+
+      .dropdown-content {
+        max-width: 7rem;
+        border-radius: 10px;
+        padding: 4px !important;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(1rem);
+
+        .dropdown-divider {
+          margin: 4px;
+        }
+
+        .dropdown-item {
+          padding: 0.25rem 0.5rem 0.25rem 0.5rem;
+          border-radius: 5px;
+          transition: all 0.25s;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          color: #fff;
+          font-size: 0.75rem;
+          margin-bottom: 0.25rem;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+
+          &:hover {
+            background: rgba(0, 0, 0, 0.2) !important;
+          }
+
+          &.is-active {
+            background: rgba(0, 0, 0, 0.2) !important;
+          }
+        }
+      }
+    }
+  }
+}
 </style>

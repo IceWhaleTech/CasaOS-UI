@@ -2,8 +2,8 @@
   <div class="modal-card">
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
-      <div class="flex1">
-        <h3 class="title is-4 has-text-weight-normal" v-if="!isWelcomeShow">{{$t('Share Initialization Wizard')}}</h3>
+      <div class="is-flex-grow-1">
+        <h3 class="title is-3" v-if="!isWelcomeShow">{{$t('Share Initialization Wizard')}}</h3>
       </div>
 
     </header>
@@ -44,7 +44,7 @@
           <div class="block">
             <div class="is-flex is-align-items-center">
               <div class="is-flex-grow-1">
-                <h4 class="title is-size-65">{{ $t('Shared folders') }}</h4>
+                <h4 class="title is-size-14px">{{ $t('Shared folders') }}</h4>
               </div>
               <div>
                 <b-button type="is-primary" size="is-small" :label="$t('Add')" @click="showFolderModal('add','/DATA')" rounded />
@@ -101,7 +101,7 @@
                     </b-icon>
                   </div>
                 </div>
-                <div class="is-size-65 mt-2 mb-2 one-line word has-text-weight-medium">
+                <div class="is-size-14px mt-2 mb-2 one-line word has-text-weight-medium">
                   {{item.nick_name}}
                 </div>
               </div>
@@ -182,7 +182,6 @@ export default {
     }
   },
   created() {
-    console.log(this.myInfo);
     this.nickname = this.myInfo.user_name
     this.description = this.myInfo.description
     this.getPublicServers()
@@ -223,7 +222,6 @@ export default {
     getPublicServers() {
       this.$api.person.publicServer().then(res => {
         if (res.data.success == 200) {
-          console.log(res.data.data);
           this.publicServer = res.data.data
         }
       })
@@ -322,7 +320,7 @@ export default {
         parent: this,
         component: FilePanel,
         hasModalCard: true,
-        customClass: 'fileModal',
+        customClass: 'file-sel-modal',
         trapFocus: true,
         canCancel: ['escape'],
         scroll: "keep",
@@ -352,7 +350,7 @@ export default {
         parent: this,
         component: FilePanel,
         hasModalCard: true,
-        customClass: 'fileModal',
+        customClass: 'file-sel-modal',
         trapFocus: true,
         canCancel: ['escape'],
         scroll: "keep",

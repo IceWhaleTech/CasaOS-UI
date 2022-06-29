@@ -1,10 +1,10 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-10-14 16:39:02
- * @LastEditors: JerryK
- * @LastEditTime: 2021-10-18 14:56:11
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-21 12:36:07
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/fileList/ListItem.vue
+ * @FilePath: \CasaOS-UI\src\components\fileList\ListItem.vue
 -->
 <template>
   <li class="ficon is-flex is-align-items-center" :class="[{active:state}]" @click="activeSelf" @dblclick="expandDir">
@@ -31,7 +31,7 @@ export default {
     }
   },
   props: {
-    item:{},
+    item: {},
     name: String,
     path: String,
     state: Boolean,
@@ -64,5 +64,17 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.ficon {
+  padding: 0.5rem 0.5rem 0.5rem 0.8rem;
+  -webkit-touch-callout: none;
+  user-select: none;
+  font-size: 0.875rem;
+
+  .cover {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: 0.5rem;
+  }
+}
 </style>

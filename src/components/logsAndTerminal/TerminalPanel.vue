@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-15 17:48:08
+ * @LastEditTime: 2022-06-22 19:20:21
  * @FilePath: /CasaOS-UI/src/components/logsAndTerminal/TerminalPanel.vue
  * @Description: 
  * 
@@ -13,9 +13,9 @@
 
     <!-- Modal-Card Body Start -->
     <section class="modal-card-body ">
-      <h2 class="title is-4">CasaOS</h2>
+      <h3 class="title is-3">CasaOS</h3>
       <div class="close-container"><button type="button" class="delete" @click="$emit('close')" /></div>
-      <div class="flex1">
+      <div class="is-flex-grow-1">
         <b-tabs :animated="false" @input="onInput">
           <b-tab-item :label="$t('Terminal')" value="terminal">
             <terminal-card ref="terminal" :wsUrl="wsUrl"></terminal-card>
@@ -73,5 +73,6 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+
 </style>

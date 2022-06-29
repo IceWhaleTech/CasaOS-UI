@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-14 13:23:13
+ * @LastEditTime: 2022-06-28 14:16:46
  * @Description: Main entry of application
  * @FilePath: \CasaOS-UI\src\App.vue
 -->
@@ -11,7 +11,7 @@
   <div id="app" class="is-flex is-flex-direction-column">
     <template v-if="isNotSharing">
       <!-- Background Layer Start -->
-      <div id="background" v-animate-css="isWelcome?initAni:noneAni" :style="backgroundStyleObj"></div>
+      <casa-wallpaper :animate="isWelcome?initAni:noneAni"></casa-wallpaper>
       <!-- Background Layer End -->
 
       <!-- BrandBar Start -->
@@ -33,13 +33,45 @@
 <script>
 import BrandBar from './components/BrandBar.vue'
 import ContactBar from './components/ContactBar.vue'
+import CasaWallpaper from './components/wallpaper/CasaWallpaper.vue'
 import { mixin } from './mixins/mixin';
 
+const customIconConfig = {
+  customIconPacks: {
+    'casa': {
+      sizes: {
+        'default': 'is-size-4',
+        'is-20': 'is-size-5',
+        'is-small': '',
+        'is-medium': 'is-size-3',
+        'is-large': 'is-size-1'
+      },
+      iconPrefix: 'casa-',
+      internalIcons: {
+        'check': 'checkmark',
+        'information': 'information',
+        'check-circle': 'checkmark-circle-outline',
+        'alert': 'alert',
+        'alert-circle': 'alert',
+        'arrow-up': 'arrow-up',
+        'chevron-right': 'arrow-right',
+        'chevron-left': 'arrow-back',
+        'chevron-down': 'arrow-down',
+        'eye': 'eye',
+        'eye-off': 'eye-off',
+        'menu-down': 'arrow-dropdown',
+        'menu-up': 'arrow-dropup',
+        'close-circle': 'close-circle-outline'
+      }
+    },
+  }
+}
 
 export default {
   components: {
     BrandBar,
     ContactBar,
+    CasaWallpaper
   },
   mixins: [mixin],
   data() {
@@ -48,9 +80,6 @@ export default {
       steps: [
       ],
       isWelcome: false,
-      backgroundStyleObj: {
-        backgroundImage: `url(${require('@/assets/background/bg3.jpg')})`
-      },
       noneAni: {
         classes: 'fadeIn',
         duration: 500
@@ -70,6 +99,7 @@ export default {
       isNotSharing: true
     }
   },
+
 
   computed: {
     isLoading() {
@@ -91,6 +121,7 @@ _____             _____ _____
 -- Made by IceWhale with YOU --
 `, `font-family: monospace`);
 
+    this.$buefy.config.setOptions(customIconConfig)
     this.checkInit();
   },
   mounted() {
@@ -135,10 +166,7 @@ _____             _____ _____
       } else {
         this.$store.commit('setIsMobile', true)
       }
-
-      console.log(this.$store.state.isMobile);
     },
-
   },
   sockets: {
     connect() {
@@ -148,3 +176,19 @@ _____             _____ _____
   },
 }
 </script>
+
+<style lang="scss" scoped>
+#app {
+  width: 100vw;
+  height: 100vh;
+  font-weight: 400;
+  font-size: 0.875rem;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  overflow-y: hidden;
+}
+</style>

@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:30:26
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-05-25 16:03:22
+ * @LastEditTime: 2022-06-28 09:31:07
  * @Description: 
  * @FilePath: \CasaOS-UI\src\views\Login.vue
 -->
@@ -64,8 +64,8 @@ export default {
     }
   },
   mounted() {
-    this.$api.user.getUserInfo().then(user => {
-      this.username = user.data.data.user_name;
+    this.$api.user.getAllUserName().then(users => {
+      this.username = users.data.data[0];
     })
   },
 
@@ -89,14 +89,11 @@ export default {
       }).then((res) => {
         if (res.data.success == 200) {
           localStorage.setItem("user_token", res.data.data.token)
+          localStorage.setItem("user_id", res.data.data.user.id)
           localStorage.setItem("version", res.data.data.version)
           this.$store.commit('setToken', res.data.data.token)
-          this.$api.user.getUserInfo().then((res) => {
-            if (res.data.success == 200) {
-              this.$store.commit('changeUserInfo', res.data.data)
-              this.$router.push('/')
-            }
-          })
+          this.$store.commit('changeUserInfo', res.data.data)
+          this.$router.push('/')
         } else {
           this.notificationShow = true;
           this.message = this.$t("Password error!")
@@ -108,5 +105,87 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+#login-page {
+  height: calc(100% - 5.5rem);
+  position: relative;
+  z-index: 500;
+
+  .login-panel {
+    text-align: left;
+    background: rgba(255, 255, 255, 0.46);
+    backdrop-filter: blur(1rem);
+    border-radius: 8px;
+    padding: 2.5rem 4rem;
+
+    .label {
+      color: #dfdfdf;
+    }
+
+    .input {
+      background: rgba(255, 255, 255, 0.32);
+      border-color: transparent;
+    }
+
+    &.step1 {
+      padding: 4rem 6rem;
+    }
+
+    &.step2 {
+      padding: 2.5rem 4rem;
+      width: 32rem;
+    }
+
+    &.step3 {
+      padding: 4rem 8rem;
+    }
+
+    &.step4 {
+      width: 28rem;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .login-panel {
+    text-align: left;
+    background: rgba(255, 255, 255, 0.46);
+    backdrop-filter: blur(1rem);
+    border-radius: 8px;
+    margin: 0 2rem;
+    padding: 2rem !important;
+
+    .label {
+      color: #dfdfdf;
+    }
+
+    .input {
+      background: rgba(255, 255, 255, 0.32);
+      border-color: transparent;
+    }
+
+    .is-128x128 {
+      height: 96px;
+      width: 96px;
+    }
+
+    .is-3 {
+      font-size: 1.5rem;
+    }
+
+    &.step1 {
+      .is-2 {
+        font-size: 1.5rem;
+      }
+
+      .subtitle {
+        font-size: 1rem;
+      }
+    }
+
+    &.step3 {
+      padding: 4rem !important;
+    }
+  }
+}
 </style>

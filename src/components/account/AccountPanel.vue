@@ -1,18 +1,18 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-10-25 18:19:17
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-09 15:54:33
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-24 15:36:56
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\account\AccountPanel.vue
+ * @FilePath: /CasaOS-UI/src/components/account/AccountPanel.vue
 -->
 <template>
   <div class="modal-card">
     <ValidationObserver ref="observer" v-slot="{ handleSubmit }">
       <!-- Modal-Card Header Start -->
       <header class="modal-card-head" :class="{'modal-card-head1':state == 1}">
-        <div class="flex1">
-          <h3 class="title is-4 has-text-weight-normal">{{title}}</h3>
+        <div class="is-flex-grow-1">
+          <h3 class="title is-3">{{title}}</h3>
         </div>
         <div><button type="button" class="delete" @click="$emit('close')" /></div>
       </header>
@@ -64,7 +64,7 @@
       <!-- Modal-Card Body End -->
       <!-- Modal-Card Footer Start-->
       <footer class="modal-card-foot is-flex is-align-items-center">
-        <div class="flex1"></div>
+        <div class="is-flex-grow-1"></div>
         <div>
           <b-button v-if="state >= 2" :label="$t('Back')" @click="goto(1)" rounded />
           <b-button v-if="state == 2" :label="$t('Submit')" type="is-primary" rounded expaned @click="handleSubmit(saveUser)" />
@@ -131,7 +131,7 @@ export default {
       }
     },
     updateUserInfo() {
-      this.$api.user.getUserInfo().then((res) => {
+      this.$api.user.getUserInfo(this.userInfo.id).then((res) => {
         if (res.data.success == 200) {
           this.$store.commit('changeUserInfo', res.data.data);
           this.goto(1);
@@ -140,7 +140,7 @@ export default {
     },
     saveUser() {
       this.isLoading = true;
-      this.$api.user.changeUserName({ username: this.username, oldname: this.userInfo.user_name }).then(res => {
+      this.$api.user.changeUserName({ user_id: this.userInfo.id, username: this.username, oldname: this.userInfo.user_name }).then(res => {
         this.isLoading = false;
         if (res.data.success == 200) {
           this.updateUserInfo();
@@ -149,7 +149,7 @@ export default {
     },
     savePassword() {
       this.isLoading = true;
-      this.$api.user.changePassword({ pwd: this.password, old_pwd: this.oriPassword }).then(res => {
+      this.$api.user.changePassword({ user_id: this.userInfo.id, pwd: this.password, old_pwd: this.oriPassword }).then(res => {
         this.isLoading = false;
         if (res.data.success == 200) {
           this.updateUserInfo();
@@ -163,5 +163,19 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.account-modal {
+  .modal-card-head1 {
+    padding: 1.5rem 1.5rem 0.5rem 1.5rem;
+  }
+
+  .modal-card {
+    width: 30rem;
+  }
+
+  .input {
+    background: rgba(255, 255, 255, 0.32);
+    border-color: transparent;
+  }
+}
 </style>

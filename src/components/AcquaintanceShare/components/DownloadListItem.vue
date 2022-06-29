@@ -104,9 +104,7 @@ export default {
 
   methods: {
     retry() {
-      this.$api.person.reDownload(this.item.uuid).then(res => {
-        console.log("redownload", res.data.message);
-      })
+      this.$api.person.reDownload(this.item.uuid)
     },
     remove() {
       if (this.isDownloading) {

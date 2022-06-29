@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-06-02 19:49:36
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-14 13:10:38
+ * @LastEditTime: 2022-06-28 14:41:25
  * @FilePath: \CasaOS-UI\src\store\mutations.js
  * @Description: 
  * 
@@ -28,9 +28,17 @@ const mutations = {
         state.syncthingKey = val.key
         state.syncthingPort = val.port
     },
+    // System Config
     changeSearchEngine(state, val) {
         state.searchEngine = val
     },
+    changeSearchEngineSwitch(state, val) {
+        state.searchEngineSwitch = val
+    },
+    changeRecommendSwitch(state, val) {
+        state.recommendSwitch = val
+    },
+
     changeSiteLoading(state) {
         state.siteLoading = false
     },
@@ -61,6 +69,18 @@ const mutations = {
     // Set if isMobile or not
     setIsMobile(state, val) {
         state.isMobile = val
+    },
+
+    // Set new Wallpaper Object
+    changeWallpaper(state, val) {
+        localStorage.setItem('wallpaper', val.path)
+        state.wallpaperObject = val
+    },
+    setDefaultWallpaper(state) {
+        state.wallpaperObject = {
+            path: require('@/assets/background/default_wallpaper.jpg'),
+            from: "Built-in" //Built-in, Upload, Files
+        }
     }
 }
 export default mutations

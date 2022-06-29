@@ -2,39 +2,41 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-13 19:31:23
+ * @LastEditTime: 2022-06-28 09:30:56
  * @Description: 
  * @FilePath: \CasaOS-UI\src\views\Home.vue
 -->
 <template>
   <div v-if="!isLoading" class="out-container">
     <!-- NavBar Start -->
-    <top-bar v-animate-css="topBarAni" @showSideBar="showSideBar"></top-bar>
+    <top-bar v-animate-css="topBarAni" @showSideBar="showSideBar" :initBarData="barData"></top-bar>
     <!-- NavBar End -->
 
     <!-- Content Start -->
-    <div class="contents  pt-55">
+    <div class="contents  pt-55 contextmenu-canvas" @contextmenu.prevent="openHomeContaxtMenu">
       <div class="container">
         <div class="is-flex">
           <!-- SideBar Start -->
           <side-bar v-if="!hardwareInfoLoading"></side-bar>
-          <div class="dark-bg" :class="{'open':sidebarOpen}"></div>
           <!-- SideBar End -->
 
           <!-- MainContent Start -->
-          <div class="main-content">
+          <div class="main-content contextmenu-canvas is-flex-grow-1" :class="{'open':sidebarOpen}">
             <!-- SearchBar Start -->
             <section>
-              <search-bar></search-bar>
+              <transition name="fade">
+                <search-bar v-if="searchbarShow"></search-bar>
+              </transition>
             </section>
             <!-- SearchBar End -->
 
-            <!-- Suggestions For You Start -->
+            <!-- core-service Start -->
             <section>
-              <!-- <suggestion></suggestion> -->
-              <core-service></core-service>
+              <transition name="fade">
+                <core-service v-if="recommendShow"></core-service>
+              </transition>
             </section>
-            <!-- Suggestions For You End -->
+            <!-- core-service End -->
 
             <!-- Apps Start -->
             <section>
@@ -72,6 +74,9 @@ import CoreService from '../components/CoreService.vue'
 import AppSection from '../components/Apps/AppSection.vue'
 //import Shortcuts from '@/components/Shortcuts.vue'
 import FilePanel from '@/components/filebrowser/FilePanel.vue'
+
+const wallpaperConfig = "wallpaper"
+
 export default {
   name: "home-page",
   components: {
@@ -81,13 +86,15 @@ export default {
     TopBar,
     CoreService,
     //Shortcuts,
-    FilePanel
+    FilePanel,
   },
   data() {
     return {
       isLoading: true,
       hardwareInfoLoading: true,
+      user_id: localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 1,
       isFileActive: false,
+      barData: {},
       topBarAni: {
         classes: 'fadeInDown',
         duration: 800
@@ -103,15 +110,61 @@ export default {
   computed: {
     sidebarOpen() {
       return this.$store.state.sidebarOpen
+    },
+    searchbarShow() {
+      return this.$store.state.searchEngineSwitch
+    },
+    recommendShow() {
+      return this.$store.state.recommendSwitch
     }
   },
-  mounted() {
-    this.isLoading = false
+  created() {
     this.getHardwareInfo();
+    this.getWallpaperConfig();
+    this.getConfig()
+  },
+  mounted() {
+
+
     window.addEventListener("resize", this.onResize);
     this.onResize()
+
   },
   methods: {
+
+    /**
+     * @description: Get CasaOS Configs
+     * @param {*}
+     * @return {*}
+     */
+    async getConfig() {
+      let systemConfig = await this.$api.user.getCustomConfig(this.user_id, "system")
+      if (systemConfig.data.success != 200 || systemConfig.data.data == "") {
+        const oldData = systemConfig.data.data
+        systemConfig = await this.$api.info.systemConfig()
+        if (oldData == "") {
+          const barData = {
+            lang: systemConfig.data.data.lang,
+            search_engine: systemConfig.data.data.search_engine,
+            search_switch: true,
+            recommend_switch: true,
+            shortcuts_switch: systemConfig.data.data.shortcuts_switch,
+            widgets_switch: systemConfig.data.data.widgets_switch,
+          }
+          // save
+          const saveRes = await this.$api.user.postCustomConfig(this.user_id, "system", barData)
+          if (saveRes.data.success === 200) {
+            this.barData = saveRes.data.data
+          }
+        }
+      }
+      this.$store.commit('changeSearchEngineSwitch', systemConfig.data.data.search_switch);
+      this.$store.commit('changeRecommendSwitch', systemConfig.data.data.recommend_switch);
+      this.barData = systemConfig.data.data
+      this.isLoading = false
+
+    },
+
     /**
      * @description: Show SideBar
      * @param {*}
@@ -156,6 +209,22 @@ export default {
       })
     },
 
+    openHomeContaxtMenu(e) {
+      // console.log(e.target);
+      this.$EventBus.$emit("showHomeContextMenu", e);
+    },
+
+    getWallpaperConfig() {
+      this.$api.user.getCustomConfig(this.user_id, wallpaperConfig).then(res => {
+        if (res.data.success === 200 && res.data.data != "") {
+          this.$store.commit('changeWallpaper', {
+            path: res.data.data.path,
+            from: res.data.data.from
+          })
+        }
+      })
+    }
+
   },
   beforeDestroy() {
     window.removeEventListener("resize", this.onResize);
@@ -164,5 +233,58 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+.out-container {
+  position: relative;
+  height: 100%;
+}
+
+.contents {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: calc(100% - 7rem);
+}
+
+.main-content {
+  margin-left: 17.5rem;
+  position: relative;
+  z-index: 10;
+}
+
+.dark-bg {
+  position: fixed;
+  transition: all 0.3s ease;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 1);
+  z-index: 19;
+  opacity: 0;
+  visibility: hidden;
+
+  &.open {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .contents {
+    height: calc(100vh - 4rem) !important;
+  }
+
+  .main-content {
+    margin-left: 0;
+    transition: all 0.3s;
+    &.open {
+      transform: scale(0.9);
+      opacity: 0;
+    }
+  }
+}
+</style>
+
+<style lang="scss">
 </style>

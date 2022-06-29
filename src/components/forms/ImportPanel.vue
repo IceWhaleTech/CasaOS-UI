@@ -2,8 +2,8 @@
   <div class="modal-card">
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
-      <div class="flex1">
-        <h3 class="title is-4 has-text-weight-normal">{{ $t('Import') }}</h3>
+      <div class="is-flex-grow-1">
+        <h3 class="title is-3">{{ $t('Import') }}</h3>
       </div>
     </header>
     <!-- Modal-Card Header End -->
@@ -41,7 +41,7 @@
     <!-- Modal-Card Body End -->
     <!-- Modal-Card Footer Start-->
     <footer class="modal-card-foot is-flex is-align-items-center">
-      <div class="flex1"></div>
+      <div class="is-flex-grow-1"></div>
       <div>
         <b-button :label="$t('Cancel')" @click="$emit('close')" rounded />
         <b-button :label="$t('Submit')" type="is-primary" @click="emitSubmit" rounded />
@@ -56,6 +56,7 @@ import upperFirst from 'lodash/upperFirst'
 import lowerFirst from 'lodash/lowerFirst'
 import parser from 'yargs-parser'
 import concat from 'lodash/concat'
+import has from 'lodash/has'
 import YAML from 'yamljs'
 
 
@@ -428,6 +429,9 @@ export default {
             delete _this.updateData.versison
             _this.updateData.network_model = _this.getNetworkModel(_this.updateData.network_model)
             _this.updateData.memory = _this.deviceMemory
+            if (!has(_this.updateData, 'protocol')) {
+              _this.updateData.protocol = "http"
+            }
             _this.dropText = val.name + " " + _this.$t('has been selected')
             _this.appFileLoaded = true
             return true
@@ -456,5 +460,11 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.import-area {
+  .textarea {
+    max-height: 40em;
+    min-height: 173px;
+  }
+}
 </style>

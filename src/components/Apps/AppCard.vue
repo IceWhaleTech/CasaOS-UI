@@ -2,20 +2,20 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-15 18:47:25
+ * @LastEditTime: 2022-06-28 13:50:04
  * @Description: App Card item
- * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
+ * @FilePath: \CasaOS-UI\src\components\Apps\AppCard.vue
 -->
 
 <template>
-  <div class="wuji-card is-flex is-align-items-center is-justify-content-center p-55 app-card" @mouseover="hover = true" @mouseleave="hover = true">
+  <div class="common-card is-flex is-align-items-center is-justify-content-center p-55 app-card" @mouseover="hover = true" @mouseleave="hover = true" >
 
     <!-- Action Button Start -->
     <div class="action-btn" v-if="item.type != 'system' && isCasa ">
       <b-dropdown aria-role="list" :triggers="['contextmenu','click']" position="is-bottom-left" class="app-card-drop" ref="dro" animation="fade1" @active-change="setDropState" :mobile-modal="false" append-to-body>
         <template #trigger>
           <p role="button">
-            <b-icon icon="dots-vertical"></b-icon>
+            <b-icon icon="dots-vertical" class="is-clickable"></b-icon>
           </p>
         </template>
 
@@ -50,9 +50,9 @@
       <b-tooltip :label="tooltipLable" type="is-dark" :triggers="tooltipTriger" animation="fade1" :animated="true">
         <div class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-3 pb-3 img-c">
           <a class="is-flex is-justify-content-center" @click="openApp(item)">
-            <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-72x72" :class="item.state | dotClass"></b-image>
+            <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-64x64" :class="item.state | dotClass"></b-image>
           </a>
-          <p class="mt-4 one-line">
+          <p class="mt-3 one-line">
             <a class="one-line" @click="openApp(item)">
               {{item.name}}
             </a>
@@ -74,7 +74,7 @@
 
 export default {
   name: "app-card",
-  inject: ["homeShowFiles"],
+  inject: ["homeShowFiles","openAppStore"],
   data() {
     return {
       hover: false,
@@ -136,12 +136,6 @@ export default {
       } else {
         this.$refs.dro.isActive = false
         if (item.port != "" && item.state == 'running') {
-          try {
-            const appName = item.name
-            const action = "open"
-            this.$api.analyse.analyseAppAction(appName, action)
-            // eslint-disable-next-line no-empty
-          } catch (err) { }
           const hostIp = item.host || this.$baseIp
           const protocol = item.protocol || 'http'
           const url = `${protocol}://${hostIp}:${item.port}${item.index}`
@@ -156,18 +150,14 @@ export default {
     },
 
     openSystemApps(item) {
-      try {
-        const appName = item.name
-        const action = "open"
-        this.$api.analyse.analyseAppAction(appName, action)
-        // eslint-disable-next-line no-empty
-      } catch (error) { }
-
       switch (item.name) {
+        case "App Store":
+          this.openAppStore()
+          break;
         case "Files":
           this.homeShowFiles()
           break;
-        case "CasaConnect":
+        case "Connect":
           var url = `${window.location.origin}/ui/#/connect`
           var arg = '\u003cscript\u003elocation.replace("' + url + '")\u003c/script\u003e';
           window.open('javascript:window.name;', arg);
@@ -205,12 +195,6 @@ export default {
      * @return {*} void
      */
     uninstallConfirm() {
-      try {
-        const appName = this.item.name
-        const action = "uninstall"
-        this.$api.analyse.analyseAppAction(appName, action)
-        // eslint-disable-next-line no-empty
-      } catch (err) { }
       this.$refs.dro.isActive = false
       this.$buefy.dialog.confirm({
         title: this.$t('Attention'),
@@ -310,5 +294,90 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+.app-card-drop {
+  .dropdown-menu {
+    min-width: 10rem;
+
+    .dropdown-content {
+      padding: 4px !important;
+      width: 160px;
+      background: none;
+      padding: 0;
+      background: rgba(255, 255, 255, 0.88);
+      border-radius: 10px;
+
+      .dropdown-item {
+        padding: 0;
+      }
+
+      .button {
+        border-radius: 0;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        border-radius: 5px;
+
+        &.is-text {
+          text-decoration: none;
+          justify-content: flex-start;
+          outline: none;
+          transition: all 0.2s;
+          border: none !important;
+          height: 2rem;
+          font-size: 0.875rem;
+
+          &.running {
+            color: #779e2a !important;
+          }
+
+          &.exited {
+            color: #ff1616 !important;
+          }
+        }
+
+        &:active {
+          background: none;
+          outline: none;
+        }
+
+        &:focus {
+          background: none;
+          box-shadow: none;
+          outline: none;
+        }
+
+        &:hover {
+          background-color: hsl(0, 0%, 86%);
+        }
+      }
+
+      .gap {
+        margin-left: -4px;
+        margin-right: -4px;
+      }
+
+      .bbor {
+        border-top: #2c3e50 1px solid;
+
+        .is-text {
+          text-decoration: none;
+          justify-content: center !important;
+        }
+
+        .column {
+          margin-bottom: -4px;
+
+          .button {
+            margin: 4px;
+            height: 2rem;
+          }
+        }
+
+        .column:first-child {
+          border-right: #2c3e50 1px solid;
+        }
+      }
+    }
+  }
+}
 </style>

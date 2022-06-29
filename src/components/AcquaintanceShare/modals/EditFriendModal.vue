@@ -1,17 +1,17 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-03-11 22:12:51
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-13 13:04:36
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-22 19:23:12
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\AcquaintanceShare\modals\EditFriendModal.vue
+ * @FilePath: /CasaOS-UI/src/components/AcquaintanceShare/modals/EditFriendModal.vue
 -->
 <template>
   <div class="modal-card">
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
-      <div class="flex1">
-        <h3 class="title is-4 has-text-weight-normal">{{$t('Modify remarks')}}</h3>
+      <div class="is-flex-grow-1">
+        <h3 class="title is-3">{{$t('Modify remarks')}}</h3>
       </div>
       <div><button type="button" class="delete" @click="$emit('close')" /></div>
     </header>
@@ -38,7 +38,7 @@
     <!-- Modal-Card Body End -->
     <!-- Modal-Card Footer Start-->
     <footer class="modal-card-foot is-flex is-align-items-center">
-      <div class="flex1"></div>
+      <div class="is-flex-grow-1"></div>
       <div>
         <b-button :label="$t('OK')" type="is-primary" rounded expaned @click="saveIntroduction" />
       </div>

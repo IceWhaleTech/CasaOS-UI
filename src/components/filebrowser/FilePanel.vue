@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-02-18 12:42:06
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-09 20:52:56
+ * @LastEditTime: 2022-06-28 09:26:59
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\FilePanel.vue
 -->
@@ -21,7 +21,7 @@
       <template>
         <!-- NavBar Start -->
         <div class="nav-bar">
-          <h2 class="title is-4 mb-0 pb-3 has-text-left">{{ $t('Files') }}</h2>
+          <h3 class="title is-3 mb-0 pb-3 has-text-left">{{ $t('Files') }}</h3>
           <div class="list-container scrollbars-light pt-0">
             <tree-list ref="navBar" :path="rootPath" :autoLoad="true"></tree-list>
           </div>
@@ -65,7 +65,7 @@
             <!-- Tool Bar Start -->
             <div class="tool-bar is-flex mb-2">
               <div class=" is-flex-grow-1 has-text-left is-flex  is-align-items-center">
-                <b-field class="ml-3 is-flex is-size-65 mb-0">
+                <b-field class="ml-3 is-flex is-size-14px mb-0">
                   <b-checkbox size="is-small" v-model="isSelectAll" :class="selectState" @input="handleSelect">{{selectLabel}}</b-checkbox>
                 </b-field>
               </div>
@@ -671,7 +671,6 @@ export default {
      * @return {*}
      */
     handleMove() {
-      console.log('move');
       this.operate('move', this.selectedArray)
       this.handleClose()
     },
@@ -681,7 +680,6 @@ export default {
      * @return {*}
      */
     handleCopy() {
-      console.log('copy');
       this.operate('copy', this.selectedArray)
       this.handleClose()
     },

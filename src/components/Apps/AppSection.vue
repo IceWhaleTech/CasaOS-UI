@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-14 14:04:27
+ * @LastEditTime: 2022-06-28 13:46:22
  * @FilePath: \CasaOS-UI\src\components\Apps\AppSection.vue
  * @Description: 
  * 
@@ -10,22 +10,16 @@
 -->
 
 <template>
-  <div class="home-section has-text-left mt-6">
+  <div class="home-section has-text-left">
     <!-- Title Bar Start -->
-    <div class="title-bar is-flex is-align-items-center">
-      <h1 class="title is-4  has-text-white is-flex-shrink-1">{{$t('Apps')}}
-        <!-- <b-tooltip :label="$t(appHelpText)" type="is-dark" multilined v-if="showDragTip">
-          <b-icon icon="help-circle-outline" custom-size="mdi-18px"></b-icon>
-        </b-tooltip> -->
-      </h1>
-      <div class="buttons ">
-        <b-button id="v-step-0" icon-left="apps" type="is-dark" size="is-small" :loading="isShowing" rounded @click="showInstall">{{$t('App Store')}}</b-button>
-      </div>
+    <div class=" is-flex is-align-items-center mb-5">
+
+      <app-section-title-tip title="Apps" label="Drag icons to sort." id="appTitle1"></app-section-title-tip>
     </div>
     <!-- Title Bar End -->
 
     <!-- App List Start -->
-    <draggable class="columns is-variable is-2 is-multiline app-list" tag="div" v-model="appList" v-bind="dragOptions" @start="drag = true" @end="onSortEnd" :draggable="draggable">
+    <draggable class="columns is-variable is-2 is-multiline app-list contextmenu-canvas" tag="div" v-model="appList" v-bind="dragOptions" @start="drag = true" @end="onSortEnd" :draggable="draggable">
       <template v-if="!isLoading">
 
         <!-- App Icon Card Start -->
@@ -33,9 +27,6 @@
           <app-card :item="item" @updateState="getList" @configApp="showConfigPanel" :isCasa="true"></app-card>
         </div>
         <!-- App Icon Card End -->
-        <!-- If None Apps Start -->
-        <app-new-button-card v-if="appList.length == 0" slot="header" @showInstall="showInstall"></app-new-button-card>
-        <!-- If None Apps End -->
 
       </template>
 
@@ -44,17 +35,13 @@
     <!-- App List End -->
     <template v-if="notImportedList.length > 0">
       <!-- Title Bar Start -->
-      <div class="title-bar is-flex is-align-items-center mt-6">
-        <h1 class="title is-4  has-text-white is-flex-shrink-1">{{$t('Existing Docker Apps')}}
-          <!-- <b-tooltip :label="$t(importHelpText)" type="is-dark" multilined>
-            <b-icon icon="help-circle-outline" custom-size="mdi-18px"></b-icon>
-          </b-tooltip> -->
-        </h1>
+      <div class="title-bar is-flex is-align-items-center mt-2rem">
+        <app-section-title-tip title="Existing Docker Apps" label="Click icon to import." id="appTitle2"></app-section-title-tip>
       </div>
       <!-- Title Bar End -->
 
       <!-- App List Start -->
-      <div class="columns is-variable is-2 is-multiline app-list">
+      <div class="columns is-variable is-2 is-multiline app-list contextmenu-canvas">
         <!-- Application not imported Start -->
         <div class="column is-narrow is-3" v-for="(item) in notImportedList" :key="'app-'+item.name">
           <app-card :item="item" @updateState="getList" @configApp="showConfigPanel" @importApp="showConfigPanel" :isCasa="false"></app-card>
@@ -70,28 +57,64 @@
 <script>
 import AppCard from './AppCard.vue'
 import AppPanel from './AppPanel.vue'
+import AppSectionTitleTip from './AppSectionTitleTip.vue'
 import draggable from 'vuedraggable'
-import AppNewButtonCard from './AddNewButtonCard.vue'
 import xor from 'lodash/xor'
 import concat from 'lodash/concat'
+
+const builtInApplications = [
+  {
+    id: "1",
+    name: "App Store",
+    icon: require(`@/assets/img/app/appstore.svg`),
+    state: "0",
+    custom_id: "1",
+    type: "system"
+  },
+  {
+    id: "2",
+    name: "Files",
+    icon: require(`@/assets/img/app/files.svg`),
+    state: "0",
+    custom_id: "2",
+    type: "system"
+  },
+  {
+    id: "3",
+    name: "Connect",
+    icon: require(`@/assets/img/share/folder-publicshare.svg`),
+    state: "0",
+    custom_id: "3",
+    type: "system"
+  },
+]
+
+const orderConfig = "app_order"
+
 export default {
   data() {
     return {
+      user_id: localStorage.getItem("user_id"),
       appList: [],
       notImportedList: [],
       appConfig: {},
       drag: false,
       isLoading: true,
       isShowing: false,
-      importHelpText: "Click icon to import apps into CasaOS",
-      appHelpText: 'Drag icons to sort',
+      importHelpText: "Click icon to import.",
+      appHelpText: 'Drag icons to sort.',
       draggable: ".handle"
     }
   },
   components: {
     AppCard,
-    AppNewButtonCard,
-    draggable
+    draggable,
+    AppSectionTitleTip
+  },
+  provide() {
+    return {
+      openAppStore: this.showInstall,
+    };
   },
   computed: {
     dragOptions() {
@@ -111,9 +134,7 @@ export default {
     this.draggable = this.isMobile() ? "" : ".handle"
   },
   methods: {
-    onChange(e) {
-      console.log(e);
-    },
+
     isMobile() {
       let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
       return flag
@@ -125,10 +146,12 @@ export default {
     async getList() {
       let listRes = await this.$api.app.myAppList()
       if (listRes.data.success == 200) {
-        let casaAppList = listRes.data.data.list
-        let sortRes = await this.$api.app.getAppListOrder()
+        const orgAppList = listRes.data.data.list
+        let casaAppList = concat(builtInApplications, orgAppList)
+        casaAppList.reverse()
+        let sortRes = await this.$api.user.getCustomConfig(this.user_id, orderConfig)
         if (sortRes.data.success == 200) {
-          let sortList = sortRes.data.data
+          let sortList = sortRes.data.data.data
           let newList = casaAppList.map((item) => {
             return item.custom_id
           })
@@ -173,9 +196,9 @@ export default {
         return item.custom_id
       })
       let data = {
-        data: JSON.stringify(newList)
+        data: newList
       }
-      this.$api.app.saveAppListOrder(data)
+      this.$api.user.postCustomConfig(this.user_id, orderConfig, data)
     },
     /**
      * @description: Handle on Sort End
@@ -229,7 +252,6 @@ export default {
      */
     showConfigPanel(id, status, isCasa) {
       this.$api.app.getContainerSettingdata(id).then(ret => {
-        console.log(ret.data.data);
         this.$api.app.appConfig().then(res => {
           if (res.data.success == 200) {
             this.$buefy.modal.open({
@@ -274,5 +296,53 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.app-list {
+  position: relative;
+}
+
+@media screen and (max-width: 480px) {
+  .app-list {
+    display: flex;
+
+    .column {
+      flex: none;
+      width: 50%;
+    }
+  }
+}
+
+@media screen and (min-width: $tablet) {
+  .app-list {
+    .column {
+      flex: none;
+      width: 50%;
+    }
+  }
+}
+@media screen and (min-width: $desktop) {
+  .app-list {
+    .column {
+      flex: none;
+      width: 33.333333%;
+    }
+  }
+}
+@media screen and (min-width: $widescreen) {
+  .app-list {
+    .column {
+      flex: none;
+      width: 25%;
+    }
+  }
+}
+
+@media screen and (min-width: $fullhd) {
+  .app-list {
+    .column {
+      flex: none;
+      width: 20%;
+    }
+  }
+}
 </style>

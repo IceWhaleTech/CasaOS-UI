@@ -1,15 +1,15 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-02-11 14:53:46
- * @LastEditors: 老竭力 jerrykuku@qq.com
- * @LastEditTime: 2022-05-06 17:55:16
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-21 11:30:11
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\forms\CommandsInput.vue
 -->
 <template>
   <div class="mb-5">
     <div class="field is-flex is-align-items-center mb-2">
-      <label class="label mb-0 flex1">{{label}}</label>
+      <label class="label mb-0 is-flex-grow-1">{{label}}</label>
       <b-button icon-left="plus" size="is-small" rounded @click="addItem">{{$t('Add')}}</b-button>
     </div>
     <div class="is-flex is-align-items-center mb-5 info" v-if="items.length == 0">

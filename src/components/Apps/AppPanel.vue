@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-03-01 21:10:57
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-07 12:09:32
+ * @LastEditTime: 2022-06-28 09:26:07
  * @FilePath: \CasaOS-UI\src\components\Apps\AppPanel.vue
  * @Description: 
  * 
@@ -19,7 +19,7 @@
         <div class="modal-card app-detial">
           <!-- Header Start -->
           <header class="modal-card-head" style="background:#ff000">
-            <div class="flex1">
+            <div class="is-flex-grow-1">
               <div @click="close" class="button is-ghost auto-height pl-0 pt-0 pb-0">
                 <b-icon icon="chevron-left" size="is-medium" class="mr-1"></b-icon> {{ $t('Back') }}
               </div>
@@ -32,10 +32,10 @@
               <div class="header-icon mr-5">
                 <b-image :src="appDetailData.icon" :key="appDetailData.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-128x128 icon-shadow"></b-image>
               </div>
-              <div class="flex1 is-flex is-align-items-center">
+              <div class="is-flex-grow-1 is-flex is-align-items-center">
                 <div>
                   <h4 class="title store-title is-4 ">{{appDetailData.title}}</h4>
-                  <p class="subtitle is-size-66 two-line">{{appDetailData.tagline}}</p>
+                  <p class="subtitle is-size-14px two-line">{{appDetailData.tagline}}</p>
                   <p class="description">
                     <b-button type="is-primary" size="is-normal" @click="qucikInstall(appDetailData.id)" :loading="appDetailData.id == currentInstallId" rounded>{{$t('Install')}}</b-button>
                   </p>
@@ -51,7 +51,7 @@
                   <p class="title">
                     <b-icon :icon="appDetailData.category_font" custom-size="mdi-36px"></b-icon>
                   </p>
-                  <p class="footing is-size-65">{{appDetailData.category}}</p>
+                  <p class="footing is-size-14px">{{appDetailData.category}}</p>
                 </div>
               </div>
               <div class="level-item has-text-centered">
@@ -60,21 +60,21 @@
                   <p class="title">
                     <b-icon icon="account-circle-outline" custom-size="mdi-36px"></b-icon>
                   </p>
-                  <p class="footing is-size-65">{{appDetailData.developer}}</p>
+                  <p class="footing is-size-14px">{{appDetailData.developer}}</p>
                 </div>
               </div>
               <div class="level-item has-text-centered">
                 <div>
                   <p class="heading "><span class="is-hidden-mobile">{{ $t('REQUIRE') }} </span>{{ $t('MEMORY') }}</p>
                   <p class="title has-text-weight-normal">{{appDetailData.min_memory}}</p>
-                  <p class="footing is-size-65">MB</p>
+                  <p class="footing is-size-14px">MB</p>
                 </div>
               </div>
               <div class="level-item has-text-centered">
                 <div>
                   <p class="heading"><span class="is-hidden-mobile">{{ $t('REQUIRE') }} </span>{{ $t('DISK') }}</p>
                   <p class="title has-text-weight-normal">{{appDetailData.min_disk}}</p>
-                  <p class="footing is-size-65">MB</p>
+                  <p class="footing is-size-14px">MB</p>
                 </div>
               </div>
             </nav>
@@ -98,9 +98,9 @@
 
             <!-- App Info  Start -->
             <div class="app-desc mt-4 mb-6">
-              <p class="is-size-66 mb-2 un-break-word">{{appDetailData.tagline}}</p>
-              <p class="is-size-66 un-break-word">{{appDetailData.description}}</p>
-              <!-- <p class="is-size-66 " v-html="appDetailData.tip"></p> -->
+              <p class="is-size-14px mb-2 un-break-word">{{appDetailData.tagline}}</p>
+              <p class="is-size-14px un-break-word">{{appDetailData.description}}</p>
+              <!-- <p class="is-size-14px " v-html="appDetailData.tip"></p> -->
             </div>
             <!-- App Info  End -->
 
@@ -113,8 +113,8 @@
 
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
-      <div class="flex1">
-        <h3 class="title is-4 has-text-weight-normal">{{panelTitle}}</h3>
+      <div class="is-flex-grow-1">
+        <h3 class="title is-3">{{panelTitle}}</h3>
       </div>
       <div class="is-flex is-align-items-center">
         <b-button v-if="currentSlide == 0" icon-left="view-grid-plus" size="is-small" type="is-primary" :label="$t('Custom Install')" @click="currentSlide = 1" class="mr-2" rounded />
@@ -155,7 +155,7 @@
                   <div class=" mr-3" @click="showAppDetial(item.id)">
                     <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" :placeholder="require('@/assets/img/app/default.png')" class="is-48x48 is-clickable"></b-image>
                   </div>
-                  <div class="flex1 mr-4 is-clickable" @click="showAppDetial(item.id)">
+                  <div class="is-flex-grow-1 mr-4 is-clickable" @click="showAppDetial(item.id)">
                     <h6 class="title is-6 mb-2 ">{{item.title}}</h6>
                     <p class="is-size-7 two-line">{{item.tagline}}</p>
                   </div>
@@ -175,7 +175,7 @@
         <!-- List condition Start -->
         <div class="is-flex mt-5 mb-5">
           <!-- Cate Start -->
-          <div class="flex1">
+          <div class="is-flex-grow-1">
             <b-dropdown aria-role="list" class="app-select file-dropdown" position="is-bottom-right" v-model="currentCate" scrollable animation="fade1" :mobile-modal="false">
               <template #trigger="{ active }">
                 <div class="button is-text auto-height pl-0 pt-0 pb-0 ">
@@ -202,7 +202,7 @@
             {{ $t('Sort by') }}:
             <b-dropdown aria-role="list" class="app-select file-dropdown" position="is-bottom-right" v-model="currentSort" animation="fade1" :mobile-modal="false">
               <template #trigger="{ active }">
-                <div class="button is-text auto-height pl-0 pt-0 pb-0 is-size-65">
+                <div class="button is-text auto-height pl-0 pt-0 pb-0 is-size-14px">
                   {{currentSort.name}}
                   <b-icon :icon="active ? 'chevron-up' : 'chevron-down'" size="is-normal" class="ml-1"></b-icon>
                 </div>
@@ -228,14 +228,14 @@
               <div class="list-icon mr-4 is-clickable" @click="showAppDetial(item.id)">
                 <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-72x72 icon-shadow"></b-image>
               </div>
-              <div class="flex1 mr-4 is-clickable" @click="showAppDetial(item.id)">
+              <div class="is-flex-grow-1 mr-4 is-clickable" @click="showAppDetial(item.id)">
                 <h6 class="title is-6 mb-2">{{item.title}}</h6>
                 <p class="is-size-7 two-line">{{item.tagline}}</p>
               </div>
 
             </div>
             <div class="mt-1 ml-7 is-flex is-align-items-center">
-              <div class="flex1 is-size-7 has-text-grey-light	">{{item.category}}</div>
+              <div class="is-flex-grow-1 is-size-7 has-text-grey-light	">{{item.category}}</div>
               <b-button type="is-primary is-light" size="is-small" rounded @click="qucikInstall(item.id)" :loading="item.id == currentInstallId">{{$t('Install')}}</b-button>
             </div>
           </div>
@@ -255,14 +255,14 @@
                 <div class="list-icon mr-4 is-clickable" @click="showAppDetial(item.id)">
                   <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-72x72 icon-shadow"></b-image>
                 </div>
-                <div class="flex1 mr-4 is-clickable" @click="showAppDetial(item.id)">
+                <div class="is-flex-grow-1 mr-4 is-clickable" @click="showAppDetial(item.id)">
                   <h6 class="title is-6 mb-2">{{item.title}}</h6>
                   <p class="is-size-7 two-line">{{item.tagline}}</p>
                 </div>
 
               </div>
               <div class="mt-1 ml-7 is-flex is-align-items-center">
-                <div class="flex1 is-size-7 has-text-grey-light	">{{item.category}}</div>
+                <div class="is-flex-grow-1 is-size-7 has-text-grey-light	">{{item.category}}</div>
                 <b-button type="is-primary is-light" size="is-small" rounded @click="qucikInstall(item.id)" :loading="item.id == currentInstallId">{{$t('Install')}}</b-button>
               </div>
             </div>
@@ -302,12 +302,12 @@
             <!-- <p class="control">
               <span class="button is-static">{{baseUrl}}</span>
             </p> -->
-            <b-select v-model="initData.protocol" >
+            <b-select v-model="initData.protocol">
               <option value="http">http://</option>
               <option value="https">https://</option>
             </b-select>
             <b-input v-model="initData.host" :placeholder="baseUrl" expanded></b-input>
-            <b-autocomplete class="has-colon" :placeholder="$t('Port')" v-model="initData.port_map" :data="bridgePorts" :open-on-focus="true" field="host" @select="option => (portSelected = option)" ></b-autocomplete>
+            <b-autocomplete class="has-colon" :placeholder="$t('Port')" v-model="initData.port_map" :data="bridgePorts" :open-on-focus="true" field="host" @select="option => (portSelected = option)"></b-autocomplete>
             <b-input v-model="initData.index" :placeholder="'/index.html '+ $t('[Optional]')" expanded></b-input>
           </b-field>
           <template v-if="isCasa">
@@ -400,7 +400,7 @@
     <!-- Modal-Card Footer Start-->
     <footer class="modal-card-foot is-flex is-align-items-center " :class="{'is-justify-content-center':currentSlide == 0}">
       <template>
-        <div class="flex1">
+        <div class="is-flex-grow-1">
           <!-- <div v-if="currentSlide == 0">
             <b-pagination v-if="listTotal > pageSize" :total="listTotal" v-model="pageIndex" range-before=1 range-after=1 order="is-centered" size="is-small" :simple="false" :rounded="true" :per-page="pageSize" icon-prev="chevron-left" icon-next="chevron-right" aria-next-label="Next page" aria-previous-label="Previous page" aria-page-label="Page" aria-current-label="Current page">
             </b-pagination>
@@ -683,7 +683,6 @@ export default {
     },
     filteredBeidgePort() {
       return this.bridgePorts.filter(port => {
-        console.log(port.host);
         return port.host.indexOf(this.initData.port_map) >= 0
       })
 
@@ -772,14 +771,6 @@ export default {
   },
   methods: {
 
-    analyse(data) {
-      try {
-        const appName = data.label
-        const action = "install"
-        this.$api.analyse.analyseAppAction(appName, action)
-        // eslint-disable-next-line no-empty
-      } catch (err) { }
-    },
     /**
      * @description: 
      * @param {*} function
@@ -936,7 +927,7 @@ export default {
       let html = "";
       if (!isNull(data) && data != "") {
         JSON.parse(data).forEach(item => {
-          html += "<span class=' is-size-65 un-break-word'>" + item.content + "</span>"
+          html += "<span class=' is-size-14px un-break-word'>" + item.content + "</span>"
           if (item.value != '') {
             html += "<span class='tag is-primary ml-1'>" + item.value + "</span>"
           }
@@ -1021,7 +1012,6 @@ export default {
         this.isLoading = false;
         if (res.data.success == 200) {
           this.currentInstallAppName = res.data.data
-          this.analyse(this.initData)
           this.currentSlide = 2;
           this.currentInstallAppText = "Start Installation..."
           this.cancelButtonText = 'Continue in background'
@@ -1076,7 +1066,9 @@ export default {
           'update': (e) => {
             //localStorage.removeItem("app_data")
             this.initData = e
-            this.changeIcon(this.initData.image)
+            if (this.initData.icon == "") {
+              this.changeIcon(this.initData.image)
+            }
             this.$buefy.dialog.alert({
               title: '⚠️ ' + this.$t('Attention'),
               message: '<div class="nobrk"><h4 class="title is-5">' + this.$t('AutoFill only helps you to complete most of the configuration.') + '</h4>' +
@@ -1259,13 +1251,225 @@ export default {
         }
       } else {
         localStorage.removeItem("app_data")
-        let _this = this
         setTimeout(() => {
-          _this.$emit('updateState')
-          _this.$emit('close')
+          this.$emit('updateState')
+          this.$emit('close')
         }, 500)
       }
     },
   }
 }
 </script>
+
+
+<style lang="scss">
+.app-item {
+  border-radius: 0.5rem;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background-color: hsl(0, 0%, 97%);
+  }
+}
+
+.level-item {
+  .icon {
+    overflow: initial;
+  }
+}
+
+.install-animation {
+  width: 200px;
+  height: 200px;
+}
+
+.creating-animation {
+  width: 16rem;
+  height: 16rem;
+}
+
+.app-detial {
+  overflow: auto;
+  height: 100%;
+
+  .app-header {
+    position: relative;
+  }
+
+  .level {
+    .footing {
+      color: hsl(0, 0%, 48%);
+    }
+  }
+
+  .swiper-button-next,
+  .swiper-rtl .swiper-button-prev {
+    right: -20px;
+    left: auto;
+  }
+
+  .swiper-button-prev,
+  .swiper-rtl .swiper-button-next {
+    left: -20px;
+    right: auto;
+  }
+}
+
+.featured-app {
+  .swiper-button-next,
+  .swiper-rtl .swiper-button-prev {
+    right: -20px;
+    top: calc(50% - 2.25rem);
+    left: auto;
+  }
+
+  .swiper-button-prev,
+  .swiper-rtl .swiper-button-next {
+    left: -20px;
+    top: calc(50% - 2.25rem);
+    right: auto;
+  }
+
+  .button {
+    box-sizing: border-box !important;
+  }
+}
+
+.app-select {
+  .dropdown-menu {
+    min-width: 1rem !important;
+  }
+
+  .dropdown-content {
+    border-radius: 0.5rem;
+    overflow-y: overlay !important;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      outline: none;
+    }
+  }
+
+  a.dropdown-item {
+    padding-right: 1.5rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .app-panel {
+    .animation-content {
+      max-width: 90% !important;
+    }
+
+    .modal-card {
+      width: 90vw;
+      transition: all 0.3s;
+
+      &.narrow {
+        width: 50rem !important;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .app-panel {
+    .modal-card {
+      width: 81rem !important;
+    }
+  }
+}
+
+@media screen and (max-width: 1366px) {
+  .f-list {
+    .is-one-quarter {
+      width: 33.333333% !important;
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .f-list {
+    .is-one-quarter {
+      width: 50% !important;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .modal-card {
+    max-height: 100vh !important;
+    border-radius: 0;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .app-detial {
+    overflow: auto;
+    height: 100%;
+
+    .modal-card-head {
+      .button {
+        -webkit-tap-highlight-color: transparent;
+      }
+    }
+
+    .app-header {
+      position: relative;
+
+      .header-icon {
+        .is-128x128 {
+          height: 96px;
+          width: 96px;
+        }
+      }
+
+      .store-title {
+        font-size: 1.125rem;
+      }
+
+      .subtitle {
+        font-size: 0.75rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .description {
+        .button {
+          font-size: 0.75rem;
+        }
+      }
+    }
+
+    .level {
+      .mdi-36px.mdi-set,
+      .mdi-36px.mdi:before {
+        font-size: 24px;
+      }
+
+      .title {
+        font-size: 24px;
+      }
+
+      .footing {
+        font-size: 0.6rem !important;
+      }
+    }
+  }
+
+  .f-list {
+    .is-one-quarter {
+      width: 100% !important;
+    }
+  }
+}
+</style>

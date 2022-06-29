@@ -2,21 +2,21 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-14 13:40:51
+ * @LastEditTime: 2022-06-28 14:55:06
  * @Description: Top bar 
  * @FilePath: \CasaOS-UI\src\components\TopBar.vue
 -->
 
 <template>
   <div class="navbar top-bar is-flex is-align-items-center">
-    <div class="navbar-brand ml-3">
+    <div class="navbar-brand ml-4">
 
       <!-- SideBar Button Start -->
       <div class="is-flex is-align-items-center mr-3 ml-3" id="sidebar-btn">
         <b-tooltip :label="sidebarIconLabel" :active="!$store.state.isMobile" position="is-right" type="is-dark">
-          <p role="button" @click="showSideBar">
-            <b-icon :icon="sidebarIcon"></b-icon>
-          </p>
+          <div role="button" @click="showSideBar">
+            <b-icon :icon="sidebarIcon" class="picon"></b-icon>
+          </div>
         </b-tooltip>
       </div>
       <!-- SideBar Button Start -->
@@ -26,7 +26,7 @@
         <template #trigger>
           <b-tooltip :label="$t('Account')" :active="!$store.state.isMobile" position="is-right" type="is-dark">
             <p role="button">
-              <b-icon class="picon" icon="account-circle"></b-icon>
+              <b-icon pack="casa" class="picon" icon="account"></b-icon>
             </p>
           </b-tooltip>
         </template>
@@ -35,7 +35,7 @@
           <h2 class="title is-4">{{$t('Account')}}</h2>
 
           <div class="is-flex is-align-items-center item">
-            <div class="is-flex is-align-items-center flex1">
+            <div class="is-flex is-align-items-center is-flex-grow-1">
               <b-image :src="require('@/assets/img/account/default-avatar.svg')" class="is-40x40 mr-3" rounded></b-image>
               <b>{{userInfo.user_name}}</b>
             </div>
@@ -47,7 +47,7 @@
           </div>
 
           <div class="is-flex is-align-items-center item mt-2">
-            <div class="is-flex is-align-items-center flex1">
+            <div class="is-flex is-align-items-center  is-flex-grow-1">
             </div>
             <div>
               <b-button type="is-dark" size="is-small" class="ml-2 " rounded @click="logout">{{$t('Logout')}}</b-button>
@@ -59,11 +59,11 @@
       <!-- Account Dropmenu End -->
 
       <!-- Settings Dropmenu Start -->
-      <b-dropdown aria-role="list" class="navbar-item" animation="fade1" @active-change="onOpen">
+      <b-dropdown aria-role="list" ref="settingsDrop" class="navbar-item" animation="fade1" @active-change="onOpen">
         <template #trigger>
           <b-tooltip :label="$t('Settings')" :active="!$store.state.isMobile" position="is-right" type="is-dark">
             <p role="button">
-              <b-icon icon="tune" class="picon" :class="{'update-icon-dot': updateInfo.is_need }"></b-icon>
+              <b-icon pack="casa" icon="tune" class="picon" :class="{'update-icon-dot': updateInfo.is_need }"></b-icon>
             </p>
           </b-tooltip>
         </template>
@@ -71,10 +71,23 @@
         <b-dropdown-item aria-role="menu-item" :focusable="false" custom>
           <h2 class="title is-4">{{$t('Dashboard Setting')}}</h2>
 
-          <!-- Search Engine Start -->
+          <!-- Search Engine Switch Start  -->
           <div class="is-flex is-align-items-center mb-2 h-30">
-            <div class="is-flex is-align-items-center flex1">
-              <b-icon icon="magnify" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{$t('Search Engine')}}</b>
+            <div class="is-flex is-align-items-center is-flex-grow-1">
+              <b-icon pack="casa" icon="search-manage" class="mr-1"></b-icon> <b>{{$t('Show Search Bar')}}</b>
+            </div>
+            <div>
+              <b-field>
+                <b-switch type="is-dark" class="is-flex-direction-row-reverse mr-0" v-model="barData.search_switch" @input="saveData"></b-switch>
+              </b-field>
+            </div>
+          </div>
+          <!-- Search Engine Switch End  -->
+
+          <!-- Search Engine Start -->
+          <div class="is-flex is-align-items-center mb-2 h-30" v-if="barData.search_switch">
+            <div class="is-flex is-align-items-center is-flex-grow-1">
+              <b-icon pack="casa" icon="magnifier" class="mr-1"></b-icon> <b>{{$t('Search Engine')}}</b>
             </div>
             <div>
               <b-field>
@@ -88,7 +101,7 @@
 
           <!-- Language Start -->
           <div class="is-flex is-align-items-center mb-2 h-30">
-            <div class="is-flex is-align-items-center flex1">
+            <div class="is-flex is-align-items-center is-flex-grow-1">
               <b-icon icon="translate" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{ $t('Language') }}</b>
             </div>
             <div>
@@ -103,21 +116,45 @@
 
           <!-- WebUI Port Start -->
           <div class="is-flex is-align-items-center mb-2 h-30">
-            <div class="is-flex is-align-items-center flex1">
+            <div class="is-flex is-align-items-center is-flex-grow-1">
               <b-icon icon="view-dashboard-outline" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{$t('WebUI Port')}}</b>
             </div>
             <div>
               {{port}}
             </div>
             <div class="ml-2">
-              <b-button type="is-dark" size="is-small" rounded @click="showPortPanel">{{$t('Edit')}}</b-button>
+              <b-button type="is-dark" size="is-small" rounded @click="showPortPanel">{{$t('Change')}}</b-button>
             </div>
           </div>
           <!-- WebUI Port End -->
 
+          <!-- Background Start -->
+          <div class="is-flex is-align-items-center mb-2 h-30">
+            <div class="is-flex is-align-items-center is-flex-grow-1">
+              <b-icon pack="casa" icon="picture" class="mr-1"></b-icon> <b>{{$t('Wallpaper')}}</b>
+            </div>
+            <div class="ml-2">
+              <b-button type="is-dark" size="is-small" rounded @click="showChangeWallpaperModal">{{$t('Change')}}</b-button>
+            </div>
+          </div>
+          <!-- Background End -->
+
+          <!--  Recommended modules Switch Start  -->
+          <div class="is-flex is-align-items-center mb-2 h-30">
+            <div class="is-flex is-align-items-center is-flex-grow-1">
+              <b-icon icon="application-outline" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{$t('Show Recommended Apps')}}</b>
+            </div>
+            <div>
+              <b-field>
+                <b-switch type="is-dark" class="is-flex-direction-row-reverse mr-0" v-model="barData.recommend_switch" @input="saveData"></b-switch>
+              </b-field>
+            </div>
+          </div>
+          <!-- Recommended modules Switch End  -->
+
           <!-- Automount USB Drive Start  -->
           <div class="is-flex is-align-items-center mb-2 h-30">
-            <div class="is-flex is-align-items-center flex1">
+            <div class="is-flex is-align-items-center is-flex-grow-1">
               <b-icon icon="usb-flash-drive-outline" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{$t('Automount USB Drive')}}</b>
               <b-tooltip :label="$t('Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB')" type="is-dark" multilined v-if="isRaspberryPi">
                 <b-icon icon="help-circle-outline" size="is-small" class="ml-1"></b-icon>
@@ -133,7 +170,7 @@
 
           <!-- Update Start -->
           <div class="is-flex is-align-items-center h-30">
-            <div class="is-flex is-align-items-center flex1">
+            <div class="is-flex is-align-items-center is-flex-grow-1">
               <b-icon icon="sync" class="mr-1" custom-size="mdi-18px"></b-icon> <b :class="{'update-text-dot': updateInfo.is_need}">{{$t('Update')}}</b>
             </div>
             <div>
@@ -146,7 +183,7 @@
             <b-icon type="is-success" icon="check" class="ml-1" custom-size="mdi-18px"></b-icon>
           </div>
           <div class="is-flex is-align-items-center is-justify-content-end update-container pl-5 " v-else>
-            <div class="flex1 is-size-7">{{$t(updateText)}}</div>
+            <div class="is-flex-grow-1 is-size-7">{{$t(updateText)}}</div>
             <b-button type="is-dark" size="is-small" class="ml-2" rounded @click="showUpdateModal">{{$t('Update')}}</b-button>
           </div>
           <!-- Update End -->
@@ -156,10 +193,10 @@
       <!-- Settings Dropmenu End -->
 
       <!-- Terminal  Start -->
-      <div class="is-flex is-align-items-center ml-3">
+      <div class="is-flex is-align-items-center ml-2">
         <b-tooltip :label="$t('Terminal & Logs')" :active="!$store.state.isMobile" position="is-right" type="is-dark">
           <p role="button" @click="showTerminalPanel">
-            <b-icon class="picon" icon="console"></b-icon>
+            <b-icon pack="casa" class="picon" icon="terminal"></b-icon>
           </p>
         </b-tooltip>
       </div>
@@ -182,21 +219,22 @@ import PortPanel from './settings/PortPanel.vue'
 import UpdateModal from './settings/UpdateModal.vue'
 import { mixin } from '../mixins/mixin';
 
+const systemConfigName = "system"
+
 export default {
   name: "top-bar",
   mixins: [mixin],
   data() {
     return {
       timer: 0,
+      user_id: localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 1,
       barData: {
-        auto_update: false,
-        background: "",
-        background_type: "",
-        search_engine: "https://duckduckgo.com/?q=",
-        search_switch: false,
-        shortcuts_switch: false,
-        widgets_switch: false,
         lang: this.getInitLang(),
+        search_engine: "https://duckduckgo.com/?q=",
+        search_switch: true,
+        recommend_switch: true,
+        shortcuts_switch: false, // Not used
+        widgets_switch: false, // Not used
       },
       updateInfo: {
         current_version: '0',
@@ -230,6 +268,11 @@ export default {
       ]
     }
   },
+  props: {
+    initBarData: {
+      type: Object
+    },
+  },
   computed: {
     sidebarIcon() {
       return this.$store.state.sidebarOpen ? "close" : "menu"
@@ -241,10 +284,38 @@ export default {
       return this.deviceModel.toLowerCase().indexOf("raspberry") >= 0
     }
   },
-  created() {
-    this.getConfig();
-    this.getPort();
+  watch: {
+    'barData.lang': {
+      handler(val) {
+        const lang = val.includes("_") ? val : "en_us";
+        this.setLang(lang)
+      },
+      deep: true
+    },
+    'barData.search_engine': {
+      handler(val) {
+        this.$store.commit('changeSearchEngine', val);
+      },
+      deep: true
+    },
+    'barData.search_switch': {
+      handler(val) {
+        this.$store.commit('changeSearchEngineSwitch', val);
+      },
+      deep: true
+    },
+    'barData.recommend_switch': {
+      handler(val) {
+        this.$store.commit('changeRecommendSwitch', val);
+      },
+      deep: true
+    },
 
+  },
+  created() {
+    this.barData = this.initBarData
+    // this.getConfig();
+    this.getPort();
   },
   mounted() {
     this.checkVersion();
@@ -258,42 +329,15 @@ export default {
     * PART 0  Common
     **************************************************/
     /**
-     * @description: Get CasaOs Configs
-     * @param {*}
-     * @return {*}
-     */
-    getConfig() {
-      this.$api.info.systemConfig().then(res => {
-        if (res.data == undefined || res.data == '') {
-          this.barData.lang = this.getLangFromBrowser()
-          this.$api.info.saveSystemConfig(this.barData).then(res => {
-            if (res.data.success == 200) {
-              this.getConfig()
-            }
-          });
-        }
-        if (res.data.success == 200) {
-          this.barData = res.data.data
-          let lang = res.data.data.lang
-          lang = lang.includes("_") ? lang : "en_us";
-          this.setLang(lang)
-          this.updateStoreSearchEngine()
-          this.$emit('changeSiteLoading')
-        }
-      })
-    },
-
-    /**
      * @description: Save CasaOs Configs
      * @param {*}
      * @return {*}
      */
-    saveData() {
-      this.$api.info.saveSystemConfig(this.barData);
-      let lang = this.barData.lang
-      lang = lang.includes("_") ? lang : "en_us";
-      this.setLang(lang);
-      this.updateStoreSearchEngine();
+    async saveData() {
+      const saveRes = await this.$api.user.postCustomConfig(this.user_id, systemConfigName, this.barData)
+      if (saveRes.data.success === 200) {
+        this.barData = saveRes.data.data
+      }
     },
 
     /**
@@ -317,18 +361,6 @@ export default {
       this.$store.commit('changeSideBarState')
     },
 
-
-    /*************************************************
-    * PART 1-1  Dashboard Setting - Search Engine
-    **************************************************/
-    /**
-     * @description: Update search Engine in store
-     * @param {*}
-     * @return {*}
-     */
-    updateStoreSearchEngine() {
-      this.$store.commit('changeSearchEngine', this.barData.search_engine);
-    },
 
     /*************************************************
     * PART 1-2  Dashboard Setting - Language
@@ -366,6 +398,7 @@ export default {
      * @return {*} 
      */
     showPortPanel() {
+      this.$refs.settingsDrop.toggle()
       this.$buefy.modal.open({
         parent: this,
         component: PortPanel,
@@ -379,6 +412,10 @@ export default {
           initPort: this.port
         }
       })
+    },
+    showChangeWallpaperModal() {
+      this.$EventBus.$emit("showChangeWallpaperModal");
+      this.$refs.settingsDrop.toggle()
     },
 
 
@@ -475,12 +512,16 @@ export default {
      */
     getUserInfo() {
       this.$store.commit('closeSideBar')
-      this.$api.user.getUserInfo().then((res) => {
-        if (res.data.success == 200) {
-          this.$store.commit('changeUserInfo', res.data.data)
-          this.userInfo = res.data.data
-        }
-      })
+      if (!this.$store.userinfo) {
+        const user_id = localStorage.getItem('user_id') ? localStorage.getItem('user_id') : 1;
+        localStorage.setItem("user_id", user_id)
+        this.$api.user.getUserInfo(user_id).then((res) => {
+          if (res.data.success == 200) {
+            this.$store.commit('changeUserInfo', res.data.data)
+            this.userInfo = res.data.data
+          }
+        })
+      }
     },
 
     /**
@@ -501,6 +542,7 @@ export default {
     },
 
     logout() {
+      this.$store.commit('setDefaultWallpaper')
       this.$router.push("/logout");
     },
 
@@ -526,7 +568,145 @@ export default {
         animation: "zoom-in",
       })
     },
+
+
   },
 
 }
 </script>
+
+<style lang="scss" >
+.top-bar {
+  position: relative;
+  z-index: 20;
+  height: 3.75rem;
+  background: rgba(255, 255, 255, 1);
+
+  .navbar-brand {
+    height: 3.75rem;
+
+    .picon {
+      cursor: pointer;
+    }
+
+    .dropdown + .dropdown {
+      margin-left: 0;
+    }
+
+    .dropdown-trigger,
+    .tooltip-trigger {
+      height: 1.5rem;
+    }
+
+    .dropdown-menu {
+      margin-top: 0.5rem;
+      min-width: 20rem;
+
+      .dropdown-content {
+        background: rgba(255, 255, 255, 1);
+        backdrop-filter: blur(1rem);
+
+        .dropdown-item {
+          padding: 0.875rem 1.25rem;
+          text-align: left;
+
+          .item {
+            height: 2rem;
+          }
+        }
+      }
+    }
+  }
+
+  .set-select {
+    .select {
+      &::after {
+        border-color: #000 !important;
+      }
+    }
+
+    select {
+      background-color: transparent !important;
+      border-color: #000 !important;
+    }
+  }
+
+  .field {
+    line-height: 1rem;
+  }
+
+  .switch {
+    &.is-flex-direction-row-reverse {
+      .control-label {
+        padding-left: 0;
+        padding-right: calc(0.75em - 1px);
+      }
+    }
+  }
+
+  .update-container {
+    .button.is-rounded {
+      padding-left: calc(1em + 0.25em);
+      padding-right: calc(1em + 0.25em);
+      border-radius: 9999px !important;
+    }
+  }
+
+  .button {
+    &.is-small {
+      height: 2em;
+    }
+  }
+  .icon {
+    color: rgb(74, 74, 74);
+  }
+}
+
+.update-text-dot {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: $danger;
+    right: -0.5rem;
+    top: 0rem;
+  }
+}
+
+.update-icon-dot {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: $danger;
+    right: 0;
+    top: 0;
+  }
+}
+
+#sidebar-btn {
+  display: none !important;
+}
+@media screen and (max-width: 480px) {
+  #sidebar-btn {
+    display: flex !important;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .top-bar {
+    background: rgba(53, 54, 58, 1);
+    .picon {
+      color: #fff;
+    }
+  }
+}
+</style>

@@ -2,14 +2,14 @@
  * @Author: JerryK
  * @Date: 2022-03-04 18:55:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-02 14:38:10
+ * @LastEditTime: 2022-06-21 11:29:28
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\viewers\VideoPlayer.vue
 -->
 <template>
   <div class="overlay">
     <header class="modal-card-head">
-      <div class="flex1 is-flex ">
+      <div class="is-flex-grow-1 is-flex ">
         <!-- Title Start -->
         <h3 class="title is-5 one-line">{{item.name}}</h3>
         <!-- Title End -->

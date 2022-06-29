@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2021-10-27 15:44:17
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-05-17 00:33:24
+ * @LastEditTime: 2022-06-28 09:24:49
  * @FilePath: \CasaOS-UI\src\bak\Weather.vue
  * @Description: 
  * 
@@ -21,9 +21,6 @@ export default {
   title: "Weather",
   initShow: false,
   mounted() {
-    // this.$api.info.getIp().then(res => {
-    //   console.log(res);
-    // })
     this.addJs()
   },
   methods: {

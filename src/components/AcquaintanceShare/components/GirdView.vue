@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-03-11 22:14:41
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-02 20:14:29
+ * @LastEditTime: 2022-06-28 09:25:42
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\AcquaintanceShare\components\GirdView.vue
 -->
@@ -90,7 +90,6 @@ export default {
     this.onResize();
   },
   beforeDestroy() {
-    console.log("adad");
     window.removeEventListener('resize', this.onResize);
   },
   methods: {

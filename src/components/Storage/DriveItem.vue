@@ -14,7 +14,7 @@
       </div>
       <div class="ml-3 is-flex-grow-1 is-flex is-align-items-center">
         <div>
-          <h4 class="title is-size-6-5 mb-3 has-text-left one-line">{{item.name}}</h4>
+          <h4 class="title is-size-14px mb-3 has-text-left one-line">{{item.name}}</h4>
           <p class="has-text-left is-size-7 ">{{item.model}}, {{renderSize(item.size)}} {{item.disk_type}}</p>
         </div>
       </div>

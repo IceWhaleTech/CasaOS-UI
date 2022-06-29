@@ -11,8 +11,8 @@
 <template>
   <div :class="item | coverType">
     <transition name="fade">
-      <img alt="folder" :src="imageData" key="thumb" v-if="showThumb" class="has-absolute" :class="isWide?'thumb-w':'thumb-h'" />
-      <img alt="folder" :src="getIconFile(item)" :class="item | iconType" key="icon" class=" has-absolute" v-else />
+      <img alt="folder" :src="imageData" key="thumb" v-if="showThumb" class="is-absolute" :class="isWide?'thumb-w':'thumb-h'" />
+      <img alt="folder" :src="getIconFile(item)" :class="item | iconType" key="icon" class=" is-absolute" v-else />
     </transition>
   </div>
 </template>

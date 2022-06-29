@@ -1,8 +1,8 @@
 /*
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-11 13:38:06
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-28 14:36:41
  * @Description: 
  * @FilePath: \CasaOS-UI\src\router\index.js
  */
@@ -74,6 +74,7 @@ router.beforeEach((to, from, next) => {
 
   if (to.path == "/logout") {
     localStorage.removeItem("user_token");
+    localStorage.removeItem("wallpaper");
     next({ path: '/login' })
   }
   if (to.meta.requireAuth) {

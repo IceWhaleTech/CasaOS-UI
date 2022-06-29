@@ -123,5 +123,8 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+.xterm {
+  height: 20rem;
+}
 </style>

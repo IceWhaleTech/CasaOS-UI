@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-03-01 21:10:57
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-05-25 20:02:34
+ * @LastEditTime: 2022-06-19 20:49:37
  * @FilePath: \CasaOS-UI\src\widgets\Clock.vue
  * @Description: 
  * 
@@ -13,7 +13,7 @@
     <div class="blur-background"></div>
     <div class="widget-content">
       <div class="time">{{timeText}}</div>
-      <div class="data">{{dateText}}</div>
+      <div class="date">{{dateText}}</div>
     </div>
   </div>
 </template>
@@ -73,13 +73,11 @@ export default {
   font-weight: 300;
   text-align: left;
   .time {
-    font-size: 2.75rem;
-    line-height: 4.25rem;
-    opacity: 0.9;
+    font-size: 2rem;
+    font-weight: 500;
   }
-  .data {
-    line-height: 1.5rem;
-    opacity: 0.9;
+  .date {
+    font-size: 0.875rem;
   }
 }
 </style>

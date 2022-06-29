@@ -1,10 +1,10 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-01-24 11:57:35
- * @LastEditors: JerryK
- * @LastEditTime: 2022-01-26 10:56:41
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-22 19:21:34
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/FeedbackPanel.vue
+ * @FilePath: /CasaOS-UI/src/components/feedback/FeedbackPanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -12,10 +12,10 @@
     <!-- Modal-Card Body Start -->
     <section class="modal-card-body ">
 
-      <h2 class="title is-4">{{ $t('Bug report') }}</h2>
+      <h3 class="title is-3">{{ $t('Bug report') }}</h3>
       <div class="close-container"><button type="button" class="delete" @click="$emit('close')" /></div>
 
-      <div class="flex1 is-relative">
+      <div class="is-flex-grow-1 is-relative">
         <b-field :label="$t('Title')">
           <b-input maxlength="100" v-model="postTitle"></b-input>
         </b-field>
@@ -23,7 +23,7 @@
           <b-input maxlength="500" type="textarea" v-model="postBody" :placeholder="$t('A clear and concise description of what the bug is.')"></b-input>
         </b-field>
         <b-field :label="$t('System infomation')">
-          <vue-markdown :source="feedBody"></vue-markdown>
+          <div class="feedback-info-container is-size-14px" v-html="markdownToHtml"></div>
         </b-field>
       </div>
     </section>
@@ -31,7 +31,7 @@
     <!-- Modal-Card Body End -->
     <!-- Modal-Card Footer Start-->
     <footer class="modal-card-foot is-flex is-align-items-center ">
-      <div class="flex1"></div>
+      <div class="is-flex-grow-1"></div>
       <div>
         <b-button :label="$t('Submit')" type="is-primary" @click="submitIssue" rounded />
       </div>
@@ -42,14 +42,15 @@
 </template>
 
 <script>
-import VueMarkdown from 'vue-markdown'
+
 import browserInfo from 'browser-info'
 import newGithubIssueUrl from 'new-github-issue-url';
+import { marked } from 'marked'
 
 export default {
   name: "feedback-panel",
   components: {
-    VueMarkdown,
+
   },
   data() {
     return {
@@ -59,6 +60,13 @@ export default {
       postBody: "",
     }
   },
+
+  computed: {
+    markdownToHtml() {
+      return marked.parse(this.feedBody);
+    }
+  },
+
   mounted() {
     this.$api.info.getDebugInfo().then(res => {
       const browserInfos = browserInfo();
@@ -80,5 +88,71 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.feedback-info-container {
+  border-radius: 4px;
+  overflow: hidden;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: bold;
+    margin-bottom: 0.4rem;
+  }
+
+  h1 {
+    font-size: 2em;
+  }
+
+  h2 {
+    font-size: 1.5em;
+  }
+
+  h3 {
+    font-size: 1.17em;
+  }
+
+  h4 {
+    font-size: 1em;
+  }
+
+  h5 {
+    font-size: 0.83em;
+  }
+
+  h6 {
+    font-size: 0.67em;
+  }
+
+  ul {
+    margin-bottom: 0.5em;
+
+    li {
+      list-style: disc;
+      margin-left: 1rem;
+    }
+  }
+}
+
+.feedback-modal {
+  .modal-card-body {
+    overflow-y: hidden;
+    transition: height 0.3s;
+    padding: 2rem 2rem 2rem 2rem;
+    position: relative;
+  }
+
+  .modal-card-foot {
+    padding-top: 0;
+  }
+
+  .close-container {
+    position: absolute;
+    right: 2rem;
+    top: 2rem;
+  }
+}
 </style>

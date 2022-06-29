@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-03-11 13:36:11
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-15 18:15:46
+ * @LastEditTime: 2022-06-28 09:30:54
  * @Description: 
- * @FilePath: /CasaOS-UI/src/views/CasaConnect.vue
+ * @FilePath: \CasaOS-UI\src\views\CasaConnect.vue
 -->
 <template>
   <div class="acquaintance-share is-flex ">
@@ -159,7 +159,7 @@
           <b-loading :is-full-page="false" v-model="isLoading"></b-loading>
           <!-- Tool Bar Start -->
           <div class="tool-bar is-flex pt-4 pb-2">
-            <div class="breadcrumb-container  flex1" id="bread-container">
+            <div class="breadcrumb-container  is-flex-grow-1" id="bread-container">
               <history-button ref="historyBar" :user="currentUser"></history-button>
             </div>
             <div class="view-btns is-flex-shrink-0 is-flex is-align-items-center">
@@ -237,7 +237,7 @@
                   <b-image :src="require('@/assets/img/avatars/1-small.png')" rounded></b-image>
                 </div>
                 <div class="ml-2 is-flex-grow-1 has-text-left">
-                  <h1 class="is-size-65 mb-0 one-line has-text-weight-medium has-text-black">Kristin Watson</h1>
+                  <h1 class="is-size-14px mb-0 one-line has-text-weight-medium has-text-black">Kristin Watson</h1>
                 </div>
               </div>
               <div class="is-flex is-flex-shrink-0 is-size-7 time">
@@ -436,7 +436,7 @@ export default {
     **************************************************/
     // Get My Info
     getMyInfo() {
-      this.$api.user.getUserInfo().then(res => {
+      this.$api.user.getUserInfo(localStorage.getItem("user_id")).then(res => {
         this.myInfo = res.data.data
         if (!this.isInit) {
           this.showInitModal()
@@ -502,7 +502,6 @@ export default {
           this.currentPathName = path.split("/").pop()
           this.listData = orderBy(res.data.data, ['is_dir'], ['desc'])
           if (type == 2) {
-            console.log(path);
             this.$refs.historyBar.clearHistory();
           } else if (type == 1) {
             this.$refs.historyBar.addHistory(path);
@@ -510,7 +509,6 @@ export default {
 
         } else {
           this.listData = []
-          console.log(res.data.message);
         }
         this.$store.commit('changeCurrentSharePath', path)
 
@@ -627,11 +625,6 @@ export default {
         canCancel: ['escape'],
         scroll: "keep",
         animation: "zoom-in",
-        events: {
-          'after-enter': () => {
-            console.log("enter");
-          }
-        }
       })
     },
 

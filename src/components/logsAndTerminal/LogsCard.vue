@@ -80,5 +80,14 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.logs {
+  white-space: pre-wrap;
+  color: #fff;
+  font-size: 0.875rem;
+  line-height: 1.5em;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 20rem;
+}
 </style>

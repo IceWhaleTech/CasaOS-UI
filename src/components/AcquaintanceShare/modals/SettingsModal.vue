@@ -2,8 +2,8 @@
   <div class="modal-card">
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
-      <div class="flex1">
-        <h3 class="title is-4 has-text-weight-normal">{{$t('Share-Setting')}}</h3>
+      <div class="is-flex-grow-1">
+        <h3 class="title is-3">{{$t('Share-Setting')}}</h3>
       </div>
       <div><button type="button" class="delete" @click="$emit('close')" /></div>
     </header>
@@ -13,7 +13,7 @@
       <div class="node-card">
         <div class="is-flex is-align-items-center">
           <div class="is-flex-grow-1">
-            <h4 class="title is-size-65">{{ $t('Shared folders') }}</h4>
+            <h4 class="title is-size-14px">{{ $t('Shared folders') }}</h4>
           </div>
           <div>
             <b-button type="is-primary" size="is-small" :label="$t('Add')" @click="showFolderModal('add','/DATA')" rounded />
@@ -59,7 +59,7 @@
     <!-- Modal-Card Body End -->
     <!-- Modal-Card Footer Start-->
     <footer class="modal-card-foot is-flex is-align-items-center">
-      <div class="flex1"></div>
+      <div class="is-flex-grow-1"></div>
       <div>
         <b-button :label="$t('OK')" type="is-primary" rounded expaned @click="saveInfo" />
       </div>
@@ -163,7 +163,7 @@ export default {
         parent: this,
         component: FilePanel,
         hasModalCard: true,
-        customClass: 'fileModal',
+        customClass: 'file-sel-modal',
         trapFocus: true,
         canCancel: ['escape'],
         scroll: "keep",
@@ -193,7 +193,7 @@ export default {
         parent: this,
         component: FilePanel,
         hasModalCard: true,
-        customClass: 'fileModal',
+        customClass: 'file-sel-modal',
         trapFocus: true,
         canCancel: ['escape'],
         scroll: "keep",

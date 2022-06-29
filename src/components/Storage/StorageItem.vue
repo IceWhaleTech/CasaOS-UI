@@ -14,7 +14,7 @@
       </div>
       <div class="ml-3 is-flex-grow-1 is-flex is-align-items-center">
         <div>
-          <h4 class="title is-size-6-5 mb-0 has-text-left one-line">{{item.name}} <b-tag class="ml-2" v-if="item.isSystem">CasaOS</b-tag>
+          <h4 class="title is-size-14px mb-0 has-text-left one-line">{{item.name}} <b-tag class="ml-2" v-if="item.isSystem">CasaOS</b-tag>
           </h4>
 
           <p class="has-text-left is-size-7 has-text-grey-light	">{{ $t('Single Drive Storage') }}, <span class="is-uppercase">{{item.fsType}}</span>

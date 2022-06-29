@@ -1,23 +1,30 @@
 <template>
-  <div class="widget has-text-white clock">
+  <div class="widget has-text-white cpu">
     <div class="blur-background"></div>
     <div class="widget-content  pb-1">
-      <div class="arrow-btn" @click="showMoreInfo">
-        <b-icon icon="chevron-right" :class="{'open':showMore}"></b-icon>
+      <!-- Header Start -->
+      <div class="widget-header is-flex">
+        <div class="widget-title is-flex-grow-1">
+          System Status
+        </div>
+        <div class="widget-icon-button is-flex-shrink-0" @click="showMoreInfo">
+          <b-icon pack="casa" icon="arrow-right" size="is-20" :class="{'open':showMore}" class="arrow-btn"></b-icon>
+        </div>
       </div>
+      <!-- Header End -->
 
       <div class="columns is-mobile ">
         <div class="column is-half has-text-centered">
           <apexchart type="radialBar" :height="barHeight" :options="chartOptions" :series="cpuSeries"></apexchart>
-          <p class="is-size-6-5 one-line">CPU <span class="is-size-7">({{cpuCores}} {{ $t('Cores') }})</span></p>
+          <p class="is-size-14px one-line">CPU <span class="is-size-7">({{cpuCores}} {{ $t('Cores') }})</span></p>
         </div>
         <div class="column is-half has-text-centered">
           <apexchart type="radialBar" :height="barHeight" :options="chartOptions" :series="ramSeries"></apexchart>
-          <p class="is-size-6-5 one-line">RAM <span class="is-size-7">({{totalMemory | renderSize}})</span></p>
+          <p class="is-size-14px one-line">RAM <span class="is-size-7">({{totalMemory | renderSize}})</span></p>
         </div>
       </div>
       <div v-if="showMore">
-        <div class="more-info pt-3 pb-1">
+        <div class="more-info pt-1 pb-1">
           <b-tabs v-model="activeTab">
             <b-tab-item label="CPU">
               <div v-for="(item,index) in containerCpuList" :key="item.title+index+'-cpu'">
@@ -76,7 +83,7 @@ export default {
       showMore: false,
       cpuCores: 0,
       totalMemory: 0,
-      barHeight: 120,
+      barHeight: 132,
       cpuSeries: [0],
       ramSeries: [0],
       chartOptions: {
@@ -89,8 +96,8 @@ export default {
           padding: {
             left: 0,
             right: 0,
-            top: -8,
-            bottom: -10
+            top: -6,
+            bottom: -15
           }
         },
         states: {
@@ -115,13 +122,13 @@ export default {
 
             hollow: {
               margin: 0,
-              size: '55%',
+              size: '60%',
               image: undefined,
               imageOffsetX: 0,
               imageOffsetY: 0,
               position: 'front',
               dropShadow: {
-                enabled: true,
+                enabled: false,
                 top: 3,
                 left: 0,
                 blur: 4,
@@ -133,13 +140,7 @@ export default {
               strokeWidth: '100%',
               margin: 0, // margin is in pixels
               opacity: 0.4,
-              dropShadow: {
-                enabled: true,
-                top: -3,
-                left: 0,
-                blur: 4,
-                opacity: 0.35
-              }
+
             },
 
             dataLabels: {
@@ -150,7 +151,7 @@ export default {
                 },
                 offsetY: -10,
                 color: '#fff',
-                fontSize: '18px',
+                fontSize: '20px',
                 show: true,
               }
             },
@@ -299,5 +300,48 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+.widget {
+  &.cpu {
+    .tabs {
+      ul {
+        border-bottom: 1px solid transparent;
+
+        li {
+          font-size: 0.875rem;
+
+          &:first-child {
+            a {
+              margin-left: 0;
+            }
+          }
+
+          a {
+            color: #fff !important;
+            border-bottom: transparent 2px solid !important;
+            padding: 0.5rem 0 0rem 0;
+            margin: 0 0.5rem;
+          }
+
+          &.is-active {
+            a {
+              font-weight: 700;
+              border-bottom: #fff 2px solid !important;
+            }
+          }
+        }
+      }
+    }
+    .arrow-btn {
+      transition: all 0.3s;
+      &.open {
+        transform: rotate(90deg);
+      }
+    }
+
+    .more-info {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  }
+}
 </style>

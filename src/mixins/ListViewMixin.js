@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-05-20 19:18:19
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-07 13:58:11
+ * @LastEditTime: 2022-06-16 17:47:23
  * @FilePath: \CasaOS-UI\src\mixins\ListViewMixin.js
  * @Description: 
  * 
@@ -40,6 +40,8 @@ export default {
         window.addEventListener('resize', this.onResize);
         this.onResize();
         this.hitboxCheck();
+        window.addEventListener('keydown', this.onKeydown)
+        window.addEventListener('keyup', this.onKeyup)
     },
     methods: {
         /*************************************************
@@ -140,8 +142,7 @@ export default {
             document.body.addEventListener('mousemove', this.onDragSelection)
             document.body.addEventListener('mouseup', this.onDragSelectionStop)
             this.parentBox.addEventListener("scroll", this.onScroll)
-            window.addEventListener('keydown', this.onKeydown)
-            window.addEventListener('keyup', this.onKeyup)
+
         },
 
         /**

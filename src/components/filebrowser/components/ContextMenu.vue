@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-02-23 17:08:21
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-09 15:29:59
+ * @LastEditTime: 2022-06-23 17:33:48
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\components\ContextMenu.vue
 -->
@@ -61,6 +61,9 @@
           <b-dropdown-item aria-role="menuitem" key="file-context5" @click="operate('copy',items)">
             {{ $t('Copy') }}
           </b-dropdown-item>
+          <b-dropdown-item aria-role="menuitem" @click="setAsWallpaper(item)" v-if="isWallpaperType">
+            {{ $t('Set as wallpaper') }}
+          </b-dropdown-item>
           <hr class="dropdown-divider">
           <b-dropdown-item aria-role="menuitem" class="has-text-danger" @click="isConfirmed = true" v-if="!isConfirmed">
             {{ $t('Delete') }}
@@ -77,7 +80,7 @@
 </template>
 
 <script>
-import { mixin } from '@/mixins/mixin';
+import { mixin, wallpaperType } from '@/mixins/mixin';
 export default {
   mixins: [mixin],
   inject: ['filePanel'],
@@ -100,6 +103,9 @@ export default {
   computed: {
     close() {
       return this.item == undefined
+    },
+    isWallpaperType() {
+      return this.item.is_dir ? false : wallpaperType.includes(this.getFileExt(this.item))
     }
   },
   watch: {

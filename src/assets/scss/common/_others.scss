@@ -1,0 +1,200 @@
+// Position
+
+.is-absolute {
+    position: absolute;
+}
+
+// Box Width and Height
+.auto-height {
+    height: auto !important;
+}
+
+.h-30 {
+    height: 30px;
+}
+
+// Index
+
+// Borders
+.border-8 {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.b-line {
+    border-bottom: #cfcfcf 1px solid;
+}
+
+// Shadow
+
+.is-shadow {
+    -webkit-box-shadow: 0px 0px 17px -2px rgba(0, 0, 0, 0.47);
+    box-shadow: 0px 0px 17px -2px rgba(0, 0, 0, 0.47);
+}
+
+.fullScreen {
+    z-index: 1000;
+    background-color: #1e1e1e !important;
+    border-radius: 4px;
+    position: relative;
+}
+
+.nobrk {
+    word-break: normal;
+}
+
+
+// Line
+
+.one-line {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    word-break: break-all;
+    -webkit-line-clamp: 1; //行数
+    -webkit-box-orient: vertical;
+}
+
+.two-line {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    word-break: normal;
+    -webkit-line-clamp: 2; //行数
+    -webkit-box-orient: vertical;
+}
+
+// opacity
+.op65 {
+    opacity: 0.65;
+}
+
+.ghost {
+    opacity: 0;
+}
+
+// Blur background
+.blur-background {
+    width: 100%;
+    height: 100%;
+
+    background-size: cover;
+    background-position: bottom center;
+    background-attachment: fixed;
+    border-radius: $backDropBorderRadius;
+    background: $backDropColor;
+    backdrop-filter: $backDropBlur;
+    position: absolute;
+    z-index: 0;
+    overflow: hidden;
+
+}
+
+
+.wuji-content {
+    position: relative;
+    z-index: 10;
+    padding: 1.5rem;
+}
+
+.cards-content {
+    position: relative;
+    z-index: 10;
+}
+
+.un-break-word {
+    word-break: keep-all;
+}
+
+.b-checkbox.checkbox input[type=checkbox]:focus:checked+.check,
+.b-checkbox.checkbox input[type=checkbox]:focus+.check {
+    box-shadow: none !important;
+}
+
+.autocomplete {
+    &.has-colon {
+        .control {
+            &::before {
+                position: absolute;
+                content: ":";
+                height: 2.714em;
+                font-size: 0.875rem;
+                line-height: 2.714em;
+                left: 0.5rem;
+                z-index: 10;
+                color: hsl(0deg, 0%, 21%);
+            }
+
+            .input {
+                padding-left: 0.75rem;
+            }
+
+        }
+
+    }
+}
+
+
+.label {
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+}
+
+.b-tooltip.is-multiline .tooltip-content {
+    word-break: keep-all;
+}
+
+.tabs li.is-active a {
+    color: #2276f3;
+    border-bottom-color: #2276f3;
+
+    &:focus {
+        border-bottom-color: #2276f3;
+    }
+}
+
+.control {
+    .button {
+        font-size: 0.875rem;
+        height: 2.714em;
+    }
+
+    .container-icon {
+        padding: 0 0.5rem;
+    }
+}
+
+.taginput .taginput-container .autocomplete input {
+    border: none !important;
+}
+
+.pagination-link.is-current {
+    background-color: $primary;
+    border-color: $primary;
+    color: #fff;
+}
+
+a.dropdown-item.is-active,
+.dropdown .dropdown-menu .has-link a.is-active,
+button.dropdown-item.is-active {
+    background-color: $primary;
+    color: #fff;
+}
+
+// Tours
+.v-step {
+    border-radius: 10px !important;
+    box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02) !important;
+    background-color: $primary !important;
+
+    .v-step__header {
+        border-top-left-radius: 10px !important;
+        border-top-right-radius: 10px !important;
+        background-color: $primary-dark !important;
+    }
+
+    .v-step__content {
+        font-size: 1rem;
+        text-align: left;
+    }
+}

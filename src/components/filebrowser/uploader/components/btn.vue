@@ -1,3 +1,13 @@
+<!--
+ * @Author: Jerryk jerry@icewhale.org
+ * @Date: 2022-03-04 12:29:37
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-19 22:53:09
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\uploader\components\btn.vue
+ * @Description: 
+ * 
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+-->
 <template>
   <label class="uploader-btn" ref="btn" v-show="support">
     <slot></slot>
@@ -42,7 +52,7 @@
     position: relative;
     padding: 4px 8px;
     font-size: 100%;
-    line-height: 1.4;
+    line-height: 1.5em;
     color: #666;
     border: 1px solid #666;
     cursor: pointer;

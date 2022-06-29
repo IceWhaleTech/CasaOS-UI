@@ -1,17 +1,17 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-02-24 14:20:01
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-08 17:09:20
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-06-21 11:27:16
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\filebrowser\DetailModal.vue
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\modals\DetailModal.vue
 -->
 
 <template>
   <div class="modal-card">
     <!-- Header Start -->
     <header class="modal-card-head">
-      <div class="flex1 is-flex ">
+      <div class="is-flex-grow-1 is-flex ">
       </div>
       <div class="is-flex is-align-items-center">
         <div class="is-flex is-align-items-center modal-close-container ">
