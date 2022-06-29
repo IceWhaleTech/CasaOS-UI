@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-25 11:43:30
+ * @LastEditTime: 2022-06-29 18:36:37
  * @Description: User API
- * @FilePath: \CasaOS-UI\src\service\user.js
+ * @FilePath: /CasaOS-UI/src/service/user.js
  */
 import { api } from "./service.js";
 
@@ -71,7 +71,8 @@ const user = {
     personInfo(nickname, description) {
         let data = {
             nick_name: nickname,
-            description: description
+            description: description,
+            user_id: localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 1,
         }
         return api.post(`/user/person/info`, data);
     },

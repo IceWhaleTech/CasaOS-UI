@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-29 14:33:55
+ * @LastEditTime: 2022-06-29 18:11:49
  * @Description: 
  * @FilePath: /CasaOS-UI/src/views/Home.vue
 -->
@@ -74,11 +74,12 @@ import CoreService from '../components/CoreService.vue'
 import AppSection from '../components/Apps/AppSection.vue'
 //import Shortcuts from '@/components/Shortcuts.vue'
 import FilePanel from '@/components/filebrowser/FilePanel.vue'
-
+import { mixin } from '../mixins/mixin';
 const wallpaperConfig = "wallpaper"
 
 export default {
   name: "home-page",
+  mixins: [mixin],
   components: {
     SideBar,
     SearchBar,
@@ -141,25 +142,26 @@ export default {
       let systemConfig = await this.$api.user.getCustomConfig(this.user_id, "system")
       if (systemConfig.data.success != 200 || systemConfig.data.data == "") {
         const oldData = systemConfig.data.data
-        systemConfig = await this.$api.info.systemConfig()
+        const oldSystemConfig = await this.$api.info.systemConfig()
         if (oldData == "") {
           const barData = {
-            lang: systemConfig.data.data.lang,
-            search_engine: systemConfig.data.data.search_engine,
+            lang: oldSystemConfig.data.data.lang ? oldSystemConfig.data.data.lang : this.getLangFromBrowser(),
+            search_engine: oldSystemConfig.data.data.search_engine ? oldSystemConfig.data.data.search_engine : "https://duckduckgo.com/?q=",
             search_switch: true,
             recommend_switch: true,
-            shortcuts_switch: systemConfig.data.data.shortcuts_switch,
-            widgets_switch: systemConfig.data.data.widgets_switch,
+            shortcuts_switch: oldSystemConfig.data.data.shortcuts_switch ? oldSystemConfig.data.data.shortcuts_switch : true,
+            widgets_switch: oldSystemConfig.data.data.widgets_switch ? oldSystemConfig.data.data.widgets_switch : true,
           }
           // save
           const saveRes = await this.$api.user.postCustomConfig(this.user_id, "system", barData)
           if (saveRes.data.success === 200) {
-            this.barData = saveRes.data.data
             systemConfig = saveRes
+            this.barData = saveRes.data.data
+
           }
         }
       }
-      console.log(systemConfig.data.data);
+
       this.$store.commit('changeSearchEngineSwitch', systemConfig.data.data.search_switch);
       this.$store.commit('changeRecommendSwitch', systemConfig.data.data.recommend_switch);
       this.barData = systemConfig.data.data
