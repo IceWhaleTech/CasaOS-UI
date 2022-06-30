@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-05-02 17:44:02
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-30 16:03:52
+ * @LastEditTime: 2022-06-30 16:56:25
  * @FilePath: \CasaOS-UI\src\components\settings\UpdateModal.vue
  * @Description: 
  * 
@@ -75,8 +75,10 @@ export default {
       this.timer = setInterval(() => {
         this.$api.info.checkVersion().then(res => {
           if (res.data.success == 200) {
+            if (!res.data.data.is_need) {
               clearInterval(this.timer);
               location.reload();
+            }
           }
         })
       }, 3000)
