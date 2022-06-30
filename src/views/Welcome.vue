@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:30:26
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-29 19:00:41
+ * @LastEditTime: 2022-06-30 08:42:18
  * @Description: 
- * @FilePath: /CasaOS-UI/src/views/Welcome.vue
+ * @FilePath: \CasaOS-UI\src\views\Welcome.vue
 -->
 <template>
   <div id="login-page" class="is-flex is-justify-content-center is-align-items-center">
@@ -141,7 +141,7 @@ export default {
         pwd: this.password
       }).then(res => {
         if (res.data.success == 200) {
-          this.$store.commit('changeInitialization', true)
+          this.$store.commit('changeInitialization', false)
           this.goToStep(3);
         }
       })

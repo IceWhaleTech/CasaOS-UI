@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-02-18 12:42:06
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-28 09:26:59
+ * @LastEditTime: 2022-06-30 14:31:34
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\FilePanel.vue
 -->
@@ -273,7 +273,10 @@ export default {
     }
     // paste
     document.onpaste = () => {
-      this.paste('overwrite')
+      if (!this.isShowDetial && !this.isModalOpen) {
+        this.paste('overwrite')
+      }
+
     }
   },
   destroyed() {
@@ -339,6 +342,7 @@ export default {
      */
     reload() {
       this.getFileList(this.currentPath);
+      this.$EventBus.$emit("reloadFileList");
     },
 
     /**
@@ -417,6 +421,7 @@ export default {
      * @return {*}
      */
     paste(style = "overwrite") {
+      if (this.$store.state.operateObject == null) return false
       this.isPasting = true
       let operateObject = this.$store.state.operateObject
       operateObject.to = this.$store.state.currentPath

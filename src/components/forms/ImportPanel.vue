@@ -22,11 +22,11 @@
         </b-tab-item>
         <b-tab-item :label="$t('AppFile')">
           <b-field :type="{ 'is-danger': parseError}" :message="errors">
-            <b-upload v-model="dropFiles" drag-drop expanded accept="application/json" @input="onSelect">
+            <b-upload v-model="dropFiles" drag-drop expanded accept="application/json" @input="onSelect" ref="importUpload">
               <section class="section">
                 <div class="content has-text-centered">
                   <p>
-                    <b-icon icon="upload" size="is-large"></b-icon>
+                    <b-icon :icon="uploadIcon" size="is-large"></b-icon>
                   </p>
                   <p>{{dropText}}</p>
                 </div>
@@ -72,6 +72,7 @@ export default {
       appFileLoaded: false,
       errors: "",
       dropText: this.$t('Drop your app file here or click to upload'),
+      uploadIcon: "upload",
       updateData: this.initData
     }
   },
@@ -398,10 +399,6 @@ export default {
         return false
       }
     },
-    // Delete Drop file
-    deleteDropFile(index) {
-      this.dropFiles.splice(index, 1);
-    },
     onSelect(val) {
       const _this = this
       const reader = new FileReader();
@@ -417,13 +414,8 @@ export default {
       reader.onload = function () {
         try {
           _this.updateData = JSON.parse(this.result);
-          if (_this.updateData.version === undefined) {
-            _this.$buefy.toast.open({
-              duration: 3000,
-              message: _this.$t('This is not a valid App file.'),
-              type: 'is-danger'
-            })
-            _this.appFileLoaded = false
+          if (_this.updateData.version === undefined || _this.updateData.version != "1.0") {
+            _this.clearInput()
             return false
           } else {
             delete _this.updateData.versison
@@ -433,20 +425,28 @@ export default {
               _this.updateData.protocol = "http"
             }
             _this.dropText = val.name + " " + _this.$t('has been selected')
+            _this.uploadIcon = "file-document"
             _this.appFileLoaded = true
             return true
           }
 
         } catch (e) {
-          _this.$buefy.toast.open({
-            duration: 3000,
-            message: _this.$t('This is not a valid json file.'),
-            type: 'is-danger'
-          })
-          _this.appFileLoaded = false
+          _this._this.clearInput()
           return false
         }
       }
+    },
+    clearInput() {
+      this.uploadIcon = "upload"
+      this.dropText = this.$t('Drop your app file here or click to upload')
+      this.appFileLoaded = false
+      this.$refs.importUpload.clearInput()
+      this.$buefy.toast.open({
+        duration: 3000,
+        message: this.$t('This is not a valid json file.'),
+        type: 'is-danger'
+      })
+      this.appFileLoaded = false
     },
 
     getNetworkModel(netName) {
@@ -460,7 +460,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
 .import-area {
   .textarea {
     max-height: 40em;
