@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-03-01 21:10:57
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-28 09:26:07
+ * @LastEditTime: 2022-06-30 15:56:42
  * @FilePath: \CasaOS-UI\src\components\Apps\AppPanel.vue
  * @Description: 
  * 
@@ -389,7 +389,7 @@
           <div class="is-flex is-align-items-center is-justify-content-center">
             <lottie-animation class="install-animation" :animationData="require('@/assets/ani/rocket-launching.json')" :loop="true" :autoPlay="true"></lottie-animation>
           </div>
-          <h3 class="title is-6 has-text-centered" :class="currentInstallAppTextClass" v-html="currentInstallAppText"></h3>
+          <h3 class="title is-6 has-text-centered" style="height:1.5em" :class="currentInstallAppTextClass" v-html="currentInstallAppText"></h3>
         </div>
       </section>
       <!-- App Install Process End -->

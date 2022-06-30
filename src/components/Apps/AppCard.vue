@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-28 13:50:04
+ * @LastEditTime: 2022-06-30 15:58:09
  * @Description: App Card item
  * @FilePath: \CasaOS-UI\src\components\Apps\AppCard.vue
 -->
@@ -11,7 +11,7 @@
   <div class="common-card is-flex is-align-items-center is-justify-content-center p-55 app-card" @mouseover="hover = true" @mouseleave="hover = true" >
 
     <!-- Action Button Start -->
-    <div class="action-btn" v-if="item.type != 'system' && isCasa ">
+    <div class="action-btn" v-if="item.type != 'system' && isCasa && !isUninstalling">
       <b-dropdown aria-role="list" :triggers="['contextmenu','click']" position="is-bottom-left" class="app-card-drop" ref="dro" animation="fade1" @active-change="setDropState" :mobile-modal="false" append-to-body>
         <template #trigger>
           <p role="button">
