@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-29 14:26:52
+ * @LastEditTime: 2022-07-01 11:38:50
  * @Description: Top bar 
  * @FilePath: /CasaOS-UI/src/components/TopBar.vue
 -->
@@ -41,7 +41,7 @@
             </div>
             <div>
               <a aria-role="button" @click="showAccountPanel">
-                <b-icon icon="account-edit"></b-icon>
+                <b-icon pack="casa" icon="account-edit"></b-icon>
               </a>
             </div>
           </div>
@@ -102,7 +102,7 @@
           <!-- Language Start -->
           <div class="is-flex is-align-items-center mb-2 h-30">
             <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon icon="translate" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{ $t('Language') }}</b>
+              <b-icon pack="casa" icon="language" class="mr-1" ></b-icon> <b>{{ $t('Language') }}</b>
             </div>
             <div>
               <b-field>
@@ -117,7 +117,7 @@
           <!-- WebUI Port Start -->
           <div class="is-flex is-align-items-center mb-2 h-30">
             <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon icon="view-dashboard-outline" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{$t('WebUI Port')}}</b>
+              <b-icon pack="casa" icon="port" class="mr-1"></b-icon> <b>{{$t('WebUI Port')}}</b>
             </div>
             <div>
               {{port}}
@@ -142,7 +142,7 @@
           <!--  Recommended modules Switch Start  -->
           <div class="is-flex is-align-items-center mb-2 h-30">
             <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon icon="application-outline" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{$t('Show Recommended Apps')}}</b>
+              <b-icon pack="casa" icon="app-switch" class="mr-1"></b-icon> <b>{{$t('Show Recommended Apps')}}</b>
             </div>
             <div>
               <b-field>
@@ -155,7 +155,7 @@
           <!-- Automount USB Drive Start  -->
           <div class="is-flex is-align-items-center mb-2 h-30">
             <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon icon="usb-flash-drive-outline" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{$t('Automount USB Drive')}}</b>
+              <b-icon pack="casa" icon="usb" class="mr-1"></b-icon> <b>{{$t('Automount USB Drive')}}</b>
               <b-tooltip :label="$t('Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB')" type="is-dark" multilined v-if="isRaspberryPi">
                 <b-icon icon="help-circle-outline" size="is-small" class="ml-1"></b-icon>
               </b-tooltip>
@@ -171,7 +171,7 @@
           <!-- Update Start -->
           <div class="is-flex is-align-items-center h-30">
             <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon icon="sync" class="mr-1" custom-size="mdi-18px"></b-icon> <b :class="{'update-text-dot': updateInfo.is_need}">{{$t('Update')}}</b>
+              <b-icon pack="casa" icon="upgrade" class="mr-1" ></b-icon> <b :class="{'update-text-dot': updateInfo.is_need}">{{$t('Update')}}</b>
             </div>
             <div>
               v{{updateInfo.current_version}}
