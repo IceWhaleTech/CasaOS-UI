@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-03-03 13:10:35
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-30 14:27:54
+ * @LastEditTime: 2022-07-01 10:52:10
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\filebrowser\sidebar\TreeList.vue
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/sidebar/TreeList.vue
 -->
 <template>
   <ul>
@@ -92,6 +92,7 @@ export default {
   },
   created() {
     this.dataList = this.initFolders;
+    this.getNewList()
   },
 
   mounted() {
