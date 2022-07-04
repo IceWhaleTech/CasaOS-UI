@@ -2,28 +2,32 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 16:49:05
+ * @LastEditTime: 2022-07-04 14:20:08
  * @Description: The right bottom contact bar
- * @FilePath: \CasaOS-UI\src\components\ContactBar.vue
+ * @FilePath: /CasaOS-UI/src/components/ContactBar.vue
 -->
 
 <template>
   <div class="contact-bar is-flex is-align-items-center has-text-white">
-    <b-tooltip :label="$t('Bug report')" :append-to-body="!$store.state.isMobile">
-      <a @click="showFeedback">
+
+    <a @click="showFeedback">
+      <b-tooltip :label="$t('Bug report')" :append-to-body="!$store.state.isMobile">
         <b-icon pack="casa" icon="bug"></b-icon>
-      </a>
-    </b-tooltip>
-    <b-tooltip :label="$t('Join Discord')" :append-to-body="!$store.state.isMobile">
-      <a href="https://discord.gg/knqAbbBbeX" target="_blank">
+      </b-tooltip>
+    </a>
+
+    <a href="https://discord.gg/knqAbbBbeX" target="_blank">
+      <b-tooltip :label="$t('Join Discord')" :append-to-body="!$store.state.isMobile">
         <b-icon pack="casa" icon="discord"></b-icon>
-      </a>
-    </b-tooltip>
-    <b-tooltip :label="$t('Visit our Github')" :append-to-body="!$store.state.isMobile">
-      <a href="https://github.com/IceWhaleTech/CasaOS" target="_blank">
+      </b-tooltip>
+    </a>
+
+    <a href="https://github.com/IceWhaleTech/CasaOS" target="_blank">
+      <b-tooltip :label="$t('Visit our Github')" :append-to-body="!$store.state.isMobile">
         <b-icon pack="casa" icon="github"></b-icon>
-      </a>
-    </b-tooltip>
+      </b-tooltip>
+    </a>
+
   </div>
 </template>
 
@@ -53,7 +57,7 @@ export default {
 .contact-bar {
   position: fixed;
   right: 0.875rem;
-  bottom: 0.5rem;
+  bottom: 0.25rem;
   z-index: 10;
 
   a {
