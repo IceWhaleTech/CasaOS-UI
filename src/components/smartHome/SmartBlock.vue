@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-11-10 18:14:56
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-19 23:06:35
+ * @LastEditTime: 2022-07-04 18:22:56
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\smartHome\SmartBlock.vue
+ * @FilePath: /CasaOS-UI/src/components/smartHome/SmartBlock.vue
 -->
 <template>
   <div class="column is-one-half">
