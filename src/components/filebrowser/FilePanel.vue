@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-02-18 12:42:06
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-30 14:31:34
+ * @LastEditTime: 2022-07-04 23:47:35
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\FilePanel.vue
 -->
@@ -321,7 +321,7 @@ export default {
           const fileList = res.data.data
           const newFileList = fileList.map(item => {
             return {
-              date: item.data,
+              date: item.date,
               isSelected: false,
               is_dir: item.is_dir,
               name: item.name,
