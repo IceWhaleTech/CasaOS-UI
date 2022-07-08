@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-04 18:17:15
+ * @LastEditTime: 2022-07-08 15:21:05
  * @FilePath: /CasaOS-UI/src/components/Apps/AppSection.vue
  * @Description: 
  * 
@@ -62,6 +62,8 @@ import draggable from 'vuedraggable'
 import xor from 'lodash/xor'
 import concat from 'lodash/concat'
 
+const SYNCTHING_STORE_ID = 74
+
 const builtInApplications = [
   {
     id: "1",
@@ -77,14 +79,6 @@ const builtInApplications = [
     icon: require(`@/assets/img/app/files.svg`),
     state: "0",
     custom_id: "2",
-    type: "system"
-  },
-  {
-    id: "3",
-    name: "Connect",
-    icon: require(`@/assets/img/share/folder-publicshare.svg`),
-    state: "0",
-    custom_id: "3",
     type: "system"
   },
 ]
@@ -131,7 +125,13 @@ export default {
   },
   created() {
     this.getList();
-    this.draggable = this.isMobile() ? "" : ".handle"
+    this.draggable = this.isMobile() ? "" : ".handle";
+    this.$EventBus.$on("OpenAppStoreAndGotoSyncthing", () => {
+      this.showInstall(SYNCTHING_STORE_ID)
+    });
+  },
+  beforeDestroy() {
+    this.$EventBus.$off("OpenAppStoreAndGotoSyncthing");
   },
   methods: {
 
@@ -214,10 +214,12 @@ export default {
      * @description: Show Install Panel Programmatic
      * @return {*} void
      */
-    showInstall() {
+    showInstall(storeId = 0) {
+
       this.isShowing = true
       this.$api.app.appConfig().then(res => {
         this.isShowing = false
+        console.log("aaa", storeId);
         if (res.data.success == 200) {
           this.$buefy.modal.open({
             parent: this,
@@ -236,7 +238,8 @@ export default {
             props: {
               id: "0",
               state: "install",
-              configData: res.data.data
+              configData: res.data.data,
+              storeId: storeId
             }
           })
         }

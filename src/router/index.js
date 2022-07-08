@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-28 14:36:41
+ * @LastEditTime: 2022-07-08 14:25:39
  * @Description: 
- * @FilePath: \CasaOS-UI\src\router\index.js
+ * @FilePath: /CasaOS-UI/src/router/index.js
  */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -25,20 +25,6 @@ const routes = [
     hidden: true,
     component: () => import('@/views/Welcome.vue'),
     meta: { requireAuth: false }
-  },
-  {
-    path: '/connect',
-    name: 'CasaConnect',
-    hidden: true,
-    component: () => import('@/views/CasaConnect.vue'),
-    meta: { requireAuth: true }
-  },
-  {
-    path: '/a-sharing',
-    name: 'CasaConnect1',
-    hidden: true,
-    component: () => import('@/views/CasaConnect.vue'),
-    meta: { requireAuth: true }
   },
   {
     path: '/',

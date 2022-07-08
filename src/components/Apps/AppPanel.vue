@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-03-01 21:10:57
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-30 15:56:42
- * @FilePath: \CasaOS-UI\src\components\Apps\AppPanel.vue
+ * @LastEditTime: 2022-07-08 15:24:37
+ * @FilePath: /CasaOS-UI/src/components/Apps/AppPanel.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -145,15 +145,15 @@
         <template v-if="recommendList.length > 0">
           <h3 class="title is-5 has-text-weight-normal">{{ $t('Featured Apps') }}</h3>
           <!-- Featured Slider Start -->
-          <div class="is-relative featured-app b-line pb-5">
+          <div class="is-relative featured-app b-line">
             <swiper class="swiper " ref="featureSwiper" :options="featureSwiperOptions">
-              <swiper-slide v-for="(item,index) in recommendList " :key="index+item.title+item.id">
+              <swiper-slide v-for="(item,index) in recommendList " :key="index+item.title+item.id" class="pb-5">
                 <div class="gap" @click="showAppDetial(item.id)">
                   <b-image :src="item.thumbnail" ratio="16by9" class="border-8 is-clickable" :src-fallback="require('@/assets/img/app/swiper_placeholder.png')" :placeholder="require('@/assets/img/app/swiper_placeholder.png')"></b-image>
                 </div>
                 <div class="is-flex pt-5 is-align-items-center">
                   <div class=" mr-3" @click="showAppDetial(item.id)">
-                    <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" :placeholder="require('@/assets/img/app/default.png')" class="is-48x48 is-clickable"></b-image>
+                    <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" :placeholder="require('@/assets/img/app/default.png')" class="is-64x64 is-clickable icon-shadow"></b-image>
                   </div>
                   <div class="is-flex-grow-1 mr-4 is-clickable" @click="showAppDetial(item.id)">
                     <h6 class="title is-6 mb-2 ">{{item.title}}</h6>
@@ -226,7 +226,7 @@
           <div class="column app-item is-one-quarter" v-for="(item,index) in pageList" :key="index+item.title+item.id">
             <div class="is-flex  is-align-items-center">
               <div class="list-icon mr-4 is-clickable" @click="showAppDetial(item.id)">
-                <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-72x72 icon-shadow"></b-image>
+                <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-64x64 icon-shadow"></b-image>
               </div>
               <div class="is-flex-grow-1 mr-4 is-clickable" @click="showAppDetial(item.id)">
                 <h6 class="title is-6 mb-2">{{item.title}}</h6>
@@ -253,7 +253,7 @@
             <div class="column is-one-quarter" v-for="(item,index) in communityList " :key="index+item.title+item.id">
               <div class="is-flex  is-align-items-center">
                 <div class="list-icon mr-4 is-clickable" @click="showAppDetial(item.id)">
-                  <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-72x72 icon-shadow"></b-image>
+                  <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-64x64 icon-shadow"></b-image>
                 </div>
                 <div class="is-flex-grow-1 mr-4 is-clickable" @click="showAppDetial(item.id)">
                   <h6 class="title is-6 mb-2">{{item.title}}</h6>
@@ -490,6 +490,10 @@ export default {
   props: {
     id: String,
     state: String,
+    storeId: {
+      type: Number,
+      default: 0
+    },
     isCasa: {
       type: Boolean,
       default: true
@@ -658,6 +662,13 @@ export default {
       this.initData.network_model = gg.length > 0 ? gg[0].name : "bridge";
       this.getCategoryList();
     }
+
+    // If StoreId is not 0
+    console.log(this.stroreId);
+    if (this.storeId != 0) {
+
+      this.showAppDetial(this.storeId);
+    }
   },
 
   computed: {
@@ -723,10 +734,6 @@ export default {
     // Watch if Icon url has changed
     'initData.icon'(val) {
       this.updateIconUrl(val)
-    },
-    'initData.label'(val) {
-      let newLabel = val.replace(/[^a-zA-Z0-9_.-]/g, "")
-      this.updateLabel(newLabel)
     },
     // Watch if Section index changes
     currentSlide(val) {

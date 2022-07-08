@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-30 15:58:09
+ * @LastEditTime: 2022-07-08 14:24:52
  * @Description: App Card item
- * @FilePath: \CasaOS-UI\src\components\Apps\AppCard.vue
+ * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
 -->
 
 <template>
@@ -50,7 +50,7 @@
       <b-tooltip :label="tooltipLable" type="is-dark" :triggers="tooltipTriger" animation="fade1" :animated="true">
         <div class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-3 pb-3 img-c">
           <a class="is-flex is-justify-content-center" @click="openApp(item)">
-            <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-64x64" :class="item.state | dotClass"></b-image>
+            <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-64x64 icon-shadow" :class="item.state | dotClass"></b-image>
           </a>
           <p class="mt-3 one-line">
             <a class="one-line" @click="openApp(item)">
@@ -156,11 +156,6 @@ export default {
           break;
         case "Files":
           this.homeShowFiles()
-          break;
-        case "Connect":
-          var url = `${window.location.origin}/ui/#/connect`
-          var arg = '\u003cscript\u003elocation.replace("' + url + '")\u003c/script\u003e';
-          window.open('javascript:window.name;', arg);
           break;
         default:
           break;
