@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-27 15:58:28
+ * @LastEditTime: 2022-07-08 11:27:19
  * @Description: Top Search bar
  * @FilePath: /CasaOS-UI/src/components/SearchBar.vue
 -->
@@ -76,7 +76,6 @@ export default {
       box-shadow: none;
     }
     &::placeholder {
-      padding-left: 0.5625rem;
       color: rgba(255, 255, 255, 0.6);
     }
   }
@@ -92,7 +91,7 @@ export default {
       color: white !important;
     }
     input {
-      padding-left: 2.5em !important;
+      padding-left: 3em !important;
       padding-right: 1em !important;
     }
   }

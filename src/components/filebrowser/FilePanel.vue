@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-02-18 12:42:06
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-04 23:47:35
+ * @LastEditTime: 2022-07-06 16:17:44
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\filebrowser\FilePanel.vue
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/FilePanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -144,6 +144,7 @@
 
 import orderBy from 'lodash/orderBy'
 import dropRight from 'lodash/dropRight'
+import isEqual from 'lodash/isEqual'
 
 import { mixin } from '@/mixins/mixin';
 
@@ -230,7 +231,8 @@ export default {
       },
       // Uploader List
       showUploadList: false,
-      uploaderListHeaderText: "Uploading"
+      uploaderListHeaderText: "Uploading",
+      usbDisks: []
     }
   },
 
@@ -249,6 +251,14 @@ export default {
       },
       deep: true
     },
+    usbDisks(newval, oldval) {
+
+      if (!isEqual(newval, oldval)) {
+        console.log(newval, oldval);
+        this.getFileList(this.currentPath)
+      }
+
+    }
 
   },
   mounted() {
@@ -707,8 +717,14 @@ export default {
           this.reload()
         }
       })
+    },
+    sys_hardware_status(data) {
+      // USB
+      this.usbDisks = data.body.sys_usb
+
     }
   }
+
 
 }
 </script>
