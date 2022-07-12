@@ -2,22 +2,109 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-29 18:36:37
+ * @LastEditTime: 2022-07-12 22:22:26
  * @Description: User API
- * @FilePath: /CasaOS-UI/src/service/user.js
+ * @FilePath: \CasaOS-UI\src\service\user.js
  */
 import { api } from "./service.js";
+const PREFIX = "/user"
 
 const user = {
+    // get user current info
+    getUserInfo() {
+        return api.get(`${PREFIX}/current`);
+    },
+    // set user current info
+    setUserInfo(data) {
+        return api.put(`${PREFIX}/current`, data);
+    },
+
+    // delete user
+    deleteUser(id) {
+        return api.delete(`${PREFIX}/${id}`);
+    },
+
+    // get user image
+    getUserImage(path) {
+        return api.get(`${PREFIX}/image`, {
+            path: path
+        });
+    },
+
+    // create or update user image from upload
+    setUserImage(key) {
+        return api.post(`${PREFIX}/current/image/${key}`);
+    },
+
+    // delete user image
+    deleteUserImage(path) {
+        return api.delete(`${PREFIX}/current/image`, {
+            path: path
+        });
+    },
+
+
+    // get custom storage
+    getCustomStorage(key) {
+        return api.get(`${PREFIX}/current/custom/${key}`);
+    },
+
+    // set or update custom storage
+    setCustomStorage(key, data) {
+        return api.post(`${PREFIX}/current/custom/${key}`, data);
+    },
+
+    // delete custom storage
+    deleteCustomStorage(key) {
+        return api.delete(`${PREFIX}/current/custom/${key}`);
+    },
+
+
+
+    // get user info by user name
+    getUserInfoByName(username) {
+        return api.get(`${PREFIX}/${username}`);
+    },
+
+    // get user status
+    getUserStatus() {
+        return api.get(`${PREFIX}/status`);
+    },
+
+    // register
+    register(username, password, key) {
+        return api.post(`${PREFIX}/register`, {
+            username: username,
+            password: password,
+            key: key
+        });
+    },
+
+    // login
+    login(username, password) {
+        return api.post(`${PREFIX}/login`, {
+            username: username,
+            password: password
+        });
+    },
+
+    // refresh token
+    refreshToken(refresh_token) {
+        return api.post(`${PREFIX}/refresh`, {
+            refresh_token: refresh_token
+        });
+    },
+
+
+
+
+
+    // ----------------------------------------------------------------
     // Get All User Name
     getAllUserName() {
         return api.get(`/user/all/name`);
     },
 
-    //login
-    login(data) {
-        return api.post("/user/login", data);
-    },
 
     // Create UserName and Password
     createUsernameAndPaword(data) {
@@ -39,10 +126,6 @@ const user = {
         return api.put("/user/password", data);
     },
 
-    // Get user info
-    getUserInfo(id) {
-        return api.get(`/user/info/${id}`);
-    },
 
     // Change User Info
     changeUserInfo(data) {

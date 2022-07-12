@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-28 14:16:46
+ * @LastEditTime: 2022-07-12 21:34:51
  * @Description: Main entry of application
  * @FilePath: \CasaOS-UI\src\App.vue
 -->
@@ -135,7 +135,7 @@ _____             _____ _____
      * @return {*} void
      */
     checkInit() {
-      this.$api.info.guideCheck().then(res => {
+      this.$api.sys.guideCheck().then(res => {
         if (res.data.success == 200 && res.data.data.need_init_user) {
           this.isWelcome = true
           this.$store.commit('changeSiteLoading')

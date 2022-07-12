@@ -2,13 +2,22 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-01 18:52:07
+ * @LastEditTime: 2022-07-12 22:24:27
  * @Description: Application API
  * @FilePath: \CasaOS-UI\src\service\app.js
  */
 import { api } from './service.js';
+const PREFIX = "/app"
 
 const app = {
+
+    // Get app info
+    getAppInfo(id) {
+        return api.get(`${PREFIX}/${id}`);
+    },
+
+    // -------------------------------------------------------------------
+
     //Get Install Info
     appConfig() {
         return api.get(`/app/install/config`);

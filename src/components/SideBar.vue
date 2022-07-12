@@ -88,7 +88,7 @@ export default {
      */
     getConfig() {
       const initData = this.getInitData();
-      this.$api.info.widgetsConfig().then(res => {
+      this.$api.sys.widgetsConfig().then(res => {
         if (res.status === 200) {
           if (res.data === "") {
             this.saveData(initData);
@@ -139,7 +139,7 @@ export default {
      * @return {*} void
      */
     saveData(data) {
-      this.$api.info.saveWidgetsConfig(data).then(res => {
+      this.$api.sys.saveWidgetsConfig(data).then(res => {
         if (res.data.success == 200) {
           this.widgetsSettings = res.data.data;
         }

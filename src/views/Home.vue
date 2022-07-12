@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-29 18:11:49
+ * @LastEditTime: 2022-07-12 21:42:07
  * @Description: 
- * @FilePath: /CasaOS-UI/src/views/Home.vue
+ * @FilePath: \CasaOS-UI\src\views\Home.vue
 -->
 <template>
   <div v-if="!isLoading" class="out-container">
@@ -142,7 +142,7 @@ export default {
       let systemConfig = await this.$api.user.getCustomConfig(this.user_id, "system")
       if (systemConfig.data.success != 200 || systemConfig.data.data == "") {
         const oldData = systemConfig.data.data
-        const oldSystemConfig = await this.$api.info.systemConfig()
+        const oldSystemConfig = await this.$api.sys.systemConfig()
         if (oldData == "") {
           const barData = {
             lang: oldSystemConfig.data.data.lang ? oldSystemConfig.data.data.lang : this.getLangFromBrowser(),
@@ -205,7 +205,7 @@ export default {
      */
 
     getHardwareInfo() {
-      this.$api.info.utilization().then(res => {
+      this.$api.sys.getUtilization().then(res => {
         if (res.data.success === 200) {
           this.hardwareInfoLoading = false
           this.$store.commit('changeHardwareInfo', res.data.data);

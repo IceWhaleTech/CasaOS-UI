@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-22 19:20:21
- * @FilePath: /CasaOS-UI/src/components/logsAndTerminal/TerminalPanel.vue
+ * @LastEditTime: 2022-07-12 21:52:02
+ * @FilePath: \CasaOS-UI\src\components\logsAndTerminal\TerminalPanel.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     getLogs() {
-      this.$api.info.systemLogs().then(res => {
+      this.$api.sys.getLogs().then(res => {
         this.logData = res.data.data;
       })
     },

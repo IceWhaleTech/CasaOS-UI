@@ -68,7 +68,7 @@ export default {
   },
 
   mounted() {
-    this.$api.info.getDebugInfo().then(res => {
+    this.$api.sys.getDebugInfo().then(res => {
       const browserInfos = browserInfo();
       this.feedBody = res.data.data.replace("$Browser$", browserInfos.name).replace("$Version$", browserInfos.fullVersion);
     })

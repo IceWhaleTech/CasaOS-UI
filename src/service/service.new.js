@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-12 21:26:51
+ * @LastEditTime: 2022-07-12 21:26:47
  * @Description: 
- * @FilePath: \CasaOS-UI\src\service\service.js
+ * @FilePath: \CasaOS-UI\src\service\service.new.js
  */
 import axios from 'axios'
 import qs from 'qs'
@@ -86,7 +86,9 @@ instance.interceptors.response.use(
                     return Promise.reject(_error);
                 }
             } else if (error.response.status === 404) {
-                Toast.open('Toasty!')
+                router.replace({ //Jump to the 404 page
+                    path: '/404'
+                })
             } else if (error.response.status === 500) {
                 Toast.open('Toasty!')
                 store.commit('setServiceError', true);

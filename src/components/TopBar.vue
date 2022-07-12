@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-01 11:38:50
+ * @LastEditTime: 2022-07-12 21:53:54
  * @Description: Top bar 
- * @FilePath: /CasaOS-UI/src/components/TopBar.vue
+ * @FilePath: \CasaOS-UI\src\components\TopBar.vue
 -->
 
 <template>
@@ -323,7 +323,7 @@ export default {
   mounted() {
     this.checkVersion();
     this.getUserInfo();
-    this.getUsbMountState();
+    this.getUsbStatus();
     this.getHardwareInfo();
   },
 
@@ -389,7 +389,7 @@ export default {
      * @return {*} 
      */
     getPort() {
-      this.$api.info.getSystemPort().then(res => {
+      this.$api.sys.getServerPort().then(res => {
         if (res.data.success == 200) {
           this.port = res.data.data
         }
@@ -429,8 +429,8 @@ export default {
      * @description: Get Auto USB Mount State
      * @return {*} 
      */
-    getUsbMountState() {
-      this.$api.info.getUsbMountState().then(res => {
+    getUsbStatus() {
+      this.$api.sys.getUsbStatus().then(res => {
         if (res.data.success == 200) {
           this.autoUsbMount = res.data.data === "True"
         }
@@ -444,7 +444,7 @@ export default {
      */
     usbAutoMount() {
       if (this.autoUsbMount) {
-        this.$api.info.setUsbMountOn()
+        this.$api.sys.setUsbMountOn()
         // Show 
         if (this.isRaspberryPi) {
           this.$buefy.snackbar.open({
@@ -455,7 +455,7 @@ export default {
         }
 
       } else {
-        this.$api.info.setUsbMountOff()
+        this.$api.sys.setUsbMountOff()
       }
     },
     /**
@@ -464,7 +464,7 @@ export default {
      * @return {*}
      */
     getHardwareInfo() {
-      this.$api.info.hardwareInfo().then(res => {
+      this.$api.sys.hardwareInfo().then(res => {
         if (res.data.success == 200) {
           this.deviceModel = res.data.data.drive_model
         }
@@ -480,7 +480,7 @@ export default {
      * @return {*} void
      */
     checkVersion() {
-      this.$api.info.checkVersion().then(res => {
+      this.$api.sys.checkVersion().then(res => {
         if (res.data.success == 200) {
           this.updateInfo = res.data.data
         }

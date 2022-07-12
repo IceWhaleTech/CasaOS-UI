@@ -1,14 +1,57 @@
 /*
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-06-08 19:15:22
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-07-12 22:58:20
  * @Description: File API
  * @FilePath: \CasaOS-UI\src\service\file.js
  */
 import { api } from "./service.js";
 
+const PREFIX = "/file"
+
 const file = {
+
+    // get file content
+    getContent(path) {
+        return api.get(`${PREFIX}/content`, {
+            path: path
+        });
+    },
+
+    // download single file
+    download(path) {
+        return api.get(`${PREFIX}`, {
+            path: path
+        });
+    },
+
+    // create file
+    create(path) {
+        return api.post(`${PREFIX}`, {
+            path: path
+        });
+    },
+
+    // rename file
+    rename(old_path, new_path) {
+        return api.put(`${PREFIX}/name`, {
+            old_path: old_path,
+            new_path: new_path
+        });
+    },
+
+    // update file
+    update(path, content) {
+        return api.put(`${PREFIX}`, {
+            path: path,
+            content: content
+        });
+    },
+
+
+
+    // ------------------------------------------------------------------------
     /**
      * @description: get Path list
      * @param {String} path
@@ -35,20 +78,7 @@ const file = {
         }
         return api.post('/file/mkdir', data)
     },
-    // Create a new File
-    create(path) {
-        let data = {
-            path: path
-        }
-        return api.post('/file/create', data)
-    },
-    // Download File
-    download(path) {
-        let data = {
-            files: path
-        }
-        return api.get('/file/download', data);
-    },
+
     // Thumbnail Data
     getThumb(path) {
         let data = {
@@ -58,14 +88,7 @@ const file = {
         }
         return api.get('/file/image', data);
     },
-    // Update File
-    update(path, content) {
-        let data = {
-            path: path,
-            content: content
-        }
-        return api.put('/file/update', data);
-    },
+
     // Copy or Move File
     operate(data) {
         return api.post('/file/operate', data);
@@ -78,10 +101,7 @@ const file = {
     delete(pathArray) {
         return api.delete('/file/delete', pathArray);
     },
-    // Upload File
-    upload() {
 
-    },
     getFileShare() {
         return api.get('/file/share')
     },
