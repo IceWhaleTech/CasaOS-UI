@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-12 21:53:54
+ * @LastEditTime: 2022-07-13 18:11:36
  * @Description: Top bar 
- * @FilePath: \CasaOS-UI\src\components\TopBar.vue
+ * @FilePath: /CasaOS-UI/src/components/TopBar.vue
 -->
 
 <template>
@@ -37,7 +37,7 @@
           <div class="is-flex is-align-items-center item">
             <div class="is-flex is-align-items-center is-flex-grow-1">
               <b-image :src="require('@/assets/img/account/default-avatar.svg')" class="is-40x40 mr-3" rounded></b-image>
-              <b>{{userInfo.user_name}}</b>
+              <b>{{userInfo.username}}</b>
             </div>
             <div>
               <a aria-role="button" @click="showAccountPanel">
@@ -102,7 +102,7 @@
           <!-- Language Start -->
           <div class="is-flex is-align-items-center mb-2 h-30">
             <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon pack="casa" icon="language" class="mr-1" ></b-icon> <b>{{ $t('Language') }}</b>
+              <b-icon pack="casa" icon="language" class="mr-1"></b-icon> <b>{{ $t('Language') }}</b>
             </div>
             <div>
               <b-field>
@@ -171,7 +171,7 @@
           <!-- Update Start -->
           <div class="is-flex is-align-items-center h-30">
             <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon pack="casa" icon="upgrade" class="mr-1" ></b-icon> <b :class="{'update-text-dot': updateInfo.is_need}">{{$t('Update')}}</b>
+              <b-icon pack="casa" icon="upgrade" class="mr-1"></b-icon> <b :class="{'update-text-dot': updateInfo.is_need}">{{$t('Update')}}</b>
             </div>
             <div>
               v{{updateInfo.current_version}}
@@ -227,7 +227,9 @@ export default {
   data() {
     return {
       timer: 0,
-      user_id: localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 1,
+      // User
+      userInfo: this.$store.state.user,
+      // System
       barData: {
         lang: this.getInitLang(),
         search_engine: "https://duckduckgo.com/?q=",
@@ -244,7 +246,7 @@ export default {
       isUpdating: false,
       latestText: "Currently the latest version",
       updateText: "A new version is available!",
-      userInfo: this.$store.state.userinfo,
+      
       port: "",
       autoUsbMount: false,
       deviceModel: "",
@@ -337,7 +339,7 @@ export default {
      * @return {*}
      */
     async saveData() {
-      const saveRes = await this.$api.user.postCustomConfig(this.user_id, systemConfigName, this.barData)
+      const saveRes = await this.$api.user.setCustomStorage(systemConfigName, this.barData)
       if (saveRes.data.success === 200) {
         this.barData = saveRes.data.data
       }
@@ -350,7 +352,7 @@ export default {
      */
     onOpen(isOpen) {
       if (isOpen) {
-        this.$store.commit('closeSideBar')
+        this.$store.commit('SET_SIDEBAR_CLOSE')
         this.checkVersion()
       }
     },
@@ -513,17 +515,16 @@ export default {
      * @description: Get user info
      * @return {*} void
      */
-    getUserInfo() {
-      this.$store.commit('closeSideBar')
-      if (!this.$store.userinfo) {
-        const user_id = localStorage.getItem('user_id') ? localStorage.getItem('user_id') : 1;
-        localStorage.setItem("user_id", user_id)
-        this.$api.user.getUserInfo(user_id).then((res) => {
-          if (res.data.success == 200) {
-            this.$store.commit('changeUserInfo', res.data.data)
-            this.userInfo = res.data.data
-          }
-        })
+    async getUserInfo() {
+      this.$store.commit('SET_SIDEBAR_CLOSE')
+      if (this.$store.state.user.id == 0) {
+        try {
+          const userRes = await this.$api.user.getUserInfo()
+          this.userInfo = userRes.data.data
+          this.$store.commit('SET_USER', this.userInfo)
+        } catch (error) {
+          console.log(error)
+        }
       }
     },
 
@@ -559,7 +560,7 @@ export default {
      * @return {*} void
      */
     showTerminalPanel() {
-      this.$store.commit('closeSideBar')
+      this.$store.commit('SET_SIDEBAR_CLOSE')
       this.$buefy.modal.open({
         parent: this,
         component: TerminalPanel,

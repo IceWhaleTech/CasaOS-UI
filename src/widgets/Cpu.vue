@@ -214,7 +214,7 @@ export default {
      * @return {*} void
      */
     getDockerUsage() {
-      this.$api.app.getAppUsage().then(res => {
+      this.$api.container.getHardwareUsage().then(res => {
         let id = 0
         this.containerCpuList = res.data.data.map(item => {
           let usage = 0;

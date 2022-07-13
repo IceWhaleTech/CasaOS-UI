@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-01-20 12:01:07
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-27 09:14:50
+ * @LastEditTime: 2022-07-13 18:57:37
  * @Description: 
- * @FilePath: \CasaOS-UI\src\mixins\mixin.js
+ * @FilePath: /CasaOS-UI/src/mixins/mixin.js
  */
 import qs from 'qs'
 import has from 'lodash/has'
@@ -344,9 +344,9 @@ export const mixin = {
                         path: "http://" + this.$baseURL + resData.online_path + "&time=" + new Date().getTime(),
                         from: "Files"
                     }
-                    this.$api.user.postCustomConfig(user_id, wallpaperConfig, wallpaperData).then(res => {
+                    this.$api.user.setCustomStorage( wallpaperConfig, wallpaperData).then(res => {
                         if (res.data.success === 200) {
-                            this.$store.commit('changeWallpaper', {
+                            this.$store.commit('SET_WALLPAPER', {
                                 path: res.data.data.path,
                                 from: res.data.data.from
                             })

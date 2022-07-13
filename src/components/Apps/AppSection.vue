@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-08 15:21:05
+ * @LastEditTime: 2022-07-13 14:24:32
  * @FilePath: /CasaOS-UI/src/components/Apps/AppSection.vue
  * @Description: 
  * 
@@ -35,7 +35,7 @@
     <!-- App List End -->
     <template v-if="notImportedList.length > 0">
       <!-- Title Bar Start -->
-      <div class="title-bar is-flex is-align-items-center mt-2rem">
+      <div class="title-bar is-flex is-align-items-center mt-2rem  mb-5">
         <app-section-title-tip title="Existing Docker Apps" label="Click icon to import." id="appTitle2"></app-section-title-tip>
       </div>
       <!-- Title Bar End -->
@@ -144,12 +144,13 @@ export default {
      * @return {*} void
      */
     async getList() {
-      let listRes = await this.$api.app.myAppList()
+      let listRes = await this.$api.container.getMyAppList()
+      console.log(listRes.data);
       if (listRes.data.success == 200) {
-        const orgAppList = listRes.data.data.list
+        const orgAppList = listRes.data.data.casaos_apps
         let casaAppList = concat(builtInApplications, orgAppList)
         casaAppList.reverse()
-        let sortRes = await this.$api.user.getCustomConfig(this.user_id, orderConfig)
+        let sortRes = await this.$api.user.getCustomStorage( orderConfig)
         if (sortRes.data.success == 200) {
           let sortList = sortRes.data.data.data
           let newList = casaAppList.map((item) => {
@@ -169,7 +170,7 @@ export default {
         } else {
           this.appList = casaAppList;
         }
-        this.notImportedList = listRes.data.data.local
+        this.notImportedList = listRes.data.data.local_apps
         this.isLoading = false;
       }
     },
@@ -198,7 +199,7 @@ export default {
       let data = {
         data: newList
       }
-      this.$api.user.postCustomConfig(this.user_id, orderConfig, data)
+      this.$api.user.setCustomStorage( orderConfig, data)
     },
     /**
      * @description: Handle on Sort End

@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-12 21:56:29
+ * @LastEditTime: 2022-07-13 12:10:24
  * @Description: System HardWare Info API
- * @FilePath: \CasaOS-UI\src\service\sys.js
+ * @FilePath: /CasaOS-UI/src/service/sys.js
  */
 import { api } from "./service.js";
 
@@ -24,6 +24,9 @@ const sys = {
 
     // check system version
     checkVersion() {
+        return api.get(`${PREFIX}/version`);
+    },
+    getVersion() {
         return api.get(`${PREFIX}/version`);
     },
 

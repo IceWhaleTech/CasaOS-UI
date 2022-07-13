@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-08 14:25:39
+ * @LastEditTime: 2022-07-13 12:04:57
  * @Description: 
  * @FilePath: /CasaOS-UI/src/router/index.js
  */
@@ -49,28 +49,30 @@ VueRouter.prototype.push = function push(location) {
 
 router.beforeEach((to, from, next) => {
 
-  let localUser = localStorage.getItem("user_token");
+  const accessToken = localStorage.getItem("access_token");
+  const version = localStorage.getItem("version");
+  const requireAuth = to.matched.some(record => record.meta.requireAuth);
 
   //Check if have a verison string in localStorage when access home page
-  let version = localStorage.getItem("version");
   if (to.path == "/" && version == null) {
-    localStorage.removeItem("user_token");
+    localStorage.removeItem("access_token");
     next({ path: '/login' })
   }
 
   if (to.path == "/logout") {
-    localStorage.removeItem("user_token");
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
     localStorage.removeItem("wallpaper");
     next({ path: '/login' })
   }
-  if (to.meta.requireAuth) {
-    if (localUser) {
+  if (requireAuth) {
+    if (accessToken) {
       next()
     } else {
       next({ path: '/login' })
     }
   } else {
-    if (localUser) {
+    if (accessToken) {
       if (to.path == "/login") {
         next({ path: '/' })
       } else {

@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-12 21:34:51
+ * @LastEditTime: 2022-07-13 16:07:51
  * @Description: Main entry of application
- * @FilePath: \CasaOS-UI\src\App.vue
+ * @FilePath: /CasaOS-UI/src/App.vue
 -->
 
 <template>
@@ -135,12 +135,14 @@ _____             _____ _____
      * @return {*} void
      */
     checkInit() {
-      this.$api.sys.guideCheck().then(res => {
-        if (res.data.success == 200 && res.data.data.need_init_user) {
+      this.$api.user.getUserStatus().then(res => {
+        if (res.data.success == 200 && !res.data.data.initialized) {
           this.isWelcome = true
-          this.$store.commit('changeSiteLoading')
-          this.$store.commit('changeInitialization', true)
-          localStorage.removeItem("user_token");
+          this.$store.commit('SET_SITE_LOADING',false)
+          this.$store.commit('SET_NEED_INITIALIZATION', true)
+          this.$store.commit('SET_INIT_KEY', res.data.data.key)
+          localStorage.removeItem("access_token");
+          localStorage.removeItem("refresh_token");
           this.$router.push("/welcome");
         } else {
           this.isWelcome = false

@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-12 21:42:07
+ * @LastEditTime: 2022-07-13 18:57:36
  * @Description: 
- * @FilePath: \CasaOS-UI\src\views\Home.vue
+ * @FilePath: /CasaOS-UI/src/views/Home.vue
 -->
 <template>
   <div v-if="!isLoading" class="out-container">
@@ -139,7 +139,7 @@ export default {
      * @return {*}
      */
     async getConfig() {
-      let systemConfig = await this.$api.user.getCustomConfig(this.user_id, "system")
+      let systemConfig = await this.$api.user.getCustomStorage("system")
       if (systemConfig.data.success != 200 || systemConfig.data.data == "") {
         const oldData = systemConfig.data.data
         const oldSystemConfig = await this.$api.sys.systemConfig()
@@ -153,7 +153,7 @@ export default {
             widgets_switch: oldSystemConfig.data.data.widgets_switch ? oldSystemConfig.data.data.widgets_switch : true,
           }
           // save
-          const saveRes = await this.$api.user.postCustomConfig(this.user_id, "system", barData)
+          const saveRes = await this.$api.user.setCustomStorage("system", barData)
           if (saveRes.data.success === 200) {
             systemConfig = saveRes
             this.barData = saveRes.data.data
@@ -194,7 +194,7 @@ export default {
      */
     onResize() {
       if (window.innerWidth > 480 && this.sidebarOpen) {
-        this.$store.commit('closeSideBar');
+        this.$store.commit('SET_SIDEBAR_CLOSE');
       }
     },
 
@@ -219,9 +219,9 @@ export default {
     },
 
     getWallpaperConfig() {
-      this.$api.user.getCustomConfig(this.user_id, wallpaperConfig).then(res => {
+      this.$api.user.getCustomStorage(wallpaperConfig).then(res => {
         if (res.data.success === 200 && res.data.data != "") {
-          this.$store.commit('changeWallpaper', {
+          this.$store.commit('SET_WALLPAPER', {
             path: res.data.data.path,
             from: res.data.data.from
           })

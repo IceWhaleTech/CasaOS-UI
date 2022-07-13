@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-12 21:26:51
+ * @LastEditTime: 2022-07-13 17:56:46
  * @Description: 
- * @FilePath: \CasaOS-UI\src\service\service.js
+ * @FilePath: /CasaOS-UI/src/service/service.js
  */
 import axios from 'axios'
 import qs from 'qs'
@@ -40,10 +40,9 @@ const getInitLang = () => {
 instance.interceptors.request.use(
     (config) => {
         config.headers.common["Language"] = getInitLang()
-        const token = localStorage.getItem("user_token")
+        const token = localStorage.getItem("access_token")
         if (token) {
             config.headers.Authorization = token
-            store.commit('setToken', token)
         }
         return config;
     }, (error) => {
@@ -53,49 +52,70 @@ instance.interceptors.request.use(
 )
 
 // Response interception
+
+let isRefreshing = false
+let requests = []
+
 instance.interceptors.response.use(
     (response) => {
         return response;
     },
     async (error) => {
-        const originalConfig = error.config;
+        const originalConfig = error?.config;
         if (originalConfig.url !== "/user/register" && error.response) {
             // Access Token was expired
-            if (error.response.status === 401 && !originalConfig._retry) {
-                originalConfig._retry = true;
-                try {
-                    const refresh_token = localStorage.getItem("refresh_token")
-                    if (refresh_token) {
-                        const res = await instance.post("/user/refresh", {
-                            refreshToken: localStorage.getItem("refresh_token"),
-                        });
-                        // const { accessToken } = res.data;
-                        console.log(res.data);
-                    } else {
-                        router.replace({ //Jump to the 404 page
-                            path: '/404'
-                        })
+            if (error?.response?.status === 401) {
+                if (!isRefreshing) {
+                    isRefreshing = true
+                    try {
+                        const refresh_token = localStorage.getItem("refresh_token")
+                        if (refresh_token) {
+                            const tokenRes = await instance.post("/user/refresh", {
+                                refresh_token: refresh_token,
+                            });
+                            if (tokenRes.data.success == 200) {
+                                localStorage.setItem("access_token", tokenRes.data.data.access_token);
+                                localStorage.setItem("refresh_token", tokenRes.data.data.refresh_token);
+                                localStorage.setItem("expires_at", tokenRes.data.data.expires_at);
+
+                                store.commit("SET_ACCESS_TOKEN", tokenRes.data.data.access_token);
+                                store.commit("SET_REFRESH_TOKEN", tokenRes.data.data.refresh_token);
+
+                                originalConfig.headers.Authorization = tokenRes.data.data.access_token
+                                Promise.resolve().then(() => {
+                                    requests.forEach(cb => cb())
+                                    requests = []
+                                })
+
+                            } else {
+                                router.replace({ //Jump to the logout page
+                                    path: '/logout'
+                                })
+                            }
+                        } else {
+                            router.replace({ //Jump to the login page
+                                path: '/login'
+                            })
+                        }
+                    } catch (_error) {
+                        return Promise.reject(_error);
                     }
+                    isRefreshing = false
 
-
-                    // 这里要检测返回，如果能获取token继续，如果获取到错误则跳转到登录页面
-                    // store.commit('setToken', accessToken)
-                    // localStorage.setItem("user_token", accessToken)
-                    return instance(originalConfig);
-                } catch (_error) {
-                    return Promise.reject(_error);
                 }
-            } else if (error.response.status === 404) {
-                Toast.open('Toasty!')
-            } else if (error.response.status === 500) {
-                Toast.open('Toasty!')
-                store.commit('setServiceError', true);
-            } else if (error.response.status === 502) {
-                store.commit('setServiceError', true);
-            }
+                return new Promise(resolve => {
+                    requests.push(() => { resolve(instance(originalConfig)) })
+                })
 
+            } else if (error?.response?.status >= 500) {
+                Toast.open({
+                    message: error?.response.data.message,
+                    type: 'is-danger'
+                })
+            }
         }
         return Promise.reject(error)
+
     }
 )
 
@@ -120,10 +140,10 @@ const api = {
 
     },
     post(url, data) {
-        return instance.post(url, this._processData(url, data))
+        return instance.post(url, data)
     },
     put(url, data) {
-        return instance.put(url, this._processData(url, data))
+        return instance.put(url, data)
     },
     delete(url, data) {
         return instance.delete(url, { data: data })
