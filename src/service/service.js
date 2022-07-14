@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-13 17:56:46
+ * @LastEditTime: 2022-07-14 15:28:02
  * @Description: 
- * @FilePath: /CasaOS-UI/src/service/service.js
+ * @FilePath: \CasaOS-UI\src\service\service.js
  */
 import axios from 'axios'
 import qs from 'qs'
@@ -41,8 +41,11 @@ instance.interceptors.request.use(
     (config) => {
         config.headers.common["Language"] = getInitLang()
         const token = localStorage.getItem("access_token")
+        const rtoken = localStorage.getItem("refresh_token")
         if (token) {
             config.headers.Authorization = token
+            store.commit("SET_ACCESS_TOKEN", token);
+            store.commit("SET_REFRESH_TOKEN", rtoken);
         }
         return config;
     }, (error) => {

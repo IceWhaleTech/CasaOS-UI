@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-01-24 11:57:35
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-22 19:21:34
+ * @LastEditTime: 2022-07-14 08:37:45
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/feedback/FeedbackPanel.vue
+ * @FilePath: \CasaOS-UI\src\components\feedback\FeedbackPanel.vue
 -->
 <template>
   <div class="modal-card">

@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-13 12:10:24
+ * @LastEditTime: 2022-07-14 18:14:11
  * @Description: System HardWare Info API
- * @FilePath: /CasaOS-UI/src/service/sys.js
+ * @FilePath: \CasaOS-UI\src\service\sys.js
  */
 import { api } from "./service.js";
 
@@ -23,9 +23,6 @@ const sys = {
     },
 
     // check system version
-    checkVersion() {
-        return api.get(`${PREFIX}/version`);
-    },
     getVersion() {
         return api.get(`${PREFIX}/version`);
     },
@@ -104,20 +101,13 @@ const sys = {
     checkUiPort(url) {
         return api.get(url);
     },
+
+    // Get system apps
+    getSystemApps(){
+        return api.get(`${PREFIX}/apps-state`)
+    }
     
 
-    // --------------------------------------------------------------------------
-
-
-    // Set usb mount off
-    setUsbMountOff() {
-        return api.put(`${PREFIX}/usb/off`)
-    },
-
-    // Set usb mount on
-    setUsbMountOn() {
-        return api.put(`${PREFIX}/usb/on`)
-    },
 
 }
 export default sys;

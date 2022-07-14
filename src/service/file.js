@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-12 22:58:20
+ * @LastEditTime: 2022-07-14 12:24:01
  * @Description: File API
  * @FilePath: \CasaOS-UI\src\service\file.js
  */
@@ -15,14 +15,16 @@ const file = {
     // get file content
     getContent(path) {
         return api.get(`${PREFIX}/content`, {
-            path: path
+            path: path,
+            timestamp: Date.now()
         });
     },
 
     // download single file
     download(path) {
         return api.get(`${PREFIX}`, {
-            path: path
+            path: path,
+            timestamp: Date.now()
         });
     },
 
@@ -49,65 +51,6 @@ const file = {
         });
     },
 
-
-
-    // ------------------------------------------------------------------------
-    /**
-     * @description: get Path list
-     * @param {String} path
-     * @return {*}
-     */
-    dirPath(path) {
-        let data = {
-            path: path
-        }
-        return api.get('/file/dirpath', data);
-    },
-    // Rename file path
-    renamePath(oldpath, path) {
-        let data = {
-            oldpath: oldpath,
-            newpath: path
-        }
-        return api.put('/file/rename', data);
-    },
-    // Make a new Dir
-    mkdir(path) {
-        let data = {
-            path: path
-        }
-        return api.post('/file/mkdir', data)
-    },
-
-    // Thumbnail Data
-    getThumb(path) {
-        let data = {
-            path: path,
-            type: "thumbnail",
-            responseType: 'arraybuffer'
-        }
-        return api.get('/file/image', data);
-    },
-
-    // Copy or Move File
-    operate(data) {
-        return api.post('/file/operate', data);
-    },
-    // cancel operate
-    cancel(id) {
-        return api.delete(`/file/operate/${id}`);
-    },
-    // Delete file or folder
-    delete(pathArray) {
-        return api.delete('/file/delete', pathArray);
-    },
-
-    getFileShare() {
-        return api.get('/file/share')
-    },
-    setFileShare(data) {
-        return api.post('/file/share', data)
-    }
 }
 
 export default file;

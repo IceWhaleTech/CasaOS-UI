@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-01-20 12:01:07
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-13 18:57:37
+ * @LastEditTime: 2022-07-14 17:41:15
  * @Description: 
- * @FilePath: /CasaOS-UI/src/mixins/mixin.js
+ * @FilePath: \CasaOS-UI\src\mixins\mixin.js
  */
 import qs from 'qs'
 import has from 'lodash/has'
@@ -175,20 +175,24 @@ export const mixin = {
 
         // Get File Download URL
         getFileUrl(items) {
-            let apiUrl = `${this.baseUrl}file/download`;
+            let apiUrl = ""
             let path = ""
             let parameters = {
-                token: this.$store.state.token
+                token: this.$store.state.access_token
             }
             if (items.constructor === Object) {
                 if (items.is_dir) {
+                    apiUrl = `${this.baseUrl}batch`;
                     path = items.path
                     parameters.files = path
                     return apiUrl + "?" + qs.stringify(parameters)
                 } else {
-                    return apiUrl + items.path + "?" + qs.stringify(parameters)
+                    apiUrl = `${this.baseUrl}file`;
+                    parameters.path = items.path
+                    return apiUrl + "?" + qs.stringify(parameters)
                 }
             } else if (items.constructor === Array) {
+                apiUrl = `${this.baseUrl}batch`;
                 const pathArray = items.map(o => {
                     return o.path
                 })
@@ -211,10 +215,10 @@ export const mixin = {
 
         // Get Image Thumb URL
         getThumbUrl(item) {
-            let apiUrl = `${this.baseUrl}file/image?`;
+            let apiUrl = `${this.baseUrl}image?`;
             let parameters = {
                 path: item.path,
-                token: this.$store.state.token,
+                token: this.$store.state.access_token,
                 type: "thumbnail"
             }
             return apiUrl + qs.stringify(parameters)
@@ -285,7 +289,7 @@ export const mixin = {
                     }
                 })
             }
-            this.$store.commit('changeOperateObject', operateObject)
+            this.$store.commit('SET_OPERATE_OBJECT', operateObject)
             if (this.$refs.dropDown !== undefined) {
                 this.$refs.dropDown.toggle()
             }
@@ -306,7 +310,7 @@ export const mixin = {
                     return o.path
                 })
             }
-            this.$api.file.delete(JSON.stringify(path)).then(res => {
+            this.$api.batch.delete(JSON.stringify(path)).then(res => {
                 if (res.data.success === 200) {
                     if (this.$refs.dropDown !== undefined) {
                         this.$refs.dropDown.toggle()
@@ -337,14 +341,14 @@ export const mixin = {
             const postData = {
                 path: item.path,
             }
-            this.$api.user.postFileImage(user_id, wallpaperConfig, postData).then(res => {
+            this.$api.users.postFileImage(user_id, wallpaperConfig, postData).then(res => {
                 if (res.data.success === 200) {
                     const resData = res.data.data
                     let wallpaperData = {
                         path: "http://" + this.$baseURL + resData.online_path + "&time=" + new Date().getTime(),
                         from: "Files"
                     }
-                    this.$api.user.setCustomStorage( wallpaperConfig, wallpaperData).then(res => {
+                    this.$api.users.setCustomStorage( wallpaperConfig, wallpaperData).then(res => {
                         if (res.data.success === 200) {
                             this.$store.commit('SET_WALLPAPER', {
                                 path: res.data.data.path,

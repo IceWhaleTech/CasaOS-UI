@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-02-25 11:03:08
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-22 19:24:23
+ * @LastEditTime: 2022-07-14 12:16:21
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/filebrowser/modals/RenameModal.vue
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\modals\RenameModal.vue
 -->
 <template>
   <div class="modal-card">
@@ -69,7 +69,7 @@ export default {
         this.$emit("close")
         return false
       }
-      this.$api.file.renamePath(this.item.path, newPath).then(res => {
+      this.$api.file.rename(this.item.path, newPath).then(res => {
         if (res.data.success == 200) {
           this.$emit("reload")
           this.$emit("close")

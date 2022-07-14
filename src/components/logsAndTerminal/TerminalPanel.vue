@@ -47,7 +47,7 @@ export default {
   data() {
     return {
       isLoading: false,
-      wsUrl: `ws://${this.$baseURL}/v1/sys/wsssh?token=${this.$store.state.token}`,
+      wsUrl: `ws://${this.$baseURL}/v1/sys/wsssh?token=${this.$store.state.access_token}`,
       logData: ""
     }
   },

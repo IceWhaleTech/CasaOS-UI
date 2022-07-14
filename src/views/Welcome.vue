@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:30:26
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-13 16:17:46
+ * @LastEditTime: 2022-07-14 11:03:56
  * @Description: 
- * @FilePath: /CasaOS-UI/src/views/Welcome.vue
+ * @FilePath: \CasaOS-UI\src\views\Welcome.vue
 -->
 <template>
   <div id="login-page" class="is-flex is-justify-content-center is-align-items-center">
@@ -140,8 +140,8 @@ export default {
      * @return {*}
      */
     register() {
-      const initKey = this.$store.state.init_key;
-      this.$api.user.register(this.username, this.password, initKey).then(res => {
+      const initKey = this.$store.state.initKey;
+      this.$api.users.register(this.username, this.password, initKey).then(res => {
         if (res.data.success == 200) {
           this.goToStep(3);
         }
@@ -153,7 +153,7 @@ export default {
      * @return {*}
      */
     async login() {
-      const userRes = await this.$api.user.login(this.username, this.password)
+      const userRes = await this.$api.users.login(this.username, this.password)
       if (userRes.data.success == 200) {
         localStorage.setItem("access_token", userRes.data.data.token.access_token);
         localStorage.setItem("refresh_token", userRes.data.data.token.refresh_token);

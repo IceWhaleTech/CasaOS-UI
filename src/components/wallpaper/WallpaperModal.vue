@@ -143,7 +143,7 @@ export default {
         from: this.from
       }
       this.isLoading = true
-      this.$api.user.setCustomStorage(wallpaperConfig, data).then(res => {
+      this.$api.users.setCustomStorage(wallpaperConfig, data).then(res => {
         this.isLoading = false
         if (res.data.success === 200) {
 

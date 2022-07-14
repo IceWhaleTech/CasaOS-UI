@@ -134,7 +134,7 @@ export default {
     },
     async updateUserInfo() {
       try {
-        const userRes = await this.$api.user.getUserInfo()
+        const userRes = await this.$api.users.getUserInfo()
         this.$store.commit('SET_USER', userRes.data.data);
         this.goto(1);
       } catch (error) {
@@ -144,7 +144,7 @@ export default {
     async saveUser() {
       this.isLoading = true;
       try {
-        const res = await this.$api.user.setUserInfo(this.user)
+        const res = await this.$api.users.setUserInfo(this.user)
         this.$store.commit('SET_USER', res.data.data);
         this.user = res.data.data
         this.goto(1);
@@ -157,7 +157,7 @@ export default {
     async savePassword() {
       this.isLoading = true;
       try {
-        await this.$api.user.changePassword({
+        await this.$api.users.changePassword({
           old_password: this.oriPassword,
           password: this.password,
         })

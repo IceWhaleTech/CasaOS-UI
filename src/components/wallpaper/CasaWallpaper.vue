@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-06-21 19:03:39
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-28 14:34:10
+ * @LastEditTime: 2022-07-14 12:01:25
  * @FilePath: \CasaOS-UI\src\components\wallpaper\CasaWallpaper.vue
  * @Description: 
  * 
@@ -18,6 +18,7 @@
 
 <script>
 import ContextMenu from './ContextMenu.vue'
+import  events  from '@/events/events';
 export default {
   name: "casa-background",
   components: {
@@ -47,7 +48,7 @@ export default {
 
   },
   mounted() {
-    this.$EventBus.$on("showChangeWallpaperModal", () => {
+    this.$EventBus.$on(events.SHOW_CHANGE_WALLPAPER_MODAL, () => {
       this.showChangeWallpaperModal()
     });
   },

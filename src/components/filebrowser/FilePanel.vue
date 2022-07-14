@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-02-18 12:42:06
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-06 16:17:44
+ * @LastEditTime: 2022-07-14 15:25:06
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/filebrowser/FilePanel.vue
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\FilePanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -147,6 +147,7 @@ import dropRight from 'lodash/dropRight'
 import isEqual from 'lodash/isEqual'
 
 import { mixin } from '@/mixins/mixin';
+import  events  from '@/events/events';
 
 import TreeList from './sidebar/TreeList.vue';
 
@@ -293,7 +294,7 @@ export default {
     this.uploaderInstance.off('dragover')
     this.uploaderInstance.off('uploadStart')
     document.removeEventListener('contextmenu', this.hideContextMenu)
-    this.$store.commit('changeOperateObject', null)
+    this.$store.commit('SET_OPERATE_OBJECT', null)
     document.onpaste = null;
     document.onkeyup = null;
   },
@@ -319,7 +320,7 @@ export default {
     getFileList(path) {
       this.isLoading = true;
       // path = path.replace("//", "/")
-      this.$api.file.dirPath(path).then(res => {
+      this.$api.folder.getList(path).then(res => {
         if (res.data.success == 200) {
           this.isLoading = false;
           this.currentPath = path
@@ -327,7 +328,7 @@ export default {
           this.uploaderInstance.opts.query = {
             path: this.currentPath,
           }
-          this.$store.commit('changeCurrentPath', path)
+          this.$store.commit('SET_CURRENT_PATH', path)
           const fileList = res.data.data
           const newFileList = fileList.map(item => {
             return {
@@ -352,7 +353,7 @@ export default {
      */
     reload() {
       this.getFileList(this.currentPath);
-      this.$EventBus.$emit("reloadFileList");
+      this.$EventBus.$emit(events.RELOAD_FILE_LIST);
     },
 
     /**
@@ -361,7 +362,7 @@ export default {
      */
     changeView() {
       this.isViewGird = !this.$store.state.isViewGird
-      this.$store.commit('changeViewGird', this.isViewGird)
+      this.$store.commit('SET_IS_VIEW_GRID', this.isViewGird)
     },
 
     /**
@@ -437,10 +438,10 @@ export default {
       operateObject.to = this.$store.state.currentPath
       operateObject.style = style
 
-      this.$api.file.operate(operateObject).then(res => {
+      this.$api.batch.task(operateObject).then(res => {
         this.isPasting = false
         if (res.data.success == 200) {
-          this.$store.commit('changeOperateObject', null)
+          this.$store.commit('SET_OPERATE_OBJECT', null)
         } else {
           this.$buefy.toast.open({
             message: res.data.message,
@@ -469,7 +470,8 @@ export default {
      * @return {*}
      */
     getTargetUrl() {
-      return `http://${this.$baseURL}/v1/file/upload?token=${this.$store.state.token}`
+      console.log(this.$store.state);
+      return `http://${this.$baseURL}/v1/file/upload?token=${this.$store.state.access_token}`
     },
 
     /**

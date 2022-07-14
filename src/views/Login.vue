@@ -84,7 +84,7 @@ export default {
   methods: {
     async login() {
       try {
-        const userRes = await this.$api.user.login(this.username, this.password)
+        const userRes = await this.$api.users.login(this.username, this.password)
           localStorage.setItem("access_token", userRes.data.data.token.access_token);
           localStorage.setItem("refresh_token", userRes.data.data.token.refresh_token);
           localStorage.setItem("expires_at", userRes.data.data.token.expires_at);

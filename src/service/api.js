@@ -2,27 +2,41 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-13 14:18:17
+ * @LastEditTime: 2022-07-14 18:16:06
  * @Description: 
- * @FilePath: /CasaOS-UI/src/service/api.js
+ * @FilePath: \CasaOS-UI\src\service\api.js
  */
 
-import app from './app.js';
-import disk from './disk.js';
+import appCategories from './appCategories.js';
+import apps from './apps.js';
+import batch from './batch.js';
+import container from './container.js';
+import disks from './disks.js';
 import file from './file.js';
+import folder from './folder.js';
+import image from './image.js';
+import port from './port.js';
 import sys from './sys.js';
-import sync from './sync.js';
-import user from "./user.js";
+import storage from './storage.js';
+
 import users from "./users.js";
-import container from "./container.js";
 
 export default {
-    app,
-    sys,
-    disk,
+    // Apps
+    appCategories,
+    apps,
+    container,
+    // Files
     file,
-    user,
-    sync,
+    folder,
+    image,
+    batch,
+    // Devices
+    disks,
+    storage,
+    // System
+    sys,
+    port,
+    // User
     users,
-    container
 }

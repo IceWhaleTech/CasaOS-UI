@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-06-02 19:48:26
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-13 16:01:21
- * @FilePath: /CasaOS-UI/src/store/state.js
+ * @LastEditTime: 2022-07-14 11:12:24
+ * @FilePath: \CasaOS-UI\src\store\state.js
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -23,14 +23,10 @@ const state = {
         updated_at: "",
         username: ""
     },
-    init_key: "",
+    initKey: "", // Initialization key for reg
 
-    token: "",
-    serviceError: false,
-    userinfo: {},
     sidebarOpen: false,
-    syncthingKey: '',
-    syncthingPort: '',
+
     // System Config
     searchEngine: '',
     searchEngineSwitch: true,
@@ -40,14 +36,12 @@ const state = {
     needInitialization: false,
     hardwareInfo: {},
     isMobile: false,
+
     // Files
-    pasteFiles: "",
     operateObject: null,
     currentPath: "",
     isViewGird: true,
-    // Conenct
-    isShareViewGird: true,
-    currentSharePath: "",
+
     // Wallpaper
     wallpaperObject: {
         path: require('@/assets/background/default_wallpaper.jpg'),

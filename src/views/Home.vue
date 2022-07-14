@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-13 18:57:36
+ * @LastEditTime: 2022-07-14 11:57:35
  * @Description: 
- * @FilePath: /CasaOS-UI/src/views/Home.vue
+ * @FilePath: \CasaOS-UI\src\views\Home.vue
 -->
 <template>
   <div v-if="!isLoading" class="out-container">
@@ -75,6 +75,7 @@ import AppSection from '../components/Apps/AppSection.vue'
 //import Shortcuts from '@/components/Shortcuts.vue'
 import FilePanel from '@/components/filebrowser/FilePanel.vue'
 import { mixin } from '../mixins/mixin';
+import  events  from '@/events/events';
 const wallpaperConfig = "wallpaper"
 
 export default {
@@ -139,7 +140,7 @@ export default {
      * @return {*}
      */
     async getConfig() {
-      let systemConfig = await this.$api.user.getCustomStorage("system")
+      let systemConfig = await this.$api.users.getCustomStorage("system")
       if (systemConfig.data.success != 200 || systemConfig.data.data == "") {
         const oldData = systemConfig.data.data
         const oldSystemConfig = await this.$api.sys.systemConfig()
@@ -153,7 +154,7 @@ export default {
             widgets_switch: oldSystemConfig.data.data.widgets_switch ? oldSystemConfig.data.data.widgets_switch : true,
           }
           // save
-          const saveRes = await this.$api.user.setCustomStorage("system", barData)
+          const saveRes = await this.$api.users.setCustomStorage("system", barData)
           if (saveRes.data.success === 200) {
             systemConfig = saveRes
             this.barData = saveRes.data.data
@@ -162,8 +163,8 @@ export default {
         }
       }
 
-      this.$store.commit('changeSearchEngineSwitch', systemConfig.data.data.search_switch);
-      this.$store.commit('changeRecommendSwitch', systemConfig.data.data.recommend_switch);
+      this.$store.commit('SET_SEARCH_ENGINE_SWITCH', systemConfig.data.data.search_switch);
+      this.$store.commit('SET_RECOMMEND_SWITCH', systemConfig.data.data.recommend_switch);
       this.barData = systemConfig.data.data
       this.isLoading = false
 
@@ -208,18 +209,19 @@ export default {
       this.$api.sys.getUtilization().then(res => {
         if (res.data.success === 200) {
           this.hardwareInfoLoading = false
-          this.$store.commit('changeHardwareInfo', res.data.data);
+          this.$store.commit('SET_HARDWARE_INFO', res.data.data);
         }
       })
     },
 
     openHomeContaxtMenu(e) {
       // console.log(e.target);
-      this.$EventBus.$emit("showHomeContextMenu", e);
+      console.log(events.SHOW_HOME_CONTEXT_MENU);
+      this.$EventBus.$emit(events.SHOW_HOME_CONTEXT_MENU, e);
     },
 
     getWallpaperConfig() {
-      this.$api.user.getCustomStorage(wallpaperConfig).then(res => {
+      this.$api.users.getCustomStorage(wallpaperConfig).then(res => {
         if (res.data.success === 200 && res.data.data != "") {
           this.$store.commit('SET_WALLPAPER', {
             path: res.data.data.path,

@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-03-03 13:10:35
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-01 10:52:10
+ * @LastEditTime: 2022-07-14 12:08:00
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/filebrowser/sidebar/TreeList.vue
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\sidebar\TreeList.vue
 -->
 <template>
   <ul>
@@ -30,6 +30,7 @@
 
 <script>
 import { mixin } from '@/mixins/mixin';
+import events from '@/events/events';
 export default {
   mixins: [mixin],
   inject: ['filePanel'],
@@ -96,15 +97,15 @@ export default {
   },
 
   mounted() {
-    this.$EventBus.$on("reloadFileList", () => {
+    this.$EventBus.$on(events.RELOAD_FILE_LIST, () => {
       this.getNewList()
     });
 
   },
   methods: {
     async getNewList() {
-      const newList = await this.$api.file.dirPath("/")
-      const dataList = await this.$api.file.dirPath("/DATA")
+      const newList = await this.$api.folder.getList("/")
+      const dataList = await this.$api.folder.getList("/DATA")
       const contactList = []
       contactList.push(...newList.data.data, ...dataList.data.data)
       this.initFolders.forEach(dir => {

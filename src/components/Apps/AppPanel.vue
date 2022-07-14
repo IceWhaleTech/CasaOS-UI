@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-03-01 21:10:57
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-08 15:24:37
- * @FilePath: /CasaOS-UI/src/components/Apps/AppPanel.vue
+ * @LastEditTime: 2022-07-14 11:35:40
+ * @FilePath: \CasaOS-UI\src\components\Apps\AppPanel.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -549,7 +549,7 @@ export default {
         cmd: [],
         privileged: false,
         host_name: "",
-
+        container_name: "",
       },
       portSelected: null,
       capArray: data,
@@ -828,17 +828,16 @@ export default {
      * @param {*} 
      * @return {*} void
      */
-    getCategoryList() {
-      this.$api.app.storeCategoryList().then((res) => {
-        this.cateMenu = res.data.data.filter((item) => {
-          return item.count > 0
-        })
-        this.currentCate = this.cateMenu[0]
-        this.currentSort = this.sortMenu[0]
-        if (this.isFirst) {
-          this.isFirst = false
-        }
+    async getCategoryList() {
+      const res = await this.$api.appCategories.getAppCategory();
+      this.cateMenu = res.data.data.filter((item) => {
+        return item.count > 0
       })
+      this.currentCate = this.cateMenu[0]
+      this.currentSort = this.sortMenu[0]
+      if (this.isFirst) {
+        this.isFirst = false
+      }
     },
 
     /**
@@ -848,7 +847,7 @@ export default {
      */
     showAppDetial(id) {
       this.isLoading = true;
-      this.$api.app.storeAppInfo(id).then(resp => {
+      this.$api.apps.getAppInfo(id).then(resp => {
         this.isLoading = false;
         this.sidebarOpen = true;
         this.appDetailData = resp.data.data
@@ -862,7 +861,7 @@ export default {
      */
     getStoreList() {
       this.isLoading = true
-      this.$api.app.storeList(this.storeQueryData).then(res => {
+      this.$api.apps.getAppList(this.storeQueryData).then(res => {
         this.isLoading = false
         if (res.data.success == 200) {
           // this.listTotal = res.data.data.count
@@ -879,7 +878,7 @@ export default {
      */
     qucikInstall(id) {
       this.currentInstallId = id
-      this.$api.app.storeAppInfo(id).then(resp => {
+      this.$api.apps.getAppInfo(id).then(resp => {
         if (resp.data.success == 200) {
 
           let respData = resp.data.data
@@ -1015,7 +1014,7 @@ export default {
       this.processData();
       this.isLoading = true;
       // console.log(this.initData);
-      this.$api.app.install(this.initData).then((res) => {
+      this.$api.container.install(this.initData).then((res) => {
         this.isLoading = false;
         if (res.data.success == 200) {
           this.currentInstallAppName = res.data.data
@@ -1041,7 +1040,7 @@ export default {
       this.processData();
       this.isLoading = true;
       let updateData = this.uuid2var(cloneDeep(this.initData));
-      this.$api.app.updateContainerSetting(this.id, updateData).then((res) => {
+      this.$api.container.update(this.id, updateData).then((res) => {
         if (res.data.success == 200) {
           this.isLoading = false;
           this.$emit('updateState')

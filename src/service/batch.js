@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-12 22:45:44
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-12 22:49:57
+ * @LastEditTime: 2022-07-14 17:41:17
  * @FilePath: \CasaOS-UI\src\service\batch.js
  * @Description: 
  * 
@@ -15,18 +15,15 @@ const PREFIX = "/batch"
 const batch = {
     // download
     download(format, files) {
-        return api.get(`${PREFIX}/download`, {
+        return api.get(`${PREFIX}`, {
             format: format,
             files: files
         });
     },
 
     // File operate task TODO:wait for the api
-    task(action, files) {
-        return api.post(`${PREFIX}/task`, {
-            action: action,
-            files: files
-        });
+    task(data) {
+        return api.post(`${PREFIX}/task`, data);
     },
 
     // delete file operate task

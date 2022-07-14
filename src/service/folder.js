@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-12 22:42:25
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-12 22:44:35
+ * @LastEditTime: 2022-07-14 12:15:14
  * @FilePath: \CasaOS-UI\src\service\folder.js
  * @Description: 
  * 
@@ -20,10 +20,9 @@ const folder = {
         });
     },
     // create folder
-    create(path, name) {
+    create(path) {
         return api.post(`${PREFIX}`, {
             path: path,
-            name: name
         });
     },
 

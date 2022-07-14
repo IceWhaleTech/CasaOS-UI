@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-13 18:11:36
+ * @LastEditTime: 2022-07-14 18:14:44
  * @Description: Top bar 
- * @FilePath: /CasaOS-UI/src/components/TopBar.vue
+ * @FilePath: \CasaOS-UI\src\components\TopBar.vue
 -->
 
 <template>
@@ -219,6 +219,8 @@ import PortPanel from './settings/PortPanel.vue'
 import UpdateModal from './settings/UpdateModal.vue'
 import { mixin } from '../mixins/mixin';
 
+import events from '@/events/events';
+
 const systemConfigName = "system"
 
 export default {
@@ -246,7 +248,7 @@ export default {
       isUpdating: false,
       latestText: "Currently the latest version",
       updateText: "A new version is available!",
-      
+
       port: "",
       autoUsbMount: false,
       deviceModel: "",
@@ -296,19 +298,19 @@ export default {
     },
     'barData.search_engine': {
       handler(val) {
-        this.$store.commit('changeSearchEngine', val);
+        this.$store.commit('SET_SEARCH_ENGINE', val);
       },
       deep: true
     },
     'barData.search_switch': {
       handler(val) {
-        this.$store.commit('changeSearchEngineSwitch', val);
+        this.$store.commit('SET_SEARCH_ENGINE_SWITCH', val);
       },
       deep: true
     },
     'barData.recommend_switch': {
       handler(val) {
-        this.$store.commit('changeRecommendSwitch', val);
+        this.$store.commit('SET_RECOMMEND_SWITCH', val);
       },
       deep: true
     },
@@ -339,7 +341,7 @@ export default {
      * @return {*}
      */
     async saveData() {
-      const saveRes = await this.$api.user.setCustomStorage(systemConfigName, this.barData)
+      const saveRes = await this.$api.users.setCustomStorage(systemConfigName, this.barData)
       if (saveRes.data.success === 200) {
         this.barData = saveRes.data.data
       }
@@ -363,7 +365,7 @@ export default {
      * @return {*}
      */
     showSideBar() {
-      this.$store.commit('changeSideBarState')
+      this.$store.commit('TOOGLE_SIDEBAR_STATE')
     },
 
 
@@ -419,7 +421,7 @@ export default {
       })
     },
     showChangeWallpaperModal() {
-      this.$EventBus.$emit("showChangeWallpaperModal");
+      this.$EventBus.$emit(events.SHOW_CHANGE_WALLPAPER_MODAL);
       this.$refs.settingsDrop.toggle()
     },
 
@@ -446,7 +448,7 @@ export default {
      */
     usbAutoMount() {
       if (this.autoUsbMount) {
-        this.$api.sys.setUsbMountOn()
+        this.$api.sys.toggleUsbAutoMount({ state: "on" })
         // Show 
         if (this.isRaspberryPi) {
           this.$buefy.snackbar.open({
@@ -457,7 +459,7 @@ export default {
         }
 
       } else {
-        this.$api.sys.setUsbMountOff()
+        this.$api.sys.toggleUsbAutoMount({ state: "off" })
       }
     },
     /**
@@ -482,7 +484,7 @@ export default {
      * @return {*} void
      */
     checkVersion() {
-      this.$api.sys.checkVersion().then(res => {
+      this.$api.sys.getVersion().then(res => {
         if (res.data.success == 200) {
           this.updateInfo = res.data.data
         }
@@ -519,7 +521,7 @@ export default {
       this.$store.commit('SET_SIDEBAR_CLOSE')
       if (this.$store.state.user.id == 0) {
         try {
-          const userRes = await this.$api.user.getUserInfo()
+          const userRes = await this.$api.users.getUserInfo()
           this.userInfo = userRes.data.data
           this.$store.commit('SET_USER', this.userInfo)
         } catch (error) {
@@ -546,7 +548,7 @@ export default {
     },
 
     logout() {
-      this.$store.commit('setDefaultWallpaper')
+      this.$store.commit('SET_DEFAULT_WALLPAPER')
       this.$router.push("/logout");
     },
 

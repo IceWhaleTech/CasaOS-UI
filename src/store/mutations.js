@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-06-02 19:49:36
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-13 18:57:46
- * @FilePath: /CasaOS-UI/src/store/mutations.js
+ * @LastEditTime: 2022-07-14 11:15:01
+ * @FilePath: \CasaOS-UI\src\store\mutations.js
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -23,7 +23,7 @@ const mutations = {
     },
 
     SET_INIT_KEY(state, key) {
-        state.init_key = key
+        state.initKey = key
     },
 
     // Site 
@@ -39,75 +39,53 @@ const mutations = {
         state.sidebarOpen = false
     },
 
+    TOOGLE_SIDEBAR_STATE(state) {
+        state.sidebarOpen = !state.sidebarOpen
+    },
+
     SET_WALLPAPER(state, wallpaper) {
         localStorage.setItem('wallpaper', wallpaper.path)
         state.wallpaperObject = wallpaper
     },
 
-
-    // ------------------------------------------------------------------
-
-    setToken(state, val) {
-        state.token = val
-    },
-    setServiceError(state, val) {
-        state.serviceError = val
-    },
-    changeUserInfo(state, val) {
-        state.userinfo = val
-    },
-    changeSideBarState(state) {
-        state.sidebarOpen = !state.sidebarOpen
-    },
-
-    changeSyncthingInfo(state, val) {
-        state.syncthingKey = val.key
-        state.syncthingPort = val.port
-    },
-    // System Config
-    changeSearchEngine(state, val) {
-        state.searchEngine = val
-    },
-    changeSearchEngineSwitch(state, val) {
-        state.searchEngineSwitch = val
-    },
-    changeRecommendSwitch(state, val) {
-        state.recommendSwitch = val
-    },
-
-
-    changeHardwareInfo(state, val) {
-        state.hardwareInfo = val
-    },
-    changePasteFiles(state, val) {
-        state.pasteFiles = val
-    },
-    changeOperateObject(state, val) {
-        state.operateObject = val
-    },
-    changeCurrentPath(state, val) {
-        state.currentPath = val
-    },
-    changeViewGird(state, val) {
-        state.isViewGird = val
-    },
-    changeShareViewGird(state, val) {
-        state.isShareViewGird = val
-    },
-    changeCurrentSharePath(state, val) {
-        state.currentSharePath = val
-    },
-    // Set if isMobile or not
-    setIsMobile(state, val) {
-        state.isMobile = val
-    },
-
-    
-    setDefaultWallpaper(state) {
+    SET_DEFAULT_WALLPAPER(state) {
         state.wallpaperObject = {
             path: require('@/assets/background/default_wallpaper.jpg'),
             from: "Built-in" //Built-in, Upload, Files
         }
-    }
+    },
+
+    SET_IS_MOBILE(state, val) {
+        state.isMobile = val
+    },
+
+    SET_SEARCH_ENGINE(state, val) {
+        state.searchEngine = val
+    },
+
+    SET_SEARCH_ENGINE_SWITCH(state, val) {
+        state.searchEngineSwitch = val
+    },
+
+    SET_RECOMMEND_SWITCH(state, val) {
+        state.recommendSwitch = val
+    },
+
+    SET_HARDWARE_INFO(state, val) {
+        state.hardwareInfo = val
+    },
+
+    SET_CURRENT_PATH(state, val) {
+        state.currentPath = val
+    },
+
+    SET_IS_VIEW_GRID(state, val) {
+        state.isViewGird = val
+    },
+
+    SET_OPERATE_OBJECT(state, val) {
+        state.operateObject = val
+    },
+
 }
 export default mutations

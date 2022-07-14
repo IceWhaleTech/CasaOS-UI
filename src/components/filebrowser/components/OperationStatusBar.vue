@@ -1,8 +1,8 @@
 <!--
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-05-30 20:15:05
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-06-08 19:25:15
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-07-14 12:13:15
  * @FilePath: \CasaOS-UI\src\components\filebrowser\components\OperationStatusBar.vue
  * @Description: 
  * 
@@ -58,7 +58,7 @@ export default {
   methods: {
     cancel() {
       this.isLoading = true
-      this.$api.file.cancel(0).then(res => {
+      this.$api.batch.deleteTask(0).then(res => {
         if (res.data.success == 200) {
           this.isLoading = false
         }

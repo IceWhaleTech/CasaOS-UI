@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-11-10 17:48:25
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-08 16:02:51
+ * @LastEditTime: 2022-07-14 11:55:57
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/syncthing/SyncBlock.vue
+ * @FilePath: \CasaOS-UI\src\components\syncthing\SyncBlock.vue
 -->
 <template>
   <div class="column is-one-half">
@@ -33,30 +33,57 @@
 </template>
 
 <script>
+import  events  from '@/events/events';
 export default {
   name: "sync-block",
   data() {
     return {
       isLoading: false,
-      syncBaseURL: ""
+      syncBaseURL: "",
+      isSyncInstalled: false,
+      isSyncRunning: false,
+      syncPort: ""
     }
   },
   created() {
-    this.syncBaseURL = `http://${this.$baseIp}:${this.$store.state.syncthingPort}`
+    this.checkSyncStatus()
   },
   computed: {
     actionText() {
-      return (!this.$store.state.syncthingKey.length == 32) ? "Install" : "Open"
+      return !this.isSyncInstalled ? "Install" : "Open"
     }
   },
 
   methods: {
-    openSyncPanel() {
-      if (this.$store.state.syncthingKey.length == 32) {
-        const arg = `\u003cscript\u003elocation.replace("${this.syncBaseURL}")\u003c/script\u003e`;
-        window.open('javascript:window.name;', arg);
+    async checkSyncStatus() {
+      const res = await this.$api.sys.getSystemApps()
+      const systemApps = res.data.data
+      this.isSyncInstalled = systemApps.some(item => {
+        return item.image.includes('syncthing')
+      })
+
+      if (this.isSyncInstalled) {
+        this.isSyncRunning = systemApps.some(item => {
+          return item.image.includes('syncthing') && item.state === "running"
+        })
+
+        this.syncPort = systemApps.find(item => {
+          return item.image.includes('syncthing')
+        }).port
+        this.syncBaseURL = `http://${this.$baseIp}:${this.syncPort}`
+      }
+    },
+    async openSyncPanel() {
+      await this.checkSyncStatus()
+      if (!this.isSyncInstalled) {
+        this.$EventBus.$emit(events.OPEN_APP_STORE_AND_GOTO_SYNCTHING);
       } else {
-        this.$EventBus.$emit("OpenAppStoreAndGotoSyncthing");
+        if (this.isSyncRunning) {
+          const arg = `\u003cscript\u003elocation.replace("${this.syncBaseURL}")\u003c/script\u003e`;
+          window.open('javascript:window.name;', arg);
+        } else {
+          console.log("openModal");
+        }
       }
     },
 

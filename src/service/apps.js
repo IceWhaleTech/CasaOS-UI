@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-12 22:00:10
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-12 22:01:02
+ * @LastEditTime: 2022-07-14 10:21:43
  * @FilePath: \CasaOS-UI\src\service\apps.js
  * @Description: 
  * 
@@ -14,8 +14,13 @@ const PREFIX = "/apps";
 
 const apps = {
     // get app list
-    getAppList() {
-        return api.get(`${PREFIX}`);
+    getAppList(data) {
+        return api.get(`${PREFIX}`, data);
+    },
+
+    // Get app info
+    getAppInfo(id) {
+        return api.get(`${PREFIX}/${id}`);
     },
 }
 

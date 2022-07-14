@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-02-25 14:26:30
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-22 19:24:18
+ * @LastEditTime: 2022-07-14 12:14:38
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/filebrowser/modals/NewFolderModal.vue
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\modals\NewFolderModal.vue
 -->
 <template>
   <div class="modal-card">
@@ -61,7 +61,7 @@ export default {
 
     createFolder() {
       let newPath = path.join(this.currentPath, this.folderName)
-      this.$api.file.mkdir(newPath).then(res => {
+      this.$api.folder.create(newPath).then(res => {
         if (res.data.success == 200) {
           this.$emit("reload")
           this.$emit("close")

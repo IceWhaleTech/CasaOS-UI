@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-13 16:07:51
+ * @LastEditTime: 2022-07-14 11:06:25
  * @Description: Main entry of application
- * @FilePath: /CasaOS-UI/src/App.vue
+ * @FilePath: \CasaOS-UI\src\App.vue
 -->
 
 <template>
@@ -135,10 +135,10 @@ _____             _____ _____
      * @return {*} void
      */
     checkInit() {
-      this.$api.user.getUserStatus().then(res => {
+      this.$api.users.getUserStatus().then(res => {
         if (res.data.success == 200 && !res.data.data.initialized) {
           this.isWelcome = true
-          this.$store.commit('SET_SITE_LOADING',false)
+          this.$store.commit('SET_SITE_LOADING', false)
           this.$store.commit('SET_NEED_INITIALIZATION', true)
           this.$store.commit('SET_INIT_KEY', res.data.data.key)
           localStorage.removeItem("access_token");
@@ -163,11 +163,8 @@ _____             _____ _____
      * @return {*}
      */
     onWindowResize() {
-      if (document.body.clientWidth >= 480) {
-        this.$store.commit('setIsMobile', false)
-      } else {
-        this.$store.commit('setIsMobile', true)
-      }
+      const isMobile = document.body.clientWidth < 480
+      this.$store.commit('SET_IS_MOBILE', isMobile)
     },
   },
   sockets: {

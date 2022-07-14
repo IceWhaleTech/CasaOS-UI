@@ -96,6 +96,12 @@ export default {
     "Config": "Config",
     "Total": "Total",
 
+    // Iot
+    "Have an idea? Shoot it on Discord!": "Have an idea? Shoot it on Discord!",
+    "Smarten up your home": "Smarten up your home",
+    "We want to give you a smart home experience with privacy, high speed, and localized storage.": "We want to give you a smart home experience with privacy, high speed, and localized storage.",
+    "In development": "In development",
+
     // Apps
     "Apps": "Apps",
     "App": "App",
