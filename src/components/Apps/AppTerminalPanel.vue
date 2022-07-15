@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-29 15:38:35
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 08:37:13
+ * @LastEditTime: 2022-07-15 18:01:25
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\Apps\AppTerminalPanel.vue
+ * @FilePath: /CasaOS-UI/src/components/Apps/AppTerminalPanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -16,7 +16,7 @@
       <div class="is-flex-grow-1">
         <b-tabs :animated="false" @input="onInput">
           <b-tab-item :label="$t('Terminal')" value="terminal">
-            <terminal-card ref="terminal" :wsUrl="wsUrl"></terminal-card>
+            <terminal-card ref="terminal" :initWsUrl="wsUrl"></terminal-card>
           </b-tab-item>
           <b-tab-item :label="$t('Logs')" value="logs">
             <logs-card ref="logs" :data="logData"></logs-card>
@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       isLoading: false,
-      wsUrl: `ws://${this.$baseURL}/v1/app/terminal/${this.appid}?token=${this.$store.state.access_token}`,
+      wsUrl: `ws://${this.$baseURL}/v1/container/${this.appid}/terminal?token=${this.$store.state.access_token}`,
       logData: ""
     }
   },

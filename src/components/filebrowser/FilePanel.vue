@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-02-18 12:42:06
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 15:25:06
+ * @LastEditTime: 2022-07-15 11:10:56
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\filebrowser\FilePanel.vue
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/FilePanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -724,6 +724,10 @@ export default {
       // USB
       this.usbDisks = data.body.sys_usb
 
+    },
+    storage_status() {
+      // Storage
+      this.reload()
     }
   }
 

@@ -2,14 +2,14 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 11:06:25
+ * @LastEditTime: 2022-07-15 10:59:06
  * @Description: Main entry of application
- * @FilePath: \CasaOS-UI\src\App.vue
+ * @FilePath: /CasaOS-UI/src/App.vue
 -->
 
 <template>
-  <div id="app" class="is-flex is-flex-direction-column">
-    <template v-if="isNotSharing">
+  <div id="app" class="is-flex is-flex-direction-column" :class="{'is-dark-bg':$route.meta.showBackground}">
+    <template v-if="$route.meta.showBackground">
       <!-- Background Layer Start -->
       <casa-wallpaper :animate="isWelcome?initAni:noneAni"></casa-wallpaper>
       <!-- Background Layer End -->
@@ -96,7 +96,6 @@ export default {
         classes: "fadeInRight",
         duration: 700
       },
-      isNotSharing: true
     }
   },
 
@@ -105,11 +104,6 @@ export default {
     isLoading() {
       return this.$store.state.siteLoading
     },
-  },
-  watch: {
-    $route() {
-      this.isNotSharing = this.$route.path != "/connect"
-    }
   },
 
   created() {
@@ -185,9 +179,10 @@ _____             _____ _____
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
   overflow-y: hidden;
+
+  &.is-dark-bg{
+    background-color: #000;
+  }
 }
 </style>

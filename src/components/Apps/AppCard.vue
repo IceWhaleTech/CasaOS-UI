@@ -50,7 +50,7 @@
       <b-tooltip :label="tooltipLable" type="is-dark" :triggers="tooltipTriger" animation="fade1" :animated="true">
         <div class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-3 pb-3 img-c">
           <a class="is-flex is-justify-content-center" @click="openApp(item)">
-            <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-64x64 icon-shadow" :class="item.state | dotClass"></b-image>
+            <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-64x64" :class="item.state | dotClass"></b-image>
           </a>
           <p class="mt-3 one-line">
             <a class="one-line" @click="openApp(item)">

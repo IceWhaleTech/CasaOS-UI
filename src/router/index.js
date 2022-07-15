@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-13 12:04:57
+ * @LastEditTime: 2022-07-15 10:50:31
  * @Description: 
  * @FilePath: /CasaOS-UI/src/router/index.js
  */
@@ -17,21 +17,40 @@ const routes = [
     name: 'Login',
     hidden: true,
     component: () => import('@/views/Login.vue'),
-    meta: { requireAuth: false }
+    meta: {
+      requireAuth: false,
+      showBackground: true
+    }
   },
   {
     path: '/welcome',
     name: 'Welcome',
     hidden: true,
     component: () => import('@/views/Welcome.vue'),
-    meta: { requireAuth: false }
+    meta: {
+      requireAuth: false,
+      showBackground: true
+    }
   },
   {
     path: '/',
     name: 'Home',
     hidden: true,
     component: () => import('@/views/Home.vue'),
-    meta: { requireAuth: true }
+    meta: {
+      requireAuth: false,
+      showBackground: true
+    }
+  },
+  {
+    path: '/terminal',
+    name: 'Terminal',
+    hidden: true,
+    component: () => import('@/views/Terminal.vue'),
+    meta: {
+      requireAuth: false,
+      showBackground: false
+    }
   },
 ]
 

@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 18:14:11
+ * @LastEditTime: 2022-07-15 11:31:18
  * @Description: System HardWare Info API
- * @FilePath: \CasaOS-UI\src\service\sys.js
+ * @FilePath: /CasaOS-UI/src/service/sys.js
  */
 import { api } from "./service.js";
 
@@ -103,10 +103,15 @@ const sys = {
     },
 
     // Get system apps
-    getSystemApps(){
+    getSystemApps() {
         return api.get(`${PREFIX}/apps-state`)
+    },
+
+    // Check ssh login
+    checkSshLogin(data) {
+        return api.post(`${PREFIX}/ssh-login`, data);
     }
-    
+
 
 
 }
