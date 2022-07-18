@@ -22,6 +22,7 @@ export default {
     "High": "Высокий",
     "Language": "Язык",
     "Change": "Change",
+    "Start": "Start",
 
     "This field is required": "Это поле обязательно",
     "This field must be a valid email": "В этом поле должен быть действующий адрес электронной почты.",
@@ -91,10 +92,13 @@ export default {
 
     // Sync
     "Sync your data": "Синхронизируйте ваши данные",
-    "Follow the guide to start syncing your files across multiple devices.": "Следуйте инструкциям, чтобы начать синхронизацию файлов на нескольких устройствах.",
+    "Use Syncthing to sync your files between multiple devices.": "Use Syncthing to sync your files between multiple devices.",
     "Total": "Всего",
     "Install": "Установить",
     "Config": "Настройка",
+    "Failed to start, please try again.": "Failed to start, please try again.",
+    "Syncthing is not running, start it?": "Syncthing is not running, start it?",
+    "Starting Syncthing...": "Starting Syncthing...",
 
 
     // Iot
@@ -179,7 +183,7 @@ export default {
     "Port [Please add a ports set first]": "Port [Please add a ports set first]",
     "[Optional]": "[Optional]",
     "Notice: If there are multiple services, only the first set can be analyzed correctly": "Notice: If there are multiple services, only the first set can be analyzed correctly",
-    "Port": "Port",
+    "There was an error loading the data, please try again!":"There was an error loading the data, please try again!",
 
     //Storage
     "Create Storage": "Create Storage",

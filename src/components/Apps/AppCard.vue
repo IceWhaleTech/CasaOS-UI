@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 08:35:11
+ * @LastEditTime: 2022-07-18 18:02:41
  * @Description: App Card item
- * @FilePath: \CasaOS-UI\src\components\Apps\AppCard.vue
+ * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
 -->
 
 <template>
@@ -71,7 +71,7 @@
 </template>
 
 <script>
-
+import events from '@/events/events';
 export default {
   name: "app-card",
   inject: ["homeShowFiles", "openAppStore"],
@@ -213,6 +213,7 @@ export default {
       this.$api.container.uninstall(this.item.id).then((res) => {
         if (res.data.success == 200) {
           // this.updateState()
+          this.$EventBus.$emit(events.UPDATE_SYNC_STATUS);
         }
         this.isUninstalling = false;
       })
@@ -225,6 +226,7 @@ export default {
     updateState() {
       this.$refs.dro.isActive = false
       this.$emit("updateState")
+      this.$EventBus.$emit(events.UPDATE_SYNC_STATUS);
     },
 
     /**

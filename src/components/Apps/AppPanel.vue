@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-03-01 21:10:57
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 11:35:40
- * @FilePath: \CasaOS-UI\src\components\Apps\AppPanel.vue
+ * @LastEditTime: 2022-07-18 17:06:13
+ * @FilePath: /CasaOS-UI/src/components/Apps/AppPanel.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -141,116 +141,92 @@
     <!-- Modal-Card Body Start -->
     <section class="modal-card-body">
       <!-- App Store List Start -->
-      <section v-if="currentSlide == 0">
-        <template v-if="recommendList.length > 0">
-          <h3 class="title is-5 has-text-weight-normal">{{ $t('Featured Apps') }}</h3>
-          <!-- Featured Slider Start -->
-          <div class="is-relative featured-app b-line">
-            <swiper class="swiper " ref="featureSwiper" :options="featureSwiperOptions">
-              <swiper-slide v-for="(item,index) in recommendList " :key="index+item.title+item.id" class="pb-5">
-                <div class="gap" @click="showAppDetial(item.id)">
-                  <b-image :src="item.thumbnail" ratio="16by9" class="border-8 is-clickable" :src-fallback="require('@/assets/img/app/swiper_placeholder.png')" :placeholder="require('@/assets/img/app/swiper_placeholder.png')"></b-image>
-                </div>
-                <div class="is-flex pt-5 is-align-items-center">
-                  <div class=" mr-3" @click="showAppDetial(item.id)">
-                    <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" :placeholder="require('@/assets/img/app/default.png')" class="is-64x64 is-clickable icon-shadow"></b-image>
+      <section v-if="currentSlide == 0 ">
+
+        <template v-if="!isLoadError">
+
+          <template v-if="recommendList.length > 0">
+            <h3 class="title is-5 has-text-weight-normal">{{ $t('Featured Apps') }}</h3>
+            <!-- Featured Slider Start -->
+            <div class="is-relative featured-app b-line">
+              <swiper class="swiper " ref="featureSwiper" :options="featureSwiperOptions">
+                <swiper-slide v-for="(item,index) in recommendList " :key="index+item.title+item.id" class="pb-5">
+                  <div class="gap" @click="showAppDetial(item.id)">
+                    <b-image :src="item.thumbnail" ratio="16by9" class="border-8 is-clickable" :src-fallback="require('@/assets/img/app/swiper_placeholder.png')" :placeholder="require('@/assets/img/app/swiper_placeholder.png')"></b-image>
                   </div>
-                  <div class="is-flex-grow-1 mr-4 is-clickable" @click="showAppDetial(item.id)">
-                    <h6 class="title is-6 mb-2 ">{{item.title}}</h6>
-                    <p class="is-size-7 two-line">{{item.tagline}}</p>
+                  <div class="is-flex pt-5 is-align-items-center">
+                    <div class=" mr-3" @click="showAppDetial(item.id)">
+                      <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" :placeholder="require('@/assets/img/app/default.png')" class="is-64x64 is-clickable icon-shadow"></b-image>
+                    </div>
+                    <div class="is-flex-grow-1 mr-4 is-clickable" @click="showAppDetial(item.id)">
+                      <h6 class="title is-6 mb-2 ">{{item.title}}</h6>
+                      <p class="is-size-7 two-line">{{item.tagline}}</p>
+                    </div>
+                    <div>
+                      <b-button type="is-primary is-light" size="is-small" rounded @click="qucikInstall(item.id)" :loading="item.id == currentInstallId">{{$t('Install')}}</b-button>
+                    </div>
                   </div>
-                  <div>
-                    <b-button type="is-primary is-light" size="is-small" rounded @click="qucikInstall(item.id)" :loading="item.id == currentInstallId">{{$t('Install')}}</b-button>
+                </swiper-slide>
+
+              </swiper>
+              <div class="swiper-button-prev" :class="{'swiper-button-disabled':disFeaturedPrev}" @click="$refs.featureSwiper.$swiper.slidePrev()"></div>
+              <div class="swiper-button-next" :class="{'swiper-button-disabled':disFeaturedNext}" @click="$refs.featureSwiper.$swiper.slideNext()"></div>
+            </div>
+          </template>
+          <!-- Featured Slider End -->
+
+          <!-- List condition Start -->
+          <div class="is-flex mt-5 mb-5">
+            <!-- Cate Start -->
+            <div class="is-flex-grow-1">
+              <b-dropdown aria-role="list" class="app-select file-dropdown" position="is-bottom-right" v-model="currentCate" scrollable animation="fade1" :mobile-modal="false">
+                <template #trigger="{ active }">
+                  <div class="button is-text auto-height pl-0 pt-0 pb-0 ">
+                    <b-icon :icon="currentCate.font" size="is-small" class="mr-1 ml-0"></b-icon>
+                    {{currentCate.name}}
+                    <b-icon :icon="active ? 'chevron-up' : 'chevron-down'" size="is-normal" class="ml-1"></b-icon>
                   </div>
-                </div>
-              </swiper-slide>
-
-            </swiper>
-            <div class="swiper-button-prev" :class="{'swiper-button-disabled':disFeaturedPrev}" @click="$refs.featureSwiper.$swiper.slidePrev()"></div>
-            <div class="swiper-button-next" :class="{'swiper-button-disabled':disFeaturedNext}" @click="$refs.featureSwiper.$swiper.slideNext()"></div>
-          </div>
-        </template>
-        <!-- Featured Slider End -->
-
-        <!-- List condition Start -->
-        <div class="is-flex mt-5 mb-5">
-          <!-- Cate Start -->
-          <div class="is-flex-grow-1">
-            <b-dropdown aria-role="list" class="app-select file-dropdown" position="is-bottom-right" v-model="currentCate" scrollable animation="fade1" :mobile-modal="false">
-              <template #trigger="{ active }">
-                <div class="button is-text auto-height pl-0 pt-0 pb-0 ">
-                  <b-icon :icon="currentCate.font" size="is-small" class="mr-1 ml-0"></b-icon>
-                  {{currentCate.name}}
-                  <b-icon :icon="active ? 'chevron-up' : 'chevron-down'" size="is-normal" class="ml-1"></b-icon>
-                </div>
-              </template>
-              <b-dropdown-item v-for="menu in cateMenu" :key="menu.id" :value="menu" aria-role="listitem" :class="menu.id == currentCate.id?'is-active':''" :data-title="menu.count">
-                <div class="media is-align-items-center is-flex">
-                  <b-icon :icon="menu.font" size="is-small" class="mr-1"></b-icon>
-                  <div class="media-content">
-                    <h3>{{menu.name}}</h3>
+                </template>
+                <b-dropdown-item v-for="menu in cateMenu" :key="menu.id" :value="menu" aria-role="listitem" :class="menu.id == currentCate.id?'is-active':''" :data-title="menu.count">
+                  <div class="media is-align-items-center is-flex">
+                    <b-icon :icon="menu.font" size="is-small" class="mr-1"></b-icon>
+                    <div class="media-content">
+                      <h3>{{menu.name}}</h3>
+                    </div>
                   </div>
-                </div>
-              </b-dropdown-item>
-            </b-dropdown>
-
-          </div>
-          <!-- Cate End -->
-
-          <!-- Sort Start -->
-          <div>
-            {{ $t('Sort by') }}:
-            <b-dropdown aria-role="list" class="app-select file-dropdown" position="is-bottom-right" v-model="currentSort" animation="fade1" :mobile-modal="false">
-              <template #trigger="{ active }">
-                <div class="button is-text auto-height pl-0 pt-0 pb-0 is-size-14px">
-                  {{currentSort.name}}
-                  <b-icon :icon="active ? 'chevron-up' : 'chevron-down'" size="is-normal" class="ml-1"></b-icon>
-                </div>
-
-              </template>
-              <b-dropdown-item v-for="(menu,index) in sortMenu" :key="'sort_'+index" :value="menu" aria-role="listitem" :class="menu.slash == currentSort.slash?'is-active':''">
-                <div class="media align-items-center is-flex">
-                  <div class="media-content">
-                    <h3>{{menu.name}}</h3>
-                  </div>
-                </div>
-              </b-dropdown-item>
-            </b-dropdown>
-          </div>
-          <!-- Sort End -->
-        </div>
-
-        <!-- List condition End -->
-        <!-- App list Start-->
-        <div class="columns f-list is-multiline is-mobile pb-3 mb-5">
-          <div class="column app-item is-one-quarter" v-for="(item,index) in pageList" :key="index+item.title+item.id">
-            <div class="is-flex  is-align-items-center">
-              <div class="list-icon mr-4 is-clickable" @click="showAppDetial(item.id)">
-                <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-64x64 icon-shadow"></b-image>
-              </div>
-              <div class="is-flex-grow-1 mr-4 is-clickable" @click="showAppDetial(item.id)">
-                <h6 class="title is-6 mb-2">{{item.title}}</h6>
-                <p class="is-size-7 two-line">{{item.tagline}}</p>
-              </div>
+                </b-dropdown-item>
+              </b-dropdown>
 
             </div>
-            <div class="mt-1 ml-7 is-flex is-align-items-center">
-              <div class="is-flex-grow-1 is-size-7 has-text-grey-light	">{{item.category}}</div>
-              <b-button type="is-primary is-light" size="is-small" rounded @click="qucikInstall(item.id)" :loading="item.id == currentInstallId">{{$t('Install')}}</b-button>
+            <!-- Cate End -->
+
+            <!-- Sort Start -->
+            <div>
+              {{ $t('Sort by') }}:
+              <b-dropdown aria-role="list" class="app-select file-dropdown" position="is-bottom-right" v-model="currentSort" animation="fade1" :mobile-modal="false">
+                <template #trigger="{ active }">
+                  <div class="button is-text auto-height pl-0 pt-0 pb-0 is-size-14px">
+                    {{currentSort.name}}
+                    <b-icon :icon="active ? 'chevron-up' : 'chevron-down'" size="is-normal" class="ml-1"></b-icon>
+                  </div>
+
+                </template>
+                <b-dropdown-item v-for="(menu,index) in sortMenu" :key="'sort_'+index" :value="menu" aria-role="listitem" :class="menu.slash == currentSort.slash?'is-active':''">
+                  <div class="media align-items-center is-flex">
+                    <div class="media-content">
+                      <h3>{{menu.name}}</h3>
+                    </div>
+                  </div>
+                </b-dropdown-item>
+              </b-dropdown>
             </div>
+            <!-- Sort End -->
           </div>
-        </div>
 
-        <!-- App list End-->
-
-        <!-- Community App List Start -->
-        <template v-if="communityList.length > 0">
-          <h3 class="title is-5 has-text-weight-normal">{{ $t('Community Apps') }}</h3>
-          <h3 class="subtitle is-7 has-text-grey-light">
-            {{ $t('From community contributors, not optimized for CasaOS, but provides a basic App experience.') }}</h3>
-
-          <div class="columns f-list is-multiline is-mobile  pb-3 mb-5">
-            <div class="column is-one-quarter" v-for="(item,index) in communityList " :key="index+item.title+item.id">
+          <!-- List condition End -->
+          <!-- App list Start-->
+          <div class="columns f-list is-multiline is-mobile pb-3 mb-5">
+            <div class="column app-item is-one-quarter" v-for="(item,index) in pageList" :key="index+item.title+item.id">
               <div class="is-flex  is-align-items-center">
                 <div class="list-icon mr-4 is-clickable" @click="showAppDetial(item.id)">
                   <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-64x64 icon-shadow"></b-image>
@@ -267,9 +243,51 @@
               </div>
             </div>
           </div>
-        </template>
 
-        <!-- Community App List End -->
+          <!-- App list End-->
+
+          <!-- Community App List Start -->
+          <template v-if="communityList.length > 0">
+            <h3 class="title is-5 has-text-weight-normal">{{ $t('Community Apps') }}</h3>
+            <h3 class="subtitle is-7 has-text-grey-light">
+              {{ $t('From community contributors, not optimized for CasaOS, but provides a basic App experience.') }}</h3>
+
+            <div class="columns f-list is-multiline is-mobile  pb-3 mb-5">
+              <div class="column is-one-quarter" v-for="(item,index) in communityList " :key="index+item.title+item.id">
+                <div class="is-flex  is-align-items-center">
+                  <div class="list-icon mr-4 is-clickable" @click="showAppDetial(item.id)">
+                    <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-64x64 icon-shadow"></b-image>
+                  </div>
+                  <div class="is-flex-grow-1 mr-4 is-clickable" @click="showAppDetial(item.id)">
+                    <h6 class="title is-6 mb-2">{{item.title}}</h6>
+                    <p class="is-size-7 two-line">{{item.tagline}}</p>
+                  </div>
+
+                </div>
+                <div class="mt-1 ml-7 is-flex is-align-items-center">
+                  <div class="is-flex-grow-1 is-size-7 has-text-grey-light	">{{item.category}}</div>
+                  <b-button type="is-primary is-light" size="is-small" rounded @click="qucikInstall(item.id)" :loading="item.id == currentInstallId">{{$t('Install')}}</b-button>
+                </div>
+              </div>
+            </div>
+          </template>
+
+          <!-- Community App List End -->
+        </template>
+        <template v-else>
+          <div class="is-flex is-align-items-center is-justify-content-center mt-6 mb-6">
+            <div class=" has-text-centered mt-6 mb-6">
+              <div class="is-flex is-align-items-center mb-5">
+                <b-icon icon="alert-circle" type="is-danger" class="mr-2"> </b-icon>
+                {{ $t('There was an error loading the data, please try again!') }}
+              </div>
+
+              <b-button type="is-primary" rounded @click="retry()">Retry</b-button>
+
+            </div>
+
+          </div>
+        </template>
 
       </section>
       <!-- App Store List End -->
@@ -389,7 +407,7 @@
           <div class="is-flex is-align-items-center is-justify-content-center">
             <lottie-animation class="install-animation" :animationData="require('@/assets/ani/rocket-launching.json')" :loop="true" :autoPlay="true"></lottie-animation>
           </div>
-          <h3 class="title is-6 has-text-centered" style="height:1.5em" :class="currentInstallAppTextClass" v-html="currentInstallAppText"></h3>
+          <h3 class="title is-6 has-text-centered" :class="currentInstallAppTextClass" v-html="currentInstallAppText"></h3>
         </div>
       </section>
       <!-- App Install Process End -->
@@ -511,6 +529,8 @@ export default {
       data: [],
       isLoading: true,
       isFetching: false,
+      isLoadError: false,
+      loadErrorStep: 0,
       isFirst: true,
       errorType: 1,
       currentInstallAppName: null,
@@ -664,9 +684,7 @@ export default {
     }
 
     // If StoreId is not 0
-    console.log(this.stroreId);
     if (this.storeId != 0) {
-
       this.showAppDetial(this.storeId);
     }
   },
@@ -829,15 +847,46 @@ export default {
      * @return {*} void
      */
     async getCategoryList() {
-      const res = await this.$api.appCategories.getAppCategory();
-      this.cateMenu = res.data.data.filter((item) => {
-        return item.count > 0
-      })
-      this.currentCate = this.cateMenu[0]
-      this.currentSort = this.sortMenu[0]
-      if (this.isFirst) {
-        this.isFirst = false
+      this.isLoading = true
+      try {
+        const res = await this.$api.appCategories.getAppCategory();
+        this.cateMenu = res.data.data.filter((item) => {
+          return item.count > 0
+        })
+        this.currentCate = this.cateMenu[0]
+        this.currentSort = this.sortMenu[0]
+        if (this.isFirst) {
+          this.isFirst = false
+        }
+      } catch (error) {
+        this.loadErrorStep = 1
+        this.isLoading = false;
+        this.isLoadError = true;
       }
+
+    },
+
+    /**
+    * @description: Get App store list
+    * @param {*}
+    * @return {*} void
+    */
+    getStoreList() {
+      this.isLoading = true
+      this.$api.apps.getAppList(this.storeQueryData).then(res => {
+        this.isLoading = false
+        this.isLoadError = false
+        if (res.data.success == 200) {
+          // this.listTotal = res.data.data.count
+          this.pageList = res.data.data.list
+          this.communityList = res.data.data.community
+          this.recommendList = res.data.data.recommend
+        }
+      }).catch(() => {
+        this.loadErrorStep = 2
+        this.isLoading = false;
+        this.isLoadError = true;
+      })
     },
 
     /**
@@ -851,26 +900,24 @@ export default {
         this.isLoading = false;
         this.sidebarOpen = true;
         this.appDetailData = resp.data.data
+      }).catch(() => {
+        this.isLoading = false;
+        this.$buefy.toast.open({
+          message: this.$t(`There was an error loading the data, please try again!`),
+          type: 'is-danger'
+        })
       })
     },
 
-    /**
-     * @description: Get App store list
-     * @param {*}
-     * @return {*} void
-     */
-    getStoreList() {
-      this.isLoading = true
-      this.$api.apps.getAppList(this.storeQueryData).then(res => {
-        this.isLoading = false
-        if (res.data.success == 200) {
-          // this.listTotal = res.data.data.count
-          this.pageList = res.data.data.list
-          this.communityList = res.data.data.community
-          this.recommendList = res.data.data.recommend
-        }
-      })
+    retry() {
+      if (this.loadErrorStep === 1) {
+        this.getCategoryList()
+      } else if (this.loadErrorStep === 2) {
+        this.getStoreList()
+      }
     },
+
+
     /**
      * @description: Quick Install App from app store
      * @param {*}
@@ -922,6 +969,11 @@ export default {
             this.installAppData()
           }
         }
+      }).catch(() => {
+        this.$buefy.toast.open({
+          message: this.$t(`There was an error loading the data, please try again!`),
+          type: 'is-danger'
+        })
       })
     },
     /**

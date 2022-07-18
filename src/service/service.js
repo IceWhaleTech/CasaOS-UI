@@ -2,15 +2,15 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 15:28:02
+ * @LastEditTime: 2022-07-18 15:49:04
  * @Description: 
- * @FilePath: \CasaOS-UI\src\service\service.js
+ * @FilePath: /CasaOS-UI/src/service/service.js
  */
 import axios from 'axios'
 import qs from 'qs'
 import router from '@/router'
 import store from '@/store'
-import { ToastProgrammatic as Toast } from 'buefy'
+// import { ToastProgrammatic as Toast } from 'buefy'
 
 const axiosBaseURL = (process.env.NODE_ENV === "dev") ? `${document.location.protocol}//${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}/v1` : `/v1`
 
@@ -110,12 +110,7 @@ instance.interceptors.response.use(
                     requests.push(() => { resolve(instance(originalConfig)) })
                 })
 
-            } else if (error?.response?.status >= 500) {
-                Toast.open({
-                    message: error?.response.data.message,
-                    type: 'is-danger'
-                })
-            }
+            } 
         }
         return Promise.reject(error)
 
