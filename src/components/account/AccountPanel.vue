@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-25 18:19:17
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-24 15:36:56
+ * @LastEditTime: 2022-07-13 18:50:55
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/account/AccountPanel.vue
 -->
@@ -25,7 +25,7 @@
           </div>
           <div class="ml-5">
             <h2 class="title is-4">{{$t('Name')}}</h2>
-            <h2 class="title is-6">{{userInfo.user_name}}</h2>
+            <h2 class="title is-6">{{userInfo.username}}</h2>
             <h2 class="title is-6 has-text-weight-normal"><a @click="goto(2)">{{$t('Change name')}}</a></h2>
 
             <h2 class="title is-4 mt-6">{{$t('Password')}}</h2>
@@ -36,10 +36,11 @@
         <template v-if="state == 2">
           <ValidationProvider rules="required" name="User" v-slot="{ errors, valid }">
             <b-field class="mb-5 mt-5 has-text-light" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="$t(errors)">
-              <b-input type="text" v-model="username" v-on:keyup.enter.native="handleSubmit(saveUser)"></b-input>
+              <b-input type="text" v-model="user.username" v-on:keyup.enter.native="handleSubmit(saveUser)"></b-input>
             </b-field>
           </ValidationProvider>
         </template>
+
         <template v-if="state == 3">
           <b-notification auto-close type="is-danger" v-model="notificationShow" aria-close-label="Close notification" role="alert">
             {{message}}
@@ -86,7 +87,8 @@ export default {
     return {
       isLoading: false,
       state: 1,
-      username: this.$store.state.userinfo.user_name,
+      user: this.$store.state.user,
+      username: this.$store.state.user.username,
       oriPassword: "",
       password: '',
       confirmation: "",
@@ -119,7 +121,7 @@ export default {
       return val
     },
     userInfo() {
-      return this.$store.state.userinfo;
+      return this.$store.state.user;
     }
   },
 
@@ -127,37 +129,45 @@ export default {
     goto(val) {
       this.state = val
       if (val == 1) {
-        this.username = this.userInfo.user_name;
+        this.username = this.userInfo.username;
       }
     },
-    updateUserInfo() {
-      this.$api.user.getUserInfo(this.userInfo.id).then((res) => {
-        if (res.data.success == 200) {
-          this.$store.commit('changeUserInfo', res.data.data);
-          this.goto(1);
-        }
-      })
+    async updateUserInfo() {
+      try {
+        const userRes = await this.$api.users.getUserInfo()
+        this.$store.commit('SET_USER', userRes.data.data);
+        this.goto(1);
+      } catch (error) {
+        console.log(error.response.message);
+      }
     },
-    saveUser() {
+    async saveUser() {
       this.isLoading = true;
-      this.$api.user.changeUserName({ user_id: this.userInfo.id, username: this.username, oldname: this.userInfo.user_name }).then(res => {
+      try {
+        const res = await this.$api.users.setUserInfo(this.user)
+        this.$store.commit('SET_USER', res.data.data);
+        this.user = res.data.data
+        this.goto(1);
         this.isLoading = false;
-        if (res.data.success == 200) {
-          this.updateUserInfo();
-        }
-      })
+      } catch (error) {
+        this.isLoading = false;
+      }
     },
-    savePassword() {
+
+    async savePassword() {
       this.isLoading = true;
-      this.$api.user.changePassword({ user_id: this.userInfo.id, pwd: this.password, old_pwd: this.oriPassword }).then(res => {
+      try {
+        await this.$api.users.changePassword({
+          old_password: this.oriPassword,
+          password: this.password,
+        })
         this.isLoading = false;
-        if (res.data.success == 200) {
-          this.updateUserInfo();
-        } else {
-          this.notificationShow = true;
-          this.message = res.data.message;
-        }
-      })
+        this.goto(1);
+      } catch (error) {
+        this.isLoading = false;
+        this.notificationShow = true;
+        this.message = error.respone.data.message;
+      }
     }
   },
 }

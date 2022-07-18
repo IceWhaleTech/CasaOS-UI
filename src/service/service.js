@@ -2,26 +2,26 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-28 09:32:59
+ * @LastEditTime: 2022-07-18 15:49:04
  * @Description: 
- * @FilePath: \CasaOS-UI\src\service\service.js
+ * @FilePath: /CasaOS-UI/src/service/service.js
  */
 import axios from 'axios'
 import qs from 'qs'
 import router from '@/router'
 import store from '@/store'
-// Set Post Headers
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
-axios.defaults.withCredentials = false;
-if (process.env.NODE_ENV === "dev") {
-    axios.defaults.baseURL = `${document.location.protocol}//${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}/v1`;
-} else {
-    axios.defaults.baseURL = `/v1`
-}
+// import { ToastProgrammatic as Toast } from 'buefy'
+
+const axiosBaseURL = (process.env.NODE_ENV === "dev") ? `${document.location.protocol}//${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}/v1` : `/v1`
 
 //Create a axios instance, And set timeout to 30s
 const instance = axios.create({
-    timeout: 60000,
+    baseURL: axiosBaseURL,
+    timeout: 30000,
+    headers: {
+        "Content-Type": "application/json",
+    },
+    withCredentials: false,
 });
 
 const getLangFromBrowser = () => {
@@ -37,45 +37,86 @@ const getInitLang = () => {
 
 
 // Interception before request initiation
-instance.interceptors.request.use((config) => {
-    let token = ''
-    if (localStorage.getItem("user_token")) {
-        token = localStorage.getItem("user_token")
+instance.interceptors.request.use(
+    (config) => {
+        config.headers.common["Language"] = getInitLang()
+        const token = localStorage.getItem("access_token")
+        const rtoken = localStorage.getItem("refresh_token")
+        if (token) {
+            config.headers.Authorization = token
+            store.commit("SET_ACCESS_TOKEN", token);
+            store.commit("SET_REFRESH_TOKEN", rtoken);
+        }
+        return config;
+    }, (error) => {
+        // Do something with request error
+        return Promise.reject(error)
     }
-    config.headers.Authorization = token
-    config.headers.common["Language"] = getInitLang()
-    store.commit('setToken', token)
-    return config;
-}, (error) => {
-    // Do something with request error
-    return Promise.reject(error)
-})
+)
 
 // Response interception
-instance.interceptors.response.use(response => {
-    return response;
-}, error => {
-    if (error.response) {
 
-        switch (error.response.status) {
-            case 401:
-                localStorage.removeItem('user_token') //Maybe the token is expired, clear it
-                router.replace({ //Jump to the login page
-                    path: '/login'
+let isRefreshing = false
+let requests = []
+
+instance.interceptors.response.use(
+    (response) => {
+        return response;
+    },
+    async (error) => {
+        const originalConfig = error?.config;
+        if (originalConfig.url !== "/user/register" && error.response) {
+            // Access Token was expired
+            if (error?.response?.status === 401) {
+                if (!isRefreshing) {
+                    isRefreshing = true
+                    try {
+                        const refresh_token = localStorage.getItem("refresh_token")
+                        if (refresh_token) {
+                            const tokenRes = await instance.post("/user/refresh", {
+                                refresh_token: refresh_token,
+                            });
+                            if (tokenRes.data.success == 200) {
+                                localStorage.setItem("access_token", tokenRes.data.data.access_token);
+                                localStorage.setItem("refresh_token", tokenRes.data.data.refresh_token);
+                                localStorage.setItem("expires_at", tokenRes.data.data.expires_at);
+
+                                store.commit("SET_ACCESS_TOKEN", tokenRes.data.data.access_token);
+                                store.commit("SET_REFRESH_TOKEN", tokenRes.data.data.refresh_token);
+
+                                originalConfig.headers.Authorization = tokenRes.data.data.access_token
+                                Promise.resolve().then(() => {
+                                    requests.forEach(cb => cb())
+                                    requests = []
+                                })
+
+                            } else {
+                                router.replace({ //Jump to the logout page
+                                    path: '/logout'
+                                })
+                            }
+                        } else {
+                            router.replace({ //Jump to the login page
+                                path: '/login'
+                            })
+                        }
+                    } catch (_error) {
+                        return Promise.reject(_error);
+                    }
+                    isRefreshing = false
+
+                }
+                return new Promise(resolve => {
+                    requests.push(() => { resolve(instance(originalConfig)) })
                 })
-                break;
-            case 404:
-                store.commit('setServiceError', true);
-                break;
-            case 500:
-                break;
-        }
-    } else {
 
-        store.commit('setServiceError', true);
+            } 
+        }
+        return Promise.reject(error)
+
     }
-    return Promise.reject(error)
-})
+)
+
 
 const CancelToken = axios.CancelToken;
 // Wrapping of axios by request type
@@ -97,10 +138,10 @@ const api = {
 
     },
     post(url, data) {
-        return instance.post(url, this._processData(url, data))
+        return instance.post(url, data)
     },
     put(url, data) {
-        return instance.put(url, this._processData(url, data))
+        return instance.put(url, data)
     },
     delete(url, data) {
         return instance.delete(url, { data: data })

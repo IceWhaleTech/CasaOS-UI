@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-14 14:08:40
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 17:31:14
+ * @LastEditTime: 2022-07-14 12:07:37
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\fileList\FilePanel.vue
 -->
@@ -116,7 +116,7 @@ export default {
   methods: {
     // get file list from api
     getFileList(path, locate = false) {
-      this.$api.file.dirPath(path).then(res => {
+      this.$api.folder.getList(path).then(res => {
         if (res.data.success == 200) {
           this.path = path
           if (this.showFile) {

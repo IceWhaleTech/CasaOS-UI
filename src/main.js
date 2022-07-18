@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-22 14:24:43
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 22:25:38
+ * @LastEditTime: 2022-07-12 21:35:54
  * @Description: 
  * @FilePath: \CasaOS-UI\src\main.js
  */
@@ -24,7 +24,7 @@ import '@/assets/scss/app.scss'
 import 'vue-tour/dist/vue-tour.css'
 import VAnimateCss from 'v-animate-css';
 
-api.info.getSocketPort().then(res => {
+api.sys.getSocketPort().then(res => {
   const wsPort = res.data.data
   const devIp = process.env.VUE_APP_DEV_IP
   const devPort = process.env.VUE_APP_DEV_PORT

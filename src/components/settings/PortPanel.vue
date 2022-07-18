@@ -1,9 +1,9 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-12-06 18:29:48
- * @LastEditTime: 2022-06-22 19:26:15
+ * @LastEditTime: 2022-07-12 21:53:02
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/settings/PortPanel.vue
+ * @FilePath: \CasaOS-UI\src\components\settings\PortPanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -61,12 +61,12 @@ export default {
   methods: {
     savePort() {
       this.isLoading = true;
-      this.$api.info.saveSystemPort({ port: this.port }).then(res => {
+      this.$api.sys.editServerPort({ port: this.port }).then(res => {
 
         if (res.data.success == 200) {
           this.errorType = "is-success";
           this.errors = "";
-          this.$api.info.stopCasaOS();
+          this.$api.sys.stopCasaOS();
           this.checkUpdate();
         } else {
           this.isLoading = false;
@@ -81,7 +81,7 @@ export default {
       this.timer = setInterval(() => {
         const protocol = document.location.protocol
         const checkUrl = `${protocol}//${this.$baseIp}:${this.port}`
-        this.$api.info.checkUiPort(checkUrl + '/v1/sys/port').then(res => {
+        this.$api.sys.checkUiPort(checkUrl + '/v1/sys/port').then(res => {
           if (res.data.success == 200) {
             clearInterval(this.timer);
             const url = `http://${this.$baseIp}:${res.data.data}`

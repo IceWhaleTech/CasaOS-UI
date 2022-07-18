@@ -2,14 +2,14 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-28 14:16:46
+ * @LastEditTime: 2022-07-15 10:59:06
  * @Description: Main entry of application
- * @FilePath: \CasaOS-UI\src\App.vue
+ * @FilePath: /CasaOS-UI/src/App.vue
 -->
 
 <template>
-  <div id="app" class="is-flex is-flex-direction-column">
-    <template v-if="isNotSharing">
+  <div id="app" class="is-flex is-flex-direction-column" :class="{'is-dark-bg':$route.meta.showBackground}">
+    <template v-if="$route.meta.showBackground">
       <!-- Background Layer Start -->
       <casa-wallpaper :animate="isWelcome?initAni:noneAni"></casa-wallpaper>
       <!-- Background Layer End -->
@@ -96,7 +96,6 @@ export default {
         classes: "fadeInRight",
         duration: 700
       },
-      isNotSharing: true
     }
   },
 
@@ -105,11 +104,6 @@ export default {
     isLoading() {
       return this.$store.state.siteLoading
     },
-  },
-  watch: {
-    $route() {
-      this.isNotSharing = this.$route.path != "/connect"
-    }
   },
 
   created() {
@@ -135,12 +129,14 @@ _____             _____ _____
      * @return {*} void
      */
     checkInit() {
-      this.$api.info.guideCheck().then(res => {
-        if (res.data.success == 200 && res.data.data.need_init_user) {
+      this.$api.users.getUserStatus().then(res => {
+        if (res.data.success == 200 && !res.data.data.initialized) {
           this.isWelcome = true
-          this.$store.commit('changeSiteLoading')
-          this.$store.commit('changeInitialization', true)
-          localStorage.removeItem("user_token");
+          this.$store.commit('SET_SITE_LOADING', false)
+          this.$store.commit('SET_NEED_INITIALIZATION', true)
+          this.$store.commit('SET_INIT_KEY', res.data.data.key)
+          localStorage.removeItem("access_token");
+          localStorage.removeItem("refresh_token");
           this.$router.push("/welcome");
         } else {
           this.isWelcome = false
@@ -161,11 +157,8 @@ _____             _____ _____
      * @return {*}
      */
     onWindowResize() {
-      if (document.body.clientWidth >= 480) {
-        this.$store.commit('setIsMobile', false)
-      } else {
-        this.$store.commit('setIsMobile', true)
-      }
+      const isMobile = document.body.clientWidth < 480
+      this.$store.commit('SET_IS_MOBILE', isMobile)
     },
   },
   sockets: {
@@ -186,9 +179,10 @@ _____             _____ _____
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
   overflow-y: hidden;
+
+  &.is-dark-bg{
+    background-color: #000;
+  }
 }
 </style>

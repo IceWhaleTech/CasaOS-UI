@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2021-10-27 15:44:17
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-28 09:31:10
+ * @LastEditTime: 2022-07-14 12:15:46
  * @FilePath: \CasaOS-UI\src\components\fileList\CreatePanel.vue
  * @Description: 
  * 
@@ -61,7 +61,7 @@ export default {
     create() {
       let path = `${this.initPath}/${this.name}`
       if (this.isDir) {
-        this.$api.file.mkdir(path).then(res => {
+        this.$api.folder.create(path).then(res => {
           if (res.data.success == 200) {
             this.successCallBack(path);
           } else {

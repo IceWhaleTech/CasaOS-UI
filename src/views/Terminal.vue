@@ -1,53 +1,57 @@
+<!--
+ * @Author: Jerryk jerry@icewhale.org
+ * @Date: 2022-07-15 10:40:36
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-07-15 16:40:41
+ * @FilePath: /CasaOS-UI/src/views/Terminal.vue
+ * @Description: 
+ * 
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+-->
 <template>
-  <fullscreen class="fullScreen  pl-2 pt-2 pb-2" :class="[{'mt-5':!fullscreen},isVaild?'fdark-bg':'flight-bg']" :fullscreen.sync="fullscreen" :teleport="true" :page-only="true" @change="onWindowResize">
-    <a class="fullscreen-button" @click="toggleFullScreen" v-if="isVaild">
-      <b-icon :icon="buttonIcon"></b-icon>
-    </a>
-    <div id="terminal" class="is-flex is-align-items-center is-justify-content-center">
-      <div class="card card-shadow mb-6" v-if="!isVaild">
-        <div class="card-content">
-          <div class="content">
-            <b-notification auto-close type="is-danger" v-model="notificationShow" aria-close-label="Close notification" role="alert" :closable="false">
-              {{message}}
-            </b-notification>
-            <b-field label="User">
-              <b-input v-model="sshUser" name="username"></b-input>
-            </b-field>
+  <div id="terminal" class="is-flex is-align-items-center is-justify-content-center">
+    <div class="card card-shadow" v-if="!isVaild">
+      <div class="card-content">
+        <div class="content">
+          <b-notification auto-close type="is-danger" v-model="notificationShow" aria-close-label="Close notification" role="alert" :closable="false">
+            {{message}}
+          </b-notification>
+          <b-field label="User">
+            <b-input v-model="sshUser" name="username"></b-input>
+          </b-field>
 
-            <b-field label="Password">
-              <b-input type="password" v-model="sshPassword" name="password" password-reveal>
-              </b-input>
-            </b-field>
+          <b-field label="Password">
+            <b-input type="password" v-model="sshPassword" name="password" password-reveal>
+            </b-input>
+          </b-field>
 
-            <b-field label="Port">
-              <b-input type="number" v-model="sshPort" name="port"></b-input>
-            </b-field>
-            <div class="buttons mt-5">
-              <b-button type="is-primary" rounded expanded @click="checkLogin" :loading="isConnecting">Connect</b-button>
-            </div>
+          <b-field label="Port">
+            <b-input type="number" v-model="sshPort" name="port"></b-input>
+          </b-field>
+          <div class="buttons mt-5">
+            <b-button type="is-primary" rounded expanded @click="checkLogin" :loading="isConnecting">Connect</b-button>
           </div>
         </div>
       </div>
-
-      <div id="xterm" class="xterm" :class="[fullscreen ? 'fullheight':'sheight']" v-else></div>
     </div>
-  </fullscreen>
+
+    <div id="xterm" class="xterm" v-else></div>
+  </div>
 </template>
 
 <script>
-import qs from 'qs'
 import 'xterm/css/xterm.css'
 import { Terminal } from 'xterm'
 import { FitAddon } from 'xterm-addon-fit'
 import { AttachAddon } from 'xterm-addon-attach'
+import qs from 'qs'
 
 const fitAddon = new FitAddon();
 export default {
   name: "terminal-card",
   props: {
     id: String,
-    label: String,
-    initWsUrl: String
+    label: String
   },
   data() {
     return {
@@ -59,8 +63,8 @@ export default {
       state: true,
       isVaild: false,
       wsUrl: "",
-      sshUser: "",
-      sshPassword: "",
+      sshUser: "root",
+      sshPassword: "123456",
       sshPort: 22,
       message: "",
       notificationShow: false,
@@ -75,15 +79,9 @@ export default {
     }
   },
   mounted() {
+    // this.initSocket();
     this.rows = document.getElementById('terminal').offsetHeight / 16 - 6;
     this.cols = document.getElementById('terminal').offsetWidth / 14;
-    
-    if (this.initWsUrl != "") {
-      this.isVaild = true
-      this.wsUrl = this.initWsUrl;
-      this.initSocket();
-    }
-
   },
   beforeDestroy() {
     this.socket.close()
@@ -148,15 +146,6 @@ export default {
       this.socketOnClose();
       this.socketOnOpen();
       this.socketOnError();
-
-      this.socket.onmessage = (event) => {
-        if (event.data == "\r\n\u001b[?2004l\rlogout\r\n") {
-          this.socket.close()
-          if (this.term != "") this.term.dispose()
-          window.removeEventListener('resize', this.onWindowResize)
-          this.isVaild = false
-        }
-      }
     },
     socketOnOpen() {
       this.socket.onopen = () => {
@@ -174,27 +163,18 @@ export default {
       }
     },
     onWindowResize() {
-      if (!this.isVaild) {
-        return false
-      }
-      this.$nextTick(() => {
-        try {
-          fitAddon.fit();
+      try {
+        fitAddon.fit();
+        this.term.onResize(() => {
           this.socket.send(JSON.stringify({
             type: "resize",
             cols: this.term.cols,
             rows: this.term.rows
           }))
-        } catch (e) {
-          console.log("e", e.message);
-        }
-      })
-
-    },
-    getTop(e) {
-      var offset = e.offsetTop;
-      if (e.offsetParent != null) offset += this.getTop(e.offsetParent);
-      return offset;
+        });
+      } catch (e) {
+        console.log("e", e.message);
+      }
     },
     active(state) {
       this.state = state;
@@ -206,11 +186,10 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped >
+<style lang="scss">
 #terminal {
-  width: 100%;
-  height: 100%;
-  min-height: 35rem;
+  width: 100vw;
+  height: 100vh;
   .card {
     .card-content {
       padding: 2.5rem;
@@ -223,13 +202,9 @@ export default {
   }
 }
 .xterm {
-  width: 100%;
-
-  &.fullheight {
-    height: 100%;
-  }
-  &.sheight {
-    height: 35rem;
-  }
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(30, 30, 30);
+  padding: 0.25rem;
 }
 </style>

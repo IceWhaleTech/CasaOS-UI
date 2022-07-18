@@ -21,6 +21,8 @@ export default {
     "Medium": "Mittel",
     "High": "Hoch",
     "Language": "Sprache",
+    "Change": "Ändern",
+    "Start": "Start",
 
     "This field is required": "Dieses Feld ist erforderlich",
     "This field must be a valid email": "Dieses Feld beinhaltet keine gültige E-Mail-Adresse",
@@ -90,40 +92,15 @@ export default {
 
     // Sync
     "Sync your data": "Synchronisiere deine Daten",
-    "Follow the guide to start syncing your files across multiple devices.": "Folge der Anleitung, um deine Dateien auf mehreren Geräten zu synchronisieren.",
-    "Go !": "Loslegen!",
-    "Sync Guide": "Synchronisation einrichten",
+    "Use Syncthing to sync your files between multiple devices.": "Use Syncthing to sync your files between multiple devices.",
+    "Total": "Gesamt",
     "Install": "Installation",
     "Config": "Konfiguration",
-    "Complete": "Abschluss",
-    "Download Syncthing on the device you want to sync with CasaOS": "Installiere Syncthing auf dem Gerät, das du mit CasaOS synchronisieren möchtest.",
-    "Get Syncthing for": "Installiere Syncthing für {os}",
-    "Download APK": "APK herunterladen",
-    "Show all Platforms": "Alle Plattformen anzeigen",
-    'Install and open the downloaded application, then click the "Next" button.': 'Installiere und öffne die heruntergeladene App und klicke dann auf "Weiter".',
-    "Device ID": "Geräte-ID",
-    "Fill in your Device ID to continue": "Trage deine Geräte-ID zum Fortfahren ein",
-    "How to get Device ID": "Device-ID auslesen",
-    "What do I need to do on my device?": "Was muss ich auf meinem Gerät tun?",
-    "Open the SyncTrayzor": "Öffne den SyncTrayzor",
-    "Find the Device ID": "Finde deine Geräte-ID",
-    "Add new device on your device": "Neues Gerät auf deinem aktuellen Gerät hinzufügen",
-    "Add new folder on your device": "Neuen Ordner auf deinem aktuellen Gerät hinzufügen",
-    "Done!": "Fertig!",
+    "Failed to start, please try again.": "Failed to start, please try again.",
+    "Syncthing is not running, start it?": "Syncthing is not running, start it?",
+    "Starting Syncthing...": "Starting Syncthing...",
 
-    "Open Syncthing in the Launchpad": "Öffne Syncthing im Launchpad",
-    "Find the Syncthing icon in the menubar": "Finde das Syncthing-Icon in der Menüleiste",
-    "Open Syncthing": "Öffne Syncthing",
-    "Open the menu": "Öffne das Menü",
-    'Choose "Show device ID"': 'Wähle "Geräte-ID anzeigen" aus',
-    "Copy the Device ID": "Kopiere die Geräte-ID",
-    "There you go!": "Und schon kann es losgehen!",
-    "Your data has started to sync.It may take some minutes to fulfill synchronization.": "Deine Dateien synchronisieren sich nun.<br>Das dauert einen kleinen Moment.",
-    "Up to Date": "Aktuell",
-    "Synchronizing": "Synchronisiere",
-    "Synchronized": "Sychronisiert",
-    "Total": "Gesamt",
-    "Add New Device": "Neues Gerät hinzufügen",
+
 
     // Iot
     "Have an idea? Shoot it on Discord!": "Du hast eine Idee? Besuche uns im Discord!",
@@ -207,7 +184,7 @@ export default {
     "Port [Please add a ports set first]": "Port [Please add a ports set first]",
     "[Optional]": "[Optional]",
     "Notice: If there are multiple services, only the first set can be analyzed correctly": "Notice: If there are multiple services, only the first set can be analyzed correctly",
-    "Port": "Port",
+    "There was an error loading the data, please try again!":"There was an error loading the data, please try again!",
 
 
     //Storage
@@ -307,114 +284,4 @@ export default {
     "Save failed, please try again!": "Save failed, please try again!",
     "Upload failed, please try again!": "Upload failed, please try again!",
 
-    /* ******************************
-    * Share Section
-    ********************************/
-    "Share module name": "CasaConnect",
-    // Main
-    "More info": "Weitere Infos",
-    "Edit Info": "Infos ändern",
-    "Copy My Share ID": "Kopiere meine Share ID",
-    "Add Friend": "Freund hinzufügen",
-    "Friends": "Freunde",
-    "Downloads": "Downloads",
-    "Notification": "Benachrichtigung",
-    "Upload not supported!": "Upload nicht unterstützt!",
-    "Select a friend to view his share.": "Wähle einen Freund, um dessen Share anzusehen.",
-    "There are no files in the current folder.": "Im aktuellen Verzeichnis sind keine Dateien.",
-    "has been copied to the clipboard": "wurde in die Zwischenablage kopiert",
-    "is offline": "ist offline",
-    "Home": "Home",
-    "Forward": "Weiterleiten",
-    // User Context
-    "Edit remark": "Bemerkung ändern",
-    "Unblock this friend": "Freund entblocken",
-    "Block this friend": "Freund blocken",
-    "Delete friend": "Freund löschen",
-    "Blocked this friend": "Freund wurde geblockt",
-    "Unblocked this friend": "Freund wurde entblockt",
-    "Blocked failed": "Blocken fehlgeschlagen",
-    "Deleted this friend": "Freund löschen",
-    "Delete failed": "Löschen fehlgeschlagen",
-    "Copy friend's ID": "Copy friend's ID",
-
-    // Tour
-    "Skip": "Überspringen",
-    "Prev": "Vorheriges",
-    "Let's Go": "Los gehts",
-    "Here is your avatar, where you can change your personal information and get your ID to share with your friends.": "Hier ist dein Avatar, wo du deine persönlichen Informationen ändern kannst und deine ID zum Weitergeben an deine Freunde findest.",
-    "Click \"+\" and enter your friend's ID to send a friend request.": "Klicke auf das \"+\" und trag die ID deines Freundes ein, um eine Freundschaftsanfrage zu schicken.",
-    "Browse your download progress and download history here.": "Den Download-Fortschritt und deine Download-Historie findest du hier.",
-    "Modify your shared folders, and default download path here.": "Ändere deine geteilten Verzeichnisse und deinen Standard-Download-Pfad hier.",
-    "Well, let's start using it!": "Los gehts",
-
-    // Download List
-    "Downloading": "Downloade",
-    "D-Completed": "Vollständig",
-    "D-Total": "Gesamt",
-    "D-Name": "Name",
-    "D-Size": "Größe",
-    "D-Progress": "Fortschritt",
-    "D-Retry": "Neustarten",
-    "Cancel Download": "Download abbrechen",
-    "Delete this record": "Eintrag löschen",
-    "Finishing": "Fertigstellen",
-    "Error": "Error",
-    "Download was cancelled": "Download wurde abgebrochen",
-    "Cancel download failed": "Download abbrechen fehlgeschlagen",
-    "Record deleted": "Eintrag gelöscht",
-    "Delete record failed": "Eintrag löschen fehlgeschlagen",
-
-
-    // Init Modal
-
-    "Share Initialization Wizard": "Share Initialization Wizard",
-    "Welcome to CasaConnect": "Willkommen zu CasaConnect",
-    "With this feature you can easily create peer-to-peer file sharing transfers between you and your friends.": "Mit diesem Feature kannst du ganz einfach Peer-to-Peer-Filesharing mit deinen Freunden nutzen.",
-    "You need to do some simple setup.": "Einige einfache Schritte sind zur Einrichtung erforderlich.",
-    "Let's Start": "Los gehts",
-    "Share-Account": "Account",
-    "Share-Setting": "Einstellung",
-    "Share-Recommend": "Empfehlen",
-    "Share-Finish": "Fertigstellen",
-    "Nickname": "Nickname",
-    "Please enter your nickname.": "Trag deinen Nickname ein.",
-    "Description": "Beschreibung",
-    "Please enter your Description.": "Bitte gib deine Beschreibung ein.",
-    "Shared folders": "Geteilte Verzeichnisse",
-    "Default download path": "Standard-Download-Pfad",
-    "Need to add at least one directory.": "Du benötigst mindestens ein Verzeichnis.",
-    "Change": "Ändern",
-    "We have prepared some public servers.": "Wir haben einige öffentliche Server für dich vorbereitet.",
-    "You need to choose one of them to start with.": "Zum Starten musst du dir einen aussuchen.",
-    "At least one must be selected.": "Mindestens einer muss ausgewählt werden.",
-    "Share is ready!": "Share ist fertig!",
-    "You have completed the initial setup.": "Du hast die Einrichtung abgeschlossen.",
-    "Next you can follow the use guide to learn how to use it.": "In der Anleitung kannst du nachlesen, wie du es benutzt.",
-    "Share-Go": "Los",
-
-    // Add Friend Modal
-    "Send Friend Request": "Freundschaftsanfrage senden",
-    "Friend's ID": "ID deines Freundes",
-    "Please enter friend's Share ID.": "Gib die ID des Shares deines Freundes ein.",
-    "Friend Request Sent.": "Freundschaftsanfrage gesendet.",
-    "is already your friend.": "ist schon dein Freund.",
-
-    // Download Modal
-    "Download to": "{file} downloaden nach",
-    "Download path": "Download-Pfad",
-    "Set as default download path": "Als Standard-Download-Pfad setzen",
-    "Download has started": "Download gestartet",
-    "Download failed": "Download fehlgeschlagen",
-
-    // Remark Modal
-    "Please enter the remark.": "Bitte trag die Bemerkung ein.",
-    "Remark saved": "Bemerkung gespeichert",
-    "Remark save failed": "Bemerkung speichern fehlgeschlagen",
-
-    // Profile Modal 
-    "Edit My Info": "Meine Info verändern",
-    "My ID": "Meine ID",
-    "Update successful": "Update erfolgreich",
-    "Update failed": "Update fehlgeschlagen",
 }

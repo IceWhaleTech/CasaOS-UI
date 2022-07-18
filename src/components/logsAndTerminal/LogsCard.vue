@@ -2,16 +2,16 @@
  * @Author: JerryK
  * @Date: 2021-10-28 13:56:32
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-09 09:34:52
+ * @LastEditTime: 2022-07-15 17:39:01
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\logsAndTerminal\LogsCard.vue
+ * @FilePath: /CasaOS-UI/src/components/logsAndTerminal/LogsCard.vue
 -->
 <template>
-  <fullscreen class="fullScreen  pl-2 pt-2 pb-2" :class="{'mt-5':!fullscreen}" :fullscreen.sync="fullscreen" :teleport="true" :page-only="true" @change="onWindowResize">
+  <fullscreen class="fullScreen  pl-2 pt-2 pb-2 fdark-bg" :class="{'mt-5':!fullscreen}" :fullscreen.sync="fullscreen" :teleport="true" :page-only="true" @change="onWindowResize">
     <a class="fullscreen-button" @click="toggleFullScreen">
       <b-icon :icon="buttonIcon"></b-icon>
     </a>
-    <div id="logs" class="logs scrollbars">
+    <div id="logs" class="logs scrollbars"  :class="[fullscreen ? 'fullheight':'sheight']">
       <div v-html="data" contenteditable></div>
     </div>
   </fullscreen>
@@ -54,15 +54,7 @@ export default {
       this.fullscreen = !this.fullscreen
     },
     onWindowResize() {
-      this.$nextTick(() => {
-        if (this.fullscreen) {
-          document.getElementById('logs').style.height = window.innerHeight - this.getTop(document.getElementById('logs')) + 'px';
-          document.body.style.overflow = "hidden";
-        } else {
-          document.getElementById('logs').style.height = window.innerHeight - this.getTop(document.getElementById('logs')) - 62 + 'px';
-          document.body.style.overflow = "auto";
-        }
-      })
+
 
     },
     getTop(e) {
@@ -88,6 +80,11 @@ export default {
   line-height: 1.5em;
   overflow-y: auto;
   overflow-x: hidden;
-  height: 20rem;
+  &.fullheight {
+    height: 100%;
+  }
+  &.sheight {
+    height: 35rem;
+  }
 }
 </style>

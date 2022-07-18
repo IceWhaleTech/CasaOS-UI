@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-04 18:17:15
+ * @LastEditTime: 2022-07-18 17:58:34
  * @FilePath: /CasaOS-UI/src/components/Apps/AppSection.vue
  * @Description: 
  * 
@@ -23,7 +23,7 @@
       <template v-if="!isLoading">
 
         <!-- App Icon Card Start -->
-        <div class="column is-narrow is-3 handle" v-for="(item) in appList" :key="'app-'+item.name">
+        <div class="column is-narrow is-3 handle" v-for="(item) in appList" :key="'app-'+item.id">
           <app-card :item="item" @updateState="getList" @configApp="showConfigPanel" :isCasa="true"></app-card>
         </div>
         <!-- App Icon Card End -->
@@ -35,7 +35,7 @@
     <!-- App List End -->
     <template v-if="notImportedList.length > 0">
       <!-- Title Bar Start -->
-      <div class="title-bar is-flex is-align-items-center mt-2rem">
+      <div class="title-bar is-flex is-align-items-center mt-2rem  mb-5">
         <app-section-title-tip title="Existing Docker Apps" label="Click icon to import." id="appTitle2"></app-section-title-tip>
       </div>
       <!-- Title Bar End -->
@@ -43,7 +43,7 @@
       <!-- App List Start -->
       <div class="columns is-variable is-2 is-multiline app-list contextmenu-canvas">
         <!-- Application not imported Start -->
-        <div class="column is-narrow is-3" v-for="(item) in notImportedList" :key="'app-'+item.name">
+        <div class="column is-narrow is-3" v-for="(item) in notImportedList" :key="'app-'+item.id">
           <app-card :item="item" @updateState="getList" @configApp="showConfigPanel" @importApp="showConfigPanel" :isCasa="false"></app-card>
         </div>
         <!-- Application not imported End -->
@@ -61,6 +61,9 @@ import AppSectionTitleTip from './AppSectionTitleTip.vue'
 import draggable from 'vuedraggable'
 import xor from 'lodash/xor'
 import concat from 'lodash/concat'
+import events from '@/events/events';
+
+const SYNCTHING_STORE_ID = 74
 
 const builtInApplications = [
   {
@@ -77,14 +80,6 @@ const builtInApplications = [
     icon: require(`@/assets/img/app/files.svg`),
     state: "0",
     custom_id: "2",
-    type: "system"
-  },
-  {
-    id: "3",
-    name: "Connect",
-    icon: require(`@/assets/img/share/folder-publicshare.svg`),
-    state: "0",
-    custom_id: "3",
     type: "system"
   },
 ]
@@ -131,7 +126,17 @@ export default {
   },
   created() {
     this.getList();
-    this.draggable = this.isMobile() ? "" : ".handle"
+    this.draggable = this.isMobile() ? "" : ".handle";
+    this.$EventBus.$on(events.OPEN_APP_STORE_AND_GOTO_SYNCTHING, () => {
+      this.showInstall(SYNCTHING_STORE_ID)
+    });
+
+    this.$EventBus.$on(events.RELOAD_APP_LIST, () => {
+      this.getList();
+    });
+  },
+  beforeDestroy() {
+    this.$EventBus.$off(events.OPEN_APP_STORE_AND_GOTO_SYNCTHING);
   },
   methods: {
 
@@ -144,34 +149,34 @@ export default {
      * @return {*} void
      */
     async getList() {
-      let listRes = await this.$api.app.myAppList()
-      if (listRes.data.success == 200) {
-        const orgAppList = listRes.data.data.list
+      this.isLoading = true;
+      try {
+        const listRes = await this.$api.container.getMyAppList();
+        const orgAppList = listRes.data.data.casaos_apps
         let casaAppList = concat(builtInApplications, orgAppList)
         casaAppList.reverse()
-        let sortRes = await this.$api.user.getCustomConfig(this.user_id, orderConfig)
-        if (sortRes.data.success == 200) {
-          let sortList = sortRes.data.data.data
-          let newList = casaAppList.map((item) => {
-            return item.custom_id
-          })
-          if (sortList != "") {
-            // Resort list
-            sortList = this.getNewSortList(sortList, newList)
-            casaAppList.sort((a, b) => {
-              return sortList.indexOf(a.custom_id) - sortList.indexOf(b.custom_id);
-            });
-          }
-          this.appList = casaAppList;
-          if (xor(sortList, newList).length > 0) {
-            this.saveSortData()
-          }
-        } else {
-          this.appList = casaAppList;
+        let sortRes = await this.$api.users.getCustomStorage(orderConfig)
+        let sortList = sortRes.data.data.data
+        let newList = casaAppList.map((item) => {
+          return item.custom_id
+        })
+        if (sortList != "") {
+          // Resort list
+          sortList = this.getNewSortList(sortList, newList)
+          casaAppList.sort((a, b) => {
+            return sortList.indexOf(a.custom_id) - sortList.indexOf(b.custom_id);
+          });
         }
-        this.notImportedList = listRes.data.data.local
+        this.appList = casaAppList;
+        if (xor(sortList, newList).length > 0) {
+          this.saveSortData()
+        }
+        this.notImportedList = listRes.data.data.local_apps
+        this.isLoading = false;
+      } catch (error) {
         this.isLoading = false;
       }
+
     },
 
     /**
@@ -198,7 +203,7 @@ export default {
       let data = {
         data: newList
       }
-      this.$api.user.postCustomConfig(this.user_id, orderConfig, data)
+      this.$api.users.setCustomStorage(orderConfig, data)
     },
     /**
      * @description: Handle on Sort End
@@ -214,31 +219,36 @@ export default {
      * @description: Show Install Panel Programmatic
      * @return {*} void
      */
-    showInstall() {
+    async showInstall(storeId = 0) {
+
       this.isShowing = true
-      this.$api.app.appConfig().then(res => {
-        this.isShowing = false
-        if (res.data.success == 200) {
-          this.$buefy.modal.open({
-            parent: this,
-            component: AppPanel,
-            hasModalCard: true,
-            customClass: 'app-panel',
-            trapFocus: true,
-            canCancel: ['escape'],
-            scroll: "keep",
-            animation: "zoom-in",
-            events: {
-              'updateState': () => {
-                this.getList()
-              }
-            },
-            props: {
-              id: "0",
-              state: "install",
-              configData: res.data.data
-            }
-          })
+
+      const networks = await this.$api.container.getNetworks();
+      const memory = this.$store.state.hardwareInfo.mem;
+      const configData = {
+        networks: networks.data.data,
+        memory: memory
+      }
+      this.isShowing = false
+      this.$buefy.modal.open({
+        parent: this,
+        component: AppPanel,
+        hasModalCard: true,
+        customClass: 'app-panel',
+        trapFocus: true,
+        canCancel: ['escape'],
+        scroll: "keep",
+        animation: "zoom-in",
+        events: {
+          'updateState': () => {
+            this.getList()
+          }
+        },
+        props: {
+          id: "0",
+          state: "install",
+          configData: configData,
+          storeId: storeId
         }
       })
     },
@@ -250,35 +260,37 @@ export default {
      * @param {Boolean} isCasa 
      * @return {*}
      */
-    showConfigPanel(id, status, isCasa) {
-      this.$api.app.getContainerSettingdata(id).then(ret => {
-        this.$api.app.appConfig().then(res => {
-          if (res.data.success == 200) {
-            this.$buefy.modal.open({
-              parent: this,
-              component: AppPanel,
-              hasModalCard: true,
-              customClass: '',
-              trapFocus: true,
-              canCancel: [''],
-              scroll: "keep",
-              animation: "zoom-in",
-              events: {
-                'updateState': () => {
-                  this.getList()
-                }
-              },
-              props: {
-                id: id,
-                state: "update",
-                isCasa: isCasa,
-                runningStatus: status,
-                configData: res.data.data,
-                settingData: ret.data.data
-              }
-            })
+    async showConfigPanel(id, status, isCasa) {
+      const networks = await this.$api.container.getNetworks();
+      const memory = this.$store.state.hardwareInfo.mem;
+      const configData = {
+        networks: networks.data.data,
+        memory: memory
+      }
+      const ret = await this.$api.container.getInfo(id);
+      console.log(ret.data.data);
+      this.$buefy.modal.open({
+        parent: this,
+        component: AppPanel,
+        hasModalCard: true,
+        customClass: '',
+        trapFocus: true,
+        canCancel: [''],
+        scroll: "keep",
+        animation: "zoom-in",
+        events: {
+          'updateState': () => {
+            this.getList()
           }
-        })
+        },
+        props: {
+          id: id,
+          state: "update",
+          isCasa: isCasa,
+          runningStatus: status,
+          configData: configData,
+          settingData: ret.data.data
+        }
       })
     }
   },
