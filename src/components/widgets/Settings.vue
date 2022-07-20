@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-09 18:41:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-27 22:35:57
+ * @LastEditTime: 2022-07-19 21:20:42
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\widgets\Settings.vue
 -->
@@ -11,7 +11,7 @@
   <div class="widget has-text-white clock is-relative  mt-4">
     <div class="blur-background"></div>
 
-    <div class="wsettings">
+    <div class="wsettings" ref="wsettings">
       <b-dropdown aria-role="list" animation="fade1" :mobile-modal="false" :position="position">
         <template #trigger>
           <div class=" widget-content">
@@ -72,10 +72,17 @@ export default {
   },
   computed: {
     position() {
-      let tempSettingArray = this.settingsData.filter(item => {
-        return item.show
-      })
-      return tempSettingArray.length > 0 ? "is-top-left" : "is-bottom-left";
+      // let tempSettingArray = this.settingsData.filter(item => {
+      //   return item.show
+      // })
+      let offsetTop = 0
+      if (this.$refs.wsettings) {
+        offsetTop = this.$refs.wsettings.getBoundingClientRect().top
+      } else {
+        offsetTop = 250
+      }
+
+      return offsetTop > 250 ? "is-top-left" : "is-bottom-left";
     }
   },
   created() {
@@ -87,6 +94,7 @@ export default {
   },
   mounted() {
     window.addEventListener('resize', this.onRezise);
+    console.log(this.$refs.wsettings.getBoundingClientRect().top);
   },
   methods: {
     getIcon(value) {

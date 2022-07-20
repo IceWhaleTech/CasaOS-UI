@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-06-22 22:20:20
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-13 18:59:04
- * @FilePath: /CasaOS-UI/src/components/wallpaper/WallpaperModal.vue
+ * @LastEditTime: 2022-07-19 20:33:41
+ * @FilePath: \CasaOS-UI\src\components\wallpaper\WallpaperModal.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -72,7 +72,6 @@ export default {
       attributes: {
         accept: 'image/png, image/jpeg, image/svg+xml, image/bmp, image/png, image/gif'
       },
-      user_id: localStorage.getItem("user_id"),
       wallpaperItems: [
         {
           name: "Built-in wallpaper 1",
@@ -178,7 +177,7 @@ export default {
     },
     getTargetUrl() {
       const accessToken = localStorage.getItem("access_token")
-      return `http://${this.$baseURL}/v1/user/current/image/${wallpaperConfig}?token=${accessToken}&type=wallpaper`
+      return `http://${this.$baseURL}/v1/users/current/image/${wallpaperConfig}?token=${accessToken}&type=wallpaper`
     },
   }
 }
