@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 12:03:45
- * @FilePath: \CasaOS-UI\src\components\Apps\AppSection.vue
+ * @LastEditTime: 2022-07-18 17:58:34
+ * @FilePath: /CasaOS-UI/src/components/Apps/AppSection.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -61,7 +61,7 @@ import AppSectionTitleTip from './AppSectionTitleTip.vue'
 import draggable from 'vuedraggable'
 import xor from 'lodash/xor'
 import concat from 'lodash/concat'
-import  events  from '@/events/events';
+import events from '@/events/events';
 
 const SYNCTHING_STORE_ID = 74
 
@@ -130,6 +130,10 @@ export default {
     this.$EventBus.$on(events.OPEN_APP_STORE_AND_GOTO_SYNCTHING, () => {
       this.showInstall(SYNCTHING_STORE_ID)
     });
+
+    this.$EventBus.$on(events.RELOAD_APP_LIST, () => {
+      this.getList();
+    });
   },
   beforeDestroy() {
     this.$EventBus.$off(events.OPEN_APP_STORE_AND_GOTO_SYNCTHING);
@@ -148,7 +152,6 @@ export default {
       this.isLoading = true;
       try {
         const listRes = await this.$api.container.getMyAppList();
-        console.log(listRes);
         const orgAppList = listRes.data.data.casaos_apps
         let casaAppList = concat(builtInApplications, orgAppList)
         casaAppList.reverse()

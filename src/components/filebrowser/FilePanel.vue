@@ -2,7 +2,11 @@
  * @Author: JerryK
  * @Date: 2022-02-18 12:42:06
  * @LastEditors: Jerryk jerry@icewhale.org
+<<<<<<< HEAD
  * @LastEditTime: 2022-07-19 21:02:42
+=======
+ * @LastEditTime: 2022-07-18 17:05:29
+>>>>>>> 1d5b2cca5932b5cc69b20357bf5a1ae06368c5cd
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\FilePanel.vue
 -->
@@ -253,9 +257,7 @@ export default {
       deep: true
     },
     usbDisks(newval, oldval) {
-
       if (!isEqual(newval, oldval)) {
-        console.log(newval, oldval);
         this.getFileList(this.currentPath)
       }
 

@@ -22,6 +22,7 @@ export default {
     "High": "Hoch",
     "Language": "Sprache",
     "Change": "Ändern",
+    "Start": "Start",
 
     "This field is required": "Dieses Feld ist erforderlich",
     "This field must be a valid email": "Dieses Feld beinhaltet keine gültige E-Mail-Adresse",
@@ -91,10 +92,13 @@ export default {
 
     // Sync
     "Sync your data": "Synchronisiere deine Daten",
-    "Follow the guide to start syncing your files across multiple devices.": "Folge der Anleitung, um deine Dateien auf mehreren Geräten zu synchronisieren.",
+    "Use Syncthing to sync your files between multiple devices.": "Use Syncthing to sync your files between multiple devices.",
     "Total": "Gesamt",
     "Install": "Installation",
     "Config": "Konfiguration",
+    "Failed to start, please try again.": "Failed to start, please try again.",
+    "Syncthing is not running, start it?": "Syncthing is not running, start it?",
+    "Starting Syncthing...": "Starting Syncthing...",
 
 
 
@@ -180,7 +184,7 @@ export default {
     "Port [Please add a ports set first]": "Port [Please add a ports set first]",
     "[Optional]": "[Optional]",
     "Notice: If there are multiple services, only the first set can be analyzed correctly": "Notice: If there are multiple services, only the first set can be analyzed correctly",
-    "Port": "Port",
+    "There was an error loading the data, please try again!":"There was an error loading the data, please try again!",
 
 
     //Storage

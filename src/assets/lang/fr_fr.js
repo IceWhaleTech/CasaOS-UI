@@ -22,6 +22,7 @@ export default {
     "High": "Haut",
     "Language": "Langue",
     "Change": "Changement",
+    "Start": "Start",
 
     "This field is required": "Ce champ est requis",
     "This field must be a valid email": "Ce champ doit être une adresse e-mail valide",
@@ -90,10 +91,13 @@ export default {
 
     // Sync
     "Sync your data": "Synchronisez vos données",
-    "Follow the guide to start syncing your files across multiple devices.": "Suivez le guide pour commencer à synchroniser vos fichiers sur plusieurs appareils.",
+    "Use Syncthing to sync your files between multiple devices.": "Use Syncthing to sync your files between multiple devices.",
     "Total": "Total",
     "Install": "Installer",
     "Config": "Config",
+    "Failed to start, please try again.": "Failed to start, please try again.",
+    "Syncthing is not running, start it?": "Syncthing is not running, start it?",
+    "Starting Syncthing...": "Starting Syncthing...",
 
 
     // Iot
@@ -178,7 +182,7 @@ export default {
     "Port [Please add a ports set first]": "Port [Please add a ports set first]",
     "[Optional]": "[Optional]",
     "Notice: If there are multiple services, only the first set can be analyzed correctly": "Notice: If there are multiple services, only the first set can be analyzed correctly",
-    "Port": "Port",
+    "There was an error loading the data, please try again!":"There was an error loading the data, please try again!",
 
 
     //Storage

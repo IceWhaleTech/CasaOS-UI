@@ -22,6 +22,7 @@ export default {
     "High": "高",
     "Language": "语言",
     "Change": "更改",
+    "Start": "启动",
 
     "This field is required": "此字段是必填项",
     "This field must be a valid email": "此字段必须是有效的电子邮件",
@@ -91,10 +92,13 @@ export default {
 
     // Sync
     "Sync your data": "同步你的数据",
-    "Follow the guide to start syncing your files across multiple devices.": "跟随指引在多个设备之间同步你的文件。",
+    "Use Syncthing to sync your files between multiple devices.": "使用 Syncthing 在多个设备之间同步你的文件。",
     "Total": "总计",
     "Install": "安装",
     "Config": "配置",
+    "Failed to start, please try again.": "启动失败，请重试。",
+    "Syncthing is not running, start it?": "SyncThing未运行，是否启动？",
+    "Starting Syncthing...": "启动 Syncthing...",
 
     // Iot
     "Have an idea? Shoot it on Discord!": "有想法？在 Discord 上告诉我们！",
@@ -179,6 +183,7 @@ export default {
     "[Optional]": "[可选]",
     "Notice: If there are multiple services, only the first set can be analyzed correctly": "注意：如果存在多个服务只有第一组服务能够被正确的解析",
     "Port": "端口",
+    "There was an error loading the data, please try again!": "加载数据时出错了，请重试！",
 
     //Storage
     "Create Storage": "创建存储空间",
