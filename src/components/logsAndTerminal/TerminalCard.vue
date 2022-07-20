@@ -8,22 +8,22 @@
         <div class="card-content">
           <div class="content">
             <b-notification auto-close type="is-danger" v-model="notificationShow" aria-close-label="Close notification" role="alert" :closable="false">
-              {{message}}
+              {{ $t(message) }}
             </b-notification>
-            <b-field label="User">
+            <b-field :label="$t('Username')">
               <b-input v-model="sshUser" name="username"></b-input>
             </b-field>
 
-            <b-field label="Password">
+            <b-field :label="$t('Password')">
               <b-input type="password" v-model="sshPassword" name="password" password-reveal>
               </b-input>
             </b-field>
 
-            <b-field label="Port">
+            <b-field :label="$t('Port')">
               <b-input type="number" v-model="sshPort" name="port"></b-input>
             </b-field>
             <div class="buttons mt-5">
-              <b-button type="is-primary" rounded expanded @click="checkLogin" :loading="isConnecting">Connect</b-button>
+              <b-button type="is-primary" rounded expanded @click="checkLogin" :loading="isConnecting">{{ $t('Connect') }}</b-button>
             </div>
           </div>
         </div>
@@ -77,7 +77,7 @@ export default {
   mounted() {
     this.rows = document.getElementById('terminal').offsetHeight / 16 - 6;
     this.cols = document.getElementById('terminal').offsetWidth / 14;
-    
+
     if (this.initWsUrl != "") {
       this.isVaild = true
       this.wsUrl = this.initWsUrl;
@@ -86,7 +86,9 @@ export default {
 
   },
   beforeDestroy() {
-    this.socket.close()
+    if (this.isVaild) {
+      this.socket.close()
+    }
     if (this.term != "") this.term.dispose()
     window.removeEventListener('resize', this.onWindowResize)
   },

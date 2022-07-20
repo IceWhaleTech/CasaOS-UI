@@ -2,13 +2,13 @@
  * @Author: JerryK
  * @Date: 2021-10-09 18:41:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-19 21:20:42
+ * @LastEditTime: 2022-07-20 16:17:09
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\widgets\Settings.vue
+ * @FilePath: /CasaOS-UI/src/components/widgets/Settings.vue
 -->
 <template>
 
-  <div class="widget has-text-white clock is-relative  mt-4">
+  <div class="widget has-text-white clock is-relative ">
     <div class="blur-background"></div>
 
     <div class="wsettings" ref="wsettings">
@@ -60,7 +60,8 @@ export default {
   data() {
     return {
       apps: [],
-      settingsData: []
+      settingsData: [],
+      position: "is-top-left"
     }
   },
   model: {
@@ -70,20 +71,21 @@ export default {
   props: {
     widgetsSettings: Array
   },
-  computed: {
-    position() {
-      // let tempSettingArray = this.settingsData.filter(item => {
-      //   return item.show
-      // })
-      let offsetTop = 0
-      if (this.$refs.wsettings) {
-        offsetTop = this.$refs.wsettings.getBoundingClientRect().top
-      } else {
-        offsetTop = 250
-      }
 
-      return offsetTop > 250 ? "is-top-left" : "is-bottom-left";
+  watch: {
+    settingsData: {
+      handler() {
+        let offsetTop = 0
+        if (this.$refs.wsettings) {
+          offsetTop = this.$refs.wsettings.getBoundingClientRect().top
+        } else {
+          offsetTop = 251
+        }
+        this.position = offsetTop > 250 ? "is-top-left" : "is-bottom-left"
+      },
+      deep: true
     }
+
   },
   created() {
     this.settingsData = JSON.parse(JSON.stringify(this.widgetsSettings))
@@ -94,7 +96,7 @@ export default {
   },
   mounted() {
     window.addEventListener('resize', this.onRezise);
-    console.log(this.$refs.wsettings.getBoundingClientRect().top);
+
   },
   methods: {
     getIcon(value) {

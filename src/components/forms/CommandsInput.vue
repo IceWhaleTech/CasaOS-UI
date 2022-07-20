@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-02-11 14:53:46
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 11:30:11
+ * @LastEditTime: 2022-07-20 18:05:17
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\forms\CommandsInput.vue
+ * @FilePath: /CasaOS-UI/src/components/forms/CommandsInput.vue
 -->
 <template>
   <div class="mb-5">
@@ -50,6 +50,11 @@ export default {
     vdata: Array,
     label: String,
     message: String,
+  },
+  watch: {
+    vdata(val) {
+      this.items = val
+    }
   },
 
   methods: {
