@@ -62,6 +62,9 @@
 }
 
 .icon-shadow {
-    border-radius: 6px;
+    background: linear-gradient(180deg, #F7FAFC 0%, #F0F2F5 100%);
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
     box-sizing: border-box;
+    overflow: hidden;
 }

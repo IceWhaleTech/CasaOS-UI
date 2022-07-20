@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-28 14:55:06
+ * @LastEditTime: 2022-07-14 18:14:44
  * @Description: Top bar 
  * @FilePath: \CasaOS-UI\src\components\TopBar.vue
 -->
@@ -37,11 +37,11 @@
           <div class="is-flex is-align-items-center item">
             <div class="is-flex is-align-items-center is-flex-grow-1">
               <b-image :src="require('@/assets/img/account/default-avatar.svg')" class="is-40x40 mr-3" rounded></b-image>
-              <b>{{userInfo.user_name}}</b>
+              <b>{{userInfo.username}}</b>
             </div>
             <div>
               <a aria-role="button" @click="showAccountPanel">
-                <b-icon icon="account-edit"></b-icon>
+                <b-icon pack="casa" icon="account-edit"></b-icon>
               </a>
             </div>
           </div>
@@ -102,7 +102,7 @@
           <!-- Language Start -->
           <div class="is-flex is-align-items-center mb-2 h-30">
             <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon icon="translate" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{ $t('Language') }}</b>
+              <b-icon pack="casa" icon="language" class="mr-1"></b-icon> <b>{{ $t('Language') }}</b>
             </div>
             <div>
               <b-field>
@@ -117,7 +117,7 @@
           <!-- WebUI Port Start -->
           <div class="is-flex is-align-items-center mb-2 h-30">
             <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon icon="view-dashboard-outline" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{$t('WebUI Port')}}</b>
+              <b-icon pack="casa" icon="port" class="mr-1"></b-icon> <b>{{$t('WebUI Port')}}</b>
             </div>
             <div>
               {{port}}
@@ -142,7 +142,7 @@
           <!--  Recommended modules Switch Start  -->
           <div class="is-flex is-align-items-center mb-2 h-30">
             <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon icon="application-outline" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{$t('Show Recommended Apps')}}</b>
+              <b-icon pack="casa" icon="app-switch" class="mr-1"></b-icon> <b>{{$t('Show Recommended Apps')}}</b>
             </div>
             <div>
               <b-field>
@@ -155,7 +155,7 @@
           <!-- Automount USB Drive Start  -->
           <div class="is-flex is-align-items-center mb-2 h-30">
             <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon icon="usb-flash-drive-outline" class="mr-1" custom-size="mdi-18px"></b-icon> <b>{{$t('Automount USB Drive')}}</b>
+              <b-icon pack="casa" icon="usb" class="mr-1"></b-icon> <b>{{$t('Automount USB Drive')}}</b>
               <b-tooltip :label="$t('Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB')" type="is-dark" multilined v-if="isRaspberryPi">
                 <b-icon icon="help-circle-outline" size="is-small" class="ml-1"></b-icon>
               </b-tooltip>
@@ -171,7 +171,7 @@
           <!-- Update Start -->
           <div class="is-flex is-align-items-center h-30">
             <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon icon="sync" class="mr-1" custom-size="mdi-18px"></b-icon> <b :class="{'update-text-dot': updateInfo.is_need}">{{$t('Update')}}</b>
+              <b-icon pack="casa" icon="upgrade" class="mr-1"></b-icon> <b :class="{'update-text-dot': updateInfo.is_need}">{{$t('Update')}}</b>
             </div>
             <div>
               v{{updateInfo.current_version}}
@@ -219,6 +219,8 @@ import PortPanel from './settings/PortPanel.vue'
 import UpdateModal from './settings/UpdateModal.vue'
 import { mixin } from '../mixins/mixin';
 
+import events from '@/events/events';
+
 const systemConfigName = "system"
 
 export default {
@@ -227,7 +229,9 @@ export default {
   data() {
     return {
       timer: 0,
-      user_id: localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 1,
+      // User
+      userInfo: this.$store.state.user,
+      // System
       barData: {
         lang: this.getInitLang(),
         search_engine: "https://duckduckgo.com/?q=",
@@ -244,7 +248,7 @@ export default {
       isUpdating: false,
       latestText: "Currently the latest version",
       updateText: "A new version is available!",
-      userInfo: this.$store.state.userinfo,
+
       port: "",
       autoUsbMount: false,
       deviceModel: "",
@@ -294,21 +298,24 @@ export default {
     },
     'barData.search_engine': {
       handler(val) {
-        this.$store.commit('changeSearchEngine', val);
+        this.$store.commit('SET_SEARCH_ENGINE', val);
       },
       deep: true
     },
     'barData.search_switch': {
       handler(val) {
-        this.$store.commit('changeSearchEngineSwitch', val);
+        this.$store.commit('SET_SEARCH_ENGINE_SWITCH', val);
       },
       deep: true
     },
     'barData.recommend_switch': {
       handler(val) {
-        this.$store.commit('changeRecommendSwitch', val);
+        this.$store.commit('SET_RECOMMEND_SWITCH', val);
       },
       deep: true
+    },
+    initBarData(val) {
+      this.barData = val
     },
 
   },
@@ -320,7 +327,7 @@ export default {
   mounted() {
     this.checkVersion();
     this.getUserInfo();
-    this.getUsbMountState();
+    this.getUsbStatus();
     this.getHardwareInfo();
   },
 
@@ -334,7 +341,7 @@ export default {
      * @return {*}
      */
     async saveData() {
-      const saveRes = await this.$api.user.postCustomConfig(this.user_id, systemConfigName, this.barData)
+      const saveRes = await this.$api.users.setCustomStorage(systemConfigName, this.barData)
       if (saveRes.data.success === 200) {
         this.barData = saveRes.data.data
       }
@@ -347,7 +354,7 @@ export default {
      */
     onOpen(isOpen) {
       if (isOpen) {
-        this.$store.commit('closeSideBar')
+        this.$store.commit('SET_SIDEBAR_CLOSE')
         this.checkVersion()
       }
     },
@@ -358,7 +365,7 @@ export default {
      * @return {*}
      */
     showSideBar() {
-      this.$store.commit('changeSideBarState')
+      this.$store.commit('TOOGLE_SIDEBAR_STATE')
     },
 
 
@@ -386,7 +393,7 @@ export default {
      * @return {*} 
      */
     getPort() {
-      this.$api.info.getSystemPort().then(res => {
+      this.$api.sys.getServerPort().then(res => {
         if (res.data.success == 200) {
           this.port = res.data.data
         }
@@ -414,7 +421,7 @@ export default {
       })
     },
     showChangeWallpaperModal() {
-      this.$EventBus.$emit("showChangeWallpaperModal");
+      this.$EventBus.$emit(events.SHOW_CHANGE_WALLPAPER_MODAL);
       this.$refs.settingsDrop.toggle()
     },
 
@@ -426,8 +433,8 @@ export default {
      * @description: Get Auto USB Mount State
      * @return {*} 
      */
-    getUsbMountState() {
-      this.$api.info.getUsbMountState().then(res => {
+    getUsbStatus() {
+      this.$api.sys.getUsbStatus().then(res => {
         if (res.data.success == 200) {
           this.autoUsbMount = res.data.data === "True"
         }
@@ -441,7 +448,7 @@ export default {
      */
     usbAutoMount() {
       if (this.autoUsbMount) {
-        this.$api.info.setUsbMountOn()
+        this.$api.sys.toggleUsbAutoMount({ state: "on" })
         // Show 
         if (this.isRaspberryPi) {
           this.$buefy.snackbar.open({
@@ -452,7 +459,7 @@ export default {
         }
 
       } else {
-        this.$api.info.setUsbMountOff()
+        this.$api.sys.toggleUsbAutoMount({ state: "off" })
       }
     },
     /**
@@ -461,7 +468,7 @@ export default {
      * @return {*}
      */
     getHardwareInfo() {
-      this.$api.info.hardwareInfo().then(res => {
+      this.$api.sys.hardwareInfo().then(res => {
         if (res.data.success == 200) {
           this.deviceModel = res.data.data.drive_model
         }
@@ -477,7 +484,7 @@ export default {
      * @return {*} void
      */
     checkVersion() {
-      this.$api.info.checkVersion().then(res => {
+      this.$api.sys.getVersion().then(res => {
         if (res.data.success == 200) {
           this.updateInfo = res.data.data
         }
@@ -510,17 +517,16 @@ export default {
      * @description: Get user info
      * @return {*} void
      */
-    getUserInfo() {
-      this.$store.commit('closeSideBar')
-      if (!this.$store.userinfo) {
-        const user_id = localStorage.getItem('user_id') ? localStorage.getItem('user_id') : 1;
-        localStorage.setItem("user_id", user_id)
-        this.$api.user.getUserInfo(user_id).then((res) => {
-          if (res.data.success == 200) {
-            this.$store.commit('changeUserInfo', res.data.data)
-            this.userInfo = res.data.data
-          }
-        })
+    async getUserInfo() {
+      this.$store.commit('SET_SIDEBAR_CLOSE')
+      if (this.$store.state.user.id == 0) {
+        try {
+          const userRes = await this.$api.users.getUserInfo()
+          this.userInfo = userRes.data.data
+          this.$store.commit('SET_USER', this.userInfo)
+        } catch (error) {
+          console.log(error)
+        }
       }
     },
 
@@ -542,7 +548,7 @@ export default {
     },
 
     logout() {
-      this.$store.commit('setDefaultWallpaper')
+      this.$store.commit('SET_DEFAULT_WALLPAPER')
       this.$router.push("/logout");
     },
 
@@ -556,7 +562,7 @@ export default {
      * @return {*} void
      */
     showTerminalPanel() {
-      this.$store.commit('closeSideBar')
+      this.$store.commit('SET_SIDEBAR_CLOSE')
       this.$buefy.modal.open({
         parent: this,
         component: TerminalPanel,

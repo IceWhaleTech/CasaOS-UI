@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-22 19:20:21
+ * @LastEditTime: 2022-07-15 17:58:36
  * @FilePath: /CasaOS-UI/src/components/logsAndTerminal/TerminalPanel.vue
  * @Description: 
  * 
@@ -12,13 +12,13 @@
   <div class="modal-card">
 
     <!-- Modal-Card Body Start -->
-    <section class="modal-card-body ">
+    <section class="modal-card-body " style="overflow:hidden">
       <h3 class="title is-3">CasaOS</h3>
       <div class="close-container"><button type="button" class="delete" @click="$emit('close')" /></div>
       <div class="is-flex-grow-1">
         <b-tabs :animated="false" @input="onInput">
           <b-tab-item :label="$t('Terminal')" value="terminal">
-            <terminal-card ref="terminal" :wsUrl="wsUrl"></terminal-card>
+            <terminal-card ref="terminal" :initWsUrl="wsUrl"></terminal-card>
           </b-tab-item>
           <b-tab-item :label="$t('Logs')" value="logs">
             <logs-card ref="logs" :data="logData"></logs-card>
@@ -47,7 +47,7 @@ export default {
   data() {
     return {
       isLoading: false,
-      wsUrl: `ws://${this.$baseURL}/v1/sys/wsssh?token=${this.$store.state.token}`,
+      wsUrl: ``,
       logData: ""
     }
   },
@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     getLogs() {
-      this.$api.info.systemLogs().then(res => {
+      this.$api.sys.getLogs().then(res => {
         this.logData = res.data.data;
       })
     },

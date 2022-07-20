@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:30:26
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-28 09:31:07
+ * @LastEditTime: 2022-07-13 17:52:29
  * @Description: 
- * @FilePath: \CasaOS-UI\src\views\Login.vue
+ * @FilePath: /CasaOS-UI/src/views/Login.vue
 -->
 <template>
   <div id="login-page" class="is-flex is-justify-content-center is-align-items-center ">
@@ -64,7 +64,7 @@ export default {
     }
   },
   mounted() {
-    this.$api.user.getAllUserName().then(users => {
+    this.$api.users.getAllUserName().then(users => {
       this.username = users.data.data[0];
     })
   },
@@ -82,24 +82,27 @@ export default {
     },
   },
   methods: {
-    login() {
-      this.$api.user.login({
-        username: this.username,
-        pwd: this.password
-      }).then((res) => {
-        if (res.data.success == 200) {
-          localStorage.setItem("user_token", res.data.data.token)
-          localStorage.setItem("user_id", res.data.data.user.id)
-          localStorage.setItem("version", res.data.data.version)
-          this.$store.commit('setToken', res.data.data.token)
-          this.$store.commit('changeUserInfo', res.data.data)
-          this.$router.push('/')
-        } else {
-          this.notificationShow = true;
-          this.message = this.$t("Password error!")
-        }
-      })
+    async login() {
+      try {
+        const userRes = await this.$api.users.login(this.username, this.password)
+          localStorage.setItem("access_token", userRes.data.data.token.access_token);
+          localStorage.setItem("refresh_token", userRes.data.data.token.refresh_token);
+          localStorage.setItem("expires_at", userRes.data.data.token.expires_at);
+          localStorage.setItem("user", JSON.stringify(userRes.data.data.user));
 
+          this.$store.commit("SET_USER", userRes.data.data.user);
+          this.$store.commit("SET_ACCESS_TOKEN", userRes.data.data.token.access_token);
+          this.$store.commit("SET_REFRESH_TOKEN", userRes.data.data.token.refresh_token);
+
+          const versionRes = await this.$api.sys.getVersion();
+          if (versionRes.data.success == 200) {
+            localStorage.setItem("version", versionRes.data.data.current_version);
+          }
+          this.$router.push("/");
+      } catch (err) {
+        this.message = this.$t("Username or Password error!")
+        this.notificationShow = true
+      }
     }
   }
 }

@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:30:26
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-24 15:26:51
+ * @LastEditTime: 2022-07-14 11:03:56
  * @Description: 
- * @FilePath: /CasaOS-UI/src/views/Welcome.vue
+ * @FilePath: \CasaOS-UI\src\views\Welcome.vue
 -->
 <template>
   <div id="login-page" class="is-flex is-justify-content-center is-align-items-center">
@@ -30,20 +30,20 @@
         <ValidationObserver ref="observer" v-slot="{ handleSubmit }">
           <ValidationProvider rules="required" name="User" v-slot="{ errors, valid }">
             <b-field :label="$t('Username')" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="$t(errors)">
-              <b-input type="text" v-model="username" v-on:keyup.enter.native="handleSubmit(reg)"></b-input>
+              <b-input type="text" v-model="username" v-on:keyup.enter.native="handleSubmit(register)"></b-input>
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required|min:5" vid="password" name="Password" v-slot="{ errors, valid }">
             <b-field :label="$t('Password')" class="mt-4" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="$t(errors)">
-              <b-input type="password" v-model="password" password-reveal v-on:keyup.enter.native="handleSubmit(reg)"></b-input>
+              <b-input type="password" v-model="password" password-reveal v-on:keyup.enter.native="handleSubmit(register)"></b-input>
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required|confirmed:password" name="Password Confirmation" v-slot="{ errors, valid }">
             <b-field :label="$t('Confirm Password')" class="mt-4" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="$t(errors)">
-              <b-input type="password" v-model="confirmation" password-reveal v-on:keyup.enter.native="handleSubmit(reg)"></b-input>
+              <b-input type="password" v-model="confirmation" password-reveal v-on:keyup.enter.native="handleSubmit(register)"></b-input>
             </b-field>
           </ValidationProvider>
-          <b-button type="is-primary" class="mt-5" rounded expanded @click="handleSubmit(reg)">{{$t('Create')}}</b-button>
+          <b-button type="is-primary" class="mt-5" rounded expanded @click="handleSubmit(register)">{{$t('Create')}}</b-button>
         </ValidationObserver>
       </div>
 
@@ -135,35 +135,44 @@ export default {
     },
   },
   methods: {
-    reg() {
-      this.$api.user.createUsernameAndPaword({
-        username: this.username,
-        pwd: this.password
-      }).then(res => {
+    /**
+     * @description: register
+     * @return {*}
+     */
+    register() {
+      const initKey = this.$store.state.initKey;
+      this.$api.users.register(this.username, this.password, initKey).then(res => {
         if (res.data.success == 200) {
           this.goToStep(3);
         }
       })
     },
-    login() {
-      this.$api.user.login({
-        username: this.username,
-        pwd: this.password
-      }).then((res) => {
-        if (res.data.success == 200) {
-          localStorage.setItem("user_id", res.data.data.user.id)
-          localStorage.setItem("user_token", res.data.data.token)
-          localStorage.setItem("version", res.data.data.version)
-          this.$store.commit('setToken', res.data.data.token)
-          this.$store.commit('setToken', res.data.data.token)
-          this.$store.commit('changeUserInfo', res.data.data)
-          this.$router.push('/')
-        } else {
-          this.notificationShow = true;
-          this.message = this.$t("Username or Password error!")
-        }
-      })
 
+    /**
+     * @description: login
+     * @return {*}
+     */
+    async login() {
+      const userRes = await this.$api.users.login(this.username, this.password)
+      if (userRes.data.success == 200) {
+        localStorage.setItem("access_token", userRes.data.data.token.access_token);
+        localStorage.setItem("refresh_token", userRes.data.data.token.refresh_token);
+        localStorage.setItem("expires_at", userRes.data.data.token.expires_at);
+        localStorage.setItem("user", JSON.stringify(userRes.data.data.user));
+
+        this.$store.commit("SET_USER", userRes.data.data.user);
+        this.$store.commit("SET_ACCESS_TOKEN", userRes.data.data.token.access_token);
+        this.$store.commit("SET_REFRESH_TOKEN", userRes.data.data.token.refresh_token);
+
+        const versionRes = await this.$api.sys.getVersion();
+        if (versionRes.data.success == 200) {
+          localStorage.setItem("version", versionRes.data.data.current_version);
+        }
+        this.$router.push("/");
+      } else {
+        this.message = this.$t("Username or Password error!")
+        this.notificationShow = true
+      }
     },
     goToStep(step) {
       this.step = step
@@ -175,9 +184,91 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .animation {
   width: 120px;
   height: 120px;
+}
+#login-page {
+  height: calc(100% - 5.5rem);
+  position: relative;
+  z-index: 500;
+
+  .login-panel {
+    text-align: left;
+    background: rgba(255, 255, 255, 0.46);
+    backdrop-filter: blur(1rem);
+    border-radius: 8px;
+    padding: 2.5rem 4rem;
+
+    .label {
+      color: #dfdfdf;
+    }
+
+    .input {
+      background: rgba(255, 255, 255, 0.32);
+      border-color: transparent;
+    }
+
+    &.step1 {
+      padding: 4rem 6rem;
+    }
+
+    &.step2 {
+      padding: 2.5rem 4rem;
+      width: 32rem;
+    }
+
+    &.step3 {
+      padding: 4rem 8rem;
+    }
+
+    &.step4 {
+      width: 28rem;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .login-panel {
+    text-align: left;
+    background: rgba(255, 255, 255, 0.46);
+    backdrop-filter: blur(1rem);
+    border-radius: 8px;
+    margin: 0 2rem;
+    padding: 2rem !important;
+
+    .label {
+      color: #dfdfdf;
+    }
+
+    .input {
+      background: rgba(255, 255, 255, 0.32);
+      border-color: transparent;
+    }
+
+    .is-128x128 {
+      height: 96px;
+      width: 96px;
+    }
+
+    .is-3 {
+      font-size: 1.5rem;
+    }
+
+    &.step1 {
+      .is-2 {
+        font-size: 1.5rem;
+      }
+
+      .subtitle {
+        font-size: 1rem;
+      }
+    }
+
+    &.step3 {
+      padding: 4rem !important;
+    }
+  }
 }
 </style>

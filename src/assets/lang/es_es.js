@@ -21,6 +21,8 @@ export default {
     "Medium": "Medio",
     "High": "Alta",
     "Language": "Idioma",
+    "Change": "Cambiar",
+    "Start": "Empezar",
 
     "This field is required": "Este campo es obligatorio",
     "This field must be a valid email": "Este campo debe ser un correo electrónico válido",
@@ -90,40 +92,14 @@ export default {
 
     // Sync
     "Sync your data": "Sincroniza tus datos",
-    "Follow the guide to start syncing your files across multiple devices.": "Sigue la guía para empezar a sincronizar tus archivos en varios dispositivos.",
-    "Go !": "¡Venga!",
-    "Sync Guide": "Guía de sincronización",
+    "Use Syncthing to sync your files between multiple devices.": "Use Syncthing to sync your files between multiple devices.",
+    "Total": "Total",
     "Install": "Instalar",
     "Config": "Configurar",
-    "Complete": "Completa",
-    "Download Syncthing on the device you want to sync with CasaOS": "Descargue Syncthing en el equipo que desea sincronizar con CasaOS",
-    "Get Syncthing for": "Obtenga Syncthing para {os}",
-    "Download APK": "Descargar APK",
-    "Show all Platforms": "Mostrar todas las plataformas",
-    'Install and open the downloaded application, then click the "Next" button.': 'Instale y abra la aplicación descargada, y luego haga clic en el botón "Siguiente".',
-    "Device ID": "Identificación del dispositivo",
-    "Fill in your Device ID to continue": "Introduzca su ID de equipo para continuar",
-    "How to get Device ID": "Cómo obtener el ID del equipo",
-    "What do I need to do on my device?": "¿Qué tengo que hacer en mi dispositivo?",
-    "Open the SyncTrayzor": "Abrir el SyncTrayzor",
-    "Find the Device ID": "Encuentre el ID del equipo",
-    "Add new device on your device": "Añadir un nuevo dispositivo en su equipo",
-    "Add new folder on your device": "Añade una nueva carpeta en tu equipo",
-    "Done!": "¡Hecho!",
+    "Failed to start, please try again.": "Failed to start, please try again.",
+    "Syncthing is not running, start it?": "Syncthing is not running, start it?",
+    "Starting Syncthing...": "Starting Syncthing...",
 
-    "Open Syncthing in the Launchpad": "Abrir Syncthing en el Launchpad",
-    "Find the Syncthing icon in the menubar": "Busque el icono de Syncthing en la barra de menús",
-    "Open Syncthing": "Abrir Syncthing",
-    "Open the menu": "Abrir el menú",
-    'Choose "Show device ID"': 'Elija "Mostrar el ID del equipo"',
-    "Copy the Device ID": "Copiar el ID del equipo",
-    "There you go!": "¡Ahí lo tienes!",
-    "Your data has started to sync.It may take some minutes to fulfill synchronization.": "Sus datos han comenzado a sincronizarse.<br>Puede tardar unos minutos en completarse la sincronización.",
-    "Up to Date": "Hasta la fecha",
-    "Synchronizing": "Sincronizando",
-    "Synchronized": "Sincronizado",
-    "Total": "Total",
-    "Add New Device": "Añadir nuevo dispositivo",
 
     // Iot
     "Have an idea? Shoot it on Discord!": "¿Tienes una idea? ¡Distribúyela en Discord!",
@@ -208,7 +184,7 @@ export default {
     "[Optional]": "[Opcional]",
     "Notice: If there are multiple services, only the first set can be analyzed correctly": "Aviso: Si hay varios servicios, sólo se puede analizar correctamente el primer conjunto",
     "Port": "Puerto",
-
+    "There was an error loading the data, please try again!":"Se ha producido un error al cargar los datos, por favor, inténtelo de nuevo.",
 
     //Storage
     "Create Storage": "Crear Almacenamiento",
@@ -417,5 +393,4 @@ export default {
     "My ID": "Mi ID",
     "Update successful": "Actualización exitosa",
     "Update failed": "Actualización fallida",
-
 }

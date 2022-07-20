@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-02-23 17:08:21
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-27 22:33:39
+ * @LastEditTime: 2022-07-14 12:01:15
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\wallpaper\ContextMenu.vue
 -->
@@ -24,6 +24,7 @@
 
 <script>
 import { mixin } from '@/mixins/mixin';
+import  events  from '@/events/events';
 export default {
   mixins: [mixin],
   data() {
@@ -42,7 +43,7 @@ export default {
     }
   },
   mounted() {
-    this.$EventBus.$on("showHomeContextMenu", (data) => {
+    this.$EventBus.$on(events.SHOW_HOME_CONTEXT_MENU, (data) => {
       this.open(data)
     });
 
@@ -63,7 +64,7 @@ export default {
       }
     },
     showChangeWallpaperModal() {
-      this.$EventBus.$emit("showChangeWallpaperModal");
+      this.$EventBus.$emit(events.SHOW_CHANGE_WALLPAPER_MODAL);
     }
 
   },

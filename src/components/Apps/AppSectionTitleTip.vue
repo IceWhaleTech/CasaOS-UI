@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-06-28 13:24:25
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-28 13:39:36
- * @FilePath: \CasaOS-UI\src\components\Apps\AppSectionTitleTip.vue
+ * @LastEditTime: 2022-07-01 11:28:38
+ * @FilePath: /CasaOS-UI/src/components/Apps/AppSectionTitleTip.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -17,7 +17,7 @@
           <b-icon pack="casa" icon="close-xs"></b-icon>
         </div>
       </template>
-      {{ $t(title) }}
+      <span class="mr-2">{{ $t(title) }}</span>
     </b-tooltip>
 
   </h1>

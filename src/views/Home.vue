@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-28 09:30:56
+ * @LastEditTime: 2022-07-14 11:57:35
  * @Description: 
  * @FilePath: \CasaOS-UI\src\views\Home.vue
 -->
@@ -74,11 +74,13 @@ import CoreService from '../components/CoreService.vue'
 import AppSection from '../components/Apps/AppSection.vue'
 //import Shortcuts from '@/components/Shortcuts.vue'
 import FilePanel from '@/components/filebrowser/FilePanel.vue'
-
+import { mixin } from '../mixins/mixin';
+import  events  from '@/events/events';
 const wallpaperConfig = "wallpaper"
 
 export default {
   name: "home-page",
+  mixins: [mixin],
   components: {
     SideBar,
     SearchBar,
@@ -138,28 +140,31 @@ export default {
      * @return {*}
      */
     async getConfig() {
-      let systemConfig = await this.$api.user.getCustomConfig(this.user_id, "system")
+      let systemConfig = await this.$api.users.getCustomStorage("system")
       if (systemConfig.data.success != 200 || systemConfig.data.data == "") {
         const oldData = systemConfig.data.data
-        systemConfig = await this.$api.info.systemConfig()
+        const oldSystemConfig = await this.$api.sys.systemConfig()
         if (oldData == "") {
           const barData = {
-            lang: systemConfig.data.data.lang,
-            search_engine: systemConfig.data.data.search_engine,
+            lang: oldSystemConfig.data.data.lang ? oldSystemConfig.data.data.lang : this.getLangFromBrowser(),
+            search_engine: oldSystemConfig.data.data.search_engine ? oldSystemConfig.data.data.search_engine : "https://duckduckgo.com/?q=",
             search_switch: true,
             recommend_switch: true,
-            shortcuts_switch: systemConfig.data.data.shortcuts_switch,
-            widgets_switch: systemConfig.data.data.widgets_switch,
+            shortcuts_switch: oldSystemConfig.data.data.shortcuts_switch ? oldSystemConfig.data.data.shortcuts_switch : true,
+            widgets_switch: oldSystemConfig.data.data.widgets_switch ? oldSystemConfig.data.data.widgets_switch : true,
           }
           // save
-          const saveRes = await this.$api.user.postCustomConfig(this.user_id, "system", barData)
+          const saveRes = await this.$api.users.setCustomStorage("system", barData)
           if (saveRes.data.success === 200) {
+            systemConfig = saveRes
             this.barData = saveRes.data.data
+
           }
         }
       }
-      this.$store.commit('changeSearchEngineSwitch', systemConfig.data.data.search_switch);
-      this.$store.commit('changeRecommendSwitch', systemConfig.data.data.recommend_switch);
+
+      this.$store.commit('SET_SEARCH_ENGINE_SWITCH', systemConfig.data.data.search_switch);
+      this.$store.commit('SET_RECOMMEND_SWITCH', systemConfig.data.data.recommend_switch);
       this.barData = systemConfig.data.data
       this.isLoading = false
 
@@ -190,7 +195,7 @@ export default {
      */
     onResize() {
       if (window.innerWidth > 480 && this.sidebarOpen) {
-        this.$store.commit('closeSideBar');
+        this.$store.commit('SET_SIDEBAR_CLOSE');
       }
     },
 
@@ -201,23 +206,24 @@ export default {
      */
 
     getHardwareInfo() {
-      this.$api.info.utilization().then(res => {
+      this.$api.sys.getUtilization().then(res => {
         if (res.data.success === 200) {
           this.hardwareInfoLoading = false
-          this.$store.commit('changeHardwareInfo', res.data.data);
+          this.$store.commit('SET_HARDWARE_INFO', res.data.data);
         }
       })
     },
 
     openHomeContaxtMenu(e) {
       // console.log(e.target);
-      this.$EventBus.$emit("showHomeContextMenu", e);
+      console.log(events.SHOW_HOME_CONTEXT_MENU);
+      this.$EventBus.$emit(events.SHOW_HOME_CONTEXT_MENU, e);
     },
 
     getWallpaperConfig() {
-      this.$api.user.getCustomConfig(this.user_id, wallpaperConfig).then(res => {
+      this.$api.users.getCustomStorage(wallpaperConfig).then(res => {
         if (res.data.success === 200 && res.data.data != "") {
-          this.$store.commit('changeWallpaper', {
+          this.$store.commit('SET_WALLPAPER', {
             path: res.data.data.path,
             from: res.data.data.from
           })

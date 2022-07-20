@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-05-02 17:44:02
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-28 09:30:42
+ * @LastEditTime: 2022-07-14 08:13:52
  * @FilePath: \CasaOS-UI\src\components\settings\UpdateModal.vue
  * @Description: 
  * 
@@ -64,7 +64,7 @@ export default {
      */
     updateSystem() {
       this.isUpdating = true;
-      this.$api.info.updateSystem();
+      this.$api.sys.updateCasaOS();
       this.checkUpdateState();
     },
     /**
@@ -73,7 +73,7 @@ export default {
      */
     checkUpdateState() {
       this.timer = setInterval(() => {
-        this.$api.info.checkVersion().then(res => {
+        this.$api.sys.getVersion().then(res => {
           if (res.data.success == 200) {
             if (!res.data.data.is_need) {
               clearInterval(this.timer);

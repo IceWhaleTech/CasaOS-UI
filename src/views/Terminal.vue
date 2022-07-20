@@ -1,0 +1,210 @@
+<!--
+ * @Author: Jerryk jerry@icewhale.org
+ * @Date: 2022-07-15 10:40:36
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-07-15 16:40:41
+ * @FilePath: /CasaOS-UI/src/views/Terminal.vue
+ * @Description: 
+ * 
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+-->
+<template>
+  <div id="terminal" class="is-flex is-align-items-center is-justify-content-center">
+    <div class="card card-shadow" v-if="!isVaild">
+      <div class="card-content">
+        <div class="content">
+          <b-notification auto-close type="is-danger" v-model="notificationShow" aria-close-label="Close notification" role="alert" :closable="false">
+            {{message}}
+          </b-notification>
+          <b-field label="User">
+            <b-input v-model="sshUser" name="username"></b-input>
+          </b-field>
+
+          <b-field label="Password">
+            <b-input type="password" v-model="sshPassword" name="password" password-reveal>
+            </b-input>
+          </b-field>
+
+          <b-field label="Port">
+            <b-input type="number" v-model="sshPort" name="port"></b-input>
+          </b-field>
+          <div class="buttons mt-5">
+            <b-button type="is-primary" rounded expanded @click="checkLogin" :loading="isConnecting">Connect</b-button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="xterm" class="xterm" v-else></div>
+  </div>
+</template>
+
+<script>
+import 'xterm/css/xterm.css'
+import { Terminal } from 'xterm'
+import { FitAddon } from 'xterm-addon-fit'
+import { AttachAddon } from 'xterm-addon-attach'
+import qs from 'qs'
+
+const fitAddon = new FitAddon();
+export default {
+  name: "terminal-card",
+  props: {
+    id: String,
+    label: String
+  },
+  data() {
+    return {
+      fullscreen: false,
+      isConnecting: false,
+      term: "",
+      rows: 40,
+      cols: 100,
+      state: true,
+      isVaild: false,
+      wsUrl: "",
+      sshUser: "root",
+      sshPassword: "123456",
+      sshPort: 22,
+      message: "",
+      notificationShow: false,
+    }
+  },
+  computed: {
+    buttonSzie() {
+      return this.$store.state.device == "mobile" ? 'is-small' : ''
+    },
+    buttonIcon() {
+      return this.fullscreen ? "fullscreen-exit" : "fullscreen"
+    }
+  },
+  mounted() {
+    // this.initSocket();
+    this.rows = document.getElementById('terminal').offsetHeight / 16 - 6;
+    this.cols = document.getElementById('terminal').offsetWidth / 14;
+  },
+  beforeDestroy() {
+    this.socket.close()
+    if (this.term != "") this.term.dispose()
+    window.removeEventListener('resize', this.onWindowResize)
+  },
+
+  methods: {
+    async checkLogin() {
+      this.isConnecting = true
+      let postData = {
+        username: String(this.sshUser),
+        password: String(this.sshPassword),
+        port: String(this.sshPort)
+      }
+      try {
+        await this.$api.sys.checkSshLogin(postData)
+        this.isConnecting = false
+        this.isVaild = true
+        postData.token = this.$store.state.access_token
+        this.wsUrl = `ws://${this.$baseURL}/v1/sys/wsssh?${qs.stringify(postData)}`
+        this.initSocket();
+      } catch (error) {
+        this.notificationShow = true
+        this.isConnecting = false
+        this.message = error.response.data.data
+      }
+
+    },
+    toggleFullScreen() {
+      this.fullscreen = !this.fullscreen
+    },
+    initTerm() {
+      const term = new Terminal({
+        // rendererType: 'canvas',
+        fontSize: 14,
+        cursorStyle: 'underline', //光标样式
+        cursorBlink: true, //光标闪烁
+        theme: { background: '#1E1E1E' },
+        rows: parseInt(this.rows), //行数
+        cols: parseInt(this.cols), // 不指定行数，自动回车后光标从下一行开始
+      });
+      const attachAddon = new AttachAddon(this.socket);
+
+      term.loadAddon(attachAddon);
+      term.loadAddon(fitAddon);
+      term.open(document.getElementById('xterm'));
+      fitAddon.fit();
+      term.focus();
+      this.term = term
+      window.addEventListener('resize', this.onWindowResize)
+
+      this.socket.send(JSON.stringify({
+        type: "resize",
+        cols: this.term.cols,
+        rows: this.term.rows
+      }))
+
+    },
+    initSocket() {
+      this.socket = new WebSocket(this.wsUrl);
+      this.socketOnClose();
+      this.socketOnOpen();
+      this.socketOnError();
+    },
+    socketOnOpen() {
+      this.socket.onopen = () => {
+        this.initTerm()
+      }
+    },
+    socketOnClose() {
+      this.socket.onclose = () => {
+        console.log('close socket')
+      }
+    },
+    socketOnError() {
+      this.socket.onerror = () => {
+        console.log('socket failure')
+      }
+    },
+    onWindowResize() {
+      try {
+        fitAddon.fit();
+        this.term.onResize(() => {
+          this.socket.send(JSON.stringify({
+            type: "resize",
+            cols: this.term.cols,
+            rows: this.term.rows
+          }))
+        });
+      } catch (e) {
+        console.log("e", e.message);
+      }
+    },
+    active(state) {
+      this.state = state;
+      if (state) {
+        this.onWindowResize();
+      }
+    }
+  }
+}
+</script>
+
+<style lang="scss">
+#terminal {
+  width: 100vw;
+  height: 100vh;
+  .card {
+    .card-content {
+      padding: 2.5rem;
+      width: 25rem;
+    }
+    &.card-shadow {
+      box-shadow: 0px 40px 80px rgba(115, 120, 128, 0.25) !important;
+      border-radius: 8px;
+    }
+  }
+}
+.xterm {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(30, 30, 30);
+  padding: 0.25rem;
+}
+</style>

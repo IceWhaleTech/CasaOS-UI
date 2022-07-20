@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-01-17 15:16:11
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-22 19:19:57
+ * @LastEditTime: 2022-07-14 18:59:47
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/Storage/StorageManagerPanel.vue
+ * @FilePath: \CasaOS-UI\src\components\Storage\StorageManagerPanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -183,7 +183,7 @@ export default {
      * @return {void} 
      */
     getDiskList(showDefault = false) {
-      this.$api.disk.diskList().then(res => {
+      this.$api.disks.getDiskList().then(res => {
         if (res.data.success === 200) {
           this.diskData = res.data.data.drive
 
@@ -284,11 +284,10 @@ export default {
       this.isCreating = true
       let data = {
         path: this.createStoragePath,
-        serial: this.createStorageSeiral,
         name: this.createStorageName,
         format: format
       }
-      this.$api.disk.addStorage(data).then((res) => {
+      this.$api.storage.create(data).then((res) => {
 
         if (res.data.success != 200) {
           this.isCreating = false;

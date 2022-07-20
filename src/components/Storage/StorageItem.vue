@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-01-20 13:21:12
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-09 16:04:51
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-07-14 18:58:45
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\Storage\StorageItem.vue
 -->
@@ -73,9 +73,9 @@ export default {
           let data = {
             path: path,
             volume: mount_point,
-            pwd: value
+            password: value
           }
-          this.$api.disk.removeStorage(data).then((res) => {
+          this.$api.storage.delete(data).then((res) => {
             if (res.data.success != 200) {
               this.isRemoving = false;
               this.$buefy.toast.open({
@@ -114,10 +114,10 @@ export default {
           let data = {
             path: path,
             volume: mount_point,
-            pwd: value
+            password: value
           }
 
-          this.$api.disk.formatStorage(data).then((res) => {
+          this.$api.storage.format(data).then((res) => {
             if (res.data.success != 200) {
               this.isFormating = false;
               this.$buefy.toast.open({

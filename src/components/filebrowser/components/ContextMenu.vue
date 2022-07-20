@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-02-23 17:08:21
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-23 17:33:48
+ * @LastEditTime: 2022-07-01 10:53:19
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\filebrowser\components\ContextMenu.vue
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/components/ContextMenu.vue
 -->
 <template>
   <div>
@@ -126,20 +126,24 @@ export default {
   },
   methods: {
     open(event, item) {
+      this.item = item
       let bounced = event.target.getAttribute('class').includes('dropdown-menu')
       if (!bounced) {
         this.showDetial = (item != undefined)
-        const isInSelected = this.filePanel.selectedArray.some(obj => {
-          return item.path == obj.path
-        })
-        if (this.filePanel.selectedArray.length > 1 && isInSelected) {
-          this.items = this.filePanel.selectedArray
-          this.showSingleEdit = false
-        } else {
-          this.items = [item]
-          this.item = item
-          this.showSingleEdit = true
+        if (this.showDetial) {
+          const isInSelected = this.filePanel.selectedArray.some(obj => {
+            return item.path == obj.path
+          })
+          if (this.filePanel.selectedArray.length > 1 && isInSelected) {
+            this.items = this.filePanel.selectedArray
+            this.showSingleEdit = false
+          } else {
+            this.items = [item]
+            this.item = item
+            this.showSingleEdit = true
+          }
         }
+
         this.$refs.dropDown.isActive = false
         this.$nextTick(() => {
           this.x = event.clientX

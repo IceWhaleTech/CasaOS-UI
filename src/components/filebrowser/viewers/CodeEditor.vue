@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-03-03 21:48:17
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 11:28:40
+ * @LastEditTime: 2022-07-14 12:26:34
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\viewers\CodeEditor.vue
 -->
@@ -16,13 +16,11 @@
       </div>
       <div class="is-flex is-align-items-center">
         <!-- Save File Button Start -->
-        <b-button icon-left="content-save" type="is-dark" size="is-small" :label="$t('Save')" class="mr-3" rounded
-          @click="saveFile(false)" />
+        <b-button icon-left="content-save" type="is-dark" size="is-small" :label="$t('Save')" class="mr-3" rounded @click="saveFile(false)" />
         <!-- Save File Button Start -->
 
         <!-- Download File Button Start -->
-        <b-button icon-left="download" type="is-primary" size="is-small" :label="$t('Download')" class="mr-2" rounded
-          @click="download" />
+        <b-button icon-left="download" type="is-primary" size="is-small" :label="$t('Download')" class="mr-2" rounded @click="download" />
         <!-- Download File Button End -->
 
         <!-- Close Button Start -->
@@ -216,7 +214,7 @@ export default {
         if (this.getFileExt(this.item) == 'json') {
           this.code = JSON.stringify(res.data, null, 2)
         } else {
-          this.code = res.data
+          this.code = String(res.data)
         }
         this.$nextTick(() => {
           this.isChange = false

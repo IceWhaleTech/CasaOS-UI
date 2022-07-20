@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-06-22 22:20:20
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-28 14:14:08
- * @FilePath: \CasaOS-UI\src\components\wallpaper\WallpaperModal.vue
+ * @LastEditTime: 2022-07-13 18:59:04
+ * @FilePath: /CasaOS-UI/src/components/wallpaper/WallpaperModal.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -143,13 +143,13 @@ export default {
         from: this.from
       }
       this.isLoading = true
-      this.$api.user.postCustomConfig(this.user_id, wallpaperConfig, data).then(res => {
+      this.$api.users.setCustomStorage(wallpaperConfig, data).then(res => {
         this.isLoading = false
         if (res.data.success === 200) {
 
           this.$emit("close")
           setTimeout(() => {
-            this.$store.commit('changeWallpaper', {
+            this.$store.commit('SET_WALLPAPER', {
               path: res.data.data.path,
               from: res.data.data.from
             })
@@ -177,7 +177,8 @@ export default {
       return this.from == from
     },
     getTargetUrl() {
-      return `http://${this.$baseURL}/v1/user/upload/image/${this.user_id}/${wallpaperConfig}?token=${this.$store.state.token}`
+      const accessToken = localStorage.getItem("access_token")
+      return `http://${this.$baseURL}/v1/user/current/image/${wallpaperConfig}?token=${accessToken}&type=wallpaper`
     },
   }
 }

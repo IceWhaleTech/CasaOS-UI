@@ -34,9 +34,18 @@
 
 .fullScreen {
     z-index: 1000;
-    background-color: #1e1e1e !important;
     border-radius: 4px;
     position: relative;
+
+
+}
+
+.fdark-bg {
+    background-color: #1e1e1e !important;
+}
+
+.flight-bg {
+    background-color: #fff !important;
 }
 
 .nobrk {
@@ -87,7 +96,6 @@
     position: absolute;
     z-index: 0;
     overflow: hidden;
-
 }
 
 

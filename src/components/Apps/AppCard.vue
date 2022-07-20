@@ -2,16 +2,16 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-28 13:50:04
+ * @LastEditTime: 2022-07-18 18:02:41
  * @Description: App Card item
- * @FilePath: \CasaOS-UI\src\components\Apps\AppCard.vue
+ * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
 -->
 
 <template>
-  <div class="common-card is-flex is-align-items-center is-justify-content-center p-55 app-card" @mouseover="hover = true" @mouseleave="hover = true" >
+  <div class="common-card is-flex is-align-items-center is-justify-content-center p-55 app-card" @mouseover="hover = true" @mouseleave="hover = true">
 
     <!-- Action Button Start -->
-    <div class="action-btn" v-if="item.type != 'system' && isCasa ">
+    <div class="action-btn" v-if="item.type != 'system' && isCasa && !isUninstalling">
       <b-dropdown aria-role="list" :triggers="['contextmenu','click']" position="is-bottom-left" class="app-card-drop" ref="dro" animation="fade1" @active-change="setDropState" :mobile-modal="false" append-to-body>
         <template #trigger>
           <p role="button">
@@ -71,10 +71,10 @@
 </template>
 
 <script>
-
+import events from '@/events/events';
 export default {
   name: "app-card",
-  inject: ["homeShowFiles","openAppStore"],
+  inject: ["homeShowFiles", "openAppStore"],
   data() {
     return {
       hover: false,
@@ -157,11 +157,6 @@ export default {
         case "Files":
           this.homeShowFiles()
           break;
-        case "Connect":
-          var url = `${window.location.origin}/ui/#/connect`
-          var arg = '\u003cscript\u003elocation.replace("' + url + '")\u003c/script\u003e';
-          window.open('javascript:window.name;', arg);
-          break;
         default:
           break;
       }
@@ -182,7 +177,7 @@ export default {
      */
     restartApp() {
       this.isRestarting = true
-      this.$api.app.startContainer(this.item.id, { state: "restart" }).then((res) => {
+      this.$api.container.updateState(this.item.id, "restart").then((res) => {
         if (res.data.success == 200) {
           this.updateState()
         }
@@ -215,9 +210,10 @@ export default {
      */
     uninstallApp() {
       this.isUninstalling = true
-      this.$api.app.uninstall(this.item.id).then((res) => {
+      this.$api.container.uninstall(this.item.id).then((res) => {
         if (res.data.success == 200) {
           // this.updateState()
+          this.$EventBus.$emit(events.UPDATE_SYNC_STATUS);
         }
         this.isUninstalling = false;
       })
@@ -230,6 +226,7 @@ export default {
     updateState() {
       this.$refs.dro.isActive = false
       this.$emit("updateState")
+      this.$EventBus.$emit(events.UPDATE_SYNC_STATUS);
     },
 
     /**
@@ -248,10 +245,9 @@ export default {
      */
     toggle(item) {
       this.isStarting = true;
-      let data = {
-        state: item.state == "running" ? "stop" : "start"
-      }
-      this.$api.app.startContainer(item.id, data).then((res) => {
+      const state = item.state == "running" ? "stop" : "start"
+
+      this.$api.container.updateState(item.id, state).then((res) => {
         this.isStarting = false
         if (res.data.success == 200) {
           item.state = res.data.data

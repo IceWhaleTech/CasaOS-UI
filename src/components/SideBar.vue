@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-28 09:24:53
+ * @LastEditTime: 2022-07-13 14:06:19
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\SideBar.vue
+ * @FilePath: /CasaOS-UI/src/components/SideBar.vue
 -->
 <template>
   <div class="side-bar contextmenu-canvas mr-5" :class="{'open':sidebarOpen}" v-if="!isLoading">
@@ -31,6 +31,8 @@ const widgetsComponents = require.context(
   false,
   /.vue$/
 )
+
+const widgetsConfig = "widgets_config"
 
 export default {
   name: 'side-bar',
@@ -88,7 +90,7 @@ export default {
      */
     getConfig() {
       const initData = this.getInitData();
-      this.$api.info.widgetsConfig().then(res => {
+      this.$api.users.getCustomStorage(widgetsConfig).then(res => {
         if (res.status === 200) {
           if (res.data === "") {
             this.saveData(initData);
@@ -139,7 +141,7 @@ export default {
      * @return {*} void
      */
     saveData(data) {
-      this.$api.info.saveWidgetsConfig(data).then(res => {
+      this.$api.users.setCustomStorage(widgetsConfig, data).then(res => {
         if (res.data.success == 200) {
           this.widgetsSettings = res.data.data;
         }

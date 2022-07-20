@@ -5,7 +5,7 @@
       <!-- Header Start -->
       <div class="widget-header is-flex">
         <div class="widget-title is-flex-grow-1">
-          System Status
+          {{ $t('System Status') }}
         </div>
         <div class="widget-icon-button is-flex-shrink-0" @click="showMoreInfo">
           <b-icon pack="casa" icon="arrow-right" size="is-20" :class="{'open':showMore}" class="arrow-btn"></b-icon>
@@ -214,7 +214,7 @@ export default {
      * @return {*} void
      */
     getDockerUsage() {
-      this.$api.app.getAppUsage().then(res => {
+      this.$api.container.getHardwareUsage().then(res => {
         let id = 0
         this.containerCpuList = res.data.data.map(item => {
           let usage = 0;
