@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-06-21 19:03:39
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 12:01:25
+ * @LastEditTime: 2022-07-21 08:45:32
  * @FilePath: \CasaOS-UI\src\components\wallpaper\CasaWallpaper.vue
  * @Description: 
  * 
@@ -34,14 +34,14 @@ export default {
     return {
       isWelcome: false,
       backgroundStyleObj: {
-        backgroundImage: localStorage.getItem("wallpaper") ? `url(${localStorage.getItem("wallpaper")})` : `url(${this.$store.state.wallpaperObject.path})`
+        backgroundImage: localStorage.getItem("wallpaper") ? `url(${this.parseUrl(localStorage.getItem("wallpaper"))})` : `url(${this.$store.state.wallpaperObject.path})`
       },
     }
   },
   watch: {
     '$store.state.wallpaperObject': {
       handler(val) {
-        this.backgroundStyleObj.backgroundImage = `url(${val.path})`
+        this.backgroundStyleObj.backgroundImage = `url(${this.parseUrl(val.path)})`
       },
       deep: true
     },
@@ -66,7 +66,11 @@ export default {
         events: {
         },
       })
-    }
+    },
+    parseUrl(serverUrl) {
+      const newUrl = serverUrl.replace('SERVER_URL', 'http://'+this.$baseURL)
+      return newUrl;
+    },
   },
 }
 </script>

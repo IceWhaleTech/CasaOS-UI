@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 11:57:35
+ * @LastEditTime: 2022-07-20 16:54:18
  * @Description: 
- * @FilePath: \CasaOS-UI\src\views\Home.vue
+ * @FilePath: /CasaOS-UI/src/views/Home.vue
 -->
 <template>
   <div v-if="!isLoading" class="out-container">
@@ -75,7 +75,7 @@ import AppSection from '../components/Apps/AppSection.vue'
 //import Shortcuts from '@/components/Shortcuts.vue'
 import FilePanel from '@/components/filebrowser/FilePanel.vue'
 import { mixin } from '../mixins/mixin';
-import  events  from '@/events/events';
+import events from '@/events/events';
 const wallpaperConfig = "wallpaper"
 
 export default {
@@ -142,24 +142,19 @@ export default {
     async getConfig() {
       let systemConfig = await this.$api.users.getCustomStorage("system")
       if (systemConfig.data.success != 200 || systemConfig.data.data == "") {
-        const oldData = systemConfig.data.data
-        const oldSystemConfig = await this.$api.sys.systemConfig()
-        if (oldData == "") {
-          const barData = {
-            lang: oldSystemConfig.data.data.lang ? oldSystemConfig.data.data.lang : this.getLangFromBrowser(),
-            search_engine: oldSystemConfig.data.data.search_engine ? oldSystemConfig.data.data.search_engine : "https://duckduckgo.com/?q=",
-            search_switch: true,
-            recommend_switch: true,
-            shortcuts_switch: oldSystemConfig.data.data.shortcuts_switch ? oldSystemConfig.data.data.shortcuts_switch : true,
-            widgets_switch: oldSystemConfig.data.data.widgets_switch ? oldSystemConfig.data.data.widgets_switch : true,
-          }
-          // save
-          const saveRes = await this.$api.users.setCustomStorage("system", barData)
-          if (saveRes.data.success === 200) {
-            systemConfig = saveRes
-            this.barData = saveRes.data.data
-
-          }
+        const barData = {
+          lang: this.getLangFromBrowser(),
+          search_engine: "https://duckduckgo.com/?q=",
+          search_switch: true,
+          recommend_switch: true,
+          shortcuts_switch: true,
+          widgets_switch: true,
+        }
+        // save
+        const saveRes = await this.$api.users.setCustomStorage("system", barData)
+        if (saveRes.data.success === 200) {
+          systemConfig = saveRes
+          this.barData = saveRes.data.data
         }
       }
 

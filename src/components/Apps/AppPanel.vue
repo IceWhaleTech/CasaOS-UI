@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-03-01 21:10:57
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-18 17:06:13
+ * @LastEditTime: 2022-07-20 18:22:20
  * @FilePath: /CasaOS-UI/src/components/Apps/AppPanel.vue
  * @Description: 
  * 
@@ -762,6 +762,7 @@ export default {
     // Watch if initData changes
     initData: {
       handler(val) {
+        console.log(val);
         if (this.state == 'install') {
           localStorage.setItem("app_data", JSON.stringify(val))
         }
@@ -1079,6 +1080,12 @@ export default {
             type: 'is-warning'
           })
         }
+      }).catch((err) => {
+        this.isLoading = false;
+        this.$buefy.toast.open({
+          message: err.response.data.message,
+          type: 'is-warning'
+        })
       })
     },
 
@@ -1103,6 +1110,12 @@ export default {
           })
         }
         this.$emit('close')
+      }).catch((err) => {
+        this.isLoading = false;
+        this.$buefy.toast.open({
+          message: err.response.data.message,
+          type: 'is-warning'
+        })
       })
     },
 
@@ -1123,7 +1136,8 @@ export default {
         events: {
           'update': (e) => {
             //localStorage.removeItem("app_data")
-            this.initData = e
+            this.initData = this.preProcessData(e)
+            console.log(this.initData);
             if (this.initData.icon == "") {
               this.changeIcon(this.initData.image)
             }

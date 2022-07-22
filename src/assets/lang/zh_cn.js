@@ -23,6 +23,7 @@ export default {
     "Language": "语言",
     "Change": "更改",
     "Start": "启动",
+    "Connect": "连接",
 
     "This field is required": "此字段是必填项",
     "This field must be a valid email": "此字段必须是有效的电子邮件",
@@ -77,6 +78,7 @@ export default {
     "Terminal & Logs": "终端与日志",
     "Terminal": "终端",
     "Logs": "日志",
+    "Please check if the username and port are correct, and make sure that ssh server is installed.":"请检查用户名和端口是否正确，并确保已经安装了ssh服务。",
 
     // Widgets
     "Widgets Settings": "小组件设置",

@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-01-20 12:01:07
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 17:41:15
+ * @LastEditTime: 2022-07-21 08:36:34
  * @Description: 
  * @FilePath: \CasaOS-UI\src\mixins\mixin.js
  */
@@ -337,15 +337,14 @@ export const mixin = {
          * @return {*}
          */
         setAsWallpaper(item) {
-            const user_id = localStorage.getItem('user_id')
             const postData = {
                 path: item.path,
             }
-            this.$api.users.postFileImage(user_id, wallpaperConfig, postData).then(res => {
+            this.$api.users.setUserImage( wallpaperConfig, postData).then(res => {
                 if (res.data.success === 200) {
                     const resData = res.data.data
                     let wallpaperData = {
-                        path: "http://" + this.$baseURL + resData.online_path + "&time=" + new Date().getTime(),
+                        path: "SERVER_URL"  + resData.online_path + "&time=" + new Date().getTime(),
                         from: "Files"
                     }
                     this.$api.users.setCustomStorage( wallpaperConfig, wallpaperData).then(res => {

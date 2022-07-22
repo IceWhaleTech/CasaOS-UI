@@ -1,9 +1,9 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-12-06 18:29:48
- * @LastEditTime: 2022-07-12 21:53:02
+ * @LastEditTime: 2022-07-20 15:18:25
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\settings\PortPanel.vue
+ * @FilePath: /CasaOS-UI/src/components/settings/PortPanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -72,8 +72,11 @@ export default {
           this.isLoading = false;
           this.errorType = "is-danger"
           this.errors = res.data.message
-
         }
+      }).catch(err => {
+        this.isLoading = false;
+        this.errorType = "is-danger"
+        this.errors = err.response.data.message
       })
     },
     checkUpdate() {

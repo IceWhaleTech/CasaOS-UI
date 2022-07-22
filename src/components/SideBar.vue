@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-13 14:06:19
+ * @LastEditTime: 2022-07-20 16:35:03
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/SideBar.vue
 -->
@@ -10,10 +10,10 @@
   <div class="side-bar contextmenu-canvas mr-5" :class="{'open':sidebarOpen}" v-if="!isLoading">
     <vue-custom-scrollbar class="scroll-area contextmenu-canvas" :settings="scrollSettings">
       <div v-for="(item,index) in activeApps" :key="`widgets_${index}`">
-        <component :is="item.app" v-if="checkShow(item.app.name,widgetsSettings)" :class="blockClass(index,activeApps)"></component>
+        <component :is="item.app" :class="{'last-block':index === activeApps.length -1 }"></component>
       </div>
     </vue-custom-scrollbar>
-    <settings v-model="widgetsSettings" @change="handleChange" class="ml-4 mr-4"></settings>
+    <settings v-model="widgetsSettings" @change="handleChange" class="ml-4 mr-4" :class="{'mt-4':activeApps.length > 0}"></settings>
   </div>
 </template>
 
@@ -55,14 +55,23 @@ export default {
   },
   computed: {
     activeApps() {
-      let newArray = this.widgetsSettings.map(item => {
-        let obj = find(this.apps, function (o) { return o.app.name == item.name; });
+
+      const showWidgets = this.widgetsSettings.filter(item => {
+        return item.show
+      })
+      const newArray = showWidgets.map(item => {
+        const obj = find(this.apps, function (o) { return o.app.name == item.name; });
         return obj;
       })
       return newArray
     },
     sidebarOpen() {
       return this.$store.state.sidebarOpen
+    },
+    showWidgets() {
+      return this.widgetsSettings.filter(item => {
+        return item.show
+      })
     }
   },
   created() {
@@ -152,13 +161,7 @@ export default {
       this.widgetsSettings = data
       this.saveData(this.widgetsSettings)
     },
-    checkShow(name) {
-      let obj = find(this.widgetsSettings, o => { return name == o.name });
-      return obj.show
-    },
-    blockClass(index, array) {
-      return (index === array.length - 1) ? "last-block" : "";
-    }
+
   },
 }
 </script>

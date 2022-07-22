@@ -2,9 +2,13 @@
  * @Author: JerryK
  * @Date: 2022-02-18 12:42:06
  * @LastEditors: Jerryk jerry@icewhale.org
+<<<<<<< HEAD
+ * @LastEditTime: 2022-07-19 21:02:42
+=======
  * @LastEditTime: 2022-07-18 17:05:29
+>>>>>>> 1d5b2cca5932b5cc69b20357bf5a1ae06368c5cd
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/filebrowser/FilePanel.vue
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\FilePanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -66,7 +70,7 @@
             <div class="tool-bar is-flex mb-2">
               <div class=" is-flex-grow-1 has-text-left is-flex  is-align-items-center">
                 <b-field class="ml-3 is-flex is-size-14px mb-0">
-                  <b-checkbox size="is-small" v-model="isSelectAll" :class="selectState" @input="handleSelect">{{selectLabel}}</b-checkbox>
+                  <b-checkbox size="is-small" v-model="isSelectAll" :class="selectState" @input="handleSelect">{{$t("select-items",selectLabel)}}</b-checkbox>
                 </b-field>
               </div>
               <div class="view-btns is-flex-shrink-0">
@@ -396,17 +400,17 @@ export default {
       if (this.selectedArray.length == list.length && list.length > 0) {
         this.selectState = "all"
         this.isSelectAll = true
-        this.selectLabel = this.$t("select-items", { num: list.length })
+        this.selectLabel =  { num: list.length }
         this.isToolbarShow = true
       } else if (this.selectedArray.length < list.length && this.selectedArray.length > 0) {
         this.selectState = "part"
         this.isSelectAll = false
-        this.selectLabel = this.$t("select-items", { num: this.selectedArray.length })
+        this.selectLabel =  { num: this.selectedArray.length }
         this.isToolbarShow = true
       } else {
         this.selectState = "none"
         this.isSelectAll = false
-        this.selectLabel = this.$t("total-items", { num: list.length })
+        this.selectLabel = { num: list.length }
         this.isToolbarShow = false
       }
     },

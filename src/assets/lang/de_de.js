@@ -23,6 +23,7 @@ export default {
     "Language": "Sprache",
     "Change": "Ändern",
     "Start": "Start",
+    "Connect": "Connect",
 
     "This field is required": "Dieses Feld ist erforderlich",
     "This field must be a valid email": "Dieses Feld beinhaltet keine gültige E-Mail-Adresse",
@@ -77,6 +78,7 @@ export default {
     "Terminal & Logs": "Terminal & Logs",
     "Terminal": "Terminal",
     "Logs": "Logs",
+    "Please check if the username and port are correct, and make sure that ssh server is installed.":"Please check if the username and port are correct, and make sure that ssh server is installed.",
 
     // Widgets
     "Widgets Settings": "Widget-Einstellungen",

@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-25 18:19:17
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-13 18:50:55
+ * @LastEditTime: 2022-07-19 20:52:01
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/account/AccountPanel.vue
+ * @FilePath: \CasaOS-UI\src\components\account\AccountPanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -186,6 +186,9 @@ export default {
   .input {
     background: rgba(255, 255, 255, 0.32);
     border-color: transparent;
+  }
+  .title{
+    line-height: 1.5em;
   }
 }
 </style>
