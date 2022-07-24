@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-02-23 17:08:21
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-01 10:53:19
+ * @LastEditTime: 2022-07-19 22:55:36
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/filebrowser/components/ContextMenu.vue
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\components\ContextMenu.vue
 -->
 <template>
   <div>
@@ -61,7 +61,7 @@
           <b-dropdown-item aria-role="menuitem" key="file-context5" @click="operate('copy',items)">
             {{ $t('Copy') }}
           </b-dropdown-item>
-          <b-dropdown-item aria-role="menuitem" @click="setAsWallpaper(item)" v-if="isWallpaperType">
+          <b-dropdown-item aria-role="menuitem" @click="setAsWallpaper(item)" v-if="showSingleEdit && isWallpaperType">
             {{ $t('Set as wallpaper') }}
           </b-dropdown-item>
           <hr class="dropdown-divider">

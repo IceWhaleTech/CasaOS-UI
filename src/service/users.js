@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-12 21:57:26
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 10:20:05
- * @FilePath: \CasaOS-UI\src\service\users.js
+ * @LastEditTime: 2022-07-20 14:06:58
+ * @FilePath: /CasaOS-UI/src/service/users.js
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -51,6 +51,11 @@ const users = {
         return api.get(`${PREFIX}/image`, {
             path: path
         });
+    },
+
+    // create or update user image from upload
+    setUserImage(key,data) {
+        return api.put(`${PREFIX}/current/image/${key}`, data);
     },
 
     // delete user image [NOT USE]

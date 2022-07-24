@@ -218,14 +218,14 @@ export default {
         let id = 0
         this.containerCpuList = res.data.data.map(item => {
           let usage = 0;
-          if (item.pre == null) {
+          if (item.previous == null) {
             usage = 0;
           } else {
 
             // Look at here  https://docs.docker.com/engine/api/v1.41/#operation/ContainerStats
 
-            const cpu_delta = item.data.cpu_stats.cpu_usage.total_usage - item.pre.cpu_stats.cpu_usage.total_usage
-            const system_cpu_delta = item.data.cpu_stats.system_cpu_usage - item.pre.cpu_stats.system_cpu_usage + 1
+            const cpu_delta = item.data.cpu_stats.cpu_usage.total_usage - item.previous.cpu_stats.cpu_usage.total_usage
+            const system_cpu_delta = item.data.cpu_stats.system_cpu_usage - item.previous.cpu_stats.system_cpu_usage + 1
             // const number_cpus = item.data.cpu_stats.online_cpus
             usage = Math.floor((cpu_delta / system_cpu_delta) * 1000) / 10
           }

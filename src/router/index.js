@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-15 10:50:31
+ * @LastEditTime: 2022-07-20 16:36:17
  * @Description: 
  * @FilePath: /CasaOS-UI/src/router/index.js
  */
@@ -40,16 +40,6 @@ const routes = [
     meta: {
       requireAuth: false,
       showBackground: true
-    }
-  },
-  {
-    path: '/terminal',
-    name: 'Terminal',
-    hidden: true,
-    component: () => import('@/views/Terminal.vue'),
-    meta: {
-      requireAuth: false,
-      showBackground: false
     }
   },
 ]
