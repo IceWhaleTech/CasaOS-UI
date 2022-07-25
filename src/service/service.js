@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-18 15:49:04
+ * @LastEditTime: 2022-07-25 13:47:42
  * @Description: 
  * @FilePath: /CasaOS-UI/src/service/service.js
  */
@@ -65,7 +65,7 @@ instance.interceptors.response.use(
     },
     async (error) => {
         const originalConfig = error?.config;
-        if (originalConfig.url !== "/user/register" && error.response) {
+        if (originalConfig.url !== "/users/register" && error.response) {
             // Access Token was expired
             if (error?.response?.status === 401) {
                 if (!isRefreshing) {
@@ -73,7 +73,7 @@ instance.interceptors.response.use(
                     try {
                         const refresh_token = localStorage.getItem("refresh_token")
                         if (refresh_token) {
-                            const tokenRes = await instance.post("/user/refresh", {
+                            const tokenRes = await instance.post("/users/refresh", {
                                 refresh_token: refresh_token,
                             });
                             if (tokenRes.data.success == 200) {
@@ -146,20 +146,5 @@ const api = {
     delete(url, data) {
         return instance.delete(url, { data: data })
     },
-    _processData(url, data) {
-        const isJSON = (url.indexOf("setting") > 0 || url.indexOf("install") > 0 || url.indexOf("sys") > 0 || url.indexOf("file") > 0 || url.indexOf("user") > 0)
-
-        let payload,
-            contentType
-        if (isJSON) {
-            contentType = 'application/json';
-            payload = JSON.stringify(data)
-        } else {
-            contentType = 'application/x-www-form-urlencoded;charset=UTF-8';
-            payload = qs.stringify(data)
-        }
-        axios.defaults.headers.post['Content-Type'] = contentType;
-        return payload
-    }
 }
 export { api }
