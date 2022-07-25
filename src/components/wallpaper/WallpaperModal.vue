@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-06-22 22:20:20
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-19 20:33:41
+ * @LastEditTime: 2022-07-21 08:57:11
  * @FilePath: \CasaOS-UI\src\components\wallpaper\WallpaperModal.vue
  * @Description: 
  * 
@@ -83,7 +83,7 @@ export default {
         }
       ],
       backgroundStyleObj: {
-        backgroundImage: `url(${this.$store.state.wallpaperObject.path})`
+        backgroundImage: `url(${this.parseUrl(this.$store.state.wallpaperObject.path)})`
       },
       path: this.$store.state.wallpaperObject.path,
       from: this.$store.state.wallpaperObject.from
@@ -121,8 +121,8 @@ export default {
       const res = JSON.parse(message)
 
       if (res.success === 200) {
-        const uploadPath = "http://" + this.$baseURL + res.data.online_path + "&time=" + new Date().getTime()
-        this.backgroundStyleObj.backgroundImage = `url(${uploadPath})`
+        const uploadPath = "SERVER_URL"  + res.data.online_path + "&time=" + new Date().getTime()
+        this.backgroundStyleObj.backgroundImage = `url(${this.parseUrl(uploadPath)})`
         this.path = uploadPath
         this.from = "Upload"
 
@@ -164,7 +164,7 @@ export default {
       })
     },
     changeWallpaper(path) {
-      this.backgroundStyleObj.backgroundImage = `url(${path})`
+      this.backgroundStyleObj.backgroundImage = `url(${this.parseUrl(path)})`
       this.path = path
       this.from = "Built-in"
     },
@@ -178,6 +178,10 @@ export default {
     getTargetUrl() {
       const accessToken = localStorage.getItem("access_token")
       return `http://${this.$baseURL}/v1/users/current/image/${wallpaperConfig}?token=${accessToken}&type=wallpaper`
+    },
+    parseUrl(serverUrl) {
+      const newUrl = serverUrl.replace('SERVER_URL', 'http://'+this.$baseURL)
+      return newUrl;
     },
   }
 }
