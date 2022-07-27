@@ -2,40 +2,63 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-04 14:20:08
+ * @LastEditTime: 2022-07-26 11:03:07
  * @Description: The right bottom contact bar
- * @FilePath: /CasaOS-UI/src/components/ContactBar.vue
+ * @FilePath: \CasaOS-UI\src\components\ContactBar.vue
 -->
 
 <template>
   <div class="contact-bar is-flex is-align-items-center has-text-white">
 
-    <a @click="showFeedback">
-      <b-tooltip :label="$t('Bug report')" :append-to-body="!$store.state.isMobile">
+    <popper trigger="hover" transition='fade' enter-active-class="fade-enter-active" leave-active-class="" :options="{
+      placement: 'top',
+      modifiers: { offset: { offset: '0,4px' } }
+    }">
+      <div class="popper  tooltip-content">
+        {{$t('Bug report')}}
+      </div>
+      <a @click="showFeedback" slot="reference">
         <b-icon pack="casa" icon="bug"></b-icon>
-      </b-tooltip>
-    </a>
+      </a>
+    </popper>
 
-    <a href="https://discord.gg/knqAbbBbeX" target="_blank">
-      <b-tooltip :label="$t('Join Discord')" :append-to-body="!$store.state.isMobile">
+    <popper trigger="hover" transition='fade' enter-active-class="fade-enter-active" leave-active-class="" :options="{
+      placement: 'top',
+      modifiers: { offset: { offset: '0,4px' } }
+    }">
+      <div class="popper  tooltip-content">
+        {{$t('Join Discord')}}
+      </div>
+      <a href="https://discord.gg/knqAbbBbeX" target="_blank" slot="reference">
         <b-icon pack="casa" icon="discord"></b-icon>
-      </b-tooltip>
-    </a>
+      </a>
+    </popper>
 
-    <a href="https://github.com/IceWhaleTech/CasaOS" target="_blank">
-      <b-tooltip :label="$t('Visit our Github')" :append-to-body="!$store.state.isMobile">
+    <popper trigger="hover" transition='fade' enter-active-class="fade-enter-active" leave-active-class="" :options="{
+      placement: 'top',
+      modifiers: { offset: { offset: '0,4px' } }
+    }">
+      <div class="popper  tooltip-content">
+        {{$t('Visit our Github')}}
+      </div>
+      <a href="https://github.com/IceWhaleTech/CasaOS" target="_blank" slot="reference">
         <b-icon pack="casa" icon="github"></b-icon>
-      </b-tooltip>
-    </a>
+      </a>
+    </popper>
 
   </div>
 </template>
 
 <script>
 import FeedbackPanel from './feedback/FeedbackPanel.vue'
+import Popper from 'vue-popperjs';
+
 
 export default {
   name: "contact-bar",
+  components: {
+    Popper,
+  },
   methods: {
     showFeedback() {
       this.$buefy.modal.open({
@@ -57,8 +80,8 @@ export default {
 .contact-bar {
   position: fixed;
   right: 0.875rem;
-  bottom: 0.25rem;
-  z-index: 10;
+  bottom: 0.35rem;
+  z-index: 100;
 
   a {
     color: #fff;
@@ -72,6 +95,27 @@ export default {
   }
 }
 
+.popper {
+  background-color: $primary;
+  padding: 0.35rem 0.75rem;
+  box-shadow: 0px 1px 2px 1px rgba(0, 1, 0, 0.2);
+  border: none;
+  color: #ffffff;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
 @media screen and (max-width: 480px) {
   .contact-bar {
     right: 0;
@@ -82,5 +126,11 @@ export default {
     justify-content: center;
     width: 100%;
   }
+}
+</style>
+
+<style lang="scss">
+.popper .popper__arrow {
+  border-color: $primary transparent transparent transparent !important;
 }
 </style>
