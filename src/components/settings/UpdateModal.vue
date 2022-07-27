@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-05-02 17:44:02
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-27 16:03:27
+ * @LastEditTime: 2022-07-27 18:14:20
  * @FilePath: /CasaOS-UI/src/components/settings/UpdateModal.vue
  * @Description: 
  * 
@@ -60,8 +60,8 @@ export default {
     markdownToHtml() {
       return marked.parse(this.changeLog);
     },
-    updateMarkdownHtml(){
-      
+    updateMarkdownHtml() {
+
       return marked.parse(this.updateLogs);
     }
   },
@@ -73,7 +73,6 @@ export default {
     async updateSystem() {
       this.isUpdating = true;
       await this.$api.sys.updateCasaOS();
-      // this.$api.sys.updateCasaOS();
       // this.checkUpdateState();
       this.getUpdateLogs()
     },
@@ -94,7 +93,7 @@ export default {
             }, 1000);
           } else if (this.updateLogs.includes(`CasaOS upgrade failed`)) {
             this.$buefy.toast.open({
-              message: `There seems to be a problem with the upgrade process, please try again!`,
+              message: this.$t(`There seems to be a problem with the upgrade process, please try again!`),
               type: 'is-danger'
             })
             clearInterval(this.updateTimer);
@@ -130,6 +129,7 @@ export default {
 .update-info-container {
   border-radius: 4px;
   overflow: hidden;
+  min-height: 20rem;
 
   h1,
   h2,

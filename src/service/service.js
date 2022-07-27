@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-27 11:31:26
+ * @LastEditTime: 2022-07-27 16:20:06
  * @Description: 
  * @FilePath: /CasaOS-UI/src/service/service.js
  */
@@ -72,28 +72,34 @@ instance.interceptors.response.use(
                     try {
                         const refresh_token = localStorage.getItem("refresh_token")
                         if (refresh_token) {
-                            const tokenRes = await instance.post("/users/refresh", {
-                                refresh_token: refresh_token,
-                            });
-                            if (tokenRes.data.success == 200) {
-                                localStorage.setItem("access_token", tokenRes.data.data.access_token);
-                                localStorage.setItem("refresh_token", tokenRes.data.data.refresh_token);
-                                localStorage.setItem("expires_at", tokenRes.data.data.expires_at);
+                            try {
+                                const tokenRes = await instance.post("/users/refresh", {
+                                    refresh_token: refresh_token,
+                                });
+                                if (tokenRes.data.success == 200) {
+                                    localStorage.setItem("access_token", tokenRes.data.data.access_token);
+                                    localStorage.setItem("refresh_token", tokenRes.data.data.refresh_token);
+                                    localStorage.setItem("expires_at", tokenRes.data.data.expires_at);
 
-                                store.commit("SET_ACCESS_TOKEN", tokenRes.data.data.access_token);
-                                store.commit("SET_REFRESH_TOKEN", tokenRes.data.data.refresh_token);
+                                    store.commit("SET_ACCESS_TOKEN", tokenRes.data.data.access_token);
+                                    store.commit("SET_REFRESH_TOKEN", tokenRes.data.data.refresh_token);
 
-                                originalConfig.headers.Authorization = tokenRes.data.data.access_token
-                                Promise.resolve().then(() => {
-                                    requests.forEach(cb => cb())
-                                    requests = []
-                                })
-
-                            } else {
+                                    originalConfig.headers.Authorization = tokenRes.data.data.access_token
+                                    Promise.resolve().then(() => {
+                                        requests.forEach(cb => cb())
+                                        requests = []
+                                    })
+                                } else {
+                                    router.replace({ //Jump to the logout page
+                                        path: '/logout'
+                                    })
+                                }
+                            } catch (error) {
                                 router.replace({ //Jump to the logout page
                                     path: '/logout'
                                 })
                             }
+
                         } else {
                             router.replace({ //Jump to the login page
                                 path: '/login'
@@ -109,7 +115,7 @@ instance.interceptors.response.use(
                     requests.push(() => { resolve(instance(originalConfig)) })
                 })
 
-            } 
+            }
         }
         return Promise.reject(error)
 
