@@ -2,12 +2,11 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-25 13:47:42
+ * @LastEditTime: 2022-07-27 11:31:26
  * @Description: 
  * @FilePath: /CasaOS-UI/src/service/service.js
  */
 import axios from 'axios'
-import qs from 'qs'
 import router from '@/router'
 import store from '@/store'
 // import { ToastProgrammatic as Toast } from 'buefy'

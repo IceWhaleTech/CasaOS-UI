@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 18:16:06
+ * @LastEditTime: 2022-07-27 13:55:24
  * @Description: 
- * @FilePath: \CasaOS-UI\src\service\api.js
+ * @FilePath: /CasaOS-UI/src/service/api.js
  */
 
 import appCategories from './appCategories.js';
@@ -18,6 +18,7 @@ import image from './image.js';
 import port from './port.js';
 import sys from './sys.js';
 import storage from './storage.js';
+import samba from './samba.js';
 
 import users from "./users.js";
 
@@ -34,6 +35,7 @@ export default {
     // Devices
     disks,
     storage,
+    samba,
     // System
     sys,
     port,

@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-05-02 17:44:02
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 08:13:52
- * @FilePath: \CasaOS-UI\src\components\settings\UpdateModal.vue
+ * @LastEditTime: 2022-07-27 16:01:22
+ * @FilePath: /CasaOS-UI/src/components/settings/UpdateModal.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -21,7 +21,8 @@
     <!-- Modal-Card Body Start -->
     <section class="modal-card-body ">
       <div class="node-card">
-        <div class="update-info-container  is-size-14px" v-html="markdownToHtml"></div>
+        <div class="update-info-container  is-size-14px" v-html="markdownToHtml" v-if="!isUpdating"></div>
+        <div class="update-info-container  is-size-14px" v-html="updateMarkdownHtml" v-else></div>
       </div>
     </section>
     <!-- Modal-Card Body End -->
@@ -38,6 +39,7 @@
 
 <script>
 import { marked } from 'marked'
+
 export default {
   props: {
     changeLog: {
@@ -48,13 +50,19 @@ export default {
   data() {
     return {
       timer: 0,
+      updateTimer: 0,
       isUpdating: false,
       markdown: ``,
+      updateLogs: ``
     };
   },
   computed: {
     markdownToHtml() {
       return marked.parse(this.changeLog);
+    },
+    updateMarkdownHtml(){
+      
+      return marked.parse(this.updateLogs);
     }
   },
   methods: {
@@ -62,10 +70,41 @@ export default {
      * @description: Update System Version and check update state
      * @return {*} void
      */
-    updateSystem() {
+    async updateSystem() {
       this.isUpdating = true;
-      this.$api.sys.updateCasaOS();
-      this.checkUpdateState();
+      await this.$api.sys.updateCasaOS();
+      // this.$api.sys.updateCasaOS();
+      // this.checkUpdateState();
+      this.getUpdateLogs()
+    },
+
+    /**
+     * @description: Get update logs
+     * @return {*} void
+     */
+    getUpdateLogs() {
+      this.updateTimer = setInterval(() => {
+        this.$api.file.getContent(`/var/log/casaos/upgrade.log`).then(res => {
+
+          this.updateLogs = res.data.data;
+          if (this.updateLogs.includes(`CasaOS upgrade successfully`)) {
+            clearInterval(this.updateTimer);
+            setTimeout(() => {
+              location.reload();
+            }, 1000);
+          } else if (this.updateLogs.includes(`CasaOS upgrade failed`)) {
+            this.$buefy.toast.open({
+              message: `There seems to be a problem with the upgrade process, please try again!`,
+              type: 'is-danger'
+            })
+            clearInterval(this.updateTimer);
+            setTimeout(() => {
+              this.isUpdating = false;
+            }, 1000);
+
+          }
+        })
+      }, 200);
     },
     /**
      * @description: check update state if is_need is false then reload page
