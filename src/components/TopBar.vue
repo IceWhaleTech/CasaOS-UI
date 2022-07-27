@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 18:14:44
+ * @LastEditTime: 2022-07-27 16:44:42
  * @Description: Top bar 
- * @FilePath: \CasaOS-UI\src\components\TopBar.vue
+ * @FilePath: /CasaOS-UI/src/components/TopBar.vue
 -->
 
 <template>
@@ -63,7 +63,7 @@
         <template #trigger>
           <b-tooltip :label="$t('Settings')" :active="!$store.state.isMobile" position="is-right" type="is-dark">
             <p role="button">
-              <b-icon pack="casa" icon="tune" class="picon" :class="{'update-icon-dot': updateInfo.is_need }"></b-icon>
+              <b-icon pack="casa" icon="tune" class="picon" :class="{'update-icon-dot': updateInfo.need_update }"></b-icon>
             </p>
           </b-tooltip>
         </template>
@@ -171,14 +171,14 @@
           <!-- Update Start -->
           <div class="is-flex is-align-items-center h-30">
             <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon pack="casa" icon="upgrade" class="mr-1"></b-icon> <b :class="{'update-text-dot': updateInfo.is_need}">{{$t('Update')}}</b>
+              <b-icon pack="casa" icon="upgrade" class="mr-1"></b-icon> <b :class="{'update-text-dot': updateInfo.need_update}">{{$t('Update')}}</b>
             </div>
             <div>
               v{{updateInfo.current_version}}
             </div>
           </div>
 
-          <div class="is-flex is-align-items-center pl-55 is-size-7" v-if="!updateInfo.is_need">
+          <div class="is-flex is-align-items-center pl-55 is-size-7" v-if="!updateInfo.need_update">
             {{$t(latestText)}}
             <b-icon type="is-success" icon="check" class="ml-1" custom-size="mdi-18px"></b-icon>
           </div>
@@ -242,7 +242,7 @@ export default {
       },
       updateInfo: {
         current_version: '0',
-        is_need: false,
+        need_update: false,
         version: Object
       },
       isUpdating: false,

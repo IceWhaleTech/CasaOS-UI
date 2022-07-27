@@ -73,12 +73,13 @@ export default {
     "Show Recommended Apps": "Show Recommended Apps",
     "Upgrade Now": "Upgrade Now",
     "Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB": "Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB",
-
+    "There seems to be a problem with the upgrade process, please try again!": "There seems to be a problem with the upgrade process, please try again!",
+    
     // Terminal & Logs
     "Terminal & Logs": "Terminal & Logs",
     "Terminal": "Terminal",
     "Logs": "Logs",
-    "Please check if the username and port are correct, and make sure that ssh server is installed.":"Please check if the username and port are correct, and make sure that ssh server is installed.",
+    "Please check if the username and port are correct, and make sure that ssh server is installed.": "Please check if the username and port are correct, and make sure that ssh server is installed.",
 
     // Widgets
     "Widgets Settings": "Widgets Settings",
