@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-05-02 17:44:02
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-27 16:01:22
+ * @LastEditTime: 2022-07-27 16:03:27
  * @FilePath: /CasaOS-UI/src/components/settings/UpdateModal.vue
  * @Description: 
  * 
