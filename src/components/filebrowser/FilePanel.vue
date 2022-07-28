@@ -2,11 +2,6 @@
  * @Author: JerryK
  * @Date: 2022-02-18 12:42:06
  * @LastEditors: Jerryk jerry@icewhale.org
-<<<<<<< HEAD
- * @LastEditTime: 2022-07-19 21:02:42
-=======
- * @LastEditTime: 2022-07-18 17:05:29
->>>>>>> 1d5b2cca5932b5cc69b20357bf5a1ae06368c5cd
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\FilePanel.vue
 -->
@@ -24,16 +19,20 @@
 
       <template>
         <!-- NavBar Start -->
-        <div class="nav-bar">
+        <div class="nav-bar is-flex is-flex-direction-column">
           <h3 class="title is-3 mb-0 pb-3 has-text-left">{{ $t('Files') }}</h3>
-          <div class="list-container scrollbars-light pt-0">
-            <tree-list ref="navBar" :path="rootPath" :autoLoad="true"></tree-list>
+          <div class="list-container scrollbars-light pt-0 is-flex-grow-1">
+            <tree-list ref="navBar" :path="rootPath" :autoLoad="true" :isActive="!isShareList"></tree-list>
+          </div>
+
+          <div class="bottom-area">
+            <share-entry-button @open="showSharedList" :active="isShareList"></share-entry-button>
           </div>
         </div>
         <!-- NavBar Start -->
 
         <!-- Main Content Start -->
-        <div class="content is-flex-grow-1">
+        <div class="content is-flex-grow-1" v-if="!isShareList">
           <uploader ref="uploader" :options="options" class="uploader-example">
             <uploader-unsupport></uploader-unsupport>
             <!-- Header Start -->
@@ -136,11 +135,15 @@
           <operation-toolbar v-model="isToolbarShow" @download="handleDownload" @copy="handleCopy" @move="handleMove" @remove="handleRemove" @close="handleClose"></operation-toolbar>
           <!-- Toolbar End -->
         </div>
+
+        <share-list-page v-else></share-list-page>
+
       </template>
       <!-- Main Content End -->
 
     </section>
     <!-- Modal-Card Body End -->
+
   </div>
 </template>
 
@@ -151,9 +154,11 @@ import dropRight from 'lodash/dropRight'
 import isEqual from 'lodash/isEqual'
 
 import { mixin } from '@/mixins/mixin';
-import  events  from '@/events/events';
+import events from '@/events/events';
 
 import TreeList from './sidebar/TreeList.vue';
+import ShareEntryButton from './shared/ShareEntryButton.vue';
+import ShareListPage from './shared/ShareListPage.vue';
 
 import GirdView from './components/GirdView.vue';
 import ListView from './components/ListView.vue';
@@ -197,7 +202,10 @@ export default {
     OperationToolbar,
     RenameModal,
     OperationStatusBar,
-    GlobalActionButton
+    GlobalActionButton,
+    // Shared
+    ShareEntryButton,
+    ShareListPage,
   },
   data() {
     return {
@@ -206,6 +214,7 @@ export default {
       isDragIn: false,
       isPasting: false,
       isShowDetial: false,
+      isShareList: false,
       panelType: null,
       currentItem: null,
       rootPath: "/DATA",
@@ -237,7 +246,8 @@ export default {
       // Uploader List
       showUploadList: false,
       uploaderListHeaderText: "Uploading",
-      usbDisks: []
+      usbDisks: [],
+
     }
   },
 
@@ -261,50 +271,77 @@ export default {
         this.getFileList(this.currentPath)
       }
 
+    },
+    isShareList(val) {
+      if (val) {
+        this.destroyedAction()
+      } else {
+        if(document.onpaste === null) {
+          this.$nextTick(() => {
+            this.beforeInit()
+          })
+          
+        }
+      }
     }
 
   },
   mounted() {
-    this.init();
-    this.setUploaderOpts();
+    if (!this.isShareList) {
+      this.beforeInit()
+    }
+
     document.addEventListener('contextmenu', this.hideContextMenu);
-    // Listen to ESC button to exit preview
-    document.onkeyup = (e) => {
-      switch (e.code) {
-        case 'Escape':
-          if (this.isShowDetial) {
-            this.$refs.previewPanel.close();
-          }
-          break;
-        case 'Backspace':
-          this.backLevel()
-          break;
 
-        default:
-          break;
-      }
-    }
-    // paste
-    document.onpaste = () => {
-      if (!this.isShowDetial && !this.isModalOpen) {
-        this.paste('overwrite')
-      }
-
-    }
   },
   destroyed() {
-    this.uploaderInstance.off('dragover')
-    this.uploaderInstance.off('uploadStart')
-    document.removeEventListener('contextmenu', this.hideContextMenu)
-    this.$store.commit('SET_OPERATE_OBJECT', null)
-    document.onpaste = null;
-    document.onkeyup = null;
+    this.destroyedAction()
   },
 
   methods: {
     /*************************************************
      * PART 0  Self
     **************************************************/
+
+    beforeInit() {
+      this.init();
+      this.setUploaderOpts();
+      // Listen to ESC button to exit preview
+      document.onkeyup = (e) => {
+        switch (e.code) {
+          case 'Escape':
+            if (this.isShowDetial) {
+              this.$refs.previewPanel.close();
+            }
+            break;
+          case 'Backspace':
+            this.backLevel()
+            break;
+
+          default:
+            break;
+        }
+      }
+      // paste
+      document.onpaste = () => {
+        if (!this.isShowDetial && !this.isModalOpen) {
+          this.paste('overwrite')
+        }
+      }
+    },
+
+    destroyedAction() {
+      this.uploaderInstance.off('dragover')
+      this.uploaderInstance.off('uploadStart')
+      document.removeEventListener('contextmenu', this.hideContextMenu)
+      this.$store.commit('SET_OPERATE_OBJECT', null)
+      document.onpaste = null;
+      document.onkeyup = null;
+    },
+
+    showSharedList(){
+      this.isShareList = true
+    },
 
     /**
      * @description: Init Funtion
@@ -322,6 +359,7 @@ export default {
     getFileList(path) {
       this.isLoading = true;
       // path = path.replace("//", "/")
+      this.isShareList = false
       this.$api.folder.getList(path).then(res => {
         if (res.data.success == 200) {
           this.isLoading = false;
@@ -400,12 +438,12 @@ export default {
       if (this.selectedArray.length == list.length && list.length > 0) {
         this.selectState = "all"
         this.isSelectAll = true
-        this.selectLabel =  { num: list.length }
+        this.selectLabel = { num: list.length }
         this.isToolbarShow = true
       } else if (this.selectedArray.length < list.length && this.selectedArray.length > 0) {
         this.selectState = "part"
         this.isSelectAll = false
-        this.selectLabel =  { num: this.selectedArray.length }
+        this.selectLabel = { num: this.selectedArray.length }
         this.isToolbarShow = true
       } else {
         this.selectState = "none"

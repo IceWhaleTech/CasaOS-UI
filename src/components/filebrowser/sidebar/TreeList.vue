@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-03-03 13:10:35
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 12:08:00
+ * @LastEditTime: 2022-07-28 16:23:10
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\filebrowser\sidebar\TreeList.vue
 -->
@@ -43,7 +43,11 @@ export default {
     autoLoad: {
       type: Boolean,
       default: false
-    }
+    },
+    isActive: {
+      type: Boolean,
+      default: true
+    },
   },
   data() {
     return {
@@ -104,8 +108,8 @@ export default {
   },
   methods: {
     async getNewList() {
-      const newList = await this.$api.folder.getList("/")
-      const dataList = await this.$api.folder.getList("/DATA")
+      const newList = await this.$api.folder.getList(this.rootDataList[0].path)
+      const dataList = await this.$api.folder.getList(this.initFolders[0].path)
       const contactList = []
       contactList.push(...newList.data.data, ...dataList.data.data)
       this.initFolders.forEach(dir => {
@@ -120,9 +124,12 @@ export default {
       return this.dataList.some(item => item.path == path)
     },
     checkActive(item) {
+      if (!this.isActive) {
+        return false
+      }
       if (item.path == this.$store.state.currentPath) {
         return true
-      } else if (item.path != this.$store.state.currentPath && item.path != "/" && item.path != "/DATA") {
+      } else if (item.path != this.$store.state.currentPath && item.path != this.rootDataList[0].path && item.path != this.initFolders[0].path) {
         if (this.$store.state.currentPath.indexOf(item.path) != -1) {
           return true
         } else {
