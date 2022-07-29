@@ -756,7 +756,17 @@ export default {
     **************************************************/
 
     handleUnShare(item) {
-      console.log(item);
+      this.$buefy.dialog.confirm({
+        title: this.$t('Unsharing Folder'),
+        message: this.$t('Are you sure you want to unshare this Folder?'),
+        confirmText: this.$t('Unshare'),
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => {
+          this.deleteItem(this.selectedArray)
+          this.handleClose()
+        }
+      })
     }
   },
   sockets: {
