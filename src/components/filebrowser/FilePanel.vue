@@ -3,7 +3,7 @@
  * @Date: 2022-02-18 12:42:06
  * @LastEditors: Jerryk jerry@icewhale.org
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\filebrowser\FilePanel.vue
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/FilePanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -276,11 +276,11 @@ export default {
       if (val) {
         this.destroyedAction()
       } else {
-        if(document.onpaste === null) {
+        if (document.onpaste === null) {
           this.$nextTick(() => {
             this.beforeInit()
           })
-          
+
         }
       }
     }
@@ -292,7 +292,7 @@ export default {
     }
 
     document.addEventListener('contextmenu', this.hideContextMenu);
-
+    this.$EventBus.$on(events.UN_SHARE, this.handleUnShare);
   },
   destroyed() {
     this.destroyedAction()
@@ -339,7 +339,7 @@ export default {
       document.onkeyup = null;
     },
 
-    showSharedList(){
+    showSharedList() {
       this.isShareList = true
     },
 
@@ -749,6 +749,14 @@ export default {
       const downItem = (this.selectedArray.length == 1) ? this.selectedArray[0] : this.selectedArray
       this.downloadFile(downItem)
       this.handleClose()
+    },
+
+    /*************************************************
+     * PART 4  Share Action
+    **************************************************/
+
+    handleUnShare(item) {
+      console.log(item);
     }
   },
   sockets: {
