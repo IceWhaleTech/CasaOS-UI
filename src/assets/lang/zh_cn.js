@@ -73,6 +73,7 @@ export default {
     "Show Recommended Apps": "显示推荐应用",
     "Upgrade Now": "立刻升级",
     "Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB": "当 Raspberry Pi 设备使用USB启动时，启用此项可能会导致启动故障。",
+    "There seems to be a problem with the upgrade process, please try again!": "升级过程中似乎出现了问题，请重试！",
 
     // Terminal & Logs
     "Terminal & Logs": "终端与日志",

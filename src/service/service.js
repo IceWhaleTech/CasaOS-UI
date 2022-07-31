@@ -2,12 +2,11 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-18 15:49:04
+ * @LastEditTime: 2022-07-27 16:20:06
  * @Description: 
  * @FilePath: /CasaOS-UI/src/service/service.js
  */
 import axios from 'axios'
-import qs from 'qs'
 import router from '@/router'
 import store from '@/store'
 // import { ToastProgrammatic as Toast } from 'buefy'
@@ -65,7 +64,7 @@ instance.interceptors.response.use(
     },
     async (error) => {
         const originalConfig = error?.config;
-        if (originalConfig.url !== "/user/register" && error.response) {
+        if (originalConfig.url !== "/users/register" && error.response) {
             // Access Token was expired
             if (error?.response?.status === 401) {
                 if (!isRefreshing) {
@@ -73,28 +72,34 @@ instance.interceptors.response.use(
                     try {
                         const refresh_token = localStorage.getItem("refresh_token")
                         if (refresh_token) {
-                            const tokenRes = await instance.post("/user/refresh", {
-                                refresh_token: refresh_token,
-                            });
-                            if (tokenRes.data.success == 200) {
-                                localStorage.setItem("access_token", tokenRes.data.data.access_token);
-                                localStorage.setItem("refresh_token", tokenRes.data.data.refresh_token);
-                                localStorage.setItem("expires_at", tokenRes.data.data.expires_at);
+                            try {
+                                const tokenRes = await instance.post("/users/refresh", {
+                                    refresh_token: refresh_token,
+                                });
+                                if (tokenRes.data.success == 200) {
+                                    localStorage.setItem("access_token", tokenRes.data.data.access_token);
+                                    localStorage.setItem("refresh_token", tokenRes.data.data.refresh_token);
+                                    localStorage.setItem("expires_at", tokenRes.data.data.expires_at);
 
-                                store.commit("SET_ACCESS_TOKEN", tokenRes.data.data.access_token);
-                                store.commit("SET_REFRESH_TOKEN", tokenRes.data.data.refresh_token);
+                                    store.commit("SET_ACCESS_TOKEN", tokenRes.data.data.access_token);
+                                    store.commit("SET_REFRESH_TOKEN", tokenRes.data.data.refresh_token);
 
-                                originalConfig.headers.Authorization = tokenRes.data.data.access_token
-                                Promise.resolve().then(() => {
-                                    requests.forEach(cb => cb())
-                                    requests = []
-                                })
-
-                            } else {
+                                    originalConfig.headers.Authorization = tokenRes.data.data.access_token
+                                    Promise.resolve().then(() => {
+                                        requests.forEach(cb => cb())
+                                        requests = []
+                                    })
+                                } else {
+                                    router.replace({ //Jump to the logout page
+                                        path: '/logout'
+                                    })
+                                }
+                            } catch (error) {
                                 router.replace({ //Jump to the logout page
                                     path: '/logout'
                                 })
                             }
+
                         } else {
                             router.replace({ //Jump to the login page
                                 path: '/login'
@@ -110,7 +115,7 @@ instance.interceptors.response.use(
                     requests.push(() => { resolve(instance(originalConfig)) })
                 })
 
-            } 
+            }
         }
         return Promise.reject(error)
 
@@ -146,20 +151,5 @@ const api = {
     delete(url, data) {
         return instance.delete(url, { data: data })
     },
-    _processData(url, data) {
-        const isJSON = (url.indexOf("setting") > 0 || url.indexOf("install") > 0 || url.indexOf("sys") > 0 || url.indexOf("file") > 0 || url.indexOf("user") > 0)
-
-        let payload,
-            contentType
-        if (isJSON) {
-            contentType = 'application/json';
-            payload = JSON.stringify(data)
-        } else {
-            contentType = 'application/x-www-form-urlencoded;charset=UTF-8';
-            payload = qs.stringify(data)
-        }
-        axios.defaults.headers.post['Content-Type'] = contentType;
-        return payload
-    }
 }
 export { api }

@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-11-10 17:48:25
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-18 18:04:40
+ * @LastEditTime: 2022-07-25 19:19:02
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/syncthing/SyncBlock.vue
 -->
@@ -147,8 +147,11 @@ export default {
 
   },
   sockets: {
-    app_install() {
-      this.checkSyncStatus();
+    app_install(res) {
+      const data = res.body.data
+      if (data.finished) {
+        this.checkSyncStatus();
+      }
     }
   }
 }

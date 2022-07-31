@@ -67,6 +67,7 @@ export default {
     "Currently the latest version": "Actualmente la última versión",
     "A new version is available!": "¡Una nueva versión está disponible!",
     "Edit Web UI port": "Editar el puerto de la WebUI",
+
     "Automount USB Drive": "Automontar unidad USB",
     "Wallpaper": "Fondo",
     "Change wallpaper": "Cambiar fondo",
@@ -74,6 +75,7 @@ export default {
     "Show Recommended Apps": "Mostrar Aplicaciones Recomendadas",
     "Upgrade Now": "Actualizar ahora",
     "Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB": "La activación de esta función puede causar fallos de arranque cuando el dispositivo Raspberry Pi se inicia desde el USB",
+    "There seems to be a problem with the upgrade process, please try again!": "¡Parece que hay un problema con el proceso de actualización, por favor, inténtelo de nuevo!",
 
     // Terminal & Logs
     "Terminal & Logs": "Terminal & Registros",

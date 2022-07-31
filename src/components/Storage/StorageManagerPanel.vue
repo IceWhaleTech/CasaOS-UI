@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-01-17 15:16:11
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 18:59:47
+ * @LastEditTime: 2022-07-29 11:22:22
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\Storage\StorageManagerPanel.vue
+ * @FilePath: /CasaOS-UI/src/components/Storage/StorageManagerPanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -277,6 +277,13 @@ export default {
         if (val) {
           this.submitCreate(needFormat)
         }
+      }).catch(err => {
+        this.isValiding = false
+        this.$buefy.toast.open({
+          duration: 3000,
+          message: err.response.data.message,
+          type: 'is-danger'
+        })
       })
 
     },
@@ -299,6 +306,13 @@ export default {
         } else {
           this.getDiskList(true);
         }
+      }).catch(err => {
+        this.isCreating = false
+        this.$buefy.toast.open({
+          duration: 3000,
+          message: err.response.data.message,
+          type: 'is-danger'
+        })
       })
     },
 
