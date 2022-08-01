@@ -3,7 +3,7 @@
  * @Date: 2022-02-18 12:42:06
  * @LastEditors: Jerryk jerry@icewhale.org
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\filebrowser\FilePanel.vue
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/FilePanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -160,6 +160,7 @@ import TreeList from './sidebar/TreeList.vue';
 import ShareEntryButton from './shared/ShareEntryButton.vue';
 import ShareListPage from './shared/ShareListPage.vue';
 import SelectShareModal from './shared/SelectShareModal.vue'
+import ShareDetial from './shared/ShareDetial.vue'
 
 import GirdView from './components/GirdView.vue';
 import ListView from './components/ListView.vue';
@@ -384,7 +385,8 @@ export default {
               name: item.name,
               path: item.path,
               size: item.size,
-              write: item.write
+              write: item.write,
+              extensions: item.extensions
             }
           })
           this.listData = orderBy(newFileList, ['is_dir'], ['desc'])
@@ -398,6 +400,7 @@ export default {
      * @return {*}
      */
     reload() {
+      console.log("reload haha");
       this.getFileList(this.currentPath);
       this.$EventBus.$emit(events.RELOAD_FILE_LIST);
     },
@@ -757,6 +760,9 @@ export default {
       this.handleClose()
     },
 
+    /*************************************************
+     * PART 4  Share Action
+    **************************************************/
 
     handleUnShare(item) {
       this.$buefy.dialog.confirm({
@@ -766,19 +772,29 @@ export default {
         type: 'is-danger',
         hasIcon: true,
         onConfirm: () => {
-          console.log(item);
-          this.$api.samba.deleteShare(item.path).then(() => {
-            if(this.isShareList){
-              this.$refs.shareList.getSharedList()  
-            }else{
-              this.reload()
-            }
-            
-          }).catch(err => {
-            console.log(err.response.data);
+          this.$api.samba.deleteShare(item.id).then(() => {
+            this.reloadShare()
+            this.$buefy.toast.open({
+              message: this.$t('Folder unshared.'),
+              type: 'is-success'
+            })
+          }).catch(() => {
+            this.$buefy.toast.open({
+              message: this.$t('Unshared failed.'),
+              type: 'is-danger'
+            })
           })
         }
       })
+    },
+
+    reloadShare() {
+      if (this.isShareList) {
+        this.$refs.shareList.getSharedList()
+        this.$EventBus.$emit(events.RELOAD_FILE_LIST);
+      } else {
+        this.reload()
+      }
     },
 
     handleSelectShare() {
@@ -794,10 +810,33 @@ export default {
         events: {
           'close': () => {
             // this.isModalOpen = false
+          },
+          'reload': () => {
+            if (this.isShareList) {
+              this.$refs.shareList.getSharedList()
+              this.$EventBus.$emit(events.RELOAD_FILE_LIST);
+            } else {
+              this.reload()
+            }
           }
         }
       })
-    }
+    },
+    getShareLink(item) {
+      this.$buefy.modal.open({
+        parent: this,
+        component: ShareDetial,
+        hasModalCard: true,
+        customClass: 'share-detial-panel file-modal',
+        trapFocus: true,
+        canCancel: [''],
+        scroll: "keep",
+        animation: "zoom-in",
+        props: {
+          item: item
+        }
+      })
+    },
 
 
   },

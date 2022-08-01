@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-28 15:48:34
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-31 20:53:39
- * @FilePath: \CasaOS-UI\src\components\filebrowser\shared\ShareListPage.vue
+ * @LastEditTime: 2022-08-01 17:40:30
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/shared/ShareListPage.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -32,7 +32,7 @@
         </div>
         {{ $t('Follow the guide to start sharing your files on the local network.') }}
         <div class="buttons is-justify-content-center pt-3">
-          <b-button type="is-primary" rounded>{{ $t('Start') }}</b-button>
+          <b-button type="is-primary" rounded @click="selectShare">{{ $t('Start') }}</b-button>
         </div>
       </div>
     </share-list-view>
@@ -43,7 +43,7 @@
 <script>
 
 import ShareListView from './ShareListView.vue'
-
+import events from '@/events/events';
 export default {
   data() {
     return {
@@ -59,9 +59,6 @@ export default {
 
   mounted() {
     this.getSharedList()
-
-    
-    
   },
 
   methods: {
@@ -70,9 +67,11 @@ export default {
       try {
         const list = await this.$api.samba.getShares();
         this.isLoading = false
+        console.log(list.data.data);
         this.list = list.data.data.map(item => {
           const name = item.path.split('/').pop()
           return {
+            id: item.id,
             date: "",
             isSelected: false,
             is_dir: true,
@@ -88,8 +87,12 @@ export default {
       }
     },
 
-    
-    
+    selectShare() {
+      this.$EventBus.$emit(events.SELECT_SHARE);
+    }
+
+
+
   },
 }
 </script>

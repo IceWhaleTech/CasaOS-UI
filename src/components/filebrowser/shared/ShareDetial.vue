@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-29 16:10:49
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-29 18:00:50
+ * @LastEditTime: 2022-08-01 18:53:30
  * @FilePath: /CasaOS-UI/src/components/filebrowser/shared/ShareDetial.vue
  * @Description: 
  * 
@@ -25,10 +25,10 @@
           {{$t('Enter the following link to access the shared folder ( Samba ) .')}}
         </div>
         <b-field horizontal :label="$t('PC ( Windows explorer )')" class="mb-5">
-          <b-input name="subject" expanded readonly :value="pcPath" icon-right="content-copy" icon-right-clickable @icon-right-click="copyToClipboard(pcPath)"></b-input>
+          <b-input name="subject" expanded readonly :value="pcPath" icon-pack="casa" icon-right="copy" icon-right-clickable @icon-right-click="copyToClipboard(pcPath)"></b-input>
         </b-field>
         <b-field horizontal :label="$t('Mac ( Finder )')" class="mb-5">
-          <b-input name="subject" expanded readonly :value="macPath" icon-right="content-copy" icon-right-clickable @icon-right-click="copyToClipboard(macPath)"></b-input>
+          <b-input name="subject" expanded readonly :value="macPath" icon-pack="casa" icon-right="copy" icon-right-clickable @icon-right-click="copyToClipboard(macPath)"></b-input>
         </b-field>
       </div>
 

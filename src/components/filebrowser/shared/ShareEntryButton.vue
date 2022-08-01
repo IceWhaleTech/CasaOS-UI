@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-28 15:29:40
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-31 20:41:46
- * @FilePath: \CasaOS-UI\src\components\filebrowser\shared\ShareEntryButton.vue
+ * @LastEditTime: 2022-08-01 14:57:49
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/shared/ShareEntryButton.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -11,8 +11,8 @@
 <template>
   <div>
     <div class="is-flex list-item new-list-item" :class="{'active':active}" id="v-step-0" @click="$emit('open')">
-      <div class="cover mr-4 is-flex-shrink-0">
-        <b-icon icon="star-outline"></b-icon>
+      <div class="cover mr-2 is-flex-shrink-0">
+        <b-icon icon="share" pack="casa" custom-size="casa-28px"  class="casa-color-blue"></b-icon>
       </div>
       <span>{{ $t('Shared') }}</span>
     </div>

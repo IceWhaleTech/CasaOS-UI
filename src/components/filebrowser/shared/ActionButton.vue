@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-30 19:40:20
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-31 19:34:15
- * @FilePath: \CasaOS-UI\src\components\filebrowser\shared\ActionButton.vue
+ * @LastEditTime: 2022-08-01 18:49:53
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/shared/ActionButton.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -59,7 +59,6 @@ export default {
         scroll: "keep",
         animation: "zoom-in",
         events: {
-
           'close': () => {
             // this.isModalOpen = false
           }

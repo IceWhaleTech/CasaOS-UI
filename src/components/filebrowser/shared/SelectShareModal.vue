@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-31 20:24:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-31 21:20:56
- * @FilePath: \CasaOS-UI\src\components\filebrowser\shared\SelectShareModal.vue
+ * @LastEditTime: 2022-08-01 18:10:05
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/shared/SelectShareModal.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -22,14 +22,25 @@
     <section class="modal-card-body">
 
       <ul class="folder-list scrollbars-light mt-5 mb-5">
-        <li v-for="(item,index) in initFolders" :key="'s'+index">
-          <div class="is-flex list-item new-list-item" v-if="item.visible">
-            <div class="cover mr-4 is-flex-shrink-0">
-              <b-icon :icon="item.icon"></b-icon>
+        <li v-for="(item,index) in rootDataList" :key="'rs'+index">
+          <div class="is-flex list-item new-list-item is-align-items-center disbiled">
+            <div class="cover ml-2 mr-2 is-flex-shrink-0  is-flex is-align-items-center">
+              <b-icon :pack="item.pack" :icon="item.icon" custom-size="casa-28px" class="casa-color-blue"></b-icon>
             </div>
             <div class=" is-flex-grow-1">{{item.name}}</div>
-            <div class=" is-flex-shrink-0">
-              <b-checkbox :value="item.selected"></b-checkbox>
+            <div class=" is-flex-shrink-0  is-flex is-align-items-center">
+              <b-checkbox :value="item.selected" class="mr-0" disabled></b-checkbox>
+            </div>
+          </div>
+        </li>
+        <li v-for="(item,index) in initFolders" :key="'s'+index">
+          <div class="is-flex list-item new-list-item is-align-items-center" v-if="item.visible" @click="toggle(item)">
+            <div class="cover ml-2 mr-2 is-flex-shrink-0 is-flex is-align-items-center">
+              <b-icon :pack="item.pack" :icon="item.icon" custom-size="casa-28px" class="casa-color-blue"></b-icon>
+            </div>
+            <div class=" is-flex-grow-1 is-unselectable">{{item.name}}</div>
+            <div class=" is-flex-shrink-0  is-flex is-align-items-center">
+              <b-checkbox :value="item.selected" class="mr-0 none-click"></b-checkbox>
             </div>
           </div>
         </li>
@@ -40,7 +51,7 @@
     <footer class="modal-card-foot is-flex is-align-items-center">
       <div class="is-flex-grow-1"></div>
       <div>
-        <b-button :label="$t('Submit')" type="is-primary" rounded />
+        <b-button :label="$t('Submit')" type="is-primary" rounded @click="saveShares" :loading="isSaving" />
       </div>
     </footer>
     <!-- Modal-Card Footer End-->
@@ -51,49 +62,64 @@
 export default {
   data() {
     return {
+      isSaving: false,
       rootDataList: [
         {
           name: 'Root',
-          icon: 'folder-home-outline',
-          path: '/'
+          icon: 'folder-root',
+          pack: 'casa',
+          path: '/',
+          visible: true,
+          selected: false,
+          extensions: null
         },
       ],
 
       initFolders: [
         {
           name: 'DATA',
-          icon: 'folder-pound-outline',
+          icon: 'folder-data',
+          pack: 'casa',
           path: '/DATA',
           visible: true,
-          selected: true
+          selected: true,
+          extensions: null
         },
         {
           name: 'Documents',
-          icon: 'folder-text-outline',
+          icon: 'folder-documents',
+          pack: 'casa',
           path: '/DATA/Documents',
           visible: true,
-          selected: true
+          selected: true,
+          extensions: null
         },
         {
           name: 'Downloads',
-          icon: 'folder-download-outline',
+          icon: 'folder-downloads',
+          pack: 'casa',
           path: '/DATA/Downloads',
           visible: true,
-          selected: true
+          selected: true,
+          extensions: null
         },
         {
           name: 'Gallery',
-          icon: 'folder-star-outline',
+          icon: 'folder-gallery',
+          pack: 'casa',
           path: '/DATA/Gallery',
           visible: true,
-          selected: true
+          selected: true,
+          extensions: null
         },
         {
           name: 'Media',
-          icon: 'folder-music-outline',
+          icon: 'folder-media',
+          pack: 'casa',
           path: '/DATA/Media',
           visible: true,
-          selected: true
+          selected: true,
+          extensions: null
         },
 
       ],
@@ -103,6 +129,10 @@ export default {
     this.getNewList()
   },
   methods: {
+    /**
+     * @description: Get new list
+     * @return {*}
+     */
     async getNewList() {
       const newList = await this.$api.folder.getList(this.rootDataList[0].path)
       const dataList = await this.$api.folder.getList(this.initFolders[0].path)
@@ -110,7 +140,43 @@ export default {
       contactList.push(...newList.data.data, ...dataList.data.data)
       this.initFolders.forEach(dir => {
         dir.visible = contactList.some(item => item.path == dir.path && item.is_dir)
+        dir.extensions = contactList.find(item => item.path == dir.path && item.is_dir).extensions;
       })
+    },
+    /**
+     * @description: Toggle folder select
+     * @param {*} item
+     * @return {*}
+     */
+    toggle(item) {
+      item.selected = !item.selected
+    },
+
+    /**
+     * @description: Save shares
+     * @return {*}
+     */
+    async saveShares() {
+      this.isSaving = true
+      const selectedList = this.initFolders.filter(item => item.selected)
+      const data = selectedList.map(item => {
+        return {
+          path: item.path,
+          anonymous: true
+        }
+      })
+      try {
+        await this.$api.samba.createShare(data)
+        this.isSaving = false
+        this.$emit('close')
+        this.$emit('reload')
+      } catch (error) {
+        this.isSaving = false
+        this.$buefy.toast.open({
+          message: error.response.data.message,
+          type: 'is-danger'
+        })
+      }
     },
   },
 }
@@ -123,8 +189,60 @@ export default {
   border-radius: 0.75rem;
   padding: 1.5rem;
 
-  .list-item {
-    font-size: 0.875rem;
+  li {
+    .list-item {
+      padding: 0.625rem 0.75rem 0.625rem 0.75rem;
+      margin: 0.125rem 0;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+      align-items: center;
+      font-size: 14px;
+
+      .arrow-container {
+        width: 24px;
+        height: 24px;
+      }
+
+      span {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      &:hover {
+        background: #deebfd;
+      }
+
+      &.active {
+        background: #deebfd;
+      }
+
+      .icon {
+        overflow: hidden;
+      }
+
+      &.disbiled {
+        opacity: 0.2;
+        pointer-events: none;
+      }
+
+      .none-click {
+        pointer-events: none;
+      }
+    }
+
+    .new-list-item {
+      font-size: 0.875rem;
+    }
+  }
+}
+</style>
+
+<style lang="scss">
+.folder-list {
+  .control-label {
+    display: none !important;
   }
 }
 </style>
