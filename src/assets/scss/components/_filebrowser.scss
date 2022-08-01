@@ -10,6 +10,7 @@
       .operation-status-bar {
         position: relative;
         z-index: 100;
+
         .popper {
           box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%), 0 0px 0 1px rgb(10 10 10 / 2%);
           background-color: white;
@@ -24,6 +25,7 @@
           position: relative;
           width: 20rem;
           padding: 0.5rem 1rem;
+
           .task-info {
             position: relative;
             z-index: 2;
@@ -159,8 +161,8 @@
           }
 
           // Bottom Area
-          .bottom-area{
-            border-top: #b5b5b5 1px solid;
+          .bottom-area {
+            border-top: rgba(0, 0, 0, 0.1) 1px solid;
             margin: 0.75rem;
             font-size: 14px;
             padding-top: 0.75rem;

@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-14 11:17:17
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-29 18:06:27
- * @FilePath: /CasaOS-UI/src/events/events.js
+ * @LastEditTime: 2022-07-31 20:40:47
+ * @FilePath: \CasaOS-UI\src\events\events.js
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -17,5 +17,7 @@ const events = {
     RELOAD_APP_LIST: 'reloadAppList',
     UPDATE_SYNC_STATUS: 'updateSyncStatus',
     UN_SHARE: 'unShare',
+    GOTO: 'goto',
+    SELECT_SHARE: 'selectShare',
 };
 export default events;

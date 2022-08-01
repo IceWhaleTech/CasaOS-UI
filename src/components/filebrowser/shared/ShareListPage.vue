@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-28 15:48:34
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-29 15:44:28
- * @FilePath: /CasaOS-UI/src/components/filebrowser/shared/ShareListPage.vue
+ * @LastEditTime: 2022-07-31 20:53:39
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\shared\ShareListPage.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -25,15 +25,18 @@
     </header>
     <!-- Header End -->
 
-    <share-list-view :listData="list" :isLoading="false">
+    <share-list-view :listData="list" :isLoading="isLoading">
       <div>
+        <div class="buttons is-justify-content-center">
+          <b-image :src="require('@/assets/img/share/share-empty.svg')" class="is-160x160"></b-image>
+        </div>
         {{ $t('Follow the guide to start sharing your files on the local network.') }}
         <div class="buttons is-justify-content-center pt-3">
           <b-button type="is-primary" rounded>{{ $t('Start') }}</b-button>
         </div>
       </div>
     </share-list-view>
-
+    <b-loading v-model="isLoading"></b-loading>
   </div>
 </template>
 
@@ -44,22 +47,29 @@ import ShareListView from './ShareListView.vue'
 export default {
   data() {
     return {
-      list: []
+      list: [],
+      isLoading: true,
     }
   },
 
   components: {
-    ShareListView
+    ShareListView,
+
   },
 
   mounted() {
     this.getSharedList()
+
+    
+    
   },
 
   methods: {
     async getSharedList() {
+      this.isLoading = true
       try {
         const list = await this.$api.samba.getShares();
+        this.isLoading = false
         this.list = list.data.data.map(item => {
           const name = item.path.split('/').pop()
           return {
@@ -73,9 +83,13 @@ export default {
           }
         })
       } catch (error) {
+        this.isLoading = false
         this.list = []
       }
-    }
+    },
+
+    
+    
   },
 }
 </script>

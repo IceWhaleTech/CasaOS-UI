@@ -1,6 +1,16 @@
+<!--
+ * @Author: Jerryk jerry@icewhale.org
+ * @Date: 2022-07-30 19:40:20
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-07-31 19:34:15
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\shared\ActionButton.vue
+ * @Description: 
+ * 
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+-->
 <template>
   <div class="action-btn">
-    <b-dropdown aria-role="list" append-to-body :close-on-click="false" ref="dropDown" :id="'dr-'+index" class="file-dropdown" :position="'is-'+verticalPos+'-left'" animation="fade1">
+    <b-dropdown aria-role="list" append-to-body close-on-click ref="dropDown" :id="'dr-'+index" class="file-dropdown" :position="'is-'+verticalPos+'-left'" animation="fade1">
       <template #trigger>
         <p role="button">
           <b-icon icon="dots-horizontal" custom-size="mdi-18px" id="das">
@@ -10,7 +20,7 @@
       <b-dropdown-item aria-role="menuitem" @click="getShareLink(item)">
         {{ $t('Get Share Link') }}
       </b-dropdown-item>
-      <b-dropdown-item aria-role="menuitem">
+      <b-dropdown-item aria-role="menuitem" @click="goto">
         {{ $t('Go to') }}
       </b-dropdown-item>
       <hr class="dropdown-divider">
@@ -39,7 +49,6 @@ export default {
   },
   methods: {
     getShareLink(item) {
-      this.$refs.dropDown.isActive = false
       this.$buefy.modal.open({
         parent: this,
         component: ShareDetial,
@@ -61,9 +70,13 @@ export default {
       })
     },
     unShare() {
-      this.$refs.dropDown.isActive = false
       this.$EventBus.$emit(events.UN_SHARE, this.item);
+    },
+
+    goto() {
+      this.$EventBus.$emit(events.GOTO, this.item);
     }
+
   },
 }
 </script>

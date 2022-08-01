@@ -3,7 +3,7 @@
  * @Date: 2022-02-18 12:42:06
  * @LastEditors: Jerryk jerry@icewhale.org
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/filebrowser/FilePanel.vue
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\FilePanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -136,7 +136,7 @@
           <!-- Toolbar End -->
         </div>
 
-        <share-list-page v-else></share-list-page>
+        <share-list-page ref="shareList" v-else></share-list-page>
 
       </template>
       <!-- Main Content End -->
@@ -159,6 +159,7 @@ import events from '@/events/events';
 import TreeList from './sidebar/TreeList.vue';
 import ShareEntryButton from './shared/ShareEntryButton.vue';
 import ShareListPage from './shared/ShareListPage.vue';
+import SelectShareModal from './shared/SelectShareModal.vue'
 
 import GirdView from './components/GirdView.vue';
 import ListView from './components/ListView.vue';
@@ -292,6 +293,11 @@ export default {
     }
 
     document.addEventListener('contextmenu', this.hideContextMenu);
+    this.$EventBus.$on(events.GOTO, (event) => {
+      this.getFileList(event.path)
+    });
+
+    this.$EventBus.$on(events.SELECT_SHARE, this.handleSelectShare);
     this.$EventBus.$on(events.UN_SHARE, this.handleUnShare);
   },
   destroyed() {
@@ -751,9 +757,6 @@ export default {
       this.handleClose()
     },
 
-    /*************************************************
-     * PART 4  Share Action
-    **************************************************/
 
     handleUnShare(item) {
       this.$buefy.dialog.confirm({
@@ -763,11 +766,40 @@ export default {
         type: 'is-danger',
         hasIcon: true,
         onConfirm: () => {
-          this.deleteItem(this.selectedArray)
-          this.handleClose()
+          console.log(item);
+          this.$api.samba.deleteShare(item.path).then(() => {
+            if(this.isShareList){
+              this.$refs.shareList.getSharedList()  
+            }else{
+              this.reload()
+            }
+            
+          }).catch(err => {
+            console.log(err.response.data);
+          })
+        }
+      })
+    },
+
+    handleSelectShare() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: SelectShareModal,
+        hasModalCard: true,
+        customClass: 'share-detial-panel file-modal',
+        trapFocus: true,
+        canCancel: [''],
+        scroll: "keep",
+        animation: "zoom-in",
+        events: {
+          'close': () => {
+            // this.isModalOpen = false
+          }
         }
       })
     }
+
+
   },
   sockets: {
     file_operate(data) {

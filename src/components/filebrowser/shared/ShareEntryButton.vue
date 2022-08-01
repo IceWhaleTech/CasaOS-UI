@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-28 15:29:40
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-28 16:17:06
+ * @LastEditTime: 2022-07-31 20:41:46
  * @FilePath: \CasaOS-UI\src\components\filebrowser\shared\ShareEntryButton.vue
  * @Description: 
  * 
@@ -37,7 +37,7 @@
                 </div>
                 <div class="column has-text-right">
                   <b-button size="is-small" class=" mb-0" @click="tour.nextStep" v-if="!tour.isLast" rounded>{{ $t('Next') }}</b-button>
-                  <b-button size="is-small" class=" mb-0" type="is-success" @click="tour.skip" v-if="tour.isLast" rounded>{{ $t(`Let's Go`)}}</b-button>
+                  <b-button size="is-small" class=" mb-0" type="is-success" @click="selectShare" v-if="tour.isLast" rounded>{{ $t(`Let's Go`)}}</b-button>
                 </div>
               </div>
             </template>
@@ -51,6 +51,10 @@
 </template>
 
 <script>
+
+const sharedInitData = "shared_init_data";
+import events from '@/events/events';
+
 export default {
   props: {
     active: {
@@ -78,6 +82,40 @@ export default {
     setTimeout(() => {
       this.$tours['myTour'].start();
     }, 500)
+    this.checkInit()
+  },
+
+  methods: {
+    async checkInit() {
+      try {
+        const res = await this.$api.users.getCustomStorage(sharedInitData)
+        const resData = res.data.data
+        console.log(resData);
+        if (resData) {
+          if (!resData.isInit) {
+            setTimeout(() => {
+              this.$tours['myTour'].start();
+            }, 500)
+            this.$api.users.setCustomStorage(sharedInitData, {
+              isInit: true
+            })
+          }
+        } else {
+          setTimeout(() => {
+            this.$tours['myTour'].start();
+          }, 500)
+          this.$api.users.setCustomStorage(sharedInitData, {
+            isInit: true
+          })
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    selectShare() {
+      this.$EventBus.$emit(events.SELECT_SHARE);
+      this.$tours['myTour'].skip()
+    }
   },
 
 }
