@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-01-17 15:16:11
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-30 19:40:32
+ * @LastEditTime: 2022-08-03 14:44:29
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\Storage\StorageManagerPanel.vue
+ * @FilePath: /CasaOS-UI/src/components/Storage/StorageManagerPanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -17,8 +17,8 @@
 
         <!-- Storage and Disk List Start -->
         <div class="is-flex-grow-1 is-relative" v-if="!creatIsShow">
-          <div class="create-container" v-if="activeTab == 0 && unDiskData.length > 0">
-            <b-button size="is-small" type="is-link is-light" rounded @click="showCreate">{{ $t('Create Storage') }}</b-button>
+          <div class="create-container" v-if="activeTab == 0">
+            <b-button size="is-small" type="is-link is-light" rounded @click="showCreate" :disabled="unDiskData.length == 0">{{ $t('Create Storage') }}</b-button>
           </div>
           <b-tabs :animated="false" v-model="activeTab">
             <b-tab-item :label="$t('Storage')" class="scrollbars-light-auto tab-item">
@@ -182,52 +182,60 @@ export default {
      * @param {} 
      * @return {void} 
      */
-    getDiskList(showDefault = false) {
-      this.$api.disks.getDiskList().then(res => {
-        if (res.data.success === 200) {
-          this.diskData = res.data.data.drive
+    async getDiskList(showDefault = false) {
 
-          this.unDiskData = res.data.data.avail
+      // get disk list
+      try {
+        const diskRes = await this.$api.disks.getDiskList()
+        this.diskData = diskRes.data.data.drive
+        this.unDiskData = diskRes.data.data.avail
+      } catch (error) {
+        console.log(error.response.message);
+      }
 
-          this.storageData = orderBy(res.data.data.storage, ['create_at'], ['asc']).map((disk) => {
-            return {
-              name: disk.name,
-              isSystem: disk.name == "System",
-              fsType: disk.type,
-              size: disk.size,
-              availSize: disk.avail,
-              usePercent: 100 - Math.floor(disk.avail * 100 / disk.size),
-              diskName: disk.drive_name,
-              path: disk.path,
-              mount_point: disk.mountpoint
-            }
-          })
-
-
-          let diskNumArray = this.storageData.map(disk => {
-            if (disk.name.includes("Storage")) {
-              let diskNum = disk.name.replace("Storage", "")
-              return (/^\d+$/.test(diskNum)) ? Number(diskNum) : 0
-            } else {
-              return 0
-            }
-          })
-          let nextMaxNum = max(diskNumArray) + 1;
-          if (this.unDiskData.length > 0) {
-            this.createStoragePath = this.unDiskData[0].path
-            this.createStorageSeiral = this.unDiskData[0].serial
-            this.createStorageType = this.getDiskType(this.unDiskData[0].need_format)
-            this.createStorageName = "Storage" + nextMaxNum
-            this.activeDisk = 0
+      // get storage list
+      try {
+        const storageRes = await this.$api.storage.list()
+        this.storageData = orderBy(storageRes.data.data.storage, ['create_at'], ['asc']).map((storage) => {
+          return {
+            name: storage.name,
+            isSystem: storage.name == "System",
+            fsType: storage.type,
+            size: storage.size,
+            availSize: storage.avail,
+            usePercent: 100 - Math.floor(storage.avail * 100 / storage.size),
+            diskName: storage.drive_name,
+            path: storage.path,
+            mount_point: storage.mountpoint
           }
-          if (showDefault) {
-            this.showDefault()
-            this.isCreating = false
-            this.createStorageName = ""
+        })
+
+        let diskNumArray = this.storageData.map(storage => {
+          if (storage.name.includes("Storage")) {
+            let diskNum = storage.name.replace("Storage", "")
+            return (/^\d+$/.test(diskNum)) ? Number(diskNum) : 0
+          } else {
+            return 0
           }
-          this.isLoading = false
+        })
+        let nextMaxNum = max(diskNumArray) + 1;
+        if (this.unDiskData.length > 0) {
+          this.createStoragePath = this.unDiskData[0].path
+          this.createStorageSeiral = this.unDiskData[0].serial
+          this.createStorageType = this.getDiskType(this.unDiskData[0].need_format)
+          this.createStorageName = "Storage" + nextMaxNum
+          this.activeDisk = 0
         }
-      })
+        if (showDefault) {
+          this.showDefault()
+          this.isCreating = false
+          this.createStorageName = ""
+        }
+      } catch (error) {
+        console.log(error.response.message);
+      }
+
+      this.isLoading = false
     },
 
     /**

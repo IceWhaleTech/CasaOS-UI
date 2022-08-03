@@ -1,28 +1,20 @@
 <!--
- * @Author: JerryK
- * @Date: 2022-03-03 13:10:35
+ * @Author: Jerryk jerry@icewhale.org
+ * @Date: 2022-08-03 14:08:02
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-03 13:53:30
+ * @LastEditTime: 2022-08-03 17:57:32
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/sidebar/MountList.vue
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/filebrowser/sidebar/TreeList.vue
+ * 
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
 -->
 <template>
   <ul>
-    <li v-for="item in rootDataList" :key="item.path">
-      <div class="is-flex list-item new-list-item" :class="{'active':checkActive(item)}" @click="open(item.path)">
-        <div class="cover mr-2 is-flex-shrink-0">
-          <b-icon :pack="item.pack" :icon="item.icon" custom-size="casa-28px" class="casa-color-blue"></b-icon>
-        </div>
-        <span>{{item.name}}</span>
-      </div>
-    </li>
+
     <li v-for="item in initFolders" :key="item.path">
       <div class="is-flex list-item new-list-item" :class="{'active':checkActive(item)}" @click="open(item.path)" v-if="item.visible">
         <div class="cover mr-2 is-flex-shrink-0 is-relative">
-          <b-icon :pack="item.pack" :icon="item.icon" custom-size="casa-28px" class="casa-color-blue"></b-icon>
-          <div class="overlay-layer" v-if="checkSharevisibility(item)">
-            <b-icon :pack="item.pack" icon="share" custom-size="casa-10px" class="casa-color-green casa-shape-rounded casa-shape-12px"></b-icon>
-          </div>
+          <b-icon :pack="item.pack" :icon="item.icon" custom-size="casa-28px"></b-icon>
         </div>
         <div class=" is-flex-grow-1">{{item.name}}</div>
 

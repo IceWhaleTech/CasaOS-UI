@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2021-10-27 15:44:17
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 12:15:46
- * @FilePath: \CasaOS-UI\src\components\fileList\CreatePanel.vue
+ * @LastEditTime: 2022-08-03 12:22:43
+ * @FilePath: /CasaOS-UI/src/components/fileList/CreatePanel.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -13,13 +13,13 @@
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
       <div class="is-flex-grow-1">
-        <h3 class="title is-4 has-text-weight-normal">{{title}}</h3>
+        <h3 class="title is-4 has-text-weight-normal">{{ $t(title) }}</h3>
       </div>
     </header>
     <!-- Modal-Card Header End -->
     <!-- Modal-Card Body Start -->
     <section class="modal-card-body">
-      <b-field label="Name" :type="errorType" :message="message">
+      <b-field :label="$t('Name ')" :type="errorType" :message="message">
         <b-input v-model="name" maxlength="255"  expanded></b-input>
       </b-field>
 
@@ -29,8 +29,8 @@
     <footer class="modal-card-foot is-flex is-align-items-center">
       <div class="is-flex-grow-1"></div>
       <div>
-        <b-button label="Cancel" type="is-grey" @click="$emit('close')" rounded />
-        <b-button label="Submit" type="is-dark" @click="create()" rounded />
+        <b-button :label="$t('Cancel')" type="is-grey" @click="$emit('close')" rounded />
+        <b-button :label="$t('Submit')" type="is-dark" @click="create()" rounded />
       </div>
     </footer>
     <!-- Modal-Card Footer End-->

@@ -2,16 +2,16 @@
  * @Author: JerryK
  * @Date: 2021-10-14 14:08:40
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 12:07:37
+ * @LastEditTime: 2022-08-03 12:21:53
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\fileList\FilePanel.vue
+ * @FilePath: /CasaOS-UI/src/components/fileList/FilePanel.vue
 -->
 <template>
   <div class="modal-card">
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
       <div class="is-flex-grow-1">
-        <h3 class="title is-4 has-text-weight-normal">Select</h3>
+        <h3 class="title is-4 has-text-weight-normal">{{ $t('Select') }}</h3>
       </div>
     </header>
     <!-- Modal-Card Header End -->
@@ -41,13 +41,13 @@
     <footer class="modal-card-foot is-flex is-align-items-center">
       <div class="is-flex-grow-1">
         <div v-if="rootPath == '/DATA'">
-          <b-tooltip label="Create Folder" type="is-dark" position="is-right">
+          <b-tooltip :label="$t('Create Folder')" type="is-dark" position="is-right">
             <a class="add-button" @click="showCreatePanel(true)">
               <b-icon icon="folder-plus"></b-icon>
             </a>
           </b-tooltip>
           <template v-if="rootPath != path && showFile">
-            <b-tooltip label="Create File" type="is-dark" position="is-right">
+            <b-tooltip :label="$t('Create File')" type="is-dark" position="is-right">
               <a class="add-button" @click="showCreatePanel(false)">
                 <b-icon icon="file-plus-outline"></b-icon>
               </a>
@@ -56,8 +56,8 @@
         </div>
       </div>
       <div>
-        <b-button label="Cancel" type="is-grey" @click="$emit('close')" rounded />
-        <b-button label="Select" type="is-dark" @click="selectFile()" rounded />
+        <b-button :label="$t('Cancel')" type="is-grey" @click="$emit('close')" rounded />
+        <b-button :label="$t('Select')" type="is-dark" @click="selectFile()" rounded />
       </div>
     </footer>
     <!-- Modal-Card Footer End-->

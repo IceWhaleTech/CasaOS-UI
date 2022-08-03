@@ -90,6 +90,10 @@
           flex-grow: 0;
           flex-shrink: 0;
 
+          .nav-bar-top{
+            overflow-y: auto;
+          }
+
           .title {
             padding: 1.5rem;
           }

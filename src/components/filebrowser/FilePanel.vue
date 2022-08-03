@@ -3,7 +3,7 @@
  * @Date: 2022-02-18 12:42:06
  * @LastEditors: Jerryk jerry@icewhale.org
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\filebrowser\FilePanel.vue
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/FilePanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -20,14 +20,41 @@
       <template>
         <!-- NavBar Start -->
         <div class="nav-bar is-flex is-flex-direction-column">
-          <h3 class="title is-3 mb-0 pb-3 has-text-left">{{ $t('Files') }}</h3>
-          <div class="list-container scrollbars-light pt-0 is-flex-grow-1">
-            <tree-list ref="navBar" :path="rootPath" :autoLoad="true" :isActive="!isShareList"></tree-list>
+          <div class="is-flex-grow-1 is-flex-shrink-1 nav-bar-top  scrollbars-light">
+            <!-- Files Start -->
+            <div class="files-section ">
+              <h3 class="title is-3 mb-0 pb-3 has-text-left">{{ $t('Files') }}</h3>
+              <div class="list-container scrollbars-light pt-0 is-flex-grow-1">
+                <tree-list ref="navBar" :path="rootPath" :autoLoad="true" :isActive="!isShareList"></tree-list>
+              </div>
+            </div>
+
+            <!-- Files End -->
+
+            <!-- Mounted Start -->
+            <div class="mounted-section">
+              <div class="is-flex is-align-items-center">
+                <div class=" is-flex-grow-1">
+                  <h3 class="title is-3 mb-0 pb-3 pt-3 has-text-left">{{ $t('Location') }}</h3>
+                </div>
+                <div class=" is-flex-shrink-0 mr-4">
+                  <mount-action-button></mount-action-button>
+                </div>
+              </div>
+
+              <div class="list-container pt-0 is-flex-grow-1">
+                <mount-list ref="mountedList" :path="rootPath" :autoLoad="true" :isActive="isShareList"></mount-list>
+              </div>
+
+            </div>
+            <!-- Mounted End -->
           </div>
 
+          <!-- Bottom Action Start -->
           <div class="bottom-area">
             <share-entry-button @open="showSharedList" :active="isShareList"></share-entry-button>
           </div>
+          <!-- Bottom Action End -->
         </div>
         <!-- NavBar Start -->
 
@@ -157,6 +184,7 @@ import { mixin } from '@/mixins/mixin';
 import events from '@/events/events';
 
 import TreeList from './sidebar/TreeList.vue';
+import MountList from './sidebar/MountList.vue';
 import ShareEntryButton from './shared/ShareEntryButton.vue';
 import ShareListPage from './shared/ShareListPage.vue';
 import SelectShareModal from './shared/SelectShareModal.vue'
@@ -178,6 +206,8 @@ import UploaderList from './uploader/components/list.vue'
 import OperationToolbar from './components/OperationToolbar.vue';
 import OperationStatusBar from './components/OperationStatusBar.vue';
 import GlobalActionButton from './components/GlobalActionButton.vue';
+import MountActionButton from './components/MountActionButton.vue';
+
 
 
 
@@ -208,6 +238,8 @@ export default {
     // Shared
     ShareEntryButton,
     ShareListPage,
+    MountList,
+    MountActionButton
   },
   data() {
     return {
@@ -769,8 +801,8 @@ export default {
         title: this.$t('Unsharing Folder'),
         message: this.$t('Are you sure you want to unshare this Folder? '),
         confirmText: this.$t('Unshare'),
-        iconPack:'casa',
-        icon:'danger',
+        iconPack: 'casa',
+        icon: 'danger',
         type: 'is-danger',
         hasIcon: true,
         onConfirm: () => {
