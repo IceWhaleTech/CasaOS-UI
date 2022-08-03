@@ -4,6 +4,8 @@
 *
 *************************************/
 
+
+
 .modal-card {
     background: rgba(255, 255, 255, 1);
     //backdrop-filter: $backDropBlur;
@@ -201,5 +203,17 @@
         .modal-card {
             width: 50rem;
         }
+    }
+}
+
+/************************************
+*
+* Dialog
+*
+*************************************/
+
+.dialog{
+    .media{
+        align-items: center;
     }
 }

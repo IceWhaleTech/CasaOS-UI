@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-28 15:48:34
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-01 17:40:30
- * @FilePath: /CasaOS-UI/src/components/filebrowser/shared/ShareListPage.vue
+ * @LastEditTime: 2022-08-02 10:59:55
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\shared\ShareListPage.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -36,7 +36,7 @@
         </div>
       </div>
     </share-list-view>
-    <b-loading v-model="isLoading"></b-loading>
+    <b-loading :is-full-page="false" v-model="isLoading"></b-loading>
   </div>
 </template>
 

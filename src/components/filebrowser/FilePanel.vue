@@ -3,7 +3,7 @@
  * @Date: 2022-02-18 12:42:06
  * @LastEditors: Jerryk jerry@icewhale.org
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/filebrowser/FilePanel.vue
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\FilePanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -767,8 +767,10 @@ export default {
     handleUnShare(item) {
       this.$buefy.dialog.confirm({
         title: this.$t('Unsharing Folder'),
-        message: this.$t('Are you sure you want to unshare this Folder?'),
+        message: this.$t('Are you sure you want to unshare this Folder? '),
         confirmText: this.$t('Unshare'),
+        iconPack:'casa',
+        icon:'danger',
         type: 'is-danger',
         hasIcon: true,
         onConfirm: () => {

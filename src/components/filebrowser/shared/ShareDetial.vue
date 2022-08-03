@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-29 16:10:49
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-01 18:53:30
- * @FilePath: /CasaOS-UI/src/components/filebrowser/shared/ShareDetial.vue
+ * @LastEditTime: 2022-08-02 11:28:28
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\shared\ShareDetial.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -38,7 +38,7 @@
     <footer class="modal-card-foot is-flex is-align-items-center">
       <div class="is-flex-grow-1"></div>
       <div>
-        <b-button :label="$t('I Got it')" type="is-primary" rounded expaned />
+        <b-button :label="$t('I Got it')" type="is-primary" rounded expaned @click="$emit('close')"/>
       </div>
     </footer>
     <!-- Modal-Card Footer End -->

@@ -2,50 +2,37 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-28 15:29:40
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-01 14:57:49
- * @FilePath: /CasaOS-UI/src/components/filebrowser/shared/ShareEntryButton.vue
+ * @LastEditTime: 2022-08-02 11:23:13
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\shared\ShareEntryButton.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
 -->
 <template>
   <div>
-    <div class="is-flex list-item new-list-item" :class="{'active':active}" id="v-step-0" @click="$emit('open')">
-      <div class="cover mr-2 is-flex-shrink-0">
-        <b-icon icon="share" pack="casa" custom-size="casa-28px"  class="casa-color-blue"></b-icon>
-      </div>
-      <span>{{ $t('Shared') }}</span>
+
+    <div class="is-flex list-item new-list-item" :class="{'active':active}" @click.self="$emit('open')">
+
+      <popper  trigger="" transition='fade' enter-active-class="fade-enter-active" :options="{
+      placement: 'top',
+      modifiers: { offset: { offset: '0,10px' } }
+    }" ref="tip">
+        <div class="popper  tooltip-content dark">
+          <div class="is-flex ">
+            {{$t('Start sharing your files on the local network.')}}
+            <div class="is-clickable ml-1 is-flex is-align-items-center" @click="hideTip">
+              <b-icon pack="casa" icon="close-xs"></b-icon>
+            </div>
+          </div>
+        </div>
+        <div class="cover mr-2 is-flex-shrink-0 is-flex is-align-items-center" slot="reference">
+          <b-icon icon="share" pack="casa" custom-size="casa-24px"></b-icon>
+        </div>
+      </popper>
+      <div ><span>{{ $t('Shared') }}</span></div>
+
     </div>
 
-    <!-- Vue Tour Start -->
-    <v-tour name="myTour" :steps="steps">
-      <template slot-scope="tour">
-        <transition name="fade">
-          <v-step v-if="tour.steps[tour.currentStep]" :key="tour.currentStep" :step="tour.steps[tour.currentStep]" :previous-step="tour.previousStep" :next-step="tour.nextStep" :stop="tour.stop" :skip="tour.skip" :is-first="tour.isFirst" :is-last="tour.isLast" :labels="tour.labels">
-            <template>
-              <div slot="content" class="v-step__content">
-                {{$t(tour.steps[tour.currentStep].content)}}
-              </div>
-              <div slot="actions" class="buttons mb-0 columns is-gapless">
-                <div class="column has-text-left">
-                  <b-button size="is-small" class=" mb-0" @click="tour.previousStep" v-if="!tour.isFirst && !tour.isLast" rounded>{{ $t('Prev') }}</b-button>
-                </div>
-                <div class="column">
-
-                  <b-button size="is-small" class=" mb-0" type="is-success" @click="tour.skip" v-if="!tour.isLast" rounded>{{ $t('Skip') }}</b-button>
-
-                </div>
-                <div class="column has-text-right">
-                  <b-button size="is-small" class=" mb-0" @click="tour.nextStep" v-if="!tour.isLast" rounded>{{ $t('Next') }}</b-button>
-                  <b-button size="is-small" class=" mb-0" type="is-success" @click="selectShare" v-if="tour.isLast" rounded>{{ $t(`Let's Go`)}}</b-button>
-                </div>
-              </div>
-            </template>
-          </v-step>
-        </transition>
-      </template>
-    </v-tour>
-    <!-- Vue Tour End -->
   </div>
 
 </template>
@@ -54,6 +41,7 @@
 
 const sharedInitData = "shared_init_data";
 import events from '@/events/events';
+import Popper from 'vue-popperjs';
 
 export default {
   props: {
@@ -62,27 +50,20 @@ export default {
       default: false
     },
   },
+  components: {
+    Popper,
+  },
   data() {
     return {
-      steps: [
-        {
-          target: '#v-step-0',
-          content: 'Start sharing your files one thel local network.',
-          params: {
-            placement: 'right' // Any valid Popper.js placement. See https://popper.js.org/popper-documentation.html#Popper.placements
-          }
-        }
-      ]
+
     }
   },
   created() {
 
   },
   mounted() {
-    setTimeout(() => {
-      this.$tours['myTour'].start();
-    }, 500)
     this.checkInit()
+    this.showTip()
   },
 
   methods: {
@@ -90,23 +71,13 @@ export default {
       try {
         const res = await this.$api.users.getCustomStorage(sharedInitData)
         const resData = res.data.data
-        console.log(resData);
         if (resData) {
           if (!resData.isInit) {
-            setTimeout(() => {
-              this.$tours['myTour'].start();
-            }, 500)
-            this.$api.users.setCustomStorage(sharedInitData, {
-              isInit: true
-            })
+            this.showTip()
           }
         } else {
-          setTimeout(() => {
-            this.$tours['myTour'].start();
-          }, 500)
-          this.$api.users.setCustomStorage(sharedInitData, {
-            isInit: true
-          })
+          this.showTip()
+
         }
       } catch (error) {
         console.log(error);
@@ -114,12 +85,49 @@ export default {
     },
     selectShare() {
       this.$EventBus.$emit(events.SELECT_SHARE);
-      this.$tours['myTour'].skip()
+      // this.$tours['myTour'].skip()
+    },
+    showTip() {
+      setTimeout(() => {
+        this.$refs.tip.doShow()
+      }, 500)
+    },
+    hideTip() {
+      this.$refs.tip.doClose()
+      this.$api.users.setCustomStorage(sharedInitData, {
+        isInit: true
+      })
     }
   },
 
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.popper {
+  background-color: #505459;
+  padding: 0.35rem 0.4rem 0.35rem 0.75rem;
+  box-shadow: 0px 1px 2px 1px rgba(0, 1, 0, 0.2);
+  border: none;
+  color: #ffffff;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
+
+<style lang="scss">
+.dark .popper__arrow {
+  border-color: #505459 transparent transparent transparent !important;
+}
 </style>

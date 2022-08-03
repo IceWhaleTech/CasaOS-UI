@@ -2,12 +2,13 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-05-30 09:19:57
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-05-30 09:24:26
+ * @LastEditTime: 2022-08-02 12:06:03
  * @FilePath: \CasaOS-UI\src\mixins\IconContainerMixin.js
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
  */
+import has from 'lodash/has'
 export default {
     props: {
         item: {}
@@ -24,6 +25,18 @@ export default {
     computed: {
         showThumb() {
             return this.isLoaded && this.hasThumb(this.item)
+        },
+        isShared() {
+            const extensions = this.item.extensions
+            if (extensions === null) {
+                return false
+            } else {
+                if (has(extensions, 'share')) {
+                    return extensions.share.shared === "true"
+                } else {
+                    return false
+                }
+            }
         }
     },
     watch: {
