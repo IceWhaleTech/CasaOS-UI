@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-01-20 13:21:12
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 18:58:45
+ * @LastEditTime: 2022-08-04 18:32:28
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\Storage\StorageItem.vue
 -->
@@ -18,7 +18,7 @@
           </h4>
 
           <p class="has-text-left is-size-7 has-text-grey-light	">{{ $t('Single Drive Storage') }}, <span class="is-uppercase">{{item.fsType}}</span>
-            <b-tooltip :label="$t('CasaOS reserves 1% of file space when creating storage in EXT4 format.')" multilined>
+            <b-tooltip :label="$t('CasaOS reserves 1% of file space when creating storage in EXT4 format.')"  append-to-body>
               <b-icon icon="help-circle-outline" size="is-small" class="mr-2 "></b-icon>
             </b-tooltip>
           </p>

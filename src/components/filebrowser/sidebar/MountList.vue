@@ -2,33 +2,38 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-08-03 14:08:02
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-03 17:57:32
- * @FilePath: /CasaOS-UI/src/components/filebrowser/sidebar/MountList.vue
+ * @LastEditTime: 2022-08-04 22:38:43
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\sidebar\MountList.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
 -->
 <template>
-  <ul>
+  <div>
+    <ul>
+      <!-- USB List Start -->
+      <tree-list-item v-for="item in usbStorageList" :key="item.path" :item="item" :isActive="isActive" iconName="disc" @rightIconClick="umountUsb"></tree-list-item>
+      <!-- USB List End -->
 
-    <li v-for="item in initFolders" :key="item.path">
-      <div class="is-flex list-item new-list-item" :class="{'active':checkActive(item)}" @click="open(item.path)" v-if="item.visible">
-        <div class="cover mr-2 is-flex-shrink-0 is-relative">
-          <b-icon :pack="item.pack" :icon="item.icon" custom-size="casa-28px"></b-icon>
-        </div>
-        <div class=" is-flex-grow-1">{{item.name}}</div>
+      <!-- Local Storage List Start -->
+      <tree-list-item v-for="item in localStorageList" :key="item.path" :item="item" :isActive="isActive"></tree-list-item>
+      <!-- Local Storage List End -->
 
-      </div>
-    </li>
+      <!-- Network Storage List Start -->
+      <tree-list-item v-for="item in networkStorageList" :key="item.path" :item="item" :isActive="isActive" iconName="disc" @rightIconClick="umountNetwork"></tree-list-item>
+      <!-- Network Storage List End -->
 
-  </ul>
+    </ul>
+    <b-loading :is-full-page="false" v-model="isLoading"></b-loading>
+  </div>
+
 </template>
 
 <script>
 import { mixin } from '@/mixins/mixin';
-import events from '@/events/events';
-import has from 'lodash/has'
+import TreeListItem from './TreeListItem.vue';
 export default {
+  components: { TreeListItem },
   mixins: [mixin],
   inject: ['filePanel'],
 
@@ -48,127 +53,135 @@ export default {
   },
   data() {
     return {
-      rootDataList: [
-        {
-          name: 'Root',
-          icon: 'folder-root',
-          pack: 'casa',
-          path: '/',
-          visible: true,
-          selected: true,
-          extensions: null
-        },
-      ],
-
-      initFolders: [
-        {
-          name: 'DATA',
-          icon: 'folder-data',
-          pack: 'casa',
-          path: '/DATA',
-          visible: true,
-          selected: true,
-          extensions: null
-        },
-        {
-          name: 'Documents',
-          icon: 'folder-documents',
-          pack: 'casa',
-          path: '/DATA/Documents',
-          visible: true,
-          selected: true,
-          extensions: null
-        },
-        {
-          name: 'Downloads',
-          icon: 'folder-downloads',
-          pack: 'casa',
-          path: '/DATA/Downloads',
-          visible: true,
-          selected: true,
-          extensions: null
-        },
-        {
-          name: 'Gallery',
-          icon: 'folder-gallery',
-          pack: 'casa',
-          path: '/DATA/Gallery',
-          visible: true,
-          selected: true,
-          extensions: null
-        },
-        {
-          name: 'Media',
-          icon: 'folder-media',
-          pack: 'casa',
-          path: '/DATA/Media',
-          visible: true,
-          selected: true,
-          extensions: null
-        },
-
-      ],
-      dataList: [],
+      isLoading: false,
+      usbStorageList: [],
+      localStorageList: [],
+      networkStorageList: [],
     }
   },
   created() {
-    this.dataList = this.initFolders;
-    this.getNewList()
+    this.getStorageList()
   },
 
   mounted() {
-    this.$EventBus.$on(events.RELOAD_FILE_LIST, this.getNewList);
+
 
   },
   methods: {
-    async getNewList() {
+    async getStorageList() {
+      this.isLoading = true;
+      // USB Storage
+      try {
+        const usbListRes = await this.$api.disks.getUsbs()
+        const usbStorageArray = []
+        usbListRes.data.data.forEach(item => {
+          item.children.forEach(part => {
+            usbStorageArray.push(part)
+          })
+        })
+        this.usbStorageList = usbStorageArray.map((storage) => {
+          return {
+            name: storage.name,
+            icon: 'folder-media',
+            pack: 'casa',
+            path: storage.mount_point,
+            visible: true,
+            selected: true,
+            extensions: null
+          }
+        })
+      } catch (error) {
+        this.isLoading = false;
+        console.log(error.reponse.message)
+      }
 
-      const newList = await this.$api.folder.getList(this.rootDataList[0].path)
-      const dataList = await this.$api.folder.getList(this.initFolders[0].path)
-      const contactList = []
-      contactList.push(...newList.data.data, ...dataList.data.data)
-      this.initFolders.forEach(dir => {
-        dir.visible = contactList.some(item => item.path == dir.path && item.is_dir)
-        dir.extensions = contactList.find(item => item.path == dir.path && item.is_dir).extensions;
+      // Local Storage
+      try {
+        const storageRes = await this.$api.storage.list({ system: "show" })
+        const storageArray = []
+        storageRes.data.data.forEach(item => {
+          item.children.forEach(part => {
+            storageArray.push(part)
+          })
+        })
+        this.localStorageList = storageArray.map((storage) => {
+          return {
+            name: storage.label,
+            icon: 'folder-media',
+            pack: 'casa',
+            path: storage.mount_point,
+            visible: true,
+            selected: true,
+            extensions: null
+          }
+        })
+      } catch (error) {
+        this.isLoading = false;
+        console.log(error.reponse.message)
+      }
+
+      // Network Storage
+
+      try {
+
+        const networkRes = await this.$api.samba.getConnections()
+        console.log(networkRes.data.data);
+        this.networkStorageList = networkRes.data.data.map((storage) => {
+          return {
+            id: storage.id,
+            name: storage.host,
+            icon: 'folder-media',
+            pack: 'casa',
+            path: storage.mount_point,
+            visible: true,
+            selected: true,
+            extensions: null
+          }
+        })
+
+      } catch (error) {
+        this.isLoading = false;
+        console.log(error.reponse.message)
+      }
+
+      this.isLoading = false;
+
+    },
+
+    // umount usb storage
+    umountUsb(item) {
+      console.log(item);
+      this.goToDataFolder(item)
+    },
+
+    // umount network storage
+    umountNetwork(item) {
+      console.log(item);
+      this.$api.samba.deleteConnection(item.id).then(() => {
+        this.getStorageList()
+        this.goToDataFolder(item)
+        this.$buefy.toast.open({
+          message: this.$t('Eject Success'),
+          type: 'is-success'
+        })
+      }).catch(() => {
+        this.$buefy.toast.open({
+          message: this.$t('Eject Failed'),
+          type: 'is-danger'
+        })
       })
+
+
     },
 
-    open(path) {
-      this.filePanel.getFileList(path);
-    },
-    checkVisibility(path) {
-      return this.dataList.some(item => item.path == path)
-    },
-    checkSharevisibility(item) {
-      const extensions = item.extensions
-      if (extensions === null) {
-        return false
-      } else {
-        if (has(extensions, 'share')) {
-          return extensions.share.shared === "true"
-        } else {
-          return false
-        }
+    // go to DATA folder
+    goToDataFolder(item) {
+      if (this.$store.state.currentPath.startsWith(item.path)) {
+        this.filePanel.getFileList('/DATA')
       }
-    },
-    checkActive(item) {
-      if (!this.isActive) {
-        return false
-      }
-      if (item.path == this.$store.state.currentPath) {
-        return true
-      } else if (item.path != this.$store.state.currentPath && item.path != this.rootDataList[0].path && item.path != this.initFolders[0].path) {
-        if (this.$store.state.currentPath.indexOf(item.path) != -1) {
-          return true
-        } else {
-          return false
-        }
-      } else {
-        return false
-      }
-    },
-
+    }
   },
+
 }
 </script>
 

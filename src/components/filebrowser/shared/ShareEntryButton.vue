@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-28 15:29:40
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-02 11:23:13
+ * @LastEditTime: 2022-08-04 18:40:08
  * @FilePath: \CasaOS-UI\src\components\filebrowser\shared\ShareEntryButton.vue
  * @Description: 
  * 
@@ -11,9 +11,9 @@
 <template>
   <div>
 
-    <div class="is-flex list-item new-list-item" :class="{'active':active}" @click.self="$emit('open')">
+    <div class="is-flex list-item new-list-item" :class="{'active':active}" @click.prevent="$emit('open')">
 
-      <popper  trigger="" transition='fade' enter-active-class="fade-enter-active" :options="{
+      <popper  trigger="click" transition='fade' enter-active-class="fade-enter-active" :options="{
       placement: 'top',
       modifiers: { offset: { offset: '0,10px' } }
     }" ref="tip">
@@ -25,7 +25,7 @@
             </div>
           </div>
         </div>
-        <div class="cover mr-2 is-flex-shrink-0 is-flex is-align-items-center" slot="reference">
+        <div class="cover mr-2 is-flex-shrink-0 is-flex is-align-items-center none-click" s slot="reference">
           <b-icon icon="share" pack="casa" custom-size="casa-24px"></b-icon>
         </div>
       </popper>
@@ -63,7 +63,7 @@ export default {
   },
   mounted() {
     this.checkInit()
-    this.showTip()
+    // this.showTip()
   },
 
   methods: {
@@ -123,6 +123,10 @@ export default {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+.none-click{
+  pointer-events: none;
 }
 </style>
 

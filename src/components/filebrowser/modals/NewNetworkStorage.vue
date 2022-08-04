@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-08-03 15:28:43
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-03 17:42:40
- * @FilePath: /CasaOS-UI/src/components/filebrowser/modals/NewNetworkStorage.vue
+ * @LastEditTime: 2022-08-04 22:43:17
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\modals\NewNetworkStorage.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -23,11 +23,11 @@
       <div class="node-card">
         <div class=" mt-5 mb-5">
           <b-field :label="$t('Server Address')">
-            <b-autocomplete v-model="host" :placeholder="$t('eg : smb://192.168.1.1')"  max-height="120px" open-on-focus :data="filteredDataObj" append-to-body>
+            <b-autocomplete ref="inputs" v-model="host" :placeholder="$t('eg : smb://192.168.1.1')" field="host" max-height="120px" open-on-focus :data="filteredDataObj" @select="option => selected = option" append-to-body>
               <template slot-scope="props">
                 <div class="media is-align-items-center">
                   <div class="media-left is-flex is-align-items-center">
-                     <b-icon  icon="history"></b-icon>
+                    <b-icon icon="history"></b-icon>
                   </div>
                   <div class="media-content">
                     {{ props.option.host }}
@@ -55,10 +55,10 @@
 
           <div class="mt-5" v-if="!isGuest">
             <b-field horizontal :label="$t('Name')" class="mb-5">
-              <b-input name="username" expanded value=""></b-input>
+              <b-input name="username" expanded v-model="username"></b-input>
             </b-field>
             <b-field horizontal :label="$t('Password')" class="mb-5">
-              <b-input name="password" type="password" expanded value=""></b-input>
+              <b-input name="password" type="password" expanded v-model="password"></b-input>
             </b-field>
           </div>
 
@@ -72,7 +72,7 @@
     <footer class="modal-card-foot is-flex is-align-items-center">
       <div class="is-flex-grow-1"></div>
       <div>
-        <b-button :label="$t('Connect')" type="is-primary" rounded expaned />
+        <b-button :label="$t('Connect')" type="is-primary" rounded expaned @click="connect" />
       </div>
     </footer>
     <!-- Modal-Card Footer End -->
@@ -93,6 +93,8 @@ export default {
     return {
       isGuest: true,
       host: "",
+      username: "",
+      password: "",
       selected: null,
       data: [
         {
@@ -120,26 +122,77 @@ export default {
   },
   computed: {
     filteredDataObj() {
-      return this.data.filter((option) => {
-        return option.host
-          .toLowerCase()
-          .indexOf(this.host.toLowerCase()) >= 0
-      })
+      return this.$store.state.networkStorage
+    }
+  },
+  watch: {
+    selected(val) {
+      this.isGuest = val.guest
+      if (!val.guest) {
+        this.username = val.username
+        this.password = val.password
+      }
     }
   },
   created() {
-
+    this.$nextTick(() => {
+      this.$refs.inputs.focus();
+    })
   },
   mounted() {
+    console.log(this.host);
     //Smooth 
     this.$smoothReflow({
       el: '.modal-card',
       property: ['height', 'width'],
       transition: 'height .25s ease, width .75s ease-out'
     })
+
+
   },
   methods: {
+    connect() {
+      if (this.host.startsWith("smb://") || this.host.startsWith("nfs://")) {
+        if (!this.isGuest && (this.username == "" || this.password == "")) {
+          this.$buefy.toast.open({
+            message: this.$t(`Username or password cannot be empty.`),
+            type: 'is-danger'
+          })
+          return
+        } else {
+          this.saveNewLoginInfoToLocalStorage()
+          console.log("connecting");
+        }
 
+      } else {
+        this.$buefy.toast.open({
+          message: this.$t(`Please enter a correct Samba address!`),
+          type: 'is-danger'
+        })
+        return
+      }
+    },
+
+
+    saveNewLoginInfoToLocalStorage() {
+      let oldInfo = this.$store.state.networkStorage
+      const loginItem = this.isGuest ? {
+        host: this.host,
+        guest: true,
+        username: "",
+        password: "",
+      } : {
+        host: this.host,
+        guest: false,
+        username: this.username,
+        password: "",
+      }
+      const isInArray = oldInfo.some(item => item.host === loginItem.host && item.guest === loginItem.guest)
+      if (!isInArray) {
+        oldInfo.push(loginItem)
+        this.$store.commit('SET_NETWORK_STORAGE', oldInfo)
+      }
+    },
   },
 }
 </script>

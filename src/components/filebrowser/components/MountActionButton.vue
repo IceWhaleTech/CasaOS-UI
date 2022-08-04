@@ -2,15 +2,15 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-08-03 14:10:43
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-03 15:57:04
- * @FilePath: /CasaOS-UI/src/components/filebrowser/components/MountActionButton.vue
+ * @LastEditTime: 2022-08-04 11:08:25
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\components\MountActionButton.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
 -->
 <template>
   <div class="action-btn">
-    <b-dropdown aria-role="list" append-to-body :close-on-click="false" ref="dropDown" id="location-drop" class="file-dropdown" position="is-bottom-left" animation="fade1">
+    <b-dropdown aria-role="list" append-to-body close-on-click ref="dropDown" id="location-drop" class="file-dropdown" position="is-bottom-left" animation="fade1">
       <template #trigger>
         <p role="button" class=" is-clickable">
           <b-icon icon="plus" custom-size="mdi-18px"></b-icon>

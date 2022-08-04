@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-01-17 15:16:11
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-03 14:44:29
+ * @LastEditTime: 2022-08-04 18:29:03
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/Storage/StorageManagerPanel.vue
+ * @FilePath: \CasaOS-UI\src\components\Storage\StorageManagerPanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -123,7 +123,6 @@ import LottieAnimation from "lottie-web-vue";
 import smoothReflow from 'vue-smooth-reflow'
 import delay from 'lodash/delay';
 import max from 'lodash/max';
-import orderBy from 'lodash/orderBy';
 import { ValidationObserver, ValidationProvider } from "vee-validate";
 import { mixin } from '../../mixins/mixin';
 import DriveItem from './DriveItem.vue'
@@ -195,19 +194,26 @@ export default {
 
       // get storage list
       try {
-        const storageRes = await this.$api.storage.list()
-        this.storageData = orderBy(storageRes.data.data.storage, ['create_at'], ['asc']).map((storage) => {
+        const storageRes = await this.$api.storage.list({ system: "show" })
+        const storageArray = []
+        storageRes.data.data.forEach(item => {
+          item.children.forEach(part => {
+            storageArray.push(part)
+          })
+        })
+        this.storageData = storageArray.map((storage) => {
           return {
-            name: storage.name,
-            isSystem: storage.name == "System",
+            name: storage.label,
+            isSystem: storage.drive_name == "System",
             fsType: storage.type,
             size: storage.size,
             availSize: storage.avail,
             usePercent: 100 - Math.floor(storage.avail * 100 / storage.size),
             diskName: storage.drive_name,
             path: storage.path,
-            mount_point: storage.mountpoint
+            mount_point: storage.mount_point
           }
+
         })
 
         let diskNumArray = this.storageData.map(storage => {

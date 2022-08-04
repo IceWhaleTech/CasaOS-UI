@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-20 16:54:18
+ * @LastEditTime: 2022-08-04 22:52:08
  * @Description: 
- * @FilePath: /CasaOS-UI/src/views/Home.vue
+ * @FilePath: \CasaOS-UI\src\views\Home.vue
 -->
 <template>
   <div v-if="!isLoading" class="out-container">
@@ -56,9 +56,9 @@
     </div>
     <!-- Content End -->
     <!-- File Panel Start -->
-    <b-modal v-model="isFileActive" has-modal-card :destroy-on-hide="false" animation="zoom-in" custom-class="file-panel" :can-cancel="[]" aria-modal full-screen>
+    <b-modal v-model="isFileActive" has-modal-card @after-enter="afterFileEnter" :destroy-on-hide="false" animation="zoom-in" custom-class="file-panel" :can-cancel="[]" aria-modal full-screen>
       <template #default="props">
-        <file-panel @close="props.close"></file-panel>
+        <file-panel @close="props.close" ref="filePanel"></file-panel>
       </template>
     </b-modal>
     <!-- File Panel End -->
@@ -181,6 +181,10 @@ export default {
      */
     showFiles() {
       this.isFileActive = true
+    },
+
+    afterFileEnter() {
+      this.$refs.filePanel.init()
     },
 
     /**

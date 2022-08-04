@@ -3,7 +3,7 @@
  * @Date: 2022-02-18 12:42:06
  * @LastEditors: Jerryk jerry@icewhale.org
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/filebrowser/FilePanel.vue
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\FilePanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -37,13 +37,13 @@
                 <div class=" is-flex-grow-1">
                   <h3 class="title is-3 mb-0 pb-3 pt-3 has-text-left">{{ $t('Location') }}</h3>
                 </div>
-                <div class=" is-flex-shrink-0 mr-4">
+                <div class=" is-flex-shrink-0 mr-5">
                   <mount-action-button></mount-action-button>
                 </div>
               </div>
 
               <div class="list-container pt-0 is-flex-grow-1">
-                <mount-list ref="mountedList" :path="rootPath" :autoLoad="true" :isActive="isShareList"></mount-list>
+                <mount-list ref="mountedList" :path="rootPath" :autoLoad="true" :isActive="!isShareList"></mount-list>
               </div>
 
             </div>
@@ -163,7 +163,7 @@
           <!-- Toolbar End -->
         </div>
 
-        <share-list-page ref="shareList" v-else></share-list-page>
+        <share-list-page ref="shareList" @close="$emit('close')" v-else></share-list-page>
 
       </template>
       <!-- Main Content End -->
@@ -301,7 +301,7 @@ export default {
       deep: true
     },
     usbDisks(newval, oldval) {
-      if (!isEqual(newval, oldval)) {
+      if (!isEqual(newval, oldval) && newval == "/DATA") {
         this.getFileList(this.currentPath)
       }
 
@@ -321,6 +321,7 @@ export default {
 
   },
   mounted() {
+    this.init();
     if (!this.isShareList) {
       this.beforeInit()
     }
@@ -343,7 +344,7 @@ export default {
     **************************************************/
 
     beforeInit() {
-      this.init();
+
       this.setUploaderOpts();
       // Listen to ESC button to exit preview
       document.onkeyup = (e) => {
@@ -399,15 +400,17 @@ export default {
       this.isLoading = true;
       // path = path.replace("//", "/")
       this.isShareList = false
+      this.currentPath = path
+      this.$store.commit('SET_CURRENT_PATH', path)
       this.$api.folder.getList(path).then(res => {
         if (res.data.success == 200) {
           this.isLoading = false;
-          this.currentPath = path
+
           this.currentPathName = path.split("/").pop()
           this.uploaderInstance.opts.query = {
             path: this.currentPath,
           }
-          this.$store.commit('SET_CURRENT_PATH', path)
+
           const fileList = res.data.data
           const newFileList = fileList.map(item => {
             return {
@@ -432,8 +435,7 @@ export default {
      * @return {*}
      */
     reload() {
-      console.log("reload haha");
-      this.getFileList(this.currentPath);
+      this.getFileList(this.$store.state.currentPath);
       this.$EventBus.$emit(events.RELOAD_FILE_LIST);
     },
 
