@@ -9874,6 +9874,11 @@ vue-smooth-reflow@^0.1.12:
   resolved "https://registry.yarnpkg.com/vue-smooth-reflow/-/vue-smooth-reflow-0.1.12.tgz#bca66e7cecc7ab1f683ebb02e1d9b75a2ab4db98"
   integrity sha512-cic+dmqsBzu/lRMXf/mhUPMM0g0vancJGUyNMMGHjis0ilSFd1RjIrZYcU5B7ef+n5oshH33/zbMA8OYyRTu7Q==
 
+vue-social-sharing@^3.0.9:
+  version "3.0.9"
+  resolved "https://registry.yarnpkg.com/vue-social-sharing/-/vue-social-sharing-3.0.9.tgz#72fda1e343cdb47cf52e3327a84a3612e9f82c11"
+  integrity sha512-Yg4oz5cSkr7ieMAgumwoRLnFhAaoUGCsN8lZE9yUkuQzbKid8yBOn4mLjfx/DA/E8nxYjunAfIUFs7eKIkBjPA==
+
 vue-socket.io-extended@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/vue-socket.io-extended/-/vue-socket.io-extended-4.2.0.tgz#e663553669fd3dcd9786b1add40b18580d36816f"
@@ -9946,8 +9951,10 @@ watchpack@^1.7.4:
   resolved "https://registry.yarnpkg.com/watchpack/-/watchpack-1.7.5.tgz#1267e6c55e0b9b5be44c2023aed5437a2c26c453"
   integrity sha512-9P3MWk6SrKjHsGkLT2KHXdQ/9SNkyoJbabxnKOoJepsvJjJG8uYTR3yTPxPQvNDI3w4Nz1xnE0TLHK4RIVe/MQ==
   dependencies:
+    chokidar "^3.4.1"
     graceful-fs "^4.1.2"
     neo-async "^2.5.0"
+    watchpack-chokidar2 "^2.0.1"
   optionalDependencies:
     chokidar "^3.4.1"
     watchpack-chokidar2 "^2.0.1"

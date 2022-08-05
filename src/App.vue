@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-15 10:59:06
+ * @LastEditTime: 2022-08-05 14:59:42
  * @Description: Main entry of application
  * @FilePath: /CasaOS-UI/src/App.vue
 -->
@@ -181,7 +181,7 @@ _____             _____ _____
   color: #2c3e50;
   overflow-y: hidden;
 
-  &.is-dark-bg{
+  &.is-dark-bg {
     background-color: #000;
   }
 }

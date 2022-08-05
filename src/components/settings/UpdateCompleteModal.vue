@@ -1,9 +1,9 @@
 <!--
  * @Author: Jerryk jerry@icewhale.org
- * @Date: 2022-05-02 17:44:02
+ * @Date: 2022-08-05 15:13:41
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-05 15:26:14
- * @FilePath: /CasaOS-UI/src/components/settings/UpdateModal.vue
+ * @LastEditTime: 2022-08-05 15:58:43
+ * @FilePath: /CasaOS-UI/src/components/settings/UpdateCompleteModal.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -13,27 +13,31 @@
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
       <div class="is-flex-grow-1">
-        <h3 class="title is-3">{{$t('Update')}}</h3>
+        <h3 class="title is-3">{{$t('Update completed')}}</h3>
       </div>
-      <div><button type="button" class="delete" @click="$emit('close')" v-if="!isUpdating" /></div>
+      <div><button type="button" class="delete" @click="$emit('close')" /></div>
     </header>
     <!-- Modal-Card Header End -->
     <!-- Modal-Card Body Start -->
     <section class="modal-card-body ">
-      <div class="node-card">
-        <div class="update-info-container  is-size-14px" v-html="markdownToHtml" v-if="!isUpdating"></div>
-        <div class="update-info-container  is-size-14px" v-html="updateMarkdownHtml" v-else></div>
+      <div class="node-card  mt-5 mb-5">
+        <div class="update-info-container  is-size-14px " v-html="markdownToHtml"></div>
+        <div class="mt-2rem">
+          <h3 class="title is-5 mb-2">{{ $t('Let more friends know') }}</h3>
+          <div class=" is-size-14px">{{ $t('please share to friends who are concerned about family and data privacy to join and use CasaOS.') }}</div>
+        </div>
+
+        <div class="buttons is-justify-content-center mb-6 mt-4">
+          <ShareNetwork v-for="site in shareSites" :network="site" :key="site" :url="githubUrl" :title="shareTitle" hashtags="homecloud,opensource">
+            <b-button icon-pack="casa" :icon-left="site" :type="`is-${site}`" class="ml-3 mr-3">
+              Share
+            </b-button>
+          </ShareNetwork>
+        </div>
+
       </div>
     </section>
     <!-- Modal-Card Body End -->
-    <!-- Modal-Card Footer Start-->
-    <footer class="modal-card-foot is-flex is-align-items-center">
-      <div class="is-flex-grow-1"></div>
-      <div>
-        <b-button :label="$t('Upgrade Now')" type="is-primary" rounded expaned :loading="isUpdating" @click="updateSystem" />
-      </div>
-    </footer>
-    <!-- Modal-Card Footer End -->
   </div>
 </template>
 
@@ -51,18 +55,19 @@ export default {
     return {
       timer: 0,
       updateTimer: 0,
-      isUpdating: false,
       markdown: ``,
-      updateLogs: ``
+      githubUrl: `https://github.com/IceWhaleTech/CasaOS`,
+      shareTitle: `Title`,
+      shareSites: [
+        'facebook',
+        'twitter',
+        'reddit'
+      ]
     };
   },
   computed: {
     markdownToHtml() {
       return marked.parse(this.changeLog);
-    },
-    updateMarkdownHtml() {
-
-      return marked.parse(this.updateLogs);
     }
   },
   methods: {
@@ -127,9 +132,12 @@ export default {
 
 <style lang="scss" >
 .update-info-container {
-  border-radius: 4px;
   overflow: hidden;
   min-height: 20rem;
+  background: #f8f8f8;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
 
   h1,
   h2,

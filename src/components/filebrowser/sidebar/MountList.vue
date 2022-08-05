@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-08-03 14:08:02
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-04 22:38:43
- * @FilePath: \CasaOS-UI\src\components\filebrowser\sidebar\MountList.vue
+ * @LastEditTime: 2022-08-05 12:08:26
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/sidebar/MountList.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -12,7 +12,7 @@
   <div>
     <ul>
       <!-- USB List Start -->
-      <tree-list-item v-for="item in usbStorageList" :key="item.path" :item="item" :isActive="isActive" iconName="disc" @rightIconClick="umountUsb"></tree-list-item>
+      <tree-list-item v-for="item in usbStorageList" :key="item.path" :item="item" :isActive="isActive" iconName="eject" @rightIconClick="umountUsb"></tree-list-item>
       <!-- USB List End -->
 
       <!-- Local Storage List Start -->
@@ -20,7 +20,7 @@
       <!-- Local Storage List End -->
 
       <!-- Network Storage List Start -->
-      <tree-list-item v-for="item in networkStorageList" :key="item.path" :item="item" :isActive="isActive" iconName="disc" @rightIconClick="umountNetwork"></tree-list-item>
+      <tree-list-item v-for="item in networkStorageList" :key="item.path" :item="item" :isActive="isActive" iconName="eject" @rightIconClick="umountNetwork"></tree-list-item>
       <!-- Network Storage List End -->
 
     </ul>
@@ -31,6 +31,7 @@
 
 <script>
 import { mixin } from '@/mixins/mixin';
+import events from '@/events/events';
 import TreeListItem from './TreeListItem.vue';
 export default {
   components: { TreeListItem },
@@ -64,7 +65,7 @@ export default {
   },
 
   mounted() {
-
+    this.$EventBus.$on(events.RELOAD_MOUNT_LIST, this.getStorageList);
 
   },
   methods: {
@@ -82,7 +83,7 @@ export default {
         this.usbStorageList = usbStorageArray.map((storage) => {
           return {
             name: storage.name,
-            icon: 'folder-media',
+            icon: 'storage-USB',
             pack: 'casa',
             path: storage.mount_point,
             visible: true,
@@ -107,7 +108,7 @@ export default {
         this.localStorageList = storageArray.map((storage) => {
           return {
             name: storage.label,
-            icon: 'folder-media',
+            icon: 'storage-other',
             pack: 'casa',
             path: storage.mount_point,
             visible: true,
@@ -130,7 +131,7 @@ export default {
           return {
             id: storage.id,
             name: storage.host,
-            icon: 'folder-media',
+            icon: 'storage-network',
             pack: 'casa',
             path: storage.mount_point,
             visible: true,

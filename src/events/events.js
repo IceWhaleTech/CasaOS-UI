@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-14 11:17:17
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-01 18:09:34
+ * @LastEditTime: 2022-08-05 12:07:58
  * @FilePath: /CasaOS-UI/src/events/events.js
  * @Description: 
  * 
@@ -19,5 +19,6 @@ const events = {
     UN_SHARE: 'unShare',
     GOTO: 'goto',
     SELECT_SHARE: 'selectShare',
+    RELOAD_MOUNT_LIST: 'reloadMountList',
 };
 export default events;

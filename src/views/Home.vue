@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-04 22:52:08
+ * @LastEditTime: 2022-08-05 16:04:16
  * @Description: 
- * @FilePath: \CasaOS-UI\src\views\Home.vue
+ * @FilePath: /CasaOS-UI/src/views/Home.vue
 -->
 <template>
   <div v-if="!isLoading" class="out-container">
@@ -74,6 +74,8 @@ import CoreService from '../components/CoreService.vue'
 import AppSection from '../components/Apps/AppSection.vue'
 //import Shortcuts from '@/components/Shortcuts.vue'
 import FilePanel from '@/components/filebrowser/FilePanel.vue'
+// import UpdateCompleteModal from '@/components/settings/UpdateCompleteModal.vue'
+import ShareModal from '@/components/share/ShareModal.vue'
 import { mixin } from '../mixins/mixin';
 import events from '@/events/events';
 const wallpaperConfig = "wallpaper"
@@ -126,11 +128,9 @@ export default {
     this.getConfig()
   },
   mounted() {
-
-
     window.addEventListener("resize", this.onResize);
     this.onResize()
-
+    this.showUpdateCompleteModal()
   },
   methods: {
 
@@ -226,6 +226,22 @@ export default {
             path: res.data.data.path,
             from: res.data.data.from
           })
+        }
+      })
+    },
+
+    showUpdateCompleteModal() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: ShareModal,
+        hasModalCard: true,
+        customClass: 'network-storage-modal',
+        trapFocus: true,
+        canCancel: [],
+        scroll: "keep",
+        animation: "zoom-in",
+        props: {
+          changeLog: `## [0.3.4] - 2022-07-29(UTC)\n\n### Added\n\n- SSH adds port-side options and prompts for connection status. ([#286](https://github.com/IceWhaleTech/CasaOS/issues/286))\n\n### Changed\n\n- Normalize all routes\n- Application names now support spaces ([#211](https://github.com/IceWhaleTech/CasaOS/issues/211))\n\n### Removed\n\n- Removed  casaos connect\n\n### Security\n\n- Adjustment of authentication method\n\n### Fixed\n\n- Fixed storage format and remove password error issues ([#344](https://github.com/IceWhaleTech/CasaOS/issues/344) [#357](https://github.com/IceWhaleTech/CasaOS/issues/357))`
         }
       })
     }

@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-08-03 15:28:43
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-04 22:43:17
- * @FilePath: \CasaOS-UI\src\components\filebrowser\modals\NewNetworkStorage.vue
+ * @LastEditTime: 2022-08-05 12:25:46
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/modals/NewNetworkStorage.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -25,7 +25,7 @@
           <b-field :label="$t('Server Address')">
             <b-autocomplete ref="inputs" v-model="host" :placeholder="$t('eg : smb://192.168.1.1')" field="host" max-height="120px" open-on-focus :data="filteredDataObj" @select="option => selected = option" append-to-body>
               <template slot-scope="props">
-                <div class="media is-align-items-center">
+                <div class="media is-align-items-center smb-media">
                   <div class="media-left is-flex is-align-items-center">
                     <b-icon icon="history"></b-icon>
                   </div>
@@ -72,7 +72,7 @@
     <footer class="modal-card-foot is-flex is-align-items-center">
       <div class="is-flex-grow-1"></div>
       <div>
-        <b-button :label="$t('Connect')" type="is-primary" rounded expaned @click="connect" />
+        <b-button :label="$t('Connect')" type="is-primary" rounded expaned :loading="isConnecting" @click="connect" />
       </div>
     </footer>
     <!-- Modal-Card Footer End -->
@@ -81,6 +81,7 @@
 
 <script>
 import smoothReflow from 'vue-smooth-reflow'
+import events from '@/events/events';
 export default {
   mixins: [smoothReflow],
   props: {
@@ -92,6 +93,7 @@ export default {
   data() {
     return {
       isGuest: true,
+      isConnecting: false,
       host: "",
       username: "",
       password: "",
@@ -135,9 +137,7 @@ export default {
     }
   },
   created() {
-    this.$nextTick(() => {
-      this.$refs.inputs.focus();
-    })
+
   },
   mounted() {
     console.log(this.host);
@@ -148,6 +148,9 @@ export default {
       transition: 'height .25s ease, width .75s ease-out'
     })
 
+    setTimeout(() => {
+      this.$refs.inputs.focus()
+    }, 500)
 
   },
   methods: {
@@ -160,8 +163,37 @@ export default {
           })
           return
         } else {
-          this.saveNewLoginInfoToLocalStorage()
-          console.log("connecting");
+
+          const host = this.host.replace("smb://", "").replace("nfs://", "")
+          const data = this.isGuest ? {
+            host: host,
+            username: "guest"
+          } : {
+            host: host,
+            username: this.username,
+            password: this.password
+          }
+          this.isConnecting = true
+          this.$api.samba.createConnection(data).then(res => {
+            console.log(res.data.data);
+            this.isConnecting = false
+            this.saveNewLoginInfoToLocalStorage()
+            this.$EventBus.$emit(events.RELOAD_MOUNT_LIST);
+            const item = {
+              path: res.data.data.mount_point
+            }
+            this.$EventBus.$emit(events.GOTO, item);
+            console.log(res.data.data.mount_point);
+            this.$emit('close')
+          }).catch(err => {
+            this.isConnecting = false
+            this.$buefy.toast.open({
+              message: this.$t(err.response.data.message),
+              type: 'is-danger'
+            })
+          })
+
+
         }
 
       } else {
@@ -217,11 +249,10 @@ export default {
 <style lang="scss">
 .network-storage-modal {
   .field-label {
-    flex-grow: 1 !important;
     text-align: left;
   }
-  .field-body {
-    flex-grow: 7 !important;
-  }
+}
+.smb-media {
+  color: #999;
 }
 </style>

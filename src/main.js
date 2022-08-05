@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-22 14:24:43
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-12 21:35:54
+ * @LastEditTime: 2022-08-05 15:49:57
  * @Description: 
- * @FilePath: \CasaOS-UI\src\main.js
+ * @FilePath: /CasaOS-UI/src/main.js
  */
 import 'intersection-observer'
 import Vue from 'vue'
@@ -17,6 +17,7 @@ import Buefy from 'buefy'
 import VueFullscreen from 'vue-fullscreen'
 import Vue2TouchEvents from 'vue2-touch-events'
 import VueTour from 'vue-tour'
+import VueSocialSharing from 'vue-social-sharing'
 import VueSocketIOExt from 'vue-socket.io-extended';
 const io = require("socket.io-client");
 // Import Styles
@@ -44,6 +45,7 @@ api.sys.getSocketPort().then(res => {
   Vue.use(Vue2TouchEvents)
   Vue.use(VueTour)
   Vue.use(VueSocketIOExt, socket);
+  Vue.use(VueSocialSharing);
 
   Vue.config.productionTip = false
   Vue.prototype.$api = api;
