@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-05 16:04:16
+ * @LastEditTime: 2022-08-06 13:13:10
  * @Description: 
- * @FilePath: /CasaOS-UI/src/views/Home.vue
+ * @FilePath: \CasaOS-UI\src\views\Home.vue
 -->
 <template>
   <div v-if="!isLoading" class="out-container">
@@ -74,8 +74,8 @@ import CoreService from '../components/CoreService.vue'
 import AppSection from '../components/Apps/AppSection.vue'
 //import Shortcuts from '@/components/Shortcuts.vue'
 import FilePanel from '@/components/filebrowser/FilePanel.vue'
-// import UpdateCompleteModal from '@/components/settings/UpdateCompleteModal.vue'
-import ShareModal from '@/components/share/ShareModal.vue'
+import UpdateCompleteModal from '@/components/settings/UpdateCompleteModal.vue'
+
 import { mixin } from '../mixins/mixin';
 import events from '@/events/events';
 const wallpaperConfig = "wallpaper"
@@ -130,7 +130,10 @@ export default {
   mounted() {
     window.addEventListener("resize", this.onResize);
     this.onResize()
-    this.showUpdateCompleteModal()
+    if (localStorage.getItem('is_update') === "true") {
+      this.showUpdateCompleteModal()
+      localStorage.removeItem('is_update')
+    }
   },
   methods: {
 
@@ -233,7 +236,7 @@ export default {
     showUpdateCompleteModal() {
       this.$buefy.modal.open({
         parent: this,
-        component: ShareModal,
+        component: UpdateCompleteModal,
         hasModalCard: true,
         customClass: 'network-storage-modal',
         trapFocus: true,

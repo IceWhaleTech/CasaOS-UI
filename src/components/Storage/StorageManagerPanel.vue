@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-01-17 15:16:11
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-04 18:29:03
+ * @LastEditTime: 2022-08-07 22:39:42
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\Storage\StorageManagerPanel.vue
 -->
@@ -18,7 +18,17 @@
         <!-- Storage and Disk List Start -->
         <div class="is-flex-grow-1 is-relative" v-if="!creatIsShow">
           <div class="create-container" v-if="activeTab == 0">
-            <b-button size="is-small" type="is-link is-light" rounded @click="showCreate" :disabled="unDiskData.length == 0">{{ $t('Create Storage') }}</b-button>
+
+            <popper trigger="hover"  append-to-body :options="{placement: 'bottom', modifiers: { offset: { offset: '0,4px' } } }">
+              <div class="popper  tooltip-content dark" v-if="unDiskData.length == 0">
+                {{$t('Please insert a Drive to Create Storage')}}
+              </div>
+              <div slot="reference">
+                <b-button size="is-small" type="is-link is-light" rounded @click="showCreate" :disabled="unDiskData.length == 0">{{ $t('Create Storage') }}</b-button>
+              </div>
+
+            </popper>
+
           </div>
           <b-tabs :animated="false" v-model="activeTab">
             <b-tab-item :label="$t('Storage')" class="scrollbars-light-auto tab-item">
@@ -127,6 +137,7 @@ import { ValidationObserver, ValidationProvider } from "vee-validate";
 import { mixin } from '../../mixins/mixin';
 import DriveItem from './DriveItem.vue'
 import StorageItem from './StorageItem.vue'
+import Popper from 'vue-popperjs';
 export default {
   name: "storage-manager-panel",
   components: {
@@ -134,7 +145,8 @@ export default {
     ValidationObserver,
     ValidationProvider,
     DriveItem,
-    StorageItem
+    StorageItem,
+    Popper
   },
   mixins: [smoothReflow, mixin],
   data() {
@@ -376,5 +388,22 @@ export default {
   .status {
     min-width: 7.75rem;
   }
+}
+
+.popper {
+  background-color: #505459;
+  padding: 0.35rem 0.75rem;
+  box-shadow: 0px 1px 2px 1px rgba(0, 1, 0, 0.2);
+  border: none;
+  color: #ffffff;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+</style>
+
+<style lang="scss">
+.popper[x-placement^="bottom"].dark .popper__arrow {
+  border-color: transparent transparent #505459 transparent !important;
 }
 </style>
