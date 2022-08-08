@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-02-23 17:08:21
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-01 18:52:31
+ * @LastEditTime: 2022-08-08 17:33:19
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/filebrowser/components/ContextMenu.vue
 -->
@@ -121,7 +121,6 @@ export default {
     },
     isShared() {
       const extensions = this.item.extensions
-      console.log(this.item);
       if (extensions === null) {
         return false
       } else {

@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'casaos';
-  src: url('../fonts/casaos.eot?kf8m64');
-  src: url('../fonts/casaos.eot?kf8m64#iefix') format('embedded-opentype'),
-    url('../fonts/casaos.ttf?kf8m64') format('truetype'),
-    url('../fonts/casaos.woff?kf8m64') format('woff'),
-    url('../fonts/casaos.svg?kf8m64#casaos') format('svg');
+  src: url('../fonts/casaos.eot?1ai5gp');
+  src: url('../fonts/casaos.eot?1ai5gp#iefix') format('embedded-opentype'),
+    url('../fonts/casaos.ttf?1ai5gp') format('truetype'),
+    url('../fonts/casaos.woff?1ai5gp') format('woff'),
+    url('../fonts/casaos.svg?1ai5gp#casaos') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -26,6 +26,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.casa-social-share:before {
+  content: "\e92c";
+}
 .casa-facebook:before {
   content: "\e929";
 }
@@ -158,6 +161,7 @@
 .casa-terminal:before {
   content: "\e90d";
 }
+
 
 
 

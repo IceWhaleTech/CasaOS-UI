@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-28 15:48:34
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-02 10:59:55
- * @FilePath: \CasaOS-UI\src\components\filebrowser\shared\ShareListPage.vue
+ * @LastEditTime: 2022-08-08 17:34:42
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/shared/ShareListPage.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -67,7 +67,6 @@ export default {
       try {
         const list = await this.$api.samba.getShares();
         this.isLoading = false
-        console.log(list.data.data);
         this.list = list.data.data.map(item => {
           const name = item.path.split('/').pop()
           return {

@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-06 13:06:07
+ * @LastEditTime: 2022-08-08 16:07:20
  * @Description: The right bottom contact bar
- * @FilePath: \CasaOS-UI\src\components\ContactBar.vue
+ * @FilePath: /CasaOS-UI/src/components/ContactBar.vue
 -->
 
 <template>
@@ -54,7 +54,7 @@
         {{$t('Share CasaOS')}}
       </div>
       <a @click="showShareModal" slot="reference">
-        <b-icon pack="casa" icon="github"></b-icon>
+        <b-icon pack="casa" icon="social-share"></b-icon>
       </a>
     </popper>
 

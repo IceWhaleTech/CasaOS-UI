@@ -51,14 +51,13 @@
                 <h4 class="title is-size-14px mb-2 mt-1 has-text-left has-text-white one-line ">
                   {{ item.model }}</h4>
                 <p class="has-text-left is-size-6 mt-1 ">
-                  <span class="op65">{{ $t('Used') }}:</span> {{item.mount?renderSize(item.use):"N/A"}}
+                  <span class="op65">{{ $t('Used') }}:</span> {{renderSize(item.size - item.avail)}}
                   <br>
                   <span class="op65"> {{ $t('Total') }}:</span> {{renderSize(item.size)}}
                 </p>
               </div>
             </div>
-            <b-progress v-if="item.mount" :type="(Math.floor(item.use * 100 / item.size)) | getProgressType" size="is-small" :value=" Math.floor(item.use * 100 / item.size)" class="mt-2"></b-progress>
-            <b-progress v-else type="is-dark" size="is-small" :value="0" class="mt-2"></b-progress>
+            <b-progress :type="(Math.floor((item.size - item.avail) * 100 / item.size)) | getProgressType" size="is-small" :value=" Math.floor((item.size - item.avail) * 100 / item.size)" class="mt-2"></b-progress>
           </div>
         </div>
       </div>
@@ -93,6 +92,7 @@ export default {
   mounted() {
     this.getDiskInfo(this.$store.state.hardwareInfo.disk)
     this.usbDisks = this.$store.state.hardwareInfo.usb
+
   },
   methods: {
     getDiskInfo(diskInfo) {
@@ -127,7 +127,6 @@ export default {
       this.getDiskInfo(data.body.sys_disk)
       // USB
       this.usbDisks = data.body.sys_usb
-
     }
   }
 }

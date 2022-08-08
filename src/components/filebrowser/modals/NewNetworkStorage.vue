@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-08-03 15:28:43
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-05 12:25:46
+ * @LastEditTime: 2022-08-08 17:34:36
  * @FilePath: /CasaOS-UI/src/components/filebrowser/modals/NewNetworkStorage.vue
  * @Description: 
  * 
@@ -140,7 +140,6 @@ export default {
 
   },
   mounted() {
-    console.log(this.host);
     //Smooth 
     this.$smoothReflow({
       el: '.modal-card',
@@ -175,7 +174,6 @@ export default {
           }
           this.isConnecting = true
           this.$api.samba.createConnection(data).then(res => {
-            console.log(res.data.data);
             this.isConnecting = false
             this.saveNewLoginInfoToLocalStorage()
             this.$EventBus.$emit(events.RELOAD_MOUNT_LIST);
@@ -183,7 +181,6 @@ export default {
               path: res.data.data.mount_point
             }
             this.$EventBus.$emit(events.GOTO, item);
-            console.log(res.data.data.mount_point);
             this.$emit('close')
           }).catch(err => {
             this.isConnecting = false

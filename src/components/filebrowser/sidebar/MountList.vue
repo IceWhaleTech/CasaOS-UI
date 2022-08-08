@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-08-03 14:08:02
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-05 12:08:26
+ * @LastEditTime: 2022-08-08 18:08:02
  * @FilePath: /CasaOS-UI/src/components/filebrowser/sidebar/MountList.vue
  * @Description: 
  * 
@@ -11,9 +11,6 @@
 <template>
   <div>
     <ul>
-      <!-- USB List Start -->
-      <tree-list-item v-for="item in usbStorageList" :key="item.path" :item="item" :isActive="isActive" iconName="eject" @rightIconClick="umountUsb"></tree-list-item>
-      <!-- USB List End -->
 
       <!-- Local Storage List Start -->
       <tree-list-item v-for="item in localStorageList" :key="item.path" :item="item" :isActive="isActive"></tree-list-item>
@@ -22,6 +19,10 @@
       <!-- Network Storage List Start -->
       <tree-list-item v-for="item in networkStorageList" :key="item.path" :item="item" :isActive="isActive" iconName="eject" @rightIconClick="umountNetwork"></tree-list-item>
       <!-- Network Storage List End -->
+
+      <!-- USB List Start -->
+      <tree-list-item v-for="item in usbStorageList" :key="item.path" :item="item" :isActive="isActive" iconName="eject" @rightIconClick="umountUsb"></tree-list-item>
+      <!-- USB List End -->
 
     </ul>
     <b-loading :is-full-page="false" v-model="isLoading"></b-loading>
@@ -126,7 +127,6 @@ export default {
       try {
 
         const networkRes = await this.$api.samba.getConnections()
-        console.log(networkRes.data.data);
         this.networkStorageList = networkRes.data.data.map((storage) => {
           return {
             id: storage.id,
@@ -151,13 +151,23 @@ export default {
 
     // umount usb storage
     umountUsb(item) {
-      console.log(item);
-      this.goToDataFolder(item)
+      this.$api.disks.umountUsb({ mount_point: item.path }).then(() => {
+        this.getStorageList()
+        this.goToDataFolder(item)
+        this.$buefy.toast.open({
+          message: this.$t('Eject Success'),
+          type: 'is-success'
+        })
+      }).catch(() => {
+        this.$buefy.toast.open({
+          message: this.$t('Eject Failed'),
+          type: 'is-danger'
+        })
+      })
     },
 
     // umount network storage
     umountNetwork(item) {
-      console.log(item);
       this.$api.samba.deleteConnection(item.id).then(() => {
         this.getStorageList()
         this.goToDataFolder(item)
@@ -182,6 +192,33 @@ export default {
       }
     }
   },
+  sockets: {
+
+    async sys_hardware_status() {
+      try {
+        const usbListRes = await this.$api.disks.getUsbs()
+        const usbStorageArray = []
+        usbListRes.data.data.forEach(item => {
+          item.children.forEach(part => {
+            usbStorageArray.push(part)
+          })
+        })
+        this.usbStorageList = usbStorageArray.map((storage) => {
+          return {
+            name: storage.name,
+            icon: 'storage-USB',
+            pack: 'casa',
+            path: storage.mount_point,
+            visible: true,
+            selected: true,
+            extensions: null
+          }
+        })
+      } catch (error) {
+        console.log(error.reponse.message)
+      }
+    }
+  }
 
 }
 </script>

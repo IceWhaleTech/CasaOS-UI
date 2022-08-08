@@ -74,7 +74,12 @@ export default {
     "Upgrade Now": "Upgrade Now",
     "Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB": "Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB",
     "There seems to be a problem with the upgrade process, please try again!": "There seems to be a problem with the upgrade process, please try again!",
-    
+    "Update completed": "Update completed",
+    "Let more friends know": "Let more friends know",
+    "Please share to friends who are concerned about family and data privacy to join and use CasaOS.": "Please share to friends who are concerned about family and data privacy to join and use CasaOS.",
+    "CasaOS upgrade successfully": "CasaOS upgrade successfully",
+    "CasaOS upgrade failed": "CasaOS upgrade failed",
+
     // Terminal & Logs
     "Terminal & Logs": "Terminal & Logs",
     "Terminal": "Terminal",
@@ -186,6 +191,7 @@ export default {
     "[Optional]": "[Optional]",
     "Notice: If there are multiple services, only the first set can be analyzed correctly": "Notice: If there are multiple services, only the first set can be analyzed correctly",
     "There was an error loading the data, please try again!": "There was an error loading the data, please try again!",
+    "Port": "Port",
 
     //Storage
     "Create Storage": "Create Storage",
@@ -215,6 +221,7 @@ export default {
     "The drive you select can be used directly as storage.": "The drive you select can be used directly as storage.",
     "You can also choose to create it after formatting. If formatted, the selected drive will be emptied.": "You can also choose to create it after formatting. If formatted, the selected drive will be emptied.",
     "Format and Create": "Format and Create",
+    "Please insert a Drive to Create Storage": "Please insert a Drive to Create Storage",
 
     // Feedback
     "Join Discord": "Join Discord",
@@ -224,6 +231,8 @@ export default {
     "Describe the bug": "Describe the bug",
     "A clear and concise description of what the bug is.": "A clear and concise description of what the bug is.",
     "System infomation": "System infomation",
+    "Share CasaOS": "Share CasaOS",
+    "Please invite more friends who are concerned about family and data privacy to join and use CasaOS.": "Please invite more friends who are concerned about family and data privacy to join and use CasaOS.",
 
     // Files
     "Files": "Files",
@@ -283,5 +292,33 @@ export default {
     "Set wallpaper successfully.": "Set wallpaper successfully.",
     "Save failed, please try again!": "Save failed, please try again!",
     "Upload failed, please try again!": "Upload failed, please try again!",
-
+    "Location": "Location",
+    "Share": "Share",
+    "Shared": "Shared",
+    "UnShare": "UnShare",
+    "Unsharing Folder": "Unsharing Folder",
+    "Are you sure you want to unshare this Folder?": "Are you sure you want to unshare this Folder?",
+    "New Local Storage": "New Local Storage",
+    "Connect Network Storage": "Connect Network Storage",
+    "Start sharing your files on the local network.": "Start sharing your files on the local network.",
+    "Shared Folders": "Shared Folders",
+    "Go to": "Go to",
+    "Get Share Link": "Get Share Link",
+    "Select Shared Folder": "Select Shared Folder",
+    "Folder has been shared": "Folder has been shared",
+    "Enter the following link to access the shared folder ( Samba ) .": "Enter the following link to access the shared folder ( Samba ) .",
+    "PC ( Windows explorer )": "PC ( Windows explorer )",
+    "Mac ( Finder )": "Mac ( Finder )",
+    "I Got it": "I Got it",
+    "Follow the guide to start sharing your files on the local network.": "Follow the guide to start sharing your files on the local network.",
+    "Eject Success": "Eject Success",
+    "Eject Failed": "Eject Failed",
+    "Server Address": "Server Address",
+    "eg : smb://192.168.1.1": "eg : smb://192.168.1.1",
+    "Support Samba Address eg : smb://192.168.1.1": "Support Samba Address eg : smb://192.168.1.1",
+    "Connect As Guest": "Connect As Guest",
+    "Username or password cannot be empty.": "Username or password cannot be empty.",
+    "Please enter a correct Samba address!": "Please enter a correct Samba address!",
+    "Create Folder": "Create Folder",
+    "Create File": "Create File",
 }

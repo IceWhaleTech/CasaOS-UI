@@ -3,7 +3,7 @@
  * @Date: 2022-02-18 12:42:06
  * @LastEditors: Jerryk jerry@icewhale.org
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\filebrowser\FilePanel.vue
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/FilePanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -243,6 +243,7 @@ export default {
   },
   data() {
     return {
+      isCreated: false,
       isLoading: true,
       isModalOpen: false,
       isDragIn: false,
@@ -388,7 +389,14 @@ export default {
      * @return {*}
      */
     init() {
-      this.getFileList(this.rootPath);
+
+      if (this.isCreated) {
+        this.getFileList(this.rootPath);
+        // this.$refs.mountedList.getStorageList();
+      } else {
+        this.isCreated = true
+      }
+
     },
 
     /**
@@ -553,7 +561,6 @@ export default {
      * @return {*}
      */
     getTargetUrl() {
-      console.log(this.$store.state);
       return `http://${this.$baseURL}/v1/file/upload?token=${this.$store.state.access_token}`
     },
 

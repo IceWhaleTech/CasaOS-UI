@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-25 19:15:57
+ * @LastEditTime: 2022-08-08 17:34:22
  * @FilePath: /CasaOS-UI/src/components/Apps/AppSection.vue
  * @Description: 
  * 
@@ -268,7 +268,6 @@ export default {
         memory: memory
       }
       const ret = await this.$api.container.getInfo(id);
-      console.log(ret.data.data);
       this.$buefy.modal.open({
         parent: this,
         component: AppPanel,

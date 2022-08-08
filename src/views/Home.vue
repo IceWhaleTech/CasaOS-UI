@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-06 13:13:10
+ * @LastEditTime: 2022-08-08 18:07:09
  * @Description: 
- * @FilePath: \CasaOS-UI\src\views\Home.vue
+ * @FilePath: /CasaOS-UI/src/views/Home.vue
 -->
 <template>
   <div v-if="!isLoading" class="out-container">
@@ -218,7 +218,6 @@ export default {
 
     openHomeContaxtMenu(e) {
       // console.log(e.target);
-      console.log(events.SHOW_HOME_CONTEXT_MENU);
       this.$EventBus.$emit(events.SHOW_HOME_CONTEXT_MENU, e);
     },
 

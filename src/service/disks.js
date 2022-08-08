@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-03 14:23:16
+ * @LastEditTime: 2022-08-08 17:36:50
  * @Description: Disk API
  * @FilePath: /CasaOS-UI/src/service/disks.js
  */
@@ -16,8 +16,13 @@ const disks = {
     },
 
     // Get usbs
-    getUsbs(){
+    getUsbs() {
         return api.get(`${PREFIX}/usb`);
+    },
+
+    // Umount usb
+    umountUsb(data) {
+        return api.delete(`${PREFIX}/usb`, data);
     }
 }
 export default disks;

@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-08-05 15:13:41
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-05 16:28:45
+ * @LastEditTime: 2022-08-08 14:40:14
  * @FilePath: /CasaOS-UI/src/components/share/ShareModal.vue
  * @Description: 
  * 
@@ -57,7 +57,7 @@ export default {
       timer: 0,
       updateTimer: 0,
       githubUrl: `https://raw.githubusercontent.com/IceWhaleTech/logo/main/casaos/casaos_social_share.png`,
-      shareTitle: `Title`,
+      shareTitle: `I'm using CasaOS, a simple, easy-to-use, elegant open-source home cloud system, try it like me`,
       shareSites: [
         'facebook',
         'twitter',
