@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-08-03 14:08:02
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-08 18:08:02
- * @FilePath: /CasaOS-UI/src/components/filebrowser/sidebar/MountList.vue
+ * @LastEditTime: 2022-08-08 23:49:30
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\sidebar\MountList.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -194,7 +194,7 @@ export default {
   },
   sockets: {
 
-    async sys_hardware_status() {
+    async sys_usb() {
       try {
         const usbListRes = await this.$api.disks.getUsbs()
         const usbStorageArray = []

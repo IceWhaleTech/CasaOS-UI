@@ -74,12 +74,17 @@ export default {
     "Upgrade Now": "立刻升级",
     "Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB": "当 Raspberry Pi 设备使用USB启动时，启用此项可能会导致启动故障。",
     "There seems to be a problem with the upgrade process, please try again!": "升级过程中似乎出现了问题，请重试！",
+    "Update completed": "更新完成",
+    "Let more friends know": "让更多人的朋友知道",
+    "Please share to friends who are concerned about family and data privacy to join and use CasaOS.": "请分享给有关家庭和数据隐私的朋友们，加入并使用CasaOS。",
+    "CasaOS upgrade successfully": "CasaOS 升级成功",
+    "CasaOS upgrade failed": "CasaOS 升级失败",
 
     // Terminal & Logs
     "Terminal & Logs": "终端与日志",
     "Terminal": "终端",
     "Logs": "日志",
-    "Please check if the username and port are correct, and make sure that ssh server is installed.":"请检查用户名和端口是否正确，并确保已经安装了ssh服务。",
+    "Please check if the username and port are correct, and make sure that ssh server is installed.": "请检查用户名和端口是否正确，并确保已经安装了ssh服务。",
 
     // Widgets
     "Widgets Settings": "小组件设置",
@@ -185,8 +190,8 @@ export default {
     "Port [Please add a ports set first]": "端口 [请先添加一组端口]",
     "[Optional]": "[可选]",
     "Notice: If there are multiple services, only the first set can be analyzed correctly": "注意：如果存在多个服务只有第一组服务能够被正确的解析",
-    "Port": "端口",
     "There was an error loading the data, please try again!": "加载数据时出错了，请重试！",
+    "Port": "端口",
 
     //Storage
     "Create Storage": "创建存储空间",
@@ -215,6 +220,7 @@ export default {
     "The drive you select can be used directly as storage.": "你所选择的硬盘可以直接作为存储空间使用。",
     "You can also choose to create it after formatting. If formatted, the selected drive will be emptied.": "你也可以选择在格式化后创建。如果格式化的话，选中的硬盘将会被清空。",
     "Format and Create": "格式化并创建",
+    "Please insert a Drive to Create Storage": "请接入一个磁盘来创建存储空间",
 
     // Feedback
     "Join Discord": "加入Discord",
@@ -224,6 +230,8 @@ export default {
     "Describe the bug": "描述一下这个错误",
     "A clear and concise description of what the bug is.": "清晰而简明地描述什么是错误。",
     "System infomation": "系统信息",
+    "Share CasaOS": "分享 CasaOS",
+    "Please invite more friends who are concerned about family and data privacy to join and use CasaOS.": "请邀请更多的朋友来关注家庭和数据隐私，并加入并使用CasaOS。",
 
     // Files
     "Files": "文件",
@@ -283,5 +291,33 @@ export default {
     "Set wallpaper successfully.": "成功设为壁纸.",
     "Save failed, please try again!": "保存失败，请重试！",
     "Upload failed, please try again!": "上传失败，请重试！",
-
+    "Location": "位置",
+    "Share": "共享",
+    "Shared": "已共享",
+    "UnShare": "取消共享",
+    "Unsharing Folder": "取消文件夹共享",
+    "Are you sure you want to unshare this Folder?": "确定要取消这个文件夹的局域网共享么？",
+    "New Local Storage": "新建本地存储空间",
+    "Connect Network Storage": "连接网络存储空间",
+    "Start sharing your files on the local network.": "在局域网上共享你的文件。",
+    "Shared Folders": "已共享的文件夹",
+    "Go to": "转到",
+    "Get Share Link": "获取共享链接",
+    "Select Shared Folder": "选择要共享的文件夹",
+    "Folder has been shared": "文件夹已共享",
+    "Enter the following link to access the shared folder ( Samba ) .": "输入以下链接以访问共享文件夹 ( Samba ) .",
+    "PC ( Windows explorer )": "PC ( Windows 文件管理器 )",
+    "Mac ( Finder )": "Mac ( 访达 )",
+    "I Got it": "我知道了",
+    "Follow the guide to start sharing your files on the local network.": "按照以下提示开始在局域网上共享你的文件。",
+    "Eject Success": "弹出成功",
+    "Eject Failed": "弹出失败",
+    "Server Address": "服务器地址",
+    "eg : smb://192.168.1.1": "例如：smb://192.168.1.1",
+    "Support Samba Address eg : smb://192.168.1.1": "支持 Samba 地址，例如：smb://192.168.1.1",
+    "Connect As Guest": "作为访客连接",
+    "Username or password cannot be empty.": "用户名或密码不能为空。",
+    "Please enter a correct Samba address!": "请输入正确的 Samba 地址！",
+    "Create Folder": "创建文件夹",
+    "Create File": "创建文件",
 }

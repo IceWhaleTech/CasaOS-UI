@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-28 15:29:40
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-04 18:40:08
+ * @LastEditTime: 2022-08-08 23:51:50
  * @FilePath: \CasaOS-UI\src\components\filebrowser\shared\ShareEntryButton.vue
  * @Description: 
  * 
@@ -20,7 +20,7 @@
         <div class="popper  tooltip-content dark">
           <div class="is-flex ">
             {{$t('Start sharing your files on the local network.')}}
-            <div class="is-clickable ml-1 is-flex is-align-items-center" @click="hideTip">
+            <div class="is-clickable ml-1 is-flex is-align-items-center" @click.stop="hideTip">
               <b-icon pack="casa" icon="close-xs"></b-icon>
             </div>
           </div>
@@ -71,6 +71,7 @@ export default {
       try {
         const res = await this.$api.users.getCustomStorage(sharedInitData)
         const resData = res.data.data
+        console.log(resData);
         if (resData) {
           if (!resData.isInit) {
             this.showTip()
