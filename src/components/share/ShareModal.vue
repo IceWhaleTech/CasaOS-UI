@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-08-05 15:13:41
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-08 14:40:14
+ * @LastEditTime: 2022-08-10 15:27:39
  * @FilePath: /CasaOS-UI/src/components/share/ShareModal.vue
  * @Description: 
  * 
@@ -29,7 +29,7 @@
         </div>
 
         <div class="buttons is-justify-content-center mb-6 mt-4">
-          <ShareNetwork v-for="site in shareSites" :network="site" :key="site" :url="githubUrl" :img="githubUrl" :title="shareTitle" hashtags="homecloud,opensource" twitter-user="guanningchuan">
+          <ShareNetwork v-for="site in shareSites" :network="site" :key="site" :url="githubUrl" :img="githubUrl" :title="shareTitle" hashtags="homecloud,opensource" :description="shareTitle">
             <b-button icon-pack="casa" :icon-left="site" :type="`is-${site}`" class="ml-3 mr-3">
               Share
             </b-button>
@@ -57,7 +57,7 @@ export default {
       timer: 0,
       updateTimer: 0,
       githubUrl: `https://raw.githubusercontent.com/IceWhaleTech/logo/main/casaos/casaos_social_share.png`,
-      shareTitle: `I'm using CasaOS, a simple, easy-to-use, elegant open-source home cloud system, try it like me`,
+      shareTitle: `I'm using CasaOS, a simple, easy-to-use, elegant open-source home cloud system, try it like me.`,
       shareSites: [
         'facebook',
         'twitter',

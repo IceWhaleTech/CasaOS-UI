@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-08 18:07:09
+ * @LastEditTime: 2022-08-10 15:53:26
  * @Description: 
  * @FilePath: /CasaOS-UI/src/views/Home.vue
 -->
@@ -183,11 +183,15 @@ export default {
      * @return {*} void
      */
     showFiles() {
+
       this.isFileActive = true
+      this.$nextTick(() => {
+        this.$refs.filePanel.init()
+      })
     },
 
     afterFileEnter() {
-      this.$refs.filePanel.init()
+
     },
 
     /**

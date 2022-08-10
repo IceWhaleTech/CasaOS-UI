@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-08-05 15:13:41
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-08 17:33:33
+ * @LastEditTime: 2022-08-10 15:37:46
  * @FilePath: /CasaOS-UI/src/components/settings/UpdateCompleteModal.vue
  * @Description: 
  * 
@@ -57,7 +57,7 @@ export default {
       updateTimer: 0,
       markdown: ``,
       githubUrl: `https://github.com/IceWhaleTech/CasaOS`,
-      shareTitle: `Title`,
+      shareTitle: `I'm using CasaOS, a simple, easy-to-use, elegant open-source home cloud system, try it like me.`,
       shareSites: [
         'facebook',
         'twitter',

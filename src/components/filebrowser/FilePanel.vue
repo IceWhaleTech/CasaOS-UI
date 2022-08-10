@@ -892,14 +892,22 @@ export default {
         }
       })
     },
-    sys_hardware_status(data) {
+    sys_hardware_status() {
       // USB
-      this.usbDisks = data.body.sys_usb
+      // this.usbDisks = data.body.sys_usb
 
     },
     storage_status() {
       // Storage
       this.reload()
+    },
+    sys_usb() {
+      setTimeout(() => {
+        if (this.currentPath == "/DATA") {
+          this.reload()
+        }
+      }, 500)
+
     }
   }
 
