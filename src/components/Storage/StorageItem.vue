@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-01-20 13:21:12
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-04 18:32:28
+ * @LastEditTime: 2022-08-11 17:15:53
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\Storage\StorageItem.vue
 -->
@@ -18,7 +18,7 @@
           </h4>
 
           <p class="has-text-left is-size-7 has-text-grey-light	">{{ $t('Single Drive Storage') }}, <span class="is-uppercase">{{item.fsType}}</span>
-            <b-tooltip :label="$t('CasaOS reserves 1% of file space when creating storage in EXT4 format.')"  append-to-body>
+            <b-tooltip :label="$t('CasaOS reserves 1% of file space when creating storage in EXT4 format.')" append-to-body>
               <b-icon icon="help-circle-outline" size="is-small" class="mr-2 "></b-icon>
             </b-tooltip>
           </p>
@@ -28,7 +28,7 @@
       </div>
       <div class="is-flex is-align-items-center b-group" v-if="!item.isSystem">
         <b-button size="is-small" :type="isFormating?'is-primary':''" rounded @click="formatStorage(item.path,item.mount_point)" :loading="isFormating" :disabled="isRemoving">{{ $t('Format') }}</b-button>
-        <b-button size="is-small" :type="isRemoving?'is-primary':''" rounded class="ml-2" @click="removeStorage(item.path,item.mount_point)" :loading="isRemoving" :disabled="isFormating"> {{ $t('Remove') }}</b-button>
+        <b-button size="is-small" :type="isRemoving?'is-primary':''" rounded class="ml-2" @click="removeStorage(item.disk)" :loading="isRemoving" :disabled="isFormating"> {{ $t('Remove') }}</b-button>
       </div>
     </div>
     <b-progress :type="item.usePercent | getProgressType" size="is-small" :value="item.usePercent"></b-progress>
@@ -54,7 +54,7 @@ export default {
     }
   },
   methods: {
-    removeStorage(path, mount_point) {
+    removeStorage(path) {
       this.isRemoving = true;
 
       this.$buefy.dialog.prompt({
@@ -72,10 +72,9 @@ export default {
         onConfirm: (value) => {
           let data = {
             path: path,
-            volume: mount_point,
             password: value
           }
-          this.$api.storage.delete(data).then((res) => {
+          this.$api.disks.umount(data).then((res) => {
             if (res.data.success != 200) {
               this.isRemoving = false;
               this.$buefy.toast.open({

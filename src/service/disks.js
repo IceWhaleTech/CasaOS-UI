@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-08 17:36:50
+ * @LastEditTime: 2022-08-11 17:16:42
  * @Description: Disk API
- * @FilePath: /CasaOS-UI/src/service/disks.js
+ * @FilePath: \CasaOS-UI\src\service\disks.js
  */
 import { api } from "./service.js";
 const PREFIX = "/disks";
@@ -13,6 +13,10 @@ const disks = {
     // get disk list
     getDiskList(data) {
         return api.get(`${PREFIX}`, data);
+    },
+
+    umount(data) {
+        return api.delete(`${PREFIX}`, data);
     },
 
     // Get usbs

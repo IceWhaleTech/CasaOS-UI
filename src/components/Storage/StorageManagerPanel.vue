@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-01-17 15:16:11
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-07 22:39:42
+ * @LastEditTime: 2022-08-11 17:15:06
  * @Description: 
  * @FilePath: \CasaOS-UI\src\components\Storage\StorageManagerPanel.vue
 -->
@@ -19,8 +19,8 @@
         <div class="is-flex-grow-1 is-relative" v-if="!creatIsShow">
           <div class="create-container" v-if="activeTab == 0">
 
-            <popper trigger="hover"  append-to-body :options="{placement: 'bottom', modifiers: { offset: { offset: '0,4px' } } }">
-              <div class="popper  tooltip-content dark" v-if="unDiskData.length == 0">
+            <popper trigger="hover" append-to-body :options="{placement: 'bottom', modifiers: { offset: { offset: '0,4px' } } }">
+              <div class="popper  tooltip-content dark" v-show="unDiskData.length == 0">
                 {{$t('Please insert a Drive to Create Storage')}}
               </div>
               <div slot="reference">
@@ -210,20 +210,23 @@ export default {
         const storageArray = []
         storageRes.data.data.forEach(item => {
           item.children.forEach(part => {
+            part.disk = item.path
+            part.diskName = item.disk_name
             storageArray.push(part)
           })
         })
         this.storageData = storageArray.map((storage) => {
           return {
             name: storage.label,
-            isSystem: storage.drive_name == "System",
+            isSystem: storage.diskName == "System",
             fsType: storage.type,
             size: storage.size,
             availSize: storage.avail,
             usePercent: 100 - Math.floor(storage.avail * 100 / storage.size),
             diskName: storage.drive_name,
             path: storage.path,
-            mount_point: storage.mount_point
+            mount_point: storage.mount_point,
+            disk: storage.disk
           }
 
         })

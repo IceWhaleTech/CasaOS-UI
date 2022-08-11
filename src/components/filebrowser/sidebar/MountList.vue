@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-08-03 14:08:02
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-10 17:16:43
- * @FilePath: /CasaOS-UI/src/components/filebrowser/sidebar/MountList.vue
+ * @LastEditTime: 2022-08-11 12:44:21
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\sidebar\MountList.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -207,6 +207,31 @@ export default {
             return {
               name: storage.name,
               icon: 'storage-USB',
+              pack: 'casa',
+              path: storage.mount_point,
+              visible: true,
+              selected: true,
+              extensions: null
+            }
+          })
+        }).catch((error) => {
+          console.log(error.reponse.message)
+        })
+      }, 500)
+    },
+    storage_status() {
+      setTimeout(() => {
+        this.$api.storage.list().then((res) => {
+          const storageArray = []
+          res.data.data.forEach(item => {
+            item.children.forEach(part => {
+              storageArray.push(part)
+            })
+          })
+          this.localStorageList = storageArray.map((storage) => {
+            return {
+              name: storage.label,
+              icon: 'storage-other',
               pack: 'casa',
               path: storage.mount_point,
               visible: true,

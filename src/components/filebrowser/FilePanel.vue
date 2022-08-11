@@ -3,7 +3,7 @@
  * @Date: 2022-02-18 12:42:06
  * @LastEditors: Jerryk jerry@icewhale.org
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/filebrowser/FilePanel.vue
+ * @FilePath: \CasaOS-UI\src\components\filebrowser\FilePanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -907,10 +907,7 @@ export default {
           this.reload()
         }
       }, 500)
-
     }
   }
-
-
 }
 </script>
