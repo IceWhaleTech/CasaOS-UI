@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-29 14:53:46
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-29 16:09:30
+ * @LastEditTime: 2022-08-12 16:41:56
  * @FilePath: /CasaOS-UI/src/components/filebrowser/shared/ShareListView.vue
  * @Description: 
  * 
@@ -21,7 +21,7 @@
         <!-- Empty Content Slot End -->
         <div class="select-parent">
           <div class="card-container">
-            <div class="tr-wrapper rdata" :data-rel="index" v-for="(item,index) in listData" :key="'list-'+index+item.path">
+            <div class="tr-wrapper rdata" :data-rel="index" v-for="(item,index) in listData" :key="'list-'+index+item.path" @contextmenu.prevent="openContextMenu($event,item)">
               <div class="tr is-unselectable" :class="{'active':item.isSelected}">
 
                 <div class="td">
@@ -51,6 +51,9 @@
         </div>
 
       </div>
+      <!-- Context Menu Start -->
+      <context-menu ref="ctxMenu" @reload="$emit('reload')"></context-menu>
+      <!-- Context Menu End -->
 
     </div>
 
@@ -61,7 +64,9 @@
 <script>
 import { mixin } from '@/mixins/mixin';
 import ActionButton from './ActionButton.vue';
+import ContextMenu from './ContextMenu.vue';
 import ListIconContainer from "../components/ListIconContainer.vue"
+
 export default {
   model: {
     prop: 'listData',
@@ -73,6 +78,7 @@ export default {
   },
   components: {
     ActionButton,
+    ContextMenu,
     ListIconContainer
   },
   mixins: [mixin],
