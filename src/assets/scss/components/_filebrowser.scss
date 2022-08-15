@@ -10,6 +10,7 @@
       .operation-status-bar {
         position: relative;
         z-index: 100;
+
         .popper {
           box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%), 0 0px 0 1px rgb(10 10 10 / 2%);
           background-color: white;
@@ -24,6 +25,7 @@
           position: relative;
           width: 20rem;
           padding: 0.5rem 1rem;
+
           .task-info {
             position: relative;
             z-index: 2;
@@ -88,9 +90,15 @@
           flex-grow: 0;
           flex-shrink: 0;
 
+          .nav-bar-top{
+            overflow-y: auto;
+          }
+
           .title {
             padding: 1.5rem;
           }
+
+
 
           .list-container {
             padding: 0.75rem;
@@ -153,6 +161,46 @@
                 height: 24px;
               }
 
+            }
+          }
+
+          // Bottom Area
+          .bottom-area {
+            border-top: rgba(0, 0, 0, 0.1) 1px solid;
+            margin: 0.75rem;
+            font-size: 14px;
+            padding-top: 0.75rem;
+
+            .list-item {
+              padding: 0.625rem 0.75rem 0.625rem 0.75rem;
+              margin: 0.125rem 0;
+              border-radius: 4px;
+              cursor: pointer;
+              transition: all 0.2s;
+              align-items: center;
+
+              .arrow-container {
+                width: 24px;
+                height: 24px;
+              }
+
+              span {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+              }
+
+              &:hover {
+                background: #f3f3f3;
+              }
+
+              &.active {
+                background: #deebfd;
+              }
+
+              .icon {
+                overflow: hidden;
+              }
             }
           }
         }

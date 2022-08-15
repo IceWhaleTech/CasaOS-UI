@@ -51,6 +51,7 @@
     "vue-simple-uploader": "^0.7.6",
     "vue-slider-component": "^3.2.14",
     "vue-smooth-reflow": "^0.1.12",
+    "vue-social-sharing": "^3.0.9",
     "vue-socket.io-extended": "^4.2.0",
     "vue-tour": "^2.0.0",
     "vue2-touch-events": "^3.2.2",

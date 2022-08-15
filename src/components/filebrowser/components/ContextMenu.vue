@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-02-23 17:08:21
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-19 22:55:36
+ * @LastEditTime: 2022-08-08 17:33:19
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\filebrowser\components\ContextMenu.vue
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/components/ContextMenu.vue
 -->
 <template>
   <div>
@@ -64,6 +64,17 @@
           <b-dropdown-item aria-role="menuitem" @click="setAsWallpaper(item)" v-if="showSingleEdit && isWallpaperType">
             {{ $t('Set as wallpaper') }}
           </b-dropdown-item>
+
+          <template v-if="item.is_dir">
+            <hr class="dropdown-divider">
+            <b-dropdown-item aria-role="menuitem" v-if="!isShared" @click="shareFoler">
+              {{ $t('Share') }}
+            </b-dropdown-item>
+            <b-dropdown-item aria-role="menuitem" class="has-text-danger" @click="unShare" v-else>
+              {{ $t('UnShare') }}
+            </b-dropdown-item>
+          </template>
+
           <hr class="dropdown-divider">
           <b-dropdown-item aria-role="menuitem" class="has-text-danger" @click="isConfirmed = true" v-if="!isConfirmed">
             {{ $t('Delete') }}
@@ -81,6 +92,7 @@
 
 <script>
 import { mixin, wallpaperType } from '@/mixins/mixin';
+import has from 'lodash/has'
 export default {
   mixins: [mixin],
   inject: ['filePanel'],
@@ -106,6 +118,18 @@ export default {
     },
     isWallpaperType() {
       return this.item.is_dir ? false : wallpaperType.includes(this.getFileExt(this.item))
+    },
+    isShared() {
+      const extensions = this.item.extensions
+      if (extensions === null) {
+        return false
+      } else {
+        if (has(extensions, 'share')) {
+          return extensions.share.shared === "true"
+        } else {
+          return false
+        }
+      }
     }
   },
   watch: {
@@ -182,6 +206,32 @@ export default {
       this.$refs.dropDown.toggle()
       const downItem = (this.items.length == 1) ? this.items[0] : this.items
       this.downloadFile(downItem);
+    },
+    async shareFoler() {
+      this.$refs.dropDown.toggle()
+      const data = [{
+        path: this.item.path,
+        anonymous: true
+      }]
+      try {
+        await this.$api.samba.createShare(data)
+        this.filePanel.reloadShare()
+        this.filePanel.getShareLink(this.item)
+      } catch (error) {
+        this.isSaving = false
+        this.$buefy.toast.open({
+          message: error.response.data.message,
+          type: 'is-danger'
+        })
+      }
+    },
+
+    unShare() {
+      this.$refs.dropDown.toggle()
+      const data = {
+        id: this.item.extensions.share.id,
+      }
+      this.filePanel.handleUnShare(data)
     }
 
   },

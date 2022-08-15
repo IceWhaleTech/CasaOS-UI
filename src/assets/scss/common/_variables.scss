@@ -184,6 +184,10 @@ $ghost-light: findLightColor($ghost);
 $ghost-dark: findDarkColor($ghost);
 $ghost-invert: findColorInvert($ghost);
 
+$facebook:#1977F3;
+$twitter:#1D9BF0;
+$reddit:#FF4500;
+
 
 // Lists and maps
 $custom-colors: null !default;
@@ -232,6 +236,16 @@ $colors: mergeColorMaps(("white": ($white,
             $danger-light,
             $danger-dark,
         ),
+
+        "facebook":($facebook,
+            $white),
+
+        "twitter":($twitter,
+            $white),
+
+        "reddit":($reddit,
+            $white),
+
     ),
     $custom-colors);
 

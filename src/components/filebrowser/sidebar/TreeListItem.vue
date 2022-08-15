@@ -1,111 +1,111 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-03-03 13:27:35
- * @LastEditors: JerryK
- * @LastEditTime: 2022-03-08 20:40:45
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2022-08-05 11:37:49
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\filebrowser\sidebar\TreeListItem.vue
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/sidebar/TreeListItem.vue
 -->
 <template>
 
   <li>
-    <div class="is-flex list-item" :class="{'active': isActive()}" @click="open" :style="styleObj">
-
-      <div class="cover mr-2 is-flex-shrink-0">
-        <div :class="item | coverType">
-          <img alt="folder" :src="getIconFile(item)" :class="item | iconType" />
+    <div class="is-flex list-item new-list-item" :class="{'active':isActived}" @click="open(item.path)" v-if="item.visible">
+      <div class="cover mr-2 is-flex-shrink-0 is-relative">
+        <b-icon :pack="item.pack" :icon="item.icon" custom-size="casa-28px" :class="iconColor"></b-icon>
+        <div class="overlay-layer" v-if="isShare">
+          <b-icon :pack="item.pack" icon="share" custom-size="casa-10px" class="casa-color-green casa-shape-rounded casa-shape-12px"></b-icon>
         </div>
       </div>
-      <span>{{item.name}}</span>
+      <div class=" is-flex-grow-1">{{item.name}}</div>
+      <div class=" is-flex-shrink-0 is-flex" v-if="iconName != ''" @click.stop="rightIconClick">
+        <b-icon :icon="iconName" :pack="item.pack" custom-size="casa-24px" class="casa-color-gray"></b-icon>
+      </div>
     </div>
-    <!-- Sub List Start -->
-    <tree-list ref="subList" :path="item.path" @update="subListUpdate" :style="subListStyleObj"></tree-list>
-    <!-- Sub List End -->
   </li>
+
 </template>
 
 <script>
-import { mixin } from '@/mixins/mixin';
-import slice from 'lodash/slice'
 
 export default {
-  mixins: [mixin],
   inject: ['filePanel'],
   components: {
-    TreeList: () => import('./TreeList.vue')
+
   },
   props: {
     item: {
       type: Object,
       default: null
     },
-    level: {
-      type: Number,
-      default: 0
-    }
+    iconColor: {
+      type: String,
+      default: ''
+    },
+    iconName: {
+      type: String,
+      default: ''
+    },
+    isShare: {
+      type: Boolean,
+      default: false
+    },
+    isShow: {
+      type: Boolean,
+      default: true
+    },
+    isActive: {
+      type: Boolean,
+      default: false
+    },
   },
   data() {
     return {
-      dirListData: [],
-      isLoading: false,
-      hasChild: true,
-      isExpand: false,
-      subListLen: 0,
-      styleObj: {
-        paddingLeft: this.level * 0.5 + "rem"
-      }
     }
   },
   computed: {
-    arrowIcon() {
-      return this.isExpand ? "menu-down" : "menu-right"
-    },
-    subListStyleObj() {
-      if (this.isExpand) {
-        return {
-          height: this.subListLen * 32 + "px"
+    isActived() {
+      if (!this.isActive) {
+        return false;
+      }
+      if (this.item.path == this.$store.state.currentPath) {
+        return true
+      } else if (this.item.path != this.$store.state.currentPath && this.item.path != "/" && this.item.path != "/DATA") {
+        if (this.$store.state.currentPath.indexOf(this.item.path) != -1) {
+          return true
+        } else {
+          return false
         }
       } else {
-        return {
-          height: "0px"
-        }
+        return false
       }
-    }
+
+    },
   },
 
   methods: {
-    isActive() {
-      let pathArray = slice(this.$store.state.currentPath.split("/"), 0, 3)
-      return this.item.path == pathArray.join("/")
-    },
     open() {
       this.filePanel.getFileList(this.item.path);
     },
-    getDirList() {
-      if (!this.hasChild) {
-        return false
-      }
-      if (!this.isExpand && !this.isLoading) {
-        this.isLoading = true
-        this.$refs.subList.getDirList()
-      } else {
-        this.isExpand = !this.isExpand
-      }
 
+    rightIconClick() {
+      this.$emit('rightIconClick', this.item);
     },
-    subListUpdate(val) {
-      this.subListLen = val
-      this.hasChild = val > 0
-      this.isLoading = false
-      if (val > 0) {
-        this.isExpand = true
-      }
-
-
-    }
   },
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.overlay-layer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+
+  .icon {
+    position: absolute;
+    right: -0.15rem;
+    bottom: -0.1rem;
+  }
+}
 </style>

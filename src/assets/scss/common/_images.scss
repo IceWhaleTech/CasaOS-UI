@@ -36,6 +36,11 @@
     width: 80px;
   }
 
+  &.is-160x160 {
+    height: 160px;
+    width: 160px;
+  }
+
   &.is-176x176 {
     height: 176px;
     width: 176px;
@@ -54,4 +59,3 @@
     }
   }
 }
-

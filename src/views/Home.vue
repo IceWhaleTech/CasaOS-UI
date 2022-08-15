@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-20 16:54:18
+ * @LastEditTime: 2022-08-10 15:53:26
  * @Description: 
  * @FilePath: /CasaOS-UI/src/views/Home.vue
 -->
@@ -56,9 +56,9 @@
     </div>
     <!-- Content End -->
     <!-- File Panel Start -->
-    <b-modal v-model="isFileActive" has-modal-card :destroy-on-hide="false" animation="zoom-in" custom-class="file-panel" :can-cancel="[]" aria-modal full-screen>
+    <b-modal v-model="isFileActive" has-modal-card @after-enter="afterFileEnter" :destroy-on-hide="false" animation="zoom-in" custom-class="file-panel" :can-cancel="[]" aria-modal full-screen>
       <template #default="props">
-        <file-panel @close="props.close"></file-panel>
+        <file-panel @close="props.close" ref="filePanel"></file-panel>
       </template>
     </b-modal>
     <!-- File Panel End -->
@@ -74,6 +74,8 @@ import CoreService from '../components/CoreService.vue'
 import AppSection from '../components/Apps/AppSection.vue'
 //import Shortcuts from '@/components/Shortcuts.vue'
 import FilePanel from '@/components/filebrowser/FilePanel.vue'
+import UpdateCompleteModal from '@/components/settings/UpdateCompleteModal.vue'
+
 import { mixin } from '../mixins/mixin';
 import events from '@/events/events';
 const wallpaperConfig = "wallpaper"
@@ -126,11 +128,12 @@ export default {
     this.getConfig()
   },
   mounted() {
-
-
     window.addEventListener("resize", this.onResize);
     this.onResize()
-
+    if (localStorage.getItem('is_update') === "true") {
+      this.showUpdateCompleteModal()
+      localStorage.removeItem('is_update')
+    }
   },
   methods: {
 
@@ -180,7 +183,15 @@ export default {
      * @return {*} void
      */
     showFiles() {
+
       this.isFileActive = true
+      this.$nextTick(() => {
+        this.$refs.filePanel.init()
+      })
+    },
+
+    afterFileEnter() {
+
     },
 
     /**
@@ -211,7 +222,6 @@ export default {
 
     openHomeContaxtMenu(e) {
       // console.log(e.target);
-      console.log(events.SHOW_HOME_CONTEXT_MENU);
       this.$EventBus.$emit(events.SHOW_HOME_CONTEXT_MENU, e);
     },
 
@@ -222,6 +232,22 @@ export default {
             path: res.data.data.path,
             from: res.data.data.from
           })
+        }
+      })
+    },
+
+    showUpdateCompleteModal() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: UpdateCompleteModal,
+        hasModalCard: true,
+        customClass: 'network-storage-modal',
+        trapFocus: true,
+        canCancel: [],
+        scroll: "keep",
+        animation: "zoom-in",
+        props: {
+          changeLog: `## [0.3.4] - 2022-07-29(UTC)\n\n### Added\n\n- SSH adds port-side options and prompts for connection status. ([#286](https://github.com/IceWhaleTech/CasaOS/issues/286))\n\n### Changed\n\n- Normalize all routes\n- Application names now support spaces ([#211](https://github.com/IceWhaleTech/CasaOS/issues/211))\n\n### Removed\n\n- Removed  casaos connect\n\n### Security\n\n- Adjustment of authentication method\n\n### Fixed\n\n- Fixed storage format and remove password error issues ([#344](https://github.com/IceWhaleTech/CasaOS/issues/344) [#357](https://github.com/IceWhaleTech/CasaOS/issues/357))`
         }
       })
     }

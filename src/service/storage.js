@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-14 18:15:24
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 18:59:15
+ * @LastEditTime: 2022-08-04 10:45:33
  * @FilePath: \CasaOS-UI\src\service\storage.js
  * @Description: 
  * 
@@ -11,6 +11,10 @@
 import { api } from "./service.js";
 const PREFIX = "/storage";
 const storage = {
+    // get storage list
+    list(data) {
+        return api.get(`${PREFIX}`, data)
+    },
 
     // create storage
     create(data) {

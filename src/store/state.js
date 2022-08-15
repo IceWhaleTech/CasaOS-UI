@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-06-02 19:48:26
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 11:12:24
+ * @LastEditTime: 2022-08-04 19:31:50
  * @FilePath: \CasaOS-UI\src\store\state.js
  * @Description: 
  * 
@@ -46,6 +46,9 @@ const state = {
     wallpaperObject: {
         path: require('@/assets/background/default_wallpaper.jpg'),
         from: "Built-in" //Built-in, Upload, Files
-    }
+    },
+
+    // Samba and nfs data
+    networkStorage: JSON.parse(localStorage.getItem('networkStorage')) || []
 }
 export default state

@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-26 11:03:07
+ * @LastEditTime: 2022-08-08 16:07:20
  * @Description: The right bottom contact bar
- * @FilePath: \CasaOS-UI\src\components\ContactBar.vue
+ * @FilePath: /CasaOS-UI/src/components/ContactBar.vue
 -->
 
 <template>
@@ -46,12 +46,26 @@
       </a>
     </popper>
 
+    <popper trigger="hover" transition='fade' enter-active-class="fade-enter-active" leave-active-class="" :options="{
+      placement: 'top',
+      modifiers: { offset: { offset: '0,4px' } }
+    }">
+      <div class="popper  tooltip-content">
+        {{$t('Share CasaOS')}}
+      </div>
+      <a @click="showShareModal" slot="reference">
+        <b-icon pack="casa" icon="social-share"></b-icon>
+      </a>
+    </popper>
+
   </div>
 </template>
 
 <script>
 import FeedbackPanel from './feedback/FeedbackPanel.vue'
+import ShareModal from '@/components/share/ShareModal.vue'
 import Popper from 'vue-popperjs';
+
 
 
 export default {
@@ -66,6 +80,19 @@ export default {
         component: FeedbackPanel,
         hasModalCard: true,
         customClass: 'feedback-modal',
+        trapFocus: true,
+        canCancel: [],
+        scroll: "keep",
+        animation: "zoom-in",
+      })
+    },
+
+    showShareModal() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: ShareModal,
+        hasModalCard: true,
+        customClass: 'network-storage-modal',
         trapFocus: true,
         canCancel: [],
         scroll: "keep",

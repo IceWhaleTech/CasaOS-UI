@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-01-17 15:16:11
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-29 11:22:22
+ * @LastEditTime: 2022-08-11 17:15:06
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/Storage/StorageManagerPanel.vue
 -->
@@ -17,8 +17,18 @@
 
         <!-- Storage and Disk List Start -->
         <div class="is-flex-grow-1 is-relative" v-if="!creatIsShow">
-          <div class="create-container" v-if="activeTab == 0 && unDiskData.length > 0">
-            <b-button size="is-small" type="is-link is-light" rounded @click="showCreate">{{ $t('Create Storage') }}</b-button>
+          <div class="create-container" v-if="activeTab == 0">
+
+            <popper trigger="hover" append-to-body :options="{placement: 'bottom', modifiers: { offset: { offset: '0,4px' } } }">
+              <div class="popper  tooltip-content dark" v-show="unDiskData.length == 0">
+                {{$t('Please insert a Drive to Create Storage')}}
+              </div>
+              <div slot="reference">
+                <b-button size="is-small" type="is-link is-light" rounded @click="showCreate" :disabled="unDiskData.length == 0">{{ $t('Create Storage') }}</b-button>
+              </div>
+
+            </popper>
+
           </div>
           <b-tabs :animated="false" v-model="activeTab">
             <b-tab-item :label="$t('Storage')" class="scrollbars-light-auto tab-item">
@@ -123,11 +133,11 @@ import LottieAnimation from "lottie-web-vue";
 import smoothReflow from 'vue-smooth-reflow'
 import delay from 'lodash/delay';
 import max from 'lodash/max';
-import orderBy from 'lodash/orderBy';
 import { ValidationObserver, ValidationProvider } from "vee-validate";
 import { mixin } from '../../mixins/mixin';
 import DriveItem from './DriveItem.vue'
 import StorageItem from './StorageItem.vue'
+import Popper from 'vue-popperjs';
 export default {
   name: "storage-manager-panel",
   components: {
@@ -135,7 +145,8 @@ export default {
     ValidationObserver,
     ValidationProvider,
     DriveItem,
-    StorageItem
+    StorageItem,
+    Popper
   },
   mixins: [smoothReflow, mixin],
   data() {
@@ -182,52 +193,70 @@ export default {
      * @param {} 
      * @return {void} 
      */
-    getDiskList(showDefault = false) {
-      this.$api.disks.getDiskList().then(res => {
-        if (res.data.success === 200) {
-          this.diskData = res.data.data.drive
+    async getDiskList(showDefault = false) {
 
-          this.unDiskData = res.data.data.avail
+      // get disk list
+      try {
+        const diskRes = await this.$api.disks.getDiskList()
+        this.diskData = diskRes.data.data.drive
+        this.unDiskData = diskRes.data.data.avail
+      } catch (error) {
+        console.log(error.response.message);
+      }
 
-          this.storageData = orderBy(res.data.data.storage, ['create_at'], ['asc']).map((disk) => {
-            return {
-              name: disk.name,
-              isSystem: disk.name == "System",
-              fsType: disk.type,
-              size: disk.size,
-              availSize: disk.avail,
-              usePercent: 100 - Math.floor(disk.avail * 100 / disk.size),
-              diskName: disk.drive_name,
-              path: disk.path,
-              mount_point: disk.mountpoint
-            }
+      // get storage list
+      try {
+        const storageRes = await this.$api.storage.list({ system: "show" })
+        const storageArray = []
+        storageRes.data.data.forEach(item => {
+          item.children.forEach(part => {
+            part.disk = item.path
+            part.diskName = item.disk_name
+            storageArray.push(part)
           })
-
-
-          let diskNumArray = this.storageData.map(disk => {
-            if (disk.name.includes("Storage")) {
-              let diskNum = disk.name.replace("Storage", "")
-              return (/^\d+$/.test(diskNum)) ? Number(diskNum) : 0
-            } else {
-              return 0
-            }
-          })
-          let nextMaxNum = max(diskNumArray) + 1;
-          if (this.unDiskData.length > 0) {
-            this.createStoragePath = this.unDiskData[0].path
-            this.createStorageSeiral = this.unDiskData[0].serial
-            this.createStorageType = this.getDiskType(this.unDiskData[0].need_format)
-            this.createStorageName = "Storage" + nextMaxNum
-            this.activeDisk = 0
+        })
+        this.storageData = storageArray.map((storage) => {
+          return {
+            name: storage.label,
+            isSystem: storage.diskName == "System",
+            fsType: storage.type,
+            size: storage.size,
+            availSize: storage.avail,
+            usePercent: 100 - Math.floor(storage.avail * 100 / storage.size),
+            diskName: storage.drive_name,
+            path: storage.path,
+            mount_point: storage.mount_point,
+            disk: storage.disk
           }
-          if (showDefault) {
-            this.showDefault()
-            this.isCreating = false
-            this.createStorageName = ""
+
+        })
+
+        let diskNumArray = this.storageData.map(storage => {
+          if (storage.name.includes("Storage")) {
+            let diskNum = storage.name.replace("Storage", "")
+            return (/^\d+$/.test(diskNum)) ? Number(diskNum) : 0
+          } else {
+            return 0
           }
-          this.isLoading = false
+        })
+        let nextMaxNum = max(diskNumArray) + 1;
+        if (this.unDiskData.length > 0) {
+          this.createStoragePath = this.unDiskData[0].path
+          this.createStorageSeiral = this.unDiskData[0].serial
+          this.createStorageType = this.getDiskType(this.unDiskData[0].need_format)
+          this.createStorageName = "Storage" + nextMaxNum
+          this.activeDisk = 0
         }
-      })
+        if (showDefault) {
+          this.showDefault()
+          this.isCreating = false
+          this.createStorageName = ""
+        }
+      } catch (error) {
+        console.log(error.response.message);
+      }
+
+      this.isLoading = false
     },
 
     /**
@@ -362,5 +391,22 @@ export default {
   .status {
     min-width: 7.75rem;
   }
+}
+
+.popper {
+  background-color: #505459;
+  padding: 0.35rem 0.75rem;
+  box-shadow: 0px 1px 2px 1px rgba(0, 1, 0, 0.2);
+  border: none;
+  color: #ffffff;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+</style>
+
+<style lang="scss">
+.popper[x-placement^="bottom"].dark .popper__arrow {
+  border-color: transparent transparent #505459 transparent !important;
 }
 </style>

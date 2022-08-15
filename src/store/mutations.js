@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-06-02 19:49:36
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 11:15:01
+ * @LastEditTime: 2022-08-04 19:32:43
  * @FilePath: \CasaOS-UI\src\store\mutations.js
  * @Description: 
  * 
@@ -86,6 +86,11 @@ const mutations = {
     SET_OPERATE_OBJECT(state, val) {
         state.operateObject = val
     },
+
+    SET_NETWORK_STORAGE(state, val) {
+        localStorage.setItem('networkStorage', JSON.stringify(val))
+        state.networkStorage = val
+    }
 
 }
 export default mutations
