@@ -4,7 +4,7 @@
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2022-08-11 17:15:06
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\Storage\StorageManagerPanel.vue
+ * @FilePath: /CasaOS-UI/src/components/Storage/StorageManagerPanel.vue
 -->
 <template>
   <div class="modal-card">
