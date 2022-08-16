@@ -177,7 +177,7 @@ export default {
     },
     getTargetUrl() {
       const accessToken = localStorage.getItem("access_token")
-      return `http://${this.$baseURL}/v1/users/current/image/${wallpaperConfig}?token=${accessToken}&type=wallpaper`
+      return `${document.location.protocol}//${this.$baseURL}/v1/users/current/image/${wallpaperConfig}?token=${accessToken}&type=wallpaper`
     },
     parseUrl(serverUrl) {
       const newUrl = serverUrl.replace('SERVER_URL', 'http://'+this.$baseURL)

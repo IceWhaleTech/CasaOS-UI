@@ -49,7 +49,7 @@ const wallpaperConfig = "wallpaper"
 export const mixin = {
     data() {
         return {
-            baseUrl: `http://${this.$baseURL}/v1/`
+            baseUrl: `${document.location.protocol}//${this.$baseURL}/v1/`
         }
     },
     mounted() {

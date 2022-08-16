@@ -561,7 +561,7 @@ export default {
      * @return {*}
      */
     getTargetUrl() {
-      return `http://${this.$baseURL}/v1/file/upload?token=${this.$store.state.access_token}`
+      return `${document.location.protocol}//${this.$baseURL}/v1/file/upload?token=${this.$store.state.access_token}`
     },
 
     /**

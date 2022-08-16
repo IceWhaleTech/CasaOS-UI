@@ -1175,7 +1175,7 @@ export default {
         return
       }
       this.isFetching = true
-      axios.get(`https://hub.docker.com/api/content/v1/products/search?source=community&q=${name}&page=1&page_size=4`)
+      axios.get(`${document.location.protocol}//hub.docker.com/api/content/v1/products/search?source=community&q=${name}&page=1&page_size=4`)
         .then(({ data }) => {
           this.data = []
           data.summaries.forEach((item) => this.data.push(item.name))
