@@ -16,11 +16,15 @@
       <div class="columns is-mobile ">
         <div class="column is-half has-text-centered">
           <apexchart type="radialBar" :height="barHeight" :options="chartOptions" :series="cpuSeries"></apexchart>
-          <p class="is-size-14px one-line">CPU <span class="is-size-7">({{cpuCores}} {{ $t('Cores') }})</span></p>
+          <p class="is-size-12px two-line margin-[-10px]">CPU<br/>
+            <span class="is-size-14px">{{cpuCores}} {{ $t('Cores') }}</span>
+          </p>
         </div>
         <div class="column is-half has-text-centered">
           <apexchart type="radialBar" :height="barHeight" :options="chartOptions" :series="ramSeries"></apexchart>
-          <p class="is-size-14px one-line">RAM <span class="is-size-7">({{totalMemory | renderSize}})</span></p>
+          <p class="is-size-12px two-line margin-[-10px]">RAM <br/>
+            <span class="is-size-14px">{{totalMemory | renderSize}}</span>
+          </p>
         </div>
       </div>
       <div v-if="showMore">
@@ -91,7 +95,6 @@ export default {
           type: 'radialBar',
           width: '100%'
         },
-
         grid: {
           padding: {
             left: 0,
@@ -115,14 +118,14 @@ export default {
         plotOptions: {
 
           radialBar: {
-            startAngle: 0,
-            endAngle: 360,
+            startAngle: -130,
+            endAngle: 130,
             offsetX: 0,
             offsetY: 0,
 
             hollow: {
               margin: 0,
-              size: '60%',
+              size: '65%',
               image: undefined,
               imageOffsetX: 0,
               imageOffsetY: 0,
@@ -142,9 +145,12 @@ export default {
               opacity: 0.4,
 
             },
-
             dataLabels: {
-              show: true,
+              name: {
+                color:'#fff',
+                offsetY: 30
+              },
+              // show: true,
               value: {
                 formatter: function (val) {
                   return parseInt(val) + "%";
