@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-06-21 19:03:39
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-21 08:45:32
- * @FilePath: \CasaOS-UI\src\components\wallpaper\CasaWallpaper.vue
+ * @LastEditTime: 2022-08-18 10:48:59
+ * @FilePath: \CasaOS-UI-dev\src\components\wallpaper\CasaWallpaper.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -68,7 +68,7 @@ export default {
       })
     },
     parseUrl(serverUrl) {
-      const newUrl = serverUrl.replace('SERVER_URL', 'http://'+this.$baseURL)
+      const newUrl = serverUrl.replace('SERVER_URL', `${this.$protocol}//${this.$baseURL}`)
       return newUrl;
     },
   },

@@ -3,7 +3,7 @@
  * @Date: 2022-02-18 12:42:06
  * @LastEditors: Jerryk jerry@icewhale.org
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/filebrowser/FilePanel.vue
+ * @FilePath: \CasaOS-UI-dev\src\components\filebrowser\FilePanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -561,7 +561,7 @@ export default {
      * @return {*}
      */
     getTargetUrl() {
-      return `http://${this.$baseURL}/v1/file/upload?token=${this.$store.state.access_token}`
+      return `${this.$protocol}//${this.$baseURL}/v1/file/upload?token=${this.$store.state.access_token}`
     },
 
     /**

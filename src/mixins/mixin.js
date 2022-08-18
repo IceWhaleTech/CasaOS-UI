@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-01-20 12:01:07
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-21 08:36:34
+ * @LastEditTime: 2022-08-18 10:49:41
  * @Description: 
- * @FilePath: \CasaOS-UI\src\mixins\mixin.js
+ * @FilePath: \CasaOS-UI-dev\src\mixins\mixin.js
  */
 import qs from 'qs'
 import has from 'lodash/has'
@@ -49,7 +49,7 @@ const wallpaperConfig = "wallpaper"
 export const mixin = {
     data() {
         return {
-            baseUrl: `http://${this.$baseURL}/v1/`
+            baseUrl: `${this.$protocol}://${this.$baseURL}/v1/`
         }
     },
     mounted() {

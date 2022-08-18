@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-08-03 15:28:43
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-08 17:34:36
- * @FilePath: /CasaOS-UI/src/components/filebrowser/modals/NewNetworkStorage.vue
+ * @LastEditTime: 2022-08-18 10:51:36
+ * @FilePath: \CasaOS-UI-dev\src\components\filebrowser\modals\NewNetworkStorage.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -185,7 +185,7 @@ export default {
           }).catch(err => {
             this.isConnecting = false
             this.$buefy.toast.open({
-              message: this.$t(err.response.data.message),
+              message: this.$t(err.response.data.data),
               type: 'is-danger'
             })
           })

@@ -1,9 +1,9 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-12-06 18:29:48
- * @LastEditTime: 2022-07-20 15:18:25
+ * @LastEditTime: 2022-08-18 10:48:41
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/settings/PortPanel.vue
+ * @FilePath: \CasaOS-UI-dev\src\components\settings\PortPanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -82,12 +82,11 @@ export default {
     checkUpdate() {
 
       this.timer = setInterval(() => {
-        const protocol = document.location.protocol
-        const checkUrl = `${protocol}//${this.$baseIp}:${this.port}`
+        const checkUrl = `${this.$protocol}//${this.$baseIp}:${this.port}`
         this.$api.sys.checkUiPort(checkUrl + '/v1/sys/port').then(res => {
           if (res.data.success == 200) {
             clearInterval(this.timer);
-            const url = `http://${this.$baseIp}:${res.data.data}`
+            const url = `${this.$protocol}//${this.$baseIp}:${res.data.data}`
             window.open(url, '_self');
           }
         })
