@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-06-22 22:20:20
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-21 08:57:11
- * @FilePath: \CasaOS-UI\src\components\wallpaper\WallpaperModal.vue
+ * @LastEditTime: 2022-08-18 10:49:19
+ * @FilePath: \CasaOS-UI-dev\src\components\wallpaper\WallpaperModal.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -177,10 +177,10 @@ export default {
     },
     getTargetUrl() {
       const accessToken = localStorage.getItem("access_token")
-      return `http://${this.$baseURL}/v1/users/current/image/${wallpaperConfig}?token=${accessToken}&type=wallpaper`
+      return `${this.$protocol}//${this.$baseURL}/v1/users/current/image/${wallpaperConfig}?token=${accessToken}&type=wallpaper`
     },
     parseUrl(serverUrl) {
-      const newUrl = serverUrl.replace('SERVER_URL', 'http://'+this.$baseURL)
+      const newUrl = serverUrl.replace('SERVER_URL', `${this.$protocol}//${this.$baseURL}`)
       return newUrl;
     },
   }

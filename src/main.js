@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-22 14:24:43
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-05 15:49:57
+ * @LastEditTime: 2022-08-16 15:08:41
  * @Description: 
- * @FilePath: /CasaOS-UI/src/main.js
+ * @FilePath: \CasaOS-UI\src\main.js
  */
 import 'intersection-observer'
 import Vue from 'vue'
@@ -26,6 +26,7 @@ import 'vue-tour/dist/vue-tour.css'
 import VAnimateCss from 'v-animate-css';
 
 api.sys.getSocketPort().then(res => {
+  const protocol = document.location.protocol
   const wsPort = res.data.data
   const devIp = process.env.VUE_APP_DEV_IP
   const devPort = process.env.VUE_APP_DEV_PORT
@@ -51,6 +52,7 @@ api.sys.getSocketPort().then(res => {
   Vue.prototype.$api = api;
   Vue.prototype.$baseIp = baseIp;
   Vue.prototype.$baseURL = baseURL;
+  Vue.prototype.$protocol = protocol;
 
   // Create an EventBus
   Vue.prototype.$EventBus = new Vue();
