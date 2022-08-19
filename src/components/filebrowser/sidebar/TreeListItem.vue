@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-03-03 13:27:35
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-05 11:37:49
+ * @LastEditTime: 2022-08-19 14:25:41
  * @Description: 
- * @FilePath: /CasaOS-UI/src/components/filebrowser/sidebar/TreeListItem.vue
+ * @FilePath: \CasaOS-UI-dev\src\components\filebrowser\sidebar\TreeListItem.vue
 -->
 <template>
 
@@ -16,7 +16,7 @@
           <b-icon :pack="item.pack" icon="share" custom-size="casa-10px" class="casa-color-green casa-shape-rounded casa-shape-12px"></b-icon>
         </div>
       </div>
-      <div class=" is-flex-grow-1">{{item.name}}</div>
+      <div class=" is-flex-grow-1 one-line">{{item.name}}</div>
       <div class=" is-flex-shrink-0 is-flex" v-if="iconName != ''" @click.stop="rightIconClick">
         <b-icon :icon="iconName" :pack="item.pack" custom-size="casa-24px" class="casa-color-gray"></b-icon>
       </div>
