@@ -4,17 +4,24 @@
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2022-08-08 17:34:22
  * @FilePath: /CasaOS-UI/src/components/Apps/AppSection.vue
- * @Description: 
- * 
- * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+ * @Description:
+ *
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
 -->
 
 <template>
   <div class="home-section has-text-left">
     <!-- Title Bar Start -->
     <div class=" is-flex is-align-items-center mb-5">
+        <app-section-title-tip title="Apps" label="Drag icons to sort." id="appTitle1" class="is-flex-grow-1"></app-section-title-tip>
 
-      <app-section-title-tip title="Apps" label="Drag icons to sort." id="appTitle1"></app-section-title-tip>
+      <b-dropdown aria-role="menu" class="file-dropdown" position="is-bottom-left" animation="fade1">
+        <template #trigger>
+          <b-icon pack="casa" icon="plus" size="is-20" type="is-white"></b-icon>
+        </template>
+        <b-dropdown-item aria-role="menuitem" @click="showInstall(0, 'custom')">{{$t('Custom Install APP')}}</b-dropdown-item>
+        <b-dropdown-item aria-role="menuitem" @click="showExternalLinkPanel">{{$t('Add external link/APP')}}</b-dropdown-item>
+      </b-dropdown>
     </div>
     <!-- Title Bar End -->
 
@@ -57,6 +64,7 @@
 <script>
 import AppCard from './AppCard.vue'
 import AppPanel from './AppPanel.vue'
+import ExternalLinkPanel from "@/components/Apps/ExternalLinkPanel";
 import AppSectionTitleTip from './AppSectionTitleTip.vue'
 import draggable from 'vuedraggable'
 import xor from 'lodash/xor'
@@ -180,7 +188,7 @@ export default {
     },
 
     /**
-     * @description: 
+     * @description:
      * @param {Array} oriList
      * @param {Array} newList
      * @return {*}
@@ -219,7 +227,7 @@ export default {
      * @description: Show Install Panel Programmatic
      * @return {*} void
      */
-    async showInstall(storeId = 0) {
+    async showInstall(storeId = 0, mode) {
 
       this.isShowing = true
 
@@ -248,7 +256,8 @@ export default {
           id: "0",
           state: "install",
           configData: configData,
-          storeId: storeId
+          storeId: storeId,
+          settingData: mode !== 'custom' ? undefined : {}
         }
       })
     },
@@ -257,7 +266,7 @@ export default {
      * @description: Show Settings Panel Programmatic
      * @param {String} id
      * @param {String} status
-     * @param {Boolean} isCasa 
+     * @param {Boolean} isCasa
      * @return {*}
      */
     async showConfigPanel(id, status, isCasa) {
@@ -290,6 +299,24 @@ export default {
           configData: configData,
           settingData: ret.data.data
         }
+      })
+    },
+    async showExternalLinkPanel(){
+      this.$buefy.modal.open({
+        parent: this,
+        component: ExternalLinkPanel,
+        hasModalCard: true,
+        customClass: '',
+        trapFocus: true,
+        canCancel: [''],
+        scroll: "keep",
+        animation: "zoom-in",
+        events: {
+          'updateState': () => {
+            this.getList()
+          }
+        },
+        props: {}
       })
     }
   },
