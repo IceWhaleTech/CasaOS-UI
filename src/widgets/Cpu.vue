@@ -17,7 +17,7 @@
         <div class="column is-half has-text-centered">
           <apexchart type="radialBar" :height="barHeight" :options="chartOptions" :series="cpuSeries"></apexchart>
           <p class="is-size-12px two-line margin-[-10px]">CPU<br/>
-            <span class="is-size-14px">{{cpuCores}} {{ $t('Cores') }}</span>
+            <span class="is-size-14px">{{power.toFixed(1)}} W/{{temperature}}°C</span>
           </p>
         </div>
         <div class="column is-half has-text-centered">
@@ -82,6 +82,10 @@ export default {
 
   data() {
     return {
+      power:0,
+      tempTime:0,
+      tempValue:0,
+      temperature:0,
       timmer: null,
       activeTab: 0,
       showMore: false,
@@ -181,11 +185,12 @@ export default {
       containerRamList: []
     }
   },
-  created() {
+  async created() {
     this.cpuCores = this.$store.state.hardwareInfo.cpu.num
     this.totalMemory = this.$store.state.hardwareInfo.mem.total
     this.updateCharts(this.$store.state.hardwareInfo)
     this.getDockerUsage()
+    await this.getSysUtilization()
     this.timer = setInterval(() => {
       if (this.showMore) {
         this.getDockerUsage()
@@ -202,6 +207,14 @@ export default {
     clearInterval(this.timer);
   },
   methods: {
+    async getSysUtilization(){
+      await this.$api.sys.getUtilization().then(({data}) => {
+        if(data.success === 200){
+          this.tempTime = data.data.cpu.power.timestamp
+          this.tempValue = data.data.cpu.power.value
+        }
+      })
+    },
     /**
      * @description: Update cpu and memory usage
      * @param {*}
@@ -295,6 +308,12 @@ export default {
       // CPU
       this.cpuCores = data.body.sys_cpu.num
       this.cpuSeries = [data.body.sys_cpu.percent]
+
+      // power temperature
+      this.power = (data.body.sys_cpu.power.value - this.tempValue)/(data.body.sys_cpu.power.timestamp - this.tempTime)/1000000
+      this.tempTime = data.body.sys_cpu.power.timestamp
+      this.tempValue = data.body.sys_cpu.power.value
+      this.temperature = data.body.sys_cpu.temperature
 
       // Memory
       this.totalMemory = data.body.sys_mem.total

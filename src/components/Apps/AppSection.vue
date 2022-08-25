@@ -163,7 +163,10 @@ export default {
       this.isLoading = true;
       try {
         const listRes = await this.$api.container.getMyAppList();
-        const listLinkApp = await this.$api.users.getLinkAppDetail().then(v => v.data.data);
+        let listLinkApp = await this.$api.users.getLinkAppDetail().then(v => v.data.data);
+        if (listLinkApp === ""){
+          listLinkApp = []
+        }
         localStorage.setItem("listLinkApp", JSON.stringify(listLinkApp))
         const orgAppList = listRes.data.data.casaos_apps
         let casaAppList = concat(builtInApplications, orgAppList, listLinkApp)

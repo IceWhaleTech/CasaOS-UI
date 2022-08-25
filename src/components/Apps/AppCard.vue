@@ -25,7 +25,7 @@
           <b-button type="is-text" class="mb-1" @click="uninstallConfirm" :loading="isUninstalling" expanded>
             {{$t('Uninstall')}}
           </b-button>
-          <div class="gap">
+          <div class="gap" v-if="item.type !== 'LinkApp'">
             <div class="columns is-gapless bbor is-flex">
               <div class="column is-flex is-justify-content-center is-align-items-center">
                 <b-button type="is-text" expanded :loading="isRestarting" @click="restartApp">
