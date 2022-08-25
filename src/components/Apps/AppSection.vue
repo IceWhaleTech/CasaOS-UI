@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
  * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-08-25 17:37:21
+ * @LastEditTime: 2022-08-26 00:45:18
  * @FilePath: /CasaOS-UI/src/components/Apps/AppSection.vue
  * @Description:
  *
@@ -13,17 +13,14 @@
   <div class="home-section has-text-left">
     <!-- Title Bar Start -->
     <div class=" is-flex is-align-items-center mb-5">
-      <app-section-title-tip title="Apps" label="Drag icons to sort." id="appTitle1" class="is-flex-grow-1">
-      </app-section-title-tip>
+        <app-section-title-tip title="Apps" label="Drag icons to sort." id="appTitle1" class="is-flex-grow-1"></app-section-title-tip>
 
       <b-dropdown aria-role="menu" class="file-dropdown" position="is-bottom-left" animation="fade1">
         <template #trigger>
           <b-icon pack="casa" icon="plus" size="is-20" type="is-white"></b-icon>
         </template>
-        <b-dropdown-item aria-role="menuitem" @click="showInstall(0, 'custom')">{{ $t('Custom Install APP') }}
-        </b-dropdown-item>
-        <b-dropdown-item aria-role="menuitem" @click="showExternalLinkPanel">{{ $t('Add external link/APP') }}
-        </b-dropdown-item>
+        <b-dropdown-item aria-role="menuitem" @click="showInstall(0, 'custom')">{{$t('Custom Install APP')}}</b-dropdown-item>
+        <b-dropdown-item aria-role="menuitem" @click="showExternalLinkPanel">{{$t('Add external link/APP')}}</b-dropdown-item>
       </b-dropdown>
     </div>
     <!-- Title Bar End -->

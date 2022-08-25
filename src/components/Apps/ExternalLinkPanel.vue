@@ -2,7 +2,7 @@
  * @Author: ezreal.ice hengxin.zhang@icewhale.org
  * @Date:  2022-08-23 14:10:59
  * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-08-25 23:10:51
+ * @LastEditTime: 2022-08-26 00:36:35
  * @FilePath: /CasaOS-UI/src/components/Apps/ExternalLinkPanel.vue
  * @Description:
  *
@@ -146,7 +146,7 @@ export default {
       this.isLoading = true
       if (this.state_nameIsExist) {
         let listLinkApp = JSON.parse(localStorage.getItem("listLinkApp"))
-        if(!listLinkApp.find((item,index,arr)=>{
+        if(!listLinkApp.find((item)=>{
           if(item.host === this.host){
             item.name = this.name
             item.icon = this.icon
@@ -157,7 +157,8 @@ export default {
             host: this.host,
             name: this.name,
             icon: this.icon,
-            type:"LinkApp"
+            type:"LinkApp",
+            id:this.name
           })
         }
         this.saveLinkApp(listLinkApp)
@@ -185,9 +186,9 @@ export default {
           type: 'is-danger'
         })
       })
-      // this.name = "res.data.data"
-      // this.icon = "https://avatars.githubusercontent.com/u/91336243?s=200&v=4"
-      // this.isLoading = false;
+      this.name = "res.data.data"
+      this.icon = "https://avatars.githubusercontent.com/u/91336243?s=200&v=4"
+      this.isLoading = false;
     },
 
     saveLinkApp(data) {
@@ -207,7 +208,7 @@ export default {
       }).catch((err) => {
         this.isLoading = false;
         this.$buefy.toast.open({
-          message: err.response.data.message || "NOT FOUND",
+          message: this.$t(`Please enter a correct Samba address!`),
           type: 'is-danger'
         })
       })

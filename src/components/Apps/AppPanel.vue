@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-03-01 21:10:57
  * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-08-25 19:45:23
+ * @LastEditTime: 2022-08-26 00:17:17
  * @FilePath: /CasaOS-UI/src/components/Apps/AppPanel.vue
  * @Description:
  *
@@ -1288,7 +1288,6 @@ export default {
 
   sockets: {
     app_install(res) {
-      debugger
       const resData = res.body.data
       if (this.currentInstallAppName != resData.name) {
         return false

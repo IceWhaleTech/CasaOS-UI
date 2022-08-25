@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-08-25 17:35:59
+ * @LastEditTime: 2022-08-26 00:47:24
  * @Description: App Card item
  * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
 -->
@@ -212,13 +212,27 @@ export default {
      */
     uninstallApp() {
       this.isUninstalling = true
-      this.$api.container.uninstall(this.item.id).then((res) => {
-        if (res.data.success == 200) {
-          // this.updateState()
-          this.$EventBus.$emit(events.UPDATE_SYNC_STATUS);
-        }
-        this.isUninstalling = false;
-      })
+      if(this.item.type === "LinkApp"){
+        let listLinkApp = JSON.parse(localStorage.getItem("listLinkApp"))
+        listLinkApp = listLinkApp.filter((o)=> o.name!==this.item.name)
+        this.$api.users.saveLinkAppDetail(listLinkApp).then((res) => {
+          if (res.data.success == 200) {
+            localStorage.setItem("listLinkApp", JSON.stringify(res.data.data))
+            this.$EventBus.$emit(events.RELOAD_APP_LIST);
+          }
+          this.isUninstalling = false;
+        })
+        // return
+      }else{
+         this.$api.container.uninstall(this.item.id).then((res) => {
+          if (res.data.success == 200) {
+            // this.updateState()
+            this.$EventBus.$emit(events.UPDATE_SYNC_STATUS);
+          }
+          this.isUninstalling = false;
+        })
+      }
+
     },
 
     /**
