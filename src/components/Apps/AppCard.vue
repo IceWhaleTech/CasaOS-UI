@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-18 18:02:41
+ * @LastEditors: zhanghengxin ezreal.ice@icloud.com
+ * @LastEditTime: 2022-08-25 17:35:59
  * @Description: App Card item
  * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
 -->
@@ -145,6 +145,8 @@ export default {
             var arg = '\u003cscript\u003elocation.replace("' + url + '")\u003c/script\u003e';
             window.open('javascript:window.name;', arg);
           }
+        }else if(item.host){
+          window.open(item.host, '_blank');
         }
       }
     },
@@ -235,7 +237,7 @@ export default {
      */
     configApp() {
       this.$refs.dro.isActive = false
-      this.$emit("configApp", this.item.id, this.item.state, true)
+      this.$emit("configApp", this.item, true)
     },
 
     /**

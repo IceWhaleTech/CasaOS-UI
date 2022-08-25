@@ -1,4 +1,5 @@
 import { required, confirmed, length, email, min } from "vee-validate/dist/rules";
+import {isURL} from 'validator';
 import { extend } from "vee-validate";
 import isValidHostname from 'is-valid-hostname';
 import validate from 'uuid-validate';
@@ -37,3 +38,8 @@ extend('uuid', {
     validate: (value) => validate(value),
     message: 'You entered an invalid share ID',
 });
+
+extend('url', {
+    validate: value => isURL(value,{require_protocol: true }),
+    message: 'The field mast be a valid url',
+})

@@ -1,12 +1,12 @@
 /*
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-12 22:25:15
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-12 22:35:25
+ * @LastEditors: zhanghengxin hengxin.zhang@icewhale.org
+ * @LastEditTime: 2022-08-24 15:25:08
  * @FilePath: \CasaOS-UI\src\service\container.js
- * @Description: 
- * 
- * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+ * @Description:
+ *
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
  */
 import { api } from "./service.js";
 

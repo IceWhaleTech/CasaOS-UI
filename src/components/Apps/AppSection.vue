@@ -1,8 +1,8 @@
 <!--
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-08 17:34:22
+ * @LastEditors: zhanghengxin ezreal.ice@icloud.com
+ * @LastEditTime: 2022-08-25 17:37:21
  * @FilePath: /CasaOS-UI/src/components/Apps/AppSection.vue
  * @Description:
  *
@@ -13,24 +13,28 @@
   <div class="home-section has-text-left">
     <!-- Title Bar Start -->
     <div class=" is-flex is-align-items-center mb-5">
-        <app-section-title-tip title="Apps" label="Drag icons to sort." id="appTitle1" class="is-flex-grow-1"></app-section-title-tip>
+      <app-section-title-tip title="Apps" label="Drag icons to sort." id="appTitle1" class="is-flex-grow-1">
+      </app-section-title-tip>
 
       <b-dropdown aria-role="menu" class="file-dropdown" position="is-bottom-left" animation="fade1">
         <template #trigger>
           <b-icon pack="casa" icon="plus" size="is-20" type="is-white"></b-icon>
         </template>
-        <b-dropdown-item aria-role="menuitem" @click="showInstall(0, 'custom')">{{$t('Custom Install APP')}}</b-dropdown-item>
-        <b-dropdown-item aria-role="menuitem" @click="showExternalLinkPanel">{{$t('Add external link/APP')}}</b-dropdown-item>
+        <b-dropdown-item aria-role="menuitem" @click="showInstall(0, 'custom')">{{ $t('Custom Install APP') }}
+        </b-dropdown-item>
+        <b-dropdown-item aria-role="menuitem" @click="showExternalLinkPanel">{{ $t('Add external link/APP') }}
+        </b-dropdown-item>
       </b-dropdown>
     </div>
     <!-- Title Bar End -->
 
     <!-- App List Start -->
-    <draggable class="columns is-variable is-2 is-multiline app-list contextmenu-canvas" tag="div" v-model="appList" v-bind="dragOptions" @start="drag = true" @end="onSortEnd" :draggable="draggable">
+    <draggable class="columns is-variable is-2 is-multiline app-list contextmenu-canvas" tag="div" v-model="appList"
+      v-bind="dragOptions" @start="drag = true" @end="onSortEnd" :draggable="draggable">
       <template v-if="!isLoading">
 
         <!-- App Icon Card Start -->
-        <div class="column is-narrow is-3 handle" v-for="(item) in appList" :key="'app-'+item.id">
+        <div class="column is-narrow is-3 handle" v-for="(item) in appList" :key="'app-' + item.id">
           <app-card :item="item" @updateState="getList" @configApp="showConfigPanel" :isCasa="true"></app-card>
         </div>
         <!-- App Icon Card End -->
@@ -43,15 +47,17 @@
     <template v-if="notImportedList.length > 0">
       <!-- Title Bar Start -->
       <div class="title-bar is-flex is-align-items-center mt-2rem  mb-5">
-        <app-section-title-tip title="Existing Docker Apps" label="Click icon to import." id="appTitle2"></app-section-title-tip>
+        <app-section-title-tip title="Existing Docker Apps" label="Click icon to import." id="appTitle2">
+        </app-section-title-tip>
       </div>
       <!-- Title Bar End -->
 
       <!-- App List Start -->
       <div class="columns is-variable is-2 is-multiline app-list contextmenu-canvas">
         <!-- Application not imported Start -->
-        <div class="column is-narrow is-3" v-for="(item) in notImportedList" :key="'app-'+item.id">
-          <app-card :item="item" @updateState="getList" @configApp="showConfigPanel" @importApp="showConfigPanel" :isCasa="false"></app-card>
+        <div class="column is-narrow is-3" v-for="(item) in notImportedList" :key="'app-' + item.id">
+          <app-card :item="item" @updateState="getList" @configApp="showConfigPanel" @importApp="showConfigPanel"
+            :isCasa="false"></app-card>
         </div>
         <!-- Application not imported End -->
       </div>
@@ -160,8 +166,10 @@ export default {
       this.isLoading = true;
       try {
         const listRes = await this.$api.container.getMyAppList();
+        const listLinkApp = await this.$api.users.getLinkAppDetail().then(v => v.data.data);
+        localStorage.setItem("listLinkApp", JSON.stringify(listLinkApp))
         const orgAppList = listRes.data.data.casaos_apps
-        let casaAppList = concat(builtInApplications, orgAppList)
+        let casaAppList = concat(builtInApplications, orgAppList, listLinkApp)
         casaAppList.reverse()
         let sortRes = await this.$api.users.getCustomStorage(orderConfig)
         let sortList = sortRes.data.data.data
@@ -264,12 +272,17 @@ export default {
 
     /**
      * @description: Show Settings Panel Programmatic
-     * @param {String} id
-     * @param {String} status
+     * @param {Object} {id:String,status:String }
      * @param {Boolean} isCasa
      * @return {*}
      */
-    async showConfigPanel(id, status, isCasa) {
+    async showConfigPanel(item, isCasa) {
+      if (item.type === 'LinkApp') {
+        await this.showExternalLinkPanel(item)
+        return
+      }
+      let status = item.status
+      let id = item.id
       const networks = await this.$api.container.getNetworks();
       const memory = this.$store.state.hardwareInfo.mem;
       const configData = {
@@ -301,7 +314,7 @@ export default {
         }
       })
     },
-    async showExternalLinkPanel(){
+    async showExternalLinkPanel(item = {}) {
       this.$buefy.modal.open({
         parent: this,
         component: ExternalLinkPanel,
@@ -316,7 +329,11 @@ export default {
             this.getList()
           }
         },
-        props: {}
+        props: {
+          linkName: item.name,
+          linkHost: item.host,
+          linkIcon: item.icon
+        }
       })
     }
   },
@@ -358,6 +375,7 @@ export default {
     }
   }
 }
+
 @media screen and (min-width: $desktop) {
   .app-list {
     .column {
@@ -366,6 +384,7 @@ export default {
     }
   }
 }
+
 @media screen and (min-width: $widescreen) {
   .app-list {
     .column {
