@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-01-20 12:01:07
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-18 10:49:41
+ * @LastEditTime: 2022-08-25 10:24:58
  * @Description: 
  * @FilePath: \CasaOS-UI-dev\src\mixins\mixin.js
  */
@@ -49,7 +49,7 @@ const wallpaperConfig = "wallpaper"
 export const mixin = {
     data() {
         return {
-            baseUrl: `${this.$protocol}://${this.$baseURL}/v1/`
+            baseUrl: `${this.$protocol}//${this.$baseURL}/v1/`
         }
     },
     mounted() {
