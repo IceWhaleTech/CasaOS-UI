@@ -2,7 +2,7 @@
  * @Author: ezreal.ice hengxin.zhang@icewhale.org
  * @Date:  2022-08-23 14:10:59
  * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-08-26 00:36:35
+ * @LastEditTime: 2022-08-27 18:45:33
  * @FilePath: /CasaOS-UI/src/components/Apps/ExternalLinkPanel.vue
  * @Description:
  *
@@ -62,7 +62,7 @@
             </ValidationProvider>
 
 
-            <ValidationProvider v-slot="{ errors, valid }">
+            <!-- <ValidationProvider v-slot="{ errors, valid }">
               <b-field class="is-flex-wrap-nowrap">
                 <template #label>
                   {{ $t('Icon URL') }}
@@ -71,7 +71,17 @@
                   append-to-body field="host" max-height="120px">
                 </b-autocomplete>
               </b-field>
-            </ValidationProvider>
+            </ValidationProvider> -->
+
+            <b-field :label="$t('Icon URL')">
+              <p class="control">
+                <span class="button is-static container-icon">
+                  <b-image :src="icon" :src-fallback="require('@/assets/img/app/default.png')" class="is-32x32"
+                    :key="icon" ratio="1by1"></b-image>
+                </span>
+              </p>
+              <b-input v-model="icon" :placeholder="$t('Your custom icon URL')" expanded></b-input>
+            </b-field>
 
           </ValidationObserver>
         </div>
@@ -94,14 +104,15 @@
 <script>
 import smoothReflow from 'vue-smooth-reflow'
 // import events from '@/events/events';
-import {ValidationObserver, ValidationProvider} from 'vee-validate'
+import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import "@/plugins/vee-validate";
 import { nanoid } from 'nanoid'
+import debounce from 'lodash/debounce'
 
 
 export default {
   mixins: [smoothReflow],
-  components: { ValidationProvider ,ValidationObserver},
+  components: { ValidationProvider, ValidationObserver },
   props: {
     linkName: {
       type: String,
@@ -112,8 +123,8 @@ export default {
       default: "",
     },
     linkIcon: {
-      type:String,
-      default:"",
+      type: String,
+      default: "",
     }
   },
   data() {
@@ -136,7 +147,11 @@ export default {
     //   return this.host && this.icon
     // }
   },
-  watch: {},
+  watch: {
+    host: function(val){
+      this.updateIconUrl(val)
+    }
+  },
   created() {
     this.host = this.linkHost
     this.name = this.linkName
@@ -156,28 +171,28 @@ export default {
 
     connect() {
       this.checkStep(this.$refs.ob1).then(valid => {
-        if(valid){
+        if (valid) {
           this.isLoading = true
           // if (this.validHost) {
-            let listLinkApp = JSON.parse(localStorage.getItem("listLinkApp"))
-            if(!listLinkApp.find((item)=>{
-              if(item.host === this.host){
-                item.name = this.name
-                item.icon = this.icon
-                return true
-              }
-            })){
-              let id = nanoid()
-              listLinkApp = listLinkApp.concat({
-                host: this.host,
-                name: this.name,
-                icon: this.icon,
-                type:"LinkApp",
-                custom_id: id,
-                id
-              })
+          let listLinkApp = JSON.parse(localStorage.getItem("listLinkApp"))
+          if (!listLinkApp.find((item) => {
+            if (item.host === this.host) {
+              item.name = this.name
+              item.icon = this.icon
+              return true
             }
-            this.saveLinkApp(listLinkApp)
+          })) {
+            let id = nanoid()
+            listLinkApp = listLinkApp.concat({
+              host: this.host,
+              name: this.name,
+              icon: this.icon,
+              type: "LinkApp",
+              custom_id: id,
+              id
+            })
+          }
+          this.saveLinkApp(listLinkApp)
           // } else {
           //   this.getLinkAppByHost()
           // }
@@ -216,10 +231,10 @@ export default {
         this.isLoading = false;
         if (res.data.success == 200) {
           let stor = res.data.data
-          if (stor === ""){
+          if (stor === "") {
             stor = []
           }
-          localStorage.setItem('listLinkApp',JSON.stringify(stor))
+          localStorage.setItem('listLinkApp', JSON.stringify(stor))
           this.$emit('updateState')
           this.$emit('close')
         } else {
@@ -235,7 +250,11 @@ export default {
           type: 'is-danger'
         })
       })
-    }
+    },
+
+    updateIconUrl: debounce( function(string){
+      this.icon = string.split("/").slice(0,3).join("/")+"/favicon.ico"
+    }, 300),
   },
 }
 </script>
