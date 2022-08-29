@@ -61,18 +61,6 @@
               </b-field>
             </ValidationProvider>
 
-
-            <!-- <ValidationProvider v-slot="{ errors, valid }">
-              <b-field class="is-flex-wrap-nowrap">
-                <template #label>
-                  {{ $t('Icon URL') }}
-                </template>
-                <b-autocomplete ref="inputs" v-model="icon" :data="filteredDataObj" :placeholder="$t('Local URL')"
-                  append-to-body field="host" max-height="120px">
-                </b-autocomplete>
-              </b-field>
-            </ValidationProvider> -->
-
             <b-field :label="$t('Icon URL')">
               <p class="control">
                 <span class="button is-static container-icon">
@@ -103,11 +91,10 @@
 
 <script>
 import smoothReflow from 'vue-smooth-reflow'
-// import events from '@/events/events';
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import "@/plugins/vee-validate";
 import { nanoid } from 'nanoid'
-import debounce from 'lodash/debounce'
+// import debounce from 'lodash/debounce'
 
 
 export default {
@@ -133,7 +120,6 @@ export default {
       name: "",
       icon: "",
       isLoading: false,
-      // validHost:false
     }
   },
   computed: {
@@ -143,14 +129,11 @@ export default {
     state_hostIsExist() {
       return this.host === "" ? false : true
     },
-    // validHost(){
-    //   return this.host && this.icon
-    // }
   },
   watch: {
-    host: function(val){
-      this.updateIconUrl(val)
-    }
+    // host: function(val){
+    //   this.updateIconUrl(val)
+    // }
   },
   created() {
     this.host = this.linkHost
@@ -173,7 +156,6 @@ export default {
       this.checkStep(this.$refs.ob1).then(valid => {
         if (valid) {
           this.isLoading = true
-          // if (this.validHost) {
           let listLinkApp = JSON.parse(localStorage.getItem("listLinkApp"))
           if (!listLinkApp.find((item) => {
             if (item.host === this.host) {
@@ -188,14 +170,12 @@ export default {
               name: this.name,
               icon: this.icon,
               type: "LinkApp",
+              state: "running",
               custom_id: id,
               id
             })
           }
           this.saveLinkApp(listLinkApp)
-          // } else {
-          //   this.getLinkAppByHost()
-          // }
         }
       })
     },
@@ -204,7 +184,6 @@ export default {
       this.$api.sys.getProxyRequestContent(this.host).then((res) => {
         this.isLoading = false;
         if (res.status == 200) {
-          // this.validHost = true
           this.name = ""
           this.icon = "https://avatars.githubusercontent.com/u/91336243?s=200&v=4"
         } else {
@@ -220,9 +199,6 @@ export default {
           type: 'is-danger'
         })
       })
-      // this.name = "res.data.data"
-      // this.icon = "https://avatars.githubusercontent.com/u/91336243?s=200&v=4"
-      // this.isLoading = false;
     },
 
     saveLinkApp(data) {
@@ -252,9 +228,9 @@ export default {
       })
     },
 
-    updateIconUrl: debounce( function(string){
-      this.icon = string.split("/").slice(0,3).join("/")+"/favicon.ico"
-    }, 300),
+    // updateIconUrl: debounce( function(string){
+    //   // this.icon = string.split("/").slice(0,3).join("/")+"/favicon.ico"
+    // }, 300),
   },
 }
 </script>

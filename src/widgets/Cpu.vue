@@ -1,11 +1,11 @@
 <template>
   <div class="widget has-text-white cpu">
     <div class="blur-background"></div>
-    <div class="widget-content  pb-1">
+    <div class="widget-content">
       <!-- Header Start -->
       <div class="widget-header is-flex">
         <div class="widget-title is-flex-grow-1">
-          {{ $t('System Status') }}
+          {{ $t('Performance') }}
         </div>
         <div class="widget-icon-button is-flex-shrink-0" @click="showMoreInfo">
           <b-icon pack="casa" icon="arrow-right" size="is-20" :class="{'open':showMore}" class="arrow-btn"></b-icon>
@@ -27,7 +27,7 @@
           </p>
         </div>
       </div>
-      <div v-if="showMore">
+      <div v-show="showMore">
         <div class="more-info pt-1 pb-1">
           <b-tabs v-model="activeTab">
             <b-tab-item label="CPU">
@@ -129,7 +129,7 @@ export default {
 
             hollow: {
               margin: 0,
-              size: '65%',
+              size: '68%',
               image: undefined,
               imageOffsetX: 0,
               imageOffsetY: 0,
@@ -145,8 +145,8 @@ export default {
             track: {
               background: '#fff',
               strokeWidth: '100%',
-              margin: 0, // margin is in pixels
-              opacity: 0.4,
+              margin: -4, // margin is in pixels
+              opacity: 0.3,
 
             },
             dataLabels: {
@@ -162,6 +162,7 @@ export default {
                 offsetY: -10,
                 color: '#fff',
                 fontSize: '20px',
+                weight:'400',
                 show: true,
               }
             },
