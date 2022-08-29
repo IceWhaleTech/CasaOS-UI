@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-28 15:29:40
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-08 23:51:50
- * @FilePath: \CasaOS-UI\src\components\filebrowser\shared\ShareEntryButton.vue
+ * @LastEditTime: 2022-08-25 10:25:40
+ * @FilePath: \CasaOS-UI-dev\src\components\filebrowser\shared\ShareEntryButton.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -71,7 +71,6 @@ export default {
       try {
         const res = await this.$api.users.getCustomStorage(sharedInitData)
         const resData = res.data.data
-        console.log(resData);
         if (resData) {
           if (!resData.isInit) {
             this.showTip()

@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-10 15:53:26
+ * @LastEditTime: 2022-08-25 12:03:31
  * @Description: 
- * @FilePath: /CasaOS-UI/src/views/Home.vue
+ * @FilePath: \CasaOS-UI-dev\src\views\Home.vue
 -->
 <template>
   <div v-if="!isLoading" class="out-container">
@@ -236,20 +236,23 @@ export default {
       })
     },
 
-    showUpdateCompleteModal() {
-      this.$buefy.modal.open({
-        parent: this,
-        component: UpdateCompleteModal,
-        hasModalCard: true,
-        customClass: 'network-storage-modal',
-        trapFocus: true,
-        canCancel: [],
-        scroll: "keep",
-        animation: "zoom-in",
-        props: {
-          changeLog: `## [0.3.4] - 2022-07-29(UTC)\n\n### Added\n\n- SSH adds port-side options and prompts for connection status. ([#286](https://github.com/IceWhaleTech/CasaOS/issues/286))\n\n### Changed\n\n- Normalize all routes\n- Application names now support spaces ([#211](https://github.com/IceWhaleTech/CasaOS/issues/211))\n\n### Removed\n\n- Removed  casaos connect\n\n### Security\n\n- Adjustment of authentication method\n\n### Fixed\n\n- Fixed storage format and remove password error issues ([#344](https://github.com/IceWhaleTech/CasaOS/issues/344) [#357](https://github.com/IceWhaleTech/CasaOS/issues/357))`
-        }
-      })
+    async showUpdateCompleteModal() {
+      const versionRes = await this.$api.sys.getVersion();
+      if (versionRes.data.success == 200) {
+        this.$buefy.modal.open({
+          parent: this,
+          component: UpdateCompleteModal,
+          hasModalCard: true,
+          customClass: 'network-storage-modal',
+          trapFocus: true,
+          canCancel: [],
+          scroll: "keep",
+          animation: "zoom-in",
+          props: {
+            changeLog: versionRes.data.data.version.change_log
+          }
+        })
+      }
     }
 
   },

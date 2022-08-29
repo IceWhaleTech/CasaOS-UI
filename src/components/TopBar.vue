@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-27 16:44:42
+ * @LastEditTime: 2022-08-22 14:50:09
  * @Description: Top bar 
- * @FilePath: /CasaOS-UI/src/components/TopBar.vue
+ * @FilePath: \CasaOS-UI-dev\src\components\TopBar.vue
 -->
 
 <template>
@@ -518,6 +518,7 @@ export default {
      * @return {*} void
      */
     async getUserInfo() {
+      this.userInfo = this.$store.state.user
       this.$store.commit('SET_SIDEBAR_CLOSE')
       if (this.$store.state.user.id == 0) {
         try {
