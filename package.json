@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --mode dev",
-    "build": "vue-cli-service build --dest ../web --mode production",
+    "build": "vue-cli-service build --dest ./build/sysroot/var/lib/casaos/www/ --mode production",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
