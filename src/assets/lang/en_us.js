@@ -321,4 +321,15 @@ export default {
     "Please enter a correct Samba address!": "Please enter a correct Samba address!",
     "Create Folder": "Create Folder",
     "Create File": "Create File",
+    //LinkApp
+    "Add External Link/APP":"Add External Link/APP",
+    "Local URL,Pblic URL":"Local URL,Pblic URL",
+    "Eg: //192.168.1.1:5000 or https://www.google.com":"Eg: //192.168.1.1:5000 or https://www.google.com",
+    "App Name":"App Name",
+    "Customize your APP name":"Customize your APP name",
+    "Icon URL":"Icon URL",
+    "Local URL":"Local URL",
+    "Custom Install APP":"Custom Install APP",
+    "Add external link/APP":"Add external link/APP",
+    "Address":"Address"
 }

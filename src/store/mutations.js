@@ -1,12 +1,12 @@
 /*
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-06-02 19:49:36
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-04 19:32:43
+ * @LastEditors: zhanghengxin ezreal.ice@icloud.com
+ * @LastEditTime: 2022-08-24 18:47:36
  * @FilePath: \CasaOS-UI\src\store\mutations.js
- * @Description: 
- * 
- * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+ * @Description:
+ *
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
  */
 const mutations = {
     // User and tokens
@@ -26,7 +26,7 @@ const mutations = {
         state.initKey = key
     },
 
-    // Site 
+    // Site
     SET_SITE_LOADING(state, loading) {
         state.siteLoading = loading
     },

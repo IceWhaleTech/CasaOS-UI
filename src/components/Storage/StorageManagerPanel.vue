@@ -3,7 +3,7 @@
  * @Date: 2022-01-17 15:16:11
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2022-08-11 17:15:06
- * @Description: 
+ * @Description:
  * @FilePath: /CasaOS-UI/src/components/Storage/StorageManagerPanel.vue
 -->
 <template>
@@ -173,7 +173,7 @@ export default {
     }
   },
   mounted() {
-    //Smooth 
+    //Smooth
     this.$smoothReflow({
       el: '.modal-card',
       property: ['height', 'width'],
@@ -190,8 +190,8 @@ export default {
   methods: {
     /**
      * @description: Get disk list
-     * @param {} 
-     * @return {void} 
+     * @param {}
+     * @return {void}
      */
     async getDiskList(showDefault = false) {
 
@@ -261,8 +261,8 @@ export default {
 
     /**
      * @description: Disk choose handle
-     * @param {int} evt index of select 
-     * @return {void} 
+     * @param {int} evt index of select
+     * @return {void}
      */
     onDiskChoose(index) {
       this.createStoragePath = this.unDiskData[index].path
@@ -288,7 +288,7 @@ export default {
     /**
      * @description: Validate form async
      * @param {Object} ref ref of component
-     * @return {Boolean} 
+     * @return {Boolean}
      */
     async checkStep(ref) {
       let isValid = await ref.validate()
@@ -296,8 +296,8 @@ export default {
     },
     /**
      * @description: Create a new storage
-     * @param {} 
-     * @return {void} 
+     * @param {}
+     * @return {void}
      */
     createStorge(needFormat) {
       this.isValiding = true
