@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-03-01 21:10:57
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-08 18:07:11
- * @FilePath: /CasaOS-UI/src/components/Apps/AppPanel.vue
+ * @LastEditTime: 2022-08-22 18:25:52
+ * @FilePath: \CasaOS-UI-dev\src\components\Apps\AppPanel.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
