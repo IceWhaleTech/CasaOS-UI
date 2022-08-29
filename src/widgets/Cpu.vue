@@ -1,11 +1,11 @@
 <template>
   <div class="widget has-text-white cpu">
     <div class="blur-background"></div>
-    <div class="widget-content  pb-1">
+    <div class="widget-content">
       <!-- Header Start -->
       <div class="widget-header is-flex">
         <div class="widget-title is-flex-grow-1">
-          {{ $t('System Status') }}
+          {{ $t('Performance') }}
         </div>
         <div class="widget-icon-button is-flex-shrink-0" @click="showMoreInfo">
           <b-icon pack="casa" icon="arrow-right" size="is-20" :class="{'open':showMore}" class="arrow-btn"></b-icon>
@@ -16,14 +16,18 @@
       <div class="columns is-mobile ">
         <div class="column is-half has-text-centered">
           <apexchart type="radialBar" :height="barHeight" :options="chartOptions" :series="cpuSeries"></apexchart>
-          <p class="is-size-14px one-line">CPU <span class="is-size-7">({{cpuCores}} {{ $t('Cores') }})</span></p>
+          <p class="is-size-12px two-line margin-[-10px]">CPU<br/>
+            <span class="is-size-14px">{{power.toFixed(1)}} W/{{temperature}}°C</span>
+          </p>
         </div>
         <div class="column is-half has-text-centered">
           <apexchart type="radialBar" :height="barHeight" :options="chartOptions" :series="ramSeries"></apexchart>
-          <p class="is-size-14px one-line">RAM <span class="is-size-7">({{totalMemory | renderSize}})</span></p>
+          <p class="is-size-12px two-line margin-[-10px]">RAM <br/>
+            <span class="is-size-14px">{{totalMemory | renderSize}}</span>
+          </p>
         </div>
       </div>
-      <div v-if="showMore">
+      <div v-show="showMore">
         <div class="more-info pt-1 pb-1">
           <b-tabs v-model="activeTab">
             <b-tab-item label="CPU">
@@ -78,6 +82,10 @@ export default {
 
   data() {
     return {
+      power:0,
+      tempTime:0,
+      tempValue:0,
+      temperature:0,
       timmer: null,
       activeTab: 0,
       showMore: false,
@@ -91,7 +99,6 @@ export default {
           type: 'radialBar',
           width: '100%'
         },
-
         grid: {
           padding: {
             left: 0,
@@ -115,14 +122,14 @@ export default {
         plotOptions: {
 
           radialBar: {
-            startAngle: 0,
-            endAngle: 360,
+            startAngle: -130,
+            endAngle: 130,
             offsetX: 0,
             offsetY: 0,
 
             hollow: {
               margin: 0,
-              size: '60%',
+              size: '68%',
               image: undefined,
               imageOffsetX: 0,
               imageOffsetY: 0,
@@ -138,13 +145,16 @@ export default {
             track: {
               background: '#fff',
               strokeWidth: '100%',
-              margin: 0, // margin is in pixels
-              opacity: 0.4,
+              margin: -4, // margin is in pixels
+              opacity: 0.3,
 
             },
-
             dataLabels: {
-              show: true,
+              name: {
+                color:'#fff',
+                offsetY: 30
+              },
+              // show: true,
               value: {
                 formatter: function (val) {
                   return parseInt(val) + "%";
@@ -152,6 +162,7 @@ export default {
                 offsetY: -10,
                 color: '#fff',
                 fontSize: '20px',
+                weight:'400',
                 show: true,
               }
             },
@@ -175,11 +186,12 @@ export default {
       containerRamList: []
     }
   },
-  created() {
+  async created() {
     this.cpuCores = this.$store.state.hardwareInfo.cpu.num
     this.totalMemory = this.$store.state.hardwareInfo.mem.total
     this.updateCharts(this.$store.state.hardwareInfo)
     this.getDockerUsage()
+    await this.getSysUtilization()
     this.timer = setInterval(() => {
       if (this.showMore) {
         this.getDockerUsage()
@@ -196,6 +208,14 @@ export default {
     clearInterval(this.timer);
   },
   methods: {
+    async getSysUtilization(){
+      await this.$api.sys.getUtilization().then(({data}) => {
+        if(data.success === 200){
+          this.tempTime = data.data.cpu.power.timestamp
+          this.tempValue = data.data.cpu.power.value
+        }
+      })
+    },
     /**
      * @description: Update cpu and memory usage
      * @param {*}
@@ -289,6 +309,12 @@ export default {
       // CPU
       this.cpuCores = data.body.sys_cpu.num
       this.cpuSeries = [data.body.sys_cpu.percent]
+
+      // power temperature
+      this.power = (data.body.sys_cpu.power.value - this.tempValue)/(data.body.sys_cpu.power.timestamp - this.tempTime)/1000000
+      this.tempTime = data.body.sys_cpu.power.timestamp
+      this.tempValue = data.body.sys_cpu.power.value
+      this.temperature = data.body.sys_cpu.temperature
 
       // Memory
       this.totalMemory = data.body.sys_mem.total

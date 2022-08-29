@@ -4,9 +4,9 @@
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2022-07-20 14:06:58
  * @FilePath: /CasaOS-UI/src/service/users.js
- * @Description: 
- * 
- * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+ * @Description:
+ *
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
  */
 import { api } from "./service.js";
 
@@ -39,6 +39,14 @@ const users = {
     // change user password [OK]
     changePassword(data) {
         return api.put(`${PREFIX}/current/password`, data);
+    },
+
+    getLinkAppDetail(){
+        return api.get(`${PREFIX}/current/custom/link`);
+    },
+
+    saveLinkAppDetail(data){
+        return api.post(`${PREFIX}/current/custom/link`, data);
     },
 
     // delete user [NOT USE]

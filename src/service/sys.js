@@ -67,14 +67,19 @@ const sys = {
         return api.get(`${PREFIX}/utilization`);
     },
 
+    // proxy request
+    getProxyRequestContent(url){
+        return api.get(`${PREFIX}/proxy?url=${url}`)
+    },
+
     // get casaos server port
     getServerPort() {
-        return api.get(`${PREFIX}/port`);
+        return api.get(`gateway/port`);
     },
 
     // edit casaos server port
     editServerPort(data) {
-        return api.put(`${PREFIX}/port`, data);
+        return api.put(`gateway/port`, data);
     },
 
     // get usb status

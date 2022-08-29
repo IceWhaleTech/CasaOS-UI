@@ -4,9 +4,9 @@
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2022-07-01 11:28:38
  * @FilePath: /CasaOS-UI/src/components/Apps/AppSectionTitleTip.vue
- * @Description: 
- * 
- * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+ * @Description:
+ *
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
 -->
 <template>
   <h1 class="title is-4  has-text-white is-flex-shrink-1 is-flex-grow-1 mb-0 contextmenu-canvas home-app-tip">
@@ -19,7 +19,6 @@
       </template>
       <span class="mr-2">{{ $t(title) }}</span>
     </b-tooltip>
-
   </h1>
 </template>
 

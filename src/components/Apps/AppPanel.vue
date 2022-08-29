@@ -1,12 +1,13 @@
 <!--
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-03-01 21:10:57
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-22 18:25:52
- * @FilePath: \CasaOS-UI-dev\src\components\Apps\AppPanel.vue
- * @Description: 
- * 
- * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+ * @LastEditors: zhanghengxin ezreal.ice@icloud.com
+ * @LastEditTime: 2022-08-27 17:19:20
+ * @FilePath: /CasaOS-UI/src/components/Apps/AppPanel.vue
+ * @Description:
+ *
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
+
 -->
 
 
@@ -672,7 +673,7 @@ export default {
     //If it is edit, Init data
     if (this.settingData != undefined) {
       this.isLoading = false
-      this.initData = this.preProcessData(this.settingData)
+      this.initData = this.preProcessData(Object.assign(this.initData, this.settingData))
       this.currentSlide = 1
 
     } else {
@@ -797,7 +798,7 @@ export default {
   methods: {
 
     /**
-     * @description: 
+     * @description:
      * @param {*} function
      * @return {*}
      */
@@ -810,7 +811,7 @@ export default {
     }, 50),
 
     /**
-     * @description: 
+     * @description:
      * @param {*} text
      * @return {*}
      */
@@ -823,7 +824,7 @@ export default {
     },
 
     /**
-     * @description: 
+     * @description:
      * @param {*} swiper
      * @return {*}
      */
@@ -832,7 +833,7 @@ export default {
       this.disNext = swiper.isEnd;
     },
     /**
-     * @description: 
+     * @description:
      * @param {*} swiper
      * @return {*}
      */
@@ -843,7 +844,7 @@ export default {
 
     /**
      * @description: Get category list
-     * @param {*} 
+     * @param {*}
      * @return {*} void
      */
     async getCategoryList() {
@@ -979,7 +980,7 @@ export default {
     /**
      * @description: Format AppStore tip datas
      * @param {data}
-     * @return {html} Str 
+     * @return {html} Str
      */
     formatTips(data) {
       let html = "";
@@ -1042,7 +1043,7 @@ export default {
     /**
      * @description: Validate form async
      * @param {Object} ref ref of component
-     * @return {Boolean} 
+     * @return {Boolean}
      */
     async checkStep(ref) {
       let isValid = await ref.validate()
@@ -1222,7 +1223,7 @@ export default {
 
     /**
      * @description: Get Network name from network list
-     * @param {*} 
+     * @param {*}
      * @return {*} String
      */
     getNetworkName(netId) {

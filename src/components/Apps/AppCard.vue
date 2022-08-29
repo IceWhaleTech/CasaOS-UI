@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-18 18:02:41
+ * @LastEditors: zhanghengxin ezreal.ice@icloud.com
+ * @LastEditTime: 2022-08-26 00:47:24
  * @Description: App Card item
  * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
 -->
@@ -25,7 +25,7 @@
           <b-button type="is-text" class="mb-1" @click="uninstallConfirm" :loading="isUninstalling" expanded>
             {{$t('Uninstall')}}
           </b-button>
-          <div class="gap">
+          <div class="gap" v-if="item.type !== 'LinkApp'">
             <div class="columns is-gapless bbor is-flex">
               <div class="column is-flex is-justify-content-center is-align-items-center">
                 <b-button type="is-text" expanded :loading="isRestarting" @click="restartApp">
@@ -145,6 +145,8 @@ export default {
             var arg = '\u003cscript\u003elocation.replace("' + url + '")\u003c/script\u003e';
             window.open('javascript:window.name;', arg);
           }
+        }else if(item.host){
+          window.open(item.host, '_blank');
         }
       }
     },
@@ -210,13 +212,27 @@ export default {
      */
     uninstallApp() {
       this.isUninstalling = true
-      this.$api.container.uninstall(this.item.id).then((res) => {
-        if (res.data.success == 200) {
-          // this.updateState()
-          this.$EventBus.$emit(events.UPDATE_SYNC_STATUS);
-        }
-        this.isUninstalling = false;
-      })
+      if(this.item.type === "LinkApp"){
+        let listLinkApp = JSON.parse(localStorage.getItem("listLinkApp"))
+        listLinkApp = listLinkApp.filter((o)=> o.name!==this.item.name)
+        this.$api.users.saveLinkAppDetail(listLinkApp).then((res) => {
+          if (res.data.success == 200) {
+            localStorage.setItem("listLinkApp", JSON.stringify(res.data.data))
+            this.$EventBus.$emit(events.RELOAD_APP_LIST);
+          }
+          this.isUninstalling = false;
+        })
+        // return
+      }else{
+         this.$api.container.uninstall(this.item.id).then((res) => {
+          if (res.data.success == 200) {
+            // this.updateState()
+            this.$EventBus.$emit(events.UPDATE_SYNC_STATUS);
+          }
+          this.isUninstalling = false;
+        })
+      }
+
     },
 
     /**
@@ -235,7 +251,7 @@ export default {
      */
     configApp() {
       this.$refs.dro.isActive = false
-      this.$emit("configApp", this.item.id, this.item.state, true)
+      this.$emit("configApp", this.item, true)
     },
 
     /**
