@@ -129,7 +129,7 @@ export default {
 
             hollow: {
               margin: 0,
-              size: '68%',
+              size: '66%',
               image: undefined,
               imageOffsetX: 0,
               imageOffsetY: 0,
@@ -190,8 +190,13 @@ export default {
     this.cpuCores = this.$store.state.hardwareInfo.cpu.num
     this.totalMemory = this.$store.state.hardwareInfo.mem.total
     this.updateCharts(this.$store.state.hardwareInfo)
+    this.power = this.$store.state.hardwareInfo.cpu.power.value/this.$store.state.hardwareInfo.cpu.power.timestamp/1000000
+    this.temperature = this.$store.state.hardwareInfo.cpu.temperature
+    console.log(this.power, this.$store.state.hardwareInfo.cpu)
+    this.tempTime = this.$store.state.hardwareInfo.cpu.power.timestamp
+    this.tempValue = this.$store.state.hardwareInfo.cpu.power.value
     this.getDockerUsage()
-    await this.getSysUtilization()
+    // await this.getSysUtilization()
     this.timer = setInterval(() => {
       if (this.showMore) {
         this.getDockerUsage()
@@ -211,8 +216,10 @@ export default {
     async getSysUtilization(){
       await this.$api.sys.getUtilization().then(({data}) => {
         if(data.success === 200){
+          this.power = data.data.cpu.power.value/data.data.cpu.power.timestamp/1000000
           this.tempTime = data.data.cpu.power.timestamp
           this.tempValue = data.data.cpu.power.value
+          this.temperature = data.data.cpu.temperature
         }
       })
     },

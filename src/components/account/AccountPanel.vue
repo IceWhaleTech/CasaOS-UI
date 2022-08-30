@@ -1,10 +1,10 @@
 <!--
  * @Author: JerryK
  * @Date: 2021-10-25 18:19:17
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-19 20:52:01
+ * @LastEditors: zhanghengxin ezreal.ice@icloud.com
+ * @LastEditTime: 2022-08-30 16:23:26
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\account\AccountPanel.vue
+ * @FilePath: /CasaOS-UI/src/components/account/AccountPanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -161,6 +161,9 @@ export default {
           old_password: this.oriPassword,
           password: this.password,
         })
+        this.oriPassword = "";
+        this.password = "";
+        this.confirmation = "";
         this.isLoading = false;
         this.goto(1);
       } catch (error) {
