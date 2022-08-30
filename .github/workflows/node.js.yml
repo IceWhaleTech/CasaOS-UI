@@ -5,8 +5,8 @@ name: Node.js CI
 
 on:
   push:
-    tags:
-      - v*.*.*
+    # tags:
+    #   - v*
     branches: [ "dev-0.3.6-ezreal", "main" ]
   # pull_request:
   #   branches: [ "dev-0.3.6-ezreal", "main" ]
@@ -30,7 +30,7 @@ jobs:
           cache: 'npm'
       - run: yarn install
       - run: yarn build
-      - name: '缓存 cache'
+      - name: '缓存 Cache'
         uses: actions/cache@v2
         id: cache-dependencies
         with:
@@ -43,34 +43,39 @@ jobs:
           path: ./package.json
           property: version
       - name: echo artifact
-        run: echo ${{ steps.version.outputs.value }}
+        run: |
+          echo ${{ steps.version.outputs.value }}
+          echo github ${{ github }}
+          echo github.sha ${{ github.sha }}
+          echo github.ref ${{ github.ref }}
+          echo github.title ${{ github.title }}
       - name: Create GitHub Release
-        id: create_release
+        id: 创建 create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ steps.version.outputs.value }}-alpha
-          release_name: release v${{ steps.version.outputs.value }}-alpha
+          tag_name: ${{ steps.version.outputs.value  }}-alpha
+          release_name: release ${{ steps.version.outputs.value  }}-alpha
           draft: false
           prerelease: false
-      - name: Archive Release
+      - name: 归档 Archive Release
         uses: thedoctor0/zip-release@main
         with:
           type: 'tar'
           path: './build'
           filename: linux-all-casaos-v${{ steps.version.outputs.value }}-alpha.tar.gz
-      - name: 上传Release Asset
+      - name: 上传 Upload Release Asset
         id: upload-release-asset
         uses: actions/upload-release-asset@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./linux-all-casaos-${{steps.version.outputs.value}}-alpha.tar.gz
-          asset_name: linux-all-casaos-${{steps.version.outputs.value}}-alpha.tar.gz
+          asset_path: ./linux-all-casaos-v${{ steps.version.outputs.value }}-alpha.tar.gz
+          asset_name: linux-all-casaos-v${{ steps.version.outputs.value }}-alpha.tar.gz
           asset_content_type: application/zip
-      - name: 刷新缓存 refresh the cache
+      - name: 刷新缓存 Refresh The Cache
         run: |
           curl https://purge.jsdelivr.net/npm/iemotion-pic@latest/dist/name.json
 
