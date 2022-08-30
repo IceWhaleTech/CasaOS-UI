@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-08-26 00:47:24
+ * @LastEditTime: 2022-08-30 17:35:39
  * @Description: App Card item
  * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
 -->
@@ -133,6 +133,8 @@ export default {
       }
       if (item.type === "system") {
         this.openSystemApps(item)
+      } else if(item.type === "LinkApp"){
+        window.open(item.host, '_blank');
       } else {
         this.$refs.dro.isActive = false
         if (item.port != "" && item.state == 'running') {
@@ -145,8 +147,6 @@ export default {
             var arg = '\u003cscript\u003elocation.replace("' + url + '")\u003c/script\u003e';
             window.open('javascript:window.name;', arg);
           }
-        }else if(item.host){
-          window.open(item.host, '_blank');
         }
       }
     },
