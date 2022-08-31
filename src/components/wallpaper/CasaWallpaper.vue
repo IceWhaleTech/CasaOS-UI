@@ -4,9 +4,9 @@
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2022-08-18 10:48:59
  * @FilePath: \CasaOS-UI-dev\src\components\wallpaper\CasaWallpaper.vue
- * @Description: 
- * 
- * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+ * @Description:
+ *
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
 -->
 <template>
   <div>
@@ -68,7 +68,9 @@ export default {
       })
     },
     parseUrl(serverUrl) {
-      const newUrl = serverUrl.replace('SERVER_URL', `${this.$protocol}//${this.$baseURL}`)
+      // serverUrl.replace('/ui', '');
+      let newUrl = serverUrl.replace('SERVER_URL', `${this.$protocol}//${this.$baseURL}`)
+      newUrl = newUrl.replace('/ui', '').replace('/user/', '/users/');
       return newUrl;
     },
   },

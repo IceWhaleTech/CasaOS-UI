@@ -13,21 +13,26 @@
   <div class="home-section has-text-left">
     <!-- Title Bar Start -->
     <div class=" is-flex is-align-items-center mb-5">
-        <app-section-title-tip title="Apps" label="Drag icons to sort." id="appTitle1" class="is-flex-grow-1"></app-section-title-tip>
+      <app-section-title-tip title="Apps" label="Drag icons to sort." id="appTitle1"
+                             class="is-flex-grow-1"></app-section-title-tip>
 
       <b-dropdown aria-role="menu" class="file-dropdown" position="is-bottom-left" animation="fade1">
         <template #trigger>
           <b-icon pack="casa" icon="plus" size="is-20" type="is-white"></b-icon>
         </template>
-        <b-dropdown-item aria-role="menuitem" @click="showInstall(0, 'custom')">{{$t('Custom Install APP')}}</b-dropdown-item>
-        <b-dropdown-item aria-role="menuitem" @click="showExternalLinkPanel">{{$t('Add external link/APP')}}</b-dropdown-item>
+        <b-dropdown-item aria-role="menuitem" @click="showInstall(0, 'custom')">
+          {{ $t('Custom Install APP') }}
+        </b-dropdown-item>
+        <b-dropdown-item aria-role="menuitem" @click="showExternalLinkPanel">
+          {{ $t('Add external link/APP') }}
+        </b-dropdown-item>
       </b-dropdown>
     </div>
     <!-- Title Bar End -->
 
     <!-- App List Start -->
     <draggable class="columns is-variable is-2 is-multiline app-list contextmenu-canvas" tag="div" v-model="appList"
-      v-bind="dragOptions" @start="drag = true" @end="onSortEnd" :draggable="draggable">
+               v-bind="dragOptions" @start="drag = true" @end="onSortEnd" :draggable="draggable">
       <template v-if="!isLoading">
 
         <!-- App Icon Card Start -->
@@ -54,7 +59,7 @@
         <!-- Application not imported Start -->
         <div class="column is-narrow is-3" v-for="(item) in notImportedList" :key="'app-' + item.id">
           <app-card :item="item" @updateState="getList" @configApp="showConfigPanel" @importApp="showConfigPanel"
-            :isCasa="false"></app-card>
+                    :isCasa="false"></app-card>
         </div>
         <!-- Application not imported End -->
       </div>
@@ -164,7 +169,7 @@ export default {
       try {
         const listRes = await this.$api.container.getMyAppList();
         let listLinkApp = await this.$api.users.getLinkAppDetail().then(v => v.data.data);
-        if (listLinkApp === ""){
+        if (listLinkApp === "") {
           listLinkApp = []
         }
         localStorage.setItem("listLinkApp", JSON.stringify(listLinkApp))

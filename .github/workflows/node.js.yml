@@ -6,8 +6,8 @@ name: Node.js CI
 on:
   push:
     # tags:
-    #   - v*
-    branches: [ "dev-0.3.6-ezreal", "main" ]
+    #   - v*.*.*
+    branches: [ "main" ]
   # pull_request:
   #   branches: [ "dev-0.3.6-ezreal", "main" ]
 
@@ -49,16 +49,17 @@ jobs:
           echo github.sha ${{ github.sha }}
           echo github.ref ${{ github.ref }}
           echo github.title ${{ github.title }}
-      - name: Create GitHub Release
-        id: 创建 create_release
+      - name: 创建 Create GitHub Release
+        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.version.outputs.value  }}-alpha
-          release_name: release ${{ steps.version.outputs.value  }}-alpha
+          tag_name: v${{ steps.version.outputs.value  }}-alpha
+          release_name: release v${{ steps.version.outputs.value  }}-alpha
           draft: false
           prerelease: false
+      - run: cp ./build/sysroot/var/lib/casaos/www/img/wallpaper0*.jpg ./build/sysroot/var/lib/casaos/www/ui/img/
       - name: 归档 Archive Release
         uses: thedoctor0/zip-release@main
         with:
@@ -78,4 +79,3 @@ jobs:
       - name: 刷新缓存 Refresh The Cache
         run: |
           curl https://purge.jsdelivr.net/npm/iemotion-pic@latest/dist/name.json
-
