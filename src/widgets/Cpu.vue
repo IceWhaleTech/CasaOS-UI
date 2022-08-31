@@ -17,7 +17,7 @@
         <div class="column is-half has-text-centered">
           <apexchart type="radialBar" :height="barHeight" :options="chartOptions" :series="cpuSeries"></apexchart>
           <p class="is-size-12px two-line margin-[-10px]">CPU<br/>
-            <span class="is-size-14px">{{power.toFixed(1)}} W/{{temperature}}°C</span>
+            <span class="is-size-14px">{{power.toFixed(1)}}W / {{temperature}}°C</span>
           </p>
         </div>
         <div class="column is-half has-text-centered">

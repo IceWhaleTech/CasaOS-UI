@@ -330,5 +330,7 @@ export default {
     "Local URL": "URL locale",
     "Custom Install APP": "APP di installazione personalizzata",
     "Add external link/APP": "Aggiungi collegamento/applicazione esterni",
-    "Address": "Indirizzo"
+    "Address": "Indirizzo",
+    "Performance":"Performance"
+
 }

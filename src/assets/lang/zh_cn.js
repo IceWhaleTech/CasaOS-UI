@@ -328,6 +328,7 @@ export default {
     "Local URL": "本地 URL",
     "Custom Install APP": "自定义安装APP",
     "Add external link/APP": "添加外部链接/应用",
-    "Address": "地址"
+    "Address": "地址",
+    "Performance":"性能"
 
 }

@@ -3,7 +3,7 @@
  * @Date: 2022-01-20 12:01:07
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2022-08-25 10:24:58
- * @Description: 
+ * @Description:
  * @FilePath: \CasaOS-UI-dev\src\mixins\mixin.js
  */
 import qs from 'qs'
@@ -60,7 +60,7 @@ export const mixin = {
         /**
          * @description: Format size output
          * @param {int} bytes size value
-         * @return {String} 
+         * @return {String}
          */
         renderSize(bytes) {
             const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
@@ -73,7 +73,7 @@ export const mixin = {
 
         /**
          * @description: Get Default Lang from browser
-         * @return {String} lang 
+         * @return {String} lang
          */
         getLangFromBrowser() {
             var lang = navigator.language || navigator.userLanguage;
@@ -84,10 +84,10 @@ export const mixin = {
 
         /**
          * @description: Set Default Lang from browser
-         * @param {String} lang 
-         * @return {void} 
+         * @param {String} lang
+         * @return {void}
          */
-        // 
+        //
         setLang(lang) {
             localStorage.setItem('lang', lang)
             this.$i18n.locale = lang;
@@ -96,10 +96,10 @@ export const mixin = {
 
         /**
          * @description: Get file icon from file name
-         * @param {Object} item 
-         * @return {Object} 
+         * @param {Object} item
+         * @return {Object}
          */
-        // 
+        //
         getIconFile(item) {
             let isDir = false
             if (has(item, 'is_dir') || has(item, "isFolder")) {
@@ -158,7 +158,7 @@ export const mixin = {
         /**
          * @description: Download File
          * @param {Object,Array} items
-         * @return {void} 
+         * @return {void}
          */
         downloadFile(items) {
             this.$buefy.toast.open({
@@ -239,8 +239,8 @@ export const mixin = {
         },
         /**
          * @description: Download File
-         * @param {Object,Object} event item 
-         * @return {void} 
+         * @param {Object,Object} event item
+         * @return {void}
          */
         clickItem(event, item) {
             let bounced = event.target.getAttribute('class').includes('mdi-dots')
@@ -255,8 +255,8 @@ export const mixin = {
         },
         /**
          * @description: Open Context Menu
-         * @param {Object,Object} event item 
-         * @return {void} 
+         * @param {Object,Object} event item
+         * @return {void}
          */
         openContextMenu(e, item) {
             if (item) {
@@ -269,7 +269,7 @@ export const mixin = {
          * @description: Copy Or Cut File
          * @param {String} type
          * @param {Object,Array} items
-         * @return {void} 
+         * @return {void}
          */
         operate(type, items) {
             let operateObject = {
@@ -299,7 +299,7 @@ export const mixin = {
         /**
          * @description: Delete File
          * @param {Object,Array} items
-         * @return {void} 
+         * @return {void}
          */
         deleteItem(items) {
             let path = ""
@@ -384,7 +384,7 @@ export const mixin = {
         /**
          * @description: Format size output
          * @param {int} value size value
-         * @return {String} 
+         * @return {String}
          */
         renderBps(value) {
             if (null == value || value == '' || value == 0) {
@@ -396,14 +396,14 @@ export const mixin = {
             index = Math.floor(Math.log(srcsize) / Math.log(1024));
             var size = srcsize / Math.pow(1024, index);
             size = size.toFixed(2);
-            return size + " " + unitArr[index];
+            return size + unitArr[index];
         },
 
 
         /**
          * @description: Format size output
          * @param {int} value size value
-         * @return {String} 
+         * @return {String}
          */
         renderSize(bytes) {
             const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
