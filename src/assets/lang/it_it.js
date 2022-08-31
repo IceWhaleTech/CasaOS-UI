@@ -84,7 +84,7 @@ export default {
     "Terminal & Logs": "Terminale & Log",
     "Terminal": "Terminale",
     "Logs": "Log",
-    "Please check if the username and port are correct, and make sure that ssh server is installed.":"Please check if the username and port are correct, and make sure that ssh server is installed.",
+    "Please check if the username and port are correct, and make sure that ssh server is installed.": "Please check if the username and port are correct, and make sure that ssh server is installed.",
 
     // Widgets
     "Widgets Settings": "Impostazioni widget",
@@ -95,7 +95,7 @@ export default {
     "Network Status": "Stato della rete",
     "available of": "{avl} disponibile di {total}",
 
-    // Search 
+    // Search
     "Search...": "Cerca...",
 
     // Sync
@@ -190,7 +190,7 @@ export default {
     "Port [Please add a ports set first]": "Port [Please add a ports set first]",
     "[Optional]": "[Optional]",
     "Notice: If there are multiple services, only the first set can be analyzed correctly": "Notice: If there are multiple services, only the first set can be analyzed correctly",
-    "There was an error loading the data, please try again!":"There was an error loading the data, please try again!",
+    "There was an error loading the data, please try again!": "There was an error loading the data, please try again!",
     "Port": "Port",
 
     //Storage
@@ -321,4 +321,14 @@ export default {
     "Please enter a correct Samba address!": "Please enter a correct Samba address!",
     "Create Folder": "Create Folder",
     "Create File": "Create File",
+    //LinkApp
+    "Add External Link/APP": "Aggiungi collegamento/applicazione esterni",
+    "Local URL,Pblic URL": "URL locale, URL Pblic ",
+    "Eg: //192.168.1.1:5000 or https://www.google.com": "Eg: //192.168.1.1:5000 or https://www.google.com",
+    "App Name": "Nome dell’applicazione",
+    "Customize your APP name": "Personalizza il tuo nome di applicazione ",
+    "Local URL": "URL locale",
+    "Custom Install APP": "APP di installazione personalizzata",
+    "Add external link/APP": "Aggiungi collegamento/applicazione esterni",
+    "Address": "Indirizzo"
 }

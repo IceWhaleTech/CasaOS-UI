@@ -95,7 +95,7 @@ export default {
     "Network Status": "État du réseau",
     "available of": "{avl} disponible sur {total}",
 
-    // Search 
+    // Search
     "Search...": "Rechercher...",
 
     // Sync
@@ -321,4 +321,14 @@ export default {
     "Please enter a correct Samba address!": "Please enter a correct Samba address!",
     "Create Folder": "Create Folder",
     "Create File": "Create File",
+    //LinkApp
+    "Add External Link/APP": "Ajout d’un lien externe /APP",
+    "Local URL,Pblic URL": "URL locale, URL Pblic",
+    "Eg: //192.168.1.1:5000 or https://www.google.com": "Eg: //192.168.1.1:5000 or https://www.google.com",
+    "App Name": "App Name",
+    "Customize your APP name": "Personnalisez votre nom d’application",
+    "Local URL": "Local URL",
+    "Custom Install APP": "Application d’installation personnalisée",
+    "Add external link/APP": "Ajout d’un lien externe /APP",
+    "Address": "Adresse"
 }

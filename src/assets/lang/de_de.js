@@ -79,12 +79,12 @@ export default {
     "Please share to friends who are concerned about family and data privacy to join and use CasaOS.": "Please share to friends who are concerned about family and data privacy to join and use CasaOS.",
     "CasaOS upgrade successfully": "CasaOS upgrade successfully",
     "CasaOS upgrade failed": "CasaOS upgrade failed",
-    
+
     // Terminal & Logs
     "Terminal & Logs": "Terminal & Logs",
     "Terminal": "Terminal",
     "Logs": "Logs",
-    "Please check if the username and port are correct, and make sure that ssh server is installed.":"Please check if the username and port are correct, and make sure that ssh server is installed.",
+    "Please check if the username and port are correct, and make sure that ssh server is installed.": "Please check if the username and port are correct, and make sure that ssh server is installed.",
 
     // Widgets
     "Widgets Settings": "Widget-Einstellungen",
@@ -190,7 +190,7 @@ export default {
     "Port [Please add a ports set first]": "Port [Please add a ports set first]",
     "[Optional]": "[Optional]",
     "Notice: If there are multiple services, only the first set can be analyzed correctly": "Notice: If there are multiple services, only the first set can be analyzed correctly",
-    "There was an error loading the data, please try again!":"There was an error loading the data, please try again!",
+    "There was an error loading the data, please try again!": "There was an error loading the data, please try again!",
     "Port": "Port",
 
     //Storage
@@ -320,5 +320,14 @@ export default {
     "Username or password cannot be empty.": "Username or password cannot be empty.",
     "Please enter a correct Samba address!": "Please enter a correct Samba address!",
     "Create Folder": "Create Folder",
-    "Create File": "Create File",
+    "Create File": "Create File", //LinkApp
+    "Add External Link/APP": "Externen Link/APP hinzufügen",
+    "Local URL,Pblic URL": "Lokale URL,Pblic URL",
+    "Eg: //192.168.1.1:5000 or https://www.google.com": "Eg: //192.168.1.1:5000 or https://www.google.com",
+    "App Name": "App Name",
+    "Customize your APP name": "Passen Sie Ihren APP-Namen an",
+    "Local URL": "Lokale URL",
+    "Custom Install APP": "Benutzerdefinierte Installations-APP",
+    "Add external link/APP": "Externen Link/APP hinzufügen",
+    "Address": "Adresse"
 }
