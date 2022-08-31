@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: '使用 Use Node.js ${{ matrix.node-version }}'
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
@@ -48,16 +48,6 @@ jobs:
           echo github ${{ github }}
           echo github.sha ${{ github.sha }}
           echo github.ref ${{ github.ref }}
-      #      - name: 创建 Create GitHub Release
-      #        id: create_release
-      #        uses: actions/create-release@v1
-      #        env:
-      #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #        with:
-      #          tag_name: ${{ steps.version.outputs.value  }}-alpha
-      #          release_name: release ${{ steps.version.outputs.value  }}-alpha
-      #          draft: false
-      #          prerelease: false
       - name: '更新 Update release'
         uses: meeDamian/github-release@v2.0.2
         with:

@@ -6,7 +6,7 @@ name: Node.js CI
 on:
   push:
     # tags:
-    #   - v*
+    #   - v*.*.*
     branches: [ "main" ]
   # pull_request:
   #   branches: [ "dev-0.3.6-ezreal", "main" ]
@@ -79,3 +79,4 @@ jobs:
       - name: 刷新缓存 Refresh The Cache
         run: |
           curl https://purge.jsdelivr.net/npm/iemotion-pic@latest/dist/name.json
+
