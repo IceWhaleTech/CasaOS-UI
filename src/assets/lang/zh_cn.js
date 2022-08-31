@@ -95,7 +95,7 @@ export default {
     "Network Status": "网络状况",
     "available of": "{avl}可用（共{total}）",
 
-    // Search 
+    // Search
     "Search...": "搜索...",
 
     // Sync
@@ -319,17 +319,15 @@ export default {
     "Username or password cannot be empty.": "用户名或密码不能为空。",
     "Please enter a correct Samba address!": "请输入正确的 Samba 地址！",
     "Create Folder": "创建文件夹",
-    "Create File": "创建文件",
-    //LinkApp
-    "Add External Link/APP":"添加外部链接/应用",
-    "Local URL,Pblic URL":"本地 URL,公网 URL",
-    "Eg: //192.168.1.1:5000 or https://www.google.com":"列入: //192.168.1.1:5000 or https://www.google.com",
-    "App Name":"应用名字",
-    "Customize your APP name":"定制你的应用名字",
-    "Icon URL":"图标 URL",
-    "Local URL":"本地 URL",
-    "Custom Install APP":"自定义安装APP",
-    "Add external link/APP":"添加外部链接/应用",
-    "Address":"地址"
+    "Create File": "创建文件", //LinkApp
+    "Add External Link/APP": "添加外部链接/应用",
+    "Local URL,Pblic URL": "本地 URL,公网 URL",
+    "Eg: //192.168.1.1:5000 or https://www.google.com": "Eg: //192.168.1.1:5000 or https://www.google.com",
+    "App Name": "应用名字",
+    "Customize your APP name": "定制你的应用名字",
+    "Local URL": "本地 URL",
+    "Custom Install APP": "自定义安装APP",
+    "Add external link/APP": "添加外部链接/应用",
+    "Address": "地址"
 
 }
