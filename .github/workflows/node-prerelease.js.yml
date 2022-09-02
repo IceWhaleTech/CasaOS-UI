@@ -58,6 +58,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           allow_override: true
           gzip: false
+          prerelease: true
           tag: ${{ env.VERSION  }}
           files: ./linux-all-casaos-${{ env.VERSION }}.tar.gz
 #      - name: '刷新缓存 Refresh The Cache'

@@ -54,29 +54,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           allow_override: true
           gzip: false
-          tag: v${{ steps.version.outputs.value  }}-alpha
-          files: ./linux-all-casaos-v${{ steps.version.outputs.value }}-alpha.tar.gz
-#      - uses: johnwbyrd/update-release@v1.0.0
-#        with:
-##          tag: v${{ steps.version.outputs.value  }}-alpha
-#          token: ${{ secrets.PRIVATE_SECRET_TOKEN }}
-#          files: ./linux-all-casaos-v${{ steps.version.outputs.value }}-alpha.tar.gz
-      #      - name: 归档 Archive Release
-      #        uses: thedoctor0/zip-release@main
-      #        with:
-      #          type: 'tar'
-      #          path: './build'
-      #          filename: linux-all-casaos-v${{ steps.version.outputs.value }}-alpha.tar.gz
-      #      - name: 上传 Upload Release Asset
-      #        id: upload-release-asset
-      #        uses: actions/upload-release-asset@latest
-      #        env:
-      #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #        with:
-      #          upload_url: ${{ steps.create_release.outputs.upload_url }}
-      #          asset_path: ./linux-all-casaos-v${{ steps.version.outputs.value }}-alpha.tar.gz
-      #          asset_name: linux-all-casaos-v${{ steps.version.outputs.value }}-alpha.tar.gz
-      #          asset_content_type: application/zip
+          tag: v${{ steps.version.outputs.value  }}
+          files: ./linux-all-casaos-v${{ steps.version.outputs.value }}.tar.gz
 #      - name: '刷新缓存 Refresh The Cache'
 #        run: |
 #          curl https://purge.jsdelivr.net/npm/iemotion-pic@latest/dist/name.json
