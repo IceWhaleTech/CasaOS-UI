@@ -286,7 +286,7 @@ export default {
         await this.showExternalLinkPanel(item)
         return
       }
-      let status = item.status
+      let state = item.state
       let id = item.id
       const networks = await this.$api.container.getNetworks();
       const memory = this.$store.state.hardwareInfo.mem;
@@ -313,7 +313,7 @@ export default {
           id: id,
           state: "update",
           isCasa: isCasa,
-          runningStatus: status,
+          runningStatus: state,
           configData: configData,
           settingData: ret.data.data
         }

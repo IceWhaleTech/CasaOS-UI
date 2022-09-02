@@ -128,7 +128,7 @@ export default {
      */
     openApp(item) {
       if (!this.isCasa) {
-        this.$emit("importApp", item.id, item.state, false)
+        this.$emit("importApp", item, false)
         return false
       }
       if (item.type === "system") {
