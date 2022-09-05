@@ -1,10 +1,9 @@
-name: Node.js release CI
+name: Node.js prerelease CI by branch
 
 on:
   push:
-    # tags:
-    #   - v*
-    branches: [ "main" ]
+    branches:
+      - 'dev**-ezreal'
 # pull_request:
 #   branches: [ "dev-0.3.6-ezreal", "main" ]
 jobs:
@@ -41,22 +40,17 @@ jobs:
       - run: yarn build
       - run: |
           cp ./build/sysroot/var/lib/casaos/www/img/wallpaper0*.jpg ./build/sysroot/var/lib/casaos/www/ui/img/
-          tar -zcvf linux-all-casaos-v${{ steps.version.outputs.value }}-alpha.tar.gz build
-      - name: '输出 echo artifact'
-        run: |
-          echo ${{ steps.version.outputs.value }}
-          echo github ${{ github }}
-          echo github.sha ${{ github.sha }}
-          echo github.ref ${{ github.ref }}
+          tar -zcvf linux-all-casaos-${{ steps.version.outputs.value }}.tar.gz build
       - name: '更新 Update release'
         uses: meeDamian/github-release@v2.0.2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           allow_override: true
           gzip: false
-          tag: v${{ steps.version.outputs.value  }}
-          files: ./linux-all-casaos-v${{ steps.version.outputs.value }}.tar.gz
+          prerelease: true
+          tag: ${{ steps.version.outputs.value }}-Developing
+          files: ./linux-all-casaos-${{ steps.version.outputs.value }}.tar.gz
+      - run: echo ${{ env.TAG }}
 #      - name: '刷新缓存 Refresh The Cache'
 #        run: |
 #          curl https://purge.jsdelivr.net/npm/iemotion-pic@latest/dist/name.json
-
