@@ -1,4 +1,4 @@
-name: Node.js prerelease CI
+name: Node.js prerelease CI by tag
 
 on:
   push:

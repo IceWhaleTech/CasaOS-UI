@@ -1,11 +1,11 @@
 name: Node.js release CI
 
-#on:
-#  push:
+on:
+  push:
 #    # tags:
 #    #   - v*
-#    branches:
-#      - 'main'
+    branches:
+      - 'main'
 #      - 'releases/**'
 #      - 'dev**-ezreal'
 # pull_request:
