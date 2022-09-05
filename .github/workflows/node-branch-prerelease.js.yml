@@ -1,4 +1,4 @@
-name: Node.js prerelease CI
+name: Node.js prerelease CI by branch
 
 on:
   push:
@@ -48,7 +48,7 @@ jobs:
           allow_override: true
           gzip: false
           prerelease: true
-          tag: ${{ steps.version.outputs.value }}
+          tag: ${{ steps.version.outputs.value }}-Developing
           files: ./linux-all-casaos-${{ steps.version.outputs.value }}.tar.gz
       - run: echo ${{ env.TAG }}
 #      - name: '刷新缓存 Refresh The Cache'
