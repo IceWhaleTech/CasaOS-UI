@@ -41,7 +41,7 @@ jobs:
       - run: yarn build
       - run: |
           cp ./build/sysroot/var/lib/casaos/www/img/wallpaper0*.jpg ./build/sysroot/var/lib/casaos/www/ui/img/
-          tar -zcvf linux-all-casaos-v${{ steps.version.outputs.value }}-alpha.tar.gz build
+          tar -zcvf linux-all-casaos-${{ steps.version.outputs.value }}-alpha.tar.gz build
       - name: '输出 echo artifact'
         run: |
           echo ${{ steps.version.outputs.value }}
@@ -54,8 +54,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           allow_override: true
           gzip: false
-          tag: v${{ steps.version.outputs.value  }}
-          files: ./linux-all-casaos-v${{ steps.version.outputs.value }}.tar.gz
+          tag: ${{ steps.version.outputs.value  }}
+          files: ./linux-all-casaos-${{ steps.version.outputs.value }}.tar.gz
 #      - name: '刷新缓存 Refresh The Cache'
 #        run: |
 #          curl https://purge.jsdelivr.net/npm/iemotion-pic@latest/dist/name.json
