@@ -1,6 +1,6 @@
 {
   "name": "CasaOS",
-  "version": "0.3.6",
+  "version": "v0.3.7",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --mode dev",

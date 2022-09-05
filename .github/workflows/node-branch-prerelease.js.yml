@@ -1,0 +1,56 @@
+name: Node.js prerelease CI
+
+on:
+  push:
+    branches:
+      - 'dev**-ezreal'
+# pull_request:
+#   branches: [ "dev-0.3.6-ezreal", "main" ]
+jobs:
+  release:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [ 16.x ]
+      # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: '使用 Use Node.js ${{ matrix.node-version }}'
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - name: '缓存 Cache'
+        uses: actions/cache@v2
+        id: cache-dependencies
+        with:
+          path: node_modules
+          key: ${{runner.OS}}-${{hashFiles('**/yarn.lock')}}
+      - name: '读取当前版本号 Read the current version number'
+        id: version
+        uses: ashley-taylor/read-json-property-action@v1.0
+        with:
+          path: ./package.json
+          property:
+            version
+      - run: yarn install
+      - run: yarn build
+      - run: |
+          cp ./build/sysroot/var/lib/casaos/www/img/wallpaper0*.jpg ./build/sysroot/var/lib/casaos/www/ui/img/
+          tar -zcvf linux-all-casaos-${{ steps.version.outputs.value }}.tar.gz build
+      - name: '更新 Update release'
+        uses: meeDamian/github-release@v2.0.2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          allow_override: true
+          gzip: false
+          prerelease: true
+          tag: ${{ steps.version.outputs.value }}
+          files: ./linux-all-casaos-${{ steps.version.outputs.value }}.tar.gz
+      - run: echo ${{ env.TAG }}
+#      - name: '刷新缓存 Refresh The Cache'
+#        run: |
+#          curl https://purge.jsdelivr.net/npm/iemotion-pic@latest/dist/name.json
