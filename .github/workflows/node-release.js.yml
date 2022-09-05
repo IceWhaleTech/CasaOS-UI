@@ -41,7 +41,7 @@ jobs:
       - run: yarn build
       - run: |
           cp ./build/sysroot/var/lib/casaos/www/img/wallpaper0*.jpg ./build/sysroot/var/lib/casaos/www/ui/img/
-          tar -zcvf linux-all-casaos-${{ steps.version.outputs.value }}-alpha.tar.gz build
+          tar -zcvf linux-all-casaos-${{ steps.version.outputs.value }}.tar.gz build
       - name: '输出 echo artifact'
         run: |
           echo ${{ steps.version.outputs.value }}
