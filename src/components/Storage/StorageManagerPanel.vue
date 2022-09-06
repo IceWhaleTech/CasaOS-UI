@@ -24,7 +24,7 @@
                 {{$t('Please insert a Drive to Create Storage')}}
               </div>
               <div slot="reference">
-                <b-button size="is-small" type="is-link is-light" rounded @click="showCreate" :disabled="unDiskData.length == 0">{{ $t('Create Storage') }}</b-button>
+                <b-button size="is-small" :type="state_createstorage_operability" rounded @click="showCreate" class="o" :disabled="unDiskData.length == 0">{{ $t('Create Storage') }}</b-button>
               </div>
 
             </popper>
@@ -38,6 +38,10 @@
               <drive-item v-for="(item,index) in diskData" :key="'disk'+index" :item="item"></drive-item>
             </b-tab-item>
           </b-tabs>
+
+          <div class="is-flex is-flex-direction-row-reverse">
+            <b-button size="is-small" :type="state_mainstorage_operability" rounded @click="storageSet" :disabled="unDiskData.length == 0" class="width">{{ $t('Set MainStorage') }}</b-button>
+          </div>
 
         </div>
         <!-- Storage and Disk List End -->
@@ -170,7 +174,18 @@ export default {
   computed: {
     title() {
       return this.creatIsShow ? this.$t('Create Storage') : this.$t('Storage Manager')
-    }
+    },
+    state_createstorage_operability() {
+      if(this.unDiskData.length == 0){
+        return "is-link is-light"
+      }
+    },
+    state_mainstorage_operability() {
+      if(this.unDiskData.length == 0){
+        return "is-link is-light"
+      }
+      return "is-link"
+    },
   },
   mounted() {
     //Smooth
@@ -284,6 +299,10 @@ export default {
       })
       let nextMaxNum = max(diskNumArray) + 1;
       this.createStorageName = "Storage" + nextMaxNum
+    },
+    storageSet(){
+      // TODO storage settings
+
     },
     /**
      * @description: Validate form async

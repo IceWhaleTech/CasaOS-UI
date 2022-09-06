@@ -1,0 +1,189 @@
+<!--
+ * @Author: zhanghengxin ezreal.ice@icloud.com
+ * @Date: 2022-09-06 14:42:24
+ * @LastEditors: zhanghengxin ezreal.ice@icloud.com
+ * @LastEditTime: 2022-09-06 15:31:14
+ * @FilePath: /CasaOS-UI/src/components/Storage/StorageBlock.vue
+ * @Description: 	
+ * 	
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.	
+ * 
+-->
+
+<template>
+  <div class="column">
+    <div class="common-card">
+
+      <div class="blur-background"></div>
+      <div class="content widget">
+        <!-- Init State Start -->
+        <div class="widget-header is-flex">
+          <div class="image is-24x24" @click="TODO">
+            <img :src="require('@/assets/img/logo/casa-white.svg')"/>
+          </div>
+          <div class="widget-title pl-2">
+            {{ $t("Find New Drive") }}
+          </div>
+        </div>
+
+        <div class="is-flex is-align-items-center">
+          <div class="info ">
+            <div class="widget-header is-flex">
+              <div class="image is-24x24" @click="TODO">
+                <img :src="require('@/assets/img/logo/casa-white.svg')"/>
+              </div>
+              <div class="widget-title pl-2 is-flex-grow-1">
+                {{ $t("Find New Drive") }}
+              </div>
+              <p class="has-text-left is-size-14px mt-1 is-flex-shrink-0">
+                <span class="op65">{{ $t('Used') }}: </span>100G
+              </p>
+            </div>
+
+          </div>
+        </div>
+        <div class="buttons">
+          <b-button type="is-primary" size="is-small" rounded @click="openSyncPanel">{{ $t(actionText) }}
+          </b-button>
+        </div>
+        <!-- Init State End -->
+
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import events from '@/events/events';
+
+export default {
+  name: "storage-block",
+  data() {
+    return {}
+  },
+  created() {
+    this.checkSyncStatus()
+
+    this.$EventBus.$on(events.UPDATE_SYNC_STATUS, () => {
+      this.checkSyncStatus();
+    });
+
+  },
+  beforeDestroy() {
+    this.$EventBus.$off(events.UPDATE_SYNC_STATUS);
+  },
+  computed: {
+    actionText() {
+      return !this.isSyncInstalled ? "Install" : "Open"
+    }
+  },
+
+  methods: {
+    async checkSyncStatus() {
+      // const res = await this.$api.sys.getSystemApps()
+      const listRes = await this.$api.container.getMyAppList();
+      const systemApps = listRes.data.data.casaos_apps
+      const is8384SyncInstalled = systemApps.some(app => {
+        return app.image.includes('syncthing') && app.port === 8384
+      })
+      if (is8384SyncInstalled) {
+        this.isSyncInstalled = true
+        this.syncBaseURL = `http://${this.$baseIp}:8384`
+        this.syncPort = 8384
+        this.syncId = systemApps.find(app => {
+          return app.image.includes('syncthing') && app.port === 8384
+        }).port
+        this.isSyncRunning = systemApps.some(app => {
+          return app.image.includes('syncthing') && app.port === 8384 && app.state === 'running'
+        })
+      } else {
+        this.isSyncInstalled = systemApps.some(app => {
+          return app.image.includes('syncthing')
+        })
+        if (this.isSyncInstalled) {
+          this.isSyncRunning = systemApps.some(app => {
+            return app.image.includes('syncthing') && app.state === "running"
+          })
+          this.syncPort = systemApps.find(app => {
+            return app.image.includes('syncthing')
+          }).port
+          this.syncId = systemApps.find(app => {
+            return app.image.includes('syncthing')
+          }).id
+          this.syncBaseURL = `http://${this.$baseIp}:${this.syncPort}`
+        }
+      }
+
+
+    },
+    async openSyncPanel() {
+      await this.checkSyncStatus()
+      if (!this.isSyncInstalled) {
+        this.$EventBus.$emit(events.OPEN_APP_STORE_AND_GOTO_SYNCTHING);
+      } else {
+        if (this.isSyncRunning) {
+          const arg = `\u003cscript\u003elocation.replace("${this.syncBaseURL}")\u003c/script\u003e`;
+          window.open('javascript:window.name;', arg);
+        } else {
+          this.$buefy.dialog.confirm({
+            title: ' ',
+            message: this.$t('Syncthing is not running, start it?'),
+            hasIcon: true,
+            closeOnConfirm: false,
+            confirmText: this.$t('Start'),
+            cancelText: this.$t('Cancel'),
+            onConfirm: (value, {close}) => {
+              this.$buefy.toast.open({
+                message: this.$t(`Starting Syncthing...`),
+              })
+              this.$api.container.updateState(this.syncId, "start").then((res) => {
+                this.isStarting = false
+                if (res.data.success == 200) {
+                  this.$EventBus.$emit(events.RELOAD_APP_LIST);
+                  const arg = `\u003cscript\u003elocation.replace("${this.syncBaseURL}")\u003c/script\u003e`;
+                  setTimeout(() => {
+                    close()
+                    window.open('javascript:window.name;', arg);
+
+                  }, 2000)
+                } else {
+                  this.$buefy.toast.open({
+                    message: this.$t(`Failed to start, please try again.`),
+                    type: 'is-danger'
+                  })
+                }
+              })
+            }
+          })
+        }
+      }
+    },
+
+  },
+  sockets: {
+    app_install(res) {
+      const data = res.body.data
+      if (data.finished) {
+        this.checkSyncStatus();
+      }
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+// copy from src/assets/scss/common/_others.scss:102
+.content {
+  position: relative;
+  z-index: 10;
+  padding: 1rem;
+  padding-left: 1.25rem;
+
+  .info{
+    //margin: 1.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    margin-left: 2rem;
+  }
+}
+</style>

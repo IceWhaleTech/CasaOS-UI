@@ -10,7 +10,7 @@
   <div class=" home-section has-text-left mt-1 mb-2rem">
     <div class="columns is-variable is-2 is-multiline suggestion-list">
       <template v-if="!isLoading">
-        <sync-block></sync-block>
+        <storage-block></storage-block>
         <smart-block></smart-block>
       </template>
       <b-loading :is-full-page="false" v-model="isLoading"></b-loading>
@@ -22,8 +22,10 @@
 <script>
 import SmartBlock from './smartHome/SmartBlock.vue'
 import SyncBlock from './syncthing/SyncBlock.vue'
+import StorageBlock from "@/components/Storage/StorageBlock";
+
 export default {
-  components: { SyncBlock, SmartBlock },
+  components: { SyncBlock, SmartBlock,StorageBlock },
   name: "core-service",
   data() {
     return {
