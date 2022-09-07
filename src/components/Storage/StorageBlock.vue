@@ -4,10 +4,10 @@
  * @LastEditors: zhanghengxin ezreal.ice@icloud.com
  * @LastEditTime: 2022-09-06 15:31:14
  * @FilePath: /CasaOS-UI/src/components/Storage/StorageBlock.vue
- * @Description: 	
- * 	
- * Copyright (c) 2022 by IceWhale, All Rights Reserved.	
- * 
+ * @Description:
+ *
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
+ *
 -->
 
 <template>
@@ -18,7 +18,7 @@
       <div class="content widget">
         <!-- Init State Start -->
         <div class="widget-header is-flex">
-          <div class="image is-24x24" @click="TODO">
+          <div class="image is-24x24">
             <img :src="require('@/assets/img/logo/casa-white.svg')"/>
           </div>
           <div class="widget-title pl-2">
@@ -27,24 +27,38 @@
         </div>
 
         <div class="is-flex is-align-items-center">
-          <div class="info ">
+          <div class="info">
             <div class="widget-header is-flex">
-              <div class="image is-24x24" @click="TODO">
+              <div class="image is-24x24 b-line-none">
                 <img :src="require('@/assets/img/logo/casa-white.svg')"/>
               </div>
-              <div class="widget-title pl-2 is-flex-grow-1">
-                {{ $t("Find New Drive") }}
+              <div  class="b-line is-flex is-flex-grow-1 ml-2">
+                <div class="widget-title is-flex-grow-1 nowarp">
+                  {{ $t("Find New Drive") }}
+                </div>
+                <p class="has-text-left is-size-14px mt-1 is-flex-shrink-0">
+                  <span class="op65">100G/1000G</span>
+                </p>
               </div>
-              <p class="has-text-left is-size-14px mt-1 is-flex-shrink-0">
-                <span class="op65">{{ $t('Used') }}: </span>100G
-              </p>
+            </div>
+            <div class="widget-header is-flex">
+              <div class="image is-24x24 b-line-none">
+                <img :src="require('@/assets/img/logo/casa-white.svg')"/>
+              </div>
+              <div  class="b-line is-flex is-flex-grow-1 ml-2">
+                <div class="widget-title is-flex-grow-1 nowarp">
+                  {{ $t("Find New Drive") }}
+                </div>
+                <p class="has-text-left is-size-14px mt-1 is-flex-shrink-0">
+                  <span class="op65">100G/1000G</span>
+                </p>
+              </div>
             </div>
 
           </div>
         </div>
-        <div class="buttons">
-          <b-button type="is-primary" size="is-small" rounded @click="openSyncPanel">{{ $t(actionText) }}
-          </b-button>
+        <div class="is-flex is-flex-direction-row-reverse">
+          <b-button size="is-small" type="is-primary" rounded @click="TODO" :disabled="false" class="width">{{ $t('Set MainStorage') }}</b-button>
         </div>
         <!-- Init State End -->
 
@@ -178,12 +192,23 @@ export default {
   z-index: 10;
   padding: 1rem;
   padding-left: 1.25rem;
-
+  padding-right: 1.25rem;
+  padding-bottom: 0.75rem;
   .info{
     //margin: 1.5rem;
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
     margin-left: 2rem;
+    //margin-right: 2rem;
+
+    //src/assets/scss/common/_others.scss:24
+    .b-line{
+      border-bottom: #cfcfcf 1px solid;
+      margin-right: 2rem;
+      .nowarp{
+        white-space: nowrap;
+      }
+    }
   }
 }
 </style>
