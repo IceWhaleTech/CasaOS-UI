@@ -28,24 +28,24 @@
 
         <div class="is-flex is-align-items-center">
           <div class="info">
-            <div class="widget-header is-flex">
-              <div class="image is-24x24 b-line-none">
+            <div class="widget-header is-flex scrpe-margin">
+              <div class="image is-24x24">
                 <img :src="require('@/assets/img/logo/casa-white.svg')"/>
               </div>
-              <div  class="b-line is-flex is-flex-grow-1 ml-2">
+              <div class="b-line is-flex is-flex-grow-1 ml-2">
                 <div class="widget-title is-flex-grow-1 nowarp">
                   {{ $t("Find New Drive") }}
                 </div>
-                <p class="has-text-left is-size-14px mt-1 is-flex-shrink-0">
+                <div class="has-text-left is-size-14px mt-1 is-flex-shrink-0">
                   <span class="op65">100G/1000G</span>
-                </p>
+                </div>
               </div>
             </div>
-            <div class="widget-header is-flex">
-              <div class="image is-24x24 b-line-none">
+            <div class="widget-header is-flex scrpe-margin">
+              <div class="image is-24x24">
                 <img :src="require('@/assets/img/logo/casa-white.svg')"/>
               </div>
-              <div  class="b-line is-flex is-flex-grow-1 ml-2">
+              <div class="b-line is-flex is-flex-grow-1 ml-2">
                 <div class="widget-title is-flex-grow-1 nowarp">
                   {{ $t("Find New Drive") }}
                 </div>
@@ -58,7 +58,9 @@
           </div>
         </div>
         <div class="is-flex is-flex-direction-row-reverse">
-          <b-button size="is-small" type="is-primary" rounded @click="TODO" :disabled="false" class="width">{{ $t('Set MainStorage') }}</b-button>
+          <b-button :disabled="false" class="width" rounded size="is-small" type="is-primary" @click="TODO">
+            {{ $t('Set MainStorage') }}
+          </b-button>
         </div>
         <!-- Init State End -->
 
@@ -87,9 +89,8 @@ export default {
     this.$EventBus.$off(events.UPDATE_SYNC_STATUS);
   },
   computed: {
-    actionText() {
-      return !this.isSyncInstalled ? "Install" : "Open"
-    }
+    // actionText() {
+    // }
   },
 
   methods: {
@@ -172,7 +173,9 @@ export default {
         }
       }
     },
+    TODO() {
 
+    }
   },
   sockets: {
     app_install(res) {
@@ -194,18 +197,25 @@ export default {
   padding-left: 1.25rem;
   padding-right: 1.25rem;
   padding-bottom: 0.75rem;
-  .info{
+
+  .info {
     //margin: 1.5rem;
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
     margin-left: 2rem;
-    //margin-right: 2rem;
+    margin-right: 0rem;
+
+    .scrpe-margin {
+      margin: 0.75rem;
+      padding-bottom: 0.75rem;
+    }
 
     //src/assets/scss/common/_others.scss:24
-    .b-line{
+    .b-line {
       border-bottom: #cfcfcf 1px solid;
       margin-right: 2rem;
-      .nowarp{
+
+      .nowarp {
         white-space: nowrap;
       }
     }
