@@ -7,6 +7,7 @@
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
+ the file not be used
 -->
 
 <template>
@@ -16,50 +17,48 @@
       <div class="is-flex-grow-1">
         <h3 class="is-flex-grow-1 title is-3">apps installation location</h3>
       </div>
-      <button type="button" class="delete" @click="TODO"/>
+      <button class="delete" type="button" @click="TODO"/>
     </header>
     <section>
-      <storage-item v-for="(item,index) in storageData" :key="'storage'+index" :item="item" @getDiskList="getDiskList"></storage-item>
-      <drive-item v-for="(item,index) in diskData" :key="'disk'+index" :item="item"></drive-item>
+      <storage-item v-for="(item,index) in storageData" :key="'storage'+index" :item="item"
+                    @getDiskList="getDiskList"></storage-item>
     </section>
   </div>
 </template>
 
 <script>
-import driveItem from "@/components/Storage/DriveItem";
 import storageItem from "@/components/Storage/StorageItem";
+
 export default {
   name: "AppsInstallationLocation",
-  components:{
-    driveItem,
+  components: {
     storageItem
   },
-  props:{
-  },
-  data(){
-    return{
-      storageData:[{
-        name:12,
-        isSystem:true,
-        fsType:'fsType',
-        diskName:'diakname',
-        availSize:'1024',
-        disk_type:'type',
-        path:'path',
-        mount_point:'mount_point',
-        usePercent:'20',
-        model:'model',
-        size:123,
-        health:true,
-        temperature:100,
+  props: {},
+  data() {
+    return {
+      storageData: [{
+        name: 12,
+        isSystem: true,
+        fsType: 'fsType',
+        diskName: 'diakname',
+        availSize: '1024',
+        disk_type: 'type',
+        path: 'path',
+        mount_point: 'mount_point',
+        usePercent: '20',
+        model: 'model',
+        size: 123,
+        health: true,
+        temperature: 100,
       }],
-      diskData:[{
-        name:12,
-        disk_type:'type',
-        model:'model',
-        size:1234567,
-        health:true,
-        temperature:100,
+      diskData: [{
+        name: 12,
+        disk_type: 'type',
+        model: 'model',
+        size: 1234567,
+        health: true,
+        temperature: 100,
       }]
     }
   }
