@@ -11,30 +11,58 @@
 -->
 
 <template>
-  <div>
-    <!--    header-->
-    <header class="modal-card-head b-line">
-      <div class="is-flex-grow-1">
-        <h3 class="is-flex-grow-1 title is-3">apps installation location</h3>
-      </div>
-      <button class="delete" type="button" @click="TODO"/>
-    </header>
-    <section>
-      <storage-item v-for="(item,index) in storageData" :key="'storage'+index" :item="item"
-                    @getDiskList="getDiskList"></storage-item>
-    </section>
+  <div class="mb-5 mt-2 mr-4 ml-4 pri-border">
+    <div :class="false" class="is-flex mb-4 mt-4 ml-6">
+      <b-radio :native-value="system"
+               :value="system"
+               name="selectInstallationLacation"
+               type="is-info"
+               @input="$emit('selection', 'jiejiefirst'+item.path)">
+          <span class="is-flex">
+          <div class="header-icon">
+            <b-image :src="require('@/assets/img/storage/storage.png')" class="is-64x64"></b-image>
+          </div>
+          <div class="ml-3 is-flex-grow-1 is-flex is-align-items-center">
+            <div>
+              <h4 class="title is-size-14px mb-0 has-text-left one-line">{{ item.name }}
+                <b-tag v-if="item.isSystem" class="ml-2">CasaOS</b-tag>
+              </h4>
+
+              <p class="has-text-left is-size-7 has-text-grey-light	">{{ $t('Single Drive Storage') }}, <span
+                  class="is-uppercase">{{ item.fsType }}</span>
+                <b-tooltip :label="$t('CasaOS reserves 1% of file space when creating storage in EXT4 format.')"
+                           append-to-body>
+                  <b-icon class="mr-2 " icon="help-circle-outline" size="is-small"></b-icon>
+                </b-tooltip>
+              </p>
+              <p class="has-text-left is-size-7 ">{{
+                  $t("Available Total", {
+                    name: item.diskName,
+                    avl: renderSize(item.availSize),
+                    total: renderSize(item.size)
+                  })
+                }}</p>
+            </div>
+
+          </div>
+          </span>
+      </b-radio>
+    </div>
   </div>
 </template>
 
 <script>
-import storageItem from "@/components/Storage/StorageItem";
+import {mixin} from "@/mixins/mixin";
 
 export default {
   name: "AppsInstallationLocation",
-  components: {
-    storageItem
+  mixins: [mixin],
+  props: {
+    item: {
+      type: Object,
+      default: null
+    },
   },
-  props: {},
   data() {
     return {
       storageData: [{
@@ -61,10 +89,21 @@ export default {
         temperature: 100,
       }]
     }
-  }
+  },
+  computed: {
+    system() {
+      if (this.item.isSystem) {
+        return true
+      }
+      return false
+    }
+  },
 }
 </script>
 
-<style scoped>
-
+<style lang="scss">
+.pri-border {
+  border: 0.0625rem solid #0000001A;
+  border-radius: 0.5rem;
+}
 </style>

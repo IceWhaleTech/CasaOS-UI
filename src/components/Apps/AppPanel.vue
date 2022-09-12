@@ -19,16 +19,24 @@
       <!--      <apps-installation-location></apps-installation-location>-->
       <header class="modal-card-head b-line">
         <div class="is-flex-grow-1">
-          <h3 class="is-flex-grow-1 title is-3">apps installation location</h3>
+          <h3 class="is-flex-grow-1 title is-3 pri-line-height has-text-black">apps installation location</h3>
         </div>
         <button class="delete" type="button" @click="$emit('close')"/>
       </header>
-      <section class="modal-card-body">
-        <ValidationObserver>
-          <storage-item v-for="(item,index) in storageData" :key="'storage'+index" :item="item"
-                        :scence="storage_item_scence"
-                        @getDiskList="getDiskList" @selection="getSelection"></storage-item>
-        </ValidationObserver>
+      <div class="ml-6">
+        Please choose a location with enough storage space and stable connection.
+      </div>
+      <div class="pri-message-alert ml-6 mr-6 is-flex is-align-items-center">
+        <div class="left ml-4 mr-2">
+          <b-icon pack="casa" icon="danger" class="is-16x16"></b-icon>
+        </div>
+        {{ $t('Cannot be changed after selection.') }}
+      </div>
+      <section class="modal-card-body is-overlay">
+
+        <AppsInstallationLocation v-for="(item,index) in storageData" :key="'storage'+index" :item="item"
+                                  :scence="storage_item_scence"
+                                  @getDiskList="getDiskList" @selection="getSelection"></AppsInstallationLocation>
 
       </section>
     </template>
@@ -491,31 +499,34 @@
       </section>
       <!-- Modal-Card Body End -->
 
-      <!-- Modal-Card Footer Start-->
-      <footer :class="{'is-justify-content-center':currentSlide == 0}"
-              class="modal-card-foot is-flex is-align-items-center ">
-        <template>
-          <div class="is-flex-grow-1">
-            <!-- <div v-if="currentSlide == 0">
-              <b-pagination v-if="listTotal > pageSize" :total="listTotal" v-model="pageIndex" range-before=1 range-after=1 order="is-centered" size="is-small" :simple="false" :rounded="true" :per-page="pageSize" icon-prev="chevron-left" icon-next="chevron-right" aria-next-label="Next page" aria-previous-label="Previous page" aria-page-label="Page" aria-current-label="Current page">
-              </b-pagination>
-            </div> -->
-          </div>
-          <div>
-            <b-button v-if="currentSlide == 2 && currentInstallAppError " :label="$t('Back')" rounded
-                      @click="prevStep"/>
-            <b-button v-if="currentSlide == 1 && state == 'install'" :label="$t('Install')" :loading="isLoading"
-                      rounded type="is-primary" @click="installApp()"/>
-            <b-button v-if="currentSlide == 1 && state == 'update'" :label="$t('Save')" :loading="isLoading"
-                      rounded type="is-primary" @click="updateApp()"/>
-            <b-button v-if="currentSlide == 2 && !currentInstallAppError" :label="$t(cancelButtonText)"
-                      rounded type="is-primary" @click="$emit('close')"/>
-          </div>
-        </template>
-
-      </footer>
-      <!-- Modal-Card Footer End -->
     </template>
+    <!-- Modal-Card Footer Start-->
+    <footer :class="{'is-justify-content-center':currentSlide == 0}"
+            class="modal-card-foot is-flex is-align-items-center ">
+      <template>
+        <div class="is-flex-grow-1">
+          <!-- <div v-if="currentSlide == 0">
+            <b-pagination v-if="listTotal > pageSize" :total="listTotal" v-model="pageIndex" range-before=1 range-after=1 order="is-centered" size="is-small" :simple="false" :rounded="true" :per-page="pageSize" icon-prev="chevron-left" icon-next="chevron-right" aria-next-label="Next page" aria-previous-label="Previous page" aria-page-label="Page" aria-current-label="Current page">
+            </b-pagination>
+          </div> -->
+        </div>
+        <div>
+          <b-button v-if="currentSlide == 2 && currentInstallAppError " :label="$t('Back')" rounded
+                    @click="prevStep"/>
+          <b-button v-if="currentSlide == 1 && state == 'install'" :label="$t('Install')" :loading="isLoading"
+                    rounded type="is-primary" @click="installApp()"/>
+          <b-button v-if="currentSlide == 1 && state == 'update'" :label="$t('Save')" :loading="isLoading"
+                    rounded type="is-primary" @click="updateApp()"/>
+          <b-button v-if="currentSlide == 2 && !currentInstallAppError" :label="$t(cancelButtonText)"
+                    rounded type="is-primary" @click="$emit('close')"/>
+          <b-button v-if="true" :label="$t('Submit')"
+                    rounded type="is-primary" @click="TODO()"/>
+        </div>
+      </template>
+
+    </footer>
+    <!-- Modal-Card Footer End -->
+
   </div>
 </template>
 
@@ -544,6 +555,7 @@ import FileSaver from 'file-saver';
 import {Swiper, SwiperSlide} from 'vue-awesome-swiper'
 // import AppsInstallationLocation from "@/components/Apps/AppsInstallationLocation";
 import storageItem from "@/components/Storage/StorageItem";
+import AppsInstallationLocation from "@/components/Apps/AppsInstallationLocation";
 
 
 const data = [
@@ -589,7 +601,7 @@ export default {
     VueSlider,
     Swiper,
     SwiperSlide,
-    // AppsInstallationLocation,
+    AppsInstallationLocation,
     storageItem,
   },
   props: {
@@ -1683,5 +1695,26 @@ export default {
       width: 100% !important;
     }
   }
+}
+
+.pri-line-height {
+  line-height: 1.875rem;
+}
+
+.pri-message-alert {
+  //padding: 0.4rem 1rem;
+  height: 2rem;
+  //text-align: center;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  background: #FFF6E5;
+  border-radius: 0.25rem;
+  color: #d99000;
+  font-size: 0.875rem;
+  font-style: normal;
+}
+
+.is-overlay {
+  overflow: overlay;
 }
 </style>

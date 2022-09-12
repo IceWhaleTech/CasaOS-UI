@@ -8,29 +8,21 @@
 -->
 <template>
   <div class="mb-5 mt-2">
-    <div :class="false" class="is-flex mb-2 line-number">
-      <ValidationProvider v-slot="{errors, valid} ">
-        <b-radio :native-value="system"
-                 :value="system"
-                 name="selectInstallationLacation"
-                 type="is-info"
-                 @input="$emit('selection', 'jiejiefirst'+item.path)">
-        </b-radio>
-      </ValidationProvider>
+    <div class="is-flex mb-2">
       <div class="header-icon">
         <b-image :src="require('@/assets/img/storage/storage.png')" class="is-64x64"></b-image>
       </div>
       <div class="ml-3 is-flex-grow-1 is-flex is-align-items-center">
         <div>
           <h4 class="title is-size-14px mb-0 has-text-left one-line">{{ item.name }}
-            <b-tag v-if="item.isSystem" class="ml-2">CasaOS</b-tag>
+            <b-tag class="ml-2" v-if="item.isSystem">CasaOS</b-tag>
           </h4>
 
           <p class="has-text-left is-size-7 has-text-grey-light	">{{ $t('Single Drive Storage') }}, <span
               class="is-uppercase">{{ item.fsType }}</span>
             <b-tooltip :label="$t('CasaOS reserves 1% of file space when creating storage in EXT4 format.')"
                        append-to-body>
-              <b-icon class="mr-2 " icon="help-circle-outline" size="is-small"></b-icon>
+              <b-icon icon="help-circle-outline" size="is-small" class="mr-2 "></b-icon>
             </b-tooltip>
           </p>
           <p class="has-text-left is-size-7 ">{{
@@ -43,54 +35,37 @@
         </div>
 
       </div>
-      <div v-if="!item.isSystem && scence !== 'select installation location'"
-           class="is-flex is-align-items-center b-group">
-        <b-button :disabled="isRemoving" :loading="isFormating" :type="isFormating?'is-primary':''"
-                  rounded size="is-small" @click="formatStorage(item.path,item.mount_point)">
+      <div class="is-flex is-align-items-center b-group" v-if="!item.isSystem">
+        <b-button size="is-small" :type="isFormating?'is-primary':''" rounded
+                  @click="formatStorage(item.path,item.mount_point)" :loading="isFormating" :disabled="isRemoving">
           {{ $t('Format') }}
         </b-button>
-        <b-button :disabled="isFormating" :loading="isRemoving" :type="isRemoving?'is-primary':''" class="ml-2"
-                  rounded size="is-small" @click="removeStorage(item.disk)"> {{ $t('Remove') }}
+        <b-button size="is-small" :type="isRemoving?'is-primary':''" rounded class="ml-2"
+                  @click="removeStorage(item.disk)" :loading="isRemoving" :disabled="isFormating"> {{ $t('Remove') }}
         </b-button>
       </div>
     </div>
-    <b-progress v-if="scence !== 'select installation location'" :type="item.usePercent | getProgressType"
-                :value="item.usePercent"
-                size="is-small"></b-progress>
+    <b-progress :type="item.usePercent | getProgressType" size="is-small" :value="item.usePercent"></b-progress>
   </div>
 </template>
 
 <script>
 import {mixin} from '@/mixins/mixin';
 import delay from 'lodash/delay';
-import {ValidationProvider} from "vee-validate";
 
 export default {
   name: "drive-item",
-  components: {ValidationProvider,},
   mixins: [mixin],
   props: {
     item: {
       type: Object,
       default: null
     },
-    scence: {
-      type: String,
-      default: ""
-    },
   },
   data() {
     return {
       isFormating: false,
       isRemoving: false
-    }
-  },
-  computed: {
-    system() {
-      if (this.item.isSystem) {
-        return true
-      }
-      return false
     }
   },
   methods: {
