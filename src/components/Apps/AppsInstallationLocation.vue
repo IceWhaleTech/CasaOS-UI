@@ -7,15 +7,13 @@
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
- the file not be used
+
 -->
 
 <template>
   <div class="mb-5 mt-2 mr-4 ml-4 pri-border">
     <div :class="false" class="is-flex mb-4 mt-4 ml-6">
       <b-radio :native-value="system"
-               :value="system"
-               name="selectInstallationLacation"
                type="is-info"
                @input="$emit('selection', 'jiejiefirst'+item.path)">
           <span class="is-flex">

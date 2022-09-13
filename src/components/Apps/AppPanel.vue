@@ -24,11 +24,11 @@
         <button class="delete" type="button" @click="$emit('close')"/>
       </header>
       <div class="ml-6">
-        Please choose a location with enough storage space and stable connection.
+        {{ $t('Please choose a location with enough storage space and stable connection.') }}
       </div>
       <div class="pri-message-alert ml-6 mr-6 is-flex is-align-items-center">
         <div class="left ml-4 mr-2">
-          <b-icon pack="casa" icon="danger" class="is-16x16"></b-icon>
+          <b-icon class="is-16x16" icon="danger" pack="casa"></b-icon>
         </div>
         {{ $t('Cannot be changed after selection.') }}
       </div>

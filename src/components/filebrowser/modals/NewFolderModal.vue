@@ -3,7 +3,7 @@
  * @Date: 2022-02-25 14:26:30
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2022-07-14 12:14:38
- * @Description: 
+ * @Description:
  * @FilePath: \CasaOS-UI\src\components\filebrowser\modals\NewFolderModal.vue
 -->
 <template>
@@ -11,9 +11,11 @@
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
       <div class="is-flex-grow-1">
-        <h3 class="title is-3">{{$t('New Folder')}}</h3>
+        <h3 class="title is-3">{{ $t('New Folder') }}</h3>
       </div>
-      <div><button type="button" class="delete" @click="$emit('close')" /></div>
+      <div>
+        <button class="delete" type="button" @click="$emit('close')"/>
+      </div>
     </header>
     <!-- Modal-Card Header End -->
     <!-- Modal-Card Body Start -->
@@ -21,12 +23,28 @@
       <div class="node-card">
         <div class="cover">
           <div class="folder-cover">
-            <img alt="folder" :src="require('@/assets/img/filebrowser/folder-default.svg')" class="folder-icon" />
+            <img :src="require('@/assets/img/filebrowser/folder-default.svg')" alt="folder" class="folder-icon"/>
           </div>
         </div>
-        <b-field class="mb-3 mt-5 has-text-light" :type="errorType" :message="errors" expanded>
-          <b-input v-model="folderName" v-on:keyup.enter.native="createFolder" @input.native="folderName = folderName.replace(/\//g,'')"></b-input>
+        <b-field :message="errors" :type="errorType" class="mb-3 mt-5 has-text-light" expanded>
+          <b-input v-model="folderName" v-on:keyup.enter.native="createFolder"
+                   @input.native="folderName = folderName.replace(/\//g,'')"></b-input>
         </b-field>
+        <div class="notification pl-4 pri-height">
+          <b-field>
+            <b-checkbox :value="shortcut"
+                        type="is-info">
+              {{ $t('Add a shortcut') }}
+            </b-checkbox>
+          </b-field>
+          <b-field>
+            <b-checkbox :value="shared"
+                        type="is-info">
+              {{ $t('Shared') }}
+            </b-checkbox>
+          </b-field>
+        </div>
+
       </div>
 
     </section>
@@ -35,7 +53,7 @@
     <footer class="modal-card-foot is-flex is-align-items-center">
       <div class="is-flex-grow-1"></div>
       <div>
-        <b-button :label="$t('Submit')" type="is-primary" rounded expaned @click="createFolder" />
+        <b-button :label="$t('Submit')" expaned rounded type="is-primary" @click="createFolder"/>
       </div>
     </footer>
     <!-- Modal-Card Footer End -->
@@ -43,8 +61,9 @@
 </template>
 
 <script>
-import { mixin } from '@/mixins/mixin';
+import {mixin} from '@/mixins/mixin';
 import path from 'path'
+
 export default {
   mixins: [mixin],
   props: {
@@ -54,12 +73,15 @@ export default {
     return {
       folderName: 'New Folder',
       errorType: "is-success",
-      errors: ""
+      errors: "",
+      shortcut: true,
+      shared: false,
     }
   },
   methods: {
 
     createFolder() {
+      // TODO shortcut
       let newPath = path.join(this.currentPath, this.folderName)
       this.$api.folder.create(newPath).then(res => {
         if (res.data.success == 200) {
@@ -70,11 +92,20 @@ export default {
           this.errors = res.data.message
         }
       })
-    }
+    },
+    // TODO refresh file list
+    // reload() {
+    //   this.$EventBus.$on(events.RELOAD_FILE_LIST, this.getNewList);
+    // }
   },
 
 }
 </script>
 
-<style>
+<style lang="scss">
+//$background: hsl(0, 0%, 97%);
+//$notification-background-color: $background;
+.pri-height {
+  height: 5.625rem;
+}
 </style>
