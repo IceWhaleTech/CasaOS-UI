@@ -897,6 +897,10 @@ export default {
         }
       })
     },
+
+    /*
+    * storage settings modal
+    * */
     showStorageSettingsModal() {
       this.$buefy.modal.open({
         parent: this,
@@ -907,7 +911,7 @@ export default {
         // customClass: 'new-folder-panel file-modal',
 
         // trapFocus: true,
-        // canCancel: true,
+        canCancel: false,
         // scroll: "keep",
         animation: "zoom-in",
         props: {},

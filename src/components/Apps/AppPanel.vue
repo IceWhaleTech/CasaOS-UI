@@ -15,7 +15,7 @@
   <div :class="{'narrow': currentSlide > 0}" class="modal-card app-card">
     <!--    first setting！！ apps installation location-->
     <!--    TODO v-if-->
-    <template v-if="true">
+    <template v-if="false">
       <!--      <apps-installation-location></apps-installation-location>-->
       <header class="modal-card-head b-line">
         <div class="is-flex-grow-1">
