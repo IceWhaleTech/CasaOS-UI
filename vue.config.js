@@ -18,9 +18,7 @@ module.exports = {
     runtimeCompiler: true,
     lintOnSave: false,
     productionSourceMap: true,
-    pluginOptions: {
-
-    },
+    pluginOptions: {},
     css: {
         extract: true
     },
@@ -57,7 +55,7 @@ module.exports = {
 
             config.optimization
                 .minimizer('css')
-                .use(require.resolve('optimize-css-assets-webpack-plugin'), [{ cssProcessorOptions: { safe: true } }])
+                .use(require.resolve('optimize-css-assets-webpack-plugin'), [{cssProcessorOptions: {safe: true}}])
 
         }
     }
