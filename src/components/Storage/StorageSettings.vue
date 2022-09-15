@@ -61,14 +61,15 @@
     <footer class="modal-card-foot is-flex is-align-items-center">
       <div class="is-flex-grow-1"></div>
       <div>
-        <b-button :label="$t('Submit')" :loading="isConnecting" expaned rounded type="is-primary" @click="connect"/>
+        <b-button :label="$t('Submit')" :loading="isConnecting" expaned rounded type="is-primary" @click="submit"/>
       </div>
     </footer>
   </div>
 </template>
 
-<script>
-import {mixin} from "@/mixins/mixin";
+<script lang="ts">
+import {mixin} from "src/mixins/mixin";
+import {MountMethodsApiFactory} from "src/codegen/local_storage/api.ts";
 
 export default {
   name: "StorageSettings",
@@ -82,7 +83,11 @@ export default {
         return true
       }
       return false
-    }
+    },
+    extended() {
+      return this.checkBoxGroup.join(":")
+    },
+
   },
   data() {
     return {
@@ -101,6 +106,8 @@ export default {
       diskData: {},
       unDiskData: {},
       checkBoxGroup: [],
+      isConnecting: false,
+
     }
   },
   methods: {
@@ -139,7 +146,11 @@ export default {
       })
     },
 
-
+    submit() {
+      MountMethodsApiFactory({mount_point: '/DATA', extended: this.extended}).updateMount().then(() => {
+        console.log(1231231231231231231231312321312321)
+      })
+    }
   },
 }
 </script>
