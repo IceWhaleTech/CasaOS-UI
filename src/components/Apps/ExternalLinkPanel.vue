@@ -17,7 +17,7 @@
         <h3 class="title is-3">{{ $t('Add External Link/APP') }}</h3>
       </div>
       <div>
-        <button class="delete" type="button" @click="$emit('close')" />
+        <button class="delete" type="button" @click="$emit('close')"/>
       </div>
     </header>
     <!-- Modal-Card Header End -->
@@ -26,20 +26,21 @@
       <div class="node-card">
         <div class=" mt-5 mb-5">
           <ValidationObserver ref="ob1">
-            <ValidationProvider rules="required|url" v-slot="{ errors, valid }">
-              <b-field class="is-flex-wrap-nowrap" :type="{ 'is-danger': errors[0], 'is-success': valid }"
-                :message="$t(errors)">
+            <ValidationProvider v-slot="{ errors, valid }" rules="required|url">
+              <b-field :message="$t(errors)" :type="{ 'is-danger': errors[0], 'is-success': valid }"
+                       class="is-flex-wrap-nowrap">
                 <template #label>
                   {{ $t('Address') }}
                   <label style="color:red">*</label>
                 </template>
                 <b-autocomplete ref="inputs" v-model="host" :data="filteredDataObj"
-                  :placeholder="$t('Local URL,Pblic URL')" append-to-body field="host" max-height="120px" open-on-focus>
+                                :placeholder="$t('Local URL,Pblic URL')" append-to-body field="host" max-height="120px"
+                                open-on-focus>
                 </b-autocomplete>
               </b-field>
             </ValidationProvider>
 
-            <div class="message-alert is-flex is-align-items-center" v-if="!state_hostIsExist">
+            <div v-if="!state_hostIsExist" class="message-alert is-flex is-align-items-center">
               <div class="left mr-2 is-flex is-align-items-center">
                 <b-icon icon="danger" pack="casa"></b-icon>
               </div>
@@ -48,15 +49,15 @@
               </div>
             </div>
 
-            <ValidationProvider rules="required" v-slot="{ errors, valid }">
-              <b-field class="is-flex-wrap-nowrap" :type="{ 'is-danger': errors[0], 'is-success': valid }"
-                :message="$t(errors)">
+            <ValidationProvider v-slot="{ errors, valid }" rules="required">
+              <b-field :message="$t(errors)" :type="{ 'is-danger': errors[0], 'is-success': valid }"
+                       class="is-flex-wrap-nowrap">
                 <template #label>
                   {{ $t('App Name') }}
                   <label style="color:red">*</label>
                 </template>
                 <b-autocomplete ref="inputs" v-model="name" :placeholder="$t('Customize your APP name')" append-to-body
-                  field="host" max-height="120px">
+                                field="host" max-height="120px">
                 </b-autocomplete>
               </b-field>
             </ValidationProvider>
@@ -64,8 +65,8 @@
             <b-field :label="$t('Icon URL')">
               <p class="control">
                 <span class="button is-static container-icon">
-                  <b-image :src="icon" :src-fallback="require('@/assets/img/app/default.png')" class="is-32x32"
-                    :key="icon" ratio="1by1"></b-image>
+                  <b-image :key="icon" :src="icon" :src-fallback="require('@/assets/img/app/default.png')"
+                           class="is-32x32" ratio="1by1"></b-image>
                 </span>
               </p>
               <b-input v-model="icon" :placeholder="$t('Your custom icon URL')" expanded></b-input>
@@ -82,7 +83,7 @@
     <footer class="modal-card-foot is-flex is-align-items-center">
       <div class="is-flex-grow-1"></div>
       <div>
-        <b-button :label="$t('Connect')" :loading="isLoading" expaned rounded type="is-primary" @click="connect" />
+        <b-button :label="$t('Connect')" :loading="isLoading" expaned rounded type="is-primary" @click="connect"/>
       </div>
     </footer>
     <!-- Modal-Card Footer End -->
@@ -91,15 +92,15 @@
 
 <script>
 import smoothReflow from 'vue-smooth-reflow'
-import { ValidationObserver, ValidationProvider } from 'vee-validate'
+import {ValidationObserver, ValidationProvider} from 'vee-validate'
 import "@/plugins/vee-validate";
-import { nanoid } from 'nanoid'
+import {nanoid} from 'nanoid'
 // import debounce from 'lodash/debounce'
 
 
 export default {
   mixins: [smoothReflow],
-  components: { ValidationProvider, ValidationObserver },
+  components: {ValidationProvider, ValidationObserver},
   props: {
     linkName: {
       type: String,
@@ -140,7 +141,8 @@ export default {
     this.name = this.linkName
     this.icon = this.linkIcon
   },
-  mounted() { },
+  mounted() {
+  },
   methods: {
     /**
      * @description: Validate form async
@@ -228,9 +230,6 @@ export default {
       })
     },
 
-    // updateIconUrl: debounce( function(string){
-    //   // this.icon = string.split("/").slice(0,3).join("/")+"/favicon.ico"
-    // }, 300),
   },
 }
 </script>

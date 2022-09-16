@@ -8,7 +8,7 @@
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
  */
-import { api } from "./service.js";
+import {api} from "./service.js";
 
 const PREFIX = "/users"
 
@@ -41,11 +41,11 @@ const users = {
         return api.put(`${PREFIX}/current/password`, data);
     },
 
-    getLinkAppDetail(){
+    getLinkAppDetail() {
         return api.get(`${PREFIX}/current/custom/link`);
     },
 
-    saveLinkAppDetail(data){
+    saveLinkAppDetail(data) {
         return api.post(`${PREFIX}/current/custom/link`, data);
     },
 
@@ -62,7 +62,7 @@ const users = {
     },
 
     // create or update user image from upload
-    setUserImage(key,data) {
+    setUserImage(key, data) {
         return api.put(`${PREFIX}/current/image/${key}`, data);
     },
 
@@ -117,6 +117,16 @@ const users = {
         return api.post(`${PREFIX}/refresh`, {
             refresh_token: refresh_token
         });
+    },
+
+    // get shutcut [OK]
+    getShutcutDetail() {
+        return api.get(`${PREFIX}/current/custom/shutcut`);
+    },
+
+    // save shutcut [OK]
+    saveShutcutDetail(data) {
+        return api.post(`${PREFIX}/current/custom/shutcut`, data);
     },
 }
 

@@ -53,7 +53,7 @@
     <footer class="modal-card-foot is-flex is-align-items-center">
       <div class="is-flex-grow-1"></div>
       <div>
-        <b-button :label="$t('Submit')" expaned rounded type="is-primary" @click="createFolder"/>
+        <b-button :label="$t('Submit')" :loading="isloading" expaned rounded type="is-primary" @click="createFolder"/>
       </div>
     </footer>
     <!-- Modal-Card Footer End -->
@@ -76,12 +76,33 @@ export default {
       errors: "",
       shortcut: true,
       shared: false,
+      isloading: false,
     }
   },
   methods: {
 
-    createFolder() {
+    async createFolder() {
+      this.isloading = true
       // TODO shortcut
+      // src/components/filebrowser/components/ActionButton.vue:121
+      const data = [{
+        path: this.item.path,
+        anonymous: true
+      }]
+      if (this.shared) {
+        await this.$api.samba.createShare(data)
+      }
+      if (this.shortcut) {
+        // get shortcut detail
+        let data = await this.$api.users.getShutcutDetail();
+        // create shortcut
+        const folderName = this.folderName
+        const shortcutPath = path.join(this.currentPath, this.folderName)
+        let dataMap = new Map(data);
+        dataMap.set(folderName, shortcutPath) // shortcut path
+        await this.$api.users.saveShutcutDetail({folderName: shortcutPath});
+      }
+
       let newPath = path.join(this.currentPath, this.folderName)
       this.$api.folder.create(newPath).then(res => {
         if (res.data.success == 200) {
