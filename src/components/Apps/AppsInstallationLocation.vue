@@ -14,8 +14,9 @@
   <div class="mb-5 mt-2 mr-4 ml-4 pri-border">
     <div :class="false" class="is-flex mb-4 mt-4 ml-6">
       <b-radio :native-value="system"
+               name="installationLocation"
                type="is-info"
-               @input="$emit('selection', 'jiejiefirst'+item.path)">
+               @input="$emit('selection', item.mount_point)">
           <span class="is-flex">
           <div class="header-icon">
             <b-image :src="require('@/assets/img/storage/storage.png')" class="is-64x64"></b-image>

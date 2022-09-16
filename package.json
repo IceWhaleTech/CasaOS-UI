@@ -81,6 +81,8 @@
     "sass-loader": "10.1.1",
     "style-resources-loader": "^1.5.0",
     "terser-webpack-plugin": "^5.3.1",
+    "ts-loader": "^8.2.0",
+    "typescript": "^4.8.3",
     "useless-files-webpack-plugin": "^1.0.1",
     "vue-cli-plugin-buefy": "~0.3.8",
     "vue-template-compiler": "^2.6.11",

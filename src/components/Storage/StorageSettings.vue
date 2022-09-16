@@ -67,9 +67,11 @@
   </div>
 </template>
 
-<script lang="ts">
-import {mixin} from "src/mixins/mixin";
-import {MountMethodsApiFactory} from "src/codegen/local_storage/api.ts";
+<script>
+import {mixin} from "@/mixins/mixin";
+// import CasaOsLocalStorageApi from "@/codegen/local_storage/dist/index.js";
+// var CasaOsLocalStorageApi = require('casa_os_local_storage_api');
+let CasaOsLocalStorageApi = require('@/codegen/local_storage/dist/index.js')
 
 export default {
   name: "StorageSettings",
@@ -147,9 +149,26 @@ export default {
     },
 
     submit() {
-      MountMethodsApiFactory({mount_point: '/DATA', extended: this.extended}).updateMount().then(() => {
-        console.log(1231231231231231231231312321312321)
-      })
+      // MountMethodsApiFactory({mount_point: '/DATA', extended: this.extended}).updateMount('/DATA').then(() => {
+      //   console.log(1231231231231231231231312321312321)
+      // })
+
+      var api = new CasaOsLocalStorageApi.MountMethodsApi()
+      var opts = {
+        // 'id': 0,
+        'mountPoint': '/DATA',
+        // 'type': 'ext4',
+        // 'source': '/dev/sda1'
+      };
+      var callback = function (error, data, response) {
+        debugger
+        if (error) {
+          console.error(error);
+        } else {
+          console.log('API called successfully. Returned data: ' + data);
+        }
+      };
+      api.updateMount(opts, callback);
     }
   },
 }

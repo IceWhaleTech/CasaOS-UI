@@ -1,0 +1,5 @@
+supportsES6: true
+withNodeImports: true
+withSeparateModelsAndApi: true
+disallowAdditionalPropertiesIfNotPresent: true
+moduleName: AMD

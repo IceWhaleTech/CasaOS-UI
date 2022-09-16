@@ -15,7 +15,7 @@
   <div :class="{'narrow': currentSlide > 0}" class="modal-card app-card">
     <!--    first setting！！ apps installation location-->
     <!--    TODO v-if-->
-    <template v-if="false">
+    <template v-if="isFirstInstall">
       <!--      <apps-installation-location></apps-installation-location>-->
       <header class="modal-card-head b-line">
         <div class="is-flex-grow-1">
@@ -520,7 +520,7 @@
           <b-button v-if="currentSlide == 2 && !currentInstallAppError" :label="$t(cancelButtonText)"
                     rounded type="is-primary" @click="$emit('close')"/>
           <b-button v-if="true" :label="$t('Submit')"
-                    rounded type="is-primary" @click="TODO()"/>
+                    rounded type="is-primary" @click="submitInstallationLocation(installationLocation)"/>
         </div>
       </template>
 
@@ -759,7 +759,10 @@ export default {
         health: true,
         temperature: 100,
       }],
-      storage_item_scence: 'select installation location'
+      storage_item_scence: 'select installation location',
+      isFirstInstall: true,
+      installationLocation: '',
+
     }
   },
 
@@ -807,6 +810,7 @@ export default {
 
     // prepare data - APPs Installation Location requirement document
     this.getDiskList();
+    this.askInstallationLocation();
   },
 
   computed: {
@@ -1432,7 +1436,29 @@ export default {
     },
 
     getSelection(val) {
-      console.log(val)
+      // console.log(val)
+      this.installationLocation = val
+    },
+
+    async askInstallationLocation() {
+      try {
+        // get docker info
+        let {data} = await this.$api.container.getInstallationLocation()
+        switch (data.success) {
+          case 200:
+          case 400:
+          default:
+            this.isFirstInstall = !data.data.docker_root_dir
+            break;
+        }
+      } catch (err) {
+        console.log(`${err} in askInstallationLocation`)
+      }
+    },
+
+    submitInstallationLocation(val) {
+      this.$api.container.putInstallationLocation(val).catch(err => console.log(`${err} in submitInstallationLocation`))
+      this.isFirstInstall = false
     }
   },
 

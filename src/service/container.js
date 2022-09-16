@@ -8,7 +8,7 @@
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
  */
-import { api } from "./service.js";
+import {api} from "./service.js";
 
 const PREFIX = "/container"
 
@@ -68,7 +68,20 @@ const container = {
     // uninstall  container
     uninstall(id) {
         return api.delete(`${PREFIX}/${id}`);
-    }
+    },
+
+    // AppsInstallationLocation require doctument
+    getInstallationLocation() {
+        return api.get(`${PREFIX}/info`);
+    },
+
+    // AppsInstallationLocation require doctument
+    putInstallationLocation(value) {
+        return api.put(`${PREFIX}/info`, {
+            docker_root_dir: value
+        });
+    },
+
 }
 
 export default container;
