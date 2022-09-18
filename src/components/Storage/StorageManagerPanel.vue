@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-01-17 15:16:11
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-11 17:15:06
+ * @LastEditors: zhanghengxin ezreal.ice@icloud.com
+ * @LastEditTime: 2022-09-20 20:14:04
  * @Description:
  * @FilePath: /CasaOS-UI/src/components/Storage/StorageManagerPanel.vue
 -->
@@ -165,18 +165,7 @@ import DriveItem from './DriveItem.vue'
 import StorageItem from './StorageItem.vue'
 import Popper from 'vue-popperjs';
 import storageSettings from '@/components/Storage/StorageSettings.vue';
-// import {ApiClient, MountMethodsApi} from "@/codegen/local_storage";
-import {a, b} from "C:/Users/zhanghengxin/WebstormProjects/test/dist/bundle.js";
-
-import('C:/Users/zhanghengxin/WebstormProjects/test/dist/bundle.js')
-    .then(({MountMethodsApiFp}) => {
-      // ...·
-      debugger
-      console.log(MountMethodsApiFp)
-    });
-
-
-export * as d from "C:/Users/zhanghengxin/WebstormProjects/test/dist/bundle.js";
+import {ApiClient, MountMethodsApi} from "@/codegen/local_storage/dist";
 
 export default {
   name: "storage-manager-panel",
@@ -273,7 +262,6 @@ export default {
         // var host = new ApiClient('http://192.168.2.118/v2/local_storage');
         // var api = new MountMethodsApi(host);
         // var callback = function (error, data, response) {
-        //   debugger
         //   if (error) {
         //     console.error(error);
         //   } else {
@@ -281,27 +269,6 @@ export default {
         //   }
         // };
         // api.getMounts({mountPoint: '/media'}, callback);
-        console.log(a)
-        console.log(b)
-        let {w, ...m} = await import('C:/Users/zhanghengxin/WebstormProjects/test/dist/bundle.js')
-
-        console.log(w, m);
-        debugger
-
-        console.log(d)
-        // console.log(__webpack_require__)
-        debugger
-        let api = new a.MountMethodsApiFactory();
-        debugger
-        let res = api.updateMount('/', {
-          "mount_point": "/DATA/merged",
-          "fstype": "mergerfs",
-          "source": "/mnt/sdb:/mnt/sdc",
-          "options": "defaults,allow_other,use_ino,category.create=mfs,moveonenospc=true,minfreespace=1M",
-          "persist": true
-        })
-        console.log(res)
-        debugger
 
         this.storageData = storageArray.map((storage) => {
           return {

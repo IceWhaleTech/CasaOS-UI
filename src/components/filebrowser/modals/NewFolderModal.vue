@@ -1,10 +1,10 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-02-25 14:26:30
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 12:14:38
+ * @LastEditors: zhanghengxin ezreal.ice@icloud.com
+ * @LastEditTime: 2022-09-20 23:30:34
  * @Description:
- * @FilePath: \CasaOS-UI\src\components\filebrowser\modals\NewFolderModal.vue
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/modals/NewFolderModal.vue
 -->
 <template>
   <div class="modal-card">
@@ -32,13 +32,13 @@
         </b-field>
         <div class="notification pl-4 pri-height">
           <b-field>
-            <b-checkbox :value="shortcut"
+            <b-checkbox v-model="shortcut"
                         type="is-info">
               {{ $t('Add a shortcut') }}
             </b-checkbox>
           </b-field>
           <b-field>
-            <b-checkbox :value="shared"
+            <b-checkbox v-model="shared"
                         type="is-info">
               {{ $t('Shared') }}
             </b-checkbox>
@@ -83,35 +83,57 @@ export default {
 
     async createFolder() {
       this.isloading = true
-      // TODO shortcut
-      // src/components/filebrowser/components/ActionButton.vue:121
-      const data = [{
-        path: this.item.path,
-        anonymous: true
-      }]
-      if (this.shared) {
-        await this.$api.samba.createShare(data)
-      }
-      if (this.shortcut) {
-        // get shortcut detail
-        let data = await this.$api.users.getShutcutDetail();
-        // create shortcut
-        const folderName = this.folderName
-        const shortcutPath = path.join(this.currentPath, this.folderName)
-        let dataMap = new Map(data);
-        dataMap.set(folderName, shortcutPath) // shortcut path
-        await this.$api.users.saveShutcutDetail({folderName: shortcutPath});
-      }
+      console.log(this)
 
+      // shortcut
+      // src/components/filebrowser/components/ActionButton.vue:121
       let newPath = path.join(this.currentPath, this.folderName)
-      this.$api.folder.create(newPath).then(res => {
+
+      this.$api.folder.create(newPath).then(async (res) => {
         if (res.data.success == 200) {
+          try {
+            if (this.shortcut) {
+              // get shortcut detail
+              // let shortcut = await this.$api.users.getShutcutDetail().then(v => v.data.data);
+              // let shortcut = await this.$store.dispatch('SET_SHORTCUT_DATA').then(v => v.data.data);
+              let shortcut = this.$store.state['shortcutData'];
+              // shortcut data preprocess
+              if (!shortcut) {
+                shortcut = []
+              }
+              // add new shortcut
+              shortcut.push({
+                name: this.folderName,
+                path: newPath,
+                type: 'folder'
+              })
+              // save shortcut
+              // await this.$api.users.saveShutcutDetail(shortcut);
+              // LURK BUG: shortcut data not update
+              await this.$store.dispatch('SET_SHORTCUT_DATA', shortcut);
+            }
+
+            if (this.shared) {
+              // set shared data
+              const data = [{
+                path: newPath,
+                anonymous: true
+              }]
+              // save shared data
+              await this.$api.samba.createShare(data)
+            }
+          } catch (e) {
+            console.log(e)
+          }
           this.$emit("reload")
           this.$emit("close")
         } else {
           this.errorType = "is-danger"
           this.errors = res.data.message
         }
+        this.isloading = false
+      }).catch(err => {
+        console.log(err)
       })
     },
     // TODO refresh file list

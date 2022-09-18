@@ -1,16 +1,17 @@
 /*
  * @Author: JerryK
  * @Date: 2022-01-20 12:01:07
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-25 10:24:58
+ * @LastEditors: zhanghengxin ezreal.ice@icloud.com
+ * @LastEditTime: 2022-09-20 22:46:06
  * @Description:
- * @FilePath: \CasaOS-UI-dev\src\mixins\mixin.js
+ * @FilePath: /CasaOS-UI/src/mixins/mixin.js
  */
 import qs from 'qs'
 import has from 'lodash/has'
 import union from 'lodash/union'
 import copy from 'clipboard-copy'
 import dayjs from 'dayjs'
+
 const typeMap = {
     "image-x-generic": ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'svg', 'tiff'],
     "video-x-generic": ['mkv', 'mp4', '3gp', 'avi', 'm2ts', 'webm', 'flv', 'vob', 'ts', 'mts', 'mov', 'wmv', 'rm', 'rmvb', 'asf', 'wmv', 'mpg', 'm4v', 'mpeg', 'f4v'],
@@ -312,6 +313,15 @@ export const mixin = {
             }
             this.$api.batch.delete(JSON.stringify(path)).then(res => {
                 if (res.data.success === 200) {
+                    // update shotcut data
+                    let shotcutData = this.$store.state['shortcutData']
+                    shotcutData.forEach((item, index) => {
+                        if (item.path === items.path) {
+                            shotcutData.splice(index, 1)
+                        }
+                    })
+                    this.$store.dispatch('SET_SHORTCUT_DATA', shotcutData);
+
                     if (this.$refs.dropDown !== undefined) {
                         this.$refs.dropDown.toggle()
                         this.$emit("reload")
@@ -340,14 +350,14 @@ export const mixin = {
             const postData = {
                 path: item.path,
             }
-            this.$api.users.setUserImage( wallpaperConfig, postData).then(res => {
+            this.$api.users.setUserImage(wallpaperConfig, postData).then(res => {
                 if (res.data.success === 200) {
                     const resData = res.data.data
                     let wallpaperData = {
-                        path: "SERVER_URL"  + resData.online_path + "&time=" + new Date().getTime(),
+                        path: "SERVER_URL" + resData.online_path + "&time=" + new Date().getTime(),
                         from: "Files"
                     }
-                    this.$api.users.setCustomStorage( wallpaperConfig, wallpaperData).then(res => {
+                    this.$api.users.setCustomStorage(wallpaperConfig, wallpaperData).then(res => {
                         if (res.data.success === 200) {
                             this.$store.commit('SET_WALLPAPER', {
                                 path: res.data.data.path,

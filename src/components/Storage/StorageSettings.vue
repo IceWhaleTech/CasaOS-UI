@@ -1,9 +1,9 @@
 <!--
  * @Author: zhanghengxin hengxin.zhang@icewhale.org
  * @Date:  2022-09-13 17:01:37
- * @LastEditors: zhanghengxin hengxin.zhang@icewhale.org
- * @LastEditTime: 2022-09-13 17:01:37
- * @FilePath: src/components/Storage/StorageSettings.vue
+ * @LastEditors: zhanghengxin ezreal.ice@icloud.com
+ * @LastEditTime: 2022-09-21 01:07:18
+ * @FilePath: /CasaOS-UI/src/components/Storage/StorageSettings.vue
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -150,37 +150,49 @@ export default {
     },
 
     submit() {
-      // MountMethodsApiFactory({mount_point: '/DATA', extended: this.extended}).updateMount('/DATA').then(() => {
-      //   console.log(1231231231231231231231312321312321)
-      // })
-      var host = new ApiClient('http://192.168.2.118/v2/local_storage');
-      var api = new MountMethodsApi(host);
-      var opts = {
-        // 'id': 0,
-        'mountPoint': '/media',
-        // 'type': 'ext4',
-        // 'source': '/dev/sda1'
-        "FSType": "mergerfs",
-        "Source": "/mnt/sdb:/mnt/sdc",
-        "Options": "defaults,allow_other,use_ino,category.create=mfs,moveonenospc=true,minfreespace=1M",
-        "Persist": true,
-      };
-      var callback = function (error, data, response) {
-        debugger
-        if (error) {
-          console.error(error);
-        } else {
-          console.log('API called successfully. Returned data: ' + data);
-        }
-      };
-      // api.updateMount('/DATA/merged', {
-      //   "mount_point": "/DATA/merged",
-      //     "fstype": "mergerfs",
-      //     "source": "/mnt/sdb:/mnt/sdc",
-      //     "options": "defaults,allow_other,use_ino,category.create=mfs,moveonenospc=true,minfreespace=1M",
-      //     "persist": true
-      // }, callback);
-      api.updateMount('/merged', {}, callback);
+      // // MountMethodsApiFactory({mount_point: '/DATA', extended: this.extended}).updateMount('/DATA').then(() => {
+      // //   console.log(1231231231231231231231312321312321)
+      // // })
+      // var host = new ApiClient('http://192.168.2.118/v2/local_storage');
+      // var api = new MountMethodsApi(host);
+      // var opts = {
+      //   // 'id': 0,
+      //   'mountPoint': '/media',
+      //   // 'type': 'ext4',
+      //   // 'source': '/dev/sda1'
+      //   "FSType": "mergerfs",
+      //   "Source": "/mnt/sdb:/mnt/sdc",
+      //   "Options": "defaults,allow_other,use_ino,category.create=mfs,moveonenospc=true,minfreespace=1M",
+      //   "Persist": true,
+      // };
+      // var callback = function (error, data, response) {
+      //   if (error) {
+      //     console.error(error);
+      //   } else {
+      //     console.log('API called successfully. Returned data: ' + data);
+      //   }
+      // };
+      // // api.updateMount('/DATA/merged', {
+      // //   "mount_point": "/DATA/merged",
+      // //     "fstype": "mergerfs",
+      // //     "source": "/mnt/sdb:/mnt/sdc",
+      // //     "options": "defaults,allow_other,use_ino,category.create=mfs,moveonenospc=true,minfreespace=1M",
+      // //     "persist": true
+      // // }, callback);
+      // api.updateMount('/merged', {}, callback);
+
+      // use local_storage api
+      this.$api.local_storage.create({
+        "mount_point": "/DATA/merged", // a inalterable value
+        "fstype": "mergerfs",
+        "source": this.extended,
+        "options": "defaults,allow_other,use_ino,category.create=mfs,moveonenospc=true,minfreespace=1M",
+        "persist": true
+      }).then(() => {
+        console.log(1231231231231231231231312321312321)
+      }).catch((err) => {
+        console.log(err)
+      })
     },
 
     // gei merge storage info
@@ -189,12 +201,10 @@ export default {
       var api = new MountMethodsApi(host);
       api.getMounts('/media', {}, function (data) {
         console.log(data)
-        debugger
       });
     },
 
     mounted() {
-      debugger
       this.getMerageStorage()
     },
 

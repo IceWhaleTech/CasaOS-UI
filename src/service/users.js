@@ -1,8 +1,8 @@
 /*
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-12 21:57:26
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-20 14:06:58
+ * @LastEditors: zhanghengxin ezreal.ice@icloud.com
+ * @LastEditTime: 2022-09-20 23:44:51
  * @FilePath: /CasaOS-UI/src/service/users.js
  * @Description:
  *
@@ -121,12 +121,12 @@ const users = {
 
     // get shutcut [OK]
     getShutcutDetail() {
-        return api.get(`${PREFIX}/current/custom/shutcut`);
+        return api.get(`${PREFIX}/current/custom/shortcut`);
     },
 
     // save shutcut [OK]
     saveShutcutDetail(data) {
-        return api.post(`${PREFIX}/current/custom/shutcut`, data);
+        return api.post(`${PREFIX}/current/custom/shortcut`, data);
     },
 }
 

@@ -1,30 +1,34 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-03-03 13:10:35
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-04 22:08:47
- * @Description: 
- * @FilePath: \CasaOS-UI\src\components\filebrowser\sidebar\TreeList.vue
+ * @LastEditors: zhanghengxin ezreal.ice@icloud.com
+ * @LastEditTime: 2022-09-20 23:38:43
+ * @Description:
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/sidebar/TreeList.vue
 -->
 <template>
   <ul>
     <!-- Root List Start -->
-    <tree-list-item v-for="item in rootDataList" :key="item.path" :item="item" iconColor="casa-color-blue" :isActive="isActive"></tree-list-item>
+    <tree-list-item v-for="item in rootDataList" :key="item.path" :isActive="isActive" :item="item"
+                    iconColor="casa-color-blue"></tree-list-item>
     <!-- Root List End -->
 
     <!-- Data List Start -->
-    <tree-list-item v-for="item in initFolders" :key="item.path" :item="item" iconColor="casa-color-blue" :isShare="checkSharevisibility(item)" :isActive="isActive"></tree-list-item>
+    <tree-list-item v-for="item in dataList" :key="item.path" :isActive="isActive"
+                    :isShare="checkSharevisibility(item)"
+                    :item="item" iconColor="casa-color-blue"></tree-list-item>
     <!-- Data List End -->
 
   </ul>
 </template>
 
 <script>
-import { mixin } from '@/mixins/mixin';
+import {mixin} from '@/mixins/mixin';
 import events from '@/events/events';
 import has from 'lodash/has'
 
 import TreeListItem from './TreeListItem.vue';
+
 export default {
   mixins: [mixin],
   inject: ['filePanel'],
@@ -108,25 +112,35 @@ export default {
 
       ],
       dataList: [],
+      shortcutList:[],
     }
   },
-  created() {
-    this.dataList = this.initFolders;
+  async created() {
+    // Get the shortcut detail for the first time and save it to store
+    try{
+      await this.$store.dispatch('GET_SHORTCUT_DATA')
+    }catch(e){
+      console.log(e);
+    }
     this.getNewList()
   },
 
   mounted() {
     this.$EventBus.$on(events.RELOAD_FILE_LIST, this.getNewList);
 
+    this.shortcutList = this.$store.state.shortcutData
+    this.dataList = [...this.initFolders, ...this.shortcutList]
+
   },
   methods: {
     async getNewList() {
-
       const newList = await this.$api.folder.getList(this.rootDataList[0].path)
       const dataList = await this.$api.folder.getList(this.initFolders[0].path)
-      const contactList = []
-      contactList.push(...newList.data.data, ...dataList.data.data)
-      this.initFolders.forEach(dir => {
+      this.shortcutList = this.$store.state.shortcutData
+      this.dataList = [...this.initFolders, ...this.shortcutList]
+      let contactList = [];
+      contactList.push(...newList.data.data, ...dataList.data.data, ...this.shortcutList);
+      this.dataList.forEach(dir => {
         dir.visible = contactList.some(item => item.path == dir.path && item.is_dir);
         const isInArray = contactList.find(item => item.path == dir.path && item.is_dir)
         dir.extensions = isInArray ? isInArray.extensions : null;

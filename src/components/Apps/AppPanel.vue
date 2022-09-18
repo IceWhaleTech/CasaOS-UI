@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-03-01 21:10:57
  * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-08-27 17:19:20
+ * @LastEditTime: 2022-09-20 23:14:50
  * @FilePath: /CasaOS-UI/src/components/Apps/AppPanel.vue
  * @Description:
  *
@@ -1457,8 +1457,7 @@ export default {
     },
 
     submitInstallationLocation(val) {
-      this.$api.container.putInstallationLocation(val).catch(err => console.log(`${err} in submitInstallationLocation`))
-      this.isFirstInstall = false
+      this.$api.container.putInstallationLocation(val).then(data=>this.isFirstInstall = false).catch(err => console.log(`${err} in submitInstallationLocation`))
     }
   },
 

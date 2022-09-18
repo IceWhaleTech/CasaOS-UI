@@ -1,85 +1,101 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-02-23 17:08:21
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-08 17:33:19
- * @Description: 
+ * @LastEditors: zhanghengxin ezreal.ice@icloud.com
+ * @LastEditTime: 2022-09-20 20:39:03
+ * @Description:
  * @FilePath: /CasaOS-UI/src/components/filebrowser/components/ContextMenu.vue
 -->
 <template>
   <div>
 
-    <div class="action-btn context-menu" :style="{top:y + 'px',left:x+'px'}">
-      <b-dropdown aria-role="list" :close-on-click="false" ref="dropDown" id="dr1" class="file-dropdown" :position="'is-'+verticalPos+'-'+horizontalPos" :animation="ani" :mobile-modal="false" @active-change="dorpActiveChange($event,'dr1')">
+    <div :style="{top:y + 'px',left:x+'px'}" class="action-btn context-menu">
+      <b-dropdown id="dr1" ref="dropDown" :animation="ani" :close-on-click="false" :mobile-modal="false"
+                  :position="'is-'+verticalPos+'-'+horizontalPos" aria-role="list" class="file-dropdown"
+                  @active-change="dorpActiveChange($event,'dr1')">
         <!-- Blank Start -->
         <template v-if="!showDetial">
-          <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center" key="system-context11" @click="$refs.dropDown.toggle();filePanel.showNewFileModal()">
-            <b-icon icon="file-plus-outline" class="mr-1" custom-size="mdi-18px"></b-icon> {{ $t('New File') }}
+          <b-dropdown-item key="system-context11" aria-role="menuitem" class="is-flex is-align-items-center"
+                           @click="$refs.dropDown.toggle();filePanel.showNewFileModal()">
+            <b-icon class="mr-1" custom-size="mdi-18px" icon="file-plus-outline"></b-icon>
+            {{ $t('New File') }}
           </b-dropdown-item>
-          <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center" key="system-context1" @click="$refs.dropDown.toggle();filePanel.showNewFolderModal()">
-            <b-icon icon="folder-plus-outline" class="mr-1" custom-size="mdi-18px"></b-icon> {{ $t('New Folder') }}
+          <b-dropdown-item key="system-context1" aria-role="menuitem" class="is-flex is-align-items-center"
+                           @click="$refs.dropDown.toggle();filePanel.showNewFolderModal()">
+            <b-icon class="mr-1" custom-size="mdi-18px" icon="folder-plus-outline"></b-icon>
+            {{ $t('New Folder') }}
           </b-dropdown-item>
 
           <hr class="dropdown-divider">
-          <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center " key="system-context2" id="upfileBtn" @click="$refs.dropDown.toggle();">
-            <b-icon icon="file-upload-outline" class="mr-1" custom-size="mdi-18px"></b-icon> {{ $t('Upload Files') }}
+          <b-dropdown-item id="upfileBtn" key="system-context2" aria-role="menuitem"
+                           class="is-flex is-align-items-center " @click="$refs.dropDown.toggle();">
+            <b-icon class="mr-1" custom-size="mdi-18px" icon="file-upload-outline"></b-icon>
+            {{ $t('Upload Files') }}
           </b-dropdown-item>
-          <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center " key="system-context3" id="upfolderBtn" @click="$refs.dropDown.toggle();">
-            <b-icon icon="folder-upload-outline" class="mr-1" custom-size="mdi-18px"></b-icon> {{ $t('Upload Folder') }}
+          <b-dropdown-item id="upfolderBtn" key="system-context3" aria-role="menuitem"
+                           class="is-flex is-align-items-center " @click="$refs.dropDown.toggle();">
+            <b-icon class="mr-1" custom-size="mdi-18px" icon="folder-upload-outline"></b-icon>
+            {{ $t('Upload Folder') }}
           </b-dropdown-item>
           <template v-if="hasPasteData">
-            <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center" key="system-context4" @click="paste('overwrite')">
-              <b-icon icon="content-paste" class="mr-1" custom-size="mdi-18px"></b-icon> {{ $t('Paste - Overwrite') }}
+            <b-dropdown-item key="system-context4" aria-role="menuitem" class="is-flex is-align-items-center"
+                             @click="paste('overwrite')">
+              <b-icon class="mr-1" custom-size="mdi-18px" icon="content-paste"></b-icon>
+              {{ $t('Paste - Overwrite') }}
             </b-dropdown-item>
-            <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center" key="system-context4-1" @click="paste('skip')">
-              <b-icon icon="content-paste" class="mr-1" custom-size="mdi-18px"></b-icon> {{ $t('Paste - Skip') }}
+            <b-dropdown-item key="system-context4-1" aria-role="menuitem" class="is-flex is-align-items-center"
+                             @click="paste('skip')">
+              <b-icon class="mr-1" custom-size="mdi-18px" icon="content-paste"></b-icon>
+              {{ $t('Paste - Skip') }}
             </b-dropdown-item>
           </template>
 
           <hr class="dropdown-divider">
-          <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center" key="system-context5" @click="$refs.dropDown.toggle();filePanel.reload()">
-            <b-icon icon="refresh" class="mr-1" custom-size="mdi-18px"></b-icon> {{ $t('Refresh') }}
+          <b-dropdown-item key="system-context5" aria-role="menuitem" class="is-flex is-align-items-center"
+                           @click="$refs.dropDown.toggle();filePanel.reload()">
+            <b-icon class="mr-1" custom-size="mdi-18px" icon="refresh"></b-icon>
+            {{ $t('Refresh') }}
           </b-dropdown-item>
         </template>
         <!-- Blank End -->
 
         <!-- Item Start -->
         <template v-else>
-          <b-dropdown-item aria-role="menuitem" key="file-context1" @click="download">
+          <b-dropdown-item key="file-context1" aria-role="menuitem" @click="download">
             {{ $t('Download') }}
           </b-dropdown-item>
-          <b-dropdown-item aria-role="menuitem" key="file-context2" v-if="showSingleEdit" @click="copyPath">
+          <b-dropdown-item v-if="showSingleEdit" key="file-context2" aria-role="menuitem" @click="copyPath">
             {{ $t('Copy Path') }}
           </b-dropdown-item>
           <hr class="dropdown-divider">
-          <b-dropdown-item aria-role="menuitem" key="file-context3" v-if="showSingleEdit" @click="rename">
+          <b-dropdown-item v-if="showSingleEdit" key="file-context3" aria-role="menuitem" @click="rename">
             {{ $t('Rename') }}
           </b-dropdown-item>
-          <b-dropdown-item aria-role="menuitem" key="file-context4" @click="operate('move',items)">
+          <b-dropdown-item key="file-context4" aria-role="menuitem" @click="operate('move',items)">
             {{ $t('Cut') }}
           </b-dropdown-item>
-          <b-dropdown-item aria-role="menuitem" key="file-context5" @click="operate('copy',items)">
+          <b-dropdown-item key="file-context5" aria-role="menuitem" @click="operate('copy',items)">
             {{ $t('Copy') }}
           </b-dropdown-item>
-          <b-dropdown-item aria-role="menuitem" @click="setAsWallpaper(item)" v-if="showSingleEdit && isWallpaperType">
+          <b-dropdown-item v-if="showSingleEdit && isWallpaperType" aria-role="menuitem" @click="setAsWallpaper(item)">
             {{ $t('Set as wallpaper') }}
           </b-dropdown-item>
 
           <template v-if="item.is_dir">
             <hr class="dropdown-divider">
-            <b-dropdown-item aria-role="menuitem" v-if="!isShared" @click="shareFoler">
+            <b-dropdown-item v-if="!isShared" aria-role="menuitem" @click="shareFoler">
               {{ $t('Share') }}
             </b-dropdown-item>
-            <b-dropdown-item aria-role="menuitem" class="has-text-danger" @click="unShare" v-else>
+            <b-dropdown-item v-else aria-role="menuitem" class="has-text-danger" @click="unShare">
               {{ $t('UnShare') }}
             </b-dropdown-item>
           </template>
 
           <hr class="dropdown-divider">
-          <b-dropdown-item aria-role="menuitem" class="has-text-danger" @click="isConfirmed = true" v-if="!isConfirmed">
+          <b-dropdown-item v-if="!isConfirmed" aria-role="menuitem" class="has-text-danger" @click="isConfirmed = true">
             {{ $t('Delete') }}
           </b-dropdown-item>
-          <b-dropdown-item aria-role="menuitem" class="has-text-danger" @click="deleteItem(items)" v-else>
+          <b-dropdown-item v-else aria-role="menuitem" class="has-text-danger" @click="deleteItem(items)">
             {{ $t('Are you sure?') }}
           </b-dropdown-item>
         </template>
@@ -91,8 +107,9 @@
 </template>
 
 <script>
-import { mixin, wallpaperType } from '@/mixins/mixin';
+import {mixin, wallpaperType} from '@/mixins/mixin';
 import has from 'lodash/has'
+
 export default {
   mixins: [mixin],
   inject: ['filePanel'],

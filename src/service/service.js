@@ -1,8 +1,8 @@
 /*
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-27 16:20:06
+ * @LastEditors: zhanghengxin ezreal.ice@icloud.com
+ * @LastEditTime: 2022-09-21 00:54:33
  * @Description: 
  * @FilePath: /CasaOS-UI/src/service/service.js
  */
@@ -11,7 +11,7 @@ import router from '@/router'
 import store from '@/store'
 // import { ToastProgrammatic as Toast } from 'buefy'
 
-const axiosBaseURL = (process.env.NODE_ENV === "dev") ? `${document.location.protocol}//${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}/v1` : `/v1`
+const axiosBaseURL = (process.env.NODE_ENV === "dev") ? `${document.location.protocol}//${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}` : ``
 
 //Create a axios instance, And set timeout to 30s
 const instance = axios.create({
@@ -122,12 +122,17 @@ instance.interceptors.response.use(
     }
 )
 
+const testVisionNum = (prefix) => {
+    // default version number is /v1
+    return /^\/v2/.test(prefix) ? `${prefix}` : `/v1${prefix}`
+}
 
 const CancelToken = axios.CancelToken;
 // Wrapping of axios by request type
 const api = {
 
     get(url, data, _this) {
+        url = testVisionNum(url)
         if (_this) {
             return instance.get(url, {
                 params: data,
@@ -143,12 +148,15 @@ const api = {
 
     },
     post(url, data) {
+        url = testVisionNum(url)
         return instance.post(url, data)
     },
     put(url, data) {
+        url = testVisionNum(url)
         return instance.put(url, data)
     },
     delete(url, data) {
+        url = testVisionNum(url)
         return instance.delete(url, { data: data })
     },
 }
