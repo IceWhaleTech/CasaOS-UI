@@ -69,7 +69,6 @@
 
 <script>
 import {mixin} from "@/mixins/mixin";
-import {ApiClient, MountMethodsApi} from "@/codegen/local_storage/dist/index.js";
 // var CasaOsLocalStorageApi = require('casa_os_local_storage_api');
 // let CasaOsLocalStorageApi = require('@/codegen/local_storage/dist/index.js')
 // import {MountMethodsApi} from '@/codegen/mount_methods_api/dist/index.js'
@@ -196,16 +195,16 @@ export default {
     },
 
     // gei merge storage info
-    getMerageStorage() {
-      var host = new ApiClient('http://192.168.2.118/v2/local_storage');
-      var api = new MountMethodsApi(host);
-      api.getMounts('/media', {}, function (data) {
-        console.log(data)
-      });
-    },
+    // getMerageStorage() {
+    //   var host = new ApiClient('http://192.168.2.118/v2/local_storage');
+    //   var api = new MountMethodsApi(host);
+    //   api.getMounts('/media', {}, function (data) {
+    //     console.log(data)
+    //   });
+    // },
 
     mounted() {
-      this.getMerageStorage()
+      // this.getMerageStorage()
     },
 
   },
