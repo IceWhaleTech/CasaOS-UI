@@ -69,9 +69,10 @@
 
 <script>
 import {mixin} from "@/mixins/mixin";
-// import CasaOsLocalStorageApi from "@/codegen/local_storage/dist/index.js";
+import {ApiClient, MountMethodsApi} from "@/codegen/local_storage/dist/index.js";
 // var CasaOsLocalStorageApi = require('casa_os_local_storage_api');
-let CasaOsLocalStorageApi = require('@/codegen/local_storage/dist/index.js')
+// let CasaOsLocalStorageApi = require('@/codegen/local_storage/dist/index.js')
+// import {MountMethodsApi} from '@/codegen/mount_methods_api/dist/index.js'
 
 export default {
   name: "StorageSettings",
@@ -152,13 +153,17 @@ export default {
       // MountMethodsApiFactory({mount_point: '/DATA', extended: this.extended}).updateMount('/DATA').then(() => {
       //   console.log(1231231231231231231231312321312321)
       // })
-
-      var api = new CasaOsLocalStorageApi.MountMethodsApi()
+      var host = new ApiClient('http://192.168.2.118/v2/local_storage');
+      var api = new MountMethodsApi(host);
       var opts = {
         // 'id': 0,
-        'mountPoint': '/DATA',
+        'mountPoint': '/media',
         // 'type': 'ext4',
         // 'source': '/dev/sda1'
+        "FSType": "mergerfs",
+        "Source": "/mnt/sdb:/mnt/sdc",
+        "Options": "defaults,allow_other,use_ino,category.create=mfs,moveonenospc=true,minfreespace=1M",
+        "Persist": true,
       };
       var callback = function (error, data, response) {
         debugger
@@ -168,8 +173,31 @@ export default {
           console.log('API called successfully. Returned data: ' + data);
         }
       };
-      api.updateMount(opts, callback);
-    }
+      // api.updateMount('/DATA/merged', {
+      //   "mount_point": "/DATA/merged",
+      //     "fstype": "mergerfs",
+      //     "source": "/mnt/sdb:/mnt/sdc",
+      //     "options": "defaults,allow_other,use_ino,category.create=mfs,moveonenospc=true,minfreespace=1M",
+      //     "persist": true
+      // }, callback);
+      api.updateMount('/merged', {}, callback);
+    },
+
+    // gei merge storage info
+    getMerageStorage() {
+      var host = new ApiClient('http://192.168.2.118/v2/local_storage');
+      var api = new MountMethodsApi(host);
+      api.getMounts('/media', {}, function (data) {
+        console.log(data)
+        debugger
+      });
+    },
+
+    mounted() {
+      debugger
+      this.getMerageStorage()
+    },
+
   },
 }
 </script>

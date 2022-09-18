@@ -901,18 +901,13 @@ export default {
     /*
     * storage settings modal
     * */
+    // show storage settings modal
     showStorageSettingsModal() {
       this.$buefy.modal.open({
         parent: this,
         component: StorageSettings,
         hasModalCard: true,
-
-        // customClass: 'detail-panel',
-        // customClass: 'new-folder-panel file-modal',
-
-        // trapFocus: true,
         canCancel: false,
-        // scroll: "keep",
         animation: "zoom-in",
         props: {},
         events: {}

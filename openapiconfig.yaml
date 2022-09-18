@@ -3,3 +3,5 @@ withNodeImports: true
 withSeparateModelsAndApi: true
 disallowAdditionalPropertiesIfNotPresent: true
 moduleName: AMD
+enablePostProcessFile: true
+useSingleRequestParameter: true

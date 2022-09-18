@@ -46,9 +46,9 @@
             </b-tab-item>
           </b-tabs>
 
-          <div class="is-flex is-flex-direction-row-reverse">
-            <b-button :disabled="unDiskData.length == 0" :type="state_mainstorage_operability" class="width" rounded
-                      size="is-small" @click="storageSet">{{ $t('Set MainStorage') }}
+          <div v-if="activeTab == 0" class="is-flex is-flex-direction-row-reverse">
+            <b-button :type="state_mainstorage_operability" class="width" rounded
+                      size="is-small" @click="showStorageSettingsModal">{{ $t('Set MainStorage') }}
             </b-button>
           </div>
 
@@ -164,6 +164,19 @@ import {mixin} from '../../mixins/mixin';
 import DriveItem from './DriveItem.vue'
 import StorageItem from './StorageItem.vue'
 import Popper from 'vue-popperjs';
+import storageSettings from '@/components/Storage/StorageSettings.vue';
+// import {ApiClient, MountMethodsApi} from "@/codegen/local_storage";
+import {a, b} from "C:/Users/zhanghengxin/WebstormProjects/test/dist/bundle.js";
+
+import('C:/Users/zhanghengxin/WebstormProjects/test/dist/bundle.js')
+    .then(({MountMethodsApiFp}) => {
+      // ...·
+      debugger
+      console.log(MountMethodsApiFp)
+    });
+
+
+export * as d from "C:/Users/zhanghengxin/WebstormProjects/test/dist/bundle.js";
 
 export default {
   name: "storage-manager-panel",
@@ -202,12 +215,13 @@ export default {
       if (this.unDiskData.length == 0) {
         return "is-link is-light"
       }
+      return "is-link"
     },
     state_mainstorage_operability() {
       if (this.unDiskData.length == 0) {
-        return "is-link is-light"
+        return "is-link"
       }
-      return "is-link"
+
     },
   },
   mounted() {
@@ -255,6 +269,40 @@ export default {
             storageArray.push(part)
           })
         })
+        // get merge storage list
+        // var host = new ApiClient('http://192.168.2.118/v2/local_storage');
+        // var api = new MountMethodsApi(host);
+        // var callback = function (error, data, response) {
+        //   debugger
+        //   if (error) {
+        //     console.error(error);
+        //   } else {
+        //     console.log('API called successfully. Returned data: ' + data);
+        //   }
+        // };
+        // api.getMounts({mountPoint: '/media'}, callback);
+        console.log(a)
+        console.log(b)
+        let {w, ...m} = await import('C:/Users/zhanghengxin/WebstormProjects/test/dist/bundle.js')
+
+        console.log(w, m);
+        debugger
+
+        console.log(d)
+        // console.log(__webpack_require__)
+        debugger
+        let api = new a.MountMethodsApiFactory();
+        debugger
+        let res = api.updateMount('/', {
+          "mount_point": "/DATA/merged",
+          "fstype": "mergerfs",
+          "source": "/mnt/sdb:/mnt/sdc",
+          "options": "defaults,allow_other,use_ino,category.create=mfs,moveonenospc=true,minfreespace=1M",
+          "persist": true
+        })
+        console.log(res)
+        debugger
+
         this.storageData = storageArray.map((storage) => {
           return {
             name: storage.label,
@@ -325,8 +373,23 @@ export default {
       let nextMaxNum = max(diskNumArray) + 1;
       this.createStorageName = "Storage" + nextMaxNum
     },
-    storageSet() {
+
+    // show storage settings modal
+    showStorageSettingsModal() {
       // TODO storage settings
+      this.$buefy.modal.open({
+        parent: this,
+        component: storageSettings,
+        hasModalCard: true,
+        trapFocus: true,
+        // canCancel: ['escape', 'x', 'outside'],
+        onCancel: () => {
+          this.getDiskList()
+        },
+        props: {
+          storage: this.storageData[this.activeTab]
+        }
+      })
 
     },
     /**
