@@ -14,7 +14,7 @@
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
       <div class="is-flex-grow-1">
-        <h3 class="title is-3">{{ $t('Add External Link/APP') }}</h3>
+        <h3 class="title is-3">{{ panelTitle }}</h3>
       </div>
       <div>
         <button class="delete" type="button" @click="$emit('close')"/>
@@ -129,6 +129,13 @@ export default {
     },
     state_hostIsExist() {
       return this.host === "" ? false : true
+    },
+    panelTitle() {
+      if (this.linkName !== "") {
+        return this.$t('Add External Link/APP');
+      } else {
+        return this.$t("Set External Link/APP")
+      }
     },
   },
   watch: {
