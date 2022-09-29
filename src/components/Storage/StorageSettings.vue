@@ -2,7 +2,7 @@
  * @Author: zhanghengxin hengxin.zhang@icewhale.org
  * @Date:  2022-09-13 17:01:37
  * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-09-28 01:33:43
+ * @LastEditTime: 2022-09-29 20:35:39
  * @FilePath: /CasaOS-UI/src/components/Storage/StorageSettings.vue
  * @Description:
  *
@@ -110,9 +110,6 @@
 import {mixin} from "@/mixins/mixin";
 import jwt_decode from "jwt-decode";
 import MD5 from 'md5-es';
-// var CasaOsLocalStorageApi = require('casa_os_local_storage_api');
-// let CasaOsLocalStorageApi = require('@/codegen/local_storage/dist/index.js')
-// import {MountMethodsApi} from '@/codegen/mount_methods_api/dist/index.js'
 
 export default {
   name: "StorageSettings",
@@ -154,25 +151,6 @@ export default {
     }
   },
   computed: {
-    // title() {
-    //   // 0 default :mainstorage settings
-    //   // 1 Data Protected
-    //   // 2 APPs Restart
-    //   // 3 APP Restart
-    //   switch (this.currentStep) {
-    //     case 0:
-    //       return this.$t('MainStorage Settings')
-    //     case 1:
-    //       return this.$t('Data Protected')
-    //     case 2:
-    //       return this.$t('APPs Restart')
-    //     case 3:
-    //       return this.$t('APP Restart')
-    //     default:
-    //       return this.$t('MainStorage Settings')
-    //   }
-    // }
-    // ,
     lessThen2() {
       if (this.checkBoxGroup.length < 2) {
         return true

@@ -1,9 +1,9 @@
 <!--
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-08-03 14:08:02
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-11 12:44:21
- * @FilePath: \CasaOS-UI\src\components\filebrowser\sidebar\MountList.vue
+ * @LastEditors: zhanghengxin ezreal.ice@icloud.com
+ * @LastEditTime: 2022-09-29 20:43:45
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/sidebar/MountList.vue
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -12,7 +12,7 @@
   <div>
     <ul>
       <!-- merge fs storage item -->
-      <li>
+      <li v-if="hasMergerFunction">
         <div :class="{hover:!dorpdown}" class="is-flex list-item new-list-item"
              @click="warning">
           <div class="cover mr-2 is-flex-shrink-0 is-relative">
@@ -74,6 +74,10 @@ export default {
       type: Boolean,
       default: true
     },
+    hasMergerFunction: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -171,10 +175,16 @@ export default {
       }
 
       // Merge Storage
+      let mergeRes;
+      try{
+        mergeRes = await this.$api.local_storage.getMergerfsInfo().then(res => res.data.data[0].source_volume_paths)
 
+      }catch (error) {
+        mergeRes = []
+        console.log(error)
+      }
       try {
         // miss
-        const mergeRes = await this.$api.local_storage.getMergerfsInfo().then(res => res.data.data[0].source_volume_paths)
         const storageRes = await this.$api.storage.list()
         const storageList = storageRes.data.data
         mergeRes.forEach(item => {

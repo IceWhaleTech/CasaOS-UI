@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-01-17 15:16:11
  * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-09-29 17:34:36
+ * @LastEditTime: 2022-09-29 20:39:02
  * @Description:
  * @FilePath: /CasaOS-UI/src/components/Storage/StorageManagerPanel.vue
 -->
@@ -225,7 +225,7 @@ export default {
     // TODO how to invoke this states code
     try{
       let hasMergeState = await this.$api.local_storage.getMergerfsInfo().then(res => res.status
-      ).catch(err => err) || []
+      ).catch(err => err)
       this.hasMergeState = hasMergeState == 200;
     }catch(e){
       console.log(e)

@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-01-20 13:21:12
  * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-09-29 14:46:45
+ * @LastEditTime: 2022-09-29 22:12:35
  * @Description:
  * @FilePath: /CasaOS-UI/src/components/Storage/StorageItem.vue
 -->
@@ -146,23 +146,36 @@ export default {
             volume: mount_point,
             password: value
           }
-
-          this.$api.storage.format(data).then((res) => {
-            if (res.data.success != 200) {
-              this.isFormating = false;
-              this.$buefy.toast.open({
-                duration: 3000,
-                message: res.data.message,
-                type: 'is-danger'
-              })
-            } else {
-              let _this = this
-              delay(() => {
-                _this.isFormating = false;
-                _this.$emit('getDiskList');
-              }, 1000);
-            }
+          // get token from the local storage
+          const token = localStorage.getItem('access_token')
+          // decode the token
+          const tokenJson = jwt_decode(token)
+          if (MD5.hash(value) === tokenJson.password) {
+            this.$api.storage.format(data).then((res) => {
+              if (res.data.success != 200) {
+                this.isFormating = false;
+                this.$buefy.toast.open({
+                  duration: 3000,
+                  message: res.data.message,
+                  type: 'is-danger'
+                })
+              } else {
+                let _this = this
+                delay(() => {
+                  _this.isFormating = false;
+                  _this.$emit('getDiskList');
+                }, 1000);
+              }
+            })
+            return
+          }
+          this.isFormating = false;
+          this.$buefy.toast.open({
+            duration: 3000,
+            message: this.$t("Password is incorrect"),
+            type: 'is-danger'
           })
+          
         }
       })
     },

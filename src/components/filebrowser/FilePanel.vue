@@ -1,9 +1,9 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-02-18 12:42:06
- * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditors: zhanghengxin ezreal.ice@icloud.com
  * @Description:
- * @FilePath: \CasaOS-UI-dev\src\components\filebrowser\FilePanel.vue
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/FilePanel.vue
 -->
 <template>
   <div class="modal-card">
@@ -29,7 +29,7 @@
                 <div class=" is-flex-grow-1">
                   <h3 class="title is-3 mb-0 pb-3 pt-3 has-text-left">{{ $t('Files') }}</h3>
                 </div>
-                <div class="is-flex-shrink-0  mr-5" @click="showStorageSettingsModal">
+                <div class="is-flex-shrink-0  mr-5" @click="showStorageSettingsModal" v-show="hasMergerFunction">
                   <b-icon custom-size="mdi-18px" icon="cog-outline"></b-icon>
                 </div>
               </div>
@@ -47,7 +47,7 @@
                   <h3 class="title is-3 mb-0 pb-3 pt-3 has-text-left">{{ $t('Location') }}</h3>
                 </div>
                 <div class=" is-flex-shrink-0 mr-5">
-                  <mount-action-button></mount-action-button>
+                  <mount-action-button :hasMergerFunction="hasMergerFunction"></mount-action-button>
                 </div>
               </div>
 
@@ -298,7 +298,16 @@ export default {
       showUploadList: false,
       uploaderListHeaderText: "Uploading",
       usbDisks: [],
-
+      hasMergerFunction: false,
+    }
+  },
+  async created(){
+    // get merge info
+    try{
+      let hasMergeState = await this.$api.local_storage.getMergerfsInfo().then(res => res.status);
+      this.hasMergerFunction = hasMergeState == 200
+    }catch (e) {
+      console.log(e)
     }
   },
 
