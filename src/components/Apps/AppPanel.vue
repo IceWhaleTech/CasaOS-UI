@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-03-01 21:10:57
  * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-09-29 09:17:59
+ * @LastEditTime: 2022-09-29 14:56:22
  * @FilePath: /CasaOS-UI/src/components/Apps/AppPanel.vue
  * @Description:
  *
@@ -519,7 +519,7 @@
                     rounded type="is-primary" @click="updateApp()"/>
           <b-button v-if="currentSlide == 2 && !currentInstallAppError" :label="$t(cancelButtonText)"
                     rounded type="is-primary" @click="$emit('close')"/>
-          <b-button v-if="true" :label="$t('Submit')"
+          <b-button v-if="isFirstInstall" :label="$t('Submit')"
                     rounded type="is-primary" @click="submitInstallationLocation(installationLocation)"/>
         </div>
       </template>
@@ -798,7 +798,7 @@ export default {
     } else {
       let gg = find(this.tempNetworks, (o) => {
         return o.driver == "bridge"
-      })
+      }) || []
       this.initData.network_model = gg.length > 0 ? gg[0].name : "bridge";
       this.getCategoryList();
     }
@@ -1448,7 +1448,7 @@ export default {
           case 200:
           case 400:
           default:
-            this.isFirstInstall = !data.data.docker_root_dir
+            this.isFirstInstall = !!data.data.docker_root_dir
             break;
         }
       } catch (err) {

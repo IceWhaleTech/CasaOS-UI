@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-01-17 15:16:11
  * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-09-28 01:23:29
+ * @LastEditTime: 2022-09-29 15:37:34
  * @Description:
  * @FilePath: /CasaOS-UI/src/components/Storage/StorageManagerPanel.vue
 -->
@@ -51,7 +51,7 @@
 
           <div v-if="activeTab == 0 && !mergeConbinationsStorageData.length"
                class="is-flex is-flex-direction-row-reverse">
-            <b-button :type="state_mainstorage_operability" class="width" rounded size="is-small"
+            <b-button :type="state_mainstorage_operability" class="width" rounded size="is-small" v-show="hasMergeState"
                       @click="showStorageSettingsModal">{{ $t('Set MainStorage') }}
             </b-button>
           </div>
@@ -198,6 +198,7 @@ export default {
       unDiskData: [],
       storageData: [],
       mergeConbinationsStorageData: [],
+      hasMergeState: false,
     }
   },
 
@@ -218,12 +219,13 @@ export default {
 
     },
   },
-  mergeState: null,
+  
   async created() {
     // get merge info
     // TODO how to invoke this states code
-    this.mergeState = await this.$api.local_storage.getMergerfsInfo().then(res => res.message
-    ).catch(err => err) ? true : false;
+    let hasMergeState = await this.$api.local_storage.getMergerfsInfo().then(res => res.status
+    ).catch(err => err)
+    this.hasMergeState = hasMergeState == 200;
   },
   mounted() {
     //Smooth
@@ -262,37 +264,10 @@ export default {
       //  with APPs Installation Location requirement document
       try {
         // 获取merge信息
-        const mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => res.data.data[0]['source_volume_paths'])
+        const mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => res.data.data[0]['source_volume_paths']) || []
         // get storage list info
         const storageRes = await this.$api.storage.list({system: "show"}).then(v => v.data.data)
-        // mock data
-        const storageRes1 = [...storageRes1,
-          {
-            "disk_name": "ererererer",
-            "size": 31268536320,
-            "path": "/dev/mmcblk1",
-            "children": [
-              {
-                "mount_point": "/DATA/merged",
-                "size": "28162772992",
-                "avail": "18197143552",
-                "type": "ext4",
-                "path": "/mnt/sda",
-                "drive_name": "sda",
-                "label": "ererererer"
-              },
-              {
-                "mount_point": "/DATA/merged",
-                "size": "28162772992",
-                "avail": "18197143552",
-                "type": "ext4",
-                "path": "/mnt/sdb",
-                "drive_name": "sdb",
-                "label": "ererererer"
-              }
-            ]
-          }
-        ]
+       
         const storageArray = []
         const mergeConbinations = []
         storageRes.forEach(item => {

@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-02-25 14:26:30
  * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-09-20 23:30:34
+ * @LastEditTime: 2022-09-29 14:35:35
  * @Description:
  * @FilePath: /CasaOS-UI/src/components/filebrowser/modals/NewFolderModal.vue
 -->
@@ -32,7 +32,7 @@
         </b-field>
         <div class="notification pl-4 pri-height">
           <b-field>
-            <b-checkbox v-model="shortcut"
+            <b-checkbox v-model="shortcut" v-show="isRootorDATA"
                         type="is-info">
               {{ $t('Add a shortcut') }}
             </b-checkbox>
@@ -74,9 +74,14 @@ export default {
       folderName: 'New Folder',
       errorType: "is-success",
       errors: "",
-      shortcut: true,
+      shortcut: false,
       shared: false,
       isloading: false,
+    }
+  },
+  computed:{
+    isRootorDATA(){
+      return this.currentPath === '/root' || this.currentPath === '/DATA'
     }
   },
   methods: {

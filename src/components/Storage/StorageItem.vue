@@ -1,10 +1,10 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-01-20 13:21:12
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-11 17:15:53
+ * @LastEditors: zhanghengxin ezreal.ice@icloud.com
+ * @LastEditTime: 2022-09-29 14:46:45
  * @Description:
- * @FilePath: \CasaOS-UI\src\components\Storage\StorageItem.vue
+ * @FilePath: /CasaOS-UI/src/components/Storage/StorageItem.vue
 -->
 <template>
   <div class="mb-5 mt-2">
@@ -52,6 +52,8 @@
 <script>
 import {mixin} from '@/mixins/mixin';
 import delay from 'lodash/delay';
+import jwt_decode from "jwt-decode";
+import MD5 from 'md5-es';
 
 export default {
   name: "drive-item",
@@ -89,21 +91,35 @@ export default {
             path: path,
             password: value
           }
-          this.$api.disks.umount(data).then((res) => {
-            if (res.data.success != 200) {
-              this.isRemoving = false;
-              this.$buefy.toast.open({
-                duration: 3000,
-                message: res.data.message,
-                type: 'is-danger'
-              })
-            } else {
-              let _this = this
-              delay(() => {
-                _this.isRemoving = false;
-                _this.$emit('getDiskList');
-              }, 1000);
-            }
+          // get token from the local storage
+          const token = localStorage.getItem('access_token')
+          // decode the token
+          const tokenJson = jwt_decode(token)
+          if (MD5.hash(value) === tokenJson.password) {
+            this.$api.disks.umount(data).then((res) => {
+              if (res.data.success != 200) {
+                this.isRemoving = false;
+                this.$buefy.toast.open({
+                  duration: 3000,
+                  message: res.data.message,
+                  type: 'is-danger'
+                })
+              } else {
+                this.isRemoving = false;
+                let _this = this
+                delay(() => {
+                  _this.isRemoving = false;
+                  _this.$emit('getDiskList');
+                }, 1000);
+              }
+            })
+            return
+          }
+          this.isRemoving = false;
+          this.$buefy.toast.open({
+            duration: 3000,
+            message: this.$t("Password is incorrect"),
+            type: 'is-danger'
           })
         }
       })
