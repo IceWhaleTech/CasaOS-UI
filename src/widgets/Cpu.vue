@@ -1,55 +1,52 @@
 <template>
   <div class="widget has-text-white cpu">
     <div class="blur-background"></div>
-    <div class="widget-content">
+    <div class="widget-content  pb-1">
       <!-- Header Start -->
       <div class="widget-header is-flex">
         <div class="widget-title is-flex-grow-1">
-          {{ $t('Performance') }}
+          {{ $t('System Status') }}
         </div>
         <div class="widget-icon-button is-flex-shrink-0" @click="showMoreInfo">
-          <b-icon pack="casa" icon="arrow-right" size="is-20" :class="{'open':showMore}" class="arrow-btn"></b-icon>
+          <b-icon :class="{'open':showMore}" class="arrow-btn" icon="arrow-right" pack="casa" size="is-20"></b-icon>
         </div>
       </div>
       <!-- Header End -->
 
-      <div class="columns is-mobile ">
+      <div class="columns is-mobile mt-0 ">
+
         <div class="column is-half has-text-centered">
-          <apexchart type="radialBar" :height="barHeight" :options="chartOptions" :series="cpuSeries"></apexchart>
-          <p class="is-size-12px two-line margin-[-10px]">CPU<br/>
-            <span class="is-size-14px">{{power.toFixed(1)}}W / {{temperature}}°C</span>
-          </p>
+          <radial-bar :extendContent="power+' / '+temperature" :percent="parseInt(cpuSeries)" label="CPU"></radial-bar>
         </div>
         <div class="column is-half has-text-centered">
-          <apexchart type="radialBar" :height="barHeight" :options="chartOptions" :series="ramSeries"></apexchart>
-          <p class="is-size-12px two-line margin-[-10px]">RAM <br/>
-            <span class="is-size-14px">{{totalMemory | renderSize}}</span>
-          </p>
+          <radial-bar :extendContent="renderSize(totalMemory)" :percent="parseInt(ramSeries)" label="RAM"></radial-bar>
         </div>
       </div>
-      <div v-show="showMore">
+      <div v-if="showMore">
         <div class="more-info pt-1 pb-1">
           <b-tabs v-model="activeTab">
             <b-tab-item label="CPU">
               <div v-for="(item,index) in containerCpuList" :key="item.title+index+'-cpu'">
-                <div class="is-flex is-size-7 is-align-items-center mb-2" v-if="!isNaN(item.usage)">
+                <div v-if="!isNaN(item.usage)" class="is-flex is-size-7 is-align-items-center mb-2">
                   <div class="is-flex-grow-1 is-flex is-align-items-center">
-                    <b-image :lazy="false" :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" class="is-16x16 mr-2 is-flex-shrink-0"></b-image>
-                    <span class="one-line">{{item.title}}</span>
+                    <b-image :lazy="false" :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')"
+                             class="is-16x16 mr-2 is-flex-shrink-0"></b-image>
+                    <span class="one-line">{{ item.title }}</span>
                   </div>
-                  <div class=" is-flex-shrink-0">{{item.usage}}%</div>
+                  <div class=" is-flex-shrink-0">{{ item.usage }}%</div>
                 </div>
               </div>
             </b-tab-item>
 
             <b-tab-item label="RAM">
               <div v-for="(item,index) in containerRamList" :key="item.title+index+'-rem'">
-                <div class="is-flex is-size-7 is-align-items-center mb-2" v-if="!isNaN(item.usage)">
+                <div v-if="!isNaN(item.usage)" class="is-flex is-size-7 is-align-items-center mb-2">
                   <div class="is-flex-grow-1 is-flex is-align-items-center">
-                    <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" class="is-16x16 mr-2 is-flex-shrink-0"></b-image>
-                    <span class="one-line">{{item.title}}</span>
+                    <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')"
+                             class="is-16x16 mr-2 is-flex-shrink-0"></b-image>
+                    <span class="one-line">{{ item.title }}</span>
                   </div>
-                  <div class=" is-flex-shrink-0">{{item.usage | renderSize}}</div>
+                  <div class=" is-flex-shrink-0">{{ item.usage | renderSize }}</div>
                 </div>
               </div>
             </b-tab-item>
@@ -67,7 +64,8 @@ import smoothReflow from 'vue-smooth-reflow'
 import orderBy from 'lodash/orderBy';
 import has from 'lodash/has';
 import slice from 'lodash/slice';
-import { mixin } from '../mixins/mixin';
+import {mixin} from '../mixins/mixin';
+import RadialBar from '@/components/widgets/RadialBar.vue';
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -77,123 +75,30 @@ export default {
   initShow: true,
   mixins: [smoothReflow, mixin],
   components: {
-    apexchart: () => import("vue-apexcharts"),
+    RadialBar
   },
 
   data() {
     return {
-      power:0,
-      tempTime:0,
-      tempValue:0,
-      temperature:0,
       timmer: null,
       activeTab: 0,
       showMore: false,
       cpuCores: 0,
       totalMemory: 0,
       barHeight: 132,
-      cpuSeries: [0],
-      ramSeries: [0],
-      chartOptions: {
-        chart: {
-          type: 'radialBar',
-          width: '100%'
-        },
-        grid: {
-          padding: {
-            left: 0,
-            right: 0,
-            top: -6,
-            bottom: -15
-          }
-        },
-        states: {
-          hover: {
-            filter: {
-              type: 'none',
-            }
-          },
-          active: {
-            filter: {
-              type: 'none',
-            }
-          },
-        },
-        plotOptions: {
-
-          radialBar: {
-            startAngle: -130,
-            endAngle: 130,
-            offsetX: 0,
-            offsetY: 0,
-
-            hollow: {
-              margin: 0,
-              size: '66%',
-              image: undefined,
-              imageOffsetX: 0,
-              imageOffsetY: 0,
-              position: 'front',
-              dropShadow: {
-                enabled: false,
-                top: 3,
-                left: 0,
-                blur: 4,
-                opacity: 0.24
-              }
-            },
-            track: {
-              background: '#fff',
-              strokeWidth: '100%',
-              margin: -4, // margin is in pixels
-              opacity: 0.3,
-
-            },
-            dataLabels: {
-              name: {
-                color:'#fff',
-                offsetY: 30
-              },
-              // show: true,
-              value: {
-                formatter: function (val) {
-                  return parseInt(val) + "%";
-                },
-                offsetY: -10,
-                color: '#fff',
-                fontSize: '20px',
-                weight:'400',
-                show: true,
-              }
-            },
-
-          }
-        },
-        fill: {
-          type: 'image',
-          image: {
-            src: [require('@/assets/img/widgets/gradient.png')],
-
-          }
-        },
-        stroke: {
-          lineCap: 'round'
-        },
-        labels: [''],
-      },
-
+      cpuSeries: 0,
+      ramSeries: 0,
       containerCpuList: [],
-      containerRamList: []
+      containerRamList: [],
+      temperature: "0°C",
+      power: '0W',
+      powerList: [],
     }
   },
-  async created() {
+  created() {
     this.cpuCores = this.$store.state.hardwareInfo.cpu.num
     this.totalMemory = this.$store.state.hardwareInfo.mem.total
     this.updateCharts(this.$store.state.hardwareInfo)
-    this.power = this.$store.state.hardwareInfo.cpu.power.value/this.$store.state.hardwareInfo.cpu.power.timestamp/1000000
-    this.temperature = this.$store.state.hardwareInfo.cpu.temperature
-    this.tempTime = this.$store.state.hardwareInfo.cpu.power.timestamp
-    this.tempValue = this.$store.state.hardwareInfo.cpu.power.value
     this.getDockerUsage()
     this.timer = setInterval(() => {
       if (this.showMore) {
@@ -217,8 +122,10 @@ export default {
      * @return {*} void
      */
     updateCharts(hardwareInfo) {
-      this.cpuSeries = [hardwareInfo.cpu.percent]
-      this.ramSeries = [hardwareInfo.mem.usedPercent]
+      this.cpuSeries = hardwareInfo.cpu.percent
+      this.ramSeries = hardwareInfo.mem.usedPercent
+      this.pushPower(hardwareInfo.cpu.power)
+      this.temperature = hardwareInfo.cpu.temperature == undefined ? "0°C" : hardwareInfo.cpu.temperature + "°C"
       if (this.showMore) {
         this.getDockerUsage()
       }
@@ -286,38 +193,31 @@ export default {
      */
     showMoreInfo() {
       this.showMore = !this.showMore;
+    },
+
+    pushPower(power) {
+      if (this.powerList.length >= 2) {
+        this.powerList.shift()
+      }
+      this.powerList.push(power)
     }
   },
   sockets: {
-    sys_cpu(data) {
-      this.cpuCores = data.body.data.num
-      this.cpuSeries = [data.body.data.percent]
-      if (this.showMore) {
-        this.getDockerUsage()
-      }
-    },
-    sys_mem(data) {
-      this.totalMemory = data.body.data.total
-      this.ramSeries = [data.body.data.usedPercent]
-    },
     sys_hardware_status(data) {
       // CPU
       this.cpuCores = data.body.sys_cpu.num
-      this.cpuSeries = [data.body.sys_cpu.percent]
-
-      // power temperature
-      this.power = (data.body.sys_cpu.power.value - this.tempValue)/(data.body.sys_cpu.power.timestamp - this.tempTime)/1000000
-      this.tempTime = data.body.sys_cpu.power.timestamp
-      this.tempValue = data.body.sys_cpu.power.value
-      this.temperature = data.body.sys_cpu.temperature
+      this.cpuSeries = data.body.sys_cpu.percent
+      this.pushPower(data.body.sys_cpu.power)
+      this.temperature = data.body.sys_cpu.temperature == undefined ? "0°C" : data.body.sys_cpu.temperature + "°C"
+      if (this.powerList.length == 2) {
+        this.power = ((this.powerList[1].value - this.powerList[0].value) / 1000000 / (this.powerList[1].timestamp - this.powerList[0].timestamp)).toFixed(1) + "W"
+      }
 
       // Memory
       this.totalMemory = data.body.sys_mem.total
-      this.ramSeries = [data.body.sys_mem.usedPercent]
+      this.ramSeries = data.body.sys_mem.usedPercent
     }
   }
-
-
 }
 </script>
 
@@ -353,8 +253,10 @@ export default {
         }
       }
     }
+
     .arrow-btn {
       transition: all 0.3s;
+
       &.open {
         transform: rotate(90deg);
       }

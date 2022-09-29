@@ -12,24 +12,34 @@ import {api} from "./service.js";
 
 const PREFIX = "/v2/local_storage";
 const local_storage = {
-    // get storage list
+    // Gets the storage list mounted to the mergerfs
     get(data) {
         return api.get(`${PREFIX}/mount`, data)
     },
 
-    // create storage
+    // create the storage list mounted to the mergerfs
     create(data) {
         return api.post(`${PREFIX}/mount`, data);
     },
 
-    // update storage
+    // update the storage list mounted to the mergerfs
     update(data) {
-        return api.put(`${PREFIX}/mount`, data);
+        return api.put(`${PREFIX}/mount?mount_point=${data.mount_point}`, data);
     },
 
-    // delete storage
+    // delete the storage list mounted to the mergerfs
     delete(data) {
         return api.delete(`${PREFIX}/mount`, data);
-    }
+    },
+
+    // get mergerfs info
+    getMergerfsInfo(data) {
+        return api.get(`${PREFIX}/merge`, data);
+    },
+
+    // update mergerfs info
+    updateMergerfsInfo(data) {
+        return api.post(`${PREFIX}/merge`, data);
+    },
 }
 export default local_storage;

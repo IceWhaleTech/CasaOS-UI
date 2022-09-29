@@ -4,38 +4,60 @@
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2022-08-11 12:44:21
  * @FilePath: \CasaOS-UI\src\components\filebrowser\sidebar\MountList.vue
- * @Description: 
- * 
- * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+ * @Description:
+ *
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
 -->
 <template>
   <div>
     <ul>
+      <!-- merge fs storage item -->
+      <li>
+        <div :class="{hover:!dorpdown}" class="is-flex list-item new-list-item"
+             @click="warning">
+          <div class="cover mr-2 is-flex-shrink-0 is-relative">
+            <span :class="{open:dorpdown}" class="icon">
+              <i :class="{'casa-storage-other': !dorpdown, 'casa-arrow-right': dorpdown}" class="casa casa-28px">
+              </i>
+            </span>
+          </div>
+          <div class=" is-flex-grow-1 one-line">CasaOS HD
+          </div>
+        </div>
+        <ul v-show="dorpdown">
+          <tree-list-item v-for="item in mergeStorageList" :key="item.path" :isActive="isActive"
+                          :item="item"></tree-list-item>
+        </ul>
+      </li>
 
       <!-- Local Storage List Start -->
-      <tree-list-item v-for="item in localStorageList" :key="item.path" :item="item" :isActive="isActive"></tree-list-item>
+      <tree-list-item v-for="item in localStorageList" :key="item.path" :isActive="isActive"
+                      :item="item"></tree-list-item>
       <!-- Local Storage List End -->
 
       <!-- Network Storage List Start -->
-      <tree-list-item v-for="item in networkStorageList" :key="item.path" :item="item" :isActive="isActive" iconName="eject" @rightIconClick="umountNetwork"></tree-list-item>
+      <tree-list-item v-for="item in networkStorageList" :key="item.path" :isActive="isActive" :item="item"
+                      iconName="eject" @rightIconClick="umountNetwork"></tree-list-item>
       <!-- Network Storage List End -->
 
       <!-- USB List Start -->
-      <tree-list-item v-for="item in usbStorageList" :key="item.path" :item="item" :isActive="isActive" iconName="eject" @rightIconClick="umountUsb"></tree-list-item>
+      <tree-list-item v-for="item in usbStorageList" :key="item.path" :isActive="isActive" :item="item" iconName="eject"
+                      @rightIconClick="umountUsb"></tree-list-item>
       <!-- USB List End -->
 
     </ul>
-    <b-loading :is-full-page="false" v-model="isLoading"></b-loading>
+    <b-loading v-model="isLoading" :is-full-page="false"></b-loading>
   </div>
 
 </template>
 
 <script>
-import { mixin } from '@/mixins/mixin';
+import {mixin} from '@/mixins/mixin';
 import events from '@/events/events';
 import TreeListItem from './TreeListItem.vue';
+
 export default {
-  components: { TreeListItem },
+  components: {TreeListItem},
   mixins: [mixin],
   inject: ['filePanel'],
 
@@ -59,6 +81,9 @@ export default {
       usbStorageList: [],
       localStorageList: [],
       networkStorageList: [],
+      dorpdown: false,
+      mergeStorageList: [],
+
     }
   },
   created() {
@@ -145,13 +170,53 @@ export default {
         console.log(error.reponse.message)
       }
 
+      // Merge Storage
+
+      try {
+        // miss
+        const mergeRes = await this.$api.local_storage.getMergerfsInfo().then(res => res.data.data[0].source_volume_paths)
+        const storageRes = await this.$api.storage.list()
+        const storageList = storageRes.data.data
+        mergeRes.forEach(item => {
+          let storage = storageList.find(storage => {
+            return storage.children[0].path === item
+          })
+          if (storage) {
+            this.mergeStorageList.push({
+              name: storage.children[0].label,
+              icon: '',
+              pack: 'casa',
+              path: storage.children[0].mount_point,
+              visible: true,
+              selected: true,
+              extensions: null
+            })
+          } else {
+            this.mergeStorageList.push({
+              name: item,
+              icon: 'danger',
+              pack: 'casa',
+              path: item,
+              visible: true,
+              selected: true,
+              extensions: null
+            })
+          }
+        })
+      } catch
+          (error) {
+        this.isLoading = false;
+        console.log(error.reponse.message)
+      }
+
       this.isLoading = false;
 
-    },
+    }
+    ,
 
     // umount usb storage
     umountUsb(item) {
-      this.$api.disks.umountUsb({ mount_point: item.path }).then(() => {
+      this.$api.disks.umountUsb({mount_point: item.path}).then(() => {
         this.getStorageList()
         this.goToDataFolder(item)
         this.$buefy.toast.open({
@@ -164,7 +229,8 @@ export default {
           type: 'is-danger'
         })
       })
-    },
+    }
+    ,
 
     // umount network storage
     umountNetwork(item) {
@@ -183,14 +249,35 @@ export default {
       })
 
 
-    },
+    }
+    ,
 
     // go to DATA folder
     goToDataFolder(item) {
       if (this.$store.state.currentPath.startsWith(item.path)) {
         this.filePanel.getFileList('/DATA')
       }
-    }
+    },
+
+    warning() {
+      if (this.dorpdown) {
+        this.dorpdown = false
+        return
+      }
+      this.$buefy.dialog.confirm({
+        title: this.$t('Data Protected'),
+        message: this.$t('Changing internal files may break the structure of the CasaOS HD'),
+        confirmText: this.$t('Continue'),
+        cancelText: this.$t('Cancel'),
+        iconPack: 'casa',
+        icon: 'danger',
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => {
+          this.dorpdown = !this.dorpdown
+        }
+      })
+    },
   },
   sockets: {
 
@@ -261,6 +348,17 @@ export default {
     position: absolute;
     right: -0.15rem;
     bottom: -0.1rem;
+  }
+}
+
+.open {
+  transform: rotate(90deg);
+}
+
+.hover:hover {
+  i::before {
+    content: "\e905";
+    //background-color: #0a0a0a;
   }
 }
 </style>

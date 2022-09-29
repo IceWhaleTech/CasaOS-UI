@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-03-01 21:10:57
  * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-09-20 23:14:50
+ * @LastEditTime: 2022-09-29 09:17:59
  * @FilePath: /CasaOS-UI/src/components/Apps/AppPanel.vue
  * @Description:
  *
@@ -36,7 +36,7 @@
 
         <AppsInstallationLocation v-for="(item,index) in storageData" :key="'storage'+index" :item="item"
                                   :scence="storage_item_scence"
-                                  @getDiskList="getDiskList" @selection="getSelection"></AppsInstallationLocation>
+                                  @selection="getSelection"></AppsInstallationLocation>
 
       </section>
     </template>
@@ -760,7 +760,7 @@ export default {
         temperature: 100,
       }],
       storage_item_scence: 'select installation location',
-      isFirstInstall: true,
+      isFirstInstall: false,
       installationLocation: '',
 
     }
@@ -1457,7 +1457,7 @@ export default {
     },
 
     submitInstallationLocation(val) {
-      this.$api.container.putInstallationLocation(val).then(data=>this.isFirstInstall = false).catch(err => console.log(`${err} in submitInstallationLocation`))
+      this.$api.container.putInstallationLocation(val).then(data => this.isFirstInstall = false).catch(err => console.log(`${err} in submitInstallationLocation`))
     }
   },
 

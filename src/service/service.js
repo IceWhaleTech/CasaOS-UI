@@ -3,7 +3,7 @@
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: zhanghengxin ezreal.ice@icloud.com
  * @LastEditTime: 2022-09-21 00:54:33
- * @Description: 
+ * @Description:
  * @FilePath: /CasaOS-UI/src/service/service.js
  */
 import axios from 'axios'
@@ -11,7 +11,8 @@ import router from '@/router'
 import store from '@/store'
 // import { ToastProgrammatic as Toast } from 'buefy'
 
-const axiosBaseURL = (process.env.NODE_ENV === "dev") ? `${document.location.protocol}//${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}` : ``
+const axiosBaseURL1 = (process.env.NODE_ENV === "dev") ? `${document.location.protocol}//${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}` : ``
+const axiosBaseURL = (process.env.NODE_ENV === "dev") ? `` : ``
 
 //Create a axios instance, And set timeout to 30s
 const instance = axios.create({
@@ -112,7 +113,9 @@ instance.interceptors.response.use(
 
                 }
                 return new Promise(resolve => {
-                    requests.push(() => { resolve(instance(originalConfig)) })
+                    requests.push(() => {
+                        resolve(instance(originalConfig))
+                    })
                 })
 
             }
@@ -157,7 +160,7 @@ const api = {
     },
     delete(url, data) {
         url = testVisionNum(url)
-        return instance.delete(url, { data: data })
+        return instance.delete(url, {data: data})
     },
 }
-export { api }
+export {api}

@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-01-17 15:16:11
  * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-09-20 20:14:04
+ * @LastEditTime: 2022-09-28 01:23:29
  * @Description:
  * @FilePath: /CasaOS-UI/src/components/Storage/StorageManagerPanel.vue
 -->
@@ -28,27 +28,31 @@
               </div>
               <div slot="reference">
                 <b-button :disabled="unDiskData.length == 0" :type="state_createstorage_operability" class="o" rounded
-                          size="is-small"
-                          @click="showCreate">{{ $t('Create Storage') }}
+                          size="is-small" @click="showCreate">{{ $t('Create Storage') }}
                 </b-button>
               </div>
-
             </popper>
 
           </div>
           <b-tabs v-model="activeTab" :animated="false">
             <b-tab-item :label="$t('Storage')" class="scrollbars-light-auto tab-item">
-              <storage-item v-for="(item,index) in storageData" :key="'storage'+index" :item="item"
-                            @getDiskList="getDiskList"></storage-item>
+              <template v-if="storageData.length">
+                <storage-item v-for="(item,index) in storageData" :key="'storage'+index" :item="item"
+                              @getDiskList="getDiskList"></storage-item>
+              </template>
+
+              <storage-combination :storageData="mergeConbinationsStorageData"
+                                   :type="state_mainstorage_operability" @reload="getDiskList"></storage-combination>
             </b-tab-item>
             <b-tab-item :label="$t('Drive')" class="scrollbars-light-auto tab-item">
               <drive-item v-for="(item,index) in diskData" :key="'disk'+index" :item="item"></drive-item>
             </b-tab-item>
           </b-tabs>
 
-          <div v-if="activeTab == 0" class="is-flex is-flex-direction-row-reverse">
-            <b-button :type="state_mainstorage_operability" class="width" rounded
-                      size="is-small" @click="showStorageSettingsModal">{{ $t('Set MainStorage') }}
+          <div v-if="activeTab == 0 && !mergeConbinationsStorageData.length"
+               class="is-flex is-flex-direction-row-reverse">
+            <b-button :type="state_mainstorage_operability" class="width" rounded size="is-small"
+                      @click="showStorageSettingsModal">{{ $t('Set MainStorage') }}
             </b-button>
           </div>
 
@@ -124,8 +128,8 @@
       <template v-if="isCreating">
         <div class="installing-warpper mt-6 mb-6">
           <div class="is-flex is-align-items-center is-justify-content-center mb-5">
-            <lottie-animation :animationData="require('@/assets/ani/creating.json')" :autoPlay="true"
-                              :loop="true" class="creating-animation"></lottie-animation>
+            <lottie-animation :animationData="require('@/assets/ani/creating.json')" :autoPlay="true" :loop="true"
+                              class="creating-animation"></lottie-animation>
           </div>
           <h3 class="title is-4 has-text-centered has-text-weight-light">{{ $t('Creation in progress') }}...</h3>
         </div>
@@ -143,8 +147,7 @@
           <b-button :label="$t('Format and Create')" :loading="isValiding"
                     :type="createStorageType == 'format'?'is-primary':''" rounded @click="createStorge(true)"/>
           <b-button v-if="createStorageType == 'mountable'" :label="$t('Create')" :loading="isValiding" rounded
-                    type="is-primary"
-                    @click="createStorge(false)"/>
+                    type="is-primary" @click="createStorge(false)"/>
         </div>
       </template>
 
@@ -165,7 +168,7 @@ import DriveItem from './DriveItem.vue'
 import StorageItem from './StorageItem.vue'
 import Popper from 'vue-popperjs';
 import storageSettings from '@/components/Storage/StorageSettings.vue';
-import {ApiClient, MountMethodsApi} from "@/codegen/local_storage/dist";
+import StorageCombination from "./StorageCombination.vue";
 
 export default {
   name: "storage-manager-panel",
@@ -175,7 +178,8 @@ export default {
     ValidationProvider,
     DriveItem,
     StorageItem,
-    Popper
+    Popper,
+    StorageCombination,
   },
   mixins: [smoothReflow, mixin],
   data() {
@@ -192,7 +196,8 @@ export default {
       createStorageType: "",
       diskData: [],
       unDiskData: [],
-      storageData: []
+      storageData: [],
+      mergeConbinationsStorageData: [],
     }
   },
 
@@ -212,6 +217,13 @@ export default {
       }
 
     },
+  },
+  mergeState: null,
+  async created() {
+    // get merge info
+    // TODO how to invoke this states code
+    this.mergeState = await this.$api.local_storage.getMergerfsInfo().then(res => res.message
+    ).catch(err => err) ? true : false;
   },
   mounted() {
     //Smooth
@@ -239,7 +251,7 @@ export default {
       // get disk list
       try {
         const diskRes = await this.$api.disks.getDiskList()
-        this.diskData = diskRes.data.data.drive
+        this.diskData = diskRes.data.data.disks
         this.unDiskData = diskRes.data.data.avail
       } catch (error) {
         console.log(error.response.message);
@@ -249,27 +261,52 @@ export default {
       // TODO: the part is repetition
       //  with APPs Installation Location requirement document
       try {
-        const storageRes = await this.$api.storage.list({system: "show"})
+        // 获取merge信息
+        const mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => res.data.data[0]['source_volume_paths'])
+        // get storage list info
+        const storageRes = await this.$api.storage.list({system: "show"}).then(v => v.data.data)
+        // mock data
+        const storageRes1 = [...storageRes1,
+          {
+            "disk_name": "ererererer",
+            "size": 31268536320,
+            "path": "/dev/mmcblk1",
+            "children": [
+              {
+                "mount_point": "/DATA/merged",
+                "size": "28162772992",
+                "avail": "18197143552",
+                "type": "ext4",
+                "path": "/mnt/sda",
+                "drive_name": "sda",
+                "label": "ererererer"
+              },
+              {
+                "mount_point": "/DATA/merged",
+                "size": "28162772992",
+                "avail": "18197143552",
+                "type": "ext4",
+                "path": "/mnt/sdb",
+                "drive_name": "sdb",
+                "label": "ererererer"
+              }
+            ]
+          }
+        ]
         const storageArray = []
-        storageRes.data.data.forEach(item => {
+        const mergeConbinations = []
+        storageRes.forEach(item => {
           item.children.forEach(part => {
             part.disk = item.path
             part.diskName = item.disk_name
-            storageArray.push(part)
+            // storageArray.push(part)
+            if (mergeStorageList.includes(part.path)) {
+              mergeConbinations.push(part)
+            } else {
+              storageArray.push(part)
+            }
           })
         })
-        // get merge storage list
-        // var host = new ApiClient('http://192.168.2.118/v2/local_storage');
-        // var api = new MountMethodsApi(host);
-        // var callback = function (error, data, response) {
-        //   if (error) {
-        //     console.error(error);
-        //   } else {
-        //     console.log('API called successfully. Returned data: ' + data);
-        //   }
-        // };
-        // api.getMounts({mountPoint: '/media'}, callback);
-
         this.storageData = storageArray.map((storage) => {
           return {
             name: storage.label,
@@ -283,7 +320,20 @@ export default {
             mount_point: storage.mount_point,
             disk: storage.disk
           }
-
+        })
+        this.mergeConbinationsStorageData = mergeConbinations.map((storage) => {
+          return {
+            name: storage.label,
+            isSystem: storage.diskName == "System",
+            fsType: storage.type,
+            size: storage.size,
+            availSize: storage.avail,
+            usePercent: 100 - Math.floor(storage.avail * 100 / storage.size),
+            diskName: storage.drive_name,
+            path: storage.path,
+            mount_point: storage.mount_point,
+            disk: storage.disk
+          }
         })
 
         let diskNumArray = this.storageData.map(storage => {
@@ -308,7 +358,7 @@ export default {
           this.createStorageName = ""
         }
       } catch (error) {
-        console.log(error.response.message);
+        console.log(error);
       }
 
       this.isLoading = false
@@ -349,12 +399,14 @@ export default {
         component: storageSettings,
         hasModalCard: true,
         trapFocus: true,
-        // canCancel: ['escape', 'x', 'outside'],
+        ariaModal: true,
         onCancel: () => {
           this.getDiskList()
         },
-        props: {
-          storage: this.storageData[this.activeTab]
+        events: {
+          close: () => {
+            this.getDiskList()
+          }
         }
       })
 

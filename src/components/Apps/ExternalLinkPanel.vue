@@ -131,7 +131,7 @@ export default {
       return this.host === "" ? false : true
     },
     panelTitle() {
-      if (this.linkName !== "") {
+      if (this.linkName === "") {
         return this.$t('Add External Link/APP');
       } else {
         return this.$t("Set External Link/APP")
