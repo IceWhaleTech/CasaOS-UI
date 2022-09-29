@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-01-17 15:16:11
  * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-09-29 15:37:34
+ * @LastEditTime: 2022-09-29 17:34:36
  * @Description:
  * @FilePath: /CasaOS-UI/src/components/Storage/StorageManagerPanel.vue
 -->
@@ -223,9 +223,14 @@ export default {
   async created() {
     // get merge info
     // TODO how to invoke this states code
-    let hasMergeState = await this.$api.local_storage.getMergerfsInfo().then(res => res.status
-    ).catch(err => err)
-    this.hasMergeState = hasMergeState == 200;
+    try{
+      let hasMergeState = await this.$api.local_storage.getMergerfsInfo().then(res => res.status
+      ).catch(err => err) || []
+      this.hasMergeState = hasMergeState == 200;
+    }catch(e){
+      console.log(e)
+    }
+    
   },
   mounted() {
     //Smooth
@@ -262,12 +267,18 @@ export default {
       // get storage list
       // TODO: the part is repetition
       //  with APPs Installation Location requirement document
+      // 获取merge信息
+      let mergeStorageList 
+      try{
+        mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => res.data.data[0]['source_volume_paths'])
+      }catch(e){
+        mergeStorageList = []
+        console.log(e)
+      }
+
       try {
-        // 获取merge信息
-        const mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => res.data.data[0]['source_volume_paths']) || []
         // get storage list info
         const storageRes = await this.$api.storage.list({system: "show"}).then(v => v.data.data)
-       
         const storageArray = []
         const mergeConbinations = []
         storageRes.forEach(item => {
