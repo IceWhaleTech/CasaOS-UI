@@ -11,45 +11,26 @@
 <template>
   <div class="modal-card">
     <!--    head-->
-    <header class="modal-card-head b-line">
+    <header class="modal-card-head pri-head">
       <div class="is-flex-grow-1">
         <h3 class=" title is-3">{{ $t(title) }}</h3>
       </div>
       <button class="delete" type="button" @click="$emit('close')"/>
     </header>
     <!--remind-->
-    <template v-if="currentStep === 0">
-      <div class="ml-6">
-        {{ $t('Please choose a location with enough storage space and stable connection.') }}
-      </div>
-      <div class="ml-6">
-        {{ $t('All the checked Storage will be merged into one big Storage.') }}
-      </div>
-      <!-- <div v-if="lessThen2" class="pri-message-alert ml-6 mr-6 is-flex is-align-items-center">
-        <div class="left ml-4 mr-2">
-          <b-icon class="is-16x16" icon="danger" pack="casa"></b-icon>
-        </div>
-        {{ $t('Please select at least 2 Storages.') }}
-      </div> -->
-
-      <div class="pri-message-danger ml-6 mr-6 is-flex is-align-items-center">
-        <div class="left ml-4 mr-2">
-          <b-icon class="is-16x16" icon="danger" pack="casa"></b-icon>
-        </div>
-        {{ $t('Please back up your data in storage, otherwise the data may be lost.') }}
-      </div>
-    </template>
-
+    <div v-if="currentStep === 0" class="pri-mrl-2rem mt-5 mb-4">
+      {{ $t('All the checked Storage will be merged into CasaOS HD.') }}
+    </div>
 
     <!--    body-->
     <!--    <section class="modal-card-body">-->
     <!--    <section class="notification is-overlay pri-margin">-->
     <section :class="{'non-backgroud' : (currentStep !== 0)}"
-             class="notification is-overlay mt-2 mr-6 mb-6 ml-6 pr-0 pl-0">
+             class="notification is-overlay mb-4 pri-mrl-2rem pr-0 pl-0">
       <template v-if="currentStep === 0">
-        <div v-for="(item, index) in storageData" :key="index" class="is-flex pt-2 pb-2 ml-5">
-          <div>
-            <b-image :src="require('@/assets/img/storage/storage.png')" class="is-64x64"></b-image>
+        <div v-for="(item, index) in storageData" :key="index" class="is-flex pri-mtr-3px ml-4 mr-4">
+          <div class="ml-5 is-flex is-align-items-center">
+            <b-image :src="require('@/assets/img/storage/storage.png')" class="is-24x24"></b-image>
           </div>
           <div class="is-flex is-flex-grow-1 is-flex-direction-column is-justify-content-center ">
             <span class="is-uppercase one-line is-size-14px">{{ item.name }}</span>
@@ -69,16 +50,16 @@
         </div>
         <b-input v-model="password" type="password"></b-input>
       </template>
-      <div v-if="currentStep === 2" class="message-danger is-flex is-align-items-center">
-        <div class="left mr-2">
+      <div v-if="currentStep === 2" class="is-flex is-align-items-center">
+        <div class="message-danger left mr-2">
           <b-icon class="is-38x38" icon="danger" pack="casa"></b-icon>
         </div>
         {{
-          `${runName.split(',').length} ` + $t('APPs is running') + `(${runName}),` + $t('restart APPs to continue.')
+          `${runName.split(',').length} ` + $t('APPs is running') + ` ( ${runName} ), ` + $t('restart APPs to continue.')
         }}
       </div>
-      <div v-if="currentStep === 3" class="message-danger is-flex is-align-items-center">
-        <div class="left mr-2">
+      <div v-if="currentStep === 3" class="is-flex is-align-items-center">
+        <div class="message-danger left mr-2">
           <b-icon class="is-38x38" icon="danger" pack="casa"></b-icon>
         </div>
         {{ runName + $t(' is running, restart ') + runName + $t(' to continue.') }}
@@ -86,7 +67,21 @@
 
     </section>
 
-    <footer class="modal-card-foot is-flex is-align-items-center">
+    <div v-if="currentStep === 0 && checkBoxGroup.length > 0" class="pri-message-alert is-flex is-align-items-center">
+      <div class="is-flex left ml-4 mr-2 is-align-items-center">
+        <b-icon class="is-16x16" icon="danger" pack="casa"></b-icon>
+      </div>
+      {{ $t('If the chosen storage is not empty, format better first.') }}
+    </div>
+
+    <div v-if="currentStep === 0" class="pri-message-danger is-flex is-align-items-center">
+      <div class="is-flex left ml-4 mr-2 is-align-items-center">
+        <b-icon class="is-16x16" icon="danger" pack="casa"></b-icon>
+      </div>
+      {{ $t('Please back up your data in storage, otherwise the data may be lost.') }}
+    </div>
+
+    <footer class="modal-card-foot is-flex is-align-items-center t-line">
       <div class="is-flex-grow-1"></div>
       <div class="mr-4">
         <b-button v-show="currentStep > 1" :label="$t('cancel')" expaned rounded type="is-primary"
@@ -151,20 +146,10 @@ export default {
     }
   },
   computed: {
-    lessThen2() {
-      if (this.checkBoxGroup.length < 2) {
-        return true
-      }
-      return false
-    }
-    ,
     extended() {
       return this.checkBoxGroup.join(":")
     }
     ,
-    // isSplit(){
-
-    // }
   }
   ,
   data() {
@@ -264,11 +249,11 @@ export default {
         // get docker info
         let dockerInfo = await this.$api.container.getInfo('').then(res => res.data.data.casaos_apps)
         if (dockerInfo.length === 1) {
-          this.currentStep = 2
+          this.currentStep = 3
           this.runName = dockerInfo[0].name
           return
         } else {
-          this.currentStep = 3
+          this.currentStep = 2
           this.runName = dockerInfo.map(item => item.name).join(',')
           return
         }
@@ -318,23 +303,65 @@ export default {
   background: none;
 }
 
+.pri-head {
+  line-height: 1.875rem;
+  border-bottom: #cfcfcf 1px solid;
+}
+
 .pri-margin {
   margin: 2rem;
 }
 
+.pri-mrl-2rem {
+  margin-left: 2rem;
+  margin-right: 2rem;
+
+  .pri-mtr-3px {
+    margin-top: 0.1875rem;
+    margin-bottom: 0.1875rem;
+    min-height: 2.75rem;
+  }
+
+  div:hover {
+    background: hsla(215, 89%, 93%, 1);
+  }
+}
+
 .pri-text-color {
   color: hsla(0, 0%, 0%, 0.4);
+}
 
+.message-danger {
+  color: hsla(348, 86%, 61%, 1);
+}
+
+.pri-message-alert {
+  height: 2rem;
+  margin-top: 0rem;
+  margin-bottom: 1rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  border-radius: 0.25rem;
+  color: hsla(40, 100%, 43%, 1);
+  font-size: 0.875rem;
+  font-style: normal;
+  background: hsla(40, 100%, 95%, 1);
 }
 
 .pri-message-danger {
   height: 2rem;
-  margin-top: 0.5rem;
+  margin-top: 0rem;
   margin-bottom: 1rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
   border-radius: 0.25rem;
   color: hsla(348, 86%, 61%, 1);
   font-size: 0.875rem;
   font-style: normal;
   background: hsla(348, 100%, 95%, 1);
+}
+
+.t-line {
+  border-top: #cfcfcf 1px solid;
 }
 </style>

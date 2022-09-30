@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
  * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-09-25 18:18:20
+ * @LastEditTime: 2022-09-29 16:51:55
  * @FilePath: /CasaOS-UI/vue.config.js
  * @Description:
  *
@@ -115,40 +115,6 @@ module.exports = {
         open: true,
         host: '192.168.2.131',
         port: 8080,
-        // before(app) {
-        //     app.get('/v2/local_storage/mount', (req, res) => {
-        //         //
-        //         res.json({
-        //             "data": [
-        //                 {
-        //                     "extended": {
-        //                         "mergerfs.srcmounts": "/dev/sda1:/dev/mmcblk0p2:/mnt/sda:/mnt/sdb"
-        //                     },
-        //                     "fstype": "fuse.mergerfs",
-        //                     "id": 86,
-        //                     "mount_point": "/DATA/merged",
-        //                     "options": "rw,relatime",
-        //                     "source": "/dev/sda1:/dev/mmcblk0p2:/mnt/sda:/mnt/sdb"
-        //                 }
-        //             ]
-        //         })
-        //     });
-        //
-        //     // app.put('/v2/local_storage/mount', (req, res) => {
-        //     //     res.json({
-        //     //         "data": {
-        //     //             "extended": {
-        //     //                 "mergerfs.srcmounts": "/mnt/sdb:/mnt/sdc"
-        //     //             },
-        //     //             "fstype": "fuse.mergerfs",
-        //     //             "id": 86,
-        //     //             "mount_point": "/DATA/merged",
-        //     //             "options": "rw,relatime",
-        //     //             "source": "/mnt/sdb:/mnt/sdc"
-        //     //         }
-        //     //     })
-        //     // });
-        // },
         proxy: {
             "/v1": {        // 自己的服务器
                 target: "http://192.168.2.118:80",  // 要进入的服务器地址

@@ -1448,7 +1448,7 @@ export default {
           case 200:
           case 400:
           default:
-            this.isFirstInstall = !!data.data.docker_root_dir
+            this.isFirstInstall = !data.data.docker_root_dir
             break;
         }
       } catch (err) {
@@ -1457,7 +1457,7 @@ export default {
     },
 
     submitInstallationLocation(val) {
-      this.$api.container.putInstallationLocation(val).then(data => this.isFirstInstall = false).catch(err => console.log(`${err} in submitInstallationLocation`))
+      this.$api.container.putInstallationLocation(val).then(data => this.isFirstInstall = data).catch(err => console.log(`${err} in submitInstallationLocation`))
     }
   },
 

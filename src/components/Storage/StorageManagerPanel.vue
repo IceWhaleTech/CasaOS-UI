@@ -51,7 +51,7 @@
 
           <div v-if="activeTab == 0 && !mergeConbinationsStorageData.length"
                class="is-flex is-flex-direction-row-reverse">
-            <b-button :type="state_mainstorage_operability" class="width" rounded size="is-small" v-show="hasMergeState"
+            <b-button v-show="hasMergeState" :type="state_mainstorage_operability" class="width" rounded size="is-small"
                       @click="showStorageSettingsModal">{{ $t('Set MainStorage') }}
             </b-button>
           </div>
@@ -219,18 +219,18 @@ export default {
 
     },
   },
-  
+
   async created() {
     // get merge info
     // TODO how to invoke this states code
-    try{
+    try {
       let hasMergeState = await this.$api.local_storage.getMergerfsInfo().then(res => res.status
       ).catch(err => err)
       this.hasMergeState = hasMergeState == 200;
-    }catch(e){
+    } catch (e) {
       console.log(e)
     }
-    
+
   },
   mounted() {
     //Smooth
@@ -268,10 +268,10 @@ export default {
       // TODO: the part is repetition
       //  with APPs Installation Location requirement document
       // 获取merge信息
-      let mergeStorageList 
-      try{
+      let mergeStorageList
+      try {
         mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => res.data.data[0]['source_volume_paths'])
-      }catch(e){
+      } catch (e) {
         mergeStorageList = []
         console.log(e)
       }
@@ -286,7 +286,7 @@ export default {
             part.disk = item.path
             part.diskName = item.disk_name
             // storageArray.push(part)
-            if (mergeStorageList.includes(part.path)) {
+            if (mergeStorageList.includes(part.path) || (mergeStorageList.length > 0 && item.disk_name === 'System')) {
               mergeConbinations.push(part)
             } else {
               storageArray.push(part)
