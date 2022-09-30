@@ -11,7 +11,7 @@
 <template>
   <div class="modal-card">
     <!--    head-->
-    <header class="modal-card-head pri-head">
+    <header :class="{'pri-head':currentStep===0}" class="modal-card-head ">
       <div class="is-flex-grow-1">
         <h3 class=" title is-3">{{ $t(title) }}</h3>
       </div>
@@ -25,30 +25,32 @@
     <!--    body-->
     <!--    <section class="modal-card-body">-->
     <!--    <section class="notification is-overlay pri-margin">-->
-    <section :class="{'non-backgroud' : (currentStep !== 0)}"
-             class="notification is-overlay mb-4 pri-mrl-2rem pr-0 pl-0">
-      <template v-if="currentStep === 0">
-        <div v-for="(item, index) in storageData" :key="index" class="is-flex pri-mtr-3px ml-4 mr-4">
-          <div class="ml-5 is-flex is-align-items-center">
-            <b-image :src="require('@/assets/img/storage/storage.png')" class="is-24x24"></b-image>
-          </div>
-          <div class="is-flex is-flex-grow-1 is-flex-direction-column is-justify-content-center ">
-            <span class="is-uppercase one-line is-size-14px">{{ item.name }}</span>
-          </div>
-          <div class="is-flex is-flex-shrink-0 is-flex-direction-column is-justify-content-center">
+
+    <section v-if="currentStep === 0"
+             class="notification is-overlay mb-4 pri-mrl-2rem pr-0 pl-0 radius">
+      <div v-for="(item, index) in storageData" :key="index" class="is-flex pri-mtr-3px ml-4 mr-4">
+        <div class="ml-5 mr-4 is-flex is-align-items-center">
+          <b-image :src="require('@/assets/img/storage/storage.png')" class="is-24x24"></b-image>
+        </div>
+        <div class="is-flex is-flex-grow-1 is-flex-direction-column is-justify-content-center ">
+          <span class="is-uppercase one-line is-size-14px">{{ item.name }}</span>
+        </div>
+        <div class="is-flex is-flex-shrink-0 is-flex-direction-column is-justify-content-center">
           <span class="is-uppercase is-size-7 pri-text-color">{{ renderSize(item.size - item.availSize) }}/{{
               renderSize(item.size)
             }}</span>
-          </div>
-          <b-checkbox v-model="checkBoxGroup" :disabled="item.persistedIn !== 'casaos'" :native-value="item.path"
-                      class="ml-2 mr-4" type="is-info"></b-checkbox>
         </div>
-      </template>
+        <b-checkbox v-model="checkBoxGroup" :disabled="item.persistedIn !== 'casaos'" :native-value="item.path"
+                    class="ml-2 mr-4"></b-checkbox>
+      </div>
+    </section>
+    <section v-if="currentStep > 0"
+             class="notification is-overlay non-backgroud mb-4 pri-mrl-2rem pr-0 pl-0">
       <template v-if="currentStep === 1">
-        <div>
+        <div class="font">
           {{ $t('Enter the password to continue.') }}
         </div>
-        <b-input v-model="password" type="password"></b-input>
+        <b-input v-model="password" class="mt-4" type="password"></b-input>
       </template>
       <div v-if="currentStep === 2" class="is-flex is-align-items-center">
         <div class="message-danger left mr-2">
@@ -64,9 +66,7 @@
         </div>
         {{ runName + $t(' is running, restart ') + runName + $t(' to continue.') }}
       </div>
-
     </section>
-
     <div v-if="currentStep === 0 && checkBoxGroup.length > 0" class="pri-message-alert is-flex is-align-items-center">
       <div class="is-flex left ml-4 mr-2 is-align-items-center">
         <b-icon class="is-16x16" icon="danger" pack="casa"></b-icon>
@@ -81,7 +81,7 @@
       {{ $t('Please back up your data in storage, otherwise the data may be lost.') }}
     </div>
 
-    <footer class="modal-card-foot is-flex is-align-items-center t-line">
+    <footer :class="{'t-line': currentStep === 0}" class="modal-card-foot is-flex is-align-items-center ">
       <div class="is-flex-grow-1"></div>
       <div class="mr-4">
         <b-button v-show="currentStep > 1" :label="$t('cancel')" expaned rounded type="is-primary"
@@ -298,14 +298,14 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scped>
 .non-backgroud {
   background: none;
 }
 
 .pri-head {
   line-height: 1.875rem;
-  border-bottom: #cfcfcf 1px solid;
+  border-bottom: rgba(0, 0, 0, 0.1) 1px solid !important;
 }
 
 .pri-margin {
@@ -320,11 +320,27 @@ export default {
     margin-top: 0.1875rem;
     margin-bottom: 0.1875rem;
     min-height: 2.75rem;
+    border-radius: 0.25rem;
+  }
+
+  .font {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
   }
 
   div:hover {
     background: hsla(215, 89%, 93%, 1);
   }
+}
+
+.radius {
+  box-sizing: border-box;
+  background: #F8F8F8;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 0.75rem;
 }
 
 .pri-text-color {
@@ -362,6 +378,12 @@ export default {
 }
 
 .t-line {
-  border-top: #cfcfcf 1px solid;
+  border-top: rgba(0, 0, 0, 0.1) 1px solid !important;
 }
+</style>
+<style lang="scss">
+.pri-mtr-3px .control-label {
+  display: none;
+}
+
 </style>
