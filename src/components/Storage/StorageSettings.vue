@@ -109,7 +109,7 @@ import MD5 from 'md5-es';
 export default {
   name: "StorageSettings",
   mixins: [mixin],
-  mounted() {
+  created() {
     this.getDiskList();
     this.getMerageStorage();
   },
@@ -127,7 +127,6 @@ export default {
         case 1:
           this.title = "Data Protected";
           this.affirm = "Submit";
-
           break;
         case 2:
           this.title = "APPs Restart";
@@ -205,8 +204,7 @@ export default {
           persistedIn: storage.persisted_in,
         }
       })
-    }
-    ,
+    },
 
     updateMerge() {
       // merge api
@@ -252,9 +250,12 @@ export default {
           this.currentStep = 3
           this.runName = dockerInfo[0].name
           return
-        } else {
+        } else if (dockerInfo.length > 1) {
           this.currentStep = 2
           this.runName = dockerInfo.map(item => item.name).join(',')
+          return
+        } else {
+          this.restart()
           return
         }
       }
