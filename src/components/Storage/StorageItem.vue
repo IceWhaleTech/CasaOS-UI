@@ -45,7 +45,7 @@
         </b-button>
       </div>
     </div>
-    <b-progress :type="item.usePercent | getProgressType" size="is-small" :value="item.usePercent"></b-progress>
+    <b-progress :type="item.usePercent | getProgressType" size="is-small" :value="item.usePercent || 0"></b-progress>
   </div>
 </template>
 
@@ -175,7 +175,7 @@ export default {
             message: this.$t("Password is incorrect"),
             type: 'is-danger'
           })
-          
+
         }
       })
     },
