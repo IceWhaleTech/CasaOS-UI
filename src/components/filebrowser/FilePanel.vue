@@ -47,12 +47,13 @@
                   <h3 class="title is-3 mb-0 pb-3 pt-3 has-text-left">{{ $t('Location') }}</h3>
                 </div>
                 <div class=" is-flex-shrink-0 mr-5">
-                  <mount-action-button :hasMergerFunction="hasMergerFunction"></mount-action-button>
+                  <mount-action-button></mount-action-button>
                 </div>
               </div>
 
               <div class="list-container pt-0 is-flex-grow-1">
-                <mount-list ref="mountedList" :autoLoad="true" :isActive="!isShareList" :path="rootPath"></mount-list>
+                <mount-list ref="mountedList" :autoLoad="true" :isActive="!isShareList" :path="rootPath"
+                            :hasMergerFunction="hasMergerFunction"></mount-list>
               </div>
 
             </div>
@@ -301,12 +302,12 @@ export default {
       hasMergerFunction: false,
     }
   },
-  async created(){
+  async created() {
     // get merge info
-    try{
+    try {
       let hasMergeState = await this.$api.local_storage.getMergerfsInfo().then(res => res.status);
       this.hasMergerFunction = hasMergeState == 200
-    }catch (e) {
+    } catch (e) {
       console.log(e)
     }
   },

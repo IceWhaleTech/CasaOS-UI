@@ -2,9 +2,9 @@
   font-family: 'casaos';
   src: url('../fonts/casaos.eot?1ai5gp');
   src: url('../fonts/casaos.eot?1ai5gp#iefix') format('embedded-opentype'),
-    url('../fonts/casaos.ttf?1ai5gp') format('truetype'),
-    url('../fonts/casaos.woff?1ai5gp') format('woff'),
-    url('../fonts/casaos.svg?1ai5gp#casaos') format('svg');
+  url('../fonts/casaos.ttf?1ai5gp') format('truetype'),
+  url('../fonts/casaos.woff?1ai5gp') format('woff'),
+  url('../fonts/casaos.svg?1ai5gp#casaos') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -26,143 +26,190 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+// TODO file manger
+.casa-merge-disk:before {
+  content: "\e92c";
+}
+
 .casa-social-share:before {
   content: "\e92c";
 }
+
 .casa-facebook:before {
   content: "\e929";
 }
+
 .casa-reddit:before {
   content: "\e92a";
 }
+
 .casa-twitter:before {
   content: "\e92b";
 }
+
 .casa-down:before {
   content: "\e91f";
 }
+
 .casa-history-records:before {
   content: "\e922";
 }
+
 .casa-eject:before {
   content: "\e923";
 }
+
 .casa-storage-network:before {
   content: "\e924";
 }
+
 .casa-storage-other:before {
   content: "\e925";
 }
+
 .casa-storage-USB:before {
   content: "\e926";
 }
+
 .casa-up:before {
   content: "\e927";
 }
+
 .casa-share:before {
   content: "\e928";
 }
+
 .casa-danger:before {
   content: "\e921";
 }
+
 .casa-copy:before {
   content: "\e917";
 }
+
 .casa-folder-data:before {
   content: "\e918";
 }
+
 .casa-folder-documents:before {
   content: "\e919";
 }
+
 .casa-folder-downloads:before {
   content: "\e91a";
 }
+
 .casa-folder-gallery:before {
   content: "\e91b";
 }
+
 .casa-folder-media:before {
   content: "\e91c";
 }
+
 .casa-folder-root:before {
   content: "\e91e";
 }
+
 .casa-more:before {
   content: "\e91d";
 }
+
 .casa-view:before {
   content: "\e920";
 }
+
 .casa-usb:before {
   content: "\e916";
 }
+
 .casa-upgrade:before {
   content: "\e90c";
 }
+
 .casa-account:before {
   content: "\e911";
 }
+
 .casa-account-edit:before {
   content: "\e912";
 }
+
 .casa-app-switch:before {
   content: "\e913";
 }
+
 .casa-language:before {
   content: "\e914";
 }
+
 .casa-port:before {
   content: "\e915";
 }
+
 .casa-close-xs:before {
   content: "\e910";
 }
+
 .casa-thumb-up:before {
   content: "\e90e";
 }
+
 .casa-search-manage:before {
   content: "\e90f";
 }
+
 .casa-sync:before {
   content: "\e90a";
 }
+
 .casa-bug:before {
   content: "\e900";
 }
+
 .casa-discord:before {
   content: "\e901";
 }
+
 .casa-github:before {
   content: "\e902";
 }
+
 .casa-picture:before {
   content: "\e903";
 }
+
 .casa-close:before {
   content: "\e904";
 }
+
 .casa-arrow-right:before {
   content: "\e905";
 }
+
 .casa-tune:before {
   content: "\e906";
 }
+
 .casa-setting:before {
   content: "\e907";
 }
+
 .casa-magnifier:before {
   content: "\e908";
 }
+
 .casa-plus:before {
   content: "\e909";
 }
+
 .casa-picture-upload:before {
   content: "\e90b";
 }
+
 .casa-terminal:before {
   content: "\e90d";
 }
-
-
 
 
 // Size

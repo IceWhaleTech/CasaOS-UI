@@ -79,9 +79,9 @@ export default {
       isloading: false,
     }
   },
-  computed:{
-    isRootorDATA(){
-      return this.currentPath === '/root' || this.currentPath === '/DATA'
+  computed: {
+    isRootorDATA() {
+      return this.currentPath === '/' || this.currentPath === '/DATA'
     }
   },
   methods: {

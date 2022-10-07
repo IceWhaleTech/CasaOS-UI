@@ -281,6 +281,7 @@ export default {
         const storageRes = await this.$api.storage.list({system: "show"}).then(v => v.data.data)
         const storageArray = []
         const mergeConbinations = []
+        let testMergeMiss = mergeStorageList
         storageRes.forEach(item => {
           item.children.forEach(part => {
             part.disk = item.path
@@ -288,9 +289,24 @@ export default {
             // storageArray.push(part)
             if (mergeStorageList.includes(part.path) || (mergeStorageList.length > 0 && item.disk_name === 'System')) {
               mergeConbinations.push(part)
+              testMergeMiss = testMergeMiss.filter(v => v !== part.path)
             } else {
               storageArray.push(part)
             }
+          })
+        })
+        testMergeMiss.forEach(item => {
+          mergeConbinations.push({
+            "mount_point": "",
+            "size": "",
+            "avail": "",
+            "type": "",
+            "path": item,
+            "drive_name": "",
+            "label": "",
+            "persisted_in": "",
+            "disk": "",
+            "diskName": ""
           })
         })
         this.storageData = storageArray.map((storage) => {

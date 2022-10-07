@@ -13,15 +13,17 @@
     <ul>
       <!-- merge fs storage item -->
       <li v-if="hasMergerFunction">
-        <div :class="{hover:!dorpdown}" class="is-flex list-item new-list-item"
-             @click="warning">
+        <div :class="{hover:!dorpdown}" class="is-flex list-item new-list-item">
           <div class="cover mr-2 is-flex-shrink-0 is-relative">
-            <span :class="{open:dorpdown}" class="icon">
-              <i :class="{'casa-storage-other': !dorpdown, 'casa-arrow-right': dorpdown}" class="casa casa-28px">
+            <span :class="{open:dorpdown}" class="icon" @click="warning">
+              <i :class="{'casa-merge-disk': !dorpdown, 'casa-arrow-right': dorpdown}" class="casa casa-28px">
               </i>
             </span>
           </div>
-          <div class=" is-flex-grow-1 one-line">CasaOS HD
+          <div class=" is-flex-grow-1 one-line" @click="dorpdown = !dorpdown">CasaOS HD
+          </div>
+          <div class="is-flex is-align-items-center" v-if="testMergeMiss > 0">
+            <b-icon icon="danger" pack="casa" class="warn" custom-size="casa-16px"></b-icon>
           </div>
         </div>
         <ul v-show="dorpdown">
@@ -87,20 +89,29 @@ export default {
       networkStorageList: [],
       dorpdown: false,
       mergeStorageList: [],
-
+      testMergeMiss: 0,
     }
   },
   created() {
     this.getStorageList()
   },
 
-  mounted() {
+  async mounted() {
     this.$EventBus.$on(events.RELOAD_MOUNT_LIST, this.getStorageList);
 
   },
   methods: {
     async getStorageList() {
       this.isLoading = true;
+      // Merge Storage
+      let mergeRes;
+      try {
+        mergeRes = await this.$api.local_storage.getMergerfsInfo().then(res => res.data.data[0].source_volume_paths)
+      } catch (error) {
+        mergeRes = []
+        console.log(error)
+      }
+
       // USB Storage
       try {
         const usbListRes = await this.$api.disks.getUsbs()
@@ -132,7 +143,8 @@ export default {
         const storageArray = []
         storageRes.data.data.forEach(item => {
           item.children.forEach(part => {
-            storageArray.push(part)
+            if (!mergeRes.find(mp => mp === part.path))
+              storageArray.push(part)
           })
         })
         this.localStorageList = storageArray.map((storage) => {
@@ -174,19 +186,10 @@ export default {
         console.log(error.reponse.message)
       }
 
-      // Merge Storage
-      let mergeRes;
-      try{
-        mergeRes = await this.$api.local_storage.getMergerfsInfo().then(res => res.data.data[0].source_volume_paths)
-
-      }catch (error) {
-        mergeRes = []
-        console.log(error)
-      }
       try {
-        // miss
         const storageRes = await this.$api.storage.list()
         const storageList = storageRes.data.data
+        // mergeRes.push('test');
         mergeRes.forEach(item => {
           let storage = storageList.find(storage => {
             return storage.children[0].path === item
@@ -202,6 +205,7 @@ export default {
               extensions: null
             })
           } else {
+            this.testMergeMiss += 1
             this.mergeStorageList.push({
               name: item,
               icon: 'danger',
@@ -370,5 +374,9 @@ export default {
     content: "\e905";
     //background-color: #0a0a0a;
   }
+}
+
+.warn {
+  color: hsla(348, 86%, 61%, 1);
 }
 </style>

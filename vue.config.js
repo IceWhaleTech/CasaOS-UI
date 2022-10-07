@@ -113,23 +113,23 @@ module.exports = {
         // },
         contentBase: path.join(__dirname, 'src'),
         open: true,
-        host: '192.168.2.131',
+        host: 'localhost',
         port: 8080,
         proxy: {
-            "/v1": {        // 自己的服务器
-                target: "http://192.168.2.118:80",  // 要进入的服务器地址
+            "/v": {        // 自己的服务器
+                target: "http://192.168.2.195:80",  // 要进入的服务器地址
                 changeOrigin: true,
                 // pathRewrite: {
                 //     "/": "/"
                 // }
             },
-            "/v2": {        // 自己的服务器
-                target: "http://192.168.2.118:80",  // 要进入的服务器地址
-                changeOrigin: true,
-                // pathRewrite: {
-                //     "/": "/"
-                // }
-            },
+            // "/v2": {        // 自己的服务器
+            //     target: "http://192.168.2.118:80",  // 要进入的服务器地址
+            //     changeOrigin: true,
+            //     // pathRewrite: {
+            //     //     "/": "/"
+            //     // }
+            // },
         },
         before: require('./mock/v2_mock.js')
 

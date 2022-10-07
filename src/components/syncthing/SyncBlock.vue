@@ -13,17 +13,17 @@
       <div class="blur-background"></div>
       <div class="wuji-content">
         <!-- Init State Start -->
-        <h6 class="title is-4 mb-0 has-text-white">{{$t(`Sync your data`)}}</h6>
+        <h6 class="title is-4 mb-0 has-text-white">{{ $t(`Sync your data`) }}</h6>
         <div class="is-flex is-align-items-center">
           <div class="info ">
             <div class="des two-line is-size-14px">
-              {{$t(`Use Syncthing to sync your files between multiple devices.`)}}
+              {{ $t(`Use Syncthing to sync your files between multiple devices.`) }}
             </div>
           </div>
           <b-image :src="require('@/assets/img/syncthing/sync.svg')" class="is-80x80"></b-image>
         </div>
         <div class="buttons">
-          <b-button type="is-primary" size="is-small" rounded @click="openSyncPanel">{{$t(actionText)}}</b-button>
+          <b-button type="is-primary" size="is-small" rounded @click="openSyncPanel">{{ $t(actionText) }}</b-button>
         </div>
         <!-- Init State End -->
 
@@ -34,6 +34,7 @@
 
 <script>
 import events from '@/events/events';
+
 export default {
   name: "sync-block",
   data() {
@@ -68,7 +69,7 @@ export default {
     async checkSyncStatus() {
       // const res = await this.$api.sys.getSystemApps()
       const listRes = await this.$api.container.getMyAppList();
-      const systemApps = listRes.data.data.casaos_apps
+      const systemApps = listRes.data ? listRes.data.data.casaos_apps : [];
       const is8384SyncInstalled = systemApps.some(app => {
         return app.image.includes('syncthing') && app.port === 8384
       })
@@ -118,7 +119,7 @@ export default {
             closeOnConfirm: false,
             confirmText: this.$t('Start'),
             cancelText: this.$t('Cancel'),
-            onConfirm: (value, { close }) => {
+            onConfirm: (value, {close}) => {
               this.$buefy.toast.open({
                 message: this.$t(`Starting Syncthing...`),
               })

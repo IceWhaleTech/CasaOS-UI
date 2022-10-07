@@ -33,15 +33,23 @@
           <b-image :src="require('@/assets/img/storage/storage.png')" class="is-24x24"></b-image>
         </div>
         <div class="is-flex is-flex-grow-1 is-flex-direction-column is-justify-content-center ">
-          <span class="is-uppercase one-line is-size-14px">{{ item.name }}</span>
+          <span class="is-uppercase one-line is-size-14px">{{ item.name || $t('undefined') }}</span>
         </div>
-        <div class="is-flex is-flex-shrink-0 is-flex-direction-column is-justify-content-center">
-          <span class="is-uppercase is-size-7 pri-text-color">{{ renderSize(item.size - item.availSize) }}/{{
+        <div class="is-flex is-flex-shrink-0 is-flex-direction-column is-justify-content-center mr-4">
+          <span class="is-uppercase is-size-7 pri-text-color" v-if="item.name">{{
+              renderSize(item.size - item.availSize)
+            }}/{{
               renderSize(item.size)
             }}</span>
+          <span v-else class="is-flex is-align-content-center">
+            <b-icon icon="danger" pack="casa" class="warn is-16x16 mr-1"></b-icon>{{
+              $t('Miss')
+            }}
+          </span>
         </div>
         <b-checkbox v-model="checkBoxGroup" :disabled="item.persistedIn !== 'casaos'" :native-value="item.path"
-                    class="ml-2 mr-4"></b-checkbox>
+                    class="mr-4" v-if="item.name"></b-checkbox>
+        <b-checkbox :disabled="true" :value="true" class="mr-4" v-else></b-checkbox>
       </div>
     </section>
     <section v-if="currentStep > 0"
@@ -109,7 +117,17 @@ import MD5 from 'md5-es';
 export default {
   name: "StorageSettings",
   mixins: [mixin],
-  created() {
+  async mounted() {
+    // TODO: the part is repetition
+    //  with APPs Installation Location requirement document
+    // 获取merge信息
+    try {
+      this.mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => res.data.data[0]['source_volume_paths'])
+    } catch (e) {
+      this.mergeStorageList = []
+      console.log(e)
+    }
+
     this.getDiskList();
     this.getMerageStorage();
   },
@@ -147,10 +165,8 @@ export default {
   computed: {
     extended() {
       return this.checkBoxGroup.join(":")
-    }
-    ,
-  }
-  ,
+    },
+  },
   data() {
     return {
       storageData: [],
@@ -164,7 +180,7 @@ export default {
       mergeInfo: [],
       password: '',
       runName: '',
-
+      mergeStorageList: [],
     }
   }
   ,
@@ -181,11 +197,27 @@ export default {
       //  with APPs Installation Location requirement document
       const storageRes = await this.$api.storage.list()
       const storageArray = []
+      let testMergeMiss = this.mergeStorageList
       storageRes.data.data.forEach(item => {
         item.children.forEach(part => {
           part.disk = item.path
           part.diskName = item.disk_name
           storageArray.push(part)
+          testMergeMiss = testMergeMiss.filter(v => v !== part.path)
+        })
+      })
+      testMergeMiss.forEach(item => {
+        storageArray.push({
+          "mount_point": "",
+          "size": "",
+          "avail": "",
+          "type": "",
+          "path": item,
+          "drive_name": "",
+          "label": "",
+          "persisted_in": "",
+          "disk": "",
+          "diskName": ""
         })
       })
 
@@ -380,6 +412,10 @@ export default {
 
 .t-line {
   border-top: rgba(0, 0, 0, 0.1) 1px solid !important;
+}
+
+.warn {
+  color: hsla(348, 86%, 61%, 1);
 }
 </style>
 <style lang="scss">
