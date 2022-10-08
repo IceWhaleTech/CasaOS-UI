@@ -1,17 +1,16 @@
 @font-face {
   font-family: 'casaos';
-  src: url('../fonts/casaos.eot?1ai5gp');
-  src: url('../fonts/casaos.eot?1ai5gp#iefix') format('embedded-opentype'),
-  url('../fonts/casaos.ttf?1ai5gp') format('truetype'),
-  url('../fonts/casaos.woff?1ai5gp') format('woff'),
-  url('../fonts/casaos.svg?1ai5gp#casaos') format('svg');
+  src: url('../fonts/casaos.eot?3dmok4');
+  src: url('../fonts/casaos.eot?3dmok4#iefix') format('embedded-opentype'),
+  url('../fonts/casaos.ttf?3dmok4') format('truetype'),
+  url('../fonts/casaos.woff?3dmok4') format('woff'),
+  url('../fonts/casaos.svg?3dmok4#casaos') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
 }
 
-[class^="casa-"],
-[class*=" casa-"] {
+[class^="casa-"], [class*=" casa-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'casaos' !important;
   speak: never;
@@ -26,9 +25,16 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-// TODO file manger
-.casa-merge-disk:before {
-  content: "\e92c";
+.casa-storage-merger:before {
+  content: "\e92f";
+}
+
+.casa-expand-down:before {
+  content: "\e930";
+}
+
+.casa-expand:before {
+  content: "\e900";
 }
 
 .casa-social-share:before {
@@ -47,8 +53,16 @@
   content: "\e92b";
 }
 
-.casa-down:before {
-  content: "\e91f";
+.casa-bug:before {
+  content: "\e901";
+}
+
+.casa-discord:before {
+  content: "\e902";
+}
+
+.casa-github:before {
+  content: "\e903";
 }
 
 .casa-history-records:before {
@@ -71,16 +85,16 @@
   content: "\e926";
 }
 
-.casa-up:before {
-  content: "\e927";
-}
-
 .casa-share:before {
   content: "\e928";
 }
 
 .casa-danger:before {
   content: "\e921";
+}
+
+.casa-danger-outline:before {
+  content: "\e92e";
 }
 
 .casa-copy:before {
@@ -109,10 +123,6 @@
 
 .casa-folder-root:before {
   content: "\e91e";
-}
-
-.casa-more:before {
-  content: "\e91d";
 }
 
 .casa-view:before {
@@ -147,12 +157,12 @@
   content: "\e915";
 }
 
-.casa-close-xs:before {
-  content: "\e910";
-}
-
 .casa-thumb-up:before {
   content: "\e90e";
+}
+
+.casa-magnifier:before {
+  content: "\e908";
 }
 
 .casa-search-manage:before {
@@ -163,52 +173,52 @@
   content: "\e90a";
 }
 
-.casa-bug:before {
-  content: "\e900";
-}
-
-.casa-discord:before {
-  content: "\e901";
-}
-
-.casa-github:before {
-  content: "\e902";
-}
-
 .casa-picture:before {
-  content: "\e903";
-}
-
-.casa-close:before {
   content: "\e904";
 }
 
-.casa-arrow-right:before {
-  content: "\e905";
-}
-
-.casa-tune:before {
-  content: "\e906";
-}
-
-.casa-setting:before {
-  content: "\e907";
-}
-
-.casa-magnifier:before {
-  content: "\e908";
+.casa-more:before {
+  content: "\e91d";
 }
 
 .casa-plus:before {
   content: "\e909";
 }
 
-.casa-picture-upload:before {
+.casa-close-xs:before {
+  content: "\e910";
+}
+
+.casa-close:before {
+  content: "\e905";
+}
+
+.casa-arrow-right:before {
+  content: "\e906";
+}
+
+.casa-up:before {
+  content: "\e927";
+}
+
+.casa-down:before {
+  content: "\e91f";
+}
+
+.casa-tune:before {
+  content: "\e907";
+}
+
+.casa-setting:before {
   content: "\e90b";
 }
 
-.casa-terminal:before {
+.casa-picture-upload:before {
   content: "\e90d";
+}
+
+.casa-terminal:before {
+  content: "\e92d";
 }
 
 

@@ -52,7 +52,7 @@
           <div v-if="activeTab == 0 && !mergeConbinationsStorageData.length"
                class="is-flex is-flex-direction-row-reverse">
             <b-button v-show="hasMergeState" :type="state_mainstorage_operability" class="width" rounded size="is-small"
-                      @click="showStorageSettingsModal">{{ $t('Set MainStorage') }}
+                      @click="showStorageSettingsModal">{{ $t('Merge Storages') }}
             </b-button>
           </div>
 

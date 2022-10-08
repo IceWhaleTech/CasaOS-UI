@@ -28,7 +28,7 @@
 
     <section v-if="currentStep === 0"
              class="notification is-overlay mb-4 pri-mrl-2rem pr-0 pl-0 radius">
-      <div v-for="(item, index) in storageData" :key="index" class="is-flex pri-mtr-3px ml-4 mr-4">
+      <div v-for="(item, index) in storageData" :key="item.path+index" class="is-flex pri-mtr-3px ml-4 mr-4">
         <div class="ml-5 mr-4 is-flex is-align-items-center">
           <b-image :src="require('@/assets/img/storage/storage.png')" class="is-24x24"></b-image>
         </div>
@@ -48,8 +48,28 @@
           </span>
         </div>
         <b-checkbox v-model="checkBoxGroup" :disabled="item.persistedIn !== 'casaos'" :native-value="item.path"
-                    class="mr-4" v-if="item.name"></b-checkbox>
-        <b-checkbox :disabled="true" :value="true" class="mr-4" v-else></b-checkbox>
+                    class="mr-4"></b-checkbox>
+      </div>
+      <div v-for="(item, index) in storageMissData" :key="item.path+index" class="is-flex pri-mtr-3px ml-4 mr-4">
+        <div class="ml-5 mr-4 is-flex is-align-items-center">
+          <b-image :src="require('@/assets/img/storage/storage.png')" class="is-24x24"></b-image>
+        </div>
+        <div class="is-flex is-flex-grow-1 is-flex-direction-column is-justify-content-center ">
+          <span class="is-uppercase one-line is-size-14px">{{ item.name || $t('undefined') }}</span>
+        </div>
+        <div class="is-flex is-flex-shrink-0 is-flex-direction-column is-justify-content-center mr-4">
+          <span class="is-uppercase is-size-7 pri-text-color" v-if="item.name">{{
+              renderSize(item.size - item.availSize)
+            }}/{{
+              renderSize(item.size)
+            }}</span>
+          <span v-else class="is-flex is-align-content-center">
+            <b-icon icon="danger" pack="casa" class="warn is-16x16 mr-1"></b-icon>{{
+              $t('Miss')
+            }}
+          </span>
+        </div>
+        <b-checkbox v-model="checkBoxMissGroup" :native-value="item.path" class="mr-4"></b-checkbox>
       </div>
     </section>
     <section v-if="currentStep > 0"
@@ -75,14 +95,14 @@
         {{ runName + $t(' is running, restart ') + runName + $t(' to continue.') }}
       </div>
     </section>
-    <div v-if="currentStep === 0 && checkBoxGroup.length > 0" class="pri-message-alert is-flex is-align-items-center">
+    <div v-if="currentStep === 0 && checkBoxGroup.length > 0" class="message-alert is-flex is-align-items-center">
       <div class="is-flex left ml-4 mr-2 is-align-items-center">
         <b-icon class="is-16x16" icon="danger" pack="casa"></b-icon>
       </div>
       {{ $t('If the chosen storage is not empty, format better first.') }}
     </div>
 
-    <div v-if="currentStep === 0" class="pri-message-danger is-flex is-align-items-center">
+    <div v-if="currentStep === 0 && isSplit" class="pri-message-danger is-flex is-align-items-center">
       <div class="is-flex left ml-4 mr-2 is-align-items-center">
         <b-icon class="is-16x16" icon="danger" pack="casa"></b-icon>
       </div>
@@ -139,7 +159,7 @@ export default {
     currentStep(val) {
       switch (val) {
         case 0:
-          this.title = "MainStorage Settings";
+          this.title = "Merge Storages";
           this.affirm = "Submit";
           break;
         case 1:
@@ -166,16 +186,21 @@ export default {
     extended() {
       return this.checkBoxGroup.join(":")
     },
+    isSplit() {
+      return !this.mergeInfo.every(item => this.checkBoxGroup.includes(item) || this.storageMissData.includes(item))
+    }
   },
   data() {
     return {
       storageData: [],
+      storageMissData: [],
       diskData: {},
       unDiskData: {},
       checkBoxGroup: [],
+      checkBoxMissGroup: [],
       isConnecting: false,
       currentStep: 0,
-      title: "MainStorage Settings",
+      title: "Merge Storages",
       affirm: "Submit",
       mergeInfo: [],
       password: '',
@@ -197,6 +222,7 @@ export default {
       //  with APPs Installation Location requirement document
       const storageRes = await this.$api.storage.list()
       const storageArray = []
+      const storageMissArray = []
       let testMergeMiss = this.mergeStorageList
       storageRes.data.data.forEach(item => {
         item.children.forEach(part => {
@@ -207,7 +233,7 @@ export default {
         })
       })
       testMergeMiss.forEach(item => {
-        storageArray.push({
+        storageMissArray.push({
           "mount_point": "",
           "size": "",
           "avail": "",
@@ -236,6 +262,22 @@ export default {
           persistedIn: storage.persisted_in,
         }
       })
+
+      this.storageMissData = storageMissArray.map((storage) => {
+        return {
+          name: storage.label,
+          isSystem: storage.diskName == "System",
+          fsType: storage.type,
+          size: storage.size,
+          availSize: storage.avail,
+          usePercent: 100 - Math.floor(storage.avail * 100 / storage.size),
+          diskName: storage.drive_name,
+          path: storage.path,
+          mount_point: storage.mount_point,
+          disk: storage.disk,
+          persistedIn: storage.persisted_in,
+        }
+      })
     },
 
     updateMerge() {
@@ -245,7 +287,7 @@ export default {
         "mount_point": "/DATA",
         // "source_base_path": "/var/lib/casaos/files",
         "source_volume_paths": [
-          ...this.checkBoxGroup
+          ...this.checkBoxGroup, ...this.storageMissData
         ]
       }).then(res => {
         // TODO : need to check the result by the states code
@@ -273,8 +315,7 @@ export default {
 
     async submit(e, nextStep = false) {
       // operation : split the mergerfs
-      //
-      let notSplit = this.mergeInfo.every(item => this.checkBoxGroup.includes(item))
+      let notSplit = this.mergeInfo.every(item => this.checkBoxGroup.includes(item) || this.storageMissData.includes(item))
       if (notSplit || nextStep) {
         // get docker info
         let dockerInfo = await this.$api.container.getInfo('').then(res => res.data.data.casaos_apps)
@@ -384,7 +425,7 @@ export default {
   color: hsla(348, 86%, 61%, 1);
 }
 
-.pri-message-alert {
+.message-alert {
   height: 2rem;
   margin-top: 0rem;
   margin-bottom: 1rem;

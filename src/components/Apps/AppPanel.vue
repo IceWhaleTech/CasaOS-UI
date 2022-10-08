@@ -12,32 +12,29 @@
 
 
 <template>
-  <div :class="{'narrow': currentSlide > 0}" class="modal-card app-card">
+  <div
+      :class="{'narrow': currentSlide > 0 ,'card-width': isFirstInstall}"
+      class="app-card modal-card">
     <!--    first setting！！ apps installation location-->
-    <!--    TODO v-if-->
     <template v-if="isFirstInstall">
-      <!--      <apps-installation-location></apps-installation-location>-->
       <header class="modal-card-head b-line">
         <div class="is-flex-grow-1">
-          <h3 class="is-flex-grow-1 title is-3 pri-line-height has-text-black">apps installation location</h3>
+          <h3 class="is-flex-grow-1 title is-3 pri-line-height has-text-black">{{
+              $t('Apps Installation Location')
+            }}</h3>
         </div>
         <button class="delete" type="button" @click="$emit('close')"/>
       </header>
-      <div class="ml-6">
+      <p class="modal-card-body">
         {{ $t('Please choose a location with enough storage space and stable connection.') }}
-      </div>
-      <div class="pri-message-alert ml-6 mr-6 is-flex is-align-items-center">
-        <div class="left ml-4 mr-2">
-          <b-icon class="is-16x16" icon="danger" pack="casa"></b-icon>
-        </div>
-        {{ $t('Cannot be changed after selection.') }}
-      </div>
+        <span class="has-text-danger">
+          {{ $t('(Cannot be changed)') }}
+        </span>
+      </p>
+
       <section class="modal-card-body is-overlay">
-
         <AppsInstallationLocation v-for="(item,index) in storageData" :key="'storage'+index" :item="item"
-                                  :scence="storage_item_scence"
-                                  @selection="getSelection"></AppsInstallationLocation>
-
+                                  :scence="storage_item_scence" @selection="getSelection"></AppsInstallationLocation>
       </section>
     </template>
     <!--    first setting have done!!-->
@@ -1741,5 +1738,10 @@ export default {
 
 .is-overlay {
   overflow: overlay;
+}
+
+.card-width {
+  max-width: 35rem;
+  min-width: 30rem;
 }
 </style>

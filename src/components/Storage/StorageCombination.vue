@@ -37,7 +37,7 @@
       </div>
       <div class="mr-5 is-flex is-flex-direction-column is-justify-content-space-between">
         <b-button :type="type" class="width" rounded size="is-small"
-                  @click="showStorageSettingsModal">{{ $t('Set MainStorage') }}
+                  @click="showStorageSettingsModal">{{ $t('Merge Storages') }}
         </b-button>
         <div class="is-size-6 has-text-weight-medium mb-1">{{ renderSize(usage) }}/{{ renderSize(totleSize) }}</div>
       </div>

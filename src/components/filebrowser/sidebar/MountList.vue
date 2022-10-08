@@ -13,14 +13,15 @@
     <ul>
       <!-- merge fs storage item -->
       <li v-if="hasMergerFunction">
-        <div :class="{hover:!dorpdown}" class="is-flex list-item new-list-item">
+        <div class="is-flex list-item new-list-item">
           <div class="cover mr-2 is-flex-shrink-0 is-relative">
-            <span :class="{open:dorpdown}" class="icon" @click="warning">
-              <i :class="{'casa-merge-disk': !dorpdown, 'casa-arrow-right': dorpdown}" class="casa casa-28px">
+            <span @mouseover="hover = true" @mouseleave="hover = false" class="icon" @click="dorpdown = !dorpdown">
+              <i :class="{'casa-storage-merger': !dorpdown && !hover, 'casa-expand': hover && !dorpdown, 'casa-expand-down': dorpdown}"
+                 class="casa casa-28px">
               </i>
             </span>
           </div>
-          <div class=" is-flex-grow-1 one-line" @click="dorpdown = !dorpdown">CasaOS HD
+          <div class=" is-flex-grow-1 one-line" @click="warning">CasaOS HD
           </div>
           <div class="is-flex is-align-items-center" v-if="testMergeMiss > 0">
             <b-icon icon="danger" pack="casa" class="warn" custom-size="casa-16px"></b-icon>
@@ -90,6 +91,7 @@ export default {
       dorpdown: false,
       mergeStorageList: [],
       testMergeMiss: 0,
+      hover: false,
     }
   },
   created() {
@@ -289,9 +291,11 @@ export default {
         hasIcon: true,
         onConfirm: () => {
           this.dorpdown = !this.dorpdown
+          this.filePanel.getFileList('/DATA')
         }
       })
     },
+
   },
   sockets: {
 
@@ -362,17 +366,6 @@ export default {
     position: absolute;
     right: -0.15rem;
     bottom: -0.1rem;
-  }
-}
-
-.open {
-  transform: rotate(90deg);
-}
-
-.hover:hover {
-  i::before {
-    content: "\e905";
-    //background-color: #0a0a0a;
   }
 }
 
