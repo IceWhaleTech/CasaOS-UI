@@ -24,7 +24,7 @@
               <div class="node-card-container">
                 <div :class="{'active':item.isSelected}" class="outer-wrapper">
                   <div :class="{'isCutting':getCardState(item)}" class="node-card is-unselectable"
-                       @click.stop="onCardClick($event,item,index)" @contextmenu.prevent="($event,item)">
+                       @click.stop="onCardClick($event,item,index)" @contextmenu.prevent="openContextMenu($event,item)">
                     <div class="cover">
                       <icon-container :item="item"></icon-container>
                     </div>
