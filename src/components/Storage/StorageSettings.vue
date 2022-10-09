@@ -22,15 +22,11 @@
       {{ $t('All the checked Storage will be merged into CasaOS HD.') }}
     </div>
 
-    <!--    body-->
-    <!--    <section class="modal-card-body">-->
-    <!--    <section class="notification is-overlay pri-margin">-->
-
     <section v-if="currentStep === 0"
              class="notification is-overlay mb-4 pri-mrl-2rem pr-0 pl-0 radius">
       <div v-for="(item, index) in storageData" :key="item.path+index" class="is-flex pri-mtr-3px ml-4 mr-4">
-        <div class="ml-5 mr-4 is-flex is-align-items-center">
-          <b-image :src="require('@/assets/img/storage/storage.png')" class="is-24x24"></b-image>
+        <div class="ml-4 mr-4 is-flex is-align-items-center">
+          <b-image :src="require('@/assets/img/storage/storage.png')" class="is-32x32"></b-image>
         </div>
         <div class="is-flex is-flex-grow-1 is-flex-direction-column is-justify-content-center ">
           <span class="is-uppercase one-line is-size-14px">{{ item.name || $t('undefined') }}</span>
@@ -46,8 +42,8 @@
                     class="mr-4"></b-checkbox>
       </div>
       <div v-for="(item, index) in storageMissData" :key="item.path+index" class="is-flex pri-mtr-3px ml-4 mr-4">
-        <div class="ml-5 mr-4 is-flex is-align-items-center">
-          <b-image :src="require('@/assets/img/storage/storage.png')" class="is-24x24"></b-image>
+        <div class="ml-4 mr-4 is-flex is-align-items-center">
+          <b-image :src="require('@/assets/img/storage/storage.png')" class="is-32x32"></b-image>
         </div>
         <div class="is-flex is-flex-grow-1 is-flex-direction-column is-justify-content-center ">
           <span class="is-uppercase one-line is-size-14px">{{ item.name || $t('undefined') }}</span>
@@ -87,14 +83,14 @@
     </section>
     <div v-if="currentStep === 0 && checkBoxGroup.length > 0" class="message-alert is-flex is-align-items-center font">
       <div class="is-flex left ml-4 mr-2 is-align-items-center">
-        <b-icon class="is-16x16" icon="danger" pack="casa"></b-icon>
+        <b-icon class="is-16x16" icon="danger" pack="casa" custom-size="casa-19px"></b-icon>
       </div>
       {{ $t('If the chosen storage is not empty, format better first.') }}
     </div>
 
     <div v-if="currentStep === 0 && isSplit" class="pri-message-danger is-flex is-align-items-center font">
       <div class="is-flex left ml-4 mr-2 is-align-items-center">
-        <b-icon class="is-16x16" icon="danger" pack="casa"></b-icon>
+        <b-icon icon="danger" pack="casa" custom-size="casa-19px"></b-icon>
       </div>
       {{ $t('Please back up your data in storage, otherwise the data may be lost.') }}
     </div>
