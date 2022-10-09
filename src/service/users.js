@@ -75,11 +75,13 @@ const users = {
 
 
     // get custom storage [OK]
+    // free store GET
     getCustomStorage(key) {
         return api.get(`${PREFIX}/current/custom/${key}`);
     },
 
     // set or update custom storage  [OK]
+    // free store POST
     setCustomStorage(key, data) {
         return api.post(`${PREFIX}/current/custom/${key}`, data);
     },

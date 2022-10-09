@@ -63,10 +63,9 @@
             }}/{{
               renderSize(item.size)
             }}</span>
-          <span v-else class="is-flex is-align-content-center">
-            <b-icon icon="danger" pack="casa" class="warn is-16x16 mr-1"></b-icon>{{
-              $t('Miss')
-            }}
+          <span v-else class="is-flex is-align-items-center has-text-danger small-font">
+            <b-icon icon="danger" pack="casa" class="warn" custom-size="casa-16px"></b-icon>
+            {{ $t('Missing') }}
           </span>
         </div>
         <b-checkbox v-model="checkBoxMissGroup" :native-value="item.path" class="mr-4"></b-checkbox>
@@ -408,6 +407,14 @@ export default {
   font-weight: 400;
   font-size: 14px;
   line-height: 21px;
+}
+
+.small-font {
+  font-family: Roboto;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0em;
 }
 
 .radius {

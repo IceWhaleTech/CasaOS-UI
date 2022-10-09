@@ -103,7 +103,7 @@ module.exports = {
             config.optimization
                 .minimizer('css')
                 .use(require.resolve('optimize-css-assets-webpack-plugin'), [{cssProcessorOptions: {safe: true}}])
-
+            config.output.filename('[name].[hash].js').end()
         }
     },
     devServer: {

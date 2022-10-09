@@ -32,8 +32,7 @@
         </b-field>
         <div class="notification pl-4 pri-height">
           <b-field>
-            <b-checkbox v-model="shortcut" v-show="isRootorDATA"
-                        type="is-info">
+            <b-checkbox v-model="shortcut" v-show="isRootorDATA" type="is-info">
               {{ $t('Add a shortcut') }}
             </b-checkbox>
           </b-field>
@@ -83,6 +82,9 @@ export default {
     isRootorDATA() {
       return this.currentPath === '/' || this.currentPath === '/DATA'
     }
+  },
+  mounted() {
+    this.isRootorDATA ? this.shortcut = true : this.shortcut = false
   },
   methods: {
 

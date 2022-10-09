@@ -294,6 +294,7 @@ export default {
             }
           })
         })
+        mergeConbinations.reverse();
         testMergeMiss.forEach(item => {
           mergeConbinations.push({
             "mount_point": "",
@@ -323,7 +324,6 @@ export default {
             disk: storage.disk
           }
         })
-        mergeConbinations.reverse();
         this.mergeConbinationsStorageData = mergeConbinations.map((storage) => {
           return {
             name: storage.label,

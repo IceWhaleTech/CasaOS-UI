@@ -15,16 +15,16 @@
       <li v-if="hasMergerFunction">
         <div class="is-flex list-item new-list-item">
           <div class="cover mr-2 is-flex-shrink-0 is-relative">
-            <span @mouseover="hover = true" @mouseleave="hover = false" class="icon" @click="dorpdown = !dorpdown">
+            <span @mouseover="hover = true" @mouseleave="hover = false" class="icon" @click="warning">
               <i :class="{'casa-storage-merger': !dorpdown && !hover, 'casa-expand': hover && !dorpdown, 'casa-expand-down': dorpdown}"
                  class="casa casa-28px">
               </i>
             </span>
           </div>
-          <div class=" is-flex-grow-1 one-line" @click="warning">CasaOS HD
+          <div class=" is-flex-grow-1 one-line" @click="filePanel.getFileList('/DATA')">CasaOS HD
           </div>
           <div class="is-flex is-align-items-center" v-if="testMergeMiss > 0">
-            <b-icon icon="danger" pack="casa" class="warn" custom-size="casa-16px"></b-icon>
+            <b-icon icon="danger-outline" pack="casa" class="warn" custom-size="casa-16px"></b-icon>
           </div>
         </div>
         <ul v-show="dorpdown">
@@ -275,9 +275,14 @@ export default {
       }
     },
 
-    warning() {
+    async warning() {
       if (this.dorpdown) {
         this.dorpdown = false
+        return
+      }
+      let notFirst = await this.$api.users.getCustomStorage('notFirstOpenMergerStorage').then(res => res.data.data)
+      if (notFirst) {
+        this.dorpdown = !this.dorpdown
         return
       }
       this.$buefy.dialog.confirm({
@@ -291,7 +296,7 @@ export default {
         hasIcon: true,
         onConfirm: () => {
           this.dorpdown = !this.dorpdown
-          this.filePanel.getFileList('/DATA')
+          this.$api.users.setCustomStorage('notFirstOpenMergerStorage', true)
         }
       })
     },
