@@ -20,7 +20,7 @@ const actions = {
         try {
             // Changing the shortcut data structure
             val.forEach((item) => {
-                item.icon = 'folder-data'
+                item.icon = 'folder'
                 item.pack = 'casa'
                 item.visible = true
                 item.selected = true

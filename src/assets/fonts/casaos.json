@@ -160,12 +160,20 @@
           "tempChar": ""
         },
         {
+          "order": 58,
+          "id": 50,
+          "name": "folder",
+          "prevSize": 32,
+          "code": 59697,
+          "tempChar": ""
+        },
+        {
           "order": 15,
           "name": "folder-data",
           "prevSize": 32,
           "id": 16,
           "code": 59672,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 16,
@@ -173,7 +181,7 @@
           "prevSize": 32,
           "id": 17,
           "code": 59673,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 21,
@@ -181,7 +189,7 @@
           "prevSize": 32,
           "id": 18,
           "code": 59674,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 22,
@@ -189,15 +197,15 @@
           "prevSize": 32,
           "id": 19,
           "code": 59675,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
-          "order": 23,
+          "order": 56,
           "name": "folder-media",
           "prevSize": 32,
           "id": 20,
           "code": 59676,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 24,
@@ -205,7 +213,7 @@
           "prevSize": 32,
           "id": 21,
           "code": 59678,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 25,
@@ -213,7 +221,7 @@
           "prevSize": 32,
           "id": 22,
           "code": 59680,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 28,
@@ -221,7 +229,7 @@
           "prevSize": 32,
           "id": 23,
           "code": 59670,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 27,
@@ -229,7 +237,7 @@
           "prevSize": 32,
           "id": 24,
           "code": 59660,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 29,
@@ -237,7 +245,7 @@
           "prevSize": 32,
           "id": 25,
           "code": 59665,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 30,
@@ -245,7 +253,7 @@
           "prevSize": 32,
           "id": 26,
           "code": 59666,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 39,
@@ -253,7 +261,7 @@
           "prevSize": 32,
           "id": 27,
           "code": 59667,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 38,
@@ -261,7 +269,7 @@
           "prevSize": 32,
           "id": 28,
           "code": 59668,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 37,
@@ -269,7 +277,7 @@
           "prevSize": 32,
           "id": 29,
           "code": 59669,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 36,
@@ -277,7 +285,7 @@
           "prevSize": 32,
           "id": 30,
           "code": 59662,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 35,
@@ -285,7 +293,7 @@
           "prevSize": 32,
           "id": 31,
           "code": 59656,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 34,
@@ -293,7 +301,7 @@
           "prevSize": 32,
           "id": 32,
           "code": 59663,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 33,
@@ -301,7 +309,7 @@
           "prevSize": 32,
           "id": 33,
           "code": 59658,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 32,
@@ -309,7 +317,7 @@
           "prevSize": 32,
           "id": 34,
           "code": 59652,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 31,
@@ -317,7 +325,7 @@
           "prevSize": 32,
           "id": 35,
           "code": 59677,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 40,
@@ -325,7 +333,7 @@
           "prevSize": 32,
           "id": 36,
           "code": 59657,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 41,
@@ -333,7 +341,7 @@
           "prevSize": 32,
           "id": 37,
           "code": 59664,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 42,
@@ -341,7 +349,7 @@
           "prevSize": 32,
           "id": 38,
           "code": 59653,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 43,
@@ -349,7 +357,7 @@
           "prevSize": 32,
           "id": 39,
           "code": 59654,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 44,
@@ -357,7 +365,7 @@
           "prevSize": 32,
           "id": 40,
           "code": 59687,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 45,
@@ -365,7 +373,7 @@
           "prevSize": 32,
           "id": 41,
           "code": 59679,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 46,
@@ -373,7 +381,7 @@
           "prevSize": 32,
           "id": 42,
           "code": 59655,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 47,
@@ -381,7 +389,7 @@
           "prevSize": 32,
           "id": 43,
           "code": 59659,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 48,
@@ -389,7 +397,7 @@
           "prevSize": 32,
           "id": 44,
           "code": 59661,
-          "tempChar": ""
+          "tempChar": ""
         },
         {
           "order": 3,
@@ -397,14 +405,14 @@
           "prevSize": 32,
           "id": 45,
           "code": 59693,
-          "tempChar": ""
+          "tempChar": ""
         }
       ],
       "metadata": {
         "name": "casaos",
         "importSize": {
-          "width": 16,
-          "height": 16
+          "width": 28,
+          "height": 28
         },
         "iconsHash": 701507904
       },
@@ -649,6 +657,17 @@
           "defaultCode": 59671,
           "id": 15,
           "attrs": []
+        },
+        {
+          "id": 50,
+          "paths": [
+            "M170.678 249.902c0-20.198 16.374-36.571 36.571-36.571h199.856c12.229 0 23.647 6.111 30.431 16.285l20.952 31.429c6.784 10.174 18.202 16.285 30.427 16.285h327.859c20.195 0 36.571 16.374 36.571 36.571v417.523c0 20.198-16.377 36.571-36.571 36.571h-609.525c-20.198 0-36.571-16.373-36.571-36.571v-481.523z"
+          ],
+          "attrs": [],
+          "grid": 0,
+          "tags": [
+            "folder"
+          ]
         },
         {
           "paths": [
@@ -1110,6 +1129,5 @@
     "historySize": 50,
     "gridSize": 16
   },
-  "uid": -1,
-  "time": 1665282859801
+  "uid": -1
 }

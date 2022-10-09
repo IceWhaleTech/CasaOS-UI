@@ -11,14 +11,14 @@
 <template>
   <div class="modal-card">
     <!--    head-->
-    <header :class="{'pri-head':currentStep===0}" class="modal-card-head ">
+    <header :class="{'pri-head':currentStep<=1}" class="modal-card-head ">
       <div class="is-flex-grow-1">
         <h3 class=" title is-3">{{ $t(title) }}</h3>
       </div>
       <button class="delete" type="button" @click="$emit('close')"/>
     </header>
     <!--remind-->
-    <div v-if="currentStep === 0" class="pri-mrl-2rem mt-5 mb-4">
+    <div v-if="currentStep === 0" class="pri-mrl-2rem mt-5 mb-4 font">
       {{ $t('All the checked Storage will be merged into CasaOS HD.') }}
     </div>
 
@@ -80,50 +80,50 @@
         </div>
         <b-input v-model="password" class="mt-4" type="password"></b-input>
       </template>
-      <div v-if="currentStep === 2" class="is-flex is-align-items-center">
-        <div class="message-danger left mr-2">
-          <b-icon class="is-38x38" icon="danger" pack="casa"></b-icon>
+      <div v-if="currentStep === 2" class="is-flex is-align-items-center font">
+        <div class="message-danger left mr-2 is-flex is-align-items-center">
+          <b-icon class="is-38x38" custom-size="is-size-2" icon="danger" pack="casa"></b-icon>
         </div>
         {{
-          `${runName.split(',').length} ` + $t('APPs is running') + ` ( ${runName} ), ` + $t('restart APPs to continue.')
+          `${runName.split(',').length} ` + $t('APPs is running') + ` (${runName}), ` + $t('restart APPs to continue.')
         }}
       </div>
-      <div v-if="currentStep === 3" class="is-flex is-align-items-center">
-        <div class="message-danger left mr-2">
-          <b-icon class="is-38x38" icon="danger" pack="casa"></b-icon>
+      <div v-if="currentStep === 3" class="is-flex is-align-items-center font">
+        <div class="message-danger left mr-2 is-flex is-align-items-center">
+          <b-icon class="is-38x38" custom-size="is-size-2" icon="danger" pack="casa"></b-icon>
         </div>
         {{ runName + $t(' is running, restart ') + runName + $t(' to continue.') }}
       </div>
     </section>
-    <div v-if="currentStep === 0 && checkBoxGroup.length > 0" class="message-alert is-flex is-align-items-center">
+    <div v-if="currentStep === 0 && checkBoxGroup.length > 0" class="message-alert is-flex is-align-items-center font">
       <div class="is-flex left ml-4 mr-2 is-align-items-center">
         <b-icon class="is-16x16" icon="danger" pack="casa"></b-icon>
       </div>
       {{ $t('If the chosen storage is not empty, format better first.') }}
     </div>
 
-    <div v-if="currentStep === 0 && isSplit" class="pri-message-danger is-flex is-align-items-center">
+    <div v-if="currentStep === 0 && isSplit" class="pri-message-danger is-flex is-align-items-center font">
       <div class="is-flex left ml-4 mr-2 is-align-items-center">
         <b-icon class="is-16x16" icon="danger" pack="casa"></b-icon>
       </div>
       {{ $t('Please back up your data in storage, otherwise the data may be lost.') }}
     </div>
 
-    <footer :class="{'t-line': currentStep === 0}" class="modal-card-foot is-flex is-align-items-center ">
+    <footer :class="{'t-line': currentStep <= 1}" class="modal-card-foot is-flex is-align-items-center ">
       <div class="is-flex-grow-1"></div>
       <div class="mr-4">
-        <b-button v-show="currentStep > 1" :label="$t('cancel')" expaned rounded type="is-primary"
+        <b-button v-show="currentStep > 1" :label="$t('Cancel')" expaned rounded
                   @click="currentStep = 0"/>
       </div>
       <div>
         <b-button v-show="currentStep === 0" :label="$t(affirm)" :loading="isConnecting" expaned rounded
-                  type="is-primary" @click="submit"/>
+                  type="is-primary" @click="submit" @keyup.enter="submit"/>
         <b-button v-show="currentStep === 1" :label="$t(affirm)" :loading="isConnecting" expaned rounded
-                  type="is-primary" @click="verifyPassword(password)"/>
+                  type="is-primary" @click="verifyPassword(password)" @keyup.enter="verifyPassword(password)"/>
         <b-button v-show="currentStep === 2" :label="$t(affirm)" :loading="isConnecting" expaned rounded
-                  type="is-primary" @click="restart"/>
+                  type="is-primary" @click="restart" @keyup.enter="restart"/>
         <b-button v-show="currentStep === 3" :label="$t(affirm)" :loading="isConnecting" expaned rounded
-                  type="is-primary" @click="restart"/>
+                  type="is-primary" @click="restart" @keyup.enter="restart"/>
       </div>
     </footer>
   </div>
@@ -397,17 +397,17 @@ export default {
     border-radius: 0.25rem;
   }
 
-  .font {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 21px;
-  }
-
   div:hover {
     background: hsla(215, 89%, 93%, 1);
   }
+}
+
+.font {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
 }
 
 .radius {
@@ -457,6 +457,11 @@ export default {
 
 .warn {
   color: hsla(348, 86%, 61%, 1);
+}
+
+.is-38x38 {
+  width: 2.375rem;
+  height: 2.375rem;
 }
 </style>
 <style lang="scss">
