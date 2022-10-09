@@ -36,16 +36,11 @@
           <span class="is-uppercase one-line is-size-14px">{{ item.name || $t('undefined') }}</span>
         </div>
         <div class="is-flex is-flex-shrink-0 is-flex-direction-column is-justify-content-center mr-4">
-          <span class="is-uppercase is-size-7 pri-text-color" v-if="item.name">{{
+          <span class="is-uppercase is-size-7 pri-text-color">{{
               renderSize(item.size - item.availSize)
             }}/{{
               renderSize(item.size)
             }}</span>
-          <span v-else class="is-flex is-align-content-center">
-            <b-icon icon="danger" pack="casa" class="warn is-16x16 mr-1"></b-icon>{{
-              $t('Miss')
-            }}
-          </span>
         </div>
         <b-checkbox v-model="checkBoxGroup" :disabled="item.persistedIn !== 'casaos'" :native-value="item.path"
                     class="mr-4"></b-checkbox>
@@ -58,12 +53,7 @@
           <span class="is-uppercase one-line is-size-14px">{{ item.name || $t('undefined') }}</span>
         </div>
         <div class="is-flex is-flex-shrink-0 is-flex-direction-column is-justify-content-center mr-4">
-          <span class="is-uppercase is-size-7 pri-text-color" v-if="item.name">{{
-              renderSize(item.size - item.availSize)
-            }}/{{
-              renderSize(item.size)
-            }}</span>
-          <span v-else class="is-flex is-align-items-center has-text-danger small-font">
+          <span class="is-flex is-align-items-center has-text-danger small-font">
             <b-icon icon="danger" pack="casa" class="warn" custom-size="casa-16px"></b-icon>
             {{ $t('Missing') }}
           </span>
@@ -77,7 +67,8 @@
         <div class="font">
           {{ $t('Enter the password to continue.') }}
         </div>
-        <b-input v-model="password" class="mt-4" type="password"></b-input>
+        <b-input v-model="password" class="mt-4" type="password"
+                 @keyup.enter.native="verifyPassword(password)"></b-input>
       </template>
       <div v-if="currentStep === 2" class="is-flex is-align-items-center font">
         <div class="message-danger left mr-2 is-flex is-align-items-center">
@@ -116,13 +107,13 @@
       </div>
       <div>
         <b-button v-show="currentStep === 0" :label="$t(affirm)" :loading="isConnecting" expaned rounded
-                  type="is-primary" @click="submit" @keyup.enter="submit"/>
+                  type="is-primary" @click="submit"/>
         <b-button v-show="currentStep === 1" :label="$t(affirm)" :loading="isConnecting" expaned rounded
-                  type="is-primary" @click="verifyPassword(password)" @keyup.enter="verifyPassword(password)"/>
+                  type="is-primary" @click="verifyPassword(password)"/>
         <b-button v-show="currentStep === 2" :label="$t(affirm)" :loading="isConnecting" expaned rounded
-                  type="is-primary" @click="restart" @keyup.enter="restart"/>
+                  type="is-primary" @click="restart"/>
         <b-button v-show="currentStep === 3" :label="$t(affirm)" :loading="isConnecting" expaned rounded
-                  type="is-primary" @click="restart" @keyup.enter="restart"/>
+                  type="is-primary" @click="restart"/>
       </div>
     </footer>
   </div>
@@ -132,6 +123,7 @@
 import {mixin} from "@/mixins/mixin";
 import jwt_decode from "jwt-decode";
 import MD5 from 'md5-es';
+import events from '@/events/events';
 
 export default {
   name: "StorageSettings",
@@ -146,9 +138,10 @@ export default {
       this.mergeStorageList = []
       console.log(e)
     }
-
+    this.checkBoxGroup.push(...this.mergeStorageList)
+    // this.checkBoxMissGroup.push(...this.mergeStorageList)
     this.getDiskList();
-    this.getMerageStorage();
+    // this.getMerageStorage();
   },
   watch: {
     // 0 default :mainstorage settings
@@ -186,7 +179,7 @@ export default {
       return this.checkBoxGroup.join(":")
     },
     isSplit() {
-      return !this.mergeInfo.every(item => this.checkBoxGroup.includes(item) || this.storageMissData.includes(item))
+      return !this.mergeStorageList.every(item => this.checkBoxGroup.includes(item) || this.storageMissData.includes(item))
     }
   },
   data() {
@@ -231,6 +224,7 @@ export default {
           testMergeMiss = testMergeMiss.filter(v => v !== part.path)
         })
       })
+      this.checkBoxMissGroup.push(...testMergeMiss);
       testMergeMiss.forEach(item => {
         storageMissArray.push({
           "mount_point": "",
@@ -286,7 +280,7 @@ export default {
         "mount_point": "/DATA",
         // "source_base_path": "/var/lib/casaos/files",
         "source_volume_paths": [
-          ...this.checkBoxGroup, ...this.storageMissData
+          ...this.checkBoxGroup, ...this.checkBoxMissGroup
         ]
       }).then(res => {
         // TODO : need to check the result by the states code
@@ -294,6 +288,8 @@ export default {
           case 200:
           case 400:
           default:
+            // refresh local storage
+            this.$EventBus.$emit(events.RELOAD_MOUNT_LIST)
             // close the modal
             this.$emit('close')
         }
@@ -301,7 +297,7 @@ export default {
     }
     ,
 
-    // get the storage list mounted to the mergerfs
+    // get the storage list be mounted of mergerfs
     async getMerageStorage() {
       try {
         // TODO merge can't be used
@@ -314,7 +310,7 @@ export default {
 
     async submit(e, nextStep = false) {
       // operation : split the mergerfs
-      let notSplit = this.mergeInfo.every(item => this.checkBoxGroup.includes(item) || this.storageMissData.includes(item))
+      let notSplit = this.mergeStorageList.every(item => this.checkBoxGroup.includes(item) || this.checkBoxMissGroup.includes(item))
       if (notSplit || nextStep) {
         // get docker info
         let dockerInfo = await this.$api.container.getInfo('').then(res => res.data.data.casaos_apps)

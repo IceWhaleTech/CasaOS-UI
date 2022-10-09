@@ -15,11 +15,15 @@
       <li v-if="hasMergerFunction">
         <div class="is-flex list-item new-list-item">
           <div class="cover mr-2 is-flex-shrink-0 is-relative">
-            <span @mouseover="hover = true" @mouseleave="hover = false" class="icon" @click="warning">
+            <div @mouseover="hover = true" @mouseleave="hover = false" class="icon" @click="warning">
               <i :class="{'casa-storage-merger': !dorpdown && !hover, 'casa-expand': hover && !dorpdown, 'casa-expand-down': dorpdown}"
                  class="casa casa-28px">
               </i>
-            </span>
+            </div>
+            <div class="hint" v-show="!dorpdown && !hover && mergeStorageList.length != 0">{{
+                mergeStorageList.length
+              }}
+            </div>
           </div>
           <div class=" is-flex-grow-1 one-line" @click="filePanel.getFileList('/DATA')">CasaOS HD
           </div>
@@ -189,6 +193,7 @@ export default {
       }
 
       try {
+        this.mergeStorageList = [];
         const storageRes = await this.$api.storage.list()
         const storageList = storageRes.data.data
         // mergeRes.push('test');
@@ -376,5 +381,21 @@ export default {
 
 .warn {
   color: hsla(348, 86%, 61%, 1);
+}
+
+.hint {
+  position: absolute;
+  color: white;
+  font-size: 10px;
+  background-color: black;
+  width: 15px;
+  height: 15px;
+  line-height: 13px;
+  text-align: center;
+  -webkit-border-radius: 24px;
+  border-radius: 24px;
+  border: 1px solid #FFFFFF;
+  top: -0.5rem;
+  left: 0.9rem;
 }
 </style>
