@@ -36,13 +36,12 @@
           </div>
           <b-tabs v-model="activeTab" :animated="false">
             <b-tab-item :label="$t('Storage')" class="scrollbars-light-auto tab-item">
+              <storage-combination :storageData="mergeConbinationsStorageData"
+                                   :type="state_mainstorage_operability" @reload="getDiskList"></storage-combination>
               <template v-if="storageData.length">
                 <storage-item v-for="(item,index) in storageData" :key="'storage'+index" :item="item"
                               @getDiskList="getDiskList"></storage-item>
               </template>
-
-              <storage-combination :storageData="mergeConbinationsStorageData"
-                                   :type="state_mainstorage_operability" @reload="getDiskList"></storage-combination>
             </b-tab-item>
             <b-tab-item :label="$t('Drive')" class="scrollbars-light-auto tab-item">
               <drive-item v-for="(item,index) in diskData" :key="'disk'+index" :item="item"></drive-item>
@@ -309,6 +308,7 @@ export default {
             "diskName": ""
           })
         })
+        storageArray.reverse();
         this.storageData = storageArray.map((storage) => {
           return {
             name: storage.label,
@@ -323,6 +323,7 @@ export default {
             disk: storage.disk
           }
         })
+        mergeConbinations.reverse();
         this.mergeConbinationsStorageData = mergeConbinations.map((storage) => {
           return {
             name: storage.label,
