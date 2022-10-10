@@ -312,16 +312,24 @@ export const mixin = {
                     return o.path
                 })
             }
-            this.$api.batch.delete(JSON.stringify(path)).then(res => {
+            this.$api.batch.delete(JSON.stringify(path)).then(async res => {
                 if (res.data.success === 200) {
                     // update shotcut data
                     let shotcutData = this.$store.state['shortcutData']
                     shotcutData.forEach((item, index) => {
                         if (item.path === items.path) {
                             shotcutData.splice(index, 1)
+                            this.$api.samba.deleteShare(item.extensions.share.id).catch((e) => {
+                                console.log(`${e} in delet shortcut`)
+                            })
                         }
                     })
-                    this.$store.dispatch('SET_SHORTCUT_DATA', shotcutData);
+                    try {
+                        await this.$store.dispatch('SET_SHORTCUT_DATA', shotcutData);
+
+                    } catch (e) {
+                        console.log(`${e} in deleteItem`)
+                    }
 
                     if (this.$refs.dropDown !== undefined) {
                         this.$refs.dropDown.toggle()
