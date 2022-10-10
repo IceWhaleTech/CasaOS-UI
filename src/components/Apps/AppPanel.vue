@@ -516,8 +516,8 @@
                     rounded type="is-primary" @click="updateApp()"/>
           <b-button v-if="currentSlide == 2 && !currentInstallAppError" :label="$t(cancelButtonText)"
                     rounded type="is-primary" @click="$emit('close')"/>
-          <b-button v-if="isFirstInstall" :label="$t('Submit')"
-                    rounded type="is-primary" @click="submitInstallationLocation(installationLocation)"/>
+          <b-button v-if="isFirstInstall" :label="$t('Submit')" rounded :loading="isLoading" type="is-primary"
+                    @click="submitInstallationLocation(installationLocation)"/>
         </div>
       </template>
 
@@ -1454,7 +1454,14 @@ export default {
     },
 
     submitInstallationLocation(val) {
-      this.$api.container.putInstallationLocation(val).then(data => this.isFirstInstall = data).catch(err => console.log(`${err} in submitInstallationLocation`))
+      this.isLoading = true
+      this.$api.container.putInstallationLocation(val).then(data => {
+        this.isLoading = false
+        this.isFirstInstall = data.data.docker_root_dir
+      }).catch(err => {
+        this.isLoading = false
+        console.log(`${err} in submitInstallationLocation`)
+      })
     }
   },
 
