@@ -1457,7 +1457,7 @@ export default {
       this.isLoading = true
       let path = ''
       if (val === '/') {
-        path = val + 'docker'
+        path = val + 'var/lib/docker'
       } else {
         path = val + '/docker'
       }
