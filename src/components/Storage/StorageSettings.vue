@@ -340,7 +340,11 @@ export default {
           this.isConnecting = false
         }).catch((e) => {
           this.isConnecting = false
-          console.log(e)
+          this.$buefy.toast.open({
+            duration: 5000,
+            message: e.response.data.data,
+            type: 'is-danger'
+          })
         })
       } catch (e) {
         console.log(e)
