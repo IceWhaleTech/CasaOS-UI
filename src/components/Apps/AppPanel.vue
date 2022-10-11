@@ -1453,14 +1453,35 @@ export default {
       }
     },
 
-    submitInstallationLocation(val) {
+    async submitInstallationLocation(val) {
       this.isLoading = true
-      this.$api.container.putInstallationLocation(val).then(data => {
+      let path = ''
+      if (val === '/') {
+        path = val + 'docker'
+      } else {
+        path = val + '/docker'
+      }
+      try {
+
+        await this.$api.folder.create(path)
+      } catch (e) {
+        this.$buefy.toast.open({
+          message: this.$t('Failed to create docker folder'),
+          type: 'is-danger'
+        })
+        return
+      }
+
+      this.$api.container.putInstallationLocation(path).then(data => {
         this.isLoading = false
         this.isFirstInstall = data.data.docker_root_dir
       }).catch(err => {
         this.isLoading = false
         console.log(`${err} in submitInstallationLocation`)
+        this.$buefy.toast.open({
+          message: err.message,
+          type: 'is-danger'
+        })
       })
     }
   },
