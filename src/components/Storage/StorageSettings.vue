@@ -102,9 +102,9 @@
                   @click="currentStep = 0"/>
       </div>
       <div>
-        <b-button v-show="currentStep === 0" :label="$t(affirm)" :loading="isConnecting" expaned rounded
+        <b-button v-show="currentStep === 0" :label="$t(affirm)" expaned rounded
                   type="is-primary" @click="submit"/>
-        <b-button v-show="currentStep === 1" :label="$t(affirm)" :loading="isConnecting" expaned rounded
+        <b-button v-show="currentStep === 1" :label="$t(affirm)" expaned rounded
                   type="is-primary" @click="verifyPassword(password)"/>
         <b-button v-show="currentStep === 2" :label="$t(affirm)" :loading="isConnecting" expaned rounded
                   type="is-primary" @click="restart"/>
@@ -328,15 +328,20 @@ export default {
     },
 
     async restart() {
+      this.isConnecting = true
       try {
         // get docker info
         let dockerInfo = await this.$api.container.getInfo('').then(res => res.data.data.casaos_apps)
         let container = this.$api.container
-        dockerInfo.forEach(async item => {
-          // restart the docker
-          await container.updateState(item.id, "restar")
+        Promise.all(dockerInfo.map(async item => {
+          await container.updateState(item.id, "restart")
+        })).then(() => {
+          this.updateMerge()
+          this.isConnecting = false
+        }).catch((e) => {
+          this.isConnecting = false
+          console.log(e)
         })
-        this.updateMerge()
       } catch (e) {
         console.log(e)
       }
