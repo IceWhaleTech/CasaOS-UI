@@ -112,6 +112,13 @@ export default {
                   _this.$emit('getDiskList');
                 }, 1000);
               }
+            }).catch(e => {
+              this.isRemoving = false;
+              this.$buefy.toast.open({
+                duration: 3000,
+                message: e.response.data.message,
+                type: 'is-danger'
+              })
             })
             return
           }
@@ -166,6 +173,13 @@ export default {
                   _this.$emit('getDiskList');
                 }, 1000);
               }
+            }).catch(e => {
+              this.isFormating = false;
+              this.$buefy.toast.open({
+                duration: 3000,
+                message: e.response.data.message,
+                type: 'is-danger'
+              })
             })
             return
           }

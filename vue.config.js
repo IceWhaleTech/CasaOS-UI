@@ -117,7 +117,7 @@ module.exports = {
         port: 8080,
         proxy: {
             "/v": {        // 自己的服务器
-                target: "http://192.168.2.118:80",  // 要进入的服务器地址
+                target: "http://192.168.2.119:80",  // 要进入的服务器地址
                 changeOrigin: true,
                 // pathRewrite: {
                 //     "/": "/"

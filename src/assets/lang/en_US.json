@@ -319,5 +319,6 @@
   " to continue.": " to continue.",
   "APPs is running": "APPs is running",
   "restart APPs to continue.": "restart APPs to continue.",
-  "Add a shortcut": "Add a shortcut"
+  "Add a shortcut": "Add a shortcut",
+  "Failed to create docker folder": "Failed to create docker folder"
 }
