@@ -63,7 +63,7 @@
         <div class="font">
           {{ $t('Enter the password to continue.') }}
         </div>
-        <b-input v-model="password" class="mt-4" type="password"
+        <b-input ref="inputPassword" v-model="password" class="mt-4" type="password"
                  @keyup.enter.native="verifyPassword(password)"></b-input>
       </template>
       <div v-if="currentStep === 2" class="is-flex is-align-items-center font">
@@ -153,16 +153,17 @@ export default {
         case 1:
           this.title = "Data Protected";
           this.affirm = "Submit";
+          this.$nextTick(() => {
+            this.$refs.inputPassword.focus();
+          });
           break;
         case 2:
           this.title = "APPs Restart";
           this.affirm = "Restart";
-
           break;
         case 3:
           this.title = "APP Restart";
           this.affirm = "Restart";
-
           break;
         default:
           break;
