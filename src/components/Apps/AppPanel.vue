@@ -807,7 +807,8 @@ export default {
 
     // prepare data - APPs Installation Location requirement document
     this.getDiskList();
-    this.askInstallationLocation();
+    // close the function - APPs Installation Location
+    // this.askInstallationLocation();
   },
 
   computed: {
