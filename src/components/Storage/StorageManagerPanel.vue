@@ -351,7 +351,7 @@ export default {
         if (this.unDiskData.length > 0) {
           this.createStoragePath = this.unDiskData[0].path
           this.createStorageSeiral = this.unDiskData[0].serial
-          this.createStorageType = this.getDiskType(this.unDiskData[0].need_format)
+          this.createStorageType = this.getDiskType(this.unDiskData[0])
           this.createStorageName = "Storage" + nextMaxNum
           this.activeDisk = 0
         }
@@ -375,7 +375,7 @@ export default {
     onDiskChoose(index) {
       this.createStoragePath = this.unDiskData[index].path
       this.createStorageSeiral = this.unDiskData[index].serial
-      this.createStorageType = this.getDiskType(this.unDiskData[index].need_format)
+      this.createStorageType = this.getDiskType(this.unDiskData[index])
     },
     showDefault() {
       this.creatIsShow = false
@@ -474,8 +474,10 @@ export default {
       })
     },
 
-    getDiskType(need_format) {
-      return need_format ? "format" : "mountable"
+    getDiskType(item) {
+      if (item.children_number == 0)
+        return "format"
+      return item.need_format ? "format" : "mountable"
     }
   }
 }
