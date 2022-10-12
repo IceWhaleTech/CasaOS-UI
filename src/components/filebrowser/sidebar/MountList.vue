@@ -16,7 +16,7 @@
         <div class="is-flex list-item new-list-item">
           <div class="cover mr-2 is-flex-shrink-0 is-relative">
             <div @mouseover="hover = true" @mouseleave="hover = false" class="icon" @click="warning">
-              <i :class="{'casa-storage-merger': !dorpdown && !hover, 'casa-expand': hover && !dorpdown, 'casa-expand-down': dorpdown}"
+              <i :class="{'casa-storage-merger': !dorpdown && !hover || mergeStorageList.length === 0, 'casa-expand': hover && !dorpdown && mergeStorageList.length !== 0, 'casa-expand-down': dorpdown && mergeStorageList.length !== 0}"
                  class="casa casa-28px">
               </i>
             </div>
