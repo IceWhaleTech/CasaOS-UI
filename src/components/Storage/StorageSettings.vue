@@ -270,7 +270,7 @@ export default {
       })
     },
 
-    updateMerge() {
+    updateMerge(dockerInfo) {
       // merge api
       this.$api.local_storage.updateMergerfsInfo({
         "fstype": "fuse.mergerfs",
@@ -280,6 +280,16 @@ export default {
           ...this.checkBoxGroup, ...this.checkBoxMissGroup
         ]
       }).then(res => {
+        Promise.all(dockerInfo.map(async item => {
+          await this.$api.container.updateState(item.id, "start")
+        })).catch(e => {
+          this.$buefy.toast.open({
+            message: e.response.data.data,
+            type: "is-danger",
+            position: "is-bottom-right",
+            duration: 3000,
+          });
+        })
         // TODO : need to check the result by the states code
         switch (res.status) {
           case 200:
@@ -334,9 +344,9 @@ export default {
         let dockerInfo = await this.$api.container.getInfo('').then(res => res.data.data.casaos_apps)
         let container = this.$api.container
         Promise.all(dockerInfo.map(async item => {
-          await container.updateState(item.id, "restart")
+          await container.updateState(item.id, "stop")
         })).then(() => {
-          this.updateMerge()
+          this.updateMerge(dockerInfo)
           this.isConnecting = false
         }).catch((e) => {
           this.isConnecting = false
