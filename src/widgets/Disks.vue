@@ -26,12 +26,13 @@
                   <b-tag type="is-danger" v-else>{{ $t('Damage') }}</b-tag>
                 </h4>
                 <p class="has-text-left is-size-14px mt-1">
-                  <span class="op65">{{ $t('Used') }}: </span>{{renderSize(totalUsed)}}<br>
-                  <span class="op65">{{ $t('Total') }}: </span>{{renderSize(totalSize)}}
+                  <span class="op65">{{ $t('Used') }}: </span>{{ renderSize(totalUsed) }}<br>
+                  <span class="op65">{{ $t('Total') }}: </span>{{ renderSize(totalSize) }}
                 </p>
               </div>
             </div>
-            <b-progress :type="totalPercent | getProgressType" size="is-small" :value="totalPercent" class="mt-2"></b-progress>
+            <b-progress :type="totalPercent | getProgressType" size="is-small" :value="totalPercent"
+                        class="mt-2"></b-progress>
           </div>
         </div>
       </div>
@@ -51,13 +52,15 @@
                 <h4 class="title is-size-14px mb-2 mt-1 has-text-left has-text-white one-line ">
                   {{ item.model }}</h4>
                 <p class="has-text-left is-size-6 mt-1 ">
-                  <span class="op65">{{ $t('Used') }}:</span> {{renderSize(item.size - item.avail)}}
+                  <span class="op65">{{ $t('Used') }}:</span> {{ renderSize(item.size - item.avail) }}
                   <br>
-                  <span class="op65"> {{ $t('Total') }}:</span> {{renderSize(item.size)}}
+                  <span class="op65"> {{ $t('Total') }}:</span> {{ renderSize(item.size) }}
                 </p>
               </div>
             </div>
-            <b-progress :type="(Math.floor((item.size - item.avail) * 100 / item.size)) | getProgressType" size="is-small" :value=" Math.floor((item.size - item.avail) * 100 / item.size)" class="mt-2"></b-progress>
+            <b-progress :type="(Math.floor((item.size - item.avail) * 100 / item.size)) | getProgressType"
+                        size="is-small" :value=" Math.floor((item.size - item.avail) * 100 / item.size)"
+                        class="mt-2"></b-progress>
           </div>
         </div>
       </div>
@@ -70,7 +73,8 @@
 
 <script>
 import StorageManagerPanel from '@/components/Storage/StorageManagerPanel.vue'
-import { mixin } from '../mixins/mixin';
+import {mixin} from '../mixins/mixin';
+
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'disks',
@@ -90,9 +94,8 @@ export default {
   },
 
   mounted() {
-    this.getDiskInfo(this.$store.state.hardwareInfo.disk)
-    this.usbDisks = this.$store.state.hardwareInfo.usb
-
+    this.getDiskInfo(this.$store.state.hardwareInfo.sys_disk)
+    this.usbDisks = this.$store.state.hardwareInfo.sys_usb
   },
   methods: {
     getDiskInfo(diskInfo) {
@@ -137,13 +140,16 @@ export default {
   .progress {
     border-radius: 2px;
     height: 12px;
+
     &::-webkit-progress-bar {
       background: rgba(255, 255, 255, 0.4);
     }
+
     &::-webkit-progress-value {
       opacity: 1;
     }
   }
+
   .tag {
     height: 1.125rem;
     border-radius: 2px;
