@@ -85,12 +85,12 @@ const sys = {
 
     // get usb status
     getUsbStatus() {
-        return api.get(`${PREFIX}/usb-auto-mount`);
+        return api.get(`/usb/usb-auto-mount`);
     },
 
     // Toggle usb auto-mount
     toggleUsbAutoMount(data) {
-        return api.put(`${PREFIX}/usb-auto-mount`, data);
+        return api.put(`/usb/usb-auto-mount`, data);
     },
 
     // update CasaOS
