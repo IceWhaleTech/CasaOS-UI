@@ -105,6 +105,13 @@ module.exports = {
             config.optimization
                 .minimizer('css')
                 .use(require.resolve('optimize-css-assets-webpack-plugin'), [{cssProcessorOptions: {safe: true}}])
+        } else {
+            config.devServer.proxy({
+                '/': {
+                    target: `http://192.168.2.119:${process.env.VUE_APP_DEV_PORT}`,
+                    changeOrigin: true,
+                }
+            })
         }
     },
     devServer: {
@@ -116,15 +123,15 @@ module.exports = {
         open: true,
         host: 'localhost',
         port: 8080,
-        proxy: {
-            "/": {        // 自己的服务器
-                target: "http://192.168.2.119:80",  // 要进入的服务器地址
-                changeOrigin: true,
-                // pathRewrite: {
-                //     "/": "/"
-                // }
-            },
-        },
+        // proxy: {
+        //     "/": {        // 自己的服务器
+        //         target: `http://192.168.2.119`,  // 要进入的服务器地址
+        //         changeOrigin: true,
+        //         // pathRewrite: {
+        //         //     "/": "/"
+        //         // }
+        //     },
+        // },
         before: require('./mock/v2_mock.js')
 
     }
