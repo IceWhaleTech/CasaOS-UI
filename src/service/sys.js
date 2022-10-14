@@ -7,7 +7,6 @@
  * @FilePath: /CasaOS-UI/src/service/sys.js
  */
 import {api} from "./service.js";
-import axios from "axios";
 
 const PREFIX = "/sys"
 
@@ -105,7 +104,7 @@ const sys = {
 
     //Check web ui Port
     checkUiPort(url) {
-        return axios.get(url);
+        return api.get(url);
     },
 
     // Get system apps
