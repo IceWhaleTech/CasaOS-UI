@@ -6,7 +6,8 @@
  * @Description: System HardWare Info API
  * @FilePath: /CasaOS-UI/src/service/sys.js
  */
-import { api } from "./service.js";
+import {api} from "./service.js";
+import axios from "axios";
 
 const PREFIX = "/sys"
 
@@ -68,7 +69,7 @@ const sys = {
     },
 
     // proxy request
-    getProxyRequestContent(url){
+    getProxyRequestContent(url) {
         return api.get(`${PREFIX}/proxy?url=${url}`)
     },
 
@@ -104,7 +105,7 @@ const sys = {
 
     //Check web ui Port
     checkUiPort(url) {
-        return api.get(url);
+        return axios.get(url);
     },
 
     // Get system apps
@@ -116,7 +117,6 @@ const sys = {
     checkSshLogin(data) {
         return api.post(`${PREFIX}/ssh-login`, data);
     }
-
 
 
 }
