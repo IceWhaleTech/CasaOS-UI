@@ -93,6 +93,8 @@ module.exports = {
             )
         //
         if (process.env.NODE_ENV === "prod") {
+            config.output.filename('[name].[contenthash:8].js').end()
+            config.output.chunkFilename('[name].[contenthash:8].js').end()
             config.optimization.minimize(true);
             // config.plugin('webpack-bundle-analyzer')
             //     .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
@@ -103,7 +105,6 @@ module.exports = {
             config.optimization
                 .minimizer('css')
                 .use(require.resolve('optimize-css-assets-webpack-plugin'), [{cssProcessorOptions: {safe: true}}])
-            config.output.filename('[name].[hash].js').end()
         }
     },
     devServer: {
@@ -116,20 +117,13 @@ module.exports = {
         host: 'localhost',
         port: 8080,
         proxy: {
-            "/v": {        // 自己的服务器
+            "/": {        // 自己的服务器
                 target: "http://192.168.2.119:80",  // 要进入的服务器地址
                 changeOrigin: true,
                 // pathRewrite: {
                 //     "/": "/"
                 // }
             },
-            // "/v2": {        // 自己的服务器
-            //     target: "http://192.168.2.118:80",  // 要进入的服务器地址
-            //     changeOrigin: true,
-            //     // pathRewrite: {
-            //     //     "/": "/"
-            //     // }
-            // },
         },
         before: require('./mock/v2_mock.js')
 
