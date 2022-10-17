@@ -17,7 +17,7 @@ const axiosBaseURL = (process.env.NODE_ENV === "dev") ? `` : ``
 //Create a axios instance, And set timeout to 30s
 const instance = axios.create({
     baseURL: axiosBaseURL,
-    timeout: 30000,
+    timeout: 60000,
     headers: {
         "Content-Type": "application/json",
     },
