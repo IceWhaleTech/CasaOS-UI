@@ -13,7 +13,7 @@
     <ul>
       <!-- merge fs storage item -->
       <li v-if="hasMergerFunction">
-        <div class="is-flex list-item new-list-item">
+        <div class="is-flex list-item new-list-item" :class="{'active': isActived}">
           <div class="cover mr-2 is-flex-shrink-0 is-relative">
             <div @mouseover="hover = true" @mouseleave="hover = false" class="icon" @click="warning">
               <i :class="{'casa-storage-merger': !dorpdown && !hover || mergeStorageList.length === 0, 'casa-expand': hover && !dorpdown && mergeStorageList.length !== 0, 'casa-expand-down': dorpdown && mergeStorageList.length !== 0}"
@@ -97,6 +97,15 @@ export default {
       testMergeMiss: 0,
       hover: false,
     }
+  },
+  computed: {
+    isActived() {
+      if ('/DATA' == this.$store.state.currentPath) {
+        return true
+      } else {
+        return false
+      }
+    },
   },
   created() {
     this.getStorageList()
