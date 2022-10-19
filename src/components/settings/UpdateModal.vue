@@ -4,23 +4,25 @@
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2022-08-08 17:53:20
  * @FilePath: /CasaOS-UI/src/components/settings/UpdateModal.vue
- * @Description: 
- * 
- * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+ * @Description:
+ *
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
 -->
 <template>
   <div class="modal-card">
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
       <div class="is-flex-grow-1">
-        <h3 class="title is-3">{{$t('Update')}}</h3>
+        <h3 class="title is-3">{{ $t('Update') }}</h3>
       </div>
-      <div><button type="button" class="delete" @click="$emit('close')" v-if="!isUpdating" /></div>
+      <div>
+        <button type="button" class="delete" @click="$emit('close')" v-if="!isUpdating"/>
+      </div>
     </header>
     <!-- Modal-Card Header End -->
     <!-- Modal-Card Body Start -->
     <section class="modal-card-body ">
-      <div class="node-card">
+      <div class="node-card fixed-height">
         <div class="update-info-container  is-size-14px" v-html="markdownToHtml" v-if="!isUpdating"></div>
         <div class="update-info-container  is-size-14px" v-html="updateMarkdownHtml" v-else></div>
       </div>
@@ -30,7 +32,8 @@
     <footer class="modal-card-foot is-flex is-align-items-center">
       <div class="is-flex-grow-1"></div>
       <div>
-        <b-button :label="$t('Upgrade Now')" type="is-primary" rounded expaned :loading="isUpdating" @click="updateSystem" />
+        <b-button :label="$t('Upgrade Now')" type="is-primary" rounded expaned :loading="isUpdating"
+                  @click="updateSystem"/>
       </div>
     </footer>
     <!-- Modal-Card Footer End -->
@@ -38,7 +41,7 @@
 </template>
 
 <script>
-import { marked } from 'marked'
+import {marked} from 'marked'
 
 export default {
   props: {
@@ -126,7 +129,12 @@ export default {
 }
 </script>
 
-<style lang="scss" >
+<style lang="scss">
+.fixed-height {
+  max-height: 20rem;
+  overflow-y: auto;
+}
+
 .update-info-container {
   border-radius: 4px;
   overflow: hidden;
