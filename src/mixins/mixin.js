@@ -311,18 +311,41 @@ export const mixin = {
                     return o.path
                 })
             }
+            let isArray = items.constructor === Array
             this.$api.batch.delete(JSON.stringify(path)).then(async res => {
                 if (res.data.success === 200) {
                     // update shotcut data
+                    let bakData = []
                     let shotcutData = this.$store.state['shortcutData']
-                    shotcutData.forEach((item, index) => {
-                        if (item.path === items.path) {
-                            shotcutData.splice(index, 1)
-                            this.$api.samba.deleteShare(item.extensions.share.id).catch((e) => {
-                                console.log(`${e} in delet shortcut`)
+                    for (let i = 0; i < shotcutData.length; i++) {
+                        let item = shotcutData[i]
+                        if (isArray) {
+                            // filter delteted item
+                            bakData = shotcutData.filter(o => {
+                                // has same path
+                                if (path.indexOf(o.path) > -1) {
+                                    try {
+                                        this.$api.samba.deleteShare(item.extensions.share.id)
+                                    } catch (e) {
+                                        console.log(`${e} in delet shortcut`)
+                                    }
+                                    return false
+                                } else {
+                                    return true
+                                }
                             })
+                        } else if (item.path === path[0]) {
+                            shotcutData.splice(i, 1)
+                            try {
+                                this.$api.samba.deleteShare(item.extensions.share.id)
+                            } catch (e) {
+                                console.log(`${e} in delet shortcut`)
+                            }
                         }
-                    })
+                    }
+                    if (isArray) {
+                        shotcutData = bakData
+                    }
                     try {
                         await this.$store.dispatch('SET_SHORTCUT_DATA', shotcutData);
 
