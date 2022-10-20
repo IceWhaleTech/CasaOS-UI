@@ -33,6 +33,7 @@ jobs:
         id: version
         uses: ashley-taylor/read-json-property-action@v1.0
         with:
+          node-version: ${{ matrix.node-version }}
           path: ./package.json
           property:
             version
