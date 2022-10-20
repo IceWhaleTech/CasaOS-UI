@@ -36,7 +36,7 @@ jobs:
       - name: '获取tag版本号 Get version of tag'
         id: get_tag_version
         run: |
-          echo "VERSION=${steps.version.outputs.property}-alpha" >> $GITHUB_ENV
+          echo "VERSION=${{steps.version.outputs.property}}-alpha" >> $GITHUB_ENV
           #'use echo "{environment_variable_name}={value}" >> $GITHUB_ENV'
           # run: echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
       - name: '输出 echo artifact'
