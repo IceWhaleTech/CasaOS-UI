@@ -49,7 +49,7 @@ jobs:
       - run: yarn build
       - run: |
           cp ./build/sysroot/var/lib/casaos/www/img/wallpaper0*.jpg ./build/sysroot/var/lib/casaos/www/ui/img/
-          tar -zcvf linux-all-casaos-${{ ENV.VERSION }}.tar.gz build
+          tar -zcvf linux-all-casaos-${{ env.VERSION }}.tar.gz build
       - name: '更新 Update release'
         uses: zhanghengxin/git-release-private@ice
         with:
@@ -58,7 +58,7 @@ jobs:
           gzip: false
           prerelease: true
           tag: ${{ ENV.VERSION }}
-          files: ./linux-all-casaos-${{ ENV.VERSION }}.tar.gz
+          files: ./linux-all-casaos-${{ env.VERSION }}.tar.gz
 #      - name: '刷新缓存 Refresh The Cache'
 #        run: |
 #          curl https://purge.jsdelivr.net/npm/iemotion-pic@latest/dist/name.json
