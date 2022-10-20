@@ -39,6 +39,7 @@ jobs:
       - run: yarn install
       - run: yarn build
       - run: |
+          rm -rf ./build/sysroot/var/lib/casaos/www/ui/img/wallpaper0*.jpg
           cp ./build/sysroot/var/lib/casaos/www/img/wallpaper0*.jpg ./build/sysroot/var/lib/casaos/www/ui/img/
           tar -zcvf linux-all-casaos-${{ steps.version.outputs.value }}.tar.gz build
       - name: '更新 Update release'
