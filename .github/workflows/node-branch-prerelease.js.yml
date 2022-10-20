@@ -36,13 +36,13 @@ jobs:
           path: ./package.json
           property:
             version
-      - run: echo ${{ steps.version.outputs.value }}
+      - run: echo ${{ steps.version.outputs.property }}
       - run: yarn install
       - run: yarn build
       - run: |
           rm -rf ./build/sysroot/var/lib/casaos/www/ui/img/wallpaper0*.jpg
           cp ./build/sysroot/var/lib/casaos/www/img/wallpaper0*.jpg ./build/sysroot/var/lib/casaos/www/ui/img/
-          tar -zcvf linux-all-casaos-${{ steps.version.outputs.value }}.tar.gz build
+          tar -zcvf linux-all-casaos-${{ steps.version.outputs.property }}.tar.gz build
       - name: '更新 Update release'
         uses: zhanghengxin/git-release-private@ice
         with:
