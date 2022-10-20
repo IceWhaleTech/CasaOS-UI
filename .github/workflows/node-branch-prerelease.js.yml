@@ -50,8 +50,8 @@ jobs:
           allow_override: true
           gzip: false
           prerelease: true
-          tag: ${{ steps.version.outputs.value }}-Developing
-          files: ./linux-all-casaos-${{ steps.version.outputs.value }}.tar.gz
+          tag: ${{ steps.version.outputs.property }}-Developing
+          files: ./linux-all-casaos-${{ steps.version.outputs.property }}.tar.gz
       - run: echo ${{ env.TAG }}
 #      - name: '刷新缓存 Refresh The Cache'
 #        run: |
