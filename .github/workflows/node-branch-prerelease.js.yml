@@ -31,9 +31,8 @@ jobs:
           key: ${{runner.OS}}-${{hashFiles('**/yarn.lock')}}
       - name: '读取当前版本号 Read the current version number'
         id: version
-        uses: ashley-taylor/read-json-property-action@v1.0
+        uses: zhanghengxin/reading-a-file-of-JSON@ice
         with:
-          node-version: ${{ matrix.node-version }}
           path: ./package.json
           property:
             version
