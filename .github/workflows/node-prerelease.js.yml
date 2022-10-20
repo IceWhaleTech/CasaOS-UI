@@ -1,4 +1,4 @@
-name: Node.js prerelease CI by tag
+name: IceWhaleTech Node.js prerelease CI
 
 on:
   push:
@@ -22,7 +22,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - name: '缓存 Cache'
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: cache-dependencies
         with:
           path: node_modules
@@ -57,7 +57,7 @@ jobs:
           allow_override: true
           gzip: false
           prerelease: true
-          tag: ${{ ENV.VERSION }}
+          tag: ${{ env.VERSION }}
           files: ./linux-all-casaos-${{ env.VERSION }}.tar.gz
 #      - name: '刷新缓存 Refresh The Cache'
 #        run: |
