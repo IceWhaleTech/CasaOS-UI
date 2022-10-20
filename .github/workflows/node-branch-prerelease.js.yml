@@ -10,7 +10,7 @@ jobs:
   release:
 
     runs-on: ubuntu-latest
-
+    if: github.repository == 'zhanghengxin/CasaOS-UI'
     strategy:
       matrix:
         node-version: [ 16.x ]
@@ -36,11 +36,12 @@ jobs:
           path: ./package.json
           property:
             version
-      - run: echo ${{ steps.version.outputs.property }}
+      - run: |
+          echo ${{ steps.version.outputs.property }}
+          echo "VERSION={steps.version.outputs.property}-alpha" >> $GITHUB_ENV
       - run: yarn install
       - run: yarn build
       - run: |
-          rm -rf ./build/sysroot/var/lib/casaos/www/ui/img/wallpaper0*.jpg
           cp ./build/sysroot/var/lib/casaos/www/img/wallpaper0*.jpg ./build/sysroot/var/lib/casaos/www/ui/img/
           tar -zcvf linux-all-casaos-${{ steps.version.outputs.property }}.tar.gz build
       - name: '更新 Update release'
