@@ -309,7 +309,7 @@ export default {
             "diskName": ""
           })
         })
-        storageArray.reverse();
+
         this.storageData = storageArray.map((storage) => {
           return {
             name: storage.label,
@@ -365,6 +365,22 @@ export default {
       }
 
       this.isLoading = false
+    },
+
+    disksSort(array) {
+      array.sort((a, b) => {
+        if (a.diskName == "System") {
+          return -1
+        } else if (b.diskName == "System") {
+          return 1
+        } else if (a.label > b.label) {
+          return 1
+        } else if (a.label < b.label) {
+          return -1
+        } else {
+          return 0
+        }
+      })
     },
 
     /**
