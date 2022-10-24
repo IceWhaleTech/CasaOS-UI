@@ -1,10 +1,10 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-01-20 13:21:12
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-11 17:15:53
- * @Description: 
- * @FilePath: \CasaOS-UI\src\components\Storage\StorageItem.vue
+ * @LastEditors: zhanghengxin ezreal.ice@icloud.com
+ * @LastEditTime: 2022-09-29 22:12:35
+ * @Description:
+ * @FilePath: /CasaOS-UI/src/components/Storage/StorageItem.vue
 -->
 <template>
   <div class="mb-5 mt-2">
@@ -14,30 +14,47 @@
       </div>
       <div class="ml-3 is-flex-grow-1 is-flex is-align-items-center">
         <div>
-          <h4 class="title is-size-14px mb-0 has-text-left one-line">{{item.name}} <b-tag class="ml-2" v-if="item.isSystem">CasaOS</b-tag>
+          <h4 class="title is-size-14px mb-0 has-text-left one-line">{{ item.name }}
+            <b-tag class="ml-2" v-if="item.isSystem">CasaOS</b-tag>
           </h4>
 
-          <p class="has-text-left is-size-7 has-text-grey-light	">{{ $t('Single Drive Storage') }}, <span class="is-uppercase">{{item.fsType}}</span>
-            <b-tooltip :label="$t('CasaOS reserves 1% of file space when creating storage in EXT4 format.')" append-to-body>
+          <p class="has-text-left is-size-7 has-text-grey-light	">{{ $t('Single Drive Storage') }}, <span
+              class="is-uppercase">{{ item.fsType }}</span>
+            <b-tooltip :label="$t('CasaOS reserves 1% of file space when creating storage in EXT4 format.')"
+                       append-to-body>
               <b-icon icon="help-circle-outline" size="is-small" class="mr-2 "></b-icon>
             </b-tooltip>
           </p>
-          <p class="has-text-left is-size-7 ">{{$t("Available Total",{name:item.diskName,avl:renderSize(item.availSize),total:renderSize(item.size)})}}</p>
+          <p class="has-text-left is-size-7 ">{{
+              $t("Available Total", {
+                name: item.diskName,
+                avl: renderSize(item.availSize),
+                total: renderSize(item.size)
+              })
+            }}</p>
         </div>
 
       </div>
       <div class="is-flex is-align-items-center b-group" v-if="!item.isSystem">
-        <b-button size="is-small" :type="isFormating?'is-primary':''" rounded @click="formatStorage(item.path,item.mount_point)" :loading="isFormating" :disabled="isRemoving">{{ $t('Format') }}</b-button>
-        <b-button size="is-small" :type="isRemoving?'is-primary':''" rounded class="ml-2" @click="removeStorage(item.disk)" :loading="isRemoving" :disabled="isFormating"> {{ $t('Remove') }}</b-button>
+        <b-button size="is-small" :type="isFormating?'is-primary':''" rounded
+                  @click="formatStorage(item.path,item.mount_point)" :loading="isFormating" :disabled="isRemoving">
+          {{ $t('Format') }}
+        </b-button>
+        <b-button size="is-small" :type="isRemoving?'is-primary':''" rounded class="ml-2"
+                  @click="removeStorage(item.disk)" :loading="isRemoving" :disabled="isFormating"> {{ $t('Remove') }}
+        </b-button>
       </div>
     </div>
-    <b-progress :type="item.usePercent | getProgressType" size="is-small" :value="item.usePercent"></b-progress>
+    <b-progress :type="item.usePercent | getProgressType" size="is-small" :value="item.usePercent || 0"></b-progress>
   </div>
 </template>
 
 <script>
-import { mixin } from '@/mixins/mixin';
+import {mixin} from '@/mixins/mixin';
 import delay from 'lodash/delay';
+import jwt_decode from "jwt-decode";
+import MD5 from 'md5-es';
+
 export default {
   name: "drive-item",
   mixins: [mixin],
@@ -74,21 +91,42 @@ export default {
             path: path,
             password: value
           }
-          this.$api.disks.umount(data).then((res) => {
-            if (res.data.success != 200) {
+          // get token from the local storage
+          const token = localStorage.getItem('access_token')
+          // decode the token
+          const tokenJson = jwt_decode(token)
+          if (MD5.hash(value) === tokenJson.password) {
+            this.$api.disks.umount(data).then((res) => {
+              if (res.data.success != 200) {
+                this.isRemoving = false;
+                this.$buefy.toast.open({
+                  duration: 3000,
+                  message: res.data.message,
+                  type: 'is-danger'
+                })
+              } else {
+                this.isRemoving = false;
+                let _this = this
+                delay(() => {
+                  _this.isRemoving = false;
+                  _this.$emit('getDiskList');
+                }, 1000);
+              }
+            }).catch(e => {
               this.isRemoving = false;
               this.$buefy.toast.open({
                 duration: 3000,
-                message: res.data.message,
+                message: e.response.data.message,
                 type: 'is-danger'
               })
-            } else {
-              let _this = this
-              delay(() => {
-                _this.isRemoving = false;
-                _this.$emit('getDiskList');
-              }, 1000);
-            }
+            })
+            return
+          }
+          this.isRemoving = false;
+          this.$buefy.toast.open({
+            duration: 3000,
+            message: this.$t("Password is incorrect"),
+            type: 'is-danger'
           })
         }
       })
@@ -115,23 +153,43 @@ export default {
             volume: mount_point,
             password: value
           }
-
-          this.$api.storage.format(data).then((res) => {
-            if (res.data.success != 200) {
+          // get token from the local storage
+          const token = localStorage.getItem('access_token')
+          // decode the token
+          const tokenJson = jwt_decode(token)
+          if (MD5.hash(value) === tokenJson.password) {
+            this.$api.storage.format(data).then((res) => {
+              if (res.data.success != 200) {
+                this.isFormating = false;
+                this.$buefy.toast.open({
+                  duration: 3000,
+                  message: res.data.message,
+                  type: 'is-danger'
+                })
+              } else {
+                let _this = this
+                delay(() => {
+                  _this.isFormating = false;
+                  _this.$emit('getDiskList');
+                }, 1000);
+              }
+            }).catch(e => {
               this.isFormating = false;
               this.$buefy.toast.open({
                 duration: 3000,
-                message: res.data.message,
+                message: e.response.data.message,
                 type: 'is-danger'
               })
-            } else {
-              let _this = this
-              delay(() => {
-                _this.isFormating = false;
-                _this.$emit('getDiskList');
-              }, 1000);
-            }
+            })
+            return
+          }
+          this.isFormating = false;
+          this.$buefy.toast.open({
+            duration: 3000,
+            message: this.$t("Password is incorrect"),
+            type: 'is-danger'
           })
+
         }
       })
     },

@@ -90,7 +90,15 @@ const mutations = {
     SET_NETWORK_STORAGE(state, val) {
         localStorage.setItem('networkStorage', JSON.stringify(val))
         state.networkStorage = val
-    }
+    },
+
+    // shortcut data mutations
+    SET_SHORTCUT_DATA(state, val) {
+        state.shortcutData = val
+    },
+    GET_SHORTCUT_DATA(state) {
+        return state.shortcutData
+    },
 
 }
 export default mutations

@@ -1,9 +1,9 @@
 /*
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-27 16:20:06
- * @Description: 
+ * @LastEditors: zhanghengxin ezreal.ice@icloud.com
+ * @LastEditTime: 2022-09-21 00:54:33
+ * @Description:
  * @FilePath: /CasaOS-UI/src/service/service.js
  */
 import axios from 'axios'
@@ -11,12 +11,13 @@ import router from '@/router'
 import store from '@/store'
 // import { ToastProgrammatic as Toast } from 'buefy'
 
-const axiosBaseURL = (process.env.NODE_ENV === "dev") ? `${document.location.protocol}//${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}/v1` : `/v1`
+const axiosBaseURL1 = (process.env.NODE_ENV === "dev") ? `${document.location.protocol}//${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}` : ``
+const axiosBaseURL = (process.env.NODE_ENV === "dev") ? `` : ``
 
 //Create a axios instance, And set timeout to 30s
 const instance = axios.create({
     baseURL: axiosBaseURL,
-    timeout: 30000,
+    timeout: 60000,
     headers: {
         "Content-Type": "application/json",
     },
@@ -112,7 +113,9 @@ instance.interceptors.response.use(
 
                 }
                 return new Promise(resolve => {
-                    requests.push(() => { resolve(instance(originalConfig)) })
+                    requests.push(() => {
+                        resolve(instance(originalConfig))
+                    })
                 })
 
             }
@@ -122,12 +125,20 @@ instance.interceptors.response.use(
     }
 )
 
+const testVisionNum = (prefix) => {
+    // default version number is /v1
+    if (/^http/.test(prefix)) {
+        return prefix
+    }
+    return /^\/v2/.test(prefix) ? `${prefix}` : `/v1${prefix}`
+}
 
 const CancelToken = axios.CancelToken;
 // Wrapping of axios by request type
 const api = {
 
     get(url, data, _this) {
+        url = testVisionNum(url)
         if (_this) {
             return instance.get(url, {
                 params: data,
@@ -143,13 +154,16 @@ const api = {
 
     },
     post(url, data) {
+        url = testVisionNum(url)
         return instance.post(url, data)
     },
     put(url, data) {
+        url = testVisionNum(url)
         return instance.put(url, data)
     },
     delete(url, data) {
-        return instance.delete(url, { data: data })
+        url = testVisionNum(url)
+        return instance.delete(url, {data: data})
     },
 }
-export { api }
+export {api}

@@ -1,9 +1,9 @@
 /*
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-11 09:46:04
- * @FilePath: \CasaOS-UI\vue.config.js
+ * @LastEditors: zhanghengxin ezreal.ice@icloud.com
+ * @LastEditTime: 2022-09-29 16:51:55
+ * @FilePath: /CasaOS-UI/vue.config.js
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -18,13 +18,58 @@ module.exports = {
     runtimeCompiler: true,
     lintOnSave: false,
     productionSourceMap: true,
-    pluginOptions: {
-
-    },
+    pluginOptions: {},
     css: {
         extract: true
     },
+    // configureWebpack: {
+    //
+    //
+    //     module: {
+    //         rules: [
+    //             {
+    //                 test: /\.tsx?$/,
+    //                 loader: 'ts-loader',
+    //                 exclude: /node_modules/,
+    //                 options: {
+    //                     appendTsSuffixTo: [/\.vue$/],
+    //                     happyPackMode: true,
+    //                     // resolveTypeReferenceDirective: {
+    //                     //     '@': path.resolve(__dirname, 'src')
+    //                     // },
+    //
+    //                 },
+    //                 // "paths": {
+    //                 //     "@/*": [
+    //                 //         path.resolve(__dirname, 'src/*')
+    //                 //     ]
+    //                 // },
+    //                 // "compilerOptions": {
+    //                 //     "target": "esnext",
+    //                 //     "module": "esnext",
+    //                 //     "strict": true,
+    //                 //     "jsx": "preserve",
+    //                 //     "importHelpers": true,
+    //                 //     "moduleResolution": "node",
+    //                 //     "experimentalDecorators": true,
+    //                 //     "esModuleInterop": true,
+    //                 //     "allowSyntheticDefaultImports": true,
+    //                 //     "sourceMap": true,
+    //                 //     "baseUrl": ".",
+    //                 //     "types": [
+    //                 //         "webpack-env",
+    //                 //         "mocha",
+    //                 //         "chai"
+    //                 //     ],
+    //                 //
+    //                 // }
+    //             },
+    //         ],
+    //     },
+    // },
     chainWebpack: config => {
+        // config.entry('app').clear().add('./src/main.js')
+        // config.module.rule('ts').test(/\.tsx?$/).use('ts-loader').loader('ts-loader').end().use('cache-loader').loader('cache-loader').end().use('babel-loader').loader('babel-loader').end()
         const oneOfsMap = config.module.rule("scss").oneOfs.store;
         oneOfsMap.forEach(item => {
             item
@@ -48,6 +93,8 @@ module.exports = {
             )
         //
         if (process.env.NODE_ENV === "prod") {
+            config.output.filename('[name].[contenthash:8].js').end()
+            config.output.chunkFilename('[name].[contenthash:8].js').end()
             config.optimization.minimize(true);
             // config.plugin('webpack-bundle-analyzer')
             //     .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
@@ -57,8 +104,35 @@ module.exports = {
 
             config.optimization
                 .minimizer('css')
-                .use(require.resolve('optimize-css-assets-webpack-plugin'), [{ cssProcessorOptions: { safe: true } }])
-
+                .use(require.resolve('optimize-css-assets-webpack-plugin'), [{cssProcessorOptions: {safe: true}}])
+        } else {
+            config.devServer.proxy({
+                '/': {
+                    target: `http://${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}`,
+                    changeOrigin: true,
+                }
+            })
         }
+    },
+    devServer: {
+        // overlay: { //Show eslink error information on Browser
+        //     warnings: true,
+        //     errors: true
+        // },
+        contentBase: path.join(__dirname, 'src'),
+        open: true,
+        // host: 'localhost',
+        port: 8080,
+        // proxy: {
+        //     "/": {        // 自己的服务器
+        //         target: `http://192.168.2.119`,  // 要进入的服务器地址
+        //         changeOrigin: true,
+        //         // pathRewrite: {
+        //         //     "/": "/"
+        //         // }
+        //     },
+        // },
+        before: require('./mock/v2_mock.js')
+
     }
 }

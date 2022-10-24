@@ -8,11 +8,13 @@
 -->
 
 <template>
-  <div class="common-card is-flex is-align-items-center is-justify-content-center p-55 app-card" @mouseover="hover = true" @mouseleave="hover = true">
+  <div class="common-card is-flex is-align-items-center is-justify-content-center p-55 app-card"
+       @mouseover="hover = true" @mouseleave="hover = true">
 
     <!-- Action Button Start -->
     <div class="action-btn" v-if="item.type != 'system' && isCasa && !isUninstalling">
-      <b-dropdown aria-role="list" :triggers="['contextmenu','click']" position="is-bottom-left" class="app-card-drop" ref="dro" animation="fade1" @active-change="setDropState" :mobile-modal="false" append-to-body>
+      <b-dropdown aria-role="list" :triggers="['contextmenu','click']" position="is-bottom-left" class="app-card-drop"
+                  ref="dro" animation="fade1" @active-change="setDropState" :mobile-modal="false" append-to-body>
         <template #trigger>
           <p role="button">
             <b-icon icon="dots-vertical" class="is-clickable"></b-icon>
@@ -20,10 +22,10 @@
         </template>
 
         <b-dropdown-item aria-role="menu-item" :focusable="false" custom>
-          <b-button type="is-text" tag="a" @click="openApp(item)" expanded>{{$t('Open')}}</b-button>
-          <b-button type="is-text" @click="configApp" expanded>{{$t('Setting')}}</b-button>
+          <b-button type="is-text" tag="a" @click="openApp(item)" expanded>{{ $t('Open') }}</b-button>
+          <b-button type="is-text" @click="configApp" expanded>{{ $t('Setting') }}</b-button>
           <b-button type="is-text" class="mb-1" @click="uninstallConfirm" :loading="isUninstalling" expanded>
-            {{$t('Uninstall')}}
+            {{ $t('Uninstall') }}
           </b-button>
           <div class="gap" v-if="item.type !== 'LinkApp'">
             <div class="columns is-gapless bbor is-flex">
@@ -50,11 +52,12 @@
       <b-tooltip :label="tooltipLable" type="is-dark" :triggers="tooltipTriger" animation="fade1" :animated="true">
         <div class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-3 pb-3 img-c">
           <a class="is-flex is-justify-content-center" @click="openApp(item)">
-            <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg" class="is-64x64" :class="item.state | dotClass"></b-image>
+            <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')" webp-fallback=".jpg"
+                     class="is-64x64" :class="item.state | dotClass"></b-image>
           </a>
           <p class="mt-3 one-line">
             <a class="one-line" @click="openApp(item)">
-              {{item.name}}
+              {{ item.name }}
             </a>
           </p>
 
@@ -72,6 +75,7 @@
 
 <script>
 import events from '@/events/events';
+
 export default {
   name: "app-card",
   inject: ["homeShowFiles", "openAppStore"],
@@ -133,7 +137,7 @@ export default {
       }
       if (item.type === "system") {
         this.openSystemApps(item)
-      } else if(item.type === "LinkApp"){
+      } else if (item.type === "LinkApp") {
         window.open(item.host, '_blank');
       } else {
         this.$refs.dro.isActive = false
@@ -184,6 +188,14 @@ export default {
           this.updateState()
         }
         this.isRestarting = false;
+      }).catch((err) => {
+        this.isRestarting = false;
+        this.$buefy.toast.open({
+          message: err.response.data.message,
+          type: 'is-danger',
+          position: 'is-bottom-right',
+          duration: 3000
+        })
       })
     },
 
@@ -212,9 +224,9 @@ export default {
      */
     uninstallApp() {
       this.isUninstalling = true
-      if(this.item.type === "LinkApp"){
+      if (this.item.type === "LinkApp") {
         let listLinkApp = JSON.parse(localStorage.getItem("listLinkApp"))
-        listLinkApp = listLinkApp.filter((o)=> o.name!==this.item.name)
+        listLinkApp = listLinkApp.filter((o) => o.name !== this.item.name)
         this.$api.users.saveLinkAppDetail(listLinkApp).then((res) => {
           if (res.data.success == 200) {
             localStorage.setItem("listLinkApp", JSON.stringify(res.data.data))
@@ -223,8 +235,8 @@ export default {
           this.isUninstalling = false;
         })
         // return
-      }else{
-         this.$api.container.uninstall(this.item.id).then((res) => {
+      } else {
+        this.$api.container.uninstall(this.item.id).then((res) => {
           if (res.data.success == 200) {
             // this.updateState()
             this.$EventBus.$emit(events.UPDATE_SYNC_STATUS);
@@ -278,6 +290,15 @@ export default {
             ariaModal: true
           })
         }
+      }).catch((err) => {
+        this.isStarting = false
+        this.$refs.dro.isActive = false
+        this.$buefy.toast.open({
+          message: err.response.data.message,
+          type: 'is-danger',
+          position: 'is-bottom-right',
+          duration: 3000
+        })
       })
     },
 

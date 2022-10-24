@@ -2,6 +2,7 @@
 node_modules
 /dist
 /build
+/src/codegen
 
 # local env files
 .env.local

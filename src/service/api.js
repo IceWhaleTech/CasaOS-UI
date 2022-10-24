@@ -1,8 +1,8 @@
 /*
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-27 13:55:24
+ * @LastEditors: zhanghengxin ezreal.ice@icloud.com
+ * @LastEditTime: 2022-09-20 23:47:43
  * @Description: 
  * @FilePath: /CasaOS-UI/src/service/api.js
  */
@@ -21,6 +21,7 @@ import storage from './storage.js';
 import samba from './samba.js';
 
 import users from "./users.js";
+import local_storage from "./local_storage.js";
 
 export default {
     // Apps
@@ -41,4 +42,5 @@ export default {
     port,
     // User
     users,
+    local_storage,
 }

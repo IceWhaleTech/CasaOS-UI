@@ -1,14 +1,14 @@
 /*
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-12 22:25:15
- * @LastEditors: zhanghengxin hengxin.zhang@icewhale.org
- * @LastEditTime: 2022-08-24 15:25:08
- * @FilePath: \CasaOS-UI\src\service\container.js
+ * @LastEditors: zhanghengxin ezreal.ice@icloud.com
+ * @LastEditTime: 2022-09-28 00:57:10
+ * @FilePath: /CasaOS-UI/src/service/container.js
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
  */
-import { api } from "./service.js";
+import {api} from "./service.js";
 
 const PREFIX = "/container"
 
@@ -68,7 +68,20 @@ const container = {
     // uninstall  container
     uninstall(id) {
         return api.delete(`${PREFIX}/${id}`);
-    }
+    },
+
+    // AppsInstallationLocation require doctument
+    getInstallationLocation() {
+        return api.get(`${PREFIX}/info`);
+    },
+
+    // AppsInstallationLocation require doctument
+    putInstallationLocation(value) {
+        return api.put(`${PREFIX}/info`, {
+            docker_root_dir: value
+        });
+    },
+
 }
 
 export default container;

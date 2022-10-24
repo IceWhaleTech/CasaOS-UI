@@ -1,17 +1,14 @@
-name: Node.js prerelease CI
+name: IceWhaleTech Node.js prerelease CI
 
 on:
   push:
-     tags:
-       - 'v**'
-#    branches: [ "dev-0.3.6-ezreal" ]
-# pull_request:
-#   branches: [ "dev-0.3.6-ezreal", "main" ]
+    branches:
+      - 'dev**-ezreal'
 jobs:
   release:
 
     runs-on: ubuntu-latest
-
+    if: github.repository == 'IceWhaleTech/CasaOS-UI'
     strategy:
       matrix:
         node-version: [ 16.x ]
@@ -25,22 +22,23 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - name: '缓存 Cache'
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: cache-dependencies
         with:
           path: node_modules
           key: ${{runner.OS}}-${{hashFiles('**/yarn.lock')}}
       - name: '读取当前版本号 Read the current version number'
         id: version
-        uses: ashley-taylor/read-json-property-action@v1.0
+        uses: zhanghengxin/reading-a-file-of-JSON@ice
         with:
           path: ./package.json
-          property:
-            version
+          property: version
       - name: '获取tag版本号 Get version of tag'
         id: get_tag_version
-#        'use echo "{environment_variable_name}={value}" >> $GITHUB_ENV'
-        run: echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
+        run: |
+          echo "VERSION=${{steps.version.outputs.property}}-alpha" >> $GITHUB_ENV
+          #'use echo "{environment_variable_name}={value}" >> $GITHUB_ENV'
+          # run: echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
       - name: '输出 echo artifact'
         run: |
           echo ${{ steps.version.outputs.value }}
@@ -53,13 +51,13 @@ jobs:
           cp ./build/sysroot/var/lib/casaos/www/img/wallpaper0*.jpg ./build/sysroot/var/lib/casaos/www/ui/img/
           tar -zcvf linux-all-casaos-${{ env.VERSION }}.tar.gz build
       - name: '更新 Update release'
-        uses: meeDamian/github-release@v2.0.2
+        uses: zhanghengxin/git-release-private@ice
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           allow_override: true
           gzip: false
           prerelease: true
-          tag: ${{ env.VERSION  }}
+          tag: ${{ env.VERSION }}
           files: ./linux-all-casaos-${{ env.VERSION }}.tar.gz
 #      - name: '刷新缓存 Refresh The Cache'
 #        run: |

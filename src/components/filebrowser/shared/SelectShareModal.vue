@@ -4,18 +4,20 @@
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2022-08-01 18:10:05
  * @FilePath: /CasaOS-UI/src/components/filebrowser/shared/SelectShareModal.vue
- * @Description: 
- * 
- * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+ * @Description:
+ *
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
 -->
 <template>
   <div class="modal-card">
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
       <div class="is-flex-grow-1">
-        <h3 class="title is-3">{{$t('Select Shared Folder')}}</h3>
+        <h3 class="title is-3">{{ $t('Select Shared Folder') }}</h3>
       </div>
-      <div><button type="button" class="delete" @click="$emit('close')" /></div>
+      <div>
+        <button type="button" class="delete" @click="$emit('close')"/>
+      </div>
     </header>
     <!-- Modal-Card Header End -->
     <!-- Modal-Card Body Start -->
@@ -27,18 +29,18 @@
             <div class="cover ml-2 mr-2 is-flex-shrink-0  is-flex is-align-items-center">
               <b-icon :pack="item.pack" :icon="item.icon" custom-size="casa-28px" class="casa-color-blue"></b-icon>
             </div>
-            <div class=" is-flex-grow-1">{{item.name}}</div>
+            <div class=" is-flex-grow-1">{{ item.name }}</div>
             <div class=" is-flex-shrink-0  is-flex is-align-items-center">
               <b-checkbox :value="item.selected" class="mr-0" disabled></b-checkbox>
             </div>
           </div>
         </li>
-        <li v-for="(item,index) in initFolders" :key="'s'+index">
+        <li v-for="(item,index) in dataList" :key="'s'+index">
           <div class="is-flex list-item new-list-item is-align-items-center" v-if="item.visible" @click="toggle(item)">
             <div class="cover ml-2 mr-2 is-flex-shrink-0 is-flex is-align-items-center">
               <b-icon :pack="item.pack" :icon="item.icon" custom-size="casa-28px" class="casa-color-blue"></b-icon>
             </div>
-            <div class=" is-flex-grow-1 is-unselectable">{{item.name}}</div>
+            <div class=" is-flex-grow-1 is-unselectable">{{ item.name }}</div>
             <div class=" is-flex-shrink-0  is-flex is-align-items-center">
               <b-checkbox :value="item.selected" class="mr-0 none-click"></b-checkbox>
             </div>
@@ -51,7 +53,7 @@
     <footer class="modal-card-foot is-flex is-align-items-center">
       <div class="is-flex-grow-1"></div>
       <div>
-        <b-button :label="$t('Submit')" type="is-primary" rounded @click="saveShares" :loading="isSaving" />
+        <b-button :label="$t('Submit')" type="is-primary" rounded @click="saveShares" :loading="isSaving"/>
       </div>
     </footer>
     <!-- Modal-Card Footer End-->
@@ -123,9 +125,16 @@ export default {
         },
 
       ],
+      dataList: [],
     }
   },
-  created() {
+  async created() {
+    // Get the shortcut detail for the first time and save it to store
+    // try{
+    //   await this.$store.dispatch('GET_SHORTCUT_DATA')
+    // }catch(e){
+    //   console.log(e);
+    // }
     this.getNewList()
   },
   methods: {
@@ -136,9 +145,12 @@ export default {
     async getNewList() {
       const newList = await this.$api.folder.getList(this.rootDataList[0].path)
       const dataList = await this.$api.folder.getList(this.initFolders[0].path)
+      this.shortcutList = this.$store.state.shortcutData
+      debugger
+      this.dataList = [...this.initFolders, ...this.shortcutList]
       const contactList = []
-      contactList.push(...newList.data.data, ...dataList.data.data)
-      this.initFolders.forEach(dir => {
+      contactList.push(...newList.data.data, ...dataList.data.data, ...this.shortcutList)
+      this.dataList.forEach(dir => {
         dir.visible = contactList.some(item => item.path == dir.path && item.is_dir)
         dir.extensions = contactList.find(item => item.path == dir.path && item.is_dir).extensions;
       })
@@ -158,7 +170,7 @@ export default {
      */
     async saveShares() {
       this.isSaving = true
-      const selectedList = this.initFolders.filter(item => item.selected)
+      const selectedList = this.dataList.filter(item => item.selected)
       const data = selectedList.map(item => {
         return {
           path: item.path,

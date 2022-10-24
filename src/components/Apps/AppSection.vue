@@ -13,12 +13,12 @@
   <div class="home-section has-text-left">
     <!-- Title Bar Start -->
     <div class=" is-flex is-align-items-center mb-5">
-      <app-section-title-tip title="Apps" label="Drag icons to sort." id="appTitle1"
-                             class="is-flex-grow-1"></app-section-title-tip>
+      <app-section-title-tip id="appTitle1" class="is-flex-grow-1" label="Drag icons to sort."
+                             title="Apps"></app-section-title-tip>
 
-      <b-dropdown aria-role="menu" class="file-dropdown" position="is-bottom-left" animation="fade1">
+      <b-dropdown animation="fade1" aria-role="menu" class="file-dropdown" position="is-bottom-left">
         <template #trigger>
-          <b-icon pack="casa" icon="plus" size="is-20" type="is-white"></b-icon>
+          <b-icon icon="plus" pack="casa" size="is-20" type="is-white"></b-icon>
         </template>
         <b-dropdown-item aria-role="menuitem" @click="showInstall(0, 'custom')">
           {{ $t('Custom Install APP') }}
@@ -31,25 +31,26 @@
     <!-- Title Bar End -->
 
     <!-- App List Start -->
-    <draggable class="columns is-variable is-2 is-multiline app-list contextmenu-canvas" tag="div" v-model="appList"
-               v-bind="dragOptions" @start="drag = true" @end="onSortEnd" :draggable="draggable">
+    <draggable v-model="appList" :draggable="draggable"
+               class="columns is-variable is-2 is-multiline app-list contextmenu-canvas"
+               tag="div" v-bind="dragOptions" @end="onSortEnd" @start="drag = true">
       <template v-if="!isLoading">
 
         <!-- App Icon Card Start -->
-        <div class="column is-narrow is-3 handle" v-for="(item) in appList" :key="'app-' + item.id">
-          <app-card :item="item" @updateState="getList" @configApp="showConfigPanel" :isCasa="true"></app-card>
+        <div v-for="(item) in appList" :key="'app-' + item.id" class="column is-narrow is-3 handle">
+          <app-card :isCasa="true" :item="item" @configApp="showConfigPanel" @updateState="getList"></app-card>
         </div>
         <!-- App Icon Card End -->
 
       </template>
 
-      <b-loading :is-full-page="false" v-model="isLoading" slot="footer"></b-loading>
+      <b-loading slot="footer" v-model="isLoading" :is-full-page="false"></b-loading>
     </draggable>
     <!-- App List End -->
     <template v-if="notImportedList.length > 0">
       <!-- Title Bar Start -->
       <div class="title-bar is-flex is-align-items-center mt-2rem  mb-5">
-        <app-section-title-tip title="Existing Docker Apps" label="Click icon to import." id="appTitle2">
+        <app-section-title-tip id="appTitle2" label="Click icon to import." title="Existing Docker Apps">
         </app-section-title-tip>
       </div>
       <!-- Title Bar End -->
@@ -57,9 +58,9 @@
       <!-- App List Start -->
       <div class="columns is-variable is-2 is-multiline app-list contextmenu-canvas">
         <!-- Application not imported Start -->
-        <div class="column is-narrow is-3" v-for="(item) in notImportedList" :key="'app-' + item.id">
-          <app-card :item="item" @updateState="getList" @configApp="showConfigPanel" @importApp="showConfigPanel"
-                    :isCasa="false"></app-card>
+        <div v-for="(item) in notImportedList" :key="'app-' + item.id" class="column is-narrow is-3">
+          <app-card :isCasa="false" :item="item" @configApp="showConfigPanel" @importApp="showConfigPanel"
+                    @updateState="getList"></app-card>
         </div>
         <!-- Application not imported End -->
       </div>

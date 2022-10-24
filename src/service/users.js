@@ -1,14 +1,14 @@
 /*
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-12 21:57:26
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-20 14:06:58
+ * @LastEditors: zhanghengxin ezreal.ice@icloud.com
+ * @LastEditTime: 2022-09-20 23:44:51
  * @FilePath: /CasaOS-UI/src/service/users.js
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
  */
-import { api } from "./service.js";
+import {api} from "./service.js";
 
 const PREFIX = "/users"
 
@@ -41,11 +41,11 @@ const users = {
         return api.put(`${PREFIX}/current/password`, data);
     },
 
-    getLinkAppDetail(){
+    getLinkAppDetail() {
         return api.get(`${PREFIX}/current/custom/link`);
     },
 
-    saveLinkAppDetail(data){
+    saveLinkAppDetail(data) {
         return api.post(`${PREFIX}/current/custom/link`, data);
     },
 
@@ -62,7 +62,7 @@ const users = {
     },
 
     // create or update user image from upload
-    setUserImage(key,data) {
+    setUserImage(key, data) {
         return api.put(`${PREFIX}/current/image/${key}`, data);
     },
 
@@ -75,11 +75,13 @@ const users = {
 
 
     // get custom storage [OK]
+    // free store GET
     getCustomStorage(key) {
         return api.get(`${PREFIX}/current/custom/${key}`);
     },
 
     // set or update custom storage  [OK]
+    // free store POST
     setCustomStorage(key, data) {
         return api.post(`${PREFIX}/current/custom/${key}`, data);
     },
@@ -117,6 +119,16 @@ const users = {
         return api.post(`${PREFIX}/refresh`, {
             refresh_token: refresh_token
         });
+    },
+
+    // get shutcut [OK]
+    getShutcutDetail() {
+        return api.get(`${PREFIX}/current/custom/shortcut`);
+    },
+
+    // save shutcut [OK]
+    saveShutcutDetail(data) {
+        return api.post(`${PREFIX}/current/custom/shortcut`, data);
     },
 }
 

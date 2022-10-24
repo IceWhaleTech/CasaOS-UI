@@ -4,9 +4,9 @@
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2022-08-04 19:31:50
  * @FilePath: \CasaOS-UI\src\store\state.js
- * @Description: 
- * 
- * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+ * @Description:
+ *
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
  */
 const state = {
     // User
@@ -49,6 +49,9 @@ const state = {
     },
 
     // Samba and nfs data
-    networkStorage: JSON.parse(localStorage.getItem('networkStorage')) || []
+    networkStorage: JSON.parse(localStorage.getItem('networkStorage')) || [],
+
+    // shortcut data
+    shortcutData: [],
 }
 export default state

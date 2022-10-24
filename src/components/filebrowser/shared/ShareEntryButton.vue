@@ -4,16 +4,16 @@
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2022-08-25 10:25:40
  * @FilePath: \CasaOS-UI-dev\src\components\filebrowser\shared\ShareEntryButton.vue
- * @Description: 
- * 
- * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+ * @Description:
+ *
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
 -->
 <template>
   <div>
 
     <div class="is-flex list-item new-list-item" :class="{'active':active}" @click.prevent="$emit('open')">
 
-      <popper  trigger="click" transition='fade' enter-active-class="fade-enter-active" :options="{
+      <popper trigger="click" transition='fade' enter-active-class="fade-enter-active" :options="{
       placement: 'top',
       modifiers: { offset: { offset: '0,10px' } }
     }" ref="tip">
@@ -29,7 +29,7 @@
           <b-icon icon="share" pack="casa" custom-size="casa-24px"></b-icon>
         </div>
       </popper>
-      <div ><span>{{ $t('Shared') }}</span></div>
+      <div><span>{{ $t('Shared') }}</span></div>
 
     </div>
 
@@ -54,9 +54,7 @@ export default {
     Popper,
   },
   data() {
-    return {
-
-    }
+    return {}
   },
   created() {
 
@@ -125,7 +123,7 @@ export default {
   opacity: 0;
 }
 
-.none-click{
+.none-click {
   pointer-events: none;
 }
 </style>

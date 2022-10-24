@@ -9,14 +9,18 @@
 <template>
 
   <li>
-    <div class="is-flex list-item new-list-item" :class="{'active':isActived}" @click="open(item.path)" v-if="item.visible">
-      <div class="cover mr-2 is-flex-shrink-0 is-relative">
-        <b-icon :pack="item.pack" :icon="item.icon" custom-size="casa-28px" :class="iconColor"></b-icon>
+    <div class="is-flex list-item new-list-item" :class="{'active':isActived}" @click="open(item.path)"
+         v-if="item.visible">
+      <div class="cover mr-2 is-flex-shrink-0 is-relative is-flex is-align-items-center">
+        <b-icon :pack="item.pack" :icon="item.icon" custom-size="casa-28px" :class="iconColor"
+                v-if="item.icon !== 'danger'"></b-icon>
+        <b-icon icon="danger" pack="casa" class="warn" v-else custom-size="casa-16px"></b-icon>
         <div class="overlay-layer" v-if="isShare">
-          <b-icon :pack="item.pack" icon="share" custom-size="casa-10px" class="casa-color-green casa-shape-rounded casa-shape-12px"></b-icon>
+          <b-icon :pack="item.pack" icon="share" custom-size="casa-10px"
+                  class="casa-color-green casa-shape-rounded casa-shape-12px"></b-icon>
         </div>
       </div>
-      <div class=" is-flex-grow-1 one-line">{{item.name}}</div>
+      <div class=" is-flex-grow-1 one-line">{{ item.name }}</div>
       <div class=" is-flex-shrink-0 is-flex" v-if="iconName != ''" @click.stop="rightIconClick">
         <b-icon :icon="iconName" :pack="item.pack" custom-size="casa-24px" class="casa-color-gray"></b-icon>
       </div>
@@ -29,9 +33,7 @@
 
 export default {
   inject: ['filePanel'],
-  components: {
-
-  },
+  components: {},
   props: {
     item: {
       type: Object,
@@ -59,8 +61,7 @@ export default {
     },
   },
   data() {
-    return {
-    }
+    return {}
   },
   computed: {
     isActived() {

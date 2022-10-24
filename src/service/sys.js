@@ -1,12 +1,12 @@
 /*
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-15 11:31:18
+ * @LastEditors: zhanghengxin ezreal.ice@icloud.com
+ * @LastEditTime: 2022-09-21 00:55:42
  * @Description: System HardWare Info API
  * @FilePath: /CasaOS-UI/src/service/sys.js
  */
-import { api } from "./service.js";
+import {api} from "./service.js";
 
 const PREFIX = "/sys"
 
@@ -68,28 +68,28 @@ const sys = {
     },
 
     // proxy request
-    getProxyRequestContent(url){
+    getProxyRequestContent(url) {
         return api.get(`${PREFIX}/proxy?url=${url}`)
     },
 
     // get casaos server port
     getServerPort() {
-        return api.get(`gateway/port`);
+        return api.get(`/gateway/port`);
     },
 
     // edit casaos server port
     editServerPort(data) {
-        return api.put(`gateway/port`, data);
+        return api.put(`/gateway/port`, data);
     },
 
     // get usb status
     getUsbStatus() {
-        return api.get(`${PREFIX}/usb-auto-mount`);
+        return api.get(`/usb/usb-auto-mount`);
     },
 
     // Toggle usb auto-mount
     toggleUsbAutoMount(data) {
-        return api.put(`${PREFIX}/usb-auto-mount`, data);
+        return api.put(`/usb/usb-auto-mount`, data);
     },
 
     // update CasaOS
@@ -116,7 +116,6 @@ const sys = {
     checkSshLogin(data) {
         return api.post(`${PREFIX}/ssh-login`, data);
     }
-
 
 
 }

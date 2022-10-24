@@ -1,6 +1,6 @@
 {
   "name": "CasaOS",
-  "version": "v0.3.6",
+  "version": "v0.3.7",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --mode dev",
@@ -62,9 +62,10 @@
     "xterm-addon-attach": "^0.6.0",
     "xterm-addon-fit": "^0.5.0",
     "yamljs": "^0.3.0",
-    "yargs-parser": "^21.0.1"
+    "yargs-parser": "^21.1.1"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.18.6",
     "@vue/cli-plugin-babel": "4.5.13",
     "@vue/cli-plugin-eslint": "4.5.13",
     "@vue/cli-plugin-router": "4.5.13",
@@ -75,11 +76,15 @@
     "css-minimizer-webpack-plugin": "^4.0.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^8.5.0",
+    "jwt-decode": "^3.1.2",
+    "md5-es": "^1.8.2",
     "optimize-css-assets-webpack-plugin": "^6.0.1",
     "sass": "^1.51.0",
     "sass-loader": "10.1.1",
     "style-resources-loader": "^1.5.0",
     "terser-webpack-plugin": "^5.3.1",
+    "ts-loader": "^8.2.0",
+    "typescript": "^4.8.3",
     "useless-files-webpack-plugin": "^1.0.1",
     "vue-cli-plugin-buefy": "~0.3.8",
     "vue-template-compiler": "^2.6.11",

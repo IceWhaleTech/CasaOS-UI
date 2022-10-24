@@ -1,16 +1,17 @@
 /*
  * @Author: JerryK
  * @Date: 2022-01-20 12:01:07
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-25 10:24:58
+ * @LastEditors: zhanghengxin ezreal.ice@icloud.com
+ * @LastEditTime: 2022-09-20 22:46:06
  * @Description:
- * @FilePath: \CasaOS-UI-dev\src\mixins\mixin.js
+ * @FilePath: /CasaOS-UI/src/mixins/mixin.js
  */
 import qs from 'qs'
 import has from 'lodash/has'
 import union from 'lodash/union'
 import copy from 'clipboard-copy'
 import dayjs from 'dayjs'
+
 const typeMap = {
     "image-x-generic": ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'svg', 'tiff'],
     "video-x-generic": ['mkv', 'mp4', '3gp', 'avi', 'm2ts', 'webm', 'flv', 'vob', 'ts', 'mts', 'mov', 'wmv', 'rm', 'rmvb', 'asf', 'wmv', 'mpg', 'm4v', 'mpeg', 'f4v'],
@@ -64,7 +65,7 @@ export const mixin = {
          */
         renderSize(bytes) {
             const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
-            if (bytes === 0) return '0 Bytes'
+            if (bytes == 0) return '0 Bytes'
             const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10)
             if (i === 0) return `${bytes} ${sizes[i]}`
             return `${parseFloat((bytes / (1024 ** i)).toFixed(2))} ${sizes[i]}`
@@ -310,8 +311,48 @@ export const mixin = {
                     return o.path
                 })
             }
-            this.$api.batch.delete(JSON.stringify(path)).then(res => {
+            let isArray = items.constructor === Array
+            this.$api.batch.delete(JSON.stringify(path)).then(async res => {
                 if (res.data.success === 200) {
+                    // update shotcut data
+                    let bakData = []
+                    let shotcutData = this.$store.state['shortcutData']
+                    for (let i = 0; i < shotcutData.length; i++) {
+                        let item = shotcutData[i]
+                        if (isArray) {
+                            // filter delteted item
+                            bakData = shotcutData.filter(o => {
+                                // has same path
+                                if (path.indexOf(o.path) > -1) {
+                                    try {
+                                        this.$api.samba.deleteShare(item.extensions.share.id)
+                                    } catch (e) {
+                                        console.log(`${e} in delet shortcut`)
+                                    }
+                                    return false
+                                } else {
+                                    return true
+                                }
+                            })
+                        } else if (item.path === path[0]) {
+                            shotcutData.splice(i, 1)
+                            try {
+                                this.$api.samba.deleteShare(item.extensions.share.id)
+                            } catch (e) {
+                                console.log(`${e} in delet shortcut`)
+                            }
+                        }
+                    }
+                    if (isArray) {
+                        shotcutData = bakData
+                    }
+                    try {
+                        await this.$store.dispatch('SET_SHORTCUT_DATA', shotcutData);
+
+                    } catch (e) {
+                        console.log(`${e} in deleteItem`)
+                    }
+
                     if (this.$refs.dropDown !== undefined) {
                         this.$refs.dropDown.toggle()
                         this.$emit("reload")
@@ -340,14 +381,14 @@ export const mixin = {
             const postData = {
                 path: item.path,
             }
-            this.$api.users.setUserImage( wallpaperConfig, postData).then(res => {
+            this.$api.users.setUserImage(wallpaperConfig, postData).then(res => {
                 if (res.data.success === 200) {
                     const resData = res.data.data
                     let wallpaperData = {
-                        path: "SERVER_URL"  + resData.online_path + "&time=" + new Date().getTime(),
+                        path: "SERVER_URL" + resData.online_path + "&time=" + new Date().getTime(),
                         from: "Files"
                     }
-                    this.$api.users.setCustomStorage( wallpaperConfig, wallpaperData).then(res => {
+                    this.$api.users.setCustomStorage(wallpaperConfig, wallpaperData).then(res => {
                         if (res.data.success === 200) {
                             this.$store.commit('SET_WALLPAPER', {
                                 path: res.data.data.path,
@@ -406,7 +447,7 @@ export const mixin = {
          * @return {String}
          */
         renderSize(bytes) {
-            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
             if (bytes === 0) return '0 Bytes'
             const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10)
             if (i === 0) return `${bytes} ${sizes[i]}`
