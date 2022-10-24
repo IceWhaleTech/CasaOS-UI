@@ -108,7 +108,7 @@ module.exports = {
         } else {
             config.devServer.proxy({
                 '/': {
-                    target: `http://192.168.2.119:${process.env.VUE_APP_DEV_PORT}`,
+                    target: `http://${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}`,
                     changeOrigin: true,
                 }
             })
@@ -121,7 +121,7 @@ module.exports = {
         // },
         contentBase: path.join(__dirname, 'src'),
         open: true,
-        host: 'localhost',
+        // host: 'localhost',
         port: 8080,
         // proxy: {
         //     "/": {        // 自己的服务器
