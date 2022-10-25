@@ -113,10 +113,15 @@ export default {
     linkIcon: {
       type: String,
       default: "",
-    }
+    },
+    linkId: {
+      type: String,
+      default: "",
+    },
   },
   data() {
     return {
+      id: "",
       host: "",
       name: "",
       icon: "",
@@ -138,12 +143,9 @@ export default {
       }
     },
   },
-  watch: {
-    // host: function(val){
-    //   this.updateIconUrl(val)
-    // }
-  },
+  watch: {},
   created() {
+    this.id = this.linkId
     this.host = this.linkHost
     this.name = this.linkName
     this.icon = this.linkIcon
@@ -167,7 +169,8 @@ export default {
           this.isLoading = true
           let listLinkApp = JSON.parse(localStorage.getItem("listLinkApp"))
           if (!listLinkApp.find((item) => {
-            if (item.host === this.host) {
+            if (item.id === this.id) {
+              item.host = this.host
               item.name = this.name
               item.icon = this.icon
               return true
