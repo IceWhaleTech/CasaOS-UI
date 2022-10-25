@@ -146,7 +146,7 @@ export default {
   watch: {},
   created() {
     this.id = this.linkId
-    this.host = this.linkHost
+    this.host = this.linkHost || "http://"
     this.name = this.linkName
     this.icon = this.linkIcon
   },
