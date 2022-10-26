@@ -3,7 +3,7 @@
  * @Date: 2021-10-29 15:38:35
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2022-07-15 18:01:25
- * @Description: 
+ * @Description:
  * @FilePath: /CasaOS-UI/src/components/Apps/AppTerminalPanel.vue
 -->
 <template>
@@ -11,8 +11,10 @@
 
     <!-- Modal-Card Body Start -->
     <section class="modal-card-body ">
-      <div class="close-container"><button type="button" class="delete" @click="$emit('close')" /></div>
-      <h3 class="title is-3">{{appName}}</h3>
+      <div class="close-container">
+        <button type="button" class="delete" @click="$emit('close')"/>
+      </div>
+      <h3 class="title is-3">{{ appName }}</h3>
       <div class="is-flex-grow-1">
         <b-tabs :animated="false" @input="onInput">
           <b-tab-item :label="$t('Terminal')" value="terminal">
@@ -35,6 +37,7 @@
 <script>
 import TerminalCard from '@/components/logsAndTerminal/TerminalCard.vue';
 import LogsCard from '@/components/logsAndTerminal/LogsCard.vue'
+
 export default {
   name: 'app-terminal-panel',
   components: {
@@ -59,7 +62,9 @@ export default {
     getLogs() {
       this.$api.container.getLogs(this.appid).then((res) => {
         if (res.data.success == 200) {
-          this.logData = res.data.data
+          let data = res.data.data
+          let replaceData = data.replace(/(?<=[\n])(.{8})/gu, '');
+          this.logData = replaceData.substring(8, replaceData.length - 1);
         }
       })
     },
