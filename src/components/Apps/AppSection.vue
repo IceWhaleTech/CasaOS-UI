@@ -336,6 +336,7 @@ export default {
           }
         },
         props: {
+          linkId: item.id,
           linkName: item.name,
           linkHost: item.host,
           linkIcon: item.icon
