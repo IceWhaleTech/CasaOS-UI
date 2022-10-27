@@ -3,7 +3,7 @@
  * @Date: 2022-01-24 11:57:35
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2022-07-14 08:37:45
- * @Description: 
+ * @Description:
  * @FilePath: \CasaOS-UI\src\components\feedback\FeedbackPanel.vue
 -->
 <template>
@@ -13,14 +13,18 @@
     <section class="modal-card-body ">
 
       <h3 class="title is-3">{{ $t('Bug report') }}</h3>
-      <div class="close-container"><button type="button" class="delete" @click="$emit('close')" /></div>
+      <div class="close-container">
+        <button type="button" class="delete" @click="$emit('close')"/>
+      </div>
 
       <div class="is-flex-grow-1 is-relative">
         <b-field :label="$t('Title')">
-          <b-input maxlength="100" v-model="postTitle"></b-input>
+          <b-input maxlength="100" v-model="postTitle"
+                   :placeholder="$t('App request、Bug report、Feature request.')"></b-input>
         </b-field>
         <b-field :label="$t('Describe the bug')">
-          <b-input maxlength="500" type="textarea" v-model="postBody" :placeholder="$t('A clear and concise description of what the bug is.')"></b-input>
+          <b-input maxlength="500" type="textarea" v-model="postBody"
+                   :placeholder="$t('A clear and concise desctiption.')"></b-input>
         </b-field>
         <b-field :label="$t('System infomation')">
           <div class="feedback-info-container is-size-14px" v-html="markdownToHtml"></div>
@@ -31,9 +35,13 @@
     <!-- Modal-Card Body End -->
     <!-- Modal-Card Footer Start-->
     <footer class="modal-card-foot is-flex is-align-items-center ">
-      <div class="is-flex-grow-1"></div>
+      <div class="is-flex-grow-1">
+        <a target="_blank"
+           href="https://github.com/IceWhaleTech/CasaOS/issues/new/choose"
+           class="is-size-14px">{{ $t('Go to github for feedback') }}</a>
+      </div>
       <div>
-        <b-button :label="$t('Submit')" type="is-primary" @click="submitIssue" rounded />
+        <b-button :label="$t('Submit')" type="is-primary" @click="submitIssue" rounded/>
       </div>
     </footer>
     <!-- Modal-Card Footer End -->
@@ -45,13 +53,11 @@
 
 import browserInfo from 'browser-info'
 import newGithubIssueUrl from 'new-github-issue-url';
-import { marked } from 'marked'
+import {marked} from 'marked'
 
 export default {
   name: "feedback-panel",
-  components: {
-
-  },
+  components: {},
   data() {
     return {
       isLoading: false,
