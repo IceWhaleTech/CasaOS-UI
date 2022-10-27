@@ -30,6 +30,7 @@ const state = {
     // System Config
     searchEngine: '',
     searchEngineSwitch: true,
+    existingAppsSwitch: true,
     recommendSwitch: true,
 
     siteLoading: true,

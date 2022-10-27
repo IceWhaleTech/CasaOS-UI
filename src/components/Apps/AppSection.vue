@@ -47,7 +47,7 @@
       <b-loading slot="footer" v-model="isLoading" :is-full-page="false"></b-loading>
     </draggable>
     <!-- App List End -->
-    <template v-if="notImportedList.length > 0">
+    <template v-if="notImportedList.length > 0 && exsitingAppsShow">
       <!-- Title Bar Start -->
       <div class="title-bar is-flex is-align-items-center mt-2rem  mb-5">
         <app-section-title-tip id="appTitle2" label="Click icon to import." title="Existing Docker Apps">
@@ -139,6 +139,9 @@ export default {
     },
     showDragTip() {
       return this.draggable == ".handle"
+    },
+    exsitingAppsShow() {
+      return this.$store.state.existingAppsSwitch
     }
   },
   created() {

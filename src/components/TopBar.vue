@@ -149,6 +149,22 @@
           </div>
           <!-- Background End -->
 
+          <!--  Show Existing Docker Apps Switch Start  -->
+          <div class="is-flex is-align-items-center mb-2 h-30">
+            <div class="is-flex is-align-items-center is-flex-grow-1">
+              <b-icon pack="casa" icon="app-switch" class="mr-1"></b-icon>
+              <b>{{ $t('Show Existing Docker Apps') }}</b>
+            </div>
+            <div>
+              <b-field>
+                <b-switch type="is-dark" class="is-flex-direction-row-reverse mr-0"
+                          v-model="barData.existing_apps_switch"
+                          @input="saveData"></b-switch>
+              </b-field>
+            </div>
+          </div>
+          <!--  Show Existing Docker Apps Switch End  -->
+
           <!--  Recommended modules Switch Start  -->
           <div class="is-flex is-align-items-center mb-2 h-30">
             <div class="is-flex is-align-items-center is-flex-grow-1">
@@ -257,6 +273,7 @@ export default {
         recommend_switch: true,
         shortcuts_switch: false, // Not used
         widgets_switch: false, // Not used
+        existing_apps_switch: true,
       },
       updateInfo: {
         current_version: '0',
@@ -325,6 +342,12 @@ export default {
     'barData.search_switch': {
       handler(val) {
         this.$store.commit('SET_SEARCH_ENGINE_SWITCH', val);
+      },
+      deep: true
+    },
+    "barData.existing_apps_switch": {
+      handler(val) {
+        this.$store.commit('SET_EXISTING_APPS_SWITCH', val);
       },
       deep: true
     },
