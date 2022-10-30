@@ -121,7 +121,7 @@ export default {
       // Merge Storage
       let mergeRes;
       try {
-        mergeRes = await this.$api.local_storage.getMergerfsInfo().then(res => res.data.data[0].source_volume_paths)
+        mergeRes = await this.$api.local_storage.getMergerfsInfo().then(res => res.data.data[0].source_volume_uuids)
       } catch (error) {
         mergeRes = []
         console.log(error)
@@ -158,7 +158,7 @@ export default {
         const storageArray = []
         storageRes.data.data.forEach(item => {
           item.children.forEach(part => {
-            if (!mergeRes.find(mp => mp === part.path))
+            if (!mergeRes.find(mp => mp === part.uuid))
               storageArray.push(part)
           })
         })
@@ -205,13 +205,13 @@ export default {
         this.mergeStorageList = [];
         const storageRes = await this.$api.storage.list()
         const storageList = storageRes.data.data
-        // mergeRes.push('test');
         mergeRes.forEach(item => {
           let storage = storageList.find(storage => {
-            return storage.children[0].path === item
+            return storage.children[0].uuid === item
           })
           if (storage) {
             this.mergeStorageList.push({
+              uuid: storage.uuid,
               name: storage.children[0].label,
               icon: '',
               pack: 'casa',
@@ -223,10 +223,11 @@ export default {
           } else {
             this.testMergeMiss += 1
             this.mergeStorageList.push({
-              name: item,
+              uuid: item,
+              name: "undefined",
               icon: 'danger',
               pack: 'casa',
-              path: item,
+              path: "",
               visible: true,
               selected: true,
               extensions: null

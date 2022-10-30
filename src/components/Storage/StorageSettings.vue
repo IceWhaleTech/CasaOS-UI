@@ -38,7 +38,7 @@
               renderSize(item.size)
             }}</span>
         </div>
-        <b-checkbox v-model="checkBoxGroup" :disabled="item.persistedIn !== 'casaos'" :native-value="item.path"
+        <b-checkbox v-model="checkBoxGroup" :disabled="item.persistedIn !== 'casaos'" :native-value="item.uuid"
                     class="mr-4"></b-checkbox>
       </div>
       <div v-for="(item, index) in storageMissData" :key="item.path+index" class="is-flex pri-mtr-3px ml-4 mr-4">
@@ -129,15 +129,13 @@ export default {
     //  with APPs Installation Location requirement document
     // 获取merge信息
     try {
-      this.mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => res.data.data[0]['source_volume_paths'])
+      this.mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => res.data.data[0]['source_volume_uuids'])
     } catch (e) {
       this.mergeStorageList = []
       console.log(e)
     }
     this.checkBoxGroup.push(...this.mergeStorageList)
-    // this.checkBoxMissGroup.push(...this.mergeStorageList)
     this.getDiskList();
-    // this.getMerageStorage();
   },
   watch: {
     // 0 default :mainstorage settings
@@ -218,12 +216,13 @@ export default {
           part.disk = item.path
           part.diskName = item.disk_name
           storageArray.push(part)
-          testMergeMiss = testMergeMiss.filter(v => v !== part.path)
+          testMergeMiss = testMergeMiss.filter(v => v !== part.uuid)
         })
       })
       this.checkBoxMissGroup.push(...testMergeMiss);
       testMergeMiss.forEach(item => {
         storageMissArray.push({
+          "uuid": "",
           "mount_point": "",
           "size": "",
           "avail": "",
@@ -239,6 +238,7 @@ export default {
 
       this.storageData = storageArray.map((storage) => {
         return {
+          uuid: storage.uuid,
           name: storage.label,
           isSystem: storage.diskName == "System",
           fsType: storage.type,
@@ -255,6 +255,7 @@ export default {
 
       this.storageMissData = storageMissArray.map((storage) => {
         return {
+          uuid: storage.uuid,
           name: storage.label,
           isSystem: storage.diskName == "System",
           fsType: storage.type,
@@ -276,7 +277,8 @@ export default {
         "fstype": "fuse.mergerfs",
         "mount_point": "/DATA",
         // "source_base_path": "/var/lib/casaos/files",
-        "source_volume_paths": [
+        //source_volume_paths
+        "source_volume_uuids": [
           ...this.checkBoxGroup, ...this.checkBoxMissGroup
         ]
       }).then(res => {
@@ -308,7 +310,7 @@ export default {
     async getMerageStorage() {
       try {
         // TODO merge can't be used
-        this.mergeInfo = await this.$api.local_storage.getMergerfsInfo().then(res => res.data.data[0]["source_volume_paths"]).catch(() => [])
+        this.mergeInfo = await this.$api.local_storage.getMergerfsInfo().then(res => res.data.data[0]["source_volume_uuids"]).catch(() => [])
         this.checkBoxGroup.push(...this.mergeInfo)
       } catch (e) {
         console.log(e)

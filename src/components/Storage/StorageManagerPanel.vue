@@ -269,7 +269,7 @@ export default {
       // 获取merge信息
       let mergeStorageList
       try {
-        mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => res.data.data[0]['source_volume_paths'])
+        mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => res.data.data[0]['source_volume_uuids'])
       } catch (e) {
         mergeStorageList = []
         console.log(e)
@@ -286,9 +286,9 @@ export default {
             part.disk = item.path
             part.diskName = item.disk_name
             // storageArray.push(part)
-            if (mergeStorageList.includes(part.path) || (mergeStorageList.length > 0 && item.disk_name === 'System')) {
+            if (mergeStorageList.includes(part.uuid) || (mergeStorageList.length > 0 && item.disk_name === 'System')) {
               mergeConbinations.push(part)
-              testMergeMiss = testMergeMiss.filter(v => v !== part.path)
+              testMergeMiss = testMergeMiss.filter(v => v !== part.uuid)
             } else {
               storageArray.push(part)
             }
@@ -297,6 +297,7 @@ export default {
         mergeConbinations.reverse();
         testMergeMiss.forEach(item => {
           mergeConbinations.push({
+            "uuid": "",
             "mount_point": "",
             "size": "",
             "avail": "",
@@ -312,6 +313,7 @@ export default {
 
         this.storageData = storageArray.map((storage) => {
           return {
+            uuid: storage.uuid,
             name: storage.label,
             isSystem: storage.diskName == "System",
             fsType: storage.type,
@@ -326,6 +328,7 @@ export default {
         })
         this.mergeConbinationsStorageData = mergeConbinations.map((storage) => {
           return {
+            uuid: storage.uuid,
             name: storage.label,
             isSystem: storage.diskName == "System",
             fsType: storage.type,
