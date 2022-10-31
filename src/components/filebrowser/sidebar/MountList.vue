@@ -20,7 +20,7 @@
                  class="casa casa-28px">
               </i>
             </div>
-            <div class="hint" v-show="!dorpdown && !hover && mergeStorageList.length != 0">{{
+            <div class="hint" v-show="!dorpdown && !hover && mergeStorageList.length !== 0">{{
                 mergeStorageList.length
               }}
             </div>
@@ -100,11 +100,7 @@ export default {
   },
   computed: {
     isActived() {
-      if ('/DATA' == this.$store.state.currentPath) {
-        return true
-      } else {
-        return false
-      }
+      return '/DATA' === this.$store.state.currentPath;
     },
   },
   created() {
@@ -204,18 +200,25 @@ export default {
       try {
         this.mergeStorageList = [];
         const storageRes = await this.$api.storage.list()
-        const storageList = storageRes.data.data
+        let storageList = [];
+        storageRes.data.data.forEach(item => {
+          item.children.forEach(part => {
+            part.disk = item.path
+            part.diskName = item.disk_name
+            storageList.push(part)
+          })
+        })
         mergeRes.forEach(item => {
           let storage = storageList.find(storage => {
-            return storage.children[0].uuid === item
+            return storage.uuid === item
           })
           if (storage) {
             this.mergeStorageList.push({
               uuid: storage.uuid,
-              name: storage.children[0].label,
+              name: storage.label,
               icon: '',
               pack: 'casa',
-              path: storage.children[0].mount_point,
+              path: storage.mount_point,
               visible: true,
               selected: true,
               extensions: null
