@@ -63,7 +63,7 @@ export default {
       this.$api.container.getLogs(this.appid).then((res) => {
         if (res.data.success == 200) {
           let data = res.data.data
-          let replaceData = data.replace(/(?<=[\n])(.{8})/gu, '');
+          let replaceData = data.replace(/\n(.{8})/gu, '\n');
           this.logData = replaceData.substring(8, replaceData.length - 1);
         }
       })
