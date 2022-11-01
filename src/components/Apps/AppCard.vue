@@ -191,7 +191,7 @@ export default {
       }).catch((err) => {
         this.isRestarting = false;
         this.$buefy.toast.open({
-          message: err.response.data.message,
+          message: err.response.data.data,
           type: 'is-danger',
           position: 'is-bottom-right',
           duration: 3000
@@ -294,7 +294,7 @@ export default {
         this.isStarting = false
         this.$refs.dro.isActive = false
         this.$buefy.toast.open({
-          message: err.response.data.message,
+          message: err.response.data.data,
           type: 'is-danger',
           position: 'is-bottom-right',
           duration: 3000
