@@ -15,10 +15,10 @@
       modifiers: { offset: { offset: '0,4px' } }
     }">
       <div class="popper  tooltip-content">
-        {{$t('Bug report')}}
+        {{ $t('We appreciate any feedback you may have') }}
       </div>
       <a @click="showFeedback" slot="reference">
-        <b-icon pack="casa" icon="bug"></b-icon>
+        <b-icon pack="casa" icon="f0eedback"></b-icon>
       </a>
     </popper>
 
@@ -27,7 +27,7 @@
       modifiers: { offset: { offset: '0,4px' } }
     }">
       <div class="popper  tooltip-content">
-        {{$t('Join Discord')}}
+        {{ $t('Join Discord') }}
       </div>
       <a href="https://discord.gg/knqAbbBbeX" target="_blank" slot="reference">
         <b-icon pack="casa" icon="discord"></b-icon>
@@ -39,7 +39,7 @@
       modifiers: { offset: { offset: '0,4px' } }
     }">
       <div class="popper  tooltip-content">
-        {{$t('Visit our Github')}}
+        {{ $t('Visit our Github') }}
       </div>
       <a href="https://github.com/IceWhaleTech/CasaOS" target="_blank" slot="reference">
         <b-icon pack="casa" icon="github"></b-icon>
@@ -51,7 +51,7 @@
       modifiers: { offset: { offset: '0,4px' } }
     }">
       <div class="popper  tooltip-content">
-        {{$t('Share CasaOS')}}
+        {{ $t('Share CasaOS') }}
       </div>
       <a @click="showShareModal" slot="reference">
         <b-icon pack="casa" icon="social-share"></b-icon>
@@ -65,7 +65,6 @@
 import FeedbackPanel from './feedback/FeedbackPanel.vue'
 import ShareModal from '@/components/share/ShareModal.vue'
 import Popper from 'vue-popperjs';
-
 
 
 export default {

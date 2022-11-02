@@ -22,7 +22,7 @@
           <b-input maxlength="100" v-model="postTitle"
                    :placeholder="$t('App request、Bug report、Feature request.')"></b-input>
         </b-field>
-        <b-field :label="$t('Describe the bug')">
+        <b-field :label="$t('Describe')">
           <b-input maxlength="500" type="textarea" v-model="postBody"
                    :placeholder="$t('A clear and concise desctiption.')"></b-input>
         </b-field>
@@ -52,7 +52,6 @@
 <script>
 
 import browserInfo from 'browser-info'
-import newGithubIssueUrl from 'new-github-issue-url';
 import {marked} from 'marked'
 
 export default {
@@ -81,13 +80,18 @@ export default {
   },
   methods: {
     submitIssue() {
-      const url = newGithubIssueUrl({
-        user: 'IceWhaleTech',
-        repo: 'CasaOS',
-        title: this.postTitle,
-        body: "**Describe the bug**\n\n" + this.postBody + "\n\n**System infomation**\n\n" + this.feedBody
-      });
-      window.open(url, '_blank');
+      const option = {
+        labels: "feedback",
+        template: "feedback.yml",
+        title: "[Feedback]" + this.postTitle,
+        description: this.postBody,
+        additional: this.feedBody,
+      }
+      let repoUrl = new URL(`https://github.com/IceWhaleTech/CasaOS/issues/new`);
+      for (const optionElement in option) {
+        repoUrl.searchParams.set(optionElement, option[optionElement]);
+      }
+      window.open(repoUrl, '_blank');
       this.$emit('close');
     }
   },
