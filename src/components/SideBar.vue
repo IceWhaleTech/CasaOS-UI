@@ -3,7 +3,7 @@
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2022-07-20 16:35:03
- * @Description: 
+ * @Description:
  * @FilePath: /CasaOS-UI/src/components/SideBar.vue
 -->
 <template>
@@ -13,7 +13,8 @@
         <component :is="item.app" :class="{'last-block':index === activeApps.length -1 }"></component>
       </div>
     </vue-custom-scrollbar>
-    <settings v-model="widgetsSettings" @change="handleChange" class="ml-4 mr-4" :class="{'mt-4':activeApps.length > 0}"></settings>
+    <settings v-model="widgetsSettings" @change="handleChange" class="ml-4 mr-4"
+              :class="{'mt-4':activeApps.length > 0}"></settings>
   </div>
 </template>
 
@@ -27,9 +28,9 @@ import vueCustomScrollbar from 'vue-custom-scrollbar'
 import "vue-custom-scrollbar/dist/vueScrollbar.css"
 
 const widgetsComponents = require.context(
-  '@/widgets',
-  false,
-  /.vue$/
+    '@/widgets',
+    false,
+    /.vue$/
 )
 
 const widgetsConfig = "widgets_config"
@@ -60,7 +61,9 @@ export default {
         return item.show
       })
       const newArray = showWidgets.map(item => {
-        const obj = find(this.apps, function (o) { return o.app.name == item.name; });
+        const obj = find(this.apps, function (o) {
+          return o.app.name == item.name;
+        });
         return obj;
       })
       return newArray
@@ -77,15 +80,15 @@ export default {
   created() {
     widgetsComponents.keys().forEach(fileName => {
       const componentName = lowerFirst(
-        camelCase(
-          fileName
-            .split('/')
-            .pop()
-            .replace(/\.\w+$/, '')
-        )
+          camelCase(
+              fileName
+                  .split('/')
+                  .pop()
+                  .replace(/\.\w+$/, '')
+          )
       )
       this.comps.push(componentName);
-      this.apps.push({ app: require(`@/widgets/${fileName.replace("./", "")}`).default })
+      this.apps.push({app: require(`@/widgets/${fileName.replace("./", "")}`).default})
     });
   },
   mounted() {
@@ -166,7 +169,7 @@ export default {
 }
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 .side-bar {
   position: fixed;
   z-index: 10;
@@ -185,12 +188,14 @@ export default {
   overflow-x: inherit !important;
   overflow-y: hidden !important;
 }
+
 .ps__thumb-x,
 .ps__thumb-y {
   background-color: rgba(0, 0, 0, 0.6);
   width: 8px;
   right: 5px;
 }
+
 .ps:hover > .ps__rail-x,
 .ps:hover > .ps__rail-y,
 .ps--focus > .ps__rail-x,
@@ -210,6 +215,7 @@ export default {
   background-color: transparent;
   opacity: 0.6;
 }
+
 .ps__rail-x:hover > .ps__thumb-x,
 .ps__rail-x:focus > .ps__thumb-x,
 .ps__rail-x.ps--clicking .ps__thumb-x {
@@ -230,6 +236,7 @@ export default {
     margin: 0 1rem !important;
     transform: translateX(-100vw);
     transition: all 0.3s ease-in-out;
+
     &.open {
       width: calc(100% - 2rem);
       transform: translateX(0);

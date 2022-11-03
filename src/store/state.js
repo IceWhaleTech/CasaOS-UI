@@ -32,6 +32,7 @@ const state = {
     searchEngineSwitch: true,
     existingAppsSwitch: true,
     recommendSwitch: true,
+    rssSwitch: true,
 
     siteLoading: true,
     needInitialization: false,

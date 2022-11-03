@@ -3,7 +3,7 @@
  * @Date: 2021-10-20 16:34:15
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2022-08-25 12:03:31
- * @Description: 
+ * @Description:
  * @FilePath: \CasaOS-UI-dev\src\views\Home.vue
 -->
 <template>
@@ -56,7 +56,8 @@
     </div>
     <!-- Content End -->
     <!-- File Panel Start -->
-    <b-modal v-model="isFileActive" has-modal-card @after-enter="afterFileEnter" :destroy-on-hide="false" animation="zoom-in" custom-class="file-panel" :can-cancel="[]" aria-modal full-screen>
+    <b-modal v-model="isFileActive" has-modal-card @after-enter="afterFileEnter" :destroy-on-hide="false"
+             animation="zoom-in" custom-class="file-panel" :can-cancel="[]" aria-modal full-screen>
       <template #default="props">
         <file-panel @close="props.close" ref="filePanel"></file-panel>
       </template>
@@ -76,8 +77,9 @@ import AppSection from '../components/Apps/AppSection.vue'
 import FilePanel from '@/components/filebrowser/FilePanel.vue'
 import UpdateCompleteModal from '@/components/settings/UpdateCompleteModal.vue'
 
-import { mixin } from '../mixins/mixin';
+import {mixin} from '../mixins/mixin';
 import events from '@/events/events';
+
 const wallpaperConfig = "wallpaper"
 
 export default {
@@ -120,7 +122,8 @@ export default {
     },
     recommendShow() {
       return this.$store.state.recommendSwitch
-    }
+    },
+
   },
   created() {
     this.getHardwareInfo();
@@ -133,6 +136,11 @@ export default {
     if (localStorage.getItem('is_update') === "true") {
       this.showUpdateCompleteModal()
       localStorage.removeItem('is_update')
+    }
+    if (sessionStorage.getItem('fromWelcome')) {
+      this.rssConfirm()
+      // one-off consumption
+      sessionStorage.removeItem('fromWelcome')
     }
   },
   methods: {
@@ -152,6 +160,7 @@ export default {
           recommend_switch: true,
           shortcuts_switch: true,
           widgets_switch: true,
+          rss_switch: false,
         }
         // save
         const saveRes = await this.$api.users.setCustomStorage("system", barData)
@@ -163,6 +172,7 @@ export default {
 
       this.$store.commit('SET_SEARCH_ENGINE_SWITCH', systemConfig.data.data.search_switch);
       this.$store.commit('SET_RECOMMEND_SWITCH', systemConfig.data.data.recommend_switch);
+      this.$store.commit('SET_RSS_SWITCH', systemConfig.data.data.rss_switch);
       this.barData = systemConfig.data.data
       this.isLoading = false
 
@@ -253,6 +263,26 @@ export default {
           }
         })
       }
+    },
+
+    // one-off
+    rssConfirm() {
+      this.$buefy.dialog.confirm({
+        title: this.$t('Get News About CasaOS'),
+        message: this.$t('CasaOS request get the latest news through the internet when you visit.'),
+        type: 'is-dark',
+        confirmText: this.$t('Accept'),
+        cancelText: this.$t('Cancel'),
+        onConfirm: async () => {
+          const saveRes = await this.$api.users.setCustomStorage("system", this.barData)
+          if (saveRes.data.success === 200) {
+            this.barData = saveRes.data.data
+          }
+        },
+        onCancel: () => {
+          this.barData.rss_switch = false
+        }
+      })
     }
 
   },
@@ -308,6 +338,7 @@ export default {
   .main-content {
     margin-left: 0;
     transition: all 0.3s;
+
     &.open {
       transform: scale(0.9);
       opacity: 0;
