@@ -3,7 +3,7 @@
  * @Date: 2021-10-20 16:30:26
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2022-07-14 11:03:56
- * @Description: 
+ * @Description:
  * @FilePath: \CasaOS-UI\src\views\Welcome.vue
 -->
 <template>
@@ -15,13 +15,14 @@
           <b-image :src="require('@/assets/img/logo/casa-dark.svg')" class="is-128x128 mb-4"></b-image>
         </div>
 
-        <h2 class="title is-2 mb-5 has-text-centered" v-animate-css="s2Ani">{{$t('Welcome to CasaOS')}}</h2>
-        <h2 class="subtitle  has-text-centered" v-animate-css="s3Ani">{{$t(`Let's create your initial account`)}}</h2>
-        <b-button type="is-primary" class="mt-2" rounded @click="goToStep(2)" v-animate-css="s4Ani">{{$t(`Go →`)}}</b-button>
+        <h2 class="title is-2 mb-5 has-text-centered" v-animate-css="s2Ani">{{ $t('Welcome to CasaOS') }}</h2>
+        <h2 class="subtitle  has-text-centered" v-animate-css="s3Ani">{{ $t(`Let's create your initial account`) }}</h2>
+        <b-button type="is-primary" class="mt-2" rounded @click="goToStep(2)" v-animate-css="s4Ani">{{ $t(`Go →`) }}
+        </b-button>
       </div>
 
       <div v-if="step == 2">
-        <h2 class="title is-3  has-text-centered">{{$t('Create Account')}}</h2>
+        <h2 class="title is-3  has-text-centered">{{ $t('Create Account') }}</h2>
         <div class="is-flex is-justify-content-center ">
           <div class="has-text-centered">
             <b-image :src="require('@/assets/img/account/default-avatar.svg')" class="is-128x128" rounded></b-image>
@@ -29,28 +30,36 @@
         </div>
         <ValidationObserver ref="observer" v-slot="{ handleSubmit }">
           <ValidationProvider rules="required" name="User" v-slot="{ errors, valid }">
-            <b-field :label="$t('Username')" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="$t(errors)">
+            <b-field :label="$t('Username')" :type="{ 'is-danger': errors[0], 'is-success': valid }"
+                     :message="$t(errors)">
               <b-input type="text" v-model="username" v-on:keyup.enter.native="handleSubmit(register)"></b-input>
             </b-field>
           </ValidationProvider>
           <ValidationProvider rules="required|min:5" vid="password" name="Password" v-slot="{ errors, valid }">
-            <b-field :label="$t('Password')" class="mt-4" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="$t(errors)">
-              <b-input type="password" v-model="password" password-reveal v-on:keyup.enter.native="handleSubmit(register)"></b-input>
+            <b-field :label="$t('Password')" class="mt-4" :type="{ 'is-danger': errors[0], 'is-success': valid }"
+                     :message="$t(errors)">
+              <b-input type="password" v-model="password" password-reveal
+                       v-on:keyup.enter.native="handleSubmit(register)"></b-input>
             </b-field>
           </ValidationProvider>
-          <ValidationProvider rules="required|confirmed:password" name="Password Confirmation" v-slot="{ errors, valid }">
-            <b-field :label="$t('Confirm Password')" class="mt-4" :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="$t(errors)">
-              <b-input type="password" v-model="confirmation" password-reveal v-on:keyup.enter.native="handleSubmit(register)"></b-input>
+          <ValidationProvider rules="required|confirmed:password" name="Password Confirmation"
+                              v-slot="{ errors, valid }">
+            <b-field :label="$t('Confirm Password')" class="mt-4"
+                     :type="{ 'is-danger': errors[0], 'is-success': valid }" :message="$t(errors)">
+              <b-input type="password" v-model="confirmation" password-reveal
+                       v-on:keyup.enter.native="handleSubmit(register)"></b-input>
             </b-field>
           </ValidationProvider>
-          <b-button type="is-primary" class="mt-5" rounded expanded @click="handleSubmit(register)">{{$t('Create')}}</b-button>
+          <b-button type="is-primary" class="mt-5" rounded expanded @click="handleSubmit(register)">{{ $t('Create') }}
+          </b-button>
         </ValidationObserver>
       </div>
 
       <div v-if="step == 3" class="has-text-centered ">
-        <h2 class="title is-3  has-text-centered">{{$t('All things done!')}}</h2>
+        <h2 class="title is-3  has-text-centered">{{ $t('All things done!') }}</h2>
         <div class="is-flex is-align-items-center is-justify-content-center">
-          <lottie-animation class="animation" :animationData="require('@/assets/ani/done.json')" :autoPlay="true" :loop="false" @complete="complete"></lottie-animation>
+          <lottie-animation class="animation" :animationData="require('@/assets/ani/done.json')" :autoPlay="true"
+                            :loop="false" @complete="complete"></lottie-animation>
         </div>
       </div>
     </div>
@@ -58,10 +67,11 @@
 </template>
 
 <script>
-import { ValidationObserver, ValidationProvider } from "vee-validate";
+import {ValidationObserver, ValidationProvider} from "vee-validate";
 import "@/plugins/vee-validate";
 import LottieAnimation from "lottie-web-vue";
 import smoothReflow from 'vue-smooth-reflow'
+
 export default {
 
   name: "welcome-page",
@@ -168,6 +178,7 @@ export default {
         if (versionRes.data.success == 200) {
           localStorage.setItem("version", versionRes.data.data.current_version);
         }
+        sessionStorage.setItem("fromWelcome", true);
         this.$router.push("/");
       } else {
         this.message = this.$t("Username or Password error!")
@@ -189,6 +200,7 @@ export default {
   width: 120px;
   height: 120px;
 }
+
 #login-page {
   height: calc(100% - 5.5rem);
   position: relative;

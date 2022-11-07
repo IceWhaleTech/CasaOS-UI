@@ -108,7 +108,7 @@ export default {
 
   created() {
     console.log(`%c
-_____             _____ _____ 
+_____             _____ _____
 |     |___ ___ ___|     |   __|
 |   --| .'|_ -| .'|  |  |__   |
 |_____|__,|___|__,|_____|_____|
@@ -144,7 +144,7 @@ _____             _____ _____
       })
     },
     /**
-     * @description: Get and Set default language 
+     * @description: Get and Set default language
      * @return {*} void
      */
     setInitLang() {

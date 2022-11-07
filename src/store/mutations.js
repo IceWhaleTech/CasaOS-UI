@@ -67,8 +67,16 @@ const mutations = {
         state.searchEngineSwitch = val
     },
 
+    SET_EXISTING_APPS_SWITCH(state, val) {
+        state.existingAppsSwitch = val
+    },
+
     SET_RECOMMEND_SWITCH(state, val) {
         state.recommendSwitch = val
+    },
+
+    SET_RSS_SWITCH(state, val) {
+        state.rssSwitch = val
     },
 
     SET_HARDWARE_INFO(state, val) {

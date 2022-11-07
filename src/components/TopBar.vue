@@ -149,8 +149,40 @@
           </div>
           <!-- Background End -->
 
-          <!--  Recommended modules Switch Start  -->
+          <!--  Show Existing Docker Apps Switch Start  -->
           <div class="is-flex is-align-items-center mb-2 h-30">
+            <div class="is-flex is-align-items-center is-flex-grow-1">
+              <b-icon pack="casa" icon="app-switch" class="mr-1"></b-icon>
+              <b>{{ $t('Show Existing Docker Apps') }}</b>
+            </div>
+            <div>
+              <b-field>
+                <b-switch type="is-dark" class="is-flex-direction-row-reverse mr-0"
+                          v-model="barData.existing_apps_switch"
+                          @input="saveData"></b-switch>
+              </b-field>
+            </div>
+          </div>
+          <!--  Show Existing Docker Apps Switch End  -->
+
+          <!--  Show Existing Docker Apps Switch Start  -->
+          <div class="is-flex is-align-items-center mb-2 h-30">
+            <div class="is-flex is-align-items-center is-flex-grow-1">
+              <b-icon pack="casa" icon="rss-switch" class="mr-1"></b-icon>
+              <b>{{ $t('Get News About CasaOS') }}</b>
+            </div>
+            <div>
+              <b-field>
+                <b-switch type="is-dark" class="is-flex-direction-row-reverse mr-0"
+                          v-model="barData.rss_switch"
+                          @input="rssConfirm"></b-switch>
+              </b-field>
+            </div>
+          </div>
+          <!--  Show Existing Docker Apps Switch End  -->
+
+          <!--  Recommended modules Switch Start  -->
+          <!-- <div class="is-flex is-align-items-center mb-2 h-30">
             <div class="is-flex is-align-items-center is-flex-grow-1">
               <b-icon pack="casa" icon="app-switch" class="mr-1"></b-icon>
               <b>{{ $t('Show Recommended Apps') }}</b>
@@ -161,7 +193,7 @@
                           @input="saveData"></b-switch>
               </b-field>
             </div>
-          </div>
+          </div>-->
           <!-- Recommended modules Switch End  -->
 
           <!-- Automount USB Drive Start  -->
@@ -257,6 +289,8 @@ export default {
         recommend_switch: true,
         shortcuts_switch: false, // Not used
         widgets_switch: false, // Not used
+        existing_apps_switch: true,
+        rss_switch: false,
       },
       updateInfo: {
         current_version: '0',
@@ -328,9 +362,21 @@ export default {
       },
       deep: true
     },
+    "barData.existing_apps_switch": {
+      handler(val) {
+        this.$store.commit('SET_EXISTING_APPS_SWITCH', val);
+      },
+      deep: true
+    },
     'barData.recommend_switch': {
       handler(val) {
         this.$store.commit('SET_RECOMMEND_SWITCH', val);
+      },
+      deep: true
+    },
+    'barData.rss_switch': {
+      handler(val) {
+        this.$store.commit('SET_RSS_SWITCH', val);
       },
       deep: true
     },
@@ -596,6 +642,23 @@ export default {
       })
     },
 
+    rssConfirm() {
+      if (this.barData.rss_switch == false)
+        return this.saveData()
+      this.$buefy.dialog.confirm({
+        title: this.$t('Get News About CasaOS'),
+        message: this.$t('CasaOS request get the latest news through the internet when you visit.'),
+        type: 'is-dark',
+        confirmText: this.$t('Accept'),
+        cancelText: this.$t('Cancel'),
+        onConfirm: () => {
+          this.saveData()
+        },
+        onCancel: () => {
+          this.barData.rss_switch = false
+        }
+      })
+    },
 
   },
 
