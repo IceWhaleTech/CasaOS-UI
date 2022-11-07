@@ -4,9 +4,9 @@
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2022-07-15 17:58:36
  * @FilePath: /CasaOS-UI/src/components/logsAndTerminal/TerminalPanel.vue
- * @Description: 
- * 
- * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+ * @Description:
+ *
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
 -->
 <template>
   <div class="modal-card">
@@ -14,7 +14,9 @@
     <!-- Modal-Card Body Start -->
     <section class="modal-card-body " style="overflow:hidden">
       <h3 class="title is-3">CasaOS</h3>
-      <div class="close-container"><button type="button" class="delete" @click="$emit('close')" /></div>
+      <div class="close-container">
+        <button type="button" class="delete" @click="$emit('close')"/>
+      </div>
       <div class="is-flex-grow-1">
         <b-tabs :animated="false" @input="onInput">
           <b-tab-item :label="$t('Terminal')" value="terminal">
@@ -48,16 +50,22 @@ export default {
     return {
       isLoading: false,
       wsUrl: ``,
-      logData: ""
+      logData: "",
+      timer: '',
     }
   },
   mounted() {
     this.getLogs();
+    this.timer = setInterval(() => {
+      this.getLogs();
+    }, 1000 * 5);
   },
   methods: {
     getLogs() {
       this.$api.sys.getLogs().then(res => {
-        this.logData = res.data.data;
+        let data = res.data.data
+        let replaceData = data.replace(/\n(.{8})/gu, '\n');
+        this.logData = replaceData.substring(8, replaceData.length - 1);
       })
     },
     onInput(e) {
@@ -70,6 +78,9 @@ export default {
       }
     }
   },
+  destroyed() {
+    clearInterval(this.timer);
+  }
 }
 </script>
 
