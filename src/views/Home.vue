@@ -160,7 +160,8 @@ export default {
           recommend_switch: true,
           shortcuts_switch: true,
           widgets_switch: true,
-          rss_switch: false,
+          existing_apps_switch: true,
+          rss_switch: this.$store.state.rssSwitch,
         }
         // save
         const saveRes = await this.$api.users.setCustomStorage("system", barData)
@@ -274,10 +275,8 @@ export default {
         confirmText: this.$t('Accept'),
         cancelText: this.$t('Cancel'),
         onConfirm: async () => {
-          const saveRes = await this.$api.users.setCustomStorage("system", this.barData)
-          if (saveRes.data.success === 200) {
-            this.barData = saveRes.data.data
-          }
+          this.$store.commit('SET_RSS_SWITCH', true);
+          await this.getConfig()
         },
         onCancel: () => {
           this.barData.rss_switch = false

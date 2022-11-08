@@ -174,7 +174,8 @@
             <div>
               <b-field>
                 <b-switch type="is-dark" class="is-flex-direction-row-reverse mr-0"
-                          v-model="barData.rss_switch"
+                          v-model="rss_switch"
+                          :native-value="barData.rss_switch"
                           @input="rssConfirm"></b-switch>
               </b-field>
             </div>
@@ -292,6 +293,7 @@ export default {
         existing_apps_switch: true,
         rss_switch: false,
       },
+      rss_switch: false,
       updateInfo: {
         current_version: '0',
         need_update: false,
@@ -376,6 +378,7 @@ export default {
     },
     'barData.rss_switch': {
       handler(val) {
+        this.rss_switch = val;
         this.$store.commit('SET_RSS_SWITCH', val);
       },
       deep: true
@@ -643,8 +646,10 @@ export default {
     },
 
     rssConfirm() {
-      if (this.barData.rss_switch == false)
-        return this.saveData()
+      if (this.rss_switch == false) {
+        this.barData.rss_switch = false;
+        return this.saveData();
+      }
       this.$buefy.dialog.confirm({
         title: this.$t('Get News About CasaOS'),
         message: this.$t('CasaOS request get the latest news through the internet when you visit.'),
@@ -652,10 +657,12 @@ export default {
         confirmText: this.$t('Accept'),
         cancelText: this.$t('Cancel'),
         onConfirm: () => {
+          this.barData.rss_switch = true
           this.saveData()
         },
         onCancel: () => {
           this.barData.rss_switch = false
+          this.rss_switch = false
         }
       })
     },

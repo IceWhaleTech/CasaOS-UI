@@ -26,7 +26,7 @@
       <div class="node-card">
         <div class=" mt-5 mb-5">
           <ValidationObserver ref="ob1">
-            <ValidationProvider v-slot="{ errors, valid }" rules="required|url">
+            <ValidationProvider v-slot="{ errors, valid }" rules="required">
               <b-field :message="$t(errors)" :type="{ 'is-danger': errors[0], 'is-success': valid }"
                        class="is-flex-wrap-nowrap">
                 <template #label>

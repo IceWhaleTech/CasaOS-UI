@@ -19,9 +19,6 @@
         <li v-for="(item,key) in rss" :key="key"><a :href="item.link" target="_blank" class="intro-text">{{
             item.title
           }}</a></li>
-        <li :key="rss.length" v-if="rss.length > 1"><a :href="rss[0].link" target="_blank" class="intro-text">{{
-            rss[0].title
-          }}</a></li>
       </ul>
     </span>
 
@@ -39,11 +36,17 @@ export default {
       return this.$store.state.rssSwitch
     },
     line() {
-      return this.rss.length === 1 ? 1 : this.rss.length + 1
+      return this.rss.length // === 1 ? 1 : this.rss.length + 1
     },
     perc() {
-      return ((1 - this.line) / this.line).toFixed(2) * 100 + '%'
+      // return ((1 - this.line) / this.line).toFixed(2) * 100 + '%'
+      return (this.line - 1) / this.line * 100 + '%'
     },
+  },
+  watch: {
+    rssShow() {
+      this.parseFeed()
+    }
   },
   data() {
     return {
@@ -131,7 +134,7 @@ export default {
   animation-duration: var(--time);
   animation-delay: 0s;
   animation-iteration-count: infinite;
-  animation-timing-function: steps(var(--line), jump-none);
+  animation-timing-function: steps(var(--line), end);
 
   li {
     max-width: 15rem;

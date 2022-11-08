@@ -12,7 +12,7 @@
     <!-- Modal-Card Body Start -->
     <section class="modal-card-body ">
 
-      <h3 class="title is-3">{{ $t('Bug report') }}</h3>
+      <h3 class="title is-3">{{ $t('Feedback') }}</h3>
       <div class="close-container">
         <button type="button" class="delete" @click="$emit('close')"/>
       </div>

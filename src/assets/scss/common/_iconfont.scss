@@ -25,6 +25,16 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.casa-exit-app:before {
+  content: "\e932";
+  color: #4a4a4a;
+}
+
+.casa-rss-switch:before {
+  content: "\e933";
+  color: #4a4a4a;
+}
+
 .casa-storage-merger:before {
   content: "\e92f";
 }
@@ -35,6 +45,10 @@
 
 .casa-expand:before {
   content: "\e900";
+}
+
+.casa-feedback:before {
+  content: "\e934";
 }
 
 .casa-social-share:before {
