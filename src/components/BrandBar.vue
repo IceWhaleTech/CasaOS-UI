@@ -40,7 +40,7 @@ export default {
     },
     perc() {
       // return ((1 - this.line) / this.line).toFixed(2) * 100 + '%'
-      return (this.line - 1) / this.line * 100 + '%'
+      return -(this.line - 1) / this.line * 100 + '%'
     },
   },
   watch: {
@@ -109,13 +109,14 @@ export default {
   }
 }
 
+// -----------------scroll start-----------------
 @keyframes scroll {
   0% {
     transform: translate(0, 0);
   }
   100% {
-    transform: translate(0, var(--perc));
-    //transform: translate(0, -100%);
+    //transform: translate(0, var(--perc)); // slide
+    transform: translate(0, -100%); // Jump upwards
   }
 }
 
@@ -126,9 +127,7 @@ export default {
 
 .scroll {
   width: 100%;
-  //height: var(--line) rem;
   line-height: 1rem;
-  //verticle-align: bottom;
   text-align: center;
   animation-name: scroll;
   animation-duration: var(--time);
@@ -142,12 +141,6 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     no-wrap: true;
-    //white-space: nowrap;
-    //animation-name: scroll;
-    //animation-duration: var(--time);
-    //animation-delay: 0s;
-    //animation-iteration-count: infinite;
-    //animation-timing-function: cubic-bezier(0.1, -0.6, 0.2, 0);
   }
 
   li:hover {
@@ -160,7 +153,6 @@ export default {
   animation-play-state: paused;
 }
 
-.aaa {
-  height: 500px;
-}
+// -----------------scroll end-----------------
+
 </style>
