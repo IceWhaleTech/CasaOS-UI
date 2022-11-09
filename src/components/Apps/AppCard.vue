@@ -141,10 +141,11 @@ export default {
         window.open(item.host, '_blank');
       } else {
         this.$refs.dro.isActive = false
-        if (item.port != "" && item.state == 'running') {
+        if (item.state == 'running') {
           const hostIp = item.host || this.$baseIp
           const protocol = item.protocol || 'http'
-          const url = `${protocol}://${hostIp}:${item.port}${item.index}`
+          const port = item.port ? `:${item.port}` : ''
+          const url = `${protocol}://${hostIp}${port}${item.index}`
           if (item.image.toLowerCase().indexOf("qbittorrent") == -1) {
             window.open(url, '_blank');
           } else {
