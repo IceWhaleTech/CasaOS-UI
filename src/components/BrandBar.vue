@@ -33,20 +33,18 @@ export default {
   components: {},
   computed: {
     rssShow() {
-      return this.$store.state.rssSwitch
+      let which = this.$store.state.rssSwitch
+      if (which) {
+        this.parseFeed()
+      }
+      return which
     },
     line() {
-      return this.rss.length // === 1 ? 1 : this.rss.length + 1
+      return this.rss.length
     },
     perc() {
-      // return ((1 - this.line) / this.line).toFixed(2) * 100 + '%'
       return -(this.line - 1) / this.line * 100 + '%'
     },
-  },
-  watch: {
-    rssShow() {
-      this.parseFeed()
-    }
   },
   data() {
     return {

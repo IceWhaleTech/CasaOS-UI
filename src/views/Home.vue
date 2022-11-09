@@ -128,7 +128,6 @@ export default {
   created() {
     this.getHardwareInfo();
     this.getWallpaperConfig();
-    this.getConfig()
   },
   mounted() {
     window.addEventListener("resize", this.onResize);
@@ -161,7 +160,7 @@ export default {
           shortcuts_switch: true,
           widgets_switch: true,
           existing_apps_switch: true,
-          rss_switch: this.$store.state.rssSwitch,
+          rss_switch: this.barData.rss_switch,
         }
         // save
         const saveRes = await this.$api.users.setCustomStorage("system", barData)
@@ -275,7 +274,7 @@ export default {
         confirmText: this.$t('Accept'),
         cancelText: this.$t('Cancel'),
         onConfirm: async () => {
-          this.$store.commit('SET_RSS_SWITCH', true);
+          this.barData.rss_switch = true
           await this.getConfig()
         },
         onCancel: () => {
