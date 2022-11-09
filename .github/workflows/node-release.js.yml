@@ -10,9 +10,11 @@ on:
         default: 'warning'
       tags:
         description: 'Tags'
-#  push:
-#    branches:
-#      - 'main'
+  push:
+    branches:
+      - '!dev*'
+    tags:
+      - 'v*'
 jobs:
   release:
 
