@@ -141,10 +141,11 @@ export default {
         window.open(item.host, '_blank');
       } else {
         this.$refs.dro.isActive = false
-        if (item.port != "" && item.state == 'running') {
+        if (item.state == 'running') {
           const hostIp = item.host || this.$baseIp
           const protocol = item.protocol || 'http'
-          const url = `${protocol}://${hostIp}:${item.port}${item.index}`
+          const port = item.port ? `:${item.port}` : ''
+          const url = `${protocol}://${hostIp}${port}${item.index}`
           if (item.image.toLowerCase().indexOf("qbittorrent") == -1) {
             window.open(url, '_blank');
           } else {
@@ -191,7 +192,7 @@ export default {
       }).catch((err) => {
         this.isRestarting = false;
         this.$buefy.toast.open({
-          message: err.response.data.message,
+          message: err.response.data.data,
           type: 'is-danger',
           position: 'is-bottom-right',
           duration: 3000
@@ -294,7 +295,7 @@ export default {
         this.isStarting = false
         this.$refs.dro.isActive = false
         this.$buefy.toast.open({
-          message: err.response.data.message,
+          message: err.response.data.data,
           type: 'is-danger',
           position: 'is-bottom-right',
           duration: 3000

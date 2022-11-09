@@ -1225,7 +1225,7 @@ export default {
           this.$emit('updateState')
         } else {
           this.$buefy.toast.open({
-            message: res.data.message,
+            message: res.data.message.data,
             type: 'is-warning'
           })
         }
