@@ -128,6 +128,7 @@ export default {
   created() {
     this.getHardwareInfo();
     this.getWallpaperConfig();
+    this.getConfig();
   },
   mounted() {
     window.addEventListener("resize", this.onResize);
@@ -274,8 +275,11 @@ export default {
         confirmText: this.$t('Accept'),
         cancelText: this.$t('Cancel'),
         onConfirm: async () => {
-          this.barData.rss_switch = true
-          await this.getConfig()
+          let systemConfig = await this.$api.users.getCustomStorage("system")
+          let barData = systemConfig.data.data
+          barData.rss_switch = true
+          const saveRes = await this.$api.users.setCustomStorage("system", barData)
+          this.barData = saveRes.data.data
         },
         onCancel: () => {
           this.barData.rss_switch = false
