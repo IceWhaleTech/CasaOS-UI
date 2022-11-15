@@ -51,6 +51,9 @@ jobs:
           echo "VERSION=${{steps.version.outputs.property}}" >> $GITHUB_ENV
           #'use echo "{environment_variable_name}={value}" >> $GITHUB_ENV'
           # run: echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
+      - name: Get version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
       - name: '输出 echo artifact'
         run: |
           echo ${{ steps.version.outputs.value }}
@@ -70,6 +73,18 @@ jobs:
           gzip: false
           tag: ${{ env.VERSION }}
           files: ./linux-all-casaos-${{ env.VERSION }}.tar.gz
+
+      - name: Upload to oss
+        id: upload_to_oss
+        uses: tvrcgo/upload-to-oss@master
+        with:
+          key-id: ${{ secrets.OSS_KEY_ID }}
+          key-secret: ${{ secrets.OSS_KEY_SECRET }}
+          region: oss-cn-shanghai
+          bucket: casaos
+          assets: |
+            ./linux-all-casaos-${{ steps.get_version.outputs.VERSION }}.tar.gz:/IceWhaleTech/CasaOS-UI/releases/download/${{ steps.get_version.outputs.VERSION }}/linux-all-casaos-${{ steps.get_version.outputs.VERSION }}.tar.gz
+
 #      - name: '刷新缓存 Refresh The Cache'
 #        run: |
 #          curl https://purge.jsdelivr.net/npm/iemotion-pic@latest/dist/name.json
