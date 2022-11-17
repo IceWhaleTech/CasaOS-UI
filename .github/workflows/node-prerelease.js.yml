@@ -11,8 +11,6 @@ on:
       tags:
         description: 'Tags'
   push:
-    branches:
-      - '!dev*'
     tags:
       - 'v*'
 jobs:
