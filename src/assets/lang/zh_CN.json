@@ -317,5 +317,17 @@
   " to continue.": "继续",
   "APPs is running": "应用正在运行中",
   "restart APPs to continue.": "重启 APP 以继续。",
-  "Add a shortcut": "添加快捷方式"
+  "Add a shortcut": "添加快捷方式",
+  "Error when creating installation path for apps": "创建应用安装路径时出错",
+  "Accapt": "接受",
+  "We appreciate any feedback you may have.": "我们感谢你的任何反馈。",
+  "Show other Docker container app(s)": "显示其他Docker容器应用",
+  "Show news feed from CasaOS Blog": "显示来自 CasaOS 博客的新闻订阅",
+  "CasaOS dashboard will get the the latest news feed of https://blog.casaos.io via Internet, which might leave your visit records to the site. Do you accept?": "CasaOS 仪表板将会通过 https://blog.casaos.io 获取最新的新闻，这可能会将您的访问记录留到网站。您接受吗？",
+  "Feedback / Issue Report": "反馈 / 问题报告",
+  "Submit a feedback or report an issue:": "提交反馈意见或报告问题：",
+  "Start with [Issue], [App Request], or [Feature Request]...": "以 [问题]、[应用请求] 或[功能请求] 开始...",
+  "Description": "描述",
+  "The more details provided, the easier this feedback or issue gets addressed.": "提供的细节越多，反馈或问题就越容易处理。",
+  "For more feedback options, visit CasaOS project on GitHub...": "更多反馈选项请访问 GitHub上的 CasaOS 项目..."
 }
