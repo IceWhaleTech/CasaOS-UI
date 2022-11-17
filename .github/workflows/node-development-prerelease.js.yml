@@ -5,7 +5,7 @@ on:
     branches:
       - 'dev**-ezreal'
     tags:
-      - '!**' # 忽略所有tag
+      - '!*' # 忽略所有tag
       # pull_request:
       #   branches: [ "dev-0.3.6-ezreal", "main" ]
 jobs:
