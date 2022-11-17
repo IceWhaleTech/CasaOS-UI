@@ -12,7 +12,7 @@
     <!-- Modal-Card Body Start -->
     <section class="modal-card-body ">
 
-      <h3 class="title is-3">{{ $t('Feedback') }}</h3>
+      <h3 class="title is-3">{{ $t('Feedback / Issue Report') }}</h3>
       <div class="close-container">
         <button type="button" class="delete" @click="$emit('close')"/>
       </div>
@@ -20,11 +20,11 @@
       <div class="is-flex-grow-1 is-relative">
         <b-field :label="$t('Title')">
           <b-input maxlength="100" v-model="postTitle"
-                   :placeholder="$t('App request、Bug report、Feature request.')"></b-input>
+                   :placeholder="$t('Start with [Issue], [App Request], or [Feature Request]...')"></b-input>
         </b-field>
-        <b-field :label="$t('Describe')">
+        <b-field :label="$t('Description')">
           <b-input maxlength="500" type="textarea" v-model="postBody"
-                   :placeholder="$t('A clear and concise desctiption.')"></b-input>
+                   :placeholder="$t('The more details provided, the easier this feedback or issue gets addressed.')"></b-input>
         </b-field>
         <b-field :label="$t('System infomation')">
           <div class="feedback-info-container is-size-14px" v-html="markdownToHtml"></div>

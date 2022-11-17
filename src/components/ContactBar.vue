@@ -15,7 +15,7 @@
       modifiers: { offset: { offset: '0,4px' } }
     }">
       <div class="popper  tooltip-content">
-        {{ $t('Submit feedback or bugs') }}
+        {{ $t('Submit a feedback or report an issue') }}
       </div>
       <a @click="showFeedback" slot="reference">
         <b-icon pack="casa" icon="feedback"></b-icon>

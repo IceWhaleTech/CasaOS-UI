@@ -1467,7 +1467,7 @@ export default {
         await this.$api.folder.create(path)
       } catch (e) {
         this.$buefy.toast.open({
-          message: this.$t('Failed to create docker folder'),
+          message: this.$t('Error when creating installation path for apps'),
           type: 'is-danger'
         })
         return
