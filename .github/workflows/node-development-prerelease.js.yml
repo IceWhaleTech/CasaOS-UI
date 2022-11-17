@@ -1,4 +1,4 @@
-name: Node.js prerelease CI by branch
+name: Development CI form branch
 
 on:
   push:
