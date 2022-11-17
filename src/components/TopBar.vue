@@ -319,11 +319,11 @@ export default {
         {lang: "pt_br", name: "Português (Brasil)"},
         {lang: "sv_se", name: "Svenska"},
         {lang: "zh_cn", name: "简体中文"},
-        {lang: "be_by", name: "Беларуская"},
-        {lang: "id_id", name: "Bahasa Indonesia"},
-        {lang: "ja_jp", name: "やまと"},
-        {lang: "ko_kr", name: "한국어"},
-        {lang: "nb_no", name: "Norsk"},
+        // {lang: "be_by", name: "Беларуская"},
+        // {lang: "id_id", name: "Bahasa Indonesia"},
+        // {lang: "ja_jp", name: "やまと"},
+        // {lang: "ko_kr", name: "한국어"},
+        // {lang: "nb_no", name: "Norsk"},
       ],
       // Search Engine Sets
       searchEngines: [
