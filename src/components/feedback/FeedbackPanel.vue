@@ -38,7 +38,7 @@
       <div class="is-flex-grow-1">
         <a target="_blank"
            href="https://github.com/IceWhaleTech/CasaOS/issues/new/choose"
-           class="is-size-14px">{{ $t('Go to github for feedback') }}</a>
+           class="is-size-14px">{{ $t('For more feedback options, visit CasaOS project on GitHub...') }}</a>
       </div>
       <div>
         <b-button :label="$t('Submit')" type="is-primary" @click="submitIssue" rounded/>
