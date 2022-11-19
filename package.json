@@ -82,7 +82,7 @@
     "sass": "^1.51.0",
     "sass-loader": "10.1.1",
     "style-resources-loader": "^1.5.0",
-    "swiper": "^8.4.4",
+    "swiper": "^5.2.0",
     "terser-webpack-plugin": "^5.3.1",
     "typescript": "^4.8.3",
     "useless-files-webpack-plugin": "^1.0.1",

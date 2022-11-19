@@ -295,7 +295,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .out-container {
   position: relative;
   height: 100%;
@@ -312,6 +312,7 @@ export default {
   margin-left: 17.5rem;
   position: relative;
   z-index: 10;
+  width: calc(100% - 17.5rem);
 }
 
 .dark-bg {
@@ -340,6 +341,7 @@ export default {
   .main-content {
     margin-left: 0;
     transition: all 0.3s;
+    width: 100%;
 
     &.open {
       transform: scale(0.9);

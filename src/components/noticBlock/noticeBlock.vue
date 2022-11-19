@@ -1,33 +1,67 @@
 <!--
- * @Author: JerryK
- * @Date: 2021-11-10 17:48:25
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-25 19:19:02
+ * @Author: zhanghengxin ezreal.ice@icloud.com
+ * @Date: 2022-09-06 14:42:24
+ * @LastEditors: zhanghengxin ezreal.ice@icloud.com
+ * @LastEditTime: 2022-09-06 15:31:14
+ * @FilePath: /CasaOS-UI/src/components/Storage/noticeBlock.vue
  * @Description:
- * @FilePath: /CasaOS-UI/src/components/syncthing/SyncBlock.vue
+ *
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
+ *
 -->
-<template>
-  <div class="column is-half">
-    <div class="common-card">
 
-      <div class="blur-background"></div>
-      <div class="wuji-content">
-        <!-- Init State Start -->
-        <h6 class="title is-4 mb-0 has-text-white">{{ $t(`Sync your data`) }}</h6>
-        <div class="is-flex is-align-items-center">
-          <div class="info ">
-            <div class="des two-line is-size-14px">
-              {{ $t(`Use Syncthing to sync your files between multiple devices.`) }}
+<template>
+  <div class="common-card">
+    <div class="blur-background"></div>
+    <div class="content widget">
+      <!-- Init State Start -->
+      <div class="widget-header is-flex">
+        <div class="image is-24x24">
+          <img :src="require('@/assets/img/logo/casa-white.svg')"/>
+        </div>
+        <div class="widget-title pl-2">
+          {{ $t("Find New Drive") }}
+        </div>
+      </div>
+
+      <div class="is-flex is-align-items-center">
+        <div class="info">
+          <div class="widget-header is-flex _content-margin">
+            <div class="image is-24x24">
+              <img :src="require('@/assets/img/logo/casa-white.svg')"/>
+            </div>
+            <div class=" is-flex is-flex-grow-1 ml-2">
+              <div class="widget-title is-flex-grow-1 nowarp">
+                {{ $t("Find New Drive") }}
+              </div>
+              <div class="has-text-left is-size-14px mt-1 is-flex-shrink-0">
+                <span class="op65">100G/1000G</span>
+              </div>
             </div>
           </div>
-          <b-image :src="require('@/assets/img/syncthing/sync.svg')" class="is-80x80"></b-image>
-        </div>
-        <div class="buttons">
-          <b-button type="is-primary" size="is-small" rounded @click="openSyncPanel">{{ $t(actionText) }}</b-button>
-        </div>
-        <!-- Init State End -->
+          <div class="widget-header is-flex scrpe-margin">
+            <div class="image is-24x24">
+              <img :src="require('@/assets/img/logo/casa-white.svg')"/>
+            </div>
+            <div class=" is-flex is-flex-grow-1 ml-2">
+              <div class="widget-title is-flex-grow-1 nowarp">
+                {{ $t("Find New Drive") }}
+              </div>
+              <p class="has-text-left is-size-14px mt-1 is-flex-shrink-0">
+                <span class="op65">100G/1000G</span>
+              </p>
+            </div>
+          </div>
 
+        </div>
       </div>
+      <div class="is-flex is-flex-direction-row-reverse">
+        <b-button :disabled="false" class="width" rounded size="is-small" type="is-primary" @click="TODO">
+          {{ $t('Set MainStorage') }}
+        </b-button>
+      </div>
+      <!-- Init State End -->
+
     </div>
   </div>
 </template>
@@ -36,17 +70,9 @@
 import events from '@/events/events';
 
 export default {
-  name: "sync-block",
+  name: "notice-block",
   data() {
-    return {
-      isLoading: false,
-      isStarting: false,
-      syncBaseURL: "",
-      isSyncInstalled: false,
-      isSyncRunning: false,
-      syncPort: "",
-      syncId: ""
-    }
+    return {}
   },
   created() {
     this.checkSyncStatus()
@@ -60,16 +86,15 @@ export default {
     this.$EventBus.$off(events.UPDATE_SYNC_STATUS);
   },
   computed: {
-    actionText() {
-      return !this.isSyncInstalled ? "Install" : "Open"
-    }
+    // actionText() {
+    // }
   },
 
   methods: {
     async checkSyncStatus() {
       // const res = await this.$api.sys.getSystemApps()
       const listRes = await this.$api.container.getMyAppList();
-      const systemApps = listRes.data ? listRes.data.data.casaos_apps : [];
+      const systemApps = listRes.data.data.casaos_apps
       const is8384SyncInstalled = systemApps.some(app => {
         return app.image.includes('syncthing') && app.port === 8384
       })
@@ -144,19 +169,43 @@ export default {
           })
         }
       }
-    },
-
-  },
-  sockets: {
-    app_install(res) {
-      const data = res.body.data
-      if (data.finished) {
-        this.checkSyncStatus();
-      }
     }
   }
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+// copy from src/assets/scss/common/_others.scss:102
+.content {
+  position: relative;
+  z-index: 10;
+  padding: 1rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  padding-bottom: 0.75rem;
+
+  .info {
+    //margin: 1.5rem;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+    margin-left: 2rem;
+    margin-right: 0rem;
+
+    ._content-margin {
+      margin-top: 0.75rem;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.75rem;
+    }
+
+    //src/assets/scss/common/_others.scss:24
+    .b-line {
+      border-bottom: #cfcfcf 1px solid;
+      margin-right: 2rem;
+
+      .nowarp {
+        white-space: nowrap;
+      }
+    }
+  }
+}
 </style>
