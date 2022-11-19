@@ -3,7 +3,7 @@
  * @Date: 2022-09-06 14:42:24
  * @LastEditors: zhanghengxin ezreal.ice@icloud.com
  * @LastEditTime: 2022-09-06 15:31:14
- * @FilePath: /CasaOS-UI/src/components/Storage/StorageBlock.vue
+ * @FilePath: /CasaOS-UI/src/components/Storage/noticeBlock.vue
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
