@@ -86,11 +86,13 @@ export default {
     this.$EventBus.$off(events.UPDATE_SYNC_STATUS);
   },
   computed: {
-    // actionText() {
-    // }
   },
 
   methods: {
+
+    TODO() {
+      // this.$refs.mySwiper.$swiper.slideNext()
+    },
     async checkSyncStatus() {
       // const res = await this.$api.sys.getSystemApps()
       const listRes = await this.$api.container.getMyAppList();

@@ -9,14 +9,12 @@
 <template>
   <swiper ref="mySwiper" :options="swiperOptions">
     <swiper-slide v-for="(carousel,key) in carousels" :key="key">
-      <!--      <div class="hero-body has-text-centered has-background-white">
-              {{ carousel.title }}
-            </div>-->
       <noticeBlock></noticeBlock>
     </swiper-slide>
-    <div class="swiper-pagination" slot="pagination"></div>
-    <div class="swiper-button-prev" slot="button-prev"></div>
-    <div class="swiper-button-next" slot="button-next"></div>
+    <div class="swiper-pagination" slot="pagination">
+    </div>
+    <img :src="require('@/assets/img/widgets/swiper-left.svg')" slot="button-prev"  class="swiper-button-prev"/>
+    <img :src="require('@/assets/img/widgets/swiper-right.svg')" slot="button-next" class="swiper-button-next" />
   </swiper>
 </template>
 
@@ -32,7 +30,7 @@ export default {
   name: "core-service",
   data() {
     return {
-      notice: "local_stroage",
+      notice: "local-storage",
       isLoading: false,
       swiperOptions: {
         // autoplay: {
@@ -43,8 +41,13 @@ export default {
         slidesPerView: 2,
         spaceBetween: 16,
         pagination: {
-          el: '.swiper-pagination'
+          el: '.swiper-pagination',
+          bulletClass: 'swiper-pagination-bullet',
         },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev'
+        }
       },
       carousels: [
         {
@@ -59,19 +62,16 @@ export default {
           color: 'is-info',
           path: '/syncthing'
         },
-        // {
-        //   title: 'Storage',
-        //   icon: 'mdi-database',
-        //   color: 'is-success',
-        //   path: '/storage'
-        // },
+        {
+          title: 'Storage',
+          icon: 'mdi-database',
+          color: 'is-success',
+          path: '/storage'
+        },
       ]
     }
   },
   computed: {
-    // swiper() {
-    //   return this.$refs.mySwiper.$swiper
-    // }
   },
   mounted() {
     this.initMessageBus();
@@ -91,9 +91,7 @@ export default {
         console.log('socket failure', e)
       }
       socket.onmessage = (event, data) => {
-        debugger
         console.log('11111\n', event, '\n', data)
-        // this.triggerUIEventBus(event)
         console.log('triggerEventBus', event)
         let eventJson = JSON.parse(event)
         this.$emit(eventJson.name, eventJson.propertyTypeList)
@@ -115,13 +113,31 @@ export default {
         messageSoruseWSHub[item] = this.createWS(item)
       })
     },
-    // uiEventBusHub(eventName, data) {
-    //   console.log('uiEventBusHub', eventName, data)
-    //   this.triggerUIEventBus(eventName, data)
-    // },
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.swiper-button-prev, .swiper-button-next {
+  width: 2rem;
+  height: 2rem;
+  margin: 0 0.5rem;
+  z-index: 20;
+}
+.swiper-pagination{
+  position: relative;
+  ::v-deep .swiper-pagination-bullet{
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    width: 2rem;
+    height: 0.25rem;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 0.125rem;
+    display: inline-block;
+  }
+  ::v-deep .swiper-pagination-bullet-active{
+    background: #FFFFFF;
+  }
+}
+
 </style>
