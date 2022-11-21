@@ -146,6 +146,25 @@ export default {
           const protocol = item.protocol || 'http'
           const port = item.port ? `:${item.port}` : ''
           const url = `${protocol}://${hostIp}${port}${item.index}`
+          let href = window.location.href.split("#")[0]
+          if (url === href) {
+            this.$buefy.toast.open({
+              message: this.$t('The page to be opened is the same as current page'),
+              type: 'is-warning',
+              position: 'is-bottom-right',
+              duration: 3000,
+              queue: false,
+              container: null,
+              animation: 'fade',
+              onOpen: () => {
+              },
+              onClose: () => {
+              },
+              ariaRole: 'alert',
+              ariaLive: 'polite'
+            })
+            return
+          }
           if (item.image.toLowerCase().indexOf("qbittorrent") == -1) {
             window.open(url, '_blank');
           } else {
@@ -235,11 +254,9 @@ export default {
           }
           this.isUninstalling = false;
         })
-        // return
       } else {
         this.$api.container.uninstall(this.item.id).then((res) => {
           if (res.data.success == 200) {
-            // this.updateState()
             this.$EventBus.$emit(events.UPDATE_SYNC_STATUS);
           }
           this.isUninstalling = false;
