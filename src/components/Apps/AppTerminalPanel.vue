@@ -47,7 +47,7 @@ export default {
   data() {
     return {
       isLoading: false,
-      wsUrl: `ws://${this.$baseURL}/v1/container/${this.appid}/terminal?token=${this.$store.state.access_token}`,
+      wsUrl: `${this.$wsProtocol}//${this.$baseURL}/v1/container/${this.appid}/terminal?token=${this.$store.state.access_token}`,
       logData: "",
       timer: "",
     }

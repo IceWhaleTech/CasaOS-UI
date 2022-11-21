@@ -1,5 +1,6 @@
 <template>
-  <fullscreen class="fullScreen  pl-2 pt-2 pb-2" :class="[{'mt-5':!fullscreen},isVaild?'fdark-bg':'flight-bg']" :fullscreen.sync="fullscreen" :teleport="true" :page-only="true" @change="onWindowResize">
+  <fullscreen class="fullScreen  pl-2 pt-2 pb-2" :class="[{'mt-5':!fullscreen},isVaild?'fdark-bg':'flight-bg']"
+              :fullscreen.sync="fullscreen" :teleport="true" :page-only="true" @change="onWindowResize">
     <a class="fullscreen-button" @click="toggleFullScreen" v-if="isVaild">
       <b-icon :icon="buttonIcon"></b-icon>
     </a>
@@ -7,7 +8,8 @@
       <div class="card card-shadow mb-6" v-if="!isVaild">
         <div class="card-content">
           <div class="content">
-            <b-notification auto-close type="is-danger" v-model="notificationShow" aria-close-label="Close notification" role="alert" :closable="false">
+            <b-notification auto-close type="is-danger" v-model="notificationShow" aria-close-label="Close notification"
+                            role="alert" :closable="false">
               {{ $t(message) }}
             </b-notification>
             <b-field :label="$t('Username')">
@@ -23,7 +25,10 @@
               <b-input type="number" v-model="sshPort" name="port"></b-input>
             </b-field>
             <div class="buttons mt-5">
-              <b-button type="is-primary" rounded expanded @click="checkLogin" :loading="isConnecting">{{ $t('Connect') }}</b-button>
+              <b-button type="is-primary" rounded expanded @click="checkLogin" :loading="isConnecting">{{
+                  $t('Connect')
+                }}
+              </b-button>
             </div>
           </div>
         </div>
@@ -37,9 +42,9 @@
 <script>
 import qs from 'qs'
 import 'xterm/css/xterm.css'
-import { Terminal } from 'xterm'
-import { FitAddon } from 'xterm-addon-fit'
-import { AttachAddon } from 'xterm-addon-attach'
+import {Terminal} from 'xterm'
+import {FitAddon} from 'xterm-addon-fit'
+import {AttachAddon} from 'xterm-addon-attach'
 
 const fitAddon = new FitAddon();
 export default {
@@ -106,7 +111,7 @@ export default {
         this.isConnecting = false
         this.isVaild = true
         postData.token = this.$store.state.access_token
-        this.wsUrl = `ws://${this.$baseURL}/v1/sys/wsssh?${qs.stringify(postData)}`
+        this.wsUrl = `${this.$wsProtocol}//${this.$baseURL}/v1/sys/wsssh?${qs.stringify(postData)}`
         this.initSocket();
       } catch (error) {
         this.notificationShow = true
@@ -124,7 +129,7 @@ export default {
         fontSize: 14,
         cursorStyle: 'underline', //光标样式
         cursorBlink: true, //光标闪烁
-        theme: { background: '#1E1E1E' },
+        theme: {background: '#1E1E1E'},
         rows: parseInt(this.rows), //行数
         cols: parseInt(this.cols), // 不指定行数，自动回车后光标从下一行开始
       });
@@ -208,28 +213,32 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped >
+<style lang="scss" scoped>
 #terminal {
   width: 100%;
   height: 100%;
   min-height: 35rem;
+
   .card {
     .card-content {
       padding: 2.5rem;
       width: 25rem;
     }
+
     &.card-shadow {
       box-shadow: 0px 40px 80px rgba(115, 120, 128, 0.25) !important;
       border-radius: 8px;
     }
   }
 }
+
 .xterm {
   width: 100%;
 
   &.fullheight {
     height: 100%;
   }
+
   &.sheight {
     height: 35rem;
   }
