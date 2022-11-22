@@ -3,7 +3,7 @@
  * @Date: 2021-09-22 14:24:43
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2022-08-16 15:08:41
- * @Description: 
+ * @Description:
  * @FilePath: \CasaOS-UI\src\main.js
  */
 import 'intersection-observer'
@@ -19,49 +19,52 @@ import Vue2TouchEvents from 'vue2-touch-events'
 import VueTour from 'vue-tour'
 import VueSocialSharing from 'vue-social-sharing'
 import VueSocketIOExt from 'vue-socket.io-extended';
-const io = require("socket.io-client");
 // Import Styles
 import '@/assets/scss/app.scss'
 import 'vue-tour/dist/vue-tour.css'
 import VAnimateCss from 'v-animate-css';
 
+const io = require("socket.io-client");
+
 api.sys.getSocketPort().then(res => {
-  const protocol = document.location.protocol
-  const wsPort = res.data.data
-  const devIp = process.env.VUE_APP_DEV_IP
-  const devPort = process.env.VUE_APP_DEV_PORT
-  const localhost = document.location.host
-  const localhostName = document.location.hostname
-  const baseIp = process.env.NODE_ENV === "dev" ? `${devIp}` : `${localhostName}`
-  const baseURL = process.env.NODE_ENV === "dev" ? `${devIp}:${devPort}` : `${localhost}`
-  const wsURL = `ws://${baseIp}:${wsPort}`
+    const protocol = document.location.protocol
+    const wsProtocol = protocol === 'https:' ? 'wss:' : 'ws:'
+    const wsPort = res.data.data
+    const devIp = process.env.VUE_APP_DEV_IP
+    const devPort = process.env.VUE_APP_DEV_PORT
+    const localhost = document.location.host
+    const localhostName = document.location.hostname
+    const baseIp = process.env.NODE_ENV === "dev" ? `${devIp}` : `${localhostName}`
+    const baseURL = process.env.NODE_ENV === "dev" ? `${devIp}:${devPort}` : `${localhost}`
+    const wsURL = `${wsProtocol}//${baseIp}:${wsPort}`
 
-  const socket = io(wsURL, {
-    transports: ['websocket', 'polling']
-  });
+    const socket = io(wsURL, {
+        transports: ['websocket', 'polling']
+    });
 
-  Vue.use(Buefy)
-  Vue.use(VueFullscreen)
-  Vue.use(VAnimateCss)
-  Vue.use(Vue2TouchEvents)
-  Vue.use(VueTour)
-  Vue.use(VueSocketIOExt, socket);
-  Vue.use(VueSocialSharing);
+    Vue.use(Buefy)
+    Vue.use(VueFullscreen)
+    Vue.use(VAnimateCss)
+    Vue.use(Vue2TouchEvents)
+    Vue.use(VueTour)
+    Vue.use(VueSocketIOExt, socket);
+    Vue.use(VueSocialSharing);
 
-  Vue.config.productionTip = false
-  Vue.prototype.$api = api;
-  Vue.prototype.$baseIp = baseIp;
-  Vue.prototype.$baseURL = baseURL;
-  Vue.prototype.$protocol = protocol;
+    Vue.config.productionTip = false
+    Vue.prototype.$api = api;
+    Vue.prototype.$baseIp = baseIp;
+    Vue.prototype.$baseURL = baseURL;
+    Vue.prototype.$protocol = protocol;
+    Vue.prototype.$wsProtocol = wsProtocol;
 
-  // Create an EventBus
-  Vue.prototype.$EventBus = new Vue();
-  new Vue({
-    router,
-    i18n,
-    store,
-    render: h => h(App)
-  }).$mount('#app')
+    // Create an EventBus
+    Vue.prototype.$EventBus = new Vue();
+    new Vue({
+        router,
+        i18n,
+        store,
+        render: h => h(App)
+    }).$mount('#app')
 
 })
 

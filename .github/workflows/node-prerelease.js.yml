@@ -1,14 +1,22 @@
-name: IceWhaleTech Node.js prerelease CI
+name: alpha prerelease CI
 
 on:
+  #  手动触发事件
+  #  workflow_dispatch:
+  #    inputs:
+  #      logLevel:
+  #        description: 'Log level'
+  #        required: true
+  #        default: 'main build'
+  #      tags:
+  #        description: 'Tags'
   push:
-    branches:
-      - 'dev**-ezreal'
+    tags:
+      - 'v*'
 jobs:
   release:
 
     runs-on: ubuntu-latest
-    if: github.repository == 'IceWhaleTech/CasaOS-UI'
     strategy:
       matrix:
         node-version: [ 16.x ]
@@ -32,24 +40,28 @@ jobs:
         uses: zhanghengxin/reading-a-file-of-JSON@ice
         with:
           path: ./package.json
-          property: version
-      - name: '获取tag版本号 Get version of tag'
-        id: get_tag_version
-        run: |
-          echo "VERSION=${{steps.version.outputs.property}}-alpha" >> $GITHUB_ENV
-          #'use echo "{environment_variable_name}={value}" >> $GITHUB_ENV'
-          # run: echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
+          property:
+            version
+      #       - name: '获取tag版本号 Get version of tag'
+      #         id: get_tag_version
+      #         run: |
+      #           echo "VERSION=${{steps.version.outputs.property}}" >> $GITHUB_ENV
+      #           #'use echo "{environment_variable_name}={value}" >> $GITHUB_ENV'
+      #           # run: echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
+      - name: Get version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
       - name: '输出 echo artifact'
         run: |
           echo ${{ steps.version.outputs.value }}
           echo github ${{ github }}
           echo github.sha ${{ github.sha }}
-          echo env.VERSION ${{ env.VERSION }}
+          echo env.VERSION ${{ steps.get_version.outputs.VERSION }}
       - run: yarn install
       - run: yarn build
       - run: |
           cp ./build/sysroot/var/lib/casaos/www/img/wallpaper0*.jpg ./build/sysroot/var/lib/casaos/www/ui/img/
-          tar -zcvf linux-all-casaos-${{ env.VERSION }}.tar.gz build
+          tar -zcvf linux-all-casaos-${{ steps.get_version.outputs.VERSION }}.tar.gz build
       - name: '更新 Update release'
         uses: zhanghengxin/git-release-private@ice
         with:
@@ -57,8 +69,21 @@ jobs:
           allow_override: true
           gzip: false
           prerelease: true
-          tag: ${{ env.VERSION }}
-          files: ./linux-all-casaos-${{ env.VERSION }}.tar.gz
+          tag: ${{ steps.get_version.outputs.VERSION }}
+          files: ./linux-all-casaos-${{ steps.get_version.outputs.VERSION }}.tar.gz
+
+      - name: Upload to oss
+        id: upload_to_oss
+        uses: tvrcgo/upload-to-oss@master
+        with:
+          key-id: ${{ secrets.OSS_KEY_ID }}
+          key-secret: ${{ secrets.OSS_KEY_SECRET }}
+          region: oss-cn-shanghai
+          bucket: casaos
+          assets: |
+            ./linux-all-casaos-${{ steps.get_version.outputs.VERSION }}.tar.gz:/IceWhaleTech/CasaOS-UI/releases/download/${{ steps.get_version.outputs.VERSION }}/linux-all-casaos-${{ steps.get_version.outputs.VERSION }}.tar.gz
+
 #      - name: '刷新缓存 Refresh The Cache'
 #        run: |
 #          curl https://purge.jsdelivr.net/npm/iemotion-pic@latest/dist/name.json
+

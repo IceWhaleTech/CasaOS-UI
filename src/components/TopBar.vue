@@ -149,11 +149,11 @@
           </div>
           <!-- Background End -->
 
-          <!--  Show Existing Docker Apps Switch Start  -->
+          <!--  Show other Docker container app(s) Switch Start  -->
           <div class="is-flex is-align-items-center mb-2 h-30">
             <div class="is-flex is-align-items-center is-flex-grow-1">
               <b-icon pack="casa" icon="app-switch" class="mr-1"></b-icon>
-              <b>{{ $t('Show Existing Docker Apps') }}</b>
+              <b>{{ $t('Show other Docker container app(s)') }}</b>
             </div>
             <div>
               <b-field>
@@ -163,13 +163,13 @@
               </b-field>
             </div>
           </div>
-          <!--  Show Existing Docker Apps Switch End  -->
+          <!--  Show other Docker container app(s) Switch End  -->
 
-          <!--  Show Existing Docker Apps Switch Start  -->
+          <!--  Show other Docker container app(s) Switch Start  -->
           <div class="is-flex is-align-items-center mb-2 h-30">
             <div class="is-flex is-align-items-center is-flex-grow-1">
               <b-icon pack="casa" icon="rss-switch" class="mr-1"></b-icon>
-              <b>{{ $t('Get News About CasaOS') }}</b>
+              <b>{{ $t('Show news feed from CasaOS Blog') }}</b>
             </div>
             <div>
               <b-field>
@@ -180,7 +180,7 @@
               </b-field>
             </div>
           </div>
-          <!--  Show Existing Docker Apps Switch End  -->
+          <!--  Show other Docker container app(s) Switch End  -->
 
           <!--  Recommended modules Switch Start  -->
           <!-- <div class="is-flex is-align-items-center mb-2 h-30">
@@ -319,6 +319,11 @@ export default {
         {lang: "pt_br", name: "Português (Brasil)"},
         {lang: "sv_se", name: "Svenska"},
         {lang: "zh_cn", name: "简体中文"},
+        // {lang: "be_by", name: "Беларуская"},
+        // {lang: "id_id", name: "Bahasa Indonesia"},
+        // {lang: "ja_jp", name: "やまと"},
+        // {lang: "ko_kr", name: "한국어"},
+        // {lang: "nb_no", name: "Norsk"},
       ],
       // Search Engine Sets
       searchEngines: [
@@ -651,8 +656,8 @@ export default {
         return this.saveData();
       }
       this.$buefy.dialog.confirm({
-        title: this.$t('Get News About CasaOS'),
-        message: this.$t('CasaOS request get the latest news through the internet when you visit.'),
+        title: this.$t('Show news feed from CasaOS Blog'),
+        message: this.$t('CasaOS dashboard will get the the latest news feed of https://blog.casaos.io via Internet, which might leave your visit records to the site. Do you accept?'),
         type: 'is-dark',
         confirmText: this.$t('Accept'),
         cancelText: this.$t('Cancel'),

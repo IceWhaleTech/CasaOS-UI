@@ -269,8 +269,8 @@ export default {
     // one-off
     rssConfirm() {
       this.$buefy.dialog.confirm({
-        title: this.$t('Get News About CasaOS'),
-        message: this.$t('CasaOS request get the latest news through the internet when you visit.'),
+        title: this.$t('Show news feed from CasaOS Blog'),
+        message: this.$t('CasaOS dashboard will get the the latest news feed of https://blog.casaos.io via Internet, which might leave your visit records to the site. Do you accept?'),
         type: 'is-dark',
         confirmText: this.$t('Accept'),
         cancelText: this.$t('Cancel'),

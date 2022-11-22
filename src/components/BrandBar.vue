@@ -62,7 +62,7 @@ export default {
       })
       params.l = localStorage.getItem('lang') ? localStorage.getItem('lang') : navigator.language.toLowerCase().replace("-", "_");
       let stringify = btoa(encodeURIComponent(JSON.stringify(params)))
-      let feed = await parser.parseURL('https://blog.casaos.io/feed/?key=' + stringify);
+      let feed = await parser.parseURL('https://blog.casaos.io/feed/tag/dashboard/?key=' + stringify);
       this.rss = feed.items
     }
   }
