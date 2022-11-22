@@ -16,19 +16,20 @@
     <div class="content widget _card is-flex is-flex-direction-column">
       <!-- start of section head-->
       <div class="widget-header is-flex is-flex-shrink-0">
-        <div class="image is-24x24">
+        <div class="image is-24x24 is-flex-shrink-0">
           <img :src="require('@/assets/img/logo/casa-white.svg')"/>
         </div>
-        <div class="header-title pl-2">
+        <div class="header-title pl-2 is-flex-grow-1">
           {{ $t("Find New Drive") }}
         </div>
+        <b-icon icon="close-xs" custom-size="casa-24px" class="is-flex-shrink-0" @click="close" pack="casa"></b-icon>
       </div>
       <!-- end of section head-->
 
       <!-- start of section content-->
       <div
           class="info is-flex is-flex-direction-column is-justify-content-space-between is-flex-grow-1">
-        <div class="widget-content is-flex mr-0">
+        <div class="_widget-content is-flex mr-0">
           <div class="image is-24x24 is-flex-shrink-0">
             <img :src="require('@/assets/img/logo/casa-white.svg')"/>
           </div>
@@ -40,7 +41,7 @@
           </div>
         </div>
         <div class="line _ml-2rem"></div>
-        <div class="widget-content is-flex mr-0">
+        <div class="_widget-content is-flex mr-0">
           <div class="image is-24x24 is-flex-shrink-0">
             <img :src="require('@/assets/img/logo/casa-white.svg')"/>
           </div>
@@ -56,6 +57,9 @@
 
       <!-- start of section footer-->
       <div class="is-flex is-flex-direction-row-reverse is-flex-shrink-0">
+        <b-button :disabled="false" class="width" rounded size="is-small" type="is-primary" @click="close">
+          {{ $t('Cancel') }}
+        </b-button>
         <b-button :disabled="false" class="width" rounded size="is-small" type="is-primary" @click="TODO">
           {{ $t('Set MainStorage') }}
         </b-button>
@@ -189,7 +193,9 @@ export default {
     }
   }
 
-  .widget-content {
+  ._widget-content {
+    align-items: center;
+    position: relative;
     .content-title {
       font-family: 'Roboto';
       font-style: normal;

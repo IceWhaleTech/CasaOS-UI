@@ -80,7 +80,7 @@ export default {
     createWS() {
       let socket
       // reference:
-      socket = new WebSocket(`ws://${this.$baseURL}/v2/message_bus/event/${this.notice}`);
+      socket = new WebSocket(`${this.$wsProtocol}//${this.$baseURL}/v2/message_bus/event/${this.notice}`);
       socket.onopen = () => {
         console.log('socket open')
       }
@@ -122,6 +122,7 @@ export default {
   width: 2rem;
   height: 2rem;
   margin: 0 0.5rem;
+  top: calc(50% - 2rem);
   z-index: 20;
 }
 .swiper-pagination{
