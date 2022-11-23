@@ -155,6 +155,14 @@ export default {
         if (res.data.success == 200) {
           this.goToStep(3);
         }
+      }).catch(err => {
+        this.$buefy.toast.open({
+          message: err.response.data.message,
+          type: 'is-danger',
+          position: 'is-top',
+          duration: 5000,
+          queue: false
+        })
       })
     },
 
