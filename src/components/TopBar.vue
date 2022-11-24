@@ -71,14 +71,15 @@
           </b-tooltip>
         </template>
 
-        <b-dropdown-item aria-role="menu-item" :focusable="false" custom>
-          <h2 class="title is-4">{{ $t('Dashboard Setting') }}</h2>
+        <b-dropdown-item aria-role="menu-item" :focusable="false" custom class="pr-4 pl-4 pt-0 pb-0">
+          <h2 class="_title mr-2 mt-2 mb-3 ml-2">{{ $t('Dashboard Setting') }}</h2>
 
+          <hr class="mt-0 mb-4"/>
           <!-- Search Engine Switch Start  -->
-          <div class="is-flex is-align-items-center mb-2 h-30">
-            <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon pack="casa" icon="search-manage" class="mr-1"></b-icon>
-              <b>{{ $t('Show Search Bar') }}</b>
+          <div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2">
+            <div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
+              <b-icon pack="casa" size="is-20" icon="search-manage" class="mr-1 ml-2"></b-icon>
+              {{ $t('Show Search Bar') }}
             </div>
             <div>
               <b-field>
@@ -90,10 +91,11 @@
           <!-- Search Engine Switch End  -->
 
           <!-- Search Engine Start -->
-          <div class="is-flex is-align-items-center mb-2 h-30" v-if="barData.search_switch">
-            <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon pack="casa" icon="magnifier" class="mr-1"></b-icon>
-              <b>{{ $t('Search Engine') }}</b>
+          <div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2"
+               v-if="barData.search_switch">
+            <div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
+              <b-icon pack="casa" size="is-20" icon="magnifier" class="mr-1 ml-2"></b-icon>
+              {{ $t('Search Engine') }}
             </div>
             <div>
               <b-field>
@@ -106,10 +108,10 @@
           <!-- Search Engine End -->
 
           <!-- Language Start -->
-          <div class="is-flex is-align-items-center mb-2 h-30">
-            <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon pack="casa" icon="language" class="mr-1"></b-icon>
-              <b>{{ $t('Language') }}</b>
+          <div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2">
+            <div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
+              <b-icon pack="casa" size="is-20" icon="language" class="mr-1 ml-2"></b-icon>
+              {{ $t('Language') }}
             </div>
             <div>
               <b-field>
@@ -122,10 +124,10 @@
           <!-- Language End -->
 
           <!-- WebUI Port Start -->
-          <div class="is-flex is-align-items-center mb-2 h-30">
-            <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon pack="casa" icon="port" class="mr-1"></b-icon>
-              <b>{{ $t('WebUI Port') }}</b>
+          <div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2">
+            <div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
+              <b-icon pack="casa" size="is-20" icon="port" class="mr-1 ml-2"></b-icon>
+              {{ $t('WebUI Port') }}
             </div>
             <div>
               {{ port }}
@@ -137,10 +139,10 @@
           <!-- WebUI Port End -->
 
           <!-- Background Start -->
-          <div class="is-flex is-align-items-center mb-2 h-30">
-            <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon pack="casa" icon="picture" class="mr-1"></b-icon>
-              <b>{{ $t('Wallpaper') }}</b>
+          <div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2">
+            <div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
+              <b-icon pack="casa" size="is-20" icon="picture" class="mr-1 ml-2"></b-icon>
+              {{ $t('Wallpaper') }}
             </div>
             <div class="ml-2">
               <b-button type="is-dark" size="is-small" rounded @click="showChangeWallpaperModal">{{ $t('Change') }}
@@ -150,10 +152,10 @@
           <!-- Background End -->
 
           <!--  Show other Docker container app(s) Switch Start  -->
-          <div class="is-flex is-align-items-center mb-2 h-30">
-            <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon pack="casa" icon="app-switch" class="mr-1"></b-icon>
-              <b>{{ $t('Show other Docker container app(s)') }}</b>
+          <div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2">
+            <div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
+              <b-icon pack="casa" size="is-20" icon="app-switch" class="mr-1 ml-2"></b-icon>
+              {{ $t('Show other Docker container app(s)') }}
             </div>
             <div>
               <b-field>
@@ -166,10 +168,10 @@
           <!--  Show other Docker container app(s) Switch End  -->
 
           <!--  Show other Docker container app(s) Switch Start  -->
-          <div class="is-flex is-align-items-center mb-2 h-30">
-            <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon pack="casa" icon="rss-switch" class="mr-1"></b-icon>
-              <b>{{ $t('Show news feed from CasaOS Blog') }}</b>
+          <div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2">
+            <div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
+              <b-icon pack="casa" size="is-20" icon="news" class="mr-1 ml-2"></b-icon>
+              {{ $t('Show news feed from CasaOS Blog') }}
             </div>
             <div>
               <b-field>
@@ -183,10 +185,10 @@
           <!--  Show other Docker container app(s) Switch End  -->
 
           <!--  Recommended modules Switch Start  -->
-          <!-- <div class="is-flex is-align-items-center mb-2 h-30">
-            <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon pack="casa" icon="app-switch" class="mr-1"></b-icon>
-              <b>{{ $t('Show Recommended Apps') }}</b>
+          <!-- <div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2">
+            <div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
+              <b-icon pack="casa" size="is-20" icon="app-switch" class="mr-1 ml-2"></b-icon>
+              {{ $t('Show Recommended Apps') }}
             </div>
             <div>
               <b-field>
@@ -198,10 +200,10 @@
           <!-- Recommended modules Switch End  -->
 
           <!-- Automount USB Drive Start  -->
-          <div class="is-flex is-align-items-center mb-2 h-30">
-            <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon pack="casa" icon="usb" class="mr-1"></b-icon>
-              <b>{{ $t('Automount USB Drive') }}</b>
+          <div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2">
+            <div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
+              <b-icon pack="casa" size="is-20" icon="usb" class="mr-1 ml-2"></b-icon>
+              {{ $t('Automount USB Drive') }}
               <b-tooltip
                   :label="$t('Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB')"
                   type="is-dark" multilined v-if="isRaspberryPi">
@@ -218,26 +220,44 @@
           <!-- Automount USB Drive End  -->
 
           <!-- Update Start -->
-          <div class="is-flex is-align-items-center h-30">
-            <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon pack="casa" icon="upgrade" class="mr-1"></b-icon>
-              <b :class="{'update-text-dot': updateInfo.need_update}">{{ $t('Update') }}</b>
+          <div class="_is-large _polymorphic _is-radius pr-2">
+            <div class="is-flex is-align-items-center">
+              <div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
+                <b-icon pack="casa" size="is-20" icon="upgrade" class="mr-1 ml-2"></b-icon>
+                <div :class="{'update-text-dot': updateInfo.need_update}">{{ $t('Update') }}</div>
+              </div>
+              <div class="_has-text-gray">
+                v{{ updateInfo.current_version }}
+              </div>
             </div>
-            <div>
-              v{{ updateInfo.current_version }}
-            </div>
-          </div>
 
-          <div class="is-flex is-align-items-center pl-55 is-size-7" v-if="!updateInfo.need_update">
-            {{ $t(latestText) }}
-            <b-icon type="is-success" icon="check" class="ml-1" custom-size="mdi-18px"></b-icon>
-          </div>
-          <div class="is-flex is-align-items-center is-justify-content-end update-container pl-5 " v-else>
-            <div class="is-flex-grow-1 is-size-7">{{ $t(updateText) }}</div>
-            <b-button type="is-dark" size="is-small" class="ml-2" rounded @click="showUpdateModal">{{ $t('Update') }}
-            </b-button>
+            <div class="is-flex is-align-items-center pl-55 ml-1 is-size-7" v-if="!updateInfo.need_update">
+              {{ $t(latestText) }}
+              <b-icon type="is-success" icon="check" class="ml-1" custom-size="mdi-18px"></b-icon>
+            </div>
+            <div class="is-flex is-align-items-center is-justify-content-end update-container pl-5 " v-else>
+              <div class="is-flex-grow-1 is-size-7">{{ $t(updateText) }}</div>
+              <b-button type="is-dark" size="is-small" class="ml-2" rounded @click="showUpdateModal">{{ $t('Update') }}
+              </b-button>
+            </div>
           </div>
           <!-- Update End -->
+
+          <hr class="mt-4 mb-2"/>
+          <!-- Restart or Shutdown Start -->
+          <div class="is-flex is-align-content-center is-justify-content-center _box">
+            <div
+                class="column is-half is-flex is-align-items-center is-justify-content-center _polymorphic _is-radius _is-normal">
+              <b-icon pack="casa" icon="restart" class="mr-1"></b-icon>
+              {{ $t('Restart') }}
+            </div>
+            <div
+                class="column is-half is-flex is-align-items-center is-justify-content-center _polymorphic-attention _has-text-attention _is-radius">
+              <b-icon pack="casa" icon="shutdown" class="mr-1" custom-class="_has-text-attention"></b-icon>
+              {{ $t('Shutdown') }}
+            </div>
+          </div>
+          <!-- Restart or Shutdown End -->
 
         </b-dropdown-item>
       </b-dropdown>
@@ -678,6 +698,66 @@ export default {
 </script>
 
 <style lang="scss">
+._is-large {
+  // bulma 3rem;
+  //height: 2.5rem;
+  padding-bottom: 0.625rem;
+  padding-top: 0.625rem;
+}
+
+._box {
+  height: 2.5rem;
+}
+
+._title {
+  //styleName: Text 500Medium/Text02;
+  font-family: Roboto;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5rem;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+._is-normal {
+  //styleName: Text 400Regular/Text03;
+  font-family: Roboto;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.25rem;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+._is-radius {
+  border-radius: 0.375rem;
+}
+
+._polymorphic:hover {
+  background: hsla(208, 16%, 96%, 1);
+}
+
+._polymorphic:active {
+  background: hsla(208, 16%, 94%, 1);
+}
+
+._polymorphic-attention:hover {
+  background: hsla(18, 98%, 94%, 1);
+}
+
+._polymorphic-attention:active {
+  background: hsla(18, 100%, 80%, 1);
+}
+
+._has-text-attention {
+  color: hsla(18, 98%, 55%, 1);
+}
+
+._has-text-gray {
+  color: hsla(208, 14%, 58%, 1);
+
+}
+
 .top-bar {
   position: relative;
   z-index: 20;
@@ -702,7 +782,7 @@ export default {
 
     .dropdown-menu {
       margin-top: 0.5rem;
-      min-width: 20rem;
+      min-width: 22.5rem;
 
       .dropdown-content {
         background: rgba(255, 255, 255, 1);

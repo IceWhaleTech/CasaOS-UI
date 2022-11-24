@@ -26,14 +26,14 @@
       </div>
       <!-- end of section head-->
 
-      <!-- start of section content-->
+      <!-- start of section body-->
       <div
           class="info is-flex is-flex-direction-column is-justify-content-space-between is-flex-grow-1">
-        <div class="_widget-content is-flex mr-0">
+        <div class="_widget-body is-flex mr-0">
           <div class="image is-24x24 is-flex-shrink-0">
             <img :src="require('@/assets/img/logo/casa-white.svg')"/>
           </div>
-          <div class="content-title is-flex-grow-1 nowarp ml-2">
+          <div class="body-title is-flex-grow-1 nowarp ml-2">
             {{ $t("Find New Drive") }}
           </div>
           <div class="has-text-left is-size-14px mt-1 is-flex-shrink-0">
@@ -41,11 +41,11 @@
           </div>
         </div>
         <div class="line _ml-2rem"></div>
-        <div class="_widget-content is-flex mr-0">
+        <div class="_widget-body is-flex mr-0">
           <div class="image is-24x24 is-flex-shrink-0">
             <img :src="require('@/assets/img/logo/casa-white.svg')"/>
           </div>
-          <div class="content-title is-flex-grow-1 nowarp ml-2">
+          <div class="body-title is-flex-grow-1 nowarp ml-2">
             {{ $t("Find New Drive") }}
           </div>
           <p class="has-text-left is-size-14px mt-1 is-flex-shrink-0">
@@ -53,16 +53,17 @@
           </p>
         </div>
       </div>
-      <!-- end of section content-->
+      <!-- end of section body-->
 
       <!-- start of section footer-->
-      <div class="is-flex is-flex-direction-row-reverse is-flex-shrink-0">
+      <div class="is-flex is-flex-direction-row-reverse is-flex-shrink-0 is-align-items-end">
         <b-button :disabled="false" class="width" rounded size="is-small" type="is-primary" @click="close">
           {{ $t('Cancel') }}
         </b-button>
         <b-button :disabled="false" class="width" rounded size="is-small" type="is-primary" @click="TODO">
           {{ $t('Set MainStorage') }}
         </b-button>
+        <div class="is-flex-grow-1 footer-hint">{{ $t('{num}Items', {num: 3}) }}</div>
       </div>
       <!-- end of section footer-->
     </div>
@@ -91,7 +92,9 @@ export default {
   computed: {},
 
   methods: {
-
+    close() {
+      this.$emit('close');
+    },
     TODO() {
       // this.$refs.mySwiper.$swiper.slideNext()
     },
@@ -193,10 +196,11 @@ export default {
     }
   }
 
-  ._widget-content {
+  ._widget-body {
     align-items: center;
     position: relative;
-    .content-title {
+
+    .body-title {
       font-family: 'Roboto';
       font-style: normal;
       font-weight: 500;
@@ -204,6 +208,17 @@ export default {
       line-height: 20px;
       color: hsla(208, 16%, 96%, 1);
     }
+  }
+
+  .footer-hint {
+    height: 16px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 0.75rem;
+    line-height: 1.125rem;
+    //vertical-align: text-bottom;
+    //margin-bottom: -1rem;
   }
 }
 
