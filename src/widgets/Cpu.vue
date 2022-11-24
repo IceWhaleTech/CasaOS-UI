@@ -8,7 +8,7 @@
           {{ $t('System Status') }}
         </div>
         <div class="widget-icon-button is-flex-shrink-0" @click="showMoreInfo">
-          <b-icon :class="{'open':showMore}" class="arrow-btn" icon="arrow-right" pack="casa" size="is-20"></b-icon>
+          <b-icon :class="{'open':showMore}" class="arrow-btn" icon="right" pack="casa" size="is-20"></b-icon>
         </div>
       </div>
       <!-- Header End -->

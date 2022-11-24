@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'casaos';
-  src: url('../fonts/casaos.eot?3dmok4');
-  src: url('../fonts/casaos.eot?3dmok4#iefix') format('embedded-opentype'),
-  url('../fonts/casaos.ttf?3dmok4') format('truetype'),
-  url('../fonts/casaos.woff?3dmok4') format('woff'),
-  url('../fonts/casaos.svg?3dmok4#casaos') format('svg');
+  src: url('../fonts/casaos.eot?o1uskt');
+  src: url('../fonts/casaos.eot?o1uskt#iefix') format('embedded-opentype'),
+  url('../fonts/casaos.ttf?o1uskt') format('truetype'),
+  url('../fonts/casaos.woff?o1uskt') format('woff'),
+  url('../fonts/casaos.svg?o1uskt#casaos') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,30 +25,20 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.casa-exit-app:before {
-  content: "\e932";
-  color: #4a4a4a;
+.casa-bug:before {
+  content: "\e901";
 }
 
-.casa-rss-switch:before {
-  content: "\e933";
-  color: #4a4a4a;
-}
-
-.casa-storage-merger:before {
-  content: "\e92f";
-}
-
-.casa-expand-down:before {
-  content: "\e930";
-}
-
-.casa-expand:before {
-  content: "\e900";
+.casa-discord:before {
+  content: "\e902";
 }
 
 .casa-feedback:before {
-  content: "\e934";
+  content: "\e903";
+}
+
+.casa-github:before {
+  content: "\e904";
 }
 
 .casa-social-share:before {
@@ -67,40 +57,140 @@
   content: "\e92b";
 }
 
-.casa-bug:before {
-  content: "\e901";
+.casa-matching:before {
+  content: "\e905";
 }
 
-.casa-discord:before {
-  content: "\e902";
+.casa-close:before {
+  content: "\e906";
 }
 
-.casa-github:before {
-  content: "\e903";
+.casa-plus:before {
+  content: "\e907";
 }
 
-.casa-history-records:before {
-  content: "\e922";
+.casa-Indeterminate:before {
+  content: "\e908";
 }
 
-.casa-eject:before {
-  content: "\e923";
+.casa-left:before {
+  content: "\e909";
 }
 
-.casa-storage-network:before {
-  content: "\e924";
+.casa-right:before {
+  content: "\e90b";
 }
 
-.casa-storage-other:before {
-  content: "\e925";
+.casa-up:before {
+  content: "\e90c";
 }
 
-.casa-storage-USB:before {
-  content: "\e926";
+.casa-down:before {
+  content: "\e90f";
 }
 
-.casa-share:before {
-  content: "\e928";
+.casa-arrow-up:before {
+  content: "\e911";
+}
+
+.casa-arrow-down:before {
+  content: "\e913";
+}
+
+.casa-more:before {
+  content: "\e914";
+}
+
+.casa-add:before {
+  content: "\e915";
+}
+
+.casa-minus:before {
+  content: "\e916";
+}
+
+.casa-setting:before {
+  content: "\e91d";
+}
+
+.casa-tune:before {
+  content: "\e91f";
+}
+
+.casa-loading:before {
+  content: "\e927";
+}
+
+.casa-restart:before {
+  content: "\e92d";
+}
+
+.casa-shutdown:before {
+  content: "\e933";
+}
+
+.casa-time:before {
+  content: "\e934";
+}
+
+.casa-language:before {
+  content: "\e935";
+}
+
+.casa-magnifier:before {
+  content: "\e936";
+}
+
+.casa-search-show:before {
+  content: "\e937";
+}
+
+.casa-search-manage:before {
+  content: "\e938";
+}
+
+.casa-picture:before {
+  content: "\e939";
+}
+
+.casa-system:before {
+  content: "\e93a";
+}
+
+.casa-terminal:before {
+  content: "\e93b";
+}
+
+.casa-storage:before {
+  content: "\e93c";
+}
+
+.casa-upgrade:before {
+  content: "\e93d";
+}
+
+.casa-port:before {
+  content: "\e93e";
+}
+
+.casa-app-switch:before {
+  content: "\e93f";
+}
+
+.casa-network:before {
+  content: "\e940";
+}
+
+.casa-news:before {
+  content: "\e941";
+}
+
+.casa-account:before {
+  content: "\e942";
+}
+
+.casa-usb:before {
+  content: "\e943";
 }
 
 .casa-danger:before {
@@ -111,8 +201,52 @@
   content: "\e92e";
 }
 
+.casa-exit-app:before {
+  content: "\e932";
+}
+
+.casa-view:before {
+  content: "\e920";
+}
+
 .casa-copy:before {
   content: "\e917";
+}
+
+.casa-eject:before {
+  content: "\e923";
+}
+
+.casa-expand-down:before {
+  content: "\e930";
+}
+
+.casa-expand:before {
+  content: "\e900";
+}
+
+.casa-history-records:before {
+  content: "\e922";
+}
+
+.casa-storage-network:before {
+  content: "\e924";
+}
+
+.casa-storage-other:before {
+  content: "\e925";
+}
+
+.casa-storage-merger:before {
+  content: "\e92f";
+}
+
+.casa-storage-USB:before {
+  content: "\e926";
+}
+
+.casa-share:before {
+  content: "\e928";
 }
 
 .casa-folder:before {
@@ -143,100 +277,24 @@
   content: "\e91e";
 }
 
-.casa-view:before {
-  content: "\e920";
-}
-
-.casa-usb:before {
-  content: "\e916";
-}
-
-.casa-upgrade:before {
-  content: "\e90c";
-}
-
-.casa-account:before {
-  content: "\e911";
-}
-
 .casa-account-edit:before {
   content: "\e912";
-}
-
-.casa-app-switch:before {
-  content: "\e913";
-}
-
-.casa-language:before {
-  content: "\e914";
-}
-
-.casa-port:before {
-  content: "\e915";
 }
 
 .casa-thumb-up:before {
   content: "\e90e";
 }
 
-.casa-magnifier:before {
-  content: "\e908";
-}
-
-.casa-search-manage:before {
-  content: "\e90f";
-}
-
 .casa-sync:before {
   content: "\e90a";
-}
-
-.casa-picture:before {
-  content: "\e904";
-}
-
-.casa-more:before {
-  content: "\e91d";
-}
-
-.casa-plus:before {
-  content: "\e909";
 }
 
 .casa-close-xs:before {
   content: "\e910";
 }
 
-.casa-close:before {
-  content: "\e905";
-}
-
-.casa-arrow-right:before {
-  content: "\e906";
-}
-
-.casa-up:before {
-  content: "\e927";
-}
-
-.casa-down:before {
-  content: "\e91f";
-}
-
-.casa-tune:before {
-  content: "\e907";
-}
-
-.casa-setting:before {
-  content: "\e90b";
-}
-
 .casa-picture-upload:before {
   content: "\e90d";
-}
-
-.casa-terminal:before {
-  content: "\e92d";
 }
 
 

@@ -3,7 +3,7 @@
  * @Date: 2021-10-09 18:41:15
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2022-07-20 16:17:09
- * @Description: 
+ * @Description:
  * @FilePath: /CasaOS-UI/src/components/widgets/Settings.vue
 -->
 <template>
@@ -21,20 +21,23 @@
                 {{ $t('Widgets Settings') }}
               </div>
               <div class="widget-icon-button is-flex-shrink-0">
-                <b-icon pack="casa" icon="arrow-right" size="is-20"></b-icon>
+                <b-icon pack="casa" icon="right" size="is-20"></b-icon>
               </div>
             </div>
             <!-- Header End -->
           </div>
         </template>
         <b-dropdown-item aria-role="menu-item" :focusable="false" custom class="has-text-white has-text-left">
-          <h2 class="title is-5 has-text-white">{{$t('Widgets Settings')}}</h2>
-          <div class="is-flex is-align-items-center item" v-for="(item,index) in settingsData" :key="`setting_${index}`">
+          <h2 class="title is-5 has-text-white">{{ $t('Widgets Settings') }}</h2>
+          <div class="is-flex is-align-items-center item" v-for="(item,index) in settingsData"
+               :key="`setting_${index}`">
             <div class="is-flex is-align-items-center is-flex-grow-1">
-              <b-icon :icon="getIcon(item.name)" class="mr-2"></b-icon> <b>{{$t(getTitle(item.name))}}</b>
+              <b-icon :icon="getIcon(item.name)" class="mr-2"></b-icon>
+              <b>{{ $t(getTitle(item.name)) }}</b>
             </div>
             <b-field>
-              <b-switch type="is-dark" v-model="item.show" size="is-small" class="is-flex-direction-row-reverse mr-0" @input="handleInput"></b-switch>
+              <b-switch type="is-dark" v-model="item.show" size="is-small" class="is-flex-direction-row-reverse mr-0"
+                        @input="handleInput"></b-switch>
             </b-field>
           </div>
         </b-dropdown-item>
@@ -47,10 +50,11 @@
 
 <script>
 import find from 'lodash/find';
+
 const widgetsComponents = require.context(
-  '@/widgets',
-  false,
-  /.vue$/
+    '@/widgets',
+    false,
+    /.vue$/
 )
 
 
@@ -91,7 +95,7 @@ export default {
     this.settingsData = JSON.parse(JSON.stringify(this.widgetsSettings))
     widgetsComponents.keys().forEach(fileName => {
       const componentConfig = widgetsComponents(fileName)
-      this.apps.push({ app: componentConfig })
+      this.apps.push({app: componentConfig})
     });
   },
   mounted() {
@@ -124,12 +128,14 @@ export default {
   },
 }
 </script>
-<style lang="scss" >
+<style lang="scss">
 .wsettings {
   width: 100%;
+
   .item {
     margin: 1.25rem 0;
   }
+
   .circle-btn {
     background: rgba(123, 123, 123, 0.16);
     backdrop-filter: blur(24px);
@@ -139,27 +145,33 @@ export default {
     width: 2.25rem;
     padding-left: 0 !important;
     padding-right: 0 !important;
+
     &:hover,
     &:active {
       outline: none;
       color: #fff;
       opacity: 0.8;
     }
+
     &:focus {
       color: #fff;
       border-color: #fff;
     }
+
     &:focus:not(:active) {
       box-shadow: none;
     }
   }
+
   .dropdown {
     display: block !important;
+
     .dropdown-content {
       background: rgba(0, 0, 0, 0.8);
       backdrop-filter: blur(1rem);
       width: 16rem;
       border-radius: 0.5rem;
+
       .dropdown-item {
         padding: 1rem 1.5rem 0 1.5rem;
       }

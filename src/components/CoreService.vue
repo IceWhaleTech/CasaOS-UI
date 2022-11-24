@@ -13,8 +13,10 @@
     </swiper-slide>
     <div class="swiper-pagination" slot="pagination">
     </div>
-    <img :src="require('@/assets/img/widgets/swiper-left.svg')" slot="button-prev"  class="swiper-button-prev"/>
-    <img :src="require('@/assets/img/widgets/swiper-right.svg')" slot="button-next" class="swiper-button-next" />
+    <img alt="prev" :src="require('@/assets/img/widgets/swiper-left.svg')" slot="button-prev"
+         class="swiper-button-prev"/>
+    <img alt="next" :src="require('@/assets/img/widgets/swiper-right.svg')" slot="button-next"
+         class="swiper-button-next"/>
   </swiper>
 </template>
 
@@ -68,19 +70,21 @@ export default {
           color: 'is-success',
           path: '/storage'
         },
-      ]
+      ],
+      nocticeData: {
+        'usb': {}
+      }
     }
   },
-  computed: {
-  },
+  computed: {},
   mounted() {
-    this.initMessageBus();
+    this.WSHub = this.initMessageBus();
   },
   methods: {
-    createWS() {
+    createWS(domain) {
       let socket
       // reference:
-      socket = new WebSocket(`${this.$wsProtocol}//${this.$baseURL}/v2/message_bus/event/${this.notice}`);
+      socket = new WebSocket(`${this.$wsProtocol}//${this.$baseURL}/v2/message_bus/event/${domain}`);
       socket.onopen = () => {
         console.log('socket open')
       }
@@ -90,11 +94,12 @@ export default {
       socket.onerror = (e) => {
         console.log('socket failure', e)
       }
-      socket.onmessage = (event, data) => {
-        console.log('11111\n', event, '\n', data)
-        console.log('triggerEventBus', event)
-        let eventJson = JSON.parse(event)
-        this.$emit(eventJson.name, eventJson.propertyTypeList)
+      socket.onmessage = (event) => {
+        let eventJson = JSON.parse(event.data)
+        console.log(eventJson)
+        let analysisSource = eventJson.name.split(':');
+        // this. = analysisSource[2]
+        // this.$emit(eventJson.name, ventJson.propertyTypeList)
       }
       return socket
     },
@@ -107,12 +112,19 @@ export default {
       this.$emit(eventJson.name, eventJson.propertyTypeList)
     },
     initMessageBus() {
-      let messageSourse = ['local_stroage']
-      let messageSoruseWSHub = Object.create(null)
-      messageSourse.forEach((item) => {
-        messageSoruseWSHub[item] = this.createWS(item)
+      // config files
+      let subscriptionMessageSourse = ['local-storage']
+      let WSHub = Object.create(null)
+      subscriptionMessageSourse.forEach((item) => {
+        WSHub[item] = this.createWS(item)
       })
+      return WSHub
     },
+  },
+  beforeDestroy() {
+    for (let key in this.WSHub) {
+      this.WSHub[key].close()
+    }
   }
 }
 </script>
@@ -125,9 +137,11 @@ export default {
   top: calc(50% - 2rem);
   z-index: 20;
 }
-.swiper-pagination{
+
+.swiper-pagination {
   position: relative;
-  ::v-deep .swiper-pagination-bullet{
+
+  ::v-deep .swiper-pagination-bullet {
     margin-left: 0.5rem;
     margin-right: 0.5rem;
     width: 2rem;
@@ -136,7 +150,8 @@ export default {
     border-radius: 0.125rem;
     display: inline-block;
   }
-  ::v-deep .swiper-pagination-bullet-active{
+
+  ::v-deep .swiper-pagination-bullet-active {
     background: #FFFFFF;
   }
 }
