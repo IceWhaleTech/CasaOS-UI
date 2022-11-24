@@ -141,7 +141,7 @@ export default {
         window.open(item.host, '_blank');
       } else {
         this.$refs.dro.isActive = false
-        if (item.state == 'running') {
+        if ((item.host != "" || item.port != "" || item.index != "") && item.state == 'running') {
           const hostIp = item.host || this.$baseIp
           const protocol = item.protocol || 'http'
           const port = item.port ? `:${item.port}` : ''
