@@ -247,14 +247,16 @@
           <!-- Restart or Shutdown Start -->
           <div class="is-flex is-align-content-center is-justify-content-center _box">
             <div
-                class="column is-half is-flex is-align-items-center is-justify-content-center _polymorphic _is-radius _is-normal">
+                class="column is-half is-flex is-align-items-center is-justify-content-center _polymorphic _is-radius _is-normal"
+                @click="power('restart')">
               <b-icon pack="casa" icon="restart" class="mr-1"></b-icon>
-              {{ $t('Restart') }}
+              {{ $t(restart) }}
             </div>
             <div
-                class="column is-half is-flex is-align-items-center is-justify-content-center _polymorphic-attention _has-text-attention _is-radius">
+                class="column is-half is-flex is-align-items-center is-justify-content-center _polymorphic-attention _has-text-attention _is-radius"
+                @click="power('shutdown')">
               <b-icon pack="casa" icon="shutdown" class="mr-1" custom-class="_has-text-attention"></b-icon>
-              {{ $t('Shutdown') }}
+              {{ $t(shutdown) }}
             </div>
           </div>
           <!-- Restart or Shutdown End -->
@@ -279,6 +281,28 @@
         <!-- <b-icon pack="far" icon="comment-alt"></b-icon> -->
       </div>
     </div>
+
+    <b-modal v-model="showPower" width="20rem" scroll="clip" :can-cancel="false" class="_modal">
+      <b-message @close="resetPower">
+        <template #header>
+          {{ $t(showPowerTitle) }}
+          <img alt="pending" :src="require('@/assets/img/power/waiting.svg')" class="ml-1 is-24x24"/>
+        </template>
+        <div class="is-flex is-align-items-center is-justify-content-start _is-normal"
+             :class="showPowerTitle === 'Now closing' ? 'mb-4' : ''">
+          {{ $t(showPowerMessage) }}
+        </div>
+      </b-message>
+      <footer v-if="showPowerTitle !== 'Now closing'"
+              class="has-background-white is-flex is-flex-direction-row-reverse">
+        <button
+            class="ml-2 mr-5 mt-3 mb-3 pr-4 pl-4 _is-normal _has-background-blue is-flex is-align-items-center is-justify-content-center"
+            @click="resetPower">
+          {{ $t('Connecting') }}
+          <img alt="loading" :src="require('@/assets/img/power/loading.svg')" class="ml-1"/>
+        </button>
+      </footer>
+    </b-modal>
 
   </div>
 </template>
@@ -350,7 +374,12 @@ export default {
         {url: "https://duckduckgo.com/?q=", name: "DuckDuckGo"},
         {url: "https://www.google.com/search?q=", name: "Google"},
         {url: "https://www.bing.com/search?q=", name: "Bing"},
-      ]
+      ],
+      restart: 'restart',
+      shutdown: 'shutdown',
+      showPower: false,
+      showPowerTitle: '',
+      showPowerMessage: '',
     }
   },
   props: {
@@ -691,7 +720,46 @@ export default {
         }
       })
     },
-
+    power(key) {
+      if (this[key] !== "are you sure?") {
+        this.resetPower();
+        this[key] = "are you sure?"
+        return
+      }
+      this.showPower = true
+      switch (key) {
+        case "restart":
+          this[key] = key
+          this.showPowerTitle = 'Restarting now'
+          this.showPowerMessage = 'Please wait for about 30 seconds before cutting off the power.'
+          break;
+        case "shutdown":
+          this[key] = key
+          this.showPowerTitle = 'Now closing'
+          this.showPowerMessage = 'Please wait for about 90 seconds.'
+          break;
+      }
+      let timer;
+      let path = key === 'shutdown' ? 'off' : 'restart'
+      this.$api.sys.power(path).then(res => {
+        if (res.data.success === 200) {
+          this.showPowerMessage = res.data.data
+          timer = setInterval(() => {
+            this.$api.users.getUserStatus().then(res => {
+              if (res.data.data.initialized) {
+                clearInterval(timer);
+                location.reload();
+              }
+            })
+          }, 30000)
+        }
+      })
+    },
+    resetPower() {
+      this.showPower = false
+      this.restart = "restart"
+      this.shutdown = "shutdown"
+    },
   },
 
 }
@@ -893,5 +961,106 @@ export default {
       color: #fff;
     }
   }
+}
+
+// TODO
+._is-normal {
+  /* Text 400Regular/Text03 */
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  /* or 143% */
+  font-feature-settings: 'pnum' on, 'lnum' on;
+}
+
+._has-background-blue {
+  background: hsla(208, 100%, 75%, 1);
+}
+
+._modal {
+  .modal-content {
+    border-radius: 0.625rem;
+
+    .message {
+      margin-bottom: 0rem;
+      border-radius: 0rem;
+
+      .message-header {
+        background: hsla(0, 0%, 100%, 1);
+        border-bottom: 1px solid hsla(208, 16%, 94%, 1);
+        //margin-top: 1.25rem;
+        //margin-left: 1.5rem;
+        padding: 1.25rem 1.5rem 0.75rem 1.5rem;
+
+        > div {
+          display: flex;
+          //align-items: center;
+          justify-content: center;
+          vertical-align: middle;
+
+          color: hsla(208, 20%, 20%, 1);
+          //styleName: Text 500Medium/Text02;
+          font-family: Roboto;
+          font-size: 1rem;
+          font-weight: 500;
+          line-height: 1.5rem;
+          letter-spacing: 0em;
+          text-align: left;
+          font-feature-settings: 'pnum' on, 'lnum' on;
+
+          .is-24x24 {
+            width: 1.5rem;
+            height: 1.5rem;
+          }
+        }
+
+        > button {
+          width: 1.5rem;
+          height: 1.5rem;
+          max-height: 1.5rem;
+          max-width: 1.5rem;
+          min-height: 1.5rem;
+          min-width: 1.5rem;
+        }
+      }
+
+      .message-body {
+        background: hsla(0, 0%, 100%, 1);
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+
+        //._is-normal {
+        //  /* Text 400Regular/Text03 */
+        //  font-family: 'Roboto';
+        //  font-style: normal;
+        //  font-weight: 400;
+        //  font-size: 0.875rem;
+        //  line-height: 1.25rem;
+        //  /* or 143% */
+        //  font-feature-settings: 'pnum' on, 'lnum' on;
+        //}
+      }
+    }
+
+    footer {
+      border: 1px solid hsla(208, 16%, 94%, 1);
+
+      button {
+        border-radius: 0.875rem;
+        border: none;
+        color: hsla(0, 0%, 100%, 1);
+        height: 2rem;
+
+        img {
+          width: 1.25rem;
+          height: 1.25rem;
+        }
+      }
+    }
+  }
+
+
 }
 </style>

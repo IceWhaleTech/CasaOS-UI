@@ -115,8 +115,12 @@ const sys = {
     // Check ssh login
     checkSshLogin(data) {
         return api.post(`${PREFIX}/ssh-login`, data);
-    }
+    },
 
-
+    // power -- data:shutdown
+    // power -- data:restart
+    power(data) {
+        return api.put(`${PREFIX}/state/${data}`);
+    },
 }
 export default sys;
