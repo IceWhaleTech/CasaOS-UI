@@ -74,8 +74,7 @@ export default {
   position: fixed;
   left: 2rem;
   bottom: 1.125rem;
-  z-index: 100;
-  //pointer-events: none;
+  z-index: 30;
 
   .logo-text {
     font-size: 1.125rem;
