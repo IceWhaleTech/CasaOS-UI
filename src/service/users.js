@@ -11,6 +11,7 @@
 import {api} from "./service.js";
 
 const PREFIX = "/users"
+const PREFIX2 = "/v2/users"
 
 const users = {
     // get all user name [OK]
@@ -130,6 +131,17 @@ const users = {
     saveShutcutDetail(data) {
         return api.post(`${PREFIX}/current/custom/shortcut`, data);
     },
+
+    // get user letter [OK]
+    getLetter() {
+        return api.get(`${PREFIX2}/events`);
+    },
+
+    // delete letter [OK]
+    delLetter(uuid) {
+        return api.delete(`${PREFIX2}/event/${uuid}`);
+    },
+
 }
 
 export default users;
