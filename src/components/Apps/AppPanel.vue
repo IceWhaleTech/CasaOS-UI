@@ -551,7 +551,7 @@ import last from 'lodash/last';
 import FileSaver from 'file-saver';
 import {Swiper, SwiperSlide} from 'vue-awesome-swiper'
 // import AppsInstallationLocation from "@/components/Apps/AppsInstallationLocation";
-import storageItem from "@/components/Storage/StorageItem";
+// import storageItem from "@/components/Storage/StorageItem";
 import AppsInstallationLocation from "@/components/Apps/AppsInstallationLocation";
 
 
@@ -599,7 +599,6 @@ export default {
     Swiper,
     SwiperSlide,
     AppsInstallationLocation,
-    storageItem,
   },
   props: {
     id: String,
