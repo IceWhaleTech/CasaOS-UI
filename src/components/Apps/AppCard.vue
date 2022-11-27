@@ -227,7 +227,10 @@ export default {
       this.$refs.dro.isActive = false
       this.$buefy.dialog.confirm({
         title: this.$t('Attention'),
-        message: this.$t('Data cannot be recovered after deletion! <br>Continue on to uninstall this application?'),
+        message: this.$t(`Data cannot be recovered after deletion! <br/>Continue on to uninstall this application?<br/><div class="is-flex is-align-items-center mt-4"><input type="checkbox" value="false" id="checkDelConfig">Delete userdata ( config folder )</input></div>`),
+       /* message: this.$t(`Data cannot be recovered after deletion! <br/>Continue on to uninstall this application?{checkbox}Delete userdata ( config folder )</input>`, {
+          checkbox: `<br/><input type="checkbox" id="deleteUserData" class="checkbox">`
+        }),*/
         type: 'is-dark',
         confirmText: this.$t('Uninstall'),
         cancelText: this.$t('Cancel'),
@@ -431,4 +434,47 @@ export default {
     }
   }
 }
+</style>
+<style lang="scss">
+// TODO Style libraries
+.dialog{
+  .modal-card-head{
+    padding-top: 1.25rem;
+    padding-left: 1.5rem;
+    padding-top: 1.5rem;
+    padding-bottom: 0.75rem;
+    border: 1px solid hsla(208, 16%, 94%, 1);
+  }
+  .modal-card-body{
+    padding: 1rem 1.5rem 1.5rem ;
+      #checkDelConfig{
+        margin-right: 0.5rem;
+        height: 1.25rem;
+        width: 1.25rem;
+      }
+
+    border: 1px solid hsla(208, 16%, 94%, 1);
+  }
+  .modal-card-foot{
+    padding-top: 0.75rem;
+    padding-bottom: 1.5rem;
+    padding-right: 1.5rem;
+
+    //styleName: Text 400Regular/Text03;
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0em;
+    text-align: left;
+    .button{
+      margin-right: 0rem;
+    }
+    .is-dark{
+      margin-left: 1rem;
+      background: hsla(208, 100%, 45%, 1);
+    }
+  }
+}
+
 </style>
