@@ -8,8 +8,8 @@
 -->
 <template>
   <swiper ref="mySwiper" :options="swiperOptions">
-    <swiper-slide v-for="(carousel,key) in carousels" :key="key">
-      <noticeBlock></noticeBlock>
+    <swiper-slide v-for="(noticeCard,key) in nocticeData" :key="key">
+      <noticeBlock :data="noticeCard"></noticeBlock>
     </swiper-slide>
     <div class="swiper-pagination" slot="pagination">
     </div>
@@ -21,26 +21,33 @@
 </template>
 
 <script>
-import SmartBlock from './smartHome/SmartBlock.vue'
-import SyncBlock from './syncthing/SyncBlock.vue'
-import StorageBlock from "@/components/Storage/StorageBlock";
+// import SmartBlock from './smartHome/SmartBlock.vue'
+// import SyncBlock from './syncthing/SyncBlock.vue'
+// import StorageBlock from "@/components/Storage/StorageBlock";
 import noticeBlock from "@/components/noticBlock/noticeBlock";
 import {Swiper, SwiperSlide} from 'vue-awesome-swiper'
 
 export default {
-  components: {SyncBlock, SmartBlock, StorageBlock, noticeBlock, Swiper, SwiperSlide},
+  components: {noticeBlock, Swiper, SwiperSlide},
   name: "core-service",
   data() {
     return {
       notice: "local-storage",
       isLoading: false,
       swiperOptions: {
-        // autoplay: {
-        //   delay: 5000,
-        //   disableOnInteraction: false,
-        // },
-        // loop: true,
-        slidesPerView: 2,
+        autoplay: {
+          delay: 5000,
+          disableOnInteraction: false,
+        },
+        loop: true,
+        breakpoints: {
+          450: {
+            slidesPerView: 1
+          },
+          960: {
+            slidesPerView: 2
+          }
+        },
         spaceBetween: 16,
         pagination: {
           el: '.swiper-pagination',
@@ -72,7 +79,55 @@ export default {
         },
       ],
       nocticeData: {
-        'usb': {}
+        'usb': {
+          title: 'USB',
+          icon: 'mdi-usb',
+          content:[ {title:'Find New Drive',icon:'mdi-usb',color:'is-primary',path:'/storage'},
+            {title:'Find New Drive',icon:'mdi-usb',color:'is-primary',path:'/storage'},],
+          operate: {
+            type: 'button',
+            title: 'More',
+            icon: 'mdi-dots-horizontal',
+          },
+          close: {
+            type: 'button',
+            title: 'Close',
+            icon: 'mdi-close',
+          },
+        },
+        'local-storage': {
+          title: 'USB',
+          icon: 'mdi-usb',
+          conetentType: 'list',
+          content:[ {title:'Find New Drive',icon:'mdi-usb',color:'is-primary',path:'/storage'},
+            {title:'Find New Drive',icon:'mdi-usb',color:'is-primary',path:'/storage'},],
+          operate: {
+            type: 'button',
+            title: 'More',
+            icon: 'mdi-dots-horizontal',
+          },
+          close: {
+            type: 'button',
+            title: 'Close',
+            icon: 'mdi-close',
+          },
+        },
+        'app': {
+          title: 'USB',
+          icon: 'mdi-usb',
+          conetentType: 'rate',
+          content:[ 0.5 ],
+          operate: {
+            type: 'button',
+            title: 'More',
+            icon: 'mdi-dots-horizontal',
+          },
+          close: {
+            type: 'button',
+            title: 'Close',
+            icon: 'mdi-close',
+          },
+        },
       }
     }
   },
@@ -97,9 +152,6 @@ export default {
       socket.onmessage = (event) => {
         let eventJson = JSON.parse(event.data)
         console.log(eventJson)
-        // let analysisSource = eventJson.name.split(':');
-        // this. = analysisSource[2]
-        // this.$emit(eventJson.name, ventJson.propertyTypeList)
       }
       return socket
     },
@@ -120,6 +172,11 @@ export default {
       })
       return WSHub
     },
+    getMessage(){
+      this.$api.users.getLetter().then(res => {
+        this.nocticeData = res.data
+      })
+    }
   },
   beforeDestroy() {
     for (let key in this.WSHub) {
