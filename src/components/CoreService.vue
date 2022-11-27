@@ -97,7 +97,7 @@ export default {
       socket.onmessage = (event) => {
         let eventJson = JSON.parse(event.data)
         console.log(eventJson)
-        let analysisSource = eventJson.name.split(':');
+        // let analysisSource = eventJson.name.split(':');
         // this. = analysisSource[2]
         // this.$emit(eventJson.name, ventJson.propertyTypeList)
       }
