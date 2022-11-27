@@ -185,9 +185,9 @@
           <!--  Show other Docker container app(s) Switch End  -->
 
           <!--  Recommended modules Switch Start  -->
-          <!-- <div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2">
+          <div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2">
             <div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-              <b-icon pack="casa" size="is-20" icon="app-switch" class="mr-1 ml-2"></b-icon>
+              <b-icon pack="casa" size="is-20" icon="docker" class="mr-1 ml-2"></b-icon>
               {{ $t('Show Recommended Apps') }}
             </div>
             <div>
@@ -196,7 +196,7 @@
                           @input="saveData"></b-switch>
               </b-field>
             </div>
-          </div>-->
+          </div>
           <!-- Recommended modules Switch End  -->
 
           <!-- Automount USB Drive Start  -->
