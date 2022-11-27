@@ -154,7 +154,7 @@
           <!--  Show other Docker container app(s) Switch Start  -->
           <div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2">
             <div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-              <b-icon pack="casa" size="is-20" icon="app-switch" class="mr-1 ml-2"></b-icon>
+              <b-icon pack="casa" size="is-20" icon="docker" class="mr-1 ml-2"></b-icon>
               {{ $t('Show other Docker container app(s)') }}
             </div>
             <div>
@@ -187,7 +187,7 @@
           <!--  Recommended modules Switch Start  -->
           <div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2">
             <div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-              <b-icon pack="casa" size="is-20" icon="docker" class="mr-1 ml-2"></b-icon>
+              <b-icon pack="casa" size="is-20" icon="app-switch" class="mr-1 ml-2"></b-icon>
               {{ $t('Show Recommended Apps') }}
             </div>
             <div>
@@ -299,7 +299,7 @@
             class="ml-2 mr-5 mt-3 mb-3 pr-4 pl-4 _is-normal _has-background-blue is-flex is-align-items-center is-justify-content-center"
             @click="resetPower">
           {{ $t('Connecting') }}
-          <img alt="loading" :src="require('@/assets/img/power/loading.svg')" class="ml-1"/>
+          <img alt="loading" :src="require('@/assets/img/power/waiting-white.svg')" class="ml-1"/>
         </button>
       </footer>
     </b-modal>
@@ -726,6 +726,7 @@ export default {
         this[key] = "are you sure?"
         return
       }
+      this.$refs.settingsDrop.toggle()
       this.showPower = true
       switch (key) {
         case "restart":
