@@ -20,33 +20,35 @@
           <img :src="require('@/assets/img/logo/casa-white.svg')"/>
         </div>
         <div class="header-title pl-2 is-flex-grow-1">
-          {{ $t("Find New Drive") }}
+          {{ $t(noticeData.prelude.title) }}
         </div>
-        <b-icon icon="close-xs" custom-size="casa-24px" class="is-flex-shrink-0" @click="close" pack="casa"></b-icon>
+        <div class="is-flex-shrink-0" @click="close">
+          <b-icon icon="close-xs" custom-size="casa-24px" pack="casa"></b-icon>
+        </div>
       </div>
       <!-- end of section head-->
 
       <!-- start of section body-->
       <div
-          class="info is-flex is-flex-direction-column is-justify-content-space-between is-flex-grow-1">
+          class="info is-flex is-flex-direction-column is-justify-content-space-around is-flex-grow-1">
         <div class="_widget-body is-flex mr-0">
           <div class="image is-24x24 is-flex-shrink-0">
             <img :src="require('@/assets/img/logo/casa-white.svg')"/>
           </div>
           <div class="body-title is-flex-grow-1 nowarp ml-2">
-            {{ $t("Find New Drive") }}
+            {{ $t(noticeData.content[0].title) }}
           </div>
           <div class="has-text-left is-size-14px mt-1 is-flex-shrink-0">
-            <span class="op65">100G/1000G</span>
+            <span class="op65">{{ noticeData.content[0].value }}</span>
           </div>
         </div>
-        <div class="line _ml-2rem"></div>
-        <div class="_widget-body is-flex mr-0">
+        <div class="line _ml-2rem" v-if="noticeData.content.length > 1"></div>
+        <div class="_widget-body is-flex mr-0" v-if="noticeData.content.length > 1">
           <div class="image is-24x24 is-flex-shrink-0">
             <img :src="require('@/assets/img/logo/casa-white.svg')"/>
           </div>
           <div class="body-title is-flex-grow-1 nowarp ml-2">
-            {{ $t("Find New Drive") }}
+            {{ $t(noticeData.content[1].title) }}
           </div>
           <p class="has-text-left is-size-14px mt-1 is-flex-shrink-0">
             <span class="op65">100G/1000G</span>
@@ -57,13 +59,16 @@
 
       <!-- start of section footer-->
       <div class="is-flex is-flex-direction-row-reverse is-flex-shrink-0 is-align-items-end">
-        <b-button :disabled="false" class="width" rounded size="is-small" type="is-primary" @click="close">
+        <b-button :disabled="false" class="width" rounded size="is-small" type="is-primary" @click="close"
+                  v-if="!noticeData.operate">
           {{ $t('Cancel') }}
         </b-button>
-        <b-button :disabled="false" class="width" rounded size="is-small" type="is-primary" @click="TODO">
+        <b-button :disabled="false" class="width" rounded size="is-small" type="is-primary" @click="TODO" v-else>
           {{ $t('Set MainStorage') }}
         </b-button>
-        <div class="is-flex-grow-1 footer-hint">{{ $t('{num}Items', {num: 3}) }}</div>
+        <div class="is-flex-grow-1 footer-hint" v-if="noticeData.content.length > 1">
+          {{ $t('{num}Items', {num: noticeData.content.length}) }}
+        </div>
       </div>
       <!-- end of section footer-->
     </div>
@@ -71,112 +76,72 @@
 </template>
 
 <script>
-import events from '@/events/events';
 
 export default {
   name: "notice-block",
+  props: {
+    noticeData: {
+      type: Object,
+      default: () => {
+        return {
+          prelude: {
+            title: 'Find New USB Drive',
+            icon: 'mdi-usb',
+          },
+          content: [
+            {
+              title: 'Find New Drive',
+              icon: 'mdi-usb',
+              color: 'is-primary',
+              path: '/storage',
+              uuid: '123',
+              value: '100G/1000G'
+            },
+            {
+              title: 'Find New Drive',
+              icon: 'mdi-usb',
+              color: 'is-primary',
+              path: '/storage',
+              uuid: '456',
+              value: '100G/1001G'
+            },],
+          contentType: 'list',
+          operate: {
+            type: 'button',
+            title: 'More',
+            path: '/storage',
+            icon: 'mdi-arrow-right',
+          },
+        };
+      },
+    },
+    noticeType: {
+      type: String,
+      default: 'usb',
+    },
+  },
   data() {
     return {}
   },
   created() {
-    this.checkSyncStatus()
-
-    this.$EventBus.$on(events.UPDATE_SYNC_STATUS, () => {
-      this.checkSyncStatus();
-    });
-
   },
   beforeDestroy() {
-    this.$EventBus.$off(events.UPDATE_SYNC_STATUS);
   },
   computed: {},
 
   methods: {
     close() {
-      this.$emit('close');
+      let promises = [];
+      this.noticeData.content.forEach((item) => {
+        promises.push(this.$api.users.delLetter(item.uuid));
+      });
+      Promise.all(promises).then(() => {
+        this.$emit('deleteNotice', this.noticeData, this.noticeType);
+      });
     },
     TODO() {
       // this.$refs.mySwiper.$swiper.slideNext()
     },
-    async checkSyncStatus() {
-      // const res = await this.$api.sys.getSystemApps()
-      const listRes = await this.$api.container.getMyAppList();
-      const systemApps = listRes.data.data.casaos_apps
-      const is8384SyncInstalled = systemApps.some(app => {
-        return app.image.includes('syncthing') && app.port === 8384
-      })
-      if (is8384SyncInstalled) {
-        this.isSyncInstalled = true
-        this.syncBaseURL = `http://${this.$baseIp}:8384`
-        this.syncPort = 8384
-        this.syncId = systemApps.find(app => {
-          return app.image.includes('syncthing') && app.port === 8384
-        }).port
-        this.isSyncRunning = systemApps.some(app => {
-          return app.image.includes('syncthing') && app.port === 8384 && app.state === 'running'
-        })
-      } else {
-        this.isSyncInstalled = systemApps.some(app => {
-          return app.image.includes('syncthing')
-        })
-        if (this.isSyncInstalled) {
-          this.isSyncRunning = systemApps.some(app => {
-            return app.image.includes('syncthing') && app.state === "running"
-          })
-          this.syncPort = systemApps.find(app => {
-            return app.image.includes('syncthing')
-          }).port
-          this.syncId = systemApps.find(app => {
-            return app.image.includes('syncthing')
-          }).id
-          this.syncBaseURL = `http://${this.$baseIp}:${this.syncPort}`
-        }
-      }
-
-
-    },
-    async openSyncPanel() {
-      await this.checkSyncStatus()
-      if (!this.isSyncInstalled) {
-        this.$EventBus.$emit(events.OPEN_APP_STORE_AND_GOTO_SYNCTHING);
-      } else {
-        if (this.isSyncRunning) {
-          const arg = `\u003cscript\u003elocation.replace("${this.syncBaseURL}")\u003c/script\u003e`;
-          window.open('javascript:window.name;', arg);
-        } else {
-          this.$buefy.dialog.confirm({
-            title: ' ',
-            message: this.$t('Syncthing is not running, start it?'),
-            hasIcon: true,
-            closeOnConfirm: false,
-            confirmText: this.$t('Start'),
-            cancelText: this.$t('Cancel'),
-            onConfirm: (value, {close}) => {
-              this.$buefy.toast.open({
-                message: this.$t(`Starting Syncthing...`),
-              })
-              this.$api.container.updateState(this.syncId, "start").then((res) => {
-                this.isStarting = false
-                if (res.data.success == 200) {
-                  this.$EventBus.$emit(events.RELOAD_APP_LIST);
-                  const arg = `\u003cscript\u003elocation.replace("${this.syncBaseURL}")\u003c/script\u003e`;
-                  setTimeout(() => {
-                    close()
-                    window.open('javascript:window.name;', arg);
-
-                  }, 2000)
-                } else {
-                  this.$buefy.toast.open({
-                    message: this.$t(`Failed to start, please try again.`),
-                    type: 'is-danger'
-                  })
-                }
-              })
-            }
-          })
-        }
-      }
-    }
   }
 }
 </script>
@@ -217,8 +182,6 @@ export default {
     font-weight: 400;
     font-size: 0.75rem;
     line-height: 1.125rem;
-    //vertical-align: text-bottom;
-    //margin-bottom: -1rem;
   }
 }
 
