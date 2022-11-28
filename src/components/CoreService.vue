@@ -8,8 +8,8 @@
 -->
 <template>
   <swiper ref="mySwiper" :options="swiperOptions">
-    <swiper-slide v-for="(noticeCard,key) in nocticeData" :key="key">
-      <noticeBlock :data="noticeCard"></noticeBlock>
+    <swiper-slide v-for="(noticeCard,key) in noticesData" :key="key">
+      <noticeBlock :noticeData="noticeCard" @deleteNotice="refreshNotice" :noticeType="key"></noticeBlock>
     </swiper-slide>
     <div class="swiper-pagination" slot="pagination">
     </div>
@@ -78,55 +78,103 @@ export default {
           path: '/storage'
         },
       ],
-      nocticeData: {
+      noticesData: {
         'usb': {
-          title: 'USB',
+          /*title: 'USB',
           icon: 'mdi-usb',
-          content:[ {title:'Find New Drive',icon:'mdi-usb',color:'is-primary',path:'/storage'},
-            {title:'Find New Drive',icon:'mdi-usb',color:'is-primary',path:'/storage'},],
+          contentType: 'list',
+          content: [
+            {title: 'Find New Drive', icon: 'mdi-usb', color: 'is-primary', path: '/storage'},
+            {title: 'Find New Drive', icon: 'mdi-usb', color: 'is-primary', path: '/storage'},],
+          operateType: 'button',
+          operateTitle: 'More',
+          operatePath: '/storage',
+          operateIcon: 'mdi-arrow-right',
+          closeType: 'button',
+          closeTitle: 'Close',
+          closeIcon: 'mdi-close',*/
+          prelude: {
+            title: 'USB',
+            icon: 'mdi-usb',
+          },
+          content: [
+            {
+              title: 'Find New Drive',
+              icon: 'mdi-usb',
+              color: 'is-primary',
+              path: '/storage',
+              uuid: '456',
+              value: '100G/1001G'
+            },
+            {
+              title: 'Find New Drive',
+              icon: 'mdi-usb',
+              color: 'is-primary',
+              path: '/storage',
+              uuid: '987',
+              value: '100G/1001G'
+            }],
+          contentType: 'list',
           operate: {
             type: 'button',
             title: 'More',
-            icon: 'mdi-dots-horizontal',
-          },
-          close: {
-            type: 'button',
-            title: 'Close',
-            icon: 'mdi-close',
+            path: '/storage',
+            icon: 'mdi-arrow-right',
           },
         },
         'local-storage': {
-          title: 'USB',
-          icon: 'mdi-usb',
-          conetentType: 'list',
-          content:[ {title:'Find New Drive',icon:'mdi-usb',color:'is-primary',path:'/storage'},
-            {title:'Find New Drive',icon:'mdi-usb',color:'is-primary',path:'/storage'},],
+          prelude: {
+            title: 'USB',
+            icon: 'mdi-usb',
+          },
+          content: [
+            {
+              title: 'Find New Drive',
+              icon: 'mdi-usb',
+              color: 'is-primary',
+              path: '/storage',
+              uuid: '456',
+              value: '100G/500G'
+            },],
+          contentType: 'list',
           operate: {
             type: 'button',
             title: 'More',
-            icon: 'mdi-dots-horizontal',
-          },
-          close: {
-            type: 'button',
-            title: 'Close',
-            icon: 'mdi-close',
+            path: '/storage',
+            icon: 'mdi-arrow-right',
           },
         },
         'app': {
-          title: 'USB',
-          icon: 'mdi-usb',
-          conetentType: 'rate',
-          content:[ 0.5 ],
-          operate: {
-            type: 'button',
-            title: 'More',
-            icon: 'mdi-dots-horizontal',
+          prelude: {
+            title: 'USB',
+            icon: 'mdi-usb',
           },
-          close: {
-            type: 'button',
-            title: 'Close',
-            icon: 'mdi-close',
-          },
+          content: [
+            {
+              title: 'Find New Drive',
+              icon: 'mdi-usb',
+              color: 'is-primary',
+              path: '/storage',
+              uuid: '456',
+              value: '100G/500G'
+            },
+            {
+              title: 'Find New Drive',
+              icon: 'mdi-usb',
+              color: 'is-primary',
+              path: '/storage',
+              uuid: '987',
+              value: '100G/500G'
+            },
+            {
+              title: 'Find New Drive',
+              icon: 'mdi-usb',
+              color: 'is-primary',
+              path: '/storage',
+              uuid: '987',
+              value: '100G/500G'
+            }],
+          contentType: 'list',
         },
       }
     }
@@ -151,7 +199,20 @@ export default {
       }
       socket.onmessage = (event) => {
         let eventJson = JSON.parse(event.data)
-        console.log(eventJson)
+        let eventType = eventJson.properties['local-storage:bus']
+        if (eventType === 'usb') {
+          this.noticesData[eventType]['prelude']['title'] = eventJson.properties['local-storage:bus'];
+          this.noticesData[eventType]['prelude']['icon'] = eventJson.properties['local-storage:icon'];
+          this.noticesData[eventType]['content'].push({
+            title: eventJson.properties['local-storage:title'],
+            icon: eventJson.properties['local-storage:icon'],
+            path: eventJson.properties['local-storage:path'],
+            uuid: eventJson.properties['local-storage:uuid'],
+            value: eventJson.properties['local-storage:value'],
+          })
+          this.noticesData[eventType]['operate']['type'] = 'button';
+          this.noticesData[eventType]['operate']['title'] = 'Open in Files';
+        }
       }
       return socket
     },
@@ -172,11 +233,14 @@ export default {
       })
       return WSHub
     },
-    getMessage(){
+    getMessage() {
       this.$api.users.getLetter().then(res => {
-        this.nocticeData = res.data
+        this.noticesData = res.data
       })
-    }
+    },
+    refreshNotice(data, type) {
+      this.noticesData[type] = data
+    },
   },
   beforeDestroy() {
     for (let key in this.WSHub) {

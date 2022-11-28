@@ -1031,17 +1031,6 @@ export default {
         background: hsla(0, 0%, 100%, 1);
         padding-top: 1rem;
         padding-bottom: 1rem;
-
-        //._is-normal {
-        //  /* Text 400Regular/Text03 */
-        //  font-family: 'Roboto';
-        //  font-style: normal;
-        //  font-weight: 400;
-        //  font-size: 0.875rem;
-        //  line-height: 1.25rem;
-        //  /* or 143% */
-        //  font-feature-settings: 'pnum' on, 'lnum' on;
-        //}
       }
     }
 
