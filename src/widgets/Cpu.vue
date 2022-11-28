@@ -16,7 +16,7 @@
       <div class="columns is-mobile mt-0 ">
 
         <div class="column is-half has-text-centered">
-          <radial-bar :extendContent="power+' / '+temperature" :percent="parseInt(cpuSeries)" label="CPU"></radial-bar>
+          <radial-bar :extendContent="power+temperature" :percent="parseInt(cpuSeries)" label="CPU"></radial-bar>
         </div>
         <div class="column is-half has-text-centered">
           <radial-bar :extendContent="renderSize(totalMemory)" :percent="parseInt(ramSeries)" label="RAM"></radial-bar>
@@ -40,7 +40,8 @@
 
             <b-tab-item label="RAM">
               <div v-for="(item,index) in containerRamList" :key="item.title+index+'-rem'">
-                <div v-if="!isNaN(item.usage)" class="is-flex is-size-7 is-align-items-center mb-2">
+                <div v-if="!isNaN(item.usage) && renderSize(item.usage).split(' ')[0] != 0"
+                     class="is-flex is-size-7 is-align-items-center mb-2">
                   <div class="is-flex-grow-1 is-flex is-align-items-center">
                     <b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')"
                              class="is-16x16 mr-2 is-flex-shrink-0"></b-image>
@@ -91,7 +92,7 @@ export default {
       containerCpuList: [],
       containerRamList: [],
       temperature: "0°C",
-      power: '0W',
+      power: '0W / ',
       powerList: [],
     }
   },
@@ -209,8 +210,10 @@ export default {
       this.cpuSeries = data.body.sys_cpu.percent
       this.pushPower(data.body.sys_cpu.power)
       this.temperature = data.body.sys_cpu.temperature == undefined ? "0°C" : data.body.sys_cpu.temperature + "°C"
-      if (this.powerList.length == 2) {
-        this.power = ((this.powerList[1].value - this.powerList[0].value) / 1000000 / (this.powerList[1].timestamp - this.powerList[0].timestamp)).toFixed(1) + "W"
+      if (this.powerList.length == 2 && data.body.sys_cpu.model === 'intel') {
+        this.power = ((this.powerList[1].value - this.powerList[0].value) / 1000000 / (this.powerList[1].timestamp - this.powerList[0].timestamp)).toFixed(1) + "W / "
+      } else {
+        this.power = ''
       }
 
       // Memory
