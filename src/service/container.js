@@ -66,8 +66,8 @@ const container = {
     },
 
     // uninstall  container
-    uninstall(id) {
-        return api.delete(`${PREFIX}/${id}`);
+    uninstall(id, data) {
+        return api.delete(`${PREFIX}/${id}`, data);
     },
 
     // AppsInstallationLocation require doctument
