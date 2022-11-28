@@ -227,7 +227,7 @@ export default {
       this.$refs.dro.isActive = false
       this.$buefy.dialog.confirm({
         title: this.$t('Attention'),
-        message: this.$t(`Data cannot be recovered after deletion! <br/>Continue on to uninstall this application?<br/><div class="is-flex is-align-items-center mt-4"><input type="checkbox" value="true" id="checkDelConfig">Delete userdata ( config folder )</input></div>`),
+        message: this.$t(`Data cannot be recovered after deletion! <br/>Continue on to uninstall this application?<br/><div class="is-flex is-align-items-center mt-4"><input type="checkbox" checked id="checkDelConfig">Delete userdata ( config folder )</input></div>`),
         /* message: this.$t(`Data cannot be recovered after deletion! <br/>Continue on to uninstall this application?{checkbox}Delete userdata ( config folder )</input>`, {
            checkbox: `<br/><input type="checkbox" id="deleteUserData" class="checkbox">`
          }),*/
