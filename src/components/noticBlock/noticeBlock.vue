@@ -36,22 +36,22 @@
             <img :src="require('@/assets/img/logo/casa-white.svg')"/>
           </div>
           <div class="body-title is-flex-grow-1 nowarp ml-2">
-            {{ $t(noticeData.content[0].title) }}
+            {{ $t(noticeData.content[Object.keys(noticeData.content)[0]].title) }}
           </div>
           <div class="has-text-left is-size-14px mt-1 is-flex-shrink-0">
-            <span class="op65">{{ noticeData.content[0].value }}</span>
+            <span class="op65">{{ noticeData.content[Object.keys(noticeData.content)[0]].value }}</span>
           </div>
         </div>
-        <div class="line _ml-2rem" v-if="noticeData.content.length > 1"></div>
-        <div class="_widget-body is-flex mr-0" v-if="noticeData.content.length > 1">
+        <div class="line _ml-2rem" v-if="Object.keys(noticeData.content).length > 1"></div>
+        <div class="_widget-body is-flex mr-0" v-if="Object.keys(noticeData.content).length > 1">
           <div class="image is-24x24 is-flex-shrink-0">
             <img :src="require('@/assets/img/logo/casa-white.svg')"/>
           </div>
           <div class="body-title is-flex-grow-1 nowarp ml-2">
-            {{ $t(noticeData.content[1].title) }}
+            {{ $t(noticeData.content[Object.keys(noticeData.content)[1]].title) }}
           </div>
           <p class="has-text-left is-size-14px mt-1 is-flex-shrink-0">
-            <span class="op65">100G/1000G</span>
+            <span class="op65">{{ noticeData.content[Object.keys(noticeData.content)[1]].value }}</span>
           </p>
         </div>
       </div>
@@ -63,11 +63,13 @@
                   v-if="!noticeData.operate">
           {{ $t('Cancel') }}
         </b-button>
-        <b-button :disabled="false" class="width" rounded size="is-small" type="is-primary" @click="TODO" v-else>
-          {{ $t('Set MainStorage') }}
+        <b-button :disabled="false" class="width" rounded size="is-small" type="is-primary"
+                  @click="$EventBus.$emit(noticeData.operate.event, noticeData.operate.path)"
+                  v-else-if="'casaUI:eventBus'">
+          {{ $t(noticeData.operate.title) }}
         </b-button>
-        <div class="is-flex-grow-1 footer-hint" v-if="noticeData.content.length > 1">
-          {{ $t('{num}Items', {num: noticeData.content.length}) }}
+        <div class="is-flex-grow-1 footer-hint" v-if="Object.keys(noticeData.content).length > 1">
+          {{ $t('{num}Items', {num: Object.keys(noticeData.content).length}) }}
         </div>
       </div>
       <!-- end of section footer-->
@@ -88,8 +90,8 @@ export default {
             title: 'Find New USB Drive',
             icon: 'mdi-usb',
           },
-          content: [
-            {
+          content: {
+            123: {
               title: 'Find New Drive',
               icon: 'mdi-usb',
               color: 'is-primary',
@@ -97,17 +99,19 @@ export default {
               uuid: '123',
               value: '100G/1000G'
             },
-            {
+            345: {
               title: 'Find New Drive',
               icon: 'mdi-usb',
               color: 'is-primary',
               path: '/storage',
               uuid: '456',
               value: '100G/1001G'
-            },],
+            },
+          },
           contentType: 'list',
           operate: {
-            type: 'button',
+            type: 'casaUI:eventBus',
+            event: 'openFile',
             title: 'More',
             path: '/storage',
             icon: 'mdi-arrow-right',
@@ -123,7 +127,11 @@ export default {
   data() {
     return {}
   },
+  inject: ['homeShowFiles'],
   created() {
+    this.$EventBus.$on('casaUI:openInFiles', (path) => {
+      this.homeShowFiles(path);
+    });
   },
   beforeDestroy() {
   },
@@ -132,9 +140,9 @@ export default {
   methods: {
     close() {
       let promises = [];
-      this.noticeData.content.forEach((item) => {
-        promises.push(this.$api.users.delLetter(item.uuid));
-      });
+      for (const contentKey in this.noticeData.content) {
+        promises.push(this.$api.users.delLetter(this.noticeData.content[contentKey].messageUUID));
+      }
       Promise.all(promises).then(() => {
         this.$emit('deleteNotice', this.noticeData, this.noticeType);
       });
