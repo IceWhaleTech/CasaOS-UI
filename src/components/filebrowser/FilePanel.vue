@@ -414,10 +414,10 @@ export default {
      * @description: Init Funtion
      * @return {*}
      */
-    init() {
-
+    init(path) {
+      let initPath = path || this.rootPath;
       if (this.isCreated) {
-        this.getFileList(this.rootPath);
+        this.getFileList(initPath);
         // this.$refs.mountedList.getStorageList();
       } else {
         this.isCreated = true

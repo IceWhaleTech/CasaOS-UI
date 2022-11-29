@@ -193,11 +193,10 @@ export default {
      * @param {*}
      * @return {*} void
      */
-    showFiles() {
-
+    showFiles(path) {
       this.isFileActive = true
       this.$nextTick(() => {
-        this.$refs.filePanel.init()
+        this.$refs.filePanel.init(path)
       })
     },
 
