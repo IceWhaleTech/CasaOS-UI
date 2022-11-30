@@ -107,7 +107,7 @@ export default {
   position: fixed;
   right: 0.875rem;
   bottom: 0.35rem;
-  z-index: 100;
+  z-index: 30;
 
   a {
     color: #fff;
