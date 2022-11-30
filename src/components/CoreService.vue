@@ -7,7 +7,7 @@
  * @FilePath: \CasaOS-UI\src\components\CoreService.vue
 -->
 <template>
-  <swiper ref="mySwiper" :options="swiperOptions">
+  <swiper ref="mySwiper" :options="swiperOptions" v-if="Object.keys(noticesData).length > 0">
     <swiper-slide v-for="(noticeCard,key) in noticesData" :key="key">
       <noticeBlock :noticeData="noticeCard" @deleteNotice="refreshNotice" :noticeType="key"></noticeBlock>
     </swiper-slide>
@@ -24,6 +24,7 @@
 import noticeBlock from "@/components/noticBlock/noticeBlock";
 import {Swiper, SwiperSlide} from 'vue-awesome-swiper'
 import {mixin} from '@/mixins/mixin';
+import _ from 'lodash';
 
 export default {
   components: {noticeBlock, Swiper, SwiperSlide},
@@ -57,41 +58,22 @@ export default {
           prevEl: '.swiper-button-prev'
         }
       },
-      carousels: [
-        {
-          title: 'Smart Home',
-          icon: 'mdi-home',
-          color: 'is-primary',
-          path: '/smartHome'
-        },
-        {
-          title: 'Syncthing',
-          icon: 'mdi-sync',
-          color: 'is-info',
-          path: '/syncthing'
-        },
-        {
-          title: 'Storage',
-          icon: 'mdi-database',
-          color: 'is-success',
-          path: '/storage'
-        },
-      ],
       noticesData: {
-        'local-storage': {
+        // example data:
+        /*'local-storage': {
           prelude: {
-            title: 'storage',
+            title: 'local-storage',
             icon: 'mdi-usb',
           },
-          content: [
-            {
+          content: {
+            a: {
               title: 'Find New Drive',
-              icon: 'mdi-usb',
+              icon: '/storage/disk.png',
               color: 'is-primary',
               path: '/storage',
               uuid: '456',
               value: '100G/500G'
-            },],
+            },},
           contentType: 'list',
           operate: {
             type: 'button',
@@ -99,7 +81,7 @@ export default {
             path: '/storage',
             icon: 'mdi-arrow-right',
           },
-        },
+        },*/
       }
     }
   },
@@ -126,13 +108,14 @@ export default {
       }
       socket.onmessage = (event) => {
         let eventJson = JSON.parse(event.data)
-        let eventType = eventJson.properties['tran']
-        let operateType = eventJson.name.split(':')[2]
-        let show = eventJson.name.split(':')[1] === 'disk'
-        let entityUUID = eventJson.properties['serial'] || '010203';
-        if (eventType === 'usb' && show) {
-          this.transformUSB(eventJson, operateType, entityUUID)
-        }
+        // let eventType = eventJson.properties['tran']
+        // let operateType = eventJson.name.split(':')[2]
+        // let show = eventJson.name.split(':')[1] === 'disk'
+        // let entityUUID = eventJson.properties['serial']// || '010203';
+        // if (eventType === 'usb' && show) {
+        //   this.transformUSB(eventJson, operateType, entityUUID)
+        // }
+        this.patchTransform(eventJson);
       }
       return socket
     },
@@ -155,7 +138,8 @@ export default {
     },
     getMessage() {
       this.$api.users.getLetter().then(res => {
-        res.data.forEach(item => {
+        let sortedData = _.sortBy(res.data, ['timestamp']).reverse();
+        sortedData.forEach(item => {
           this.patchTransform({
             ...item,
             properties: JSON.parse(item.properties),
@@ -164,74 +148,41 @@ export default {
       })
     },
     refreshNotice(data, type) {
-      this.noticesData[type] = data
-      // this.$delete(this.noticesData, type)
+      // this.noticesData[type] = data
+      this.$delete(this.noticesData, type)
     },
     patchTransform(eventJson) {
-      let eventType = eventJson.properties['tran']
+      let notShow = eventJson.name.split(':')[1] !== 'disk'
+      if (notShow) {
+        return
+      }
+      // Business : Determine if formatting is required
+      let eventType = eventJson.properties['children:num'] !== undefined ? eventJson.properties['tran'] : 'newDisk';
+
       let operateType = eventJson.name.split(':')[2]
-      // let show = eventJson.name.split(':')[1] === 'disk'
-      let entityUUID = eventJson.properties['serial'] || '010203';
+      let entityUUID = eventJson.properties['serial'] || eventJson.properties['local-storage:uuid'];
+
       switch (eventType) {
         case 'usb':
           this.transformUSB(eventJson, operateType, entityUUID)
           break;
         case 'sata':
-          this.transformLocalStorage(eventJson, "added", entityUUID)
+          this.transformLocalStorage(eventJson, operateType, entityUUID)
           break;
         case 'app':
           this.transformApp(eventJson, operateType, entityUUID)
           break;
+        case 'newDisk':
+          this.transformNewDisk(eventJson, operateType, entityUUID)
+          break;
+        default:
+          break;
       }
     },
     transformUSB(eventJson) {
-      let notShow = eventJson.name.split(':')[1] !== 'disk'
-      if (notShow) {
-        return
-      }
       let eventType = eventJson.properties['tran']
       let operateType = eventJson.name.split(':')[2]
-      let entityUUID = eventJson.properties['serial'] || '010203';
-      if (!this.noticesData[eventType]) {
-        this.$set(this.noticesData, eventType, {
-          prelude: {
-            title: eventType,
-            icon: 'mdi-usb',
-          },
-          content: {},
-          contentType: 'list',
-          operate: {
-            type: 'button',
-            title: 'More',
-            path: '/storage',
-            icon: 'mdi-arrow-right',
-          },
-        })
-      }
-      if (operateType === 'added') {
-        let percent = eventJson.properties['used'] ? 'NaN' : `${this.renderSize(eventJson.properties['used'])} / ${this.renderSize(eventJson.properties['size'])}`
-        this.$set(this.noticesData[eventType]['content'], entityUUID, {
-          title: eventJson.properties['local-storage:title'] || 'Find New Drive',
-          icon: 'mdi-usb',
-          color: 'is-primary',
-          path: eventJson.properties['local-storage:path'],
-          uuid: entityUUID,
-          value: percent,
-          messageUUID: eventJson.uuid
-        })
-        this.noticesData[eventType]['operate']['path'] = eventJson.properties['local-storage:path']
-      } else if (operateType === 'removed') {
-        this.$delete(this.noticesData[eventType]['content'], entityUUID)
-        if (Object.keys(this.noticesData[eventType]['content']).length === 0) {
-          this.$delete(this.noticesData, eventType)
-        }
-      }
-    },
-    transformLocalStorage(eventJson, operateType) {
-      console.log(eventJson)
-      let eventType = eventJson.properties['tran']
-      // let operateType = eventJson.name.split(':')[2]
-      let entityUUID = eventJson.properties['serial'] || '010203';
+      let entityUUID = eventJson.properties['serial'] || eventJson.properties['local-storage:uuid'];
       if (!this.noticesData[eventType]) {
         this.$set(this.noticesData, eventType, {
           prelude: {
@@ -250,10 +201,51 @@ export default {
         })
       }
       if (operateType === 'added') {
-        let percent = eventJson.properties['used'] ? 'NaN' : `${this.renderSize(eventJson.properties['used'])} / ${this.renderSize(eventJson.properties['size'])}`
+        let percent = eventJson.properties['used'] ? `${this.renderSize(eventJson.properties['used'])} / ${this.renderSize(eventJson.properties['size'])}` : 'NaN';
         this.$set(this.noticesData[eventType]['content'], entityUUID, {
           title: eventJson.properties['local-storage:title'] || 'Find New Drive',
-          icon: 'mdi-usb',
+          icon: '',
+          color: 'is-primary',
+          path: eventJson.properties['local-storage:path'],
+          uuid: entityUUID,
+          value: percent,
+          messageUUID: eventJson.uuid
+        })
+        this.noticesData[eventType]['operate']['path'] = eventJson.properties['local-storage:path']
+      } else if (operateType === 'removed') {
+        this.$delete(this.noticesData[eventType]['content'], entityUUID)
+        if (Object.keys(this.noticesData[eventType]['content']).length === 0) {
+          this.$delete(this.noticesData, eventType)
+          this.$api.users.delLetter(eventJson.uuid)
+        }
+      }
+    },
+    transformLocalStorage(eventJson, operateType) {
+      console.log(eventJson)
+      let eventType = eventJson.properties['tran']
+      let entityUUID = eventJson.properties['serial'] || eventJson.properties['local-storage:uuid'];
+      if (!this.noticesData[eventType]) {
+        this.$set(this.noticesData, eventType, {
+          prelude: {
+            title: eventType,
+            icon: 'mdi-usb',
+          },
+          content: {},
+          contentType: 'list',
+          operate: {
+            type: 'casaUI:eventBus',
+            title: 'Open in Files',
+            event: 'casaUI:openInStorageManager',
+            path: '/Storage',
+            icon: 'mdi-arrow-right',
+          },
+        })
+      }
+      if (operateType === 'added') {
+        let percent = eventJson.properties['used'] ? `${this.renderSize(eventJson.properties['used'])} / ${this.renderSize(eventJson.properties['size'])}` : 'NaN';
+        this.$set(this.noticesData[eventType]['content'], entityUUID, {
+          title: eventJson.properties['local-storage:title'] || 'Find New Drive',
+          icon: '/storage/disk.png',
           color: 'is-primary',
           path: eventJson.properties['local-storage:path'],
           uuid: entityUUID,
@@ -265,6 +257,47 @@ export default {
         this.$delete(this.noticesData[eventType]['content'], entityUUID)
         if (Object.keys(this.noticesData[eventType]['content']).length === 0) {
           this.$delete(this.noticesData, eventType)
+          this.$api.users.delLetter(eventJson.uuid)
+        }
+      }
+    },
+    transformNewDisk(eventJson, operateType) {
+      let eventType = eventJson.properties['tran']
+      let entityUUID = eventJson.properties['serial'] || eventJson.properties['local-storage:uuid'];
+      if (!this.noticesData[eventType]) {
+        this.$set(this.noticesData, eventType, {
+          prelude: {
+            title: eventType,
+            icon: 'mdi-usb',
+          },
+          content: {},
+          contentType: 'list',
+          operate: {
+            type: 'casaUI:eventBus',
+            title: 'Open in Files',
+            event: 'casaUI:openDiskLearnMore',
+            path: '/Storage',
+            icon: 'mdi-arrow-right',
+          },
+        })
+      }
+      if (operateType === 'added') {
+        let percent = eventJson.properties['used'] ? `${this.renderSize(eventJson.properties['used'])} / ${this.renderSize(eventJson.properties['size'])}` : 'NaN';
+        this.$set(this.noticesData[eventType]['content'], entityUUID, {
+          title: eventJson.properties['local-storage:title'] || 'Find New Drive',
+          icon: '/storage/disk.png',
+          color: 'is-primary',
+          path: eventJson.properties['local-storage:path'],
+          uuid: entityUUID,
+          value: percent,
+          messageUUID: eventJson.uuid
+        })
+        this.noticesData[eventType]['operate']['path'] = eventJson.properties['mountpoint']
+      } else if (operateType === 'removed') {
+        this.$delete(this.noticesData[eventType]['content'], entityUUID)
+        if (Object.keys(this.noticesData[eventType]['content']).length === 0) {
+          this.$delete(this.noticesData, eventType)
+          this.$api.users.delLetter(eventJson.uuid)
         }
       }
     },

@@ -20,8 +20,7 @@
       </div>
       <div class="is-flex is-align-items-center status pri-min-width">
         <div>
-          <p class="has-text-left is-size-7 mb-3">{{ $t('Health') }}: <b v-if="item.health"
-                                                                         class="has-text-success">{{ $t('Healthy') }}</b><b
+          <p class="has-text-left is-size-7 mb-3">{{ $t('Health') }}: <b v-if="item.health" class="has-text-success">{{ $t('Healthy') }}</b><b
               v-if="!item.health" class="has-text-danger">{{ $t('Damage') }}</b></p>
           <p class="has-text-left is-size-7 ">{{ $t('Temp') }}: <b v-if="item.temperature > 0">{{ item.temperature }}°C
             / {{ item.temperature | toFahrenheit }}°F</b> <b v-else>N/A</b></p>
