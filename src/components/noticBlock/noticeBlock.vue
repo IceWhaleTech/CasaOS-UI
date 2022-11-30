@@ -33,7 +33,8 @@
           class="info is-flex is-flex-direction-column is-justify-content-space-around is-flex-grow-1">
         <div class="_widget-body is-flex mr-0">
           <div class="image is-24x24 is-flex-shrink-0">
-            <img :src="require('@/assets/img/logo/casa-white.svg')"/>
+            <img :src="require(`@/assets/img/logo/casa-white.svg`)" v-if="!noticeData.content[Object.keys(noticeData.content)[0]].icon"/>
+            <img :src="require(`@/assets/img${noticeData.content[Object.keys(noticeData.content)[0]].icon}`)" v-else/>
           </div>
           <div class="body-title is-flex-grow-1 nowarp ml-2">
             {{ $t(noticeData.content[Object.keys(noticeData.content)[0]].title) }}
@@ -45,7 +46,8 @@
         <div class="line _ml-2rem" v-if="Object.keys(noticeData.content).length > 1"></div>
         <div class="_widget-body is-flex mr-0" v-if="Object.keys(noticeData.content).length > 1">
           <div class="image is-24x24 is-flex-shrink-0">
-            <img :src="require('@/assets/img/logo/casa-white.svg')"/>
+            <img :src="require(`@/assets/img/logo/casa-white.svg`)" v-if="!noticeData.content[Object.keys(noticeData.content)[1]].icon"/>
+            <img :src="require(`@/assets/img${noticeData.content[Object.keys(noticeData.content)[1]].icon}`)" v-else/>
           </div>
           <div class="body-title is-flex-grow-1 nowarp ml-2">
             {{ $t(noticeData.content[Object.keys(noticeData.content)[1]].title) }}
@@ -63,9 +65,10 @@
                   v-if="!noticeData.operate">
           {{ $t('Cancel') }}
         </b-button>
-        <b-button :disabled="false" class="width" rounded size="is-small" type="is-primary"
-                  @click="$EventBus.$emit(noticeData.operate.event, noticeData.operate.path)"
-                  v-else-if="'casaUI:eventBus'">
+        <b-button :disabled="false" class="width" rounded size="is-small" type="is-primary" @click="$EventBus.$emit(noticeData.operate.event, noticeData.operate.path)" v-else-if="noticeData.operate.type === 'casaUI:eventBus'">
+          {{ $t(noticeData.operate.title) }}
+        </b-button>
+        <b-button :disabled="false" class="width" rounded size="is-small" type="is-primary" @click="$EventBus.$emit(noticeData.operate.event, noticeData.operate.path)" v-else>
           {{ $t(noticeData.operate.title) }}
         </b-button>
         <div class="is-flex-grow-1 footer-hint" v-if="Object.keys(noticeData.content).length > 1">
@@ -78,6 +81,8 @@
 </template>
 
 <script>
+
+import StorageManagerPanel from "@/components/Storage/StorageManagerPanel.vue";
 
 export default {
   name: "notice-block",
@@ -131,6 +136,18 @@ export default {
   created() {
     this.$EventBus.$on('casaUI:openInFiles', (path) => {
       this.homeShowFiles(path);
+    });
+    this.$EventBus.$on('casaUI:openInStorageManager', () => {
+      this.$buefy.modal.open({
+        parent: this,
+        component: StorageManagerPanel,
+        hasModalCard: true,
+        customClass: 'storage-modal',
+        trapFocus: true,
+        canCancel: [],
+        scroll: "keep",
+        animation: "zoom-in",
+      })
     });
   },
   beforeDestroy() {
