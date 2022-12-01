@@ -1,96 +1,137 @@
 /*
- * @Author: JerryK
- * @Date: 2021-09-18 21:32:13
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-20 16:36:17
- * @Description: 
+ * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ * @LastEditTime: 2022/12/1 下午8:21
  * @FilePath: /CasaOS-UI/src/router/index.js
+ * @Description:
+ *
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
  */
+
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import api from '@/service/api'
+import store from '@/store'
 
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/login',
-    name: 'Login',
-    hidden: true,
-    component: () => import('@/views/Login.vue'),
-    meta: {
-      requireAuth: false,
-      showBackground: true
-    }
-  },
-  {
-    path: '/welcome',
-    name: 'Welcome',
-    hidden: true,
-    component: () => import('@/views/Welcome.vue'),
-    meta: {
-      requireAuth: false,
-      showBackground: true
-    }
-  },
-  {
-    path: '/',
-    name: 'Home',
-    hidden: true,
-    component: () => import('@/views/Home.vue'),
-    meta: {
-      requireAuth: false,
-      showBackground: true
-    }
-  },
+    {
+        path: '/login',
+        name: 'Login',
+        hidden: true,
+        component: () => import('@/views/Login.vue'),
+        meta: {
+            requireAuth: false,
+            showBackground: true
+        }
+    },
+    {
+        path: '/welcome',
+        name: 'Welcome',
+        hidden: true,
+        component: () => import('@/views/Welcome.vue'),
+        meta: {
+            requireAuth: false,
+            showBackground: true
+        }
+    },
+    {
+        path: '/',
+        name: 'Home',
+        hidden: true,
+        component: () => import('@/views/Home.vue'),
+        meta: {
+            requireAuth: true,
+            showBackground: true
+        }
+    },
 ]
 
 const router = new VueRouter({
-  mode: 'hash',
-  base: process.env.BASE_URL,
-  routes
+    mode: 'hash',
+    base: process.env.BASE_URL,
+    routes
 })
 
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
-  return originalPush.call(this, location).catch((err) => err)
+    return originalPush.call(this, location).catch((err) => err)
+}
+
+const needInit = async () => {
+    if (store.state.needInitialization) {
+        return true
+    }
+    try {
+        let userStatusRes = await api.users.getUserStatus();
+        if (userStatusRes.data.success === 200 && !userStatusRes.data.data.initialized) {
+            store.commit('SET_NEED_INITIALIZATION', true)
+            store.commit('SET_INIT_KEY', userStatusRes.data.data.key)
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("refresh_token");
+            return true
+        } else {
+            return false
+        }
+    } catch (error) {
+        console.error(error)
+        return false
+    }
 }
 
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
 
-  const accessToken = localStorage.getItem("access_token");
-  const version = localStorage.getItem("version");
-  const requireAuth = to.matched.some(record => record.meta.requireAuth);
+    const accessToken = localStorage.getItem("access_token");
+    const version = localStorage.getItem("version");
+    const requireAuth = to.matched.some(record => record.meta.requireAuth);
 
-  //Check if have a verison string in localStorage when access home page
-  if (to.path == "/" && version == null) {
-    localStorage.removeItem("access_token");
-    next({ path: '/login' })
-  }
+    // 判断是否需要初始化
+    let needInitRes = await needInit();
+    if (to.path !== '/welcome') {
+        if (needInitRes) {
+            next('/welcome')
+        } else {
 
-  if (to.path == "/logout") {
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
-    localStorage.removeItem("wallpaper");
-    next({ path: '/login' })
-  }
-  if (requireAuth) {
-    if (accessToken) {
-      next()
+            if (requireAuth) {
+                if (!accessToken) {
+                    next('/login')
+                }
+            } else {
+                switch (to.path) {
+                    case "/login":
+                        if (accessToken) {
+                            next('/')
+                        }
+                        break;
+
+                    case "/logout":
+                        localStorage.removeItem("access_token");
+                        localStorage.removeItem("refresh_token");
+                        localStorage.removeItem("wallpaper");
+                        next('/login');
+                        break;
+
+                    default:
+                        if (version == null) {
+                            localStorage.removeItem("access_token");
+                            next('/login');
+                        }
+                        break;
+                }
+            }
+            next()
+        }
+
     } else {
-      next({ path: '/login' })
+        if (needInitRes) {
+            next();
+        } else {
+            next("/login");
+        }
     }
-  } else {
-    if (accessToken) {
-      if (to.path == "/login") {
-        next({ path: '/' })
-      } else {
-        next()
-      }
-    } else {
-      next();
-    }
-  }
+
+
 })
 
 
