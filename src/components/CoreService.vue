@@ -14,13 +14,13 @@
 		<swiper-slide v-for="(noticeCard,key) in noticesData" :key="key">
 			<noticeBlock :noticeData="noticeCard" :noticeType="key" @deleteNotice="refreshNotice"></noticeBlock>
 		</swiper-slide>
-		<swiper-slide>
+		<swiper-slide v-if="recommendShow">
 			<sync-block></sync-block>
 		</swiper-slide>
-		<swiper-slide>
+		<swiper-slide v-if="recommendShow">
 			<smart-block></smart-block>
 		</swiper-slide>
-		<div slot="pagination" class="swiper-pagination">
+		<div v-show="recommendShow || Object.keys(noticesData).length !== 0" slot="pagination" class="swiper-pagination">
 		</div>
 		<img slot="button-prev" :src="require('@/assets/img/widgets/swiper-left.svg')" alt="prev"
 		     class="swiper-button-prev"/>
@@ -41,6 +41,11 @@ export default {
 	components: {SmartBlock, SyncBlock, noticeBlock, Swiper, SwiperSlide},
 	name: "core-service",
 	mixins: [mixin],
+	computed: {
+		recommendShow() {
+			return this.$store.state.recommendSwitch
+		},
+	},
 	data() {
 		return {
 			notice: "local-storage",
@@ -96,7 +101,6 @@ export default {
 			}
 		}
 	},
-	computed: {},
 	created() {
 		this.getMessage();
 	},
@@ -119,13 +123,6 @@ export default {
 			}
 			socket.onmessage = (event) => {
 				let eventJson = JSON.parse(event.data)
-				// let eventType = eventJson.properties['tran']
-				// let operateType = eventJson.name.split(':')[2]
-				// let show = eventJson.name.split(':')[1] === 'disk'
-				// let entityUUID = eventJson.properties['serial']// || '010203';
-				// if (eventType === 'usb' && show) {
-				//   this.transformUSB(eventJson, operateType, entityUUID)
-				// }
 				this.patchTransform(eventJson);
 			}
 			return socket
@@ -220,14 +217,14 @@ export default {
 				let percent = eventJson.properties['avail'] ? `${this.renderSize(eventJson.properties['size'] - eventJson.properties['avail'])} / ${this.renderSize(eventJson.properties['size'])}` : 'NaN';
 				this.$set(this.noticesData[eventType]['content'], entityUUID, {
 					title: eventJson.properties['local-storage:title'] || 'Find New Drive',
-					icon: '',
+					icon: '/storage/USB.png',
 					color: 'is-primary',
 					path: eventJson.properties['local-storage:path'],
 					uuid: entityUUID,
 					value: percent,
 					messageUUID: eventJson.uuid
 				})
-				this.noticesData[eventType]['operate']['path'] = eventJson.properties['local-storage:path']
+				this.noticesData[eventType]['operate']['path'] = eventJson.properties['mount_point']
 			} else if (operateType === 'removed') {
 				this.$delete(this.noticesData[eventType]['content'], entityUUID)
 				if (Object.keys(this.noticesData[eventType]['content']).length === 0) {
@@ -237,7 +234,6 @@ export default {
 			}
 		},
 		transformLocalStorage(eventJson, operateType) {
-			console.log(eventJson)
 			let eventType = eventJson.properties['tran']
 			let entityUUID = eventJson.properties['serial'] || eventJson.properties['local-storage:uuid'];
 			if (!this.noticesData[eventType]) {
@@ -250,7 +246,7 @@ export default {
 					contentType: 'list',
 					operate: {
 						type: 'casaUI:eventBus',
-						title: 'Open in Files',
+						title: 'Set Mainstorage',
 						event: 'casaUI:openInStorageManager',
 						path: '/Storage',
 						icon: 'mdi-arrow-right',
@@ -261,14 +257,14 @@ export default {
 				let percent = eventJson.properties['avail'] ? `${this.renderSize(eventJson.properties['size'] - eventJson.properties['avail'])} / ${this.renderSize(eventJson.properties['size'])}` : 'NaN';
 				this.$set(this.noticesData[eventType]['content'], entityUUID, {
 					title: eventJson.properties['local-storage:title'] || 'Find New Drive',
-					icon: '/storage/disk.png',
+					icon: '/storage/storage.png',
 					color: 'is-primary',
 					path: eventJson.properties['local-storage:path'],
 					uuid: entityUUID,
 					value: percent,
 					messageUUID: eventJson.uuid
 				})
-				this.noticesData[eventType]['operate']['path'] = eventJson.properties['mountpoint']
+				this.noticesData[eventType]['operate']['path'] = eventJson.properties['mount_point']
 			} else if (operateType === 'removed') {
 				this.$delete(this.noticesData[eventType]['content'], entityUUID)
 				if (Object.keys(this.noticesData[eventType]['content']).length === 0) {
@@ -290,7 +286,7 @@ export default {
 					contentType: 'list',
 					operate: {
 						type: 'casaUI:eventBus',
-						title: 'Open in Files',
+						title: 'Learn more',
 						event: 'casaUI:openDiskLearnMore',
 						path: '/Storage',
 						icon: 'mdi-arrow-right',
@@ -308,7 +304,7 @@ export default {
 					value: percent,
 					messageUUID: eventJson.uuid
 				})
-				this.noticesData[eventType]['operate']['path'] = eventJson.properties['mountpoint']
+				this.noticesData[eventType]['operate']['path'] = eventJson.properties['mount_point']
 			} else if (operateType === 'removed') {
 				this.$delete(this.noticesData[eventType]['content'], entityUUID)
 				if (Object.keys(this.noticesData[eventType]['content']).length === 0) {
