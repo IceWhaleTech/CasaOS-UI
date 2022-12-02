@@ -173,12 +173,11 @@ export default {
 				this.$api.users.delLetter(eventJson.uuid)
 				return
 			}
-			// Business : Determine if formatting is required
+			// Business : whether formatting is required
 			let eventType = eventJson.properties['children:num'] !== undefined ? eventJson.properties['tran'] : 'newDisk';
 
 			let operateType = eventJson.name.split(':')[2]
 			let entityUUID = eventJson.properties['serial'] || eventJson.properties['local-storage:uuid'];
-
 			switch (eventType) {
 				case 'usb':
 					this.transformUSB(eventJson, operateType, entityUUID)
@@ -218,7 +217,7 @@ export default {
 				})
 			}
 			if (operateType === 'added') {
-				let percent = eventJson.properties['used'] ? `${this.renderSize(eventJson.properties['size'] - eventJson.properties['avail'])} / ${this.renderSize(eventJson.properties['size'])}` : 'NaN';
+				let percent = eventJson.properties['avail'] ? `${this.renderSize(eventJson.properties['size'] - eventJson.properties['avail'])} / ${this.renderSize(eventJson.properties['size'])}` : 'NaN';
 				this.$set(this.noticesData[eventType]['content'], entityUUID, {
 					title: eventJson.properties['local-storage:title'] || 'Find New Drive',
 					icon: '',
@@ -259,7 +258,7 @@ export default {
 				})
 			}
 			if (operateType === 'added') {
-				let percent = eventJson.properties['used'] ? `${this.renderSize(eventJson.properties['size'] - eventJson.properties['avail'])} / ${this.renderSize(eventJson.properties['size'])}` : 'NaN';
+				let percent = eventJson.properties['avail'] ? `${this.renderSize(eventJson.properties['size'] - eventJson.properties['avail'])} / ${this.renderSize(eventJson.properties['size'])}` : 'NaN';
 				this.$set(this.noticesData[eventType]['content'], entityUUID, {
 					title: eventJson.properties['local-storage:title'] || 'Find New Drive',
 					icon: '/storage/disk.png',
@@ -299,7 +298,7 @@ export default {
 				})
 			}
 			if (operateType === 'added') {
-				let percent = eventJson.properties['used'] ? `${this.renderSize(eventJson.properties['used'])} / ${this.renderSize(eventJson.properties['size'])}` : 'NaN';
+				let percent = eventJson.properties['avail'] ? `${this.renderSize(eventJson.properties['used'])} / ${this.renderSize(eventJson.properties['size'])}` : 'NaN';
 				this.$set(this.noticesData[eventType]['content'], entityUUID, {
 					title: eventJson.properties['local-storage:title'] || 'Find New Drive',
 					icon: '/storage/disk.png',
