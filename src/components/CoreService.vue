@@ -202,7 +202,7 @@ export default {
 			if (!this.noticesData[eventType]) {
 				this.$set(this.noticesData, eventType, {
 					prelude: {
-						title: eventType,
+						title: 'Find New Drive',
 						icon: 'mdi-usb',
 					},
 					content: {},
@@ -219,7 +219,7 @@ export default {
 			if (operateType === 'added') {
 				let percent = eventJson.properties['avail'] ? `${this.renderSize(eventJson.properties['size'] - eventJson.properties['avail'])} / ${this.renderSize(eventJson.properties['size'])}` : 'NaN';
 				this.$set(this.noticesData[eventType]['content'], entityUUID, {
-					title: eventJson.properties['local-storage:title'] || 'Find New Drive',
+					title: eventJson.properties['model'] || 'Find New Drive',
 					icon: '/storage/USB.png',
 					color: 'is-primary',
 					path: eventJson.properties['local-storage:path'],
@@ -236,13 +236,15 @@ export default {
 				}
 			}
 		},
-		transformLocalStorage(eventJson, operateType) {
+		transformLocalStorage(eventJson, /*operateType*/) {
 			let eventType = eventJson.properties['tran']
+			let operateType = eventJson.name.split(':')[2]
+			let driveType = eventJson.name.split(':')[1]
 			let entityUUID = eventJson.properties['serial'] || eventJson.properties['local-storage:uuid'];
-			if (!this.noticesData[eventType]) {
-				this.$set(this.noticesData, eventType, {
+			if (!this.noticesData[driveType]) {
+				this.$set(this.noticesData, driveType, {
 					prelude: {
-						title: eventType,
+						title: 'Find New Drive',
 						icon: 'mdi-usb',
 					},
 					content: {},
@@ -257,9 +259,10 @@ export default {
 				})
 			}
 			if (operateType === 'added') {
-				let percent = eventJson.properties['avail'] > 0 ? `${this.renderSize(eventJson.properties['size'] - eventJson.properties['avail'])} / ${this.renderSize(eventJson.properties['size'])}` : eventType;
-				this.$set(this.noticesData[eventType]['content'], entityUUID, {
-					title: eventJson.properties['local-storage:title'] || 'Find New Drive',
+				let percent = eventJson.properties['avail'] > 0 ? `${this.renderSize(eventJson.properties['size'] - eventJson.properties['avail'])} / ${this.renderSize(eventJson.properties['size'])}` : eventType.toUpperCase();
+				// let percent = eventType.toUpperCase();
+				this.$set(this.noticesData[driveType]['content'], entityUUID, {
+					title: eventJson.properties['model'] || 'Find New Drive',
 					icon: '/storage/storage.png',
 					color: 'is-primary',
 					path: eventJson.properties['local-storage:path'],
@@ -267,11 +270,11 @@ export default {
 					value: percent,
 					messageUUID: eventJson.uuid
 				})
-				this.noticesData[eventType]['operate']['path'] = eventJson.properties['mount_point']
+				this.noticesData[driveType]['operate']['path'] = eventJson.properties['mount_point']
 			} else if (operateType === 'removed') {
-				this.$delete(this.noticesData[eventType]['content'], entityUUID)
-				if (Object.keys(this.noticesData[eventType]['content']).length === 0) {
-					this.$delete(this.noticesData, eventType)
+				this.$delete(this.noticesData[driveType]['content'], entityUUID)
+				if (Object.keys(this.noticesData[driveType]['content']).length === 0) {
+					this.$delete(this.noticesData, driveType)
 					this.$api.users.delLetter(eventJson.uuid)
 				}
 			}
@@ -282,7 +285,7 @@ export default {
 			if (!this.noticesData[eventType]) {
 				this.$set(this.noticesData, eventType, {
 					prelude: {
-						title: eventType,
+						title: 'Find New Drive',
 						icon: 'mdi-usb',
 					},
 					content: {},
@@ -299,7 +302,7 @@ export default {
 			if (operateType === 'added') {
 				let percent = eventJson.properties['avail'] ? `${this.renderSize(eventJson.properties['used'])} / ${this.renderSize(eventJson.properties['size'])}` : 'NaN';
 				this.$set(this.noticesData[eventType]['content'], entityUUID, {
-					title: eventJson.properties['local-storage:title'] || 'Find New Drive',
+					title: eventJson.properties['model'] || 'Find New Drive',
 					icon: '/storage/disk.png',
 					color: 'is-primary',
 					path: eventJson.properties['local-storage:path'],
