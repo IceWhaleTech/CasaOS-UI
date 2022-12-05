@@ -14,7 +14,8 @@
 		<!-- Action Button Start -->
 		<div v-if="item.type != 'system' && isCasa && !isUninstalling" class="action-btn">
 			<b-dropdown ref="dro" :mobile-modal="false" :triggers="['contextmenu','click']" animation="fade1"
-			            append-to-body aria-role="list" class="app-card-drop" position="is-bottom-left" @active-change="setDropState">
+			            append-to-body aria-role="list" class="app-card-drop" position="is-bottom-left"
+			            @active-change="setDropState">
 				<template #trigger>
 					<p role="button">
 						<b-icon class="is-clickable" icon="dots-vertical"></b-icon>
@@ -52,7 +53,8 @@
 			<b-tooltip :animated="true" :label="tooltipLable" :triggers="tooltipTriger" animation="fade1" type="is-dark">
 				<div class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-3 pb-3 img-c">
 					<a class="is-flex is-justify-content-center" @click="openApp(item)">
-						<b-image :class="item.state | dotClass" :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')"
+						<b-image :class="item.state | dotClass" :src="item.icon"
+						         :src-fallback="require('@/assets/img/app/default.png')"
 						         class="is-64x64" webp-fallback=".jpg"></b-image>
 					</a>
 					<p class="mt-3 one-line">
@@ -324,7 +326,7 @@ export default {
 			this.$refs.dro.isActive = false
 			this.$buefy.dialog.confirm({
 				title: this.$t('Attention'),
-				message: this.$t(`Data cannot be recovered after deletion! <br/>Continue on to uninstall this application?<br/><div class="is-flex is-align-items-center mt-4"><input type="checkbox" checked id="checkDelConfig">Delete userdata ( config folder )</input></div>`),
+				message: this.$t(`Data cannot be recovered after deletion! <br/>Continue on to uninstall this application?<br/>{div}`, {div: `<div class="is-flex is-align-items-center mt-4"><input type="checkbox" checked id="checkDelConfig">Delete userdata ( config folder )</input></div>`}),
 				/* message: this.$t(`Data cannot be recovered after deletion! <br/>Continue on to uninstall this application?{checkbox}Delete userdata ( config folder )</input>`, {
 					 checkbox: `<br/><input type="checkbox" id="deleteUserData" class="checkbox">`
 				 }),*/
