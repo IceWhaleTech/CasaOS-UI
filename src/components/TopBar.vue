@@ -73,7 +73,7 @@
 				</template>
 
 				<b-dropdown-item :focusable="false" aria-role="menu-item" class="pr-4 pl-4 pt-0 pb-0" custom>
-					<h2 class="_title mr-2 mt-2 mb-3 ml-2">{{ $t('Dashboard Setting') }}</h2>
+					<h2 class="_title mr-2 mt-2 mb-3 ml-2">{{ $t('Settings') }}</h2>
 
 					<hr class="mt-0 mb-4"/>
 					<!-- Search Engine Switch Start  -->
@@ -287,15 +287,15 @@
 			<b-message @close="resetPower">
 				<template #header>
 					{{ $t(showPowerTitle) }}
-					<img v-if="showPowerTitle ==='Now closing'" :src="require('@/assets/img/power/waiting.svg')" alt="pending"
-					     class="ml-1 is-24x24"/>
+					<img v-if="showPowerTitle ==='Now shutting down'" :src="require('@/assets/img/power/waiting.svg')"
+					     alt="pending" class="ml-1 is-24x24"/>
 				</template>
-				<div :class="showPowerTitle === 'Now closing' ? 'mb-4' : ''"
+				<div :class="showPowerTitle === 'Now shutting down' ? 'mb-4' : ''"
 				     class="is-flex is-align-items-center is-justify-content-start _is-normal">
 					{{ $t(showPowerMessage) }}
 				</div>
 			</b-message>
-			<footer v-if="showPowerTitle !== 'Now closing'"
+			<footer v-if="showPowerTitle !== 'Now shutting down'"
 			        class="has-background-white is-flex is-flex-direction-row-reverse">
 				<button
 						class="ml-2 mr-5 mt-3 mb-3 pr-4 pl-4 _is-normal _has-background-blue is-flex is-align-items-center is-justify-content-center">
@@ -345,7 +345,7 @@ export default {
 				version: Object
 			},
 			isUpdating: false,
-			latestText: "Currently the latest version",
+			latestText: "Currently at the latest version",
 			updateText: "A new version is available!",
 
 			port: "",
@@ -727,8 +727,8 @@ export default {
 			})
 		},
 		power(key) {
-			if (this[key.toLowerCase()] !== "are you sure?") {
-				this[key.toLowerCase()] = "are you sure?"
+			if (this[key.toLowerCase()] !== "Are you sure?") {
+				this[key.toLowerCase()] = "Are you sure?"
 				return
 			}
 			this.$refs.settingsDrop.toggle()
@@ -741,7 +741,7 @@ export default {
 					break;
 				case "Shutdown":
 					this[key.toLowerCase()] = key
-					this.showPowerTitle = 'Now closing'
+					this.showPowerTitle = 'Now shutting down'
 					this.showPowerMessage = 'Please wait for about 90 seconds.'
 					break;
 			}
