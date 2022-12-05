@@ -257,7 +257,7 @@ export default {
 				})
 			}
 			if (operateType === 'added') {
-				let percent = eventJson.properties['avail'] ? `${this.renderSize(eventJson.properties['size'] - eventJson.properties['avail'])} / ${this.renderSize(eventJson.properties['size'])}` : 'NaN';
+				let percent = eventJson.properties['avail'] > 0 ? `${this.renderSize(eventJson.properties['size'] - eventJson.properties['avail'])} / ${this.renderSize(eventJson.properties['size'])}` : eventType;
 				this.$set(this.noticesData[eventType]['content'], entityUUID, {
 					title: eventJson.properties['local-storage:title'] || 'Find New Drive',
 					icon: '/storage/storage.png',
