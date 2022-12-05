@@ -171,7 +171,7 @@ export default {
 				return
 			}
 			// Business : whether formatting is required
-			let eventType = eventJson.properties['children:num'] !== undefined ? eventJson.properties['tran'] : 'newDisk';
+			let eventType = eventJson.properties['children:num'] > 0 ? eventJson.properties['tran'] : 'newDisk';
 
 			let operateType = eventJson.name.split(':')[2]
 			let entityUUID = eventJson.properties['serial'] || eventJson.properties['local-storage:uuid'];
@@ -180,6 +180,9 @@ export default {
 					this.transformUSB(eventJson, operateType, entityUUID)
 					break;
 				case 'sata':
+				case 'nvme':
+				case 'spi':
+				case 'sas':
 					this.transformLocalStorage(eventJson, operateType, entityUUID)
 					break;
 				case 'app':
