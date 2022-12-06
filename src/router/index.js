@@ -45,6 +45,16 @@ const routes = [
             showBackground: true
         }
     },
+    {
+        path: '/developmentElement',
+        name: 'DevelopmentElement',
+        hidden: true,
+        component: () => import('@/components/Storage/diskLearnMore.vue'),
+        meta: {
+            requireAuth: true,
+            showBackground: false
+        }
+    }
 ]
 
 const router = new VueRouter({
