@@ -678,8 +678,8 @@ export default {
 			currentInstallId: 0,
 
 			//Image List Swiper
-			disPrev: true,
-			disNext: false,
+			// disPrev: true,
+			// disNext: false,
 			swiperOptions: {
 				loop: false,
 				autoplay: true,
@@ -695,13 +695,13 @@ export default {
 						slidesPerView: 3
 					}
 				},
-				on: {
-					slideChangeTransitionStart: this.handleInfoSlide
-				},
+				// on: {
+				// 	slideChangeTransitionStart: this.handleInfoSlide
+				// },
 			},
 			// Featured Swiper
-			disFeaturedPrev: true,
-			disFeaturedNext: false,
+			// disFeaturedPrev: true,
+			// disFeaturedNext: false,
 			featureSwiperOptions: {
 				loop: false,
 				autoplay: true,
@@ -717,9 +717,9 @@ export default {
 						slidesPerView: 3
 					}
 				},
-				on: {
-					slideChangeTransitionStart: this.handleFeaturedSlide
-				},
+				// on: {
+				// 	slideChangeTransitionStart: this.handleFeaturedSlide
+				// },
 			},
 			searchKey: "",
 			currentCate: {},
@@ -948,19 +948,19 @@ export default {
 		 * @param {*} swiper
 		 * @return {*}
 		 */
-		handleInfoSlide(swiper) {
+		/*handleInfoSlide(swiper) {
 			this.disPrev = (swiper.activeIndex == 0) ? true : false;
 			this.disNext = swiper.isEnd;
-		},
+		},*/
 		/**
 		 * @description:
 		 * @param {*} swiper
 		 * @return {*}
 		 */
-		handleFeaturedSlide(swiper) {
+		/*handleFeaturedSlide(swiper) {
 			this.disFeaturedPrev = (swiper.activeIndex == 0) ? true : false;
 			this.disFeaturedNext = swiper.isEnd;
-		},
+		},*/
 
 		/**
 		 * @description: Get category list
