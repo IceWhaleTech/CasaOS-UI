@@ -146,7 +146,7 @@ export default {
 		},
 		getMessage() {
 			this.$api.users.getLetter().then(res => {
-				let sortedData = _.sortBy(res.data, ['timestamp']).reverse();
+				let sortedData = _.sortBy(res.data, ['timestamp']);
 				sortedData.forEach(item => {
 					let json = {
 						...item,
@@ -229,10 +229,12 @@ export default {
 				})
 				this.noticesData[eventType]['operate']['path'] = eventJson.properties['mount_point']
 			} else if (operateType === 'removed') {
-				this.$delete(this.noticesData[eventType]['content'], entityUUID)
-				if (Object.keys(this.noticesData[eventType]['content']).length === 0) {
-					this.$delete(this.noticesData, eventType)
-					this.$api.users.delLetter(eventJson.uuid)
+				// Delete according to the uuid from this.noticesData[driveType]['content']
+				this.$api.users.delLetter(this.noticesData[driveType]['content'][entityUUID].messageUUID)
+				this.$delete(this.noticesData[driveType]['content'], entityUUID)
+				this.$api.users.delLetter(eventJson.uuid)
+				if (Object.keys(this.noticesData[driveType]['content']).length === 0) {
+					this.$delete(this.noticesData, driveType)
 				}
 			}
 		},
@@ -272,10 +274,12 @@ export default {
 				})
 				this.noticesData[driveType]['operate']['path'] = eventJson.properties['mount_point']
 			} else if (operateType === 'removed') {
+				// Delete according to the uuid from this.noticesData[driveType]['content']
+				this.$api.users.delLetter(this.noticesData[driveType]['content'][entityUUID].messageUUID)
 				this.$delete(this.noticesData[driveType]['content'], entityUUID)
+				this.$api.users.delLetter(eventJson.uuid)
 				if (Object.keys(this.noticesData[driveType]['content']).length === 0) {
 					this.$delete(this.noticesData, driveType)
-					this.$api.users.delLetter(eventJson.uuid)
 				}
 			}
 		},
@@ -312,10 +316,12 @@ export default {
 				})
 				this.noticesData[eventType]['operate']['path'] = eventJson.properties['mount_point']
 			} else if (operateType === 'removed') {
-				this.$delete(this.noticesData[eventType]['content'], entityUUID)
-				if (Object.keys(this.noticesData[eventType]['content']).length === 0) {
-					this.$delete(this.noticesData, eventType)
-					this.$api.users.delLetter(eventJson.uuid)
+				// Delete according to the uuid from this.noticesData[driveType]['content']
+				this.$api.users.delLetter(this.noticesData[driveType]['content'][entityUUID].messageUUID)
+				this.$delete(this.noticesData[driveType]['content'], entityUUID)
+				this.$api.users.delLetter(eventJson.uuid)
+				if (Object.keys(this.noticesData[driveType]['content']).length === 0) {
+					this.$delete(this.noticesData, driveType)
 				}
 			}
 		},
