@@ -229,12 +229,14 @@ export default {
 				})
 				this.noticesData[eventType]['operate']['path'] = eventJson.properties['mount_point']
 			} else if (operateType === 'removed') {
-				// Delete according to the uuid from this.noticesData[driveType]['content']
-				this.$api.users.delLetter(this.noticesData[driveType]['content'][entityUUID].messageUUID)
-				this.$delete(this.noticesData[driveType]['content'], entityUUID)
+				// Delete according to the uuid with this.noticesData[eventType]['content'] from BackEnd-DB
+				if (this.noticesData[eventType] && this.noticesData[eventType]['content'][entityUUID]) {
+					this.$api.users.delLetter(this.noticesData[eventType]['content'][entityUUID].messageUUID)
+					this.$delete(this.noticesData[eventType]['content'], entityUUID)
+				}
 				this.$api.users.delLetter(eventJson.uuid)
-				if (Object.keys(this.noticesData[driveType]['content']).length === 0) {
-					this.$delete(this.noticesData, driveType)
+				if (Object.keys(this.noticesData[eventType]['content']).length === 0) {
+					this.$delete(this.noticesData, eventType)
 				}
 			}
 		},
@@ -274,9 +276,11 @@ export default {
 				})
 				this.noticesData[driveType]['operate']['path'] = eventJson.properties['mount_point']
 			} else if (operateType === 'removed') {
-				// Delete according to the uuid from this.noticesData[driveType]['content']
-				this.$api.users.delLetter(this.noticesData[driveType]['content'][entityUUID].messageUUID)
-				this.$delete(this.noticesData[driveType]['content'], entityUUID)
+				// Delete according to the uuid with this.noticesData[driveType]['content'] from BackEnd-DB
+				if (this.noticesData[driveType] && this.noticesData[driveType]['content'][entityUUID]) {
+					this.$api.users.delLetter(this.noticesData[driveType]['content'][entityUUID].messageUUID)
+					this.$delete(this.noticesData[driveType]['content'], entityUUID)
+				}
 				this.$api.users.delLetter(eventJson.uuid)
 				if (Object.keys(this.noticesData[driveType]['content']).length === 0) {
 					this.$delete(this.noticesData, driveType)
@@ -316,12 +320,15 @@ export default {
 				})
 				this.noticesData[eventType]['operate']['path'] = eventJson.properties['mount_point']
 			} else if (operateType === 'removed') {
-				// Delete according to the uuid from this.noticesData[driveType]['content']
-				this.$api.users.delLetter(this.noticesData[driveType]['content'][entityUUID].messageUUID)
-				this.$delete(this.noticesData[driveType]['content'], entityUUID)
+				// Delete according to the uuid with this.noticesData[eventType]['content'] from BackEnd-DB
+				if (this.noticesData[eventType] && this.noticesData[eventType]['content'][entityUUID]) {
+					this.$api.users.delLetter(this.noticesData[eventType]['content'][entityUUID].messageUUID)
+					this.$delete(this.noticesData[eventType]['content'], entityUUID)
+				}
+
 				this.$api.users.delLetter(eventJson.uuid)
-				if (Object.keys(this.noticesData[driveType]['content']).length === 0) {
-					this.$delete(this.noticesData, driveType)
+				if (Object.keys(this.noticesData[eventType]['content']).length === 0) {
+					this.$delete(this.noticesData, eventType)
 				}
 			}
 		},
