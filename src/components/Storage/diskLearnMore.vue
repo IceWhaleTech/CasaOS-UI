@@ -8,36 +8,36 @@
   -->
 <template>
 	<div>
-		<header class="is-flex is-align-items-center mt-4 mb-2 ml-4 mr-4">
-			<div class="is-flex-grow-1 ml-2">
-				<h3 class="">12345</h3>
+		<header class="is-flex is-align-items-center pt-4 pb-3 pl-4 pr-4 _b-line">
+			<div class="is-flex-grow-1 ml-2 mt-1">
+				<h3 class="_header-title">{{ $t('Build data station') }}</h3>
 			</div>
 			<!--			<img alt="" src="@/assets/img/learn/learnmore.svg" @click="close">-->
 			<b-icon custom-class="mr-1" icon="close" size="is-medium" @click="close"></b-icon>
 		</header>
 		<section>
-			<div class="learnmore">
-				<div v-show="setps === 1" class="learnmore__title">
-					<h3>什么是磁盘空间</h3>
-					<p>磁盘空间是指您的设备上可用于存储数据的空间。磁盘空间越大，您可以存储的数据就越多。</p>
-					<img alt="" src="@/assets/img/learn/diskLearnMore-1.svg"/>
+			<div class="pl-4 pr-4 pt-4 pb-4 _b-line _font">
+				<div v-show="setps === 1" class="ml-2 mr-2">
+					<p>{{$t('Get a huge storage space merged from several hard drives.')}}</p>
+          <h3 class="_content-title">{{$t('Step1:')}}</h3><p>{{$t('Insert more Immovable hard drives and restart.')}}</p>
+					<img alt="" src="@/assets/img/learn/diskLearnMore-1.svg">
 				</div>
-				<div v-show="setps === 2" class="learnmore__title">
-					<h3>什么是磁盘空间</h3>
-					<p>磁盘空间是指您的设备上可用于存储数据的空间。磁盘空间越大，您可以存储的数据就越多。</p>
+				<div v-show="setps === 2" class="ml-2 mr-2">
+					<p>{{$t('Get a huge storage space merged from several hard drives.')}}</p>
+          <h3 class="_content-title">{{$t('Step2:')}}</h3><p>{{$t('Create storages.')}}</p>
 					<img alt="" src="@/assets/img/learn/diskLearnMore-2.svg">
 				</div>
-				<div v-show="setps === 3" class="learnmore__title">
-					<h3>什么是磁盘空间</h3>
-					<p>磁盘空间是指您的设备上可用于存储数据的空间。磁盘空间越大，您可以存储的数据就越多。</p>
-					<img alt="" src="@/assets/img/learn/diskLearnMore-3.svg">
+				<div v-show="setps === 3" class="ml-2 mr-2">
+          <p>{{$t('Get a huge storage space merged from several hard drives.')}}</p>
+          <h3 class="_content-title">{{$t('Step3:')}}</h3><p>{{$t('Merge several storages and submit.')}}</p>
+          <img alt="" src="@/assets/img/learn/diskLearnMore-3.svg">
 				</div>
 			</div>
 		</section>
 		<footer>
-			<div>
-				<b-button>
-
+			<div class="is-flex is-flex-direction-row-reverse">
+				<b-button rounded size="is-small" type="is-primary" class="is-flex-shrink-0" @click="setps+=1">
+          {{$t('Next') }}
 				</b-button>
 			</div>
 		</footer>
@@ -61,5 +61,44 @@ export default {
 </script>
 
 <style scoped>
+._header-title{
+  /* Text 500Medium/Text02 */
 
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  /* identical to box height, or 150% */
+
+  font-feature-settings: 'pnum' on, 'lnum' on;
+
+  /* Gary/800 */
+
+  color: #29343D;
+}
+._b-line{
+  border-bottom: 1px solid hsla(208, 16%, 94%, 1)
+}
+._font{
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+  /* identical to box height, or 150% */
+
+  color: hsla(0, 0%, 29%, 1);
+}
+._content-title{
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  /* identical to box height, or 150% */
+
+  color: hsla(0, 0%, 0%, 0.9);
+
+}
 </style>

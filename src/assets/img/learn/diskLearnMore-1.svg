@@ -1,17 +1,7 @@
-<!--
-  - * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  - * @LastEditTime: 2022/12/5 下午1:56
-  - * @FilePath: /CasaOS-UI/src/assets/img/learn/diskLearnMore-1.svg
-  - * @Description:
-  - *
-  - * Copyright (c) 2022 by IceWhale, All Rights Reserved.
-  -->
-
 <svg width="544" height="248" viewBox="0 0 544 248" fill="none" xmlns="http://www.w3.org/2000/svg">
 <mask id="mask0_391_2125" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="544" height="248">
 <rect width="544" height="248" fill="white"/>
 </mask>
-<g mask="url(#mask0_391_2125)">
 <path d="M268.37 142.82C270.741 141.042 270.741 137.487 268.37 135.709L248.222 120.598C246.269 119.133 243.481 120.527 243.481 122.968V130.376H204.963C203.327 130.376 202 131.703 202 133.339V145.191C202 146.827 203.327 148.154 204.963 148.154H243.481V155.561C243.481 158.003 246.269 159.396 248.222 157.931L268.37 142.82Z" fill="#2BD990"/>
 <g filter="url(#filter0_f_391_2125)">
 <ellipse cx="384" cy="183.5" rx="112" ry="18.5" fill="#6C7480" fill-opacity="0.24"/>
