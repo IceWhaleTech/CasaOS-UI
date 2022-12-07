@@ -89,6 +89,7 @@
 <script>
 
 import StorageManagerPanel from "@/components/Storage/StorageManagerPanel.vue";
+import DiskLearnMore from "@/components/Storage/DiskLearnMore.vue";
 
 export default {
 	name: "notice-block",
@@ -98,12 +99,12 @@ export default {
 			default: () => {
 				return {
 					prelude: {
-						title: 'Find New USB Drive',
+						title: 'Found a New USB Drive',
 						icon: 'mdi-usb',
 					},
 					content: {
 						123: {
-							title: 'Find New Drive',
+							title: 'Found a New Drive',
 							icon: 'mdi-usb',
 							color: 'is-primary',
 							path: '/storage',
@@ -111,7 +112,7 @@ export default {
 							value: '100G/1000G'
 						},
 						345: {
-							title: 'Find New Drive',
+							title: 'Found a New Drive',
 							icon: 'mdi-usb',
 							color: 'is-primary',
 							path: '/storage',
@@ -158,7 +159,7 @@ export default {
 		this.$EventBus.$on('casaUI:openDiskLearnMore', () => {
 			this.$buefy.modal.open({
 				parent: this,
-				component: StorageManagerPanel,
+				component: DiskLearnMore,
 				hasModalCard: true,
 				customClass: 'storage-modal',
 				trapFocus: true,
