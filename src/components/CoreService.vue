@@ -11,7 +11,7 @@
 
 <template>
 	<swiper ref="mySwiper" :options="swiperOptions">
-		<swiper-slide v-for="(noticeCard,key) in noticesData" :key="key">
+		<swiper-slide v-for="(noticeCard,key) in noticesData" :key="key" :class="{_singleWidth:showFullCard}">
 			<noticeBlock :noticeData="noticeCard" :noticeType="key" @deleteNotice="refreshNotice"></noticeBlock>
 		</swiper-slide>
 		<swiper-slide v-if="recommendShow">
@@ -20,7 +20,7 @@
 		<swiper-slide v-if="recommendShow">
 			<smart-block></smart-block>
 		</swiper-slide>
-		<div v-show="recommendShow || Object.keys(noticesData).length !== 0" slot="pagination" class="swiper-pagination">
+		<div v-show="recommendShow || noticeLength !== 0" slot="pagination" class="swiper-pagination">
 		</div>
 		<img slot="button-prev" :src="require('@/assets/img/widgets/swiper-left.svg')" alt="prev"
 		     class="swiper-button-prev"/>
@@ -45,17 +45,20 @@ export default {
 		recommendShow() {
 			return this.$store.state.recommendSwitch
 		},
+		noticeLength() {
+			return Object.keys(this.noticesData).length
+		},
+		// full width to show with single notice card
+		showFullCard() {
+			return this.noticeLength === 1 && !this.recommendShow
+		}
 	},
 	data() {
 		return {
 			notice: "local-storage",
 			isLoading: false,
 			swiperOptions: {
-				// autoplay: {
-				// 	delay: 5000,
-				// 	disableOnInteraction: false,
-				// },
-				// loop: true,
+				watchOverflow: true,
 				breakpoints: {
 					450: {
 						slidesPerView: 1
@@ -72,7 +75,8 @@ export default {
 				navigation: {
 					nextEl: '.swiper-button-next',
 					prevEl: '.swiper-button-prev'
-				}
+				},
+				observer: true,
 			},
 			noticesData: {
 				// example data:
@@ -83,7 +87,7 @@ export default {
 					},
 					content: {
 						a: {
-							title: 'Find New Drive',
+							title: 'Found a New Drive',
 							icon: '/storage/disk.png',
 							color: 'is-primary',
 							path: '/storage',
@@ -179,12 +183,12 @@ export default {
 				case 'usb':
 					this.transformUSB(eventJson, operateType, entityUUID)
 					break;
-				case 'sata':
-				case 'nvme':
-				case 'spi':
-				case 'sas':
-					this.transformLocalStorage(eventJson, operateType, entityUUID)
-					break;
+					// case 'sata':
+					// case 'nvme':
+					// case 'spi':
+					// case 'sas':
+					// 	this.transformLocalStorage(eventJson, operateType, entityUUID)
+					// 	break;
 				case 'app':
 					this.transformApp(eventJson, operateType, entityUUID)
 					break;
@@ -192,6 +196,7 @@ export default {
 					this.transformNewDisk(eventJson, operateType, entityUUID)
 					break;
 				default:
+					this.transformLocalStorage(eventJson, operateType, entityUUID)
 					break;
 			}
 		},
@@ -202,7 +207,7 @@ export default {
 			if (!this.noticesData[eventType]) {
 				this.$set(this.noticesData, eventType, {
 					prelude: {
-						title: 'Find New Drive',
+						title: 'Found a New Drive',
 						icon: 'mdi-usb',
 					},
 					content: {},
@@ -219,7 +224,7 @@ export default {
 			if (operateType === 'added') {
 				let percent = eventJson.properties['avail'] ? `${this.renderSize(eventJson.properties['size'] - eventJson.properties['avail'])} / ${this.renderSize(eventJson.properties['size'])}` : 'NaN';
 				this.$set(this.noticesData[eventType]['content'], entityUUID, {
-					title: eventJson.properties['model'] || 'Find New Drive',
+					title: eventJson.properties['model'] || 'Found a New Drive',
 					icon: '/storage/USB.png',
 					color: 'is-primary',
 					path: eventJson.properties['local-storage:path'],
@@ -248,7 +253,7 @@ export default {
 			if (!this.noticesData[driveType]) {
 				this.$set(this.noticesData, driveType, {
 					prelude: {
-						title: 'Find New Drive',
+						title: 'Found a New Drive',
 						icon: 'mdi-usb',
 					},
 					content: {},
@@ -266,7 +271,7 @@ export default {
 				let percent = eventJson.properties['avail'] > 0 ? `${this.renderSize(eventJson.properties['size'] - eventJson.properties['avail'])} / ${this.renderSize(eventJson.properties['size'])}` : eventType.toUpperCase();
 				// let percent = eventType.toUpperCase();
 				this.$set(this.noticesData[driveType]['content'], entityUUID, {
-					title: eventJson.properties['model'] || 'Find New Drive',
+					title: eventJson.properties['model'] || 'Found a New Drive',
 					icon: '/storage/storage.png',
 					color: 'is-primary',
 					path: eventJson.properties['local-storage:path'],
@@ -293,7 +298,7 @@ export default {
 			if (!this.noticesData[eventType]) {
 				this.$set(this.noticesData, eventType, {
 					prelude: {
-						title: 'Find New Drive',
+						title: 'Found a New Drive',
 						icon: 'mdi-usb',
 					},
 					content: {},
@@ -310,7 +315,7 @@ export default {
 			if (operateType === 'added') {
 				let percent = eventJson.properties['avail'] ? `${this.renderSize(eventJson.properties['used'])} / ${this.renderSize(eventJson.properties['size'])}` : 'NaN';
 				this.$set(this.noticesData[eventType]['content'], entityUUID, {
-					title: eventJson.properties['model'] || 'Find New Drive',
+					title: eventJson.properties['model'] || 'Found a New Drive',
 					icon: '/storage/disk.png',
 					color: 'is-primary',
 					path: eventJson.properties['local-storage:path'],
@@ -342,6 +347,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// full width to show with single notice
+._singleWidth {
+	width: 100% !important;
+}
+
 .swiper-button-prev, .swiper-button-next {
 	width: 2rem;
 	height: 2rem;

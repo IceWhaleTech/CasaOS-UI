@@ -11,51 +11,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import api from '@/service/api'
 import store from '@/store'
+import route from './route.js'
 
 Vue.use(VueRouter)
 
-const routes = [
-    {
-        path: '/login',
-        name: 'Login',
-        hidden: true,
-        component: () => import('@/views/Login.vue'),
-        meta: {
-            requireAuth: false,
-            showBackground: true
-        }
-    },
-    {
-        path: '/welcome',
-        name: 'Welcome',
-        hidden: true,
-        component: () => import('@/views/Welcome.vue'),
-        meta: {
-            requireAuth: false,
-            showBackground: true
-        }
-    },
-    {
-        path: '/',
-        name: 'Home',
-        hidden: true,
-        component: () => import('@/views/Home.vue'),
-        meta: {
-            requireAuth: true,
-            showBackground: true
-        }
-    },
-    {
-        path: '/developmentElement',
-        name: 'DevelopmentElement',
-        hidden: true,
-        component: () => import('@/components/Storage/diskLearnMore.vue'),
-        meta: {
-            requireAuth: true,
-            showBackground: false
-        }
-    }
-]
+const routes = route
 
 const router = new VueRouter({
     mode: 'hash',

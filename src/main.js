@@ -1,4 +1,13 @@
 /*
+ * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ * @LastEditTime: 2022/12/7 上午9:56
+ * @FilePath: /CasaOS-UI/src/main.js
+ * @Description:
+ *
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
+ */
+
+/*
  * @Author: JerryK
  * @Date: 2021-09-22 14:24:43
  * @LastEditors: Jerryk jerry@icewhale.org
@@ -27,6 +36,7 @@ import VAnimateCss from 'v-animate-css';
 const io = require("socket.io-client");
 
 api.sys.getSocketPort().then(res => {
+    const isDev = process.env.NODE_ENV === 'development';
     const protocol = document.location.protocol
     const wsProtocol = protocol === 'https:' ? 'wss:' : 'ws:'
     const wsPort = res.data.data
@@ -34,8 +44,8 @@ api.sys.getSocketPort().then(res => {
     const devPort = process.env.VUE_APP_DEV_PORT
     const localhost = document.location.host
     const localhostName = document.location.hostname
-    const baseIp = process.env.NODE_ENV === "dev" ? `${devIp}` : `${localhostName}`
-    const baseURL = process.env.NODE_ENV === "dev" ? `${devIp}:${devPort}` : `${localhost}`
+    const baseIp = isDev ? `${devIp}` : `${localhostName}`
+    const baseURL = isDev ? `${devIp}:${devPort}` : `${localhost}`
     const wsURL = `${wsProtocol}//${baseIp}:${wsPort}`
 
     const socket = io(wsURL, {
@@ -56,6 +66,7 @@ api.sys.getSocketPort().then(res => {
     Vue.prototype.$baseURL = baseURL;
     Vue.prototype.$protocol = protocol;
     Vue.prototype.$wsProtocol = wsProtocol;
+    // Vue.prototype.isDev = isDev;
 
     // Create an EventBus
     Vue.prototype.$EventBus = new Vue();
