@@ -319,7 +319,7 @@
   "restart APPs to continue.": "reinicie las aplicaciones para continuar.",
   "Add a shortcut": "Añadir acceso directo",
   "Error when creating installation path for apps": "Error when creating installation path for apps",
-  "Accapt": "Aceptar",
+  "Accept": "Accept",
   "We appreciate any feedback you may have.": "Agradecemos cualquier comentario que pueda tener.",
   "Show other Docker container app(s)": "Show other Docker container app(s)",
   "Show news feed from CasaOS Blog": "Show news feed from CasaOS Blog",
@@ -327,7 +327,16 @@
   "Feedback / Issue Report": "Feedback / Issue Report",
   "Submit a feedback or report an issue:": "Submit a feedback or report an issue:",
   "Start with [Issue], [App Request], or [Feature Request]...": "Start with [Issue], [App Request], or [Feature Request]...",
-  "Description": "Description",
+  "Description": "Descripción",
   "The more details provided, the easier this feedback or issue gets addressed.": "The more details provided, the easier this feedback or issue gets addressed.",
-  "For more feedback options, visit CasaOS project on GitHub...": "For more feedback options, visit CasaOS project on GitHub..."
+  "For more feedback options, visit CasaOS project on GitHub...": "For more feedback options, visit CasaOS project on GitHub...",
+  "{num}Items": "{num}Items",
+  "Submit a feedback or report an issue": "Submit a feedback or report an issue",
+  "Shutdown": "Shutdown",
+  "Connecting": "Connecting",
+  "Open in Files": "Open in Files",
+  "Learn more": "Learn more",
+  "Set Mainstorage": "Set Mainstorage",
+  "Found a New Drive": "Found a New Drive",
+  "Data cannot be recovered after deletion! <br/>Continue on to uninstall this application?<br/>{divS}Delete userdata ( config folder ){divE}": "Data cannot be recovered after deletion! <br/>Continue on to uninstall this application?<br/>{divS}Delete userdata ( config folder ){divE}"
 }
