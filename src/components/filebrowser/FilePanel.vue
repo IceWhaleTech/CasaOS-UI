@@ -230,6 +230,7 @@ import GlobalActionButton from './components/GlobalActionButton.vue';
 import MountActionButton from './components/MountActionButton.vue';
 // storage settings requirement document
 import StorageSettings from "@/components/Storage/StorageSettings";
+import {nanoid} from "nanoid";
 
 export default {
 	name: "file-panel",
@@ -287,14 +288,7 @@ export default {
 			isSelectAll: false,
 			selectLabel: "",
 			isToolbarShow: false,
-			options: {
-				target: this.getTargetUrl(),
-				testChunks: true,
-				uploadMethod: "POST",
-				successStatuses: [200, 201, 202, 2002],
-				allowDuplicateUploads: true,
-				// chunkSize: 1024 * 1024 * 1024 * 1024
-			},
+
 			attrs: {
 				accept: '*'
 			},
@@ -306,6 +300,15 @@ export default {
 		}
 	},
 	async created() {
+		this.options = {
+			target: this.getTargetUrl(),
+			testChunks: true,
+			uploadMethod: "POST",
+			successStatuses: [200, 201, 202, 2002],
+			allowDuplicateUploads: true,
+			// generateUniqueIdentifier: nanoid(),
+			// chunkSize: 1024 * 1024 * 1024 * 1024
+		}
 		// get merge info
 		try {
 			let hasMergeState = await this.$api.local_storage.getMergerfsInfo().then(res => res.status);
@@ -444,9 +447,9 @@ export default {
 					this.isLoading = false;
 
 					this.currentPathName = path.split("/").pop()
-					this.uploaderInstance.opts.query = {
-						path: this.currentPath,
-					}
+					// this.uploaderInstance.opts.query = {
+					// 	path: this.currentPath,
+					// }
 
 					const fileList = res.data.data
 					const newFileList = fileList.map(item => {
