@@ -78,7 +78,7 @@
 					{{ $t(noticeData.operate.title) }}
 				</b-button>
 				<div v-if="Object.keys(noticeData.content).length > 1" class="is-flex-grow-1 footer-hint">
-					{{ $t('{num}Items', {num: Object.keys(noticeData.content).length}) }}
+					{{ $t('{num} items', {num: Object.keys(noticeData.content).length}) }}
 				</div>
 			</div>
 			<!-- end of section footer-->

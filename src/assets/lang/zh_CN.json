@@ -330,7 +330,7 @@
   "Description": "描述",
   "The more details provided, the easier this feedback or issue gets addressed.": "提供的细节越多，反馈或问题就越容易处理。",
   "For more feedback options, visit CasaOS project on GitHub...": "更多反馈选项请访问 GitHub上的 CasaOS 项目...",
-  "{num}Items": "{num}项",
+  "{num} items": "{num} 项",
   "Submit a feedback or report an issue": "提交反馈或报告问题",
   "Shutdown": "关机",
   "Connecting": "连接中",
