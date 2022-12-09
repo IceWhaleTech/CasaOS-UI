@@ -87,7 +87,7 @@ export default {
 					},
 					content: {
 						a: {
-							title: 'Found a New Drive',
+							title: 'Found a new drive',
 							icon: '/storage/disk.png',
 							color: 'is-primary',
 							path: '/storage',
@@ -207,7 +207,7 @@ export default {
 			if (!this.noticesData[eventType]) {
 				this.$set(this.noticesData, eventType, {
 					prelude: {
-						title: 'Found a New Drive',
+						title: 'Found a new drive',
 						icon: 'mdi-usb',
 					},
 					content: {},
@@ -224,7 +224,7 @@ export default {
 			if (operateType === 'added') {
 				let percent = eventJson.properties['avail'] ? `${this.renderSize(eventJson.properties['size'] - eventJson.properties['avail'])} / ${this.renderSize(eventJson.properties['size'])}` : 'NaN';
 				this.$set(this.noticesData[eventType]['content'], entityUUID, {
-					title: eventJson.properties['model'] || 'Found a New Drive',
+					title: eventJson.properties['model'] || 'Found a new drive',
 					icon: '/storage/USB.png',
 					color: 'is-primary',
 					path: eventJson.properties['local-storage:path'],
@@ -253,14 +253,14 @@ export default {
 			if (!this.noticesData[driveType]) {
 				this.$set(this.noticesData, driveType, {
 					prelude: {
-						title: 'Found a New Drive',
+						title: 'Found a new drive',
 						icon: 'mdi-usb',
 					},
 					content: {},
 					contentType: 'list',
 					operate: {
 						type: 'casaUI:eventBus',
-						title: 'Set Mainstorage',
+						title: 'Set MainStorage',
 						event: 'casaUI:openInStorageManager',
 						path: '/Storage',
 						icon: 'mdi-arrow-right',
@@ -271,7 +271,7 @@ export default {
 				let percent = eventJson.properties['avail'] > 0 ? `${this.renderSize(eventJson.properties['size'] - eventJson.properties['avail'])} / ${this.renderSize(eventJson.properties['size'])}` : eventType.toUpperCase();
 				// let percent = eventType.toUpperCase();
 				this.$set(this.noticesData[driveType]['content'], entityUUID, {
-					title: eventJson.properties['model'] || 'Found a New Drive',
+					title: eventJson.properties['model'] || 'Found a new drive',
 					icon: '/storage/storage.png',
 					color: 'is-primary',
 					path: eventJson.properties['local-storage:path'],
@@ -298,7 +298,7 @@ export default {
 			if (!this.noticesData[eventType]) {
 				this.$set(this.noticesData, eventType, {
 					prelude: {
-						title: 'Found a New Drive',
+						title: 'Found a new drive',
 						icon: 'mdi-usb',
 					},
 					content: {},
@@ -315,7 +315,7 @@ export default {
 			if (operateType === 'added') {
 				let percent = eventJson.properties['avail'] ? `${this.renderSize(eventJson.properties['used'])} / ${this.renderSize(eventJson.properties['size'])}` : 'NaN';
 				this.$set(this.noticesData[eventType]['content'], entityUUID, {
-					title: eventJson.properties['model'] || 'Found a New Drive',
+					title: eventJson.properties['model'] || 'Found a new drive',
 					icon: '/storage/disk.png',
 					color: 'is-primary',
 					path: eventJson.properties['local-storage:path'],

@@ -104,7 +104,7 @@ export default {
 					},
 					content: {
 						123: {
-							title: 'Found a New Drive',
+							title: 'Found a new drive',
 							icon: 'mdi-usb',
 							color: 'is-primary',
 							path: '/storage',
@@ -112,7 +112,7 @@ export default {
 							value: '100G/1000G'
 						},
 						345: {
-							title: 'Found a New Drive',
+							title: 'Found a new drive',
 							icon: 'mdi-usb',
 							color: 'is-primary',
 							path: '/storage',
