@@ -336,7 +336,7 @@
   "Connecting": "Connecting",
   "Open in Files": "Open in Files",
   "Learn more": "Learn more",
-  "Set Mainstorage": "Set Mainstorage",
-  "Found a New Drive": "Found a New Drive",
+  "Set MainStorage": "Set MainStorage",
+  "Found a new drive": "Found a new drive",
   "Data cannot be recovered after deletion! <br/>Continue on to uninstall this application?<br/>{divS}Delete userdata ( config folder ){divE}": "Data cannot be recovered after deletion! <br/>Continue on to uninstall this application?<br/>{divS}Delete userdata ( config folder ){divE}"
 }
