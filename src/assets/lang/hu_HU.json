@@ -330,7 +330,7 @@
   "Description": "Leírás",
   "The more details provided, the easier this feedback or issue gets addressed.": "Minél több részletet adsz meg, annál könnyebben azonosítható ez a visszajelzés vagy probléma.",
   "For more feedback options, visit CasaOS project on GitHub...": "További visszajelzési lehetőségekért látogass el a CasaOS projektre a GitHubon...",
-  "{num}Items": "{num}Items",
+  "{num} items": "{num} items",
   "Submit a feedback or report an issue": "Submit a feedback or report an issue",
   "Shutdown": "Shutdown",
   "Connecting": "Connecting",
