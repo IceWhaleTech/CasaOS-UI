@@ -22,7 +22,7 @@
 				<div class="header-title pl-2 is-flex-grow-1">
 					{{ $t(noticeData.prelude.title) }}
 				</div>
-				<div class="is-flex-shrink-0" @click="close">
+				<div class="is-flex-shrink-0 _close-polymorphic" @click="close">
 					<b-icon custom-size="casa-24px" icon="close-xs" pack="casa"></b-icon>
 				</div>
 			</div>
@@ -253,5 +253,9 @@ export default {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+._close-polymorphic:hover {
+	cursor: pointer;
 }
 </style>
