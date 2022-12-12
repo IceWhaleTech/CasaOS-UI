@@ -1,4 +1,13 @@
 <!--
+  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+  * @LastEditTime: 2022/12/12 下午6:36
+  * @FilePath: /CasaOS-UI/src/components/Storage/StorageManagerPanel.vue
+  * @Description:
+  *
+  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
+  -->
+
+<!--
  * @Author: JerryK
  * @Date: 2022-01-17 15:16:11
  * @LastEditors: zhanghengxin ezreal.ice@icloud.com
@@ -7,153 +16,153 @@
  * @FilePath: /CasaOS-UI/src/components/Storage/StorageManagerPanel.vue
 -->
 <template>
-  <div class="modal-card">
+	<div class="modal-card">
 
-    <!-- Modal-Card Body Start -->
-    <section class="modal-card-body ">
-      <template v-if="!isCreating">
-        <h3 class="title is-3">{{ title }}</h3>
-        <div class="close-container">
-          <button class="delete" type="button" @click="$emit('close')"/>
-        </div>
+		<!-- Modal-Card Body Start -->
+		<section class="modal-card-body ">
+			<template v-if="!isCreating">
+				<h3 class="title is-3">{{ title }}</h3>
+				<div class="close-container">
+					<button class="delete" type="button" @click="$emit('close')"/>
+				</div>
 
-        <!-- Storage and Disk List Start -->
-        <div v-if="!creatIsShow" class="is-flex-grow-1 is-relative">
-          <div v-if="activeTab == 0" class="create-container">
+				<!-- Storage and Disk List Start -->
+				<div v-if="!creatIsShow" class="is-flex-grow-1 is-relative">
+					<div v-if="activeTab == 0" class="create-container">
 
-            <popper :options="{placement: 'bottom', modifiers: { offset: { offset: '0,4px' } } }" append-to-body
-                    trigger="hover">
-              <div v-show="unDiskData.length == 0" class="popper  tooltip-content dark">
-                {{ $t('Please insert a Drive to Create Storage') }}
-              </div>
-              <div slot="reference">
-                <b-button :disabled="unDiskData.length == 0" :type="state_createstorage_operability" class="o" rounded
-                          size="is-small" @click="showCreate">{{ $t('Create Storage') }}
-                </b-button>
-              </div>
-            </popper>
+						<popper :options="{placement: 'bottom', modifiers: { offset: { offset: '0,4px' } } }" append-to-body
+						        trigger="hover">
+							<div v-show="unDiskData.length == 0" class="popper  tooltip-content dark">
+								{{ $t('Please insert a Drive to Create Storage') }}
+							</div>
+							<div slot="reference">
+								<b-button :disabled="unDiskData.length == 0" :type="state_createstorage_operability" class="o" rounded
+								          size="is-small" @click="showCreate">{{ $t('Create Storage') }}
+								</b-button>
+							</div>
+						</popper>
 
-          </div>
-          <b-tabs v-model="activeTab" :animated="false">
-            <b-tab-item :label="$t('Storage')" class="scrollbars-light-auto tab-item">
-              <storage-combination :storageData="mergeConbinationsStorageData"
-                                   :type="state_mainstorage_operability" @reload="getDiskList"></storage-combination>
-              <template v-if="storageData.length">
-                <storage-item v-for="(item,index) in storageData" :key="'storage'+index" :item="item"
-                              @getDiskList="getDiskList"></storage-item>
-              </template>
-            </b-tab-item>
-            <b-tab-item :label="$t('Drive')" class="scrollbars-light-auto tab-item">
-              <drive-item v-for="(item,index) in diskData" :key="'disk'+index" :item="item"></drive-item>
-            </b-tab-item>
-          </b-tabs>
+					</div>
+					<b-tabs v-model="activeTab" :animated="false">
+						<b-tab-item :label="$t('Storage')" class="scrollbars-light-auto tab-item">
+							<storage-combination :storageData="mergeConbinationsStorageData"
+							                     :type="state_mainstorage_operability" @reload="getDiskList"></storage-combination>
+							<template v-if="storageData.length">
+								<storage-item v-for="(item,index) in storageData" :key="'storage'+index" :item="item"
+								              @getDiskList="getDiskList"></storage-item>
+							</template>
+						</b-tab-item>
+						<b-tab-item :label="$t('Drive')" class="scrollbars-light-auto tab-item">
+							<drive-item v-for="(item,index) in diskData" :key="'disk'+index" :item="item"></drive-item>
+						</b-tab-item>
+					</b-tabs>
 
-          <div v-if="activeTab == 0 && !mergeConbinationsStorageData.length"
-               class="is-flex is-flex-direction-row-reverse">
-            <b-button v-show="hasMergeState" :type="state_mainstorage_operability" class="width" rounded size="is-small"
-                      @click="showStorageSettingsModal">{{ $t('Merge Storages') }}
-            </b-button>
-          </div>
+					<div v-if="activeTab == 0 && !mergeConbinationsStorageData.length"
+					     class="is-flex is-flex-direction-row-reverse">
+						<b-button v-show="hasMergeState" :type="state_mainstorage_operability" class="width" rounded size="is-small"
+						          @click="showStorageSettingsModal">{{ $t('Merge Storages') }}
+						</b-button>
+					</div>
 
-        </div>
-        <!-- Storage and Disk List End -->
+				</div>
+				<!-- Storage and Disk List End -->
 
-        <!-- Create Storage Start -->
-        <div v-if="creatIsShow" class="is-flex-grow-1 is-relative">
-          <ValidationObserver ref="ob1">
-            <ValidationProvider v-slot="{ errors, valid }" name="StorageName" rules="required">
-              <b-field :label="$t('Storage Name')" :message="$t(errors)"
-                       :type="{ 'is-danger': errors[0], 'is-success': valid }">
-                <b-input v-model="createStorageName"
-                         @keyup.native="createStorageName=createStorageName.replace(/[^\w]/g,'')"
-                         @paste.native="createStorageName=createStorageName.replace(/[^\w]/g,'')"></b-input>
-              </b-field>
-            </ValidationProvider>
+				<!-- Create Storage Start -->
+				<div v-if="creatIsShow" class="is-flex-grow-1 is-relative">
+					<ValidationObserver ref="ob1">
+						<ValidationProvider v-slot="{ errors, valid }" name="StorageName" rules="required">
+							<b-field :label="$t('Storage Name')" :message="$t(errors)"
+							         :type="{ 'is-danger': errors[0], 'is-success': valid }">
+								<b-input v-model="createStorageName"
+								         @keyup.native="createStorageName=createStorageName.replace(/[^\w]/g,'')"
+								         @paste.native="createStorageName=createStorageName.replace(/[^\w]/g,'')"></b-input>
+							</b-field>
+						</ValidationProvider>
 
-            <b-field :label="$t('Choose Drive')">
-              <b-select v-model="activeDisk" expanded @input="onDiskChoose">
-                <option v-for="(option,index) in unDiskData" :key="option.path" :value="index">
-                  {{ option.name }} ({{ option.model }} - {{ renderSize(option.size) }})
-                </option>
-              </b-select>
-            </b-field>
+						<b-field :label="$t('Choose Drive')">
+							<b-select v-model="activeDisk" expanded @input="onDiskChoose">
+								<option v-for="(option,index) in unDiskData" :key="option.path" :value="index">
+									{{ option.name }} ({{ option.model }} - {{ renderSize(option.size) }})
+								</option>
+							</b-select>
+						</b-field>
 
-          </ValidationObserver>
+					</ValidationObserver>
 
-          <article v-if="createStorageType == 'format'" class="message is-danger mt-5">
-            <section class="message-body">
-              <div class="media">
-                <div class="media-left">
-                  <span class="icon is-large is-danger"><i class="mdi mdi-alert-circle mdi-48px"></i></span>
-                </div>
-                <div class="media-content">
-                  <h3 class="is-size-5">{{ $t('Warning') }}</h3>
-                  <p class="is-size-14px">
-                    {{ $t("The selected drive will be emptied.") }}<br>
-                    {{
-                      $t("Please make sure again that there is no important data on the selected drive that needs to be backed up.")
-                    }}
-                  </p>
-                </div>
-              </div>
-            </section>
-          </article>
+					<article v-if="createStorageType == 'format'" class="message is-danger mt-5">
+						<section class="message-body">
+							<div class="media">
+								<div class="media-left">
+									<span class="icon is-large is-danger"><i class="mdi mdi-alert-circle mdi-48px"></i></span>
+								</div>
+								<div class="media-content">
+									<h3 class="is-size-5">{{ $t('Warning') }}</h3>
+									<p class="is-size-14px">
+										{{ $t("The selected drive will be emptied.") }}<br>
+										{{
+											$t("Please make sure again that there is no important data on the selected drive that needs to be backed up.")
+										}}
+									</p>
+								</div>
+							</div>
+						</section>
+					</article>
 
-          <article v-else class="message is-danger mt-5">
-            <section class="message-body">
-              <div class="media">
-                <div class="media-left">
-                  <span class="icon is-large is-danger"><i class="mdi mdi-alert-circle mdi-48px"></i></span>
-                </div>
-                <div class="media-content">
-                  <h3 class="is-size-5">{{ $t('Attention') }}</h3>
-                  <p class="is-size-14px">
-                    {{ $t("The drive you select can be used directly as storage.") }}<br>
-                    {{
-                      $t("You can also choose to create it after formatting. If formatted, the selected drive will be emptied.")
-                    }}<br>
-                    {{
-                      $t("Please make sure again that there is no important data on the selected drive that needs to be backed up.")
-                    }}
-                  </p>
-                </div>
-              </div>
-            </section>
-          </article>
+					<article v-else class="message is-danger mt-5">
+						<section class="message-body">
+							<div class="media">
+								<div class="media-left">
+									<span class="icon is-large is-danger"><i class="mdi mdi-alert-circle mdi-48px"></i></span>
+								</div>
+								<div class="media-content">
+									<h3 class="is-size-5">{{ $t('Attention') }}</h3>
+									<p class="is-size-14px">
+										{{ $t("The drive you select can be used directly as storage.") }}<br>
+										{{
+											$t("You can also choose to create it after formatting. If formatted, the selected drive will be emptied.")
+										}}<br>
+										{{
+											$t("Please make sure again that there is no important data on the selected drive that needs to be backed up.")
+										}}
+									</p>
+								</div>
+							</div>
+						</section>
+					</article>
 
-        </div>
-        <!-- Create Storage End -->
-      </template>
-      <template v-if="isCreating">
-        <div class="installing-warpper mt-6 mb-6">
-          <div class="is-flex is-align-items-center is-justify-content-center mb-5">
-            <lottie-animation :animationData="require('@/assets/ani/creating.json')" :autoPlay="true" :loop="true"
-                              class="creating-animation"></lottie-animation>
-          </div>
-          <h3 class="title is-4 has-text-centered has-text-weight-light">{{ $t('Creation in progress') }}...</h3>
-        </div>
-      </template>
-      <b-loading v-model="isLoading" :can-cancel="false" :is-full-page="false"></b-loading>
-    </section>
+				</div>
+				<!-- Create Storage End -->
+			</template>
+			<template v-if="isCreating">
+				<div class="installing-warpper mt-6 mb-6">
+					<div class="is-flex is-align-items-center is-justify-content-center mb-5">
+						<lottie-animation :animationData="require('@/assets/ani/creating.json')" :autoPlay="true" :loop="true"
+						                  class="creating-animation"></lottie-animation>
+					</div>
+					<h3 class="title is-4 has-text-centered has-text-weight-light">{{ $t('Creation in progress') }}...</h3>
+				</div>
+			</template>
+			<b-loading v-model="isLoading" :can-cancel="false" :is-full-page="false"></b-loading>
+		</section>
 
-    <!-- Modal-Card Body End -->
-    <!-- Modal-Card Footer Start-->
-    <footer v-if="creatIsShow && !isCreating" class="modal-card-foot is-flex is-align-items-center ">
-      <template>
-        <div class="is-flex-grow-1"></div>
-        <div>
-          <b-button :label="$t('Cancel')" rounded @click="showDefault"/>
-          <b-button :label="$t('Format and Create')" :loading="isValiding"
-                    :type="createStorageType == 'format'?'is-primary':''" rounded @click="createStorge(true)"/>
-          <b-button v-if="createStorageType == 'mountable'" :label="$t('Create')" :loading="isValiding" rounded
-                    type="is-primary" @click="createStorge(false)"/>
-        </div>
-      </template>
+		<!-- Modal-Card Body End -->
+		<!-- Modal-Card Footer Start-->
+		<footer v-if="creatIsShow && !isCreating" class="modal-card-foot is-flex is-align-items-center ">
+			<template>
+				<div class="is-flex-grow-1"></div>
+				<div>
+					<b-button :label="$t('Cancel')" rounded @click="showDefault"/>
+					<b-button :label="$t('Format and Create')" :loading="isValiding"
+					          :type="createStorageType == 'format'?'is-primary':''" rounded @click="createStorge(true)"/>
+					<b-button v-if="createStorageType == 'mountable'" :label="$t('Create')" :loading="isValiding" rounded
+					          type="is-primary" @click="createStorge(false)"/>
+				</div>
+			</template>
 
-    </footer>
-    <!-- Modal-Card Footer End -->
+		</footer>
+		<!-- Modal-Card Footer End -->
 
-  </div>
+	</div>
 </template>
 
 <script>
@@ -170,394 +179,395 @@ import storageSettings from '@/components/Storage/StorageSettings.vue';
 import StorageCombination from "./StorageCombination.vue";
 
 export default {
-  name: "storage-manager-panel",
-  components: {
-    LottieAnimation,
-    ValidationObserver,
-    ValidationProvider,
-    DriveItem,
-    StorageItem,
-    Popper,
-    StorageCombination,
-  },
-  mixins: [smoothReflow, mixin],
-  data() {
-    return {
-      isLoading: true,
-      creatIsShow: false,
-      isCreating: false,
-      isValiding: false,
-      activeTab: 0,
-      activeDisk: "",
-      createStorageName: "",
-      createStoragePath: "",
-      createStorageSeiral: "",
-      createStorageType: "",
-      diskData: [],
-      unDiskData: [],
-      storageData: [],
-      mergeConbinationsStorageData: [],
-      hasMergeState: false,
-    }
-  },
+	name: "storage-manager-panel",
+	components: {
+		LottieAnimation,
+		ValidationObserver,
+		ValidationProvider,
+		DriveItem,
+		StorageItem,
+		Popper,
+		StorageCombination,
+	},
+	mixins: [smoothReflow, mixin],
+	data() {
+		return {
+			isLoading: true,
+			creatIsShow: false,
+			isCreating: false,
+			isValiding: false,
+			activeTab: 0,
+			activeDisk: "",
+			createStorageName: "",
+			createStoragePath: "",
+			createStorageSeiral: "",
+			createStorageType: "",
+			diskData: [],
+			unDiskData: [],
+			storageData: [],
+			mergeConbinationsStorageData: [],
+			hasMergeState: false,
+		}
+	},
 
-  computed: {
-    title() {
-      return this.creatIsShow ? this.$t('Create Storage') : this.$t('Storage Manager')
-    },
-    state_createstorage_operability() {
-      if (this.unDiskData.length == 0) {
-        return "is-link is-light"
-      }
-      return "is-link"
-    },
-    state_mainstorage_operability() {
-      if (this.unDiskData.length == 0) {
-        return "is-link"
-      }
+	computed: {
+		title() {
+			return this.creatIsShow ? this.$t('Create Storage') : this.$t('Storage Manager')
+		},
+		state_createstorage_operability() {
+			if (this.unDiskData.length == 0) {
+				return "is-link is-light"
+			}
+			return "is-link"
+		},
+		state_mainstorage_operability() {
+			if (this.unDiskData.length == 0) {
+				return "is-link"
+			}
 
-    },
-  },
+		},
+	},
 
-  async created() {
-    // get merge info
-    // TODO how to invoke this states code
-    try {
-      let hasMergeState = await this.$api.local_storage.getMergerfsInfo().then(res => res.status
-      ).catch(err => err)
-      this.hasMergeState = hasMergeState == 200;
-    } catch (e) {
-      console.log(e)
-    }
+	async created() {
+		// get merge info
+		// TODO how to invoke this states code
+		try {
+			let hasMergeState = await this.$api.local_storage.getMergerfsInfo().then(res => res.status
+			).catch(err => err)
+			this.hasMergeState = hasMergeState == 200;
+		} catch (e) {
+			console.log(e)
+		}
 
-  },
-  mounted() {
-    //Smooth
-    this.$smoothReflow({
-      el: '.modal-card',
-      property: ['height', 'width'],
-      transition: 'height .25s ease, width .75s ease-out'
-    })
+	},
+	mounted() {
+		//Smooth
+		this.$smoothReflow({
+			el: '.modal-card',
+			property: ['height', 'width'],
+			transition: 'height .25s ease, width .75s ease-out'
+		})
 
-    //Get disk list
-    let _this = this
-    delay(function () {
-      _this.getDiskList()
-    }, 150);
-  },
+		//Get disk list
+		let _this = this
+		delay(function () {
+			_this.getDiskList()
+		}, 150);
+	},
 
-  methods: {
-    /**
-     * @description: Get disk list
-     * @param {}
-     * @return {void}
-     */
-    async getDiskList(showDefault = false) {
+	methods: {
+		/**
+		 * @description: Get disk list
+		 * @param {}
+		 * @return {void}
+		 */
+		async getDiskList(showDefault = false) {
 
-      // get disk list
-      try {
-        const diskRes = await this.$api.disks.getDiskList()
-        this.diskData = diskRes.data.data.disks
-        this.unDiskData = diskRes.data.data.avail
-      } catch (error) {
-        console.log(error.response.message);
-      }
+			// get disk list
+			try {
+				const diskRes = await this.$api.disks.getDiskList()
+				this.diskData = diskRes.data.data.disks
+				this.unDiskData = diskRes.data.data.avail
+			} catch (error) {
+				console.log(error.response.message);
+			}
 
-      // get storage list
-      // TODO: the part is repetition
-      //  with APPs Installation Location requirement document
-      // 获取merge信息
-      let mergeStorageList
-      try {
-        mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => res.data.data[0]['source_volume_uuids'])
-      } catch (e) {
-        mergeStorageList = []
-        console.log(e)
-      }
+			// get storage list
+			// TODO: the part is repetition
+			//  with APPs Installation Location requirement document
+			// 获取merge信息
+			let mergeStorageList
+			try {
+				mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => res.data.data[0]['source_volume_uuids'])
+			} catch (e) {
+				mergeStorageList = []
+				console.log(e)
+			}
 
-      try {
-        // get storage list info
-        const storageRes = await this.$api.storage.list({system: "show"}).then(v => v.data.data)
-        const storageArray = []
-        const mergeConbinations = []
-        let testMergeMiss = mergeStorageList
-        storageRes.forEach(item => {
-          item.children.forEach(part => {
-            part.disk = item.path
-            part.diskName = item.disk_name
-            // storageArray.push(part)
-            if (mergeStorageList.includes(part.uuid) || (mergeStorageList.length > 0 && item.disk_name === 'System')) {
-              mergeConbinations.push(part)
-              testMergeMiss = testMergeMiss.filter(v => v !== part.uuid)
-            } else {
-              storageArray.push(part)
-            }
-          })
-        })
-        mergeConbinations.reverse();
-        testMergeMiss.forEach(item => {
-          mergeConbinations.push({
-            "uuid": "",
-            "mount_point": "",
-            "size": "",
-            "avail": "",
-            "type": "",
-            "path": item,
-            "drive_name": "",
-            "label": "",
-            "persisted_in": "",
-            "disk": "",
-            "diskName": ""
-          })
-        })
+			try {
+				// get storage list info
+				const storageRes = await this.$api.storage.list({system: "show"}).then(v => v.data.data)
+				const storageArray = []
+				const mergeConbinations = []
+				let testMergeMiss = mergeStorageList
+				storageRes.forEach(item => {
+					item.children.forEach(part => {
+						part.disk = item.path
+						part.diskName = item.disk_name
+						// storageArray.push(part)
+						if (mergeStorageList.includes(part.uuid) || (mergeStorageList.length > 0 && item.disk_name === 'System')) {
+							mergeConbinations.push(part)
+							testMergeMiss = testMergeMiss.filter(v => v !== part.uuid)
+						} else {
+							storageArray.push(part)
+						}
+					})
+				})
+				mergeConbinations.reverse();
+				testMergeMiss.forEach(item => {
+					mergeConbinations.push({
+						"uuid": "",
+						"mount_point": "",
+						"size": "",
+						"avail": "",
+						"type": "",
+						"path": item,
+						"drive_name": "",
+						"label": "",
+						"persisted_in": "",
+						"disk": "",
+						"diskName": ""
+					})
+				})
 
-        this.storageData = storageArray.map((storage) => {
-          return {
-            uuid: storage.uuid,
-            name: storage.label,
-            isSystem: storage.diskName == "System",
-            fsType: storage.type,
-            size: storage.size,
-            availSize: storage.avail,
-            usePercent: 100 - Math.floor(storage.avail * 100 / storage.size),
-            diskName: storage.drive_name,
-            path: storage.path,
-            mount_point: storage.mount_point,
-            disk: storage.disk
-          }
-        })
-        this.mergeConbinationsStorageData = mergeConbinations.map((storage) => {
-          return {
-            uuid: storage.uuid,
-            name: storage.label,
-            isSystem: storage.diskName == "System",
-            fsType: storage.type,
-            size: storage.size,
-            availSize: storage.avail,
-            usePercent: 100 - Math.floor(storage.avail * 100 / storage.size),
-            diskName: storage.drive_name,
-            path: storage.path,
-            mount_point: storage.mount_point,
-            disk: storage.disk
-          }
-        })
+				this.storageData = storageArray.map((storage) => {
+					console.log('storage', storage.size, this.renderSize(storage.size))
+					return {
+						uuid: storage.uuid,
+						name: storage.label,
+						isSystem: storage.diskName == "System",
+						fsType: storage.type,
+						size: storage.size,
+						availSize: storage.avail,
+						usePercent: 100 - Math.floor(storage.avail * 100 / storage.size),
+						diskName: storage.drive_name,
+						path: storage.path,
+						mount_point: storage.mount_point,
+						disk: storage.disk
+					}
+				})
+				this.mergeConbinationsStorageData = mergeConbinations.map((storage) => {
+					return {
+						uuid: storage.uuid,
+						name: storage.label,
+						isSystem: storage.diskName == "System",
+						fsType: storage.type,
+						size: storage.size,
+						availSize: storage.avail,
+						usePercent: 100 - Math.floor(storage.avail * 100 / storage.size),
+						diskName: storage.drive_name,
+						path: storage.path,
+						mount_point: storage.mount_point,
+						disk: storage.disk
+					}
+				})
 
-        let diskNumArray = this.storageData.map(storage => {
-          if (storage.name.includes("Storage")) {
-            let diskNum = storage.name.replace("Storage", "")
-            return (/^\d+$/.test(diskNum)) ? Number(diskNum) : 0
-          } else {
-            return 0
-          }
-        })
-        let nextMaxNum = max(diskNumArray) + 1;
-        if (this.unDiskData.length > 0) {
-          this.createStoragePath = this.unDiskData[0].path
-          this.createStorageSeiral = this.unDiskData[0].serial
-          this.createStorageType = this.getDiskType(this.unDiskData[0])
-          this.createStorageName = "Storage" + nextMaxNum
-          this.activeDisk = 0
-        }
-        if (showDefault) {
-          this.showDefault()
-          this.isCreating = false
-          this.createStorageName = ""
-        }
-      } catch (error) {
-        console.log(error);
-      }
+				let diskNumArray = this.storageData.map(storage => {
+					if (storage.name.includes("Storage")) {
+						let diskNum = storage.name.replace("Storage", "")
+						return (/^\d+$/.test(diskNum)) ? Number(diskNum) : 0
+					} else {
+						return 0
+					}
+				})
+				let nextMaxNum = max(diskNumArray) + 1;
+				if (this.unDiskData.length > 0) {
+					this.createStoragePath = this.unDiskData[0].path
+					this.createStorageSeiral = this.unDiskData[0].serial
+					this.createStorageType = this.getDiskType(this.unDiskData[0])
+					this.createStorageName = "Storage" + nextMaxNum
+					this.activeDisk = 0
+				}
+				if (showDefault) {
+					this.showDefault()
+					this.isCreating = false
+					this.createStorageName = ""
+				}
+			} catch (error) {
+				console.log(error);
+			}
 
-      this.isLoading = false
-    },
+			this.isLoading = false
+		},
 
-    disksSort(array) {
-      array.sort((a, b) => {
-        if (a.diskName == "System") {
-          return -1
-        } else if (b.diskName == "System") {
-          return 1
-        } else if (a.label > b.label) {
-          return 1
-        } else if (a.label < b.label) {
-          return -1
-        } else {
-          return 0
-        }
-      })
-    },
+		disksSort(array) {
+			array.sort((a, b) => {
+				if (a.diskName == "System") {
+					return -1
+				} else if (b.diskName == "System") {
+					return 1
+				} else if (a.label > b.label) {
+					return 1
+				} else if (a.label < b.label) {
+					return -1
+				} else {
+					return 0
+				}
+			})
+		},
 
-    /**
-     * @description: Disk choose handle
-     * @param {int} evt index of select
-     * @return {void}
-     */
-    onDiskChoose(index) {
-      this.createStoragePath = this.unDiskData[index].path
-      this.createStorageSeiral = this.unDiskData[index].serial
-      this.createStorageType = this.getDiskType(this.unDiskData[index])
-    },
-    showDefault() {
-      this.creatIsShow = false
-    },
-    showCreate() {
-      this.creatIsShow = true
-      let diskNumArray = this.storageData.map(disk => {
-        if (disk.name.includes("Storage")) {
-          let diskNum = disk.name.replace("Storage", "")
-          return (/^\d+$/.test(diskNum)) ? Number(diskNum) : 0
-        } else {
-          return 0
-        }
-      })
-      let nextMaxNum = max(diskNumArray) + 1;
-      this.createStorageName = "Storage" + nextMaxNum
-    },
+		/**
+		 * @description: Disk choose handle
+		 * @param {int} evt index of select
+		 * @return {void}
+		 */
+		onDiskChoose(index) {
+			this.createStoragePath = this.unDiskData[index].path
+			this.createStorageSeiral = this.unDiskData[index].serial
+			this.createStorageType = this.getDiskType(this.unDiskData[index])
+		},
+		showDefault() {
+			this.creatIsShow = false
+		},
+		showCreate() {
+			this.creatIsShow = true
+			let diskNumArray = this.storageData.map(disk => {
+				if (disk.name.includes("Storage")) {
+					let diskNum = disk.name.replace("Storage", "")
+					return (/^\d+$/.test(diskNum)) ? Number(diskNum) : 0
+				} else {
+					return 0
+				}
+			})
+			let nextMaxNum = max(diskNumArray) + 1;
+			this.createStorageName = "Storage" + nextMaxNum
+		},
 
-    // show storage settings modal
-    showStorageSettingsModal() {
-      // TODO storage settings
-      this.$buefy.modal.open({
-        parent: this,
-        component: storageSettings,
-        hasModalCard: true,
-        trapFocus: true,
-        ariaModal: true,
-        onCancel: () => {
-          this.getDiskList()
-        },
-        events: {
-          close: () => {
-            this.getDiskList()
-          }
-        }
-      })
+		// show storage settings modal
+		showStorageSettingsModal() {
+			// TODO storage settings
+			this.$buefy.modal.open({
+				parent: this,
+				component: storageSettings,
+				hasModalCard: true,
+				trapFocus: true,
+				ariaModal: true,
+				onCancel: () => {
+					this.getDiskList()
+				},
+				events: {
+					close: () => {
+						this.getDiskList()
+					}
+				}
+			})
 
-    },
-    /**
-     * @description: Validate form async
-     * @param {Object} ref ref of component
-     * @return {Boolean}
-     */
-    async checkStep(ref) {
-      let isValid = await ref.validate()
-      return isValid
-    },
-    /**
-     * @description: Create a new storage
-     * @param {}
-     * @return {void}
-     */
-    createStorge(needFormat) {
-      this.isValiding = true
-      this.checkStep(this.$refs.ob1).then(val => {
-        this.isValiding = false
-        if (val) {
-          this.submitCreate(needFormat)
-        }
-      }).catch(err => {
-        this.isValiding = false
-        this.$buefy.toast.open({
-          duration: 3000,
-          message: err.response.data.message,
-          type: 'is-danger'
-        })
-      })
+		},
+		/**
+		 * @description: Validate form async
+		 * @param {Object} ref ref of component
+		 * @return {Boolean}
+		 */
+		async checkStep(ref) {
+			let isValid = await ref.validate()
+			return isValid
+		},
+		/**
+		 * @description: Create a new storage
+		 * @param {}
+		 * @return {void}
+		 */
+		createStorge(needFormat) {
+			this.isValiding = true
+			this.checkStep(this.$refs.ob1).then(val => {
+				this.isValiding = false
+				if (val) {
+					this.submitCreate(needFormat)
+				}
+			}).catch(err => {
+				this.isValiding = false
+				this.$buefy.toast.open({
+					duration: 3000,
+					message: err.response.data.message,
+					type: 'is-danger'
+				})
+			})
 
-    },
-    submitCreate(format) {
-      this.isCreating = true
-      let data = {
-        path: this.createStoragePath,
-        name: this.createStorageName,
-        format: format
-      }
-      this.$api.storage.create(data).then((res) => {
+		},
+		submitCreate(format) {
+			this.isCreating = true
+			let data = {
+				path: this.createStoragePath,
+				name: this.createStorageName,
+				format: format
+			}
+			this.$api.storage.create(data).then((res) => {
 
-        if (res.data.success != 200) {
-          this.isCreating = false;
-          this.$buefy.toast.open({
-            duration: 3000,
-            message: res.data.message,
-            type: 'is-danger'
-          })
-        } else {
-          this.getDiskList(true);
-        }
-      }).catch(err => {
-        this.isCreating = false
-        this.$buefy.toast.open({
-          duration: 3000,
-          message: err.response.data.message,
-          type: 'is-danger'
-        })
-      })
-    },
+				if (res.data.success != 200) {
+					this.isCreating = false;
+					this.$buefy.toast.open({
+						duration: 3000,
+						message: res.data.message,
+						type: 'is-danger'
+					})
+				} else {
+					this.getDiskList(true);
+				}
+			}).catch(err => {
+				this.isCreating = false
+				this.$buefy.toast.open({
+					duration: 3000,
+					message: err.response.data.message,
+					type: 'is-danger'
+				})
+			})
+		},
 
-    getDiskType(item) {
-      if (item.children_number == 0)
-        return "format"
-      return item.need_format ? "format" : "mountable"
-    }
-  }
+		getDiskType(item) {
+			if (item.children_number == 0)
+				return "format"
+			return item.need_format ? "format" : "mountable"
+		}
+	}
 }
 </script>
 
 
 <style lang="scss" scoped>
 .create-container {
-  height: 2.25rem;
-  position: absolute;
-  right: 0;
-  display: flex;
-  align-items: center;
+	height: 2.25rem;
+	position: absolute;
+	right: 0;
+	display: flex;
+	align-items: center;
 }
 
 .storage-modal {
-  .modal-card-body {
-    overflow-y: hidden;
-    transition: height 0.3s;
-    padding: 2rem 2rem 2rem 2rem;
-    position: relative;
+	.modal-card-body {
+		overflow-y: hidden;
+		transition: height 0.3s;
+		padding: 2rem 2rem 2rem 2rem;
+		position: relative;
 
-    .tab-item {
-      max-height: calc(100vh - 15rem);
-      overflow-y: overlay;
-    }
-  }
+		.tab-item {
+			max-height: calc(100vh - 15rem);
+			overflow-y: overlay;
+		}
+	}
 
-  .modal-card-foot {
-    padding-top: 0;
-  }
+	.modal-card-foot {
+		padding-top: 0;
+	}
 
-  .close-container {
-    position: absolute;
-    right: 2rem;
-    top: 2rem;
-  }
+	.close-container {
+		position: absolute;
+		right: 2rem;
+		top: 2rem;
+	}
 
-  .tab-content {
-    padding: 0;
-  }
+	.tab-content {
+		padding: 0;
+	}
 
-  .status {
-    min-width: 7.75rem;
-  }
+	.status {
+		min-width: 7.75rem;
+	}
 }
 
 .popper {
-  background-color: #505459;
-  padding: 0.35rem 0.75rem;
-  box-shadow: 0px 1px 2px 1px rgba(0, 1, 0, 0.2);
-  border: none;
-  color: #ffffff;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  font-weight: 400;
+	background-color: #505459;
+	padding: 0.35rem 0.75rem;
+	box-shadow: 0px 1px 2px 1px rgba(0, 1, 0, 0.2);
+	border: none;
+	color: #ffffff;
+	border-radius: 6px;
+	font-size: 0.85rem;
+	font-weight: 400;
 }
 </style>
 
 <style lang="scss">
 .popper[x-placement^="bottom"].dark .popper__arrow {
-  border-color: transparent transparent #505459 transparent !important;
+	border-color: transparent transparent #505459 transparent !important;
 }
 </style>

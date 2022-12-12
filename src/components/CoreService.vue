@@ -132,10 +132,8 @@ export default {
 			return socket
 		},
 		initUIEventBus() {
-			console.log('initEventBus')
 		},
 		triggerUIEventBus(event) {
-			console.log('triggerEventBus', event)
 			let eventJson = JSON.parse(event)
 			this.$emit(eventJson.name, eventJson.propertyTypeList)
 		},
@@ -268,7 +266,8 @@ export default {
 				})
 			}
 			if (operateType === 'added') {
-				let percent = eventJson.properties['avail'] > 0 ? `${this.renderSize(eventJson.properties['size'] - eventJson.properties['avail'])} / ${this.renderSize(eventJson.properties['size'])}` : eventType.toUpperCase();
+				let availValue = eventJson.properties['avail'] > 0 ? this.renderSize(eventJson.properties['size'] - eventJson.properties['avail']) : 'NaN';
+				let percent = `${availValue} / ${this.renderSize(eventJson.properties['size'])}`;
 				// let percent = eventType.toUpperCase();
 				this.$set(this.noticesData[driveType]['content'], entityUUID, {
 					title: eventJson.properties['model'] || 'Found a new drive',
