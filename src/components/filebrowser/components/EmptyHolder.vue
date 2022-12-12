@@ -25,7 +25,7 @@
 				<span>{{ $t('Upload Files') }}</span>
 				<b-image :src="require('@/assets/img/filebrowser/upfile.svg')"></b-image>
 			</li>
-			<li id="eUpFolderBtn" class="e-btn" @click="freshPath">
+			<li id="eUpFolderBtn" class="e-btn">
 				<span>{{ $t('Upload Folder') }}</span>
 				<b-image :src="require('@/assets/img/filebrowser/upfolder.svg')"></b-image>
 			</li>

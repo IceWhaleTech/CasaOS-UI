@@ -20,7 +20,7 @@
 				<b-icon class="mr-1" custom-size="mdi-18px" icon="file-upload-outline"></b-icon>
 				{{ $t('Upload Files') }}
 			</b-dropdown-item>
-			<b-dropdown-item id="upfolder-btn" aria-role="menuitem" class="is-flex is-align-items-center" @click="freshPath">
+			<b-dropdown-item id="upfolder-btn" aria-role="menuitem" class="is-flex is-align-items-center">
 				<b-icon class="mr-1" custom-size="mdi-18px" icon="folder-upload-outline"></b-icon>
 				{{ $t('Upload Folder') }}
 			</b-dropdown-item>
@@ -58,7 +58,6 @@ export default {
 			});
 		},
 		freshPath() {
-			debugger
 			this.filePanel.uploaderInstance.opts.query.path = this.filePanel.currentPath
 		}
 	},

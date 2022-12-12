@@ -447,9 +447,9 @@ export default {
 					this.isLoading = false;
 
 					this.currentPathName = path.split("/").pop()
-					// this.uploaderInstance.opts.query = {
-					// 	path: this.currentPath,
-					// }
+					this.uploaderInstance.opts.query = {
+						path: this.currentPath,
+					}
 
 					const fileList = res.data.data
 					const newFileList = fileList.map(item => {
