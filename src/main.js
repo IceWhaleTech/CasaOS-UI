@@ -7,14 +7,6 @@
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
  */
 
-/*
- * @Author: JerryK
- * @Date: 2021-09-22 14:24:43
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-16 15:08:41
- * @Description:
- * @FilePath: \CasaOS-UI\src\main.js
- */
 import 'intersection-observer'
 import Vue from 'vue'
 import App from '@/App.vue'
@@ -36,7 +28,7 @@ import VAnimateCss from 'v-animate-css';
 const io = require("socket.io-client");
 
 api.sys.getSocketPort().then(res => {
-    const isDev = process.env.NODE_ENV === 'development';
+    const isDev = process.env.NODE_ENV === 'dev';
     const protocol = document.location.protocol
     const wsProtocol = protocol === 'https:' ? 'wss:' : 'ws:'
     const wsPort = res.data.data
