@@ -700,8 +700,8 @@ export default {
 				// },
 			},
 			// Featured Swiper
-			// disFeaturedPrev: true,
-			// disFeaturedNext: false,
+			disFeaturedPrev: false,
+			disFeaturedNext: false,
 			featureSwiperOptions: {
 				loop: false,
 				autoplay: true,

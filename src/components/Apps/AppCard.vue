@@ -1,4 +1,13 @@
 <!--
+  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+  * @LastEditTime: 2022/12/13 下午4:43
+  * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
+  * @Description:
+  *
+  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
+  -->
+
+<!--
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: zhanghengxin ezreal.ice@icloud.com
@@ -143,7 +152,7 @@ export default {
 				window.open(item.host, '_blank');
 			} else {
 				this.$refs.dro.isActive = false
-				if (item.state == 'running') {
+				if ((item.host != "" || item.port != "" || item.index != "") && item.state == 'running') {
 					const hostIp = item.host || this.$baseIp
 					const protocol = item.protocol || 'http'
 					const port = item.port ? `:${item.port}` : ''
@@ -176,103 +185,6 @@ export default {
 				}
 			}
 		},
-  name: "app-card",
-  inject: ["homeShowFiles", "openAppStore"],
-  data() {
-    return {
-      hover: false,
-      dropState: false,
-      isUninstalling: false,
-      isRestarting: false,
-      isStarting: false,
-      isStoping: false,
-      isSaving: false,
-    }
-  },
-  props: {
-    item: {
-      type: Object
-    },
-    isCasa: {
-      type: Boolean
-    }
-  },
-  computed: {
-    tooltipLable() {
-      if (!this.isCasa) {
-        return this.$t('Import to CasaOS')
-      } else {
-        if (this.item.type === "system" || this.item.port != "" && this.item.state == 'running') {
-          return this.$t('Open')
-        } else {
-          return this.$t('Setting')
-        }
-      }
-    },
-    tooltipTriger() {
-      if (!this.isCasa) {
-        return ['hover']
-      } else {
-        if (this.item.type === "system" || this.item.port != "" && this.item.state == 'running') {
-          return ['hover']
-        } else {
-          return []
-        }
-      }
-    }
-  },
-  methods: {
-    /**
-     * @description: Open app in new windows
-     * @param {String} state App state
-     * @param {String} port App access port
-     * @param {String} index App access index
-     * @return {*} void
-     */
-    openApp(item) {
-      if (!this.isCasa) {
-        this.$emit("importApp", item, false)
-        return false
-      }
-      if (item.type === "system") {
-        this.openSystemApps(item)
-      } else if (item.type === "LinkApp") {
-        window.open(item.host, '_blank');
-      } else {
-        this.$refs.dro.isActive = false
-        if ((item.host != "" || item.port != "" || item.index != "") && item.state == 'running') {
-          const hostIp = item.host || this.$baseIp
-          const protocol = item.protocol || 'http'
-          const port = item.port ? `:${item.port}` : ''
-          const url = `${protocol}://${hostIp}${port}${item.index}`
-          let href = window.location.href.split("#")[0]
-          if (url === href) {
-            this.$buefy.toast.open({
-              message: this.$t('The page to be opened is the same as current page'),
-              type: 'is-warning',
-              position: 'is-bottom-right',
-              duration: 3000,
-              queue: false,
-              container: null,
-              animation: 'fade',
-              onOpen: () => {
-              },
-              onClose: () => {
-              },
-              ariaRole: 'alert',
-              ariaLive: 'polite'
-            })
-            return
-          }
-          if (item.image.toLowerCase().indexOf("qbittorrent") == -1) {
-            window.open(url, '_blank');
-          } else {
-            var arg = '\u003cscript\u003elocation.replace("' + url + '")\u003c/script\u003e';
-            window.open('javascript:window.name;', arg);
-          }
-        }
-      }
-    },
 
 		openSystemApps(item) {
 			switch (item.name) {
@@ -331,8 +243,8 @@ export default {
 					divE: `</input></div>`
 				}),
 				/* message: this.$t(`Data cannot be recovered after deletion! <br/>Continue on to uninstall this application?{checkbox}Delete userdata ( config folder )</input>`, {
-					 checkbox: `<br/><input type="checkbox" id="deleteUserData" class="checkbox">`
-				 }),*/
+				 checkbox: `<br/><input type="checkbox" id="deleteUserData" class="checkbox">`
+			 }),*/
 				type: 'is-dark',
 				confirmText: this.$t('Uninstall'),
 				cancelText: this.$t('Cancel'),
@@ -416,7 +328,7 @@ export default {
 					this.$refs.dro.isActive = false
 					this.$buefy.dialog.alert({
 						title: 'Error',
-						message: res.data.data,
+						message: res.data.data || res.data.message,
 						type: 'is-danger',
 						ariaRole: 'alertdialog',
 						ariaModal: true
@@ -426,9 +338,9 @@ export default {
 				this.isStarting = false
 				this.$refs.dro.isActive = false
 				this.$buefy.toast.open({
-					message: err.response.data.data,
+					message: err.response.data.data || err.response.data.message,
 					type: 'is-danger',
-					position: 'is-bottom-right',
+					position: 'is-top',
 					duration: 3000
 				})
 			})

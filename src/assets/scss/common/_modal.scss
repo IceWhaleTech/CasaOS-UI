@@ -1,3 +1,12 @@
+/*!
+ *  @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ *  @LastEditTime: 2022/12/13 下午4:47
+ *  @FilePath: /CasaOS-UI/src/assets/scss/common/_modal.scss
+ *  @Description:
+ *
+ *  Copyright (c) 2022 by IceWhale, All Rights Reserved.
+ */
+
 /************************************
 *
 * Modal
@@ -5,205 +14,204 @@
 *************************************/
 
 
-
 .modal-card {
-    background: rgba(255, 255, 255, 1);
-    //backdrop-filter: $backDropBlur;
-    border-radius: $backDropBorderRadius;
+  background: rgba(255, 255, 255, 1);
+  //backdrop-filter: $backDropBlur;
+  border-radius: $backDropBorderRadius;
 
-    .close-container {
-        position: absolute;
-        right: 2rem;
-        top: 2rem;
+  .close-container {
+    position: absolute;
+    right: 2rem;
+    top: 2rem;
+  }
+
+  .modal-close-container {
+    padding-left: 1rem;
+    margin-left: 0.5rem;
+    position: relative;
+    height: 100%;
+  }
+
+  .modal-close-container-line {
+    &:before {
+      content: "";
+      position: absolute;
+      border-left: #363636 2px solid;
+      height: 1rem;
+      left: 0;
+    }
+  }
+
+  .modal-card-head,
+  .modal-card-body,
+  .modal-card-foot {
+    position: relative;
+    background-color: transparent;
+    border: none;
+  }
+
+  .modal-card-head {
+    padding: 2rem 2rem 1rem 2rem;
+  }
+
+  .modal-card-body {
+    padding: 0 2rem;
+
+    .loading-overlay .loading-icon:after {
+      -webkit-animation: spinAround 500ms infinite linear;
+      animation: spinAround 500ms infinite linear;
+      border: 4px solid #000;
+      border-radius: 9999px;
+      border-right-color: transparent;
+      border-top-color: transparent;
+      content: "";
+      display: block;
+      height: 1em;
+      position: relative;
+      width: 1em;
+      position: absolute;
+      top: calc(50% - 1.25rem);
+      left: calc(50% - 1.25rem);
+      width: 2.5rem;
+      height: 2.5rem;
+      border-width: 0.2rem;
     }
 
-    .modal-close-container {
-        padding-left: 1rem;
-        margin-left: 0.5rem;
-        position: relative;
-        height: 100%;
+    .button.is-static,
+    .input,
+    .textarea,
+    .select select,
+    .file-cta,
+    .file-name,
+    .pagination-previous,
+    .pagination-next,
+    .pagination-link,
+    .pagination-ellipsis {
+      font-size: 0.875rem;
+      height: 2.714em;
+      border: 1px solid #cfcfcf !important;
+      border-radius: 4px;
+
+      &:focus {
+        box-shadow: none;
+      }
     }
 
-    .modal-close-container-line {
-        &:before {
-            content: "";
-            position: absolute;
-            border-left: #363636 2px solid;
-            height: 1rem;
-            left: 0;
-        }
+    .media {
+      padding: 0rem;
     }
 
-    .modal-card-head,
-    .modal-card-body,
-    .modal-card-foot {
-        position: relative;
-        background-color: transparent;
-        border: none;
-    }
+    .media-content {
+      p {
+        word-wrap: break-word;
 
-    .modal-card-head {
-        padding: 2rem 2rem 1rem 2rem;
-    }
-
-    .modal-card-body {
-        padding: 0 2rem;
-
-        .loading-overlay .loading-icon:after {
-            -webkit-animation: spinAround 500ms infinite linear;
-            animation: spinAround 500ms infinite linear;
-            border: 4px solid #000;
-            border-radius: 9999px;
-            border-right-color: transparent;
-            border-top-color: transparent;
-            content: "";
-            display: block;
-            height: 1em;
-            position: relative;
-            width: 1em;
-            position: absolute;
-            top: calc(50% - 1.25rem);
-            left: calc(50% - 1.25rem);
-            width: 2.5rem;
-            height: 2.5rem;
-            border-width: 0.2 em;
+        div {
+          word-wrap: break-word;
         }
-
-        .button.is-static,
-        .input,
-        .textarea,
-        .select select,
-        .file-cta,
-        .file-name,
-        .pagination-previous,
-        .pagination-next,
-        .pagination-link,
-        .pagination-ellipsis {
-            font-size: 0.875rem;
-            height: 2.714em;
-            border: 1px solid #cfcfcf !important;
-            border-radius: 4px;
-
-            &:focus {
-                box-shadow: none;
-            }
-        }
-
-        .media {
-            padding: 0rem;
-        }
-
-        .media-content {
-            p {
-                word-wrap: break-word;
-
-                div {
-                    word-wrap: break-word;
-                }
-            }
-        }
-
-        .tab-content {
-            overflow: hidden;
-        }
-
-        .title {
-            overflow: hidden;
-        }
-
-        .field:last-child {
-            margin-bottom: 0.5rem;
-        }
-
-        .field-body {
-            .field:last-child {
-                margin-bottom: 0rem;
-            }
-        }
-
-        .port-item:not(:last-child) {
-            .field {
-                margin-bottom: 0;
-            }
-        }
-    }
-
-    .modal-card-foot {
-        padding: 1rem 2rem 2rem 2rem;
-
-        .button {
-            border-radius: 9999px;
-            padding-left: calc(1em + 0.25em);
-            padding-right: calc(1em + 0.25em);
-        }
-    }
-}
-
-.terminal-modal {
-    .modal-card-body {
-        padding: 2rem 2rem 2rem 2rem;
-    }
-
-    .close-container {
-        position: absolute;
-        right: 2rem;
-        top: 2rem;
+      }
     }
 
     .tab-content {
-        padding: 0;
+      overflow: hidden;
     }
 
-    // Tabs
-    .tabs {
-        width: 14rem !important;
+    .title {
+      overflow: hidden;
+    }
 
-        &.is-toggle {
-            ul {
-                background: rgba(60, 60, 67, 0.05);
-                box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.1);
-                border-radius: 6px;
+    .field:last-child {
+      margin-bottom: 0.5rem;
+    }
 
-                li {
-                    flex: none;
+    .field-body {
+      .field:last-child {
+        margin-bottom: 0rem;
+      }
+    }
 
-                    a {
-                        font-size: 0.875rem;
-                        padding: 0.2rem 1.5rem;
-                        min-width: 7rem;
-                        border-radius: 6px;
-                        border: none;
+    .port-item:not(:last-child) {
+      .field {
+        margin-bottom: 0;
+      }
+    }
+  }
 
-                        &:hover {
-                            background-color: transparent;
-                        }
-                    }
+  .modal-card-foot {
+    padding: 1rem 2rem 2rem 2rem;
 
-                    &.is-active {
-                        a {
-                            background: #ffffff;
-                            border: 0.5px solid rgba(0, 0, 0, 0.2);
-                            color: #000;
-                            z-index: 1;
-                            box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.2);
-                        }
-                    }
-                }
+    .button {
+      border-radius: 9999px;
+      padding-left: calc(1em + 0.25em);
+      padding-right: calc(1em + 0.25em);
+    }
+  }
+}
+
+.terminal-modal {
+  .modal-card-body {
+    padding: 2rem 2rem 2rem 2rem;
+  }
+
+  .close-container {
+    position: absolute;
+    right: 2rem;
+    top: 2rem;
+  }
+
+  .tab-content {
+    padding: 0;
+  }
+
+  // Tabs
+  .tabs {
+    width: 14rem !important;
+
+    &.is-toggle {
+      ul {
+        background: rgba(60, 60, 67, 0.05);
+        box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 6px;
+
+        li {
+          flex: none;
+
+          a {
+            font-size: 0.875rem;
+            padding: 0.2rem 1.5rem;
+            min-width: 7rem;
+            border-radius: 6px;
+            border: none;
+
+            &:hover {
+              background-color: transparent;
             }
+          }
+
+          &.is-active {
+            a {
+              background: #ffffff;
+              border: 0.5px solid rgba(0, 0, 0, 0.2);
+              color: #000;
+              z-index: 1;
+              box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.2);
+            }
+          }
         }
+      }
     }
+  }
 }
 
 .modal-background {
-    background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.8);
 }
 
 @media screen and (min-width: 769px) {
-    .terminal-modal {
-        .modal-card {
-            width: 50rem;
-        }
+  .terminal-modal {
+    .modal-card {
+      width: 50rem;
     }
+  }
 }
 
 /************************************
@@ -212,8 +220,8 @@
 *
 *************************************/
 
-.dialog{
-    .media{
-        align-items: center;
-    }
+.dialog {
+  .media {
+    align-items: center;
+  }
 }
