@@ -43,7 +43,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tbody>
     <tr>
-      <td align="center"><a href="https://github.com/Cp0204"><img src="https://avatars.githubusercontent.com/u/5239753?v=4?s=100" width="100px;" alt="Cp0204"/><br /><sub><b>Cp0204</b></sub></a><br /><a href="https://github.com/IceWhaleTech/CasaOS-UI/commits?author=Cp0204" title="Code">💻</a></td>
+      <td align="center"><a href="https://cadow.net/"><img src="https://avatars.githubusercontent.com/u/1626149?v=4?s=100" width="100px;" alt="Eric Cadow"/><br /><sub><b>Eric Cadow</b></sub></a><br /><a href="https://github.com/IceWhaleTech/CasaOS-UI/commits?author=luckycadow" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
