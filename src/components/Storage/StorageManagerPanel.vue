@@ -6,15 +6,6 @@
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
   -->
-
-<!--
- * @Author: JerryK
- * @Date: 2022-01-17 15:16:11
- * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-09-29 20:39:02
- * @Description:
- * @FilePath: /CasaOS-UI/src/components/Storage/StorageManagerPanel.vue
--->
 <template>
 	<div class="modal-card">
 

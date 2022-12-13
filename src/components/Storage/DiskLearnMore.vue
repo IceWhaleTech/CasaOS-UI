@@ -7,13 +7,13 @@
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
   -->
 <template>
-	<div>
+	<div class="modal-card">
 		<header class="is-flex is-align-items-center pt-4 pb-3 pl-4 pr-4 _b-line">
 			<div class="is-flex-grow-1 ml-2 mt-1">
 				<h3 class="_header-title">{{ $t('Build data station') }}</h3>
 			</div>
 			<!--			<img alt="" src="@/assets/img/learn/learnmore.svg" @click="close">-->
-			<b-icon custom-class="mr-1" icon="close" size="is-medium" @click="close"></b-icon>
+			<b-icon custom-class="mr-1" icon="close" size="is-medium" @click.native="close"></b-icon>
 		</header>
 		<section>
 			<div class="pl-4 pr-4 pt-4 pb-4 _b-line _font">
@@ -46,7 +46,7 @@
 		<footer class="mb-5 mr-5 ml-5 mt-3">
 			<div class="is-flex is-flex-direction-row-reverse">
 				<b-button class="is-flex-shrink-0" rounded size="is-small" type="is-primary" @click="steps+=1">
-					{{ $t('Next') }}
+					{{ $t(nextTitle) }}
 				</b-button>
 			</div>
 		</footer>
@@ -59,10 +59,14 @@ export default {
 	data() {
 		return {
 			steps: 1,
+			nextTitle: "Next"
 		};
 	},
 	watch: {
 		steps(val) {
+			if (val === 3) {
+				this.nextTitle = "Cancel";
+			}
 			if (val > 3) {
 				this.close();
 			}
