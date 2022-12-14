@@ -31,17 +31,17 @@ api.sys.getSocketPort().then(res => {
     const isDev = process.env.NODE_ENV === 'dev';
     const protocol = document.location.protocol
     const wsProtocol = protocol === 'https:' ? 'wss:' : 'ws:'
-    const wsPort = res.data.data
     const devIp = process.env.VUE_APP_DEV_IP
     const devPort = process.env.VUE_APP_DEV_PORT
     const localhost = document.location.host
     const localhostName = document.location.hostname
     const baseIp = isDev ? `${devIp}` : `${localhostName}`
     const baseURL = isDev ? `${devIp}:${devPort}` : `${localhost}`
-    const wsURL = `${wsProtocol}//${baseIp}:${wsPort}`
+    const wsURL = `${wsProtocol}//${baseURL}`
 
     const socket = io(wsURL, {
-        transports: ['websocket', 'polling']
+        transports: ['websocket', 'polling'],
+        path: '/v1/socketio/',
     });
 
     Vue.use(Buefy)

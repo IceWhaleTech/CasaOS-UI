@@ -938,7 +938,7 @@ export default {
 	},
 	sockets: {
 		file_operate(data) {
-			const taskList = data.body.file_operate.data
+			const taskList = data.file_operate.data
 			taskList.forEach(task => {
 				if (task.finished && task.to === this.currentPath) {
 					this.reload()

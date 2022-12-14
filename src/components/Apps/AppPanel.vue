@@ -1492,7 +1492,7 @@ export default {
 
 	sockets: {
 		app_install(res) {
-			const resData = res.body.data
+			const resData = res.data
 			if (this.currentInstallAppName != resData.name) {
 				return false
 			}
