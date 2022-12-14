@@ -678,8 +678,8 @@ export default {
 			currentInstallId: 0,
 
 			//Image List Swiper
-			// disPrev: true,
-			// disNext: false,
+			disPrev: false,
+			disNext: false,
 			swiperOptions: {
 				loop: false,
 				autoplay: true,
