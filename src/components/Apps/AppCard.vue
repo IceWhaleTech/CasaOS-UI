@@ -162,7 +162,7 @@ export default {
 						this.$buefy.toast.open({
 							message: this.$t('The page to be opened is the same as current page'),
 							type: 'is-warning',
-							position: 'is-bottom-right',
+							position: 'is-top',
 							duration: 3000,
 							queue: false,
 							container: null,
@@ -224,8 +224,8 @@ export default {
 				this.$buefy.toast.open({
 					message: err.response.data.data,
 					type: 'is-danger',
-					position: 'is-bottom-right',
-					duration: 3000
+					position: 'is-top',
+					duration: 5000
 				})
 			})
 		},
@@ -283,8 +283,8 @@ export default {
 					this.$buefy.toast.open({
 						message: err.response.data.data,
 						type: 'is-danger',
-						position: 'is-bottom-right',
-						duration: 3000
+						position: 'is-top',
+						duration: 5000
 					})
 				})
 			}
@@ -316,6 +316,7 @@ export default {
 		 * @return {*} void
 		 */
 		toggle(item) {
+			Ï
 			this.isStarting = true;
 			const state = item.state == "running" ? "stop" : "start"
 
