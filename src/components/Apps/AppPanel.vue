@@ -9,8 +9,6 @@
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
 
 -->
-
-
 <template>
 	<div
 			:class="{'narrow': currentSlide > 0 ,'card-width': isFirstInstall}"
@@ -23,7 +21,8 @@
 							$t('Apps Installation Location')
 						}}</h3>
 				</div>
-				<button class="delete" type="button" @click="$emit('close')"/>
+				<!--				<button class="delete" type="button" @click="$emit('close')"/>-->
+				<b-icon class="_polymorphic" icon="close" pack="casa" @click.native="$emit('close')"/>
 			</header>
 			<p class="modal-card-body">
 				{{ $t('Please choose a location with enough storage space and stable connection.') }}
@@ -166,8 +165,9 @@
 						<button class="icon-button mdi mdi-export-variant" type="button" @click="exportJSON"/>
 					</b-tooltip>
 					<div v-if="currentSlide < 2"
-					     class="is-flex is-align-items-center modal-close-container modal-close-container-line">
-						<button class="delete" type="button" @click="$emit('close')"/>
+					     class="is-flex is-align-items-center modal-close-container modal-close-container-line ">
+						<!--						<button class="delete" type="button" @click="$emit('close')"/>-->
+						<b-icon class="_polymorphic" icon="close" pack="casa" @click.native="$emit('close')"/>
 					</div>
 
 				</div>
@@ -1772,4 +1772,18 @@ export default {
 	max-width: 35rem;
 	min-width: 30rem;
 }
+
+._polymorphic {
+	height: 2rem;
+	width: 2rem;
+	border-radius: 0.375rem;
+}
+
+._polymorphic:hover {
+	background: hsla(208, 16%, 96%, 1);
+}
+
+//._polymorphic:active {
+//	background: blue;
+//}
 </style>
