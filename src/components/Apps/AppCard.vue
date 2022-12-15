@@ -316,7 +316,6 @@ export default {
 		 * @return {*} void
 		 */
 		toggle(item) {
-			Ï
 			this.isStarting = true;
 			const state = item.state == "running" ? "stop" : "start"
 
