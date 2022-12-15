@@ -746,7 +746,7 @@ export default {
 					break;
 			}
 			let timer;
-			let path = key === 'Shutdown' ? 'off' : 'Restart'
+			let path = key === 'Shutdown' ? 'off' : 'restart'
 			this.$api.sys.power(path).then(res => {
 				if (res.data.success === 200) {
 					this.showPowerMessage = res.data.data
