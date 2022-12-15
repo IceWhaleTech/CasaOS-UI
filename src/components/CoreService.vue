@@ -36,6 +36,7 @@ import {mixin} from '@/mixins/mixin';
 import _ from 'lodash';
 import SyncBlock from "@/components/syncthing/SyncBlock.vue";
 import SmartBlock from "@/components/smartHome/SmartBlock.vue";
+import last from "lodash/last";
 
 export default {
 	components: {SmartBlock, SyncBlock, noticeBlock, Swiper, SwiperSlide},
@@ -106,7 +107,9 @@ export default {
 		}
 	},
 	created() {
-		this.getMessage();
+		this.getMessageFromLetter();
+		// this.$eventBus.$on('addNotice', (data) => {
+		// })
 	},
 	mounted() {
 		this.WSHub = this.initMessageBus();
@@ -146,7 +149,7 @@ export default {
 			})
 			return WSHub
 		},
-		getMessage() {
+		getMessageFromLetter() {
 			this.$api.users.getLetter().then(res => {
 				let sortedData = _.sortBy(res.data, ['timestamp']);
 				sortedData.forEach(item => {
@@ -336,6 +339,64 @@ export default {
 				}
 			}
 		},
+		addNotice(Json, rootName) {
+			this.$set(this.noticesData, rootName, {
+				prelude: {
+					title: Json.title,
+					icon: Json.icon,
+				},
+				content: Json.content,
+				contentType: Json.contentType,
+				operate: Json.operate,
+			})
+		},
+		removeNotice(rootName) {
+			this.$delete(this.noticesData, rootName)
+		},
+	},
+	sockets: {
+		'app_install': function (res) {
+			const resData = res
+			if (this.noticesData[resData.name]) {
+				// update progress
+				if (resData.finished) {
+					this.removeNotice(resData.name)
+				} else {
+					const messageArray = resData.message.split(/[(\r\n)\r\n]+/);
+					messageArray.forEach((item, index) => {
+						if (!item) {
+							messageArray.splice(index, 1);
+						}
+					})
+					const lastMessage = last(messageArray)
+					const info = JSON.parse(lastMessage)
+					const id = (info.id != undefined) ? info.id : "";
+					let progress = ""
+					if (info.progressDetail != undefined) {
+						let progressDetail = info.progressDetail
+						if (!isNaN(progressDetail.current / progressDetail.total)) {
+							progress = `[ ${String(Math.floor((progressDetail.current / progressDetail.total) * 100))}% ]`
+						}
+					}
+					let status = info.status
+					let currentInstallAppText = status + ":" + id + " " + progress
+					this.$set(this.noticesData[resData.name], 'content', currentInstallAppText)
+				}
+				return
+			}
+			// add new app install notice
+			const data = {
+				title: 'Installing app',
+				icon: res.icon,
+				content: "",
+				// show progress
+				contentType: 'progress',
+				// show Cancel button
+				operate: false,
+			}
+			this.addNotice(data, resData.name)
+			this.$emit('updateState')
+		}
 	},
 	beforeDestroy() {
 		for (let key in this.WSHub) {

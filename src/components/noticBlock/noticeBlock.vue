@@ -29,7 +29,9 @@
 			<!-- end of section head-->
 
 			<!-- start of section body-->
+			<!--			list-->
 			<div
+					v-if="noticeData.contentType === 'list'"
 					class="info is-flex is-flex-direction-column is-justify-content-space-around is-flex-grow-1">
 				<div class="_widget-body is-flex mr-0">
 					<div class="image is-24x24 is-flex-shrink-0">
@@ -59,6 +61,16 @@
 					</p>
 				</div>
 			</div>
+			<div v-else-if="noticeData.contentType === 'progress'"
+			     class="info is-flex is-flex-direction-column is-justify-content-space-around is-flex-grow-1">
+				<div>
+					{{ noticeData.content }}
+				</div>
+				<b-progress
+						show-value
+						type="is-info"
+				></b-progress>
+			</div>
 			<!-- end of section body-->
 
 			<!-- start of section footer-->
@@ -77,7 +89,8 @@
 				          type="is-primary" @click="$EventBus.$emit(noticeData.operate.event, noticeData.operate.path)">
 					{{ $t(noticeData.operate.title) }}
 				</b-button>
-				<div v-if="Object.keys(noticeData.content).length > 1" class="is-flex-grow-1 footer-hint">
+				<div v-if="Object.keys(noticeData.content).length > 1 && noticeData.contentType === 'list'"
+				     class="is-flex-grow-1 footer-hint">
 					{{ $t('{num} items', {num: Object.keys(noticeData.content).length}) }}
 				</div>
 			</div>

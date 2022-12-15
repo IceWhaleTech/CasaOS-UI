@@ -145,9 +145,9 @@
 			<!-- Sidebar End -->
 
 			<!-- Modal-Card Header Start -->
-			<header class="modal-card-head">
+			<header class="modal-card-head _b-line">
 				<div class="is-flex-grow-1">
-					<h3 class="title is-3">{{ panelTitle }}</h3>
+					<h3 class="_title is-5">{{ panelTitle }}</h3>
 				</div>
 				<div class="is-flex is-align-items-center">
 					<b-button v-if="currentSlide == 0" :label="$t('Custom Install')" class="mr-2" icon-left="view-grid-plus"
@@ -167,6 +167,9 @@
 					<div v-if="currentSlide < 2"
 					     class="is-flex is-align-items-center modal-close-container modal-close-container-line ">
 						<!--						<button class="delete" type="button" @click="$emit('close')"/>-->
+						<b-icon class="_polymorphic" icon="close" pack="casa" @click.native="$emit('close')"/>
+					</div>
+					<div v-else-if="currentSlide === 2" class="is-flex is-align-items-center">
 						<b-icon class="_polymorphic" icon="close" pack="casa" @click.native="$emit('close')"/>
 					</div>
 
@@ -481,11 +484,11 @@
 				<!-- App Install Form End -->
 
 				<!-- App Install Process Start -->
-				<section v-if="currentSlide == 2">
-					<div class="installing-warpper">
+				<section v-if="currentSlide == 2" class="_b-line">
+					<div class="installing-warpper mb-5">
 						<div class="is-flex is-align-items-center is-justify-content-center">
-							<lottie-animation :animationData="require('@/assets/ani/rocket-launching.json')" :autoPlay="true"
-							                  :loop="true" class="install-animation"></lottie-animation>
+							<lottie-animation :animationData="require('@/assets/ani/loading.json')" :autoPlay="true" :loop="true"
+							                  class="install-animation"></lottie-animation>
 						</div>
 						<h3 :class="currentInstallAppTextClass" class="title is-6 has-text-centered"
 						    v-html="currentInstallAppText"></h3>
@@ -1514,7 +1517,8 @@ export default {
 						if (info.progressDetail != undefined) {
 							let progressDetail = info.progressDetail
 							if (!isNaN(progressDetail.current / progressDetail.total)) {
-								progress = `[ ${String(Math.floor((progressDetail.current / progressDetail.total) * 100))}% ]`
+								progress = `<div style="font-weight: 600;color:hsla(208, 100%, 45%, 1)
+">[ ${String(Math.floor((progressDetail.current / progressDetail.total) * 100))}% ]</div>`
 							}
 						}
 						let status = info.status
@@ -1536,7 +1540,7 @@ export default {
 </script>
 
 
-<style lang="scss">
+<style lang="scss" scoped>
 .app-item {
 	border-radius: 0.5rem;
 	transition: background 0.3s ease;
@@ -1786,4 +1790,24 @@ export default {
 //._polymorphic:active {
 //	background: blue;
 //}
+._title {
+	/* Text 500Medium/Text02 */
+
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 1rem;
+	line-height: 1.5rem;
+	/* identical to box height, or 150% */
+
+	font-feature-settings: 'pnum' on, 'lnum' on;
+
+	/* Gary/800 */
+
+	color: #29343D;
+}
+
+._b-line {
+	border-bottom: 1px solid hsla(208, 16%, 94%, 1) !important;
+}
 </style>
