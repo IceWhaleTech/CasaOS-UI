@@ -17,7 +17,8 @@
 			<!-- start of section head-->
 			<div class="widget-header is-flex is-flex-shrink-0">
 				<div class="image is-24x24 is-flex-shrink-0">
-					<img :src="require('@/assets/img/logo/casa-white.svg')"/>
+					<img v-if="noticeData.prelude.icon" :src="noticeData.prelude.icon" alt=""/>
+					<img v-else :src="require('@/assets/img/logo/casa-white.svg')"/>
 				</div>
 				<div class="header-title pl-2 is-flex-grow-1">
 					{{ $t(noticeData.prelude.title) }}
@@ -62,14 +63,11 @@
 				</div>
 			</div>
 			<div v-else-if="noticeData.contentType === 'progress'"
-			     class="info is-flex is-flex-direction-column is-justify-content-space-around is-flex-grow-1">
-				<div>
+			     class="info is-flex is-flex-direction-column is-justify-content-center is-flex-grow-1">
+				<div class="has-text-white _is-normal mb-1">
 					{{ noticeData.content }}
 				</div>
-				<b-progress
-						show-value
-						type="is-info"
-				></b-progress>
+				<b-progress size="c-is-small"></b-progress>
 			</div>
 			<!-- end of section body-->
 
@@ -113,7 +111,7 @@ export default {
 				return {
 					prelude: {
 						title: 'Found a New USB Drive',
-						icon: 'mdi-usb',
+						icon: '',
 					},
 					content: {
 						123: {
@@ -188,6 +186,10 @@ export default {
 
 	methods: {
 		close() {
+			if (this.noticeData.contentType === 'progress') {
+				this.$emit('deleteNotice', this.noticeData, this.noticeType);
+				return
+			}
 			let promises = [];
 			for (const contentKey in this.noticeData.content) {
 				promises.push(this.$api.users.delLetter(this.noticeData.content[contentKey].messageUUID));
@@ -270,5 +272,11 @@ export default {
 
 ._close-polymorphic:hover {
 	cursor: pointer;
+}
+
+::v-deep .progress.c-is-small {
+	height: 0.5rem !important;
+	background-image: linear-gradient(to right, hsla(215, 100%, 60%, 1) 30%, hsla(0, 0%, 100%, 0.4) 30%);
+	border-radius: 0.5rem;
 }
 </style>

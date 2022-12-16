@@ -1495,16 +1495,15 @@ export default {
 
 	sockets: {
 		app_install(res) {
-			const resData = res.data
-			if (this.currentInstallAppName != resData.name) {
+			if (this.currentInstallAppName != res.name) {
 				return false
 			}
-			if (!resData.finished) {
-				this.currentInstallAppError = !resData.success;
-				if (resData.success) {
-					this.currentInstallAppType = resData.type;
-					if (resData.message !== "") {
-						const messageArray = resData.message.split(/[(\r\n)\r\n]+/);
+			if (!res.finished) {
+				this.currentInstallAppError = !res.success;
+				if (res.success) {
+					this.currentInstallAppType = res.type;
+					if (res.message !== "") {
+						const messageArray = res.message.split(/[(\r\n)\r\n]+/);
 						messageArray.forEach((item, index) => {
 							if (!item) {
 								messageArray.splice(index, 1);
@@ -1525,10 +1524,15 @@ export default {
 						this.currentInstallAppText = status + ":" + id + " " + progress
 					}
 				} else {
-					this.currentInstallAppText = resData.message
+					this.currentInstallAppText = res.message
 				}
 			} else {
 				localStorage.removeItem("app_data")
+
+				// business :: Tagging of new app / scrollIntoView
+				let business_new_app = localStorage.getItem("business_new_app") || []
+				localStorage.setItem('business_new_app', business_new_app.push[res.id])
+
 				setTimeout(() => {
 					this.$emit('updateState')
 					this.$emit('close')
@@ -1540,7 +1544,7 @@ export default {
 </script>
 
 
-<style lang="scss" scoped>
+<style lang="scss">
 .app-item {
 	border-radius: 0.5rem;
 	transition: background 0.3s ease;
@@ -1776,7 +1780,8 @@ export default {
 	max-width: 35rem;
 	min-width: 30rem;
 }
-
+</style>
+<style lang="scss" scoped>
 ._polymorphic {
 	height: 2rem;
 	width: 2rem;

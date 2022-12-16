@@ -37,6 +37,8 @@ import _ from 'lodash';
 import SyncBlock from "@/components/syncthing/SyncBlock.vue";
 import SmartBlock from "@/components/smartHome/SmartBlock.vue";
 import last from "lodash/last";
+import axios from "axios";
+import events from "@/events/events";
 
 export default {
 	components: {SmartBlock, SyncBlock, noticeBlock, Swiper, SwiperSlide},
@@ -113,6 +115,11 @@ export default {
 	},
 	mounted() {
 		this.WSHub = this.initMessageBus();
+		axios.get('/mate_data/noticeBlock/noticeData/app_install_progress').then(res => {
+			this.transformAppInstallationProgress(res.data.data)
+		}).catch(err => {
+			console.log(err)
+		})
 	},
 	methods: {
 		createWS(domain) {
@@ -209,7 +216,7 @@ export default {
 				this.$set(this.noticesData, eventType, {
 					prelude: {
 						title: 'Found a new drive',
-						icon: 'mdi-usb',
+						icon: '',
 					},
 					content: {},
 					contentType: 'list',
@@ -255,7 +262,7 @@ export default {
 				this.$set(this.noticesData, driveType, {
 					prelude: {
 						title: 'Found a new drive',
-						icon: 'mdi-usb',
+						icon: '',
 					},
 					content: {},
 					contentType: 'list',
@@ -301,7 +308,7 @@ export default {
 				this.$set(this.noticesData, eventType, {
 					prelude: {
 						title: 'Found a new drive',
-						icon: 'mdi-usb',
+						icon: '',
 					},
 					content: {},
 					contentType: 'list',
@@ -353,16 +360,17 @@ export default {
 		removeNotice(rootName) {
 			this.$delete(this.noticesData, rootName)
 		},
-	},
-	sockets: {
-		'app_install': function (res) {
-			const resData = res
-			if (this.noticesData[resData.name]) {
+		transformAppInstallationProgress(res) {
+			if (this.noticesData[res.name]) {
 				// update progress
-				if (resData.finished) {
-					this.removeNotice(resData.name)
-				} else {
-					const messageArray = resData.message.split(/[(\r\n)\r\n]+/);
+				if (res.finished) {
+					this.removeNotice(res.name)
+					// business :: Tagging of new app
+					let business_new_app = localStorage.getItem('business_new_app') || [];
+					localStorage.setItem('business_new_app', business_new_app.push[res.id])
+
+				} else if (res.message !== "") {
+					const messageArray = res.message.split(/[(\r\n)\r\n]+/);
 					messageArray.forEach((item, index) => {
 						if (!item) {
 							messageArray.splice(index, 1);
@@ -380,7 +388,7 @@ export default {
 					}
 					let status = info.status
 					let currentInstallAppText = status + ":" + id + " " + progress
-					this.$set(this.noticesData[resData.name], 'content', currentInstallAppText)
+					this.$set(this.noticesData[res.name], 'content', currentInstallAppText)
 				}
 				return
 			}
@@ -388,15 +396,21 @@ export default {
 			const data = {
 				title: 'Installing app',
 				icon: res.icon,
-				content: "",
+				content: res.message || "",
 				// show progress
 				contentType: 'progress',
 				// show Cancel button
 				operate: false,
 			}
-			this.addNotice(data, resData.name)
-			this.$emit('updateState')
+			this.addNotice(data, res.name)
+			// this.$emit('updateState')
+			this.$EventBus.$emit(events.RELOAD_APP_LIST)
 		}
+	},
+	sockets: {
+		'app_install': function (res) {
+			this.transformAppInstallationProgress(res)
+		},
 	},
 	beforeDestroy() {
 		for (let key in this.WSHub) {

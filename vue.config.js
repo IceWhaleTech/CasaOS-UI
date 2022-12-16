@@ -132,7 +132,7 @@ module.exports = {
         //         // }
         //     },
         // },
-        before: require('./mock/v2_mock.js')
+        before: require('./mock/meta_data.js')
 
     }
 }

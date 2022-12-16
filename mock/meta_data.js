@@ -3,7 +3,7 @@
  * @Date: 2022-09-22 19:00:01
  * @LastEditors: zhanghengxin ezreal.ice@icloud.com
  * @LastEditTime: 2022-09-22 21:20:11
- * @FilePath: /CasaOS-UI/mock/v2_mock.js
+ * @FilePath: /CasaOS-UI/mock/meta_data.js
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -14,7 +14,6 @@
 module.exports = function mock(app) {
     app.get('/v2/local_storage/mount1', (req, res) => {
         //
-        console.log(req);
         res.json({
             "data": [
                 {
@@ -41,6 +40,25 @@ module.exports = function mock(app) {
                 "mount_point": "/DATA/merged",
                 "options": "rw,relatime",
                 "source": "/mnt/sdb:/mnt/sdc"
+            }
+        })
+    });
+
+    // You Should Know :: noticeBlock.vue :: noticeData :: contentType[progress] :: App installing
+    // Modified from socket.io[app_install]
+    app.get('/mate_data/noticeBlock/noticeData/app_install_progress', (req, res) => {
+        debugger
+        res.json({
+            "data": {
+                "name": "Transmission",
+                "state": "INSTALLED",
+                "type": "INSTALL",
+                "icon": "https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/Transmission/icon.png",
+                "message": "App installing",
+                // business :: coreService.vue :: whether to show notifications
+                "finished": false,
+                // business :: coreService.vue :: whether to update notifications
+                "success": true
             }
         })
     });

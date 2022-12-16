@@ -37,7 +37,8 @@
 			<template v-if="!isLoading">
 
 				<!-- App Icon Card Start -->
-				<div v-for="(item) in appList" :key="'app-' + item.id" class="column is-narrow is-3 handle">
+				<div v-for="(item) in appList" :id="'app-' + item.id" :key="'app-' + item.id"
+				     class="column is-narrow is-3 handle">
 					<app-card :isCasa="true" :item="item" @configApp="showConfigPanel" @updateState="getList"></app-card>
 				</div>
 				<!-- App Icon Card End -->
@@ -79,9 +80,11 @@ import draggable from 'vuedraggable'
 import xor from 'lodash/xor'
 import concat from 'lodash/concat'
 import events from '@/events/events';
+import {last} from 'lodash';
 
 const SYNCTHING_STORE_ID = 74
 
+// meta_data :: build-in app
 const builtInApplications = [
 	{
 		id: "1",
@@ -155,6 +158,9 @@ export default {
 			this.getList();
 		});
 	},
+	// mounted() {
+	//
+	// },
 	beforeDestroy() {
 		this.$EventBus.$off(events.OPEN_APP_STORE_AND_GOTO_SYNCTHING);
 	},
@@ -193,6 +199,9 @@ export default {
 					});
 				}
 				this.appList = casaAppList;
+				this.$nextTick(() => {
+					this.scrollToNewApp();
+				})
 				if (xor(sortList, newList).length > 0) {
 					this.saveSortData()
 				}
@@ -345,12 +354,18 @@ export default {
 					linkIcon: item.icon
 				}
 			})
+		},
+
+		scrollToNewApp() {
+			// business :: scroll to last position
+			let business_new_app = localStorage.getItem("business_new_app") || [];
+			const el = business_new_app[business_new_app.length - 1];
+			el && document.getElementById(last(business_new_app)).scrollIntoView();
 		}
 	},
 	sockets: {
 		app_install(res) {
-			const data = res.data
-			if (data.finished) {
+			if (res.finished) {
 				this.getList();
 			}
 		},
