@@ -53,6 +53,7 @@
 						<b-button v-show="hasMergeState" :type="state_mainstorage_operability" class="width" rounded size="is-small"
 						          @click="showStorageSettingsModal">{{ $t('Merge Storages') }}
 						</b-button>
+						<cToolTip isBlock></cToolTip>
 					</div>
 
 				</div>
@@ -166,8 +167,9 @@ import {mixin} from '../../mixins/mixin';
 import DriveItem from './DriveItem.vue'
 import StorageItem from './StorageItem.vue'
 import Popper from 'vue-popperjs';
-import storageSettings from '@/components/Storage/StorageSettings.vue';
+import MergeStorages from '@/components/Storage/MergeStorages.vue';
 import StorageCombination from "./StorageCombination.vue";
+import cToolTip from '@/components/basicComponents/tooltip/tooltip.vue';
 
 export default {
 	name: "storage-manager-panel",
@@ -179,6 +181,7 @@ export default {
 		StorageItem,
 		Popper,
 		StorageCombination,
+		cToolTip: cToolTip,
 	},
 	mixins: [smoothReflow, mixin],
 	data() {
@@ -419,7 +422,7 @@ export default {
 			// TODO storage settings
 			this.$buefy.modal.open({
 				parent: this,
-				component: storageSettings,
+				component: MergeStorages,
 				hasModalCard: true,
 				trapFocus: true,
 				ariaModal: true,

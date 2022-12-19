@@ -3,70 +3,112 @@
  * @Date:  2022-09-13 17:01:37
  * @LastEditors: zhanghengxin ezreal.ice@icloud.com
  * @LastEditTime: 2022-09-29 20:35:39
- * @FilePath: /CasaOS-UI/src/components/Storage/StorageSettings.vue
+ * @FilePath: /CasaOS-UI/src/components/Storage/MergeStorages.vue
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
 -->
 <template>
-	<div class="modal-card">
+	<div :class="{'_max-width-320': currentStep===1}" class="modal-card">
 		<!--    head-->
-		<header :class="{'pri-head':currentStep<=1}" class="modal-card-head ">
+		<header :class="{'pri-head':currentStep<=2}" class="modal-card-head ">
+			<b-icon v-if="currentStep === 1" class="mr-2" custom-class="_has-text-red-default" icon="danger" pack="casa"
+			        size="is-20"></b-icon>
 			<div class="is-flex-grow-1">
-				<h3 class=" title is-3">{{ $t(title) }}</h3>
+				<h3 class=" title is-3">{{ $t(title) }}
+					<cToolTip v-if="currentStep === 0" modal="is-success"></cToolTip>
+				</h3>
 			</div>
-			<button class="delete" type="button" @click="$emit('close')"/>
+			<button class="delete" type="button" @click="cancel"/>
 		</header>
 		<!--remind-->
-		<div v-if="currentStep === 0" class="pri-mrl-2rem mt-5 mb-4 font">
-			{{ $t('All the checked Storage will be merged into CasaOS HD.') }}
-		</div>
 
 		<section v-if="currentStep === 0"
-		         class="notification is-overlay mb-4 pri-mrl-2rem pr-0 pl-0 radius">
-			<div v-for="(item, index) in storageData" :key="item.path+index" class="is-flex pri-mtr-3px ml-4 mr-4">
-				<div class="ml-4 mr-4 is-flex is-align-items-center">
-					<b-image :src="require('@/assets/img/storage/storage.png')" class="is-32x32"></b-image>
+		         class="notification is-overlay mr-5 ml-5 mb-0 pr-0 pl-0 pt-5 pb-3 non-backgroud">
+			<div v-if="currentStep === 0" class="_is-normal _has-text-gray-600 mb-4">
+				{{ $t('All the checked Storage will be merged into CasaOS HD.') }}
+			</div>
+
+			<div v-for="(item, index) in storageData" :key="item.path+index"
+			     class="is-flex mb-1 radius _height-40">
+				<div class="ml-2 mr-1 is-flex is-align-items-center _has-text-gray-600">
+					<b-icon icon="storage-other" pack="casa" size="is-20"></b-icon>
 				</div>
 				<div class="is-flex is-flex-grow-1 is-flex-direction-column is-justify-content-center ">
-					<span class="is-uppercase one-line is-size-14px">{{ item.name || $t('undefined') }}</span>
+					<span class="is-uppercase one-line _is-text-emphasis-03 _has-text-gray-800">{{
+							item.name || $t('undefined')
+						}}</span>
 				</div>
-				<div class="is-flex is-flex-shrink-0 is-flex-direction-column is-justify-content-center mr-4">
-          <span class="is-uppercase is-size-7 pri-text-color">{{
+				<div class="is-flex is-flex-shrink-0 is-flex-direction-column is-justify-content-center mr-2">
+          <span class="is-uppercase _is-text-full-03 _has-text-gray-600">{{
 		          renderSize(item.size - item.availSize)
 	          }}/{{
 		          renderSize(item.size)
 	          }}</span>
 				</div>
 				<b-checkbox v-model="checkBoxGroup" :disabled="item.persistedIn !== 'casaos'" :native-value="item.uuid"
-				            class="mr-4"></b-checkbox>
+				            class="mr-2"></b-checkbox>
 			</div>
-			<div v-for="(item, index) in storageMissData" :key="item.path+index" class="is-flex pri-mtr-3px ml-4 mr-4">
-				<div class="ml-4 mr-4 is-flex is-align-items-center">
-					<b-image :src="require('@/assets/img/storage/storage.png')" class="is-32x32"></b-image>
+
+			<div v-for="(item, index) in storageMissData" :key="item.path+index"
+			     class="is-flex mb-1 radius _height-40">
+				<div class="ml-2 mr-1 is-flex is-align-items-center _has-text-gray-600">
+					<b-icon icon="storage-other" pack="casa" size="is-20"></b-icon>
 				</div>
 				<div class="is-flex is-flex-grow-1 is-flex-direction-column is-justify-content-center ">
-					<span class="is-uppercase one-line is-size-14px">{{ item.name || $t('undefined') }}</span>
+					<span class="is-uppercase one-line  _is-text-emphasis-03 _has-text-gray-800">{{
+							item.name || $t('undefined')
+						}}</span>
 				</div>
-				<div class="is-flex is-flex-shrink-0 is-flex-direction-column is-justify-content-center mr-4">
+				<div class="is-flex is-flex-shrink-0 is-flex-direction-column is-justify-content-center mr-2">
           <span class="is-flex is-align-items-center has-text-danger small-font">
             <b-icon class="warn" custom-size="casa-16px" icon="danger" pack="casa"></b-icon>
             {{ $t('Missing') }}
           </span>
 				</div>
-				<b-checkbox v-model="checkBoxMissGroup" :native-value="item.path" class="mr-4"></b-checkbox>
+				<b-checkbox v-model="checkBoxMissGroup" :native-value="item.path" class="mr-2"></b-checkbox>
 			</div>
 		</section>
+
+		<div v-if="currentStep === 0 && checkBoxGroup.length > 0"
+		     class="_has-background-yellow-default _has-text-white _is-normal is-flex is-align-items-center font ml-5 mr-5 mb-4 pt-2 pb-2 _radius-line">
+			<div class="is-flex left ml-3 mr-2 is-align-items-center">
+				<b-icon class="is-16x16" custom-size="casa-19px" icon="danger" pack="casa"></b-icon>
+			</div>
+			{{ $t('If the chosen storage is not empty, format better first.') }}
+		</div>
+		<div v-if="currentStep === 0 && isSplit"
+		     class="_has-background-red-default _has-text-white _is-normal is-flex is-align-items-center ml-5 mr-5 mb-4 pt-2 pb-2 _radius-line">
+			<div class="is-flex left ml-3 mr-2 is-align-items-center">
+				<b-icon custom-size="casa-19px" icon="danger" pack="casa"></b-icon>
+			</div>
+			{{ $t('Please back up your data in storage, otherwise the data may be lost.') }}
+		</div>
+		<div v-if="currentStep === 0 "
+		     class="_has-background-red-default _has-text-white _is-normal is-flex is-align-items-center ml-5 mr-5 mb-4 pt-2 pb-2 _radius-line">
+			<div class="is-flex left ml-3 mr-2 is-align-items-center">
+				<b-icon custom-size="casa-19px" icon="danger" pack="casa"></b-icon>
+			</div>
+			{{
+				$t('* This feature is now testing and verifying, enabling it may clear personal data and destroy the installed APPs, so it is recommended to use it only during the startup.')
+			}}
+		</div>
+
 		<section v-if="currentStep > 0"
-		         class="notification is-overlay non-backgroud mb-4 pri-mrl-2rem pr-0 pl-0">
-			<template v-if="currentStep === 1">
+		         class="notification is-overlay mr-5 ml-5 mb-0 pr-0 pl-0 pt-5 pb-4 non-backgroud">
+			<div v-if="currentStep === 1" class="is-flex is-align-items-center _is-normal">
+				{{
+					$t('This operation may clear all personal data and destroy the installed APPs.')
+				}}
+			</div>
+			<template v-if="currentStep === 2">
 				<div class="font">
 					{{ $t('Enter the password to continue.') }}
 				</div>
 				<b-input ref="inputPassword" v-model="password" class="mt-4" type="password"
 				         @keyup.enter.native="verifyPassword(password)"></b-input>
 			</template>
-			<div v-if="currentStep === 2" class="is-flex is-align-items-center font">
+			<div v-if="currentStep === 3" class="is-flex is-align-items-center font">
 				<div class="message-danger left mr-2 is-flex is-align-items-center">
 					<b-icon class="is-38x38" custom-size="is-size-2" icon="danger" pack="casa"></b-icon>
 				</div>
@@ -74,41 +116,32 @@
 					`${runName.split(',').length} ` + $t('APPs is running') + ` (${runName}), ` + $t('restart APPs to continue.')
 				}}
 			</div>
-			<div v-if="currentStep === 3" class="is-flex is-align-items-center font">
+			<div v-if="currentStep === 4" class="is-flex is-align-items-center font">
 				<div class="message-danger left mr-2 is-flex is-align-items-center">
 					<b-icon class="is-38x38" custom-size="is-size-2" icon="danger" pack="casa"></b-icon>
 				</div>
 				{{ runName + $t(' is running, restart ') + runName + $t(' to continue.') }}
 			</div>
 		</section>
-		<div v-if="currentStep === 0 && checkBoxGroup.length > 0" class="message-alert is-flex is-align-items-center font">
-			<div class="is-flex left ml-4 mr-2 is-align-items-center">
-				<b-icon class="is-16x16" custom-size="casa-19px" icon="danger" pack="casa"></b-icon>
-			</div>
-			{{ $t('If the chosen storage is not empty, format better first.') }}
-		</div>
 
-		<div v-if="currentStep === 0 && isSplit" class="pri-message-danger is-flex is-align-items-center font">
-			<div class="is-flex left ml-4 mr-2 is-align-items-center">
-				<b-icon custom-size="casa-19px" icon="danger" pack="casa"></b-icon>
-			</div>
-			{{ $t('Please back up your data in storage, otherwise the data may be lost.') }}
-		</div>
-
-		<footer :class="{'t-line': currentStep <= 1}" class="modal-card-foot is-flex is-align-items-center ">
+		<footer :class="{'t-line': currentStep <= 2}" class="modal-card-foot is-flex is-align-items-center ">
 			<div class="is-flex-grow-1"></div>
 			<div class="mr-4">
-				<b-button v-show="currentStep > 1" :label="$t('Cancel')" expaned rounded
-				          @click="currentStep = 0"/>
+				<b-button v-show="currentStep > 2 || currentStep === 1" :label="$t('Cancel')"
+				          class="_has-background-gray-100 _radius-line"
+				          expaned @click="currentStep = 0"/>
 			</div>
 			<div>
 				<b-button v-show="currentStep === 0" :label="$t(affirm)" expaned rounded
-				          type="is-primary" @click="submit"/>
-				<b-button v-show="currentStep === 1" :label="$t(affirm)" expaned rounded
+				          type="is-primary" @click="test"/>
+				<b-button v-show="currentStep === 1" :label="$t(affirm)"
+				          class="_has-background-red-default _radius-line _has-text-white"
+				          expaned @click="currentStep = 2"/>
+				<b-button v-show="currentStep === 2" :label="$t(affirm)" expaned rounded
 				          type="is-primary" @click="verifyPassword(password)"/>
-				<b-button v-show="currentStep === 2" :label="$t(affirm)" :loading="isConnecting" expaned rounded
-				          type="is-primary" @click="restart"/>
 				<b-button v-show="currentStep === 3" :label="$t(affirm)" :loading="isConnecting" expaned rounded
+				          type="is-primary" @click="restart"/>
+				<b-button v-show="currentStep === 4" :label="$t(affirm)" :loading="isConnecting" expaned rounded
 				          type="is-primary" @click="restart"/>
 			</div>
 		</footer>
@@ -120,10 +153,14 @@ import {mixin} from "@/mixins/mixin";
 import jwt_decode from "jwt-decode";
 import MD5 from 'md5-es';
 import events from '@/events/events';
+import cToolTip from '@/components/basicComponents/tooltip/tooltip.vue';
 
 export default {
-	name: "StorageSettings",
+	name: "MergeStorages",
 	mixins: [mixin],
+	components: {
+		cToolTip
+	},
 	async mounted() {
 		// TODO: the part is repetition
 		//  with APPs Installation Location requirement document
@@ -139,27 +176,27 @@ export default {
 	},
 	watch: {
 		// 0 default :mainstorage settings
-		// 1 Data Protected
-		// 2 APPs Restart
-		// 3 APP Restart
+		// 2 Data Protected
+		// 3 APPs Restart
+		// 4 APP Restart
 		currentStep(val) {
 			switch (val) {
 				case 0:
 					this.title = "Merge Storages";
 					this.affirm = "Submit";
 					break;
-				case 1:
+				case 2:
 					this.title = "Data Protected";
 					this.affirm = "Submit";
 					this.$nextTick(() => {
 						this.$refs.inputPassword.focus();
 					});
 					break;
-				case 2:
+				case 3:
 					this.title = "APPs Restart";
 					this.affirm = "Restart";
 					break;
-				case 3:
+				case 4:
 					this.title = "APP Restart";
 					this.affirm = "Restart";
 					break;
@@ -289,7 +326,7 @@ export default {
 						message: e.response.data.data,
 						type: "is-danger",
 						position: "is-bottom-right",
-						duration: 3000,
+						duration: 5000,
 					});
 				})
 				// TODO : need to check the result by the states code
@@ -316,7 +353,29 @@ export default {
 				console.log(e)
 			}
 		},
-
+		cancel() {
+			this.$emit('close')
+		},
+		async test() {
+			let notEmpty = await this.$api.folder.getFolderSize('/DATA').then(res => {
+				console.log(res)
+			}).catch(e => {
+				this.$buefy.toast.open({
+					message: e.response.data.data || e.response.data.message,
+					type: "is-danger",
+					position: "is-top",
+					duration: 5000,
+				});
+			})
+			// business :: If storage is empty, no reminder
+			if (notEmpty) {
+				this.title = "Reset Warning"
+				this.affirm = "Reset"
+				this.currentStep = 1
+			} else {
+				this.submit()
+			}
+		},
 		async submit(e, nextStep = false) {
 			// operation : split the mergerfs
 			let notSplit = this.mergeStorageList.every(item => this.checkBoxGroup.includes(item) || this.checkBoxMissGroup.includes(item))
@@ -324,11 +383,11 @@ export default {
 				// get docker info
 				let dockerInfo = await this.$api.container.getInfo('').then(res => res.data.data.casaos_apps)
 				if (dockerInfo.length === 1) {
-					this.currentStep = 3
+					this.currentStep = 4
 					this.runName = dockerInfo[0].name
 					return
 				} else if (dockerInfo.length > 1) {
-					this.currentStep = 2
+					this.currentStep = 3
 					this.runName = dockerInfo.map(item => item.name).join(',')
 					return
 				} else {
@@ -336,7 +395,7 @@ export default {
 					return
 				}
 			}
-			this.currentStep = 1
+			this.currentStep = 2
 		},
 
 		async restart() {
@@ -374,7 +433,7 @@ export default {
 				return
 			}
 			this.$buefy.toast.open({
-				duration: 3000,
+				duration: 5000,
 				message: this.$t("Password is incorrect"),
 				type: 'is-danger'
 			})
@@ -415,13 +474,90 @@ export default {
 	}
 }
 
-.font {
+._is-normal {
+	/* Text 400Regular/Text03 */
+
 	font-family: 'Roboto';
 	font-style: normal;
 	font-weight: 400;
 	font-size: 14px;
-	line-height: 21px;
+	line-height: 20px;
+	/* identical to box height, or 143% */
+
+	font-feature-settings: 'pnum' on, 'lnum' on;
 }
+
+._is-text-emphasis-03 {
+	/* Text 500Medium/Text03 */
+
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 14px;
+	line-height: 20px;
+	/* identical to box height, or 143% */
+
+	font-feature-settings: 'pnum' on, 'lnum' on;
+}
+
+._is-text-full-03 {
+	/* Text 400Regular/Text03 */
+
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 20px;
+	/* identical to box height, or 143% */
+
+	text-align: right;
+	font-feature-settings: 'pnum' on, 'lnum' on;
+}
+
+._has-text-gray-800 {
+	/* Gary/800 */
+
+	color: hsla(208, 20%, 20%, 1);
+}
+
+._has-text-gray-600 {
+	/* Gary/600 */
+	color: hsla(208, 14%, 58%, 1);
+}
+
+._has-text-red-default {
+	/* Red/Default */
+	color: hsla(18, 98%, 55%, 1);
+}
+
+._has-text-white {
+	/* White/White */
+	color: hsla(0, 0%, 100%, 1);
+}
+
+._has-background-red-default {
+	/* Red/Default */
+	background: hsla(18, 98%, 55%, 1);
+}
+
+._has-background-yellow-default {
+	/* Red/Default */
+	background: hsla(44, 98%, 46%, 1)
+}
+
+._has-background-gray-100 {
+	/* Gray/100 */
+	background: hsla(208, 16%, 96%, 1);
+}
+
+._height-40 {
+	height: 2.5rem;
+}
+
+//._is-20x20 {
+//	width: 1.25rem;
+//	height: 1.25rem;
+//}
 
 .small-font {
 	font-family: Roboto;
@@ -433,9 +569,13 @@ export default {
 
 .radius {
 	box-sizing: border-box;
-	background: #F8F8F8;
 	border: 1px solid rgba(0, 0, 0, 0.1);
-	border-radius: 0.75rem;
+	border-radius: 0.375rem;
+}
+
+._radius-line {
+	border-radius: 0.375rem;
+	border: 0px solid rgba(0, 0, 0, 0);
 }
 
 .pri-text-color {
@@ -483,6 +623,10 @@ export default {
 .is-38x38 {
 	width: 2.375rem;
 	height: 2.375rem;
+}
+
+._max-width-320 {
+	max-width: 20rem;
 }
 </style>
 <style lang="scss">

@@ -6,16 +6,6 @@
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
   -->
-
-<!--
- * @Author: JerryK
- * @Date: 2021-09-18 21:32:13
- * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-08-30 17:35:39
- * @Description: App Card item
- * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
--->
-
 <template>
 	<div class="common-card is-flex is-align-items-center is-justify-content-center p-55 app-card"
 	     @mouseleave="hover = true" @mouseover="hover = true">
@@ -222,7 +212,7 @@ export default {
 			}).catch((err) => {
 				this.isRestarting = false;
 				this.$buefy.toast.open({
-					message: err.response.data.data,
+					message: err.response.data.data || err.response.data.message,
 					type: 'is-danger',
 					position: 'is-top',
 					duration: 5000
