@@ -48,6 +48,13 @@
             </b-tab-item>
           </b-tabs>
 
+					<div v-if="activeTab == 0 && !mergeConbinationsStorageData.length"
+					     class="is-flex is-flex-direction-row-reverse">
+						<b-button v-show="hasMergeState" :type="state_mainstorage_operability" class="width" rounded size="is-small"
+						          @click="showStorageSettingsModal">{{ $t('Merge Storages') }}
+						</b-button>
+						<cToolTip isBlock></cToolTip>
+					</div>
           <div v-if="activeTab == 0 && !mergeConbinationsStorageData.length"
                class="is-flex is-flex-direction-row-reverse">
             <b-button :type="state_mainstorage_operability" class="width" rounded size="is-small"
