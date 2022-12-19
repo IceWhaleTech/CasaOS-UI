@@ -9,7 +9,7 @@
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
 -->
 <template>
-	<div :class="{'_max-width-320': currentStep===1}" class="modal-card">
+	<div :class="{'_max-width-320': currentStep===1 ||currentStep===3 || currentStep ===4 }" class="modal-card">
 		<!--    head-->
 		<header :class="{'pri-head':currentStep<=2}" class="modal-card-head ">
 			<b-icon v-if="currentStep === 1" class="mr-2" custom-class="_has-text-red-default" icon="danger" pack="casa"
@@ -236,8 +236,6 @@ export default {
 	methods: {
 		/**
 		 * @description: Get disk list
-		 * @param {}
-		 * @return {void}
 		 * src/components/Storage/StorageManagerPanel.vue:234
 		 */
 		async getDiskList() {
@@ -277,7 +275,7 @@ export default {
 				return {
 					uuid: storage.uuid,
 					name: storage.label,
-					isSystem: storage.diskName == "System",
+					isSystem: storage.diskName === "System",
 					fsType: storage.type,
 					size: storage.size,
 					availSize: storage.avail,
@@ -294,7 +292,7 @@ export default {
 				return {
 					uuid: storage.uuid,
 					name: storage.label,
-					isSystem: storage.diskName == "System",
+					isSystem: storage.diskName === "System",
 					fsType: storage.type,
 					size: storage.size,
 					availSize: storage.avail,
@@ -325,7 +323,7 @@ export default {
 					this.$buefy.toast.open({
 						message: e.response.data.data,
 						type: "is-danger",
-						position: "is-bottom-right",
+						position: "is-top",
 						duration: 5000,
 					});
 				})
@@ -358,7 +356,7 @@ export default {
 		},
 		async test() {
 			let notEmpty = await this.$api.folder.getFolderSize('/DATA').then(res => {
-				console.log(res)
+				return res.data.data
 			}).catch(e => {
 				this.$buefy.toast.open({
 					message: e.response.data.data || e.response.data.message,
@@ -413,7 +411,8 @@ export default {
 					this.isConnecting = false
 					this.$buefy.toast.open({
 						duration: 5000,
-						message: e.response.data.data,
+						message: e.response.data.data || e.response.data.message,
+            position: "is-top",
 						type: 'is-danger'
 					})
 				})
@@ -444,7 +443,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scped>
+<style lang="scss" scoped>
 .non-backgroud {
 	background: none;
 }
@@ -564,7 +563,7 @@ export default {
 	font-size: 12px;
 	font-weight: 400;
 	line-height: 18px;
-	letter-spacing: 0em;
+	letter-spacing: 0;
 }
 
 .radius {
@@ -575,7 +574,7 @@ export default {
 
 ._radius-line {
 	border-radius: 0.375rem;
-	border: 0px solid rgba(0, 0, 0, 0);
+	border: 0 solid rgba(0, 0, 0, 0);
 }
 
 .pri-text-color {
@@ -588,7 +587,7 @@ export default {
 
 .message-alert {
 	height: 2rem;
-	margin-top: 0rem;
+	margin-top: 0;
 	margin-bottom: 1rem;
 	margin-left: 2rem;
 	margin-right: 2rem;
@@ -601,7 +600,7 @@ export default {
 
 .pri-message-danger {
 	height: 2rem;
-	margin-top: 0rem;
+	margin-top: 0;
 	margin-bottom: 1rem;
 	margin-left: 2rem;
 	margin-right: 2rem;
