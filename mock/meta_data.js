@@ -47,7 +47,6 @@ module.exports = function mock(app) {
     // You Should Know :: noticeBlock.vue :: noticeData :: contentType[progress] :: App installing
     // Modified from socket.io[app_install]
     app.get('/mate_data/noticeBlock/noticeData/app_install_progress', (req, res) => {
-        debugger
         res.json({
             "data": {
                 "name": "Transmission",
