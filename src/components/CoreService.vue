@@ -39,11 +39,12 @@ import SmartBlock from "@/components/smartHome/SmartBlock.vue";
 import last from "lodash/last";
 import axios from "axios";
 import events from "@/events/events";
+import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
 
 export default {
 	components: {SmartBlock, SyncBlock, noticeBlock, Swiper, SwiperSlide},
 	name: "core-service",
-	mixins: [mixin],
+	mixins: [mixin, business_ShowNewAppTag],
 	computed: {
 		recommendShow() {
 			return this.$store.state.recommendSwitch
@@ -365,9 +366,8 @@ export default {
 				// update progress
 				if (res.finished) {
 					this.removeNotice(res.name)
-					// business :: Tagging of new app
-					let business_new_app = localStorage.getItem('business_new_app') || [];
-					localStorage.setItem('business_new_app', business_new_app.push[res.id])
+					// business :: Tagging of new app / scrollIntoView
+					this.addIdToLocalStorage(res.properties['app-management:app:id'])
 
 				} else if (res.message !== "") {
 					const messageArray = res.message.split(/[(\r\n)\r\n]+/);

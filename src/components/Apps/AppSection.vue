@@ -81,6 +81,7 @@ import xor from 'lodash/xor'
 import concat from 'lodash/concat'
 import events from '@/events/events';
 import {last} from 'lodash';
+import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
 
 const SYNCTHING_STORE_ID = 74
 
@@ -107,6 +108,7 @@ const builtInApplications = [
 const orderConfig = "app_order"
 
 export default {
+	mixins: [business_ShowNewAppTag],
 	data() {
 		return {
 			user_id: localStorage.getItem("user_id"),
@@ -358,9 +360,8 @@ export default {
 
 		scrollToNewApp() {
 			// business :: scroll to last position
-			let business_new_app = localStorage.getItem("business_new_app") || [];
-			const el = business_new_app[business_new_app.length - 1];
-			el && document.getElementById(last(business_new_app)).scrollIntoView();
+			let business_new_app = last(this.getIdFromLocalStorage());
+			business_new_app && document.getElementById("app-" + business_new_app).scrollIntoView();
 		}
 	},
 	sockets: {

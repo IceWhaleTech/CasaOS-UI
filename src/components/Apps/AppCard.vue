@@ -54,7 +54,9 @@
 					<a class="is-flex is-justify-content-center" @click="openApp(item)">
 						<b-image :class="item.state | dotClass" :src="item.icon"
 						         :src-fallback="require('@/assets/img/app/default.png')"
-						         class="is-64x64" webp-fallback=".jpg"></b-image>
+						         class="is-64x64 is-flex-grow-1" webp-fallback=".jpg"></b-image>
+						<!-- Unstable-->
+						<cTooltip v-if="newAppIds.includes(item.id)" class="__position"></cTooltip>
 					</a>
 					<p class="mt-3 one-line">
 						<a class="one-line" @click="openApp(item)">
@@ -76,9 +78,16 @@
 
 <script>
 import events from '@/events/events';
+import cTooltip from '@/components/basicComponents/tooltip/tooltip.vue';
+import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
+import business_OpenThirdApp from "@/mixins/app/Business_OpenThirdApp";
 
 export default {
 	name: "app-card",
+	components: {
+		cTooltip
+	},
+	mixins: [business_ShowNewAppTag, business_OpenThirdApp],
 	inject: ["homeShowFiles", "openAppStore"],
 	data() {
 		return {
@@ -142,37 +151,7 @@ export default {
 				window.open(item.host, '_blank');
 			} else {
 				this.$refs.dro.isActive = false
-				if ((item.host != "" || item.port != "" || item.index != "") && item.state == 'running') {
-					const hostIp = item.host || this.$baseIp
-					const protocol = item.protocol || 'http'
-					const port = item.port ? `:${item.port}` : ''
-					const url = `${protocol}://${hostIp}${port}${item.index}`
-					let href = window.location.href.split("#")[0]
-					if (url === href) {
-						this.$buefy.toast.open({
-							message: this.$t('The page to be opened is the same as current page'),
-							type: 'is-warning',
-							position: 'is-top',
-							duration: 3000,
-							queue: false,
-							container: null,
-							animation: 'fade',
-							onOpen: () => {
-							},
-							onClose: () => {
-							},
-							ariaRole: 'alert',
-							ariaLive: 'polite'
-						})
-						return
-					}
-					if (item.image.toLowerCase().indexOf("qbittorrent") == -1) {
-						window.open(url, '_blank');
-					} else {
-						var arg = '\u003cscript\u003elocation.replace("' + url + '")\u003c/script\u003e';
-						window.open('javascript:window.name;', arg);
-					}
-				}
+				this.openThirdApp(item)
 			}
 		},
 
@@ -446,6 +425,12 @@ export default {
 			}
 		}
 	}
+}
+
+.__position {
+	position: absolute !important;
+	top: 0.125rem !important;
+	left: 3rem !important;
 }
 </style>
 <style lang="scss">

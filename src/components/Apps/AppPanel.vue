@@ -65,8 +65,13 @@
 										<h4 class="title store-title is-4 ">{{ appDetailData.title }}</h4>
 										<p class="subtitle is-size-14px two-line">{{ appDetailData.tagline }}</p>
 										<p class="description">
-											<b-button :loading="appDetailData.id == currentInstallId" rounded size="is-normal"
-											          type="is-primary" @click="qucikInstall(appDetailData.id)">{{ $t('Install') }}
+											<b-button v-if="item.state===0" :loading="appDetailData.id == currentInstallId" rounded
+											          size="is-normal" type="is-primary" @click="qucikInstall(appDetailData.id)">
+												{{ $t('Install') }}
+											</b-button>
+											<b-button v-if="item.state===1" :loading="appDetailData.id == currentInstallId" rounded
+											          size="is-normal" type="is-primary" @click="openThirdAppById(item.id)">
+												{{ $t('Install') }}
 											</b-button>
 										</p>
 									</div>
@@ -296,8 +301,11 @@
 								</div>
 								<div class="mt-1 ml-7 is-flex is-align-items-center">
 									<div class="is-flex-grow-1 is-size-7 has-text-grey-light	">{{ item.category }}</div>
-									<b-button :loading="item.id == currentInstallId" rounded size="is-small" type="is-primary is-light"
-									          @click="qucikInstall(item.id)">{{ $t('Install') }}
+									<b-button v-if="item.state===0" :loading="item.id == currentInstallId" rounded size="is-small"
+									          type="is-primary is-light" @click="qucikInstall(item.id)">{{ $t('Install') }}
+									</b-button>
+									<b-button v-if="item.state===1" :loading="item.id == currentInstallId" rounded size="is-small"
+									          type="is-primary is-light" @click="openThirdAppById(item.id)">{{ $t('open') }}
 									</b-button>
 								</div>
 							</div>
@@ -556,6 +564,8 @@ import {Swiper, SwiperSlide} from 'vue-awesome-swiper'
 // import AppsInstallationLocation from "@/components/Apps/AppsInstallationLocation";
 // import storageItem from "@/components/Storage/StorageItem";
 import AppsInstallationLocation from "@/components/Apps/AppsInstallationLocation";
+import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
+import business_OpenThirdApp from "@/mixins/app/Business_OpenThirdApp";
 
 
 const data = [
@@ -603,6 +613,7 @@ export default {
 		SwiperSlide,
 		AppsInstallationLocation,
 	},
+	mixins: [business_ShowNewAppTag, business_OpenThirdApp],
 	props: {
 		id: String,
 		state: String,
@@ -1530,8 +1541,7 @@ export default {
 				localStorage.removeItem("app_data")
 
 				// business :: Tagging of new app / scrollIntoView
-				let business_new_app = localStorage.getItem("business_new_app") || []
-				localStorage.setItem('business_new_app', business_new_app.push[res.id])
+				this.addIdToLocalStorage(res.properties['app-management:app:id'])
 
 				setTimeout(() => {
 					this.$emit('updateState')
