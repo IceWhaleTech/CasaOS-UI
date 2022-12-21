@@ -28,6 +28,7 @@ export default {
             } else {
                 newAppTag = [appId];
             }
+            this.newAppIds = newAppTag;
             localStorage.setItem('newAppTag', JSON.stringify(newAppTag));
         },
         removeIdFromLocalStorage(appId) {
@@ -38,6 +39,7 @@ export default {
                     newAppTag.splice(newAppTag.indexOf(appId), 1);
                 }
             }
+            this.newAppIds = newAppTag;
             localStorage.setItem('newAppTag', JSON.stringify(newAppTag));
         },
         getIdFromLocalStorage() {

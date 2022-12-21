@@ -40,9 +40,6 @@ export default {
 			}];
 		},
 	},
-	created() {
-		console.log(this['is-block']);
-	}
 }
 </script>
 

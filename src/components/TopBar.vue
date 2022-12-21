@@ -287,7 +287,7 @@
 			<b-message @close="resetPower">
 				<template #header>
 					{{ $t(showPowerTitle) }}
-					<img v-if="showPowerTitle ==='Now shutting down'" :src="require('@/assets/img/power/waiting.svg')"
+					<img v-if="showPowerTitle ==='Now shutting down'" :src="require('@/assets/img/waiting.svg')"
 					     alt="pending" class="ml-1 is-24x24"/>
 				</template>
 				<div :class="showPowerTitle === 'Now shutting down' ? 'mb-4' : ''"

@@ -39,10 +39,20 @@ export default [
         }
     },
     {
+        path: '/launch',
+        name: 'AppLauncherCheck',
+        hidden: true,
+        component: () => import('@/views/AppLauncherCheck.vue'),
+        meta: {
+            requireAuth: false,
+            showBackground: false
+        }
+    },
+    {
         path: '/developmentElement',
         name: 'DevelopmentElement',
         hidden: true,
-        component: () => import('@/components/Storage/MergeStorages.vue'),
+        component: () => import('@/views/Login.vue'),
         meta: {
             requireAuth: true,
             showBackground: false

@@ -65,13 +65,13 @@
 										<h4 class="title store-title is-4 ">{{ appDetailData.title }}</h4>
 										<p class="subtitle is-size-14px two-line">{{ appDetailData.tagline }}</p>
 										<p class="description">
-											<b-button v-if="item.state===0" :loading="appDetailData.id == currentInstallId" rounded
+											<b-button v-if="appDetailData.state===0" :loading="appDetailData.id == currentInstallId" rounded
 											          size="is-normal" type="is-primary" @click="qucikInstall(appDetailData.id)">
 												{{ $t('Install') }}
 											</b-button>
-											<b-button v-if="item.state===1" :loading="appDetailData.id == currentInstallId" rounded
-											          size="is-normal" type="is-primary" @click="openThirdAppById(item.id)">
-												{{ $t('Install') }}
+											<b-button v-if="appDetailData.state===1" :loading="appDetailData.id == currentInstallId" rounded
+											          size="is-normal" type="is-primary" @click="openThirdContainerByAppInfo(item)">
+												{{ $t('Open') }}
 											</b-button>
 										</p>
 									</div>
@@ -305,7 +305,7 @@
 									          type="is-primary is-light" @click="qucikInstall(item.id)">{{ $t('Install') }}
 									</b-button>
 									<b-button v-if="item.state===1" :loading="item.id == currentInstallId" rounded size="is-small"
-									          type="is-primary is-light" @click="openThirdAppById(item.id)">{{ $t('open') }}
+									          type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">{{ $t('Open') }}
 									</b-button>
 								</div>
 							</div>
@@ -498,8 +498,7 @@
 							<lottie-animation :animationData="require('@/assets/ani/loading.json')" :autoPlay="true" :loop="true"
 							                  class="install-animation"></lottie-animation>
 						</div>
-						<h3 :class="currentInstallAppTextClass" class="title is-6 has-text-centered"
-						    v-html="currentInstallAppText"></h3>
+						<h3 :class="currentInstallAppTextClass" class="title is-6 has-text-centered is-flex is-flex-direction-row is-align-items-center is-justify-content-center" v-html="currentInstallAppText"></h3>
 					</div>
 				</section>
 				<!-- App Install Process End -->
@@ -1062,7 +1061,6 @@ export default {
 			this.currentInstallId = id
 			this.$api.apps.getAppInfo(id).then(resp => {
 				if (resp.data.success == 200) {
-
 					let respData = resp.data.data
 					this.initData.protocol = respData.protocol
 					this.initData.host = respData.host
@@ -1086,7 +1084,6 @@ export default {
 					this.initData.cmd = isNull(respData.cmd) ? [] : respData.cmd
 					this.initData.privileged = respData.privileged
 					this.initData.host_name = respData.host_name
-
 
 					this.currentInstallId = 0
 					if (respData.tip !== "null" && respData.tip !== "[]" && respData.tip !== "") {

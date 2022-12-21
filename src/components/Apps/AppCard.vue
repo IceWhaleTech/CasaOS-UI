@@ -11,7 +11,7 @@
 	     @mouseleave="hover = true" @mouseover="hover = true">
 
 		<!-- Action Button Start -->
-		<div v-if="item.type != 'system' && isCasa && !isUninstalling" class="action-btn">
+		<div v-if="item.type !== 'system' && isCasa && !isUninstalling" class="action-btn">
 			<b-dropdown ref="dro" :mobile-modal="false" :triggers="['contextmenu','click']" animation="fade1"
 			            append-to-body aria-role="list" class="app-card-drop" position="is-bottom-left"
 			            @active-change="setDropState">
@@ -49,7 +49,7 @@
 		<div class="blur-background"></div>
 		<div class="cards-content">
 			<!-- Card Content Start -->
-			<b-tooltip :animated="true" :label="tooltipLable" :triggers="tooltipTriger" animation="fade1" type="is-dark">
+			<b-tooltip :animated="true" :label="tooltipLabel" :triggers="tooltipTriger" animation="fade1" type="is-dark">
 				<div class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-3 pb-3 img-c">
 					<a class="is-flex is-justify-content-center" @click="openApp(item)">
 						<b-image :class="item.state | dotClass" :src="item.icon"
@@ -109,11 +109,11 @@ export default {
 		}
 	},
 	computed: {
-		tooltipLable() {
+		tooltipLabel() {
 			if (!this.isCasa) {
 				return this.$t('Import to CasaOS')
 			} else {
-				if (this.item.type === "system" || this.item.port != "" && this.item.state == 'running') {
+				if (this.item.type === "system" || this.item.port !== "" && this.item.state === 'running') {
 					return this.$t('Open')
 				} else {
 					return this.$t('Setting')
@@ -124,7 +124,7 @@ export default {
 			if (!this.isCasa) {
 				return ['hover']
 			} else {
-				if (this.item.type === "system" || this.item.port != "" && this.item.state == 'running') {
+				if (this.item.type === "system" || this.item.port !== "" && this.item.state === 'running') {
 					return ['hover']
 				} else {
 					return []
@@ -151,7 +151,7 @@ export default {
 				window.open(item.host, '_blank');
 			} else {
 				this.$refs.dro.isActive = false
-				this.openThirdApp(item)
+				this.openAppToNewWindow(item)
 			}
 		},
 
@@ -184,7 +184,7 @@ export default {
 		restartApp() {
 			this.isRestarting = true
 			this.$api.container.updateState(this.item.id, "restart").then((res) => {
-				if (res.data.success == 200) {
+				if (res.data.success === 200) {
 					this.updateState()
 				}
 				this.isRestarting = false;
@@ -235,7 +235,7 @@ export default {
 				let listLinkApp = JSON.parse(localStorage.getItem("listLinkApp"))
 				listLinkApp = listLinkApp.filter((o) => o.name !== this.item.name)
 				this.$api.users.saveLinkAppDetail(listLinkApp).then((res) => {
-					if (res.data.success == 200) {
+					if (res.data.success === 200) {
 						localStorage.setItem("listLinkApp", JSON.stringify(res.data.data))
 						this.$EventBus.$emit(events.RELOAD_APP_LIST);
 					}
@@ -243,7 +243,7 @@ export default {
 				})
 			} else {
 				this.$api.container.uninstall(this.item.id, {'delete_config_folder': checkDelConfig}).then((res) => {
-					if (res.data.success == 200) {
+					if (res.data.success === 200) {
 						this.$EventBus.$emit(events.UPDATE_SYNC_STATUS);
 					}
 					this.isUninstalling = false;
@@ -280,17 +280,17 @@ export default {
 		},
 
 		/**
-		 * @description: Start or Stop a App
+		 * @description: Start or Stop App
 		 * @param {Object} item the app info object
 		 * @return {*} void
 		 */
 		toggle(item) {
 			this.isStarting = true;
-			const state = item.state == "running" ? "stop" : "start"
+			const state = item.state === "running" ? "stop" : "start"
 
 			this.$api.container.updateState(item.id, state).then((res) => {
 				this.isStarting = false
-				if (res.data.success == 200) {
+				if (res.data.success === 200) {
 					item.state = res.data.data
 					this.updateState()
 				} else {
@@ -332,7 +332,7 @@ export default {
 			if (state === "0") {
 				return "start"
 			} else {
-				return state == 'running' ? 'start' : 'stop'
+				return state === 'running' ? 'start' : 'stop'
 			}
 
 		},

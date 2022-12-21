@@ -7,45 +7,69 @@
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
  */
 
+import container from "@/service/container";
+
 export default {
     methods: {
-        openThirdApp(appInfo) {
-            if ((appInfo.host !== "" || appInfo.port !== "" || appInfo.index !== "") && appInfo.state === 'running') {
-                const hostIp = appInfo.host || this.$baseIp
-                const protocol = appInfo.protocol || 'http'
-                const port = appInfo.port ? `:${appInfo.port}` : ''
-                const url = `${protocol}://${hostIp}${port}${appInfo.index}`
-                let href = window.location.href.split("#")[0]
-                if (url === href) {
-                    this.$buefy.toast.open({
-                        message: this.$t('The page to be opened is the same as current page'),
-                        type: 'is-warning',
-                        position: 'is-top',
-                        duration: 5000,
-                        queue: false,
-                        container: null,
-                        animation: 'fade',
-                        onOpen: () => {
-                        },
-                        onClose: () => {
-                        },
-                        ariaRole: 'alert',
-                        ariaLive: 'polite'
-                    })
-                    return
+        openAppToNewWindow(appInfo) {
+            this.removeIdFromLocalStorage(appInfo.id);
+            this.$router.push({
+                name: 'AppLauncherCheck',
+                path: '/launch',
+                params: {
+                    appDetailData: appInfo
                 }
-                if (appInfo.image.toLowerCase().indexOf("qbittorrent") == -1) {
-                    window.open(url, '_blank');
-                } else {
-                    let arg = '\u003cscript\u003elocation.replace("' + url + '")\u003c/script\u003e';
-                    window.open('javascript:window.name;', arg);
-                }
-            }
+            });
+
+            // let routeUrl = this.$router.resolve({
+            //     name: 'AppLauncherCheck',
+            //     path: '/launch',
+            //     params: {
+            //         appDetailData: appInfo
+            //     }
+            // });
+            // window.open(routeUrl.href, '_blank');
         },
-        async openThirdAppById(appId) {
-            // TODO >> WAITTING API
-            let appInfo = await this.$api.apps.getContainerInfo(appId).then(res => res.data)
-            this.openThirdApp(appInfo)
-        }
+        openThirdApp(appInfo){
+            if ((appInfo.host !== "" || appInfo.port !== "" || appInfo.index !== "") && appInfo.state === 'running') {
+                  const hostIp = appInfo.host || this.$baseIp
+                  const protocol = appInfo.protocol || 'http'
+                  const port = appInfo.port ? `:${appInfo.port}` : ''
+                  const url = `${protocol}://${hostIp}${port}${appInfo.index}`
+                  let href = window.location.href.split("#")[0]
+                  if (url === href) {
+                      this.$buefy.toast.open({
+                          message: this.$t('The page to be opened is the same as current page'),
+                          type: 'is-warning',
+                          position: 'is-top',
+                          duration: 5000,
+                          queue: false,
+                          container: null,
+                          animation: 'fade',
+                          onOpen: () => {
+                          },
+                          onClose: () => {
+                          },
+                          ariaRole: 'alert',
+                          ariaLive: 'polite'
+                      })
+                      return
+                  }
+                  if (appInfo.image.toLowerCase().indexOf("qbittorrent") === -1) {
+                      window.location.reload(url, '_blank');
+                  } else {
+                      let arg = '\u003cscript\u003elocation.replace("' + url + '")\u003c/script\u003e';
+                      window.location.reload('javascript:window.name;', arg);
+                  }
+              }
+        },
+        async openThirdContainerByAppInfo(appInfo) {
+            const data = {
+                "name": appInfo.title,
+                "image": appInfo.image,
+            }
+            let containerInfo = await container.getMyAppList(data).then(res => res.data.data.casaos_apps)
+            this.openAppToNewWindow(containerInfo[0])
+        },
     }
 }

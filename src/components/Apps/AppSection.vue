@@ -360,8 +360,8 @@ export default {
 
 		scrollToNewApp() {
 			// business :: scroll to last position
-			let business_new_app = last(this.getIdFromLocalStorage());
-			business_new_app && document.getElementById("app-" + business_new_app).scrollIntoView();
+      let showEl = document.getElementById("app-" + last(this.getIdFromLocalStorage()))
+      showEl && showEl.scrollIntoView();
 		}
 	},
 	sockets: {
