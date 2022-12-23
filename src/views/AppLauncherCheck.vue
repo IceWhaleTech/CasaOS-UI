@@ -4,8 +4,14 @@
            :src-fallback="require('@/assets/img/app/default.png')" class="is-64x64 icon-shadow"
            webp-fallback=".jpg"></b-image>
   <h2 class="has-text-emphasis-01 has-text-white mt-2">{{ appDetailData.name }}</h2>
-  <h1 class="has-text-sub-03 has-text-white mt-6">{{ $t('Launching the app') }}</h1>
-  <b-image :src="require('@/assets/img/waiting.svg')" alt="pending" class="is-48x48 mt-6"/>
+  <h1 class="has-text-sub-03 has-text-white mt-6" v-if="status === 'pending'">{{ $t('Preparing for launch') }}</h1>
+  <h1 class="has-text-sub-03 has-text-white mt-6" v-else>{{ $t('APP may not be available') }}</h1>
+  <b-image :src="require('@/assets/img/waiting.svg')" alt="pending" class="is-48x48 mt-6" v-if="status === 'pending'"/>
+  <span class="has-text-full-03 has-text-grey-600 mt-6" v-else>{{
+      $t('Please') }}
+    <a @click="openThirdApp(appDetailData);">{{$t('click here')}}
+    </a> {{$t('try to open the APP, if it does not work, please restart or try again later.')}}
+  </span>
   <img class="is-absolute position" :src="require('@/assets/img/logo/logo.svg')" alt=""/>
 </div>
 </template>
@@ -20,11 +26,12 @@ export default {
       appDetailData: {
         icon: "",
         name: ""
-      }
+      },
+      status: "pending",
     }
   },
   mounted() {
-    this.appDetailData = this.$route.params.appDetailData
+    this.appDetailData = JSON.parse(this.$route.query.appDetailData)
     let counter = 0
     let timer = setInterval(async() => {
       counter += 1
@@ -38,6 +45,7 @@ export default {
         clearInterval(timer)
         this.openThirdApp(this.appDetailData);
       }else if(counter > 10){
+        this.status = "reject"
         clearInterval(timer)
       }
     }, 1000);

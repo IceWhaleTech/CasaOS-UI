@@ -52,7 +52,7 @@ export default [
         path: '/developmentElement',
         name: 'DevelopmentElement',
         hidden: true,
-        component: () => import('@/views/Login.vue'),
+        component: () => import('@/components/Storage/MergeStorages.vue'),
         meta: {
             requireAuth: true,
             showBackground: false
@@ -83,14 +83,4 @@ export default [
             settingData: undefined
         }
     },
-    {
-        path: '/developmentElement1',
-        name: 'DevelopmentElement1',
-        hidden: true,
-        component: () => import('@/components/Storage/StorageManagerPanel.vue'),
-        meta: {
-            requireAuth: true,
-            showBackground: false
-        },
-    }
 ]

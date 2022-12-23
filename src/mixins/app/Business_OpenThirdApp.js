@@ -13,18 +13,16 @@ export default {
     methods: {
         openAppToNewWindow(appInfo) {
             this.removeIdFromLocalStorage(appInfo.id);
-
             let routeUrl = this.$router.resolve({
                 name: 'AppLauncherCheck',
                 path: '/launch',
-                params: {
-                    appDetailData: appInfo
+                query: {
+                    appDetailData: JSON.stringify(appInfo)
                 }
             });
             window.open(routeUrl.href, '_blank');
         },
         openThirdApp(appInfo){
-            debugger
             if ((appInfo.host !== "" || appInfo.port !== "" || appInfo.index !== "") && appInfo.state === 'running') {
                   const hostIp = appInfo.host || this.$baseIp
                   const protocol = appInfo.protocol || 'http'
