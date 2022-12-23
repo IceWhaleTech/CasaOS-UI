@@ -6,7 +6,7 @@
   <h2 class="has-text-emphasis-01 has-text-white mt-2">{{ appDetailData.name }}</h2>
   <h1 class="has-text-sub-03 has-text-white mt-6">{{ $t('Launching the app') }}</h1>
   <b-image :src="require('@/assets/img/waiting.svg')" alt="pending" class="is-48x48 mt-6"/>
-  <img class="is-absolute position" :src="require('@/assets/img/logo/logo.svg')" />
+  <img class="is-absolute position" :src="require('@/assets/img/logo/logo.svg')" alt=""/>
 </div>
 </template>
 
@@ -27,8 +27,13 @@ export default {
     this.appDetailData = this.$route.params.appDetailData
     let counter = 0
     let timer = setInterval(async() => {
-      counter += counter
-      let isOk = await this.launcherCheck(this.appDetailData.id);
+      counter += 1
+      let isOk = await this.$api.container.containerLauncherCheck(this.appDetailData.id).then((res) => {
+        return res.status === 200
+      }).catch(() => {
+        return false
+      });
+      console.log(counter)
       if(isOk){
         clearInterval(timer)
         this.openThirdApp(this.appDetailData);
@@ -37,12 +42,6 @@ export default {
       }
     }, 1000);
   },
-  methods:{
-    async launcherCheck(containerId) {
-      let a = await this.$api.container.containerLauncherCheck(containerId).then((res) => res);
-      return a
-    },
-  }
 }
 </script>
 

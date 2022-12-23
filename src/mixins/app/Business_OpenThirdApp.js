@@ -13,24 +13,18 @@ export default {
     methods: {
         openAppToNewWindow(appInfo) {
             this.removeIdFromLocalStorage(appInfo.id);
-            this.$router.push({
+
+            let routeUrl = this.$router.resolve({
                 name: 'AppLauncherCheck',
                 path: '/launch',
                 params: {
                     appDetailData: appInfo
                 }
             });
-
-            // let routeUrl = this.$router.resolve({
-            //     name: 'AppLauncherCheck',
-            //     path: '/launch',
-            //     params: {
-            //         appDetailData: appInfo
-            //     }
-            // });
-            // window.open(routeUrl.href, '_blank');
+            window.open(routeUrl.href, '_blank');
         },
         openThirdApp(appInfo){
+            debugger
             if ((appInfo.host !== "" || appInfo.port !== "" || appInfo.index !== "") && appInfo.state === 'running') {
                   const hostIp = appInfo.host || this.$baseIp
                   const protocol = appInfo.protocol || 'http'
@@ -56,10 +50,10 @@ export default {
                       return
                   }
                   if (appInfo.image.toLowerCase().indexOf("qbittorrent") === -1) {
-                      window.location.reload(url, '_blank');
+                      window.location.replace(url);
                   } else {
-                      let arg = '\u003cscript\u003elocation.replace("' + url + '")\u003c/script\u003e';
-                      window.location.reload('javascript:window.name;', arg);
+                      window.location.replace('javascript:window.name;')
+                      window.name = '\u003cscript\u003elocation.replace("' + url + '")\u003c/script\u003e';
                   }
               }
         },

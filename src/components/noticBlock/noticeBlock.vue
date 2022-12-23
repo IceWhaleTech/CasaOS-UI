@@ -18,12 +18,12 @@
 			<div class="widget-header is-flex is-flex-shrink-0">
 				<div class="image is-24x24 is-flex-shrink-0">
 					<img v-if="noticeData.prelude.icon" :src="noticeData.prelude.icon" alt=""/>
-					<img v-else :src="require('@/assets/img/logo/casa-white.svg')"/>
+					<img v-else :src="require('@/assets/img/logo/casa-white.svg')" alt=""/>
 				</div>
 				<div class="header-title pl-2 is-flex-grow-1">
 					{{ $t(noticeData.prelude.title) }}
 				</div>
-				<div class="is-flex-shrink-0 _close-polymorphic" @click="close">
+				<div class="is-flex-shrink-0 _close-polymorphic" @click="close" v-if="noticeData.contentType !== 'progress'">
 					<b-icon custom-size="casa-24px" icon="close-xs" pack="casa"></b-icon>
 				</div>
 			</div>
@@ -37,8 +37,8 @@
 				<div class="_widget-body is-flex mr-0">
 					<div class="image is-24x24 is-flex-shrink-0">
 						<img v-if="!noticeData.content[Object.keys(noticeData.content)[0]].icon"
-						     :src="require(`@/assets/img/logo/casa-white.svg`)"/>
-						<img v-else :src="require(`@/assets/img${noticeData.content[Object.keys(noticeData.content)[0]].icon}`)"/>
+						     :src="require(`@/assets/img/logo/casa-white.svg`)" alt=""/>
+						<img v-else :src="require(`@/assets/img${noticeData.content[Object.keys(noticeData.content)[0]].icon}`)" alt=""/>
 					</div>
 					<div class="body-title is-flex-grow-1 _nowrap ml-2">
 						{{ $t(noticeData.content[Object.keys(noticeData.content)[0]].title) }}
@@ -51,8 +51,8 @@
 				<div v-if="Object.keys(noticeData.content).length > 1" class="_widget-body is-flex mr-0">
 					<div class="image is-24x24 is-flex-shrink-0">
 						<img v-if="!noticeData.content[Object.keys(noticeData.content)[1]].icon"
-						     :src="require(`@/assets/img/logo/casa-white.svg`)"/>
-						<img v-else :src="require(`@/assets/img${noticeData.content[Object.keys(noticeData.content)[1]].icon}`)"/>
+						     :src="require(`@/assets/img/logo/casa-white.svg`)" alt=""/>
+						<img v-else :src="require(`@/assets/img${noticeData.content[Object.keys(noticeData.content)[1]].icon}`)" alt=""/>
 					</div>
 					<div class="body-title is-flex-grow-1 _nowrap ml-2">
 						{{ $t(noticeData.content[Object.keys(noticeData.content)[1]].title) }}
@@ -64,7 +64,7 @@
 			</div>
 			<div v-else-if="noticeData.contentType === 'progress'"
 			     class="info is-flex is-flex-direction-column is-justify-content-center is-flex-grow-1">
-				<div class="has-text-white _is-normal mb-1">
+				<div class="has-text-grey-200 _is-normal mb-1">
 					{{ noticeData.content }}
 				</div>
 				<b-progress size="c-is-small"></b-progress>
@@ -72,21 +72,23 @@
 			<!-- end of section body-->
 
 			<!-- start of section footer-->
-			<div class="is-flex is-flex-direction-row-reverse is-flex-shrink-0 is-align-items-end">
-				<b-button v-if="!noticeData.operate" :disabled="false" class="width" rounded size="is-small" type="is-primary"
-				          @click="close">
-					{{ $t('Cancel') }}
-				</b-button>
-				<b-button v-else-if="noticeData.operate.type === 'casaUI:eventBus'" :disabled="false" class="width" rounded
-				          size="is-small"
-				          type="is-primary"
-				          @click="$EventBus.$emit(noticeData.operate.event, noticeData.operate.path)">
-					{{ $t(noticeData.operate.title) }}
-				</b-button>
-				<b-button v-else :disabled="false" class="width" rounded size="is-small"
-				          type="is-primary" @click="$EventBus.$emit(noticeData.operate.event, noticeData.operate.path)">
-					{{ $t(noticeData.operate.title) }}
-				</b-button>
+			<div class="is-flex is-flex-direction-row-reverse is-flex-shrink-0 is-align-items-end" :style="{height: '24px'}">
+        <template v-if="noticeData.contentType !== 'progress'">
+          <b-button v-if="!noticeData.operate" :disabled="false" class="width" rounded size="is-small" type="is-primary"
+                    @click="close">
+            {{ $t('Cancel') }}
+          </b-button>
+          <b-button v-else-if="noticeData.operate.type === 'casaUI:eventBus'" :disabled="false" class="width" rounded
+                    size="is-small"
+                    type="is-primary"
+                    @click="$EventBus.$emit(noticeData.operate.event, noticeData.operate.path)">
+            {{ $t(noticeData.operate.title) }}
+          </b-button>
+          <b-button v-else :disabled="false" class="width" rounded size="is-small"
+                    type="is-primary" @click="$EventBus.$emit(noticeData.operate.event, noticeData.operate.path)">
+            {{ $t(noticeData.operate.title) }}
+          </b-button>
+        </template>
 				<div v-if="Object.keys(noticeData.content).length > 1 && noticeData.contentType === 'list'"
 				     class="is-flex-grow-1 footer-hint">
 					{{ $t('{num} items', {num: Object.keys(noticeData.content).length}) }}

@@ -85,7 +85,7 @@ const container = {
 
     // check container launch status
     containerLauncherCheck(id) {
-        return api.get(`${PREFIX2}/${id}/health`);
+        return api.get(`${PREFIX2}/${id}/healthcheck`);
     }
 
 }

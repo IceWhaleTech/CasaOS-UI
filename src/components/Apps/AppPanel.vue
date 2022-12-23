@@ -496,7 +496,7 @@
 					<div class="installing-warpper mb-5">
 						<div class="is-flex is-align-items-center is-justify-content-center">
 							<lottie-animation :animationData="require('@/assets/ani/loading.json')" :autoPlay="true" :loop="true"
-							                  class="install-animation"></lottie-animation>
+							                  class="install-animation mt-5 mb-2"></lottie-animation>
 						</div>
 						<h3 :class="currentInstallAppTextClass" class="title is-6 has-text-centered is-flex is-flex-direction-row is-align-items-center is-justify-content-center" v-html="currentInstallAppText"></h3>
 					</div>
@@ -1568,8 +1568,8 @@ export default {
 }
 
 .install-animation {
-	width: 200px;
-	height: 200px;
+	width: 100px;
+	height: 100px;
 }
 
 .creating-animation {
