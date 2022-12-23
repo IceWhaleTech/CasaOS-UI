@@ -52,7 +52,7 @@ export default [
         path: '/developmentElement',
         name: 'DevelopmentElement',
         hidden: true,
-        component: () => import('@/views/Login.vue'),
+        component: () => import('@/components/Storage/MergeStorages.vue'),
         meta: {
             requireAuth: true,
             showBackground: false
