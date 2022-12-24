@@ -487,6 +487,9 @@
 							<lottie-animation :animationData="require('@/assets/ani/rocket-launching.json')" :autoPlay="true"
 							                  :loop="true" class="install-animation"></lottie-animation>
 						</div>
+						<b-progress type="is-primary" :max="currentInstallAppProgressTotals.total * 2"
+							:value="currentInstallAppProgressTotals.download + currentInstallAppProgressTotals.extract"
+							show-value format="percent"></b-progress>
 						<h3 :class="currentInstallAppTextClass" class="title is-6 has-text-centered"
 						    v-html="currentInstallAppText"></h3>
 					</div>
@@ -632,6 +635,8 @@ export default {
 			currentInstallAppError: false,
 			currentInstallAppType: null,
 			currentInstallAppText: "",
+			currentInstallAppProgress: {},
+			currentInstallAppProgressTotals: {},
 
 			appIcon: "",
 			sidebarOpen: false,
@@ -1502,23 +1507,55 @@ export default {
 					this.currentInstallAppType = resData.type;
 					if (resData.message !== "") {
 						const messageArray = resData.message.split(/[(\r\n)\r\n]+/);
-						messageArray.forEach((item, index) => {
-							if (!item) {
-								messageArray.splice(index, 1);
+						messageArray.forEach((item) => {
+							if (item) {
+								const info = JSON.parse(item)
+								//console.log(info) //debug
+								const status = info.status
+								if (info.progressDetail != undefined) {
+									const id = info.id
+									let progressDetail = info.progressDetail
+									let total = 0
+									let current = 0
+									if (progressDetail.total != undefined) {
+										total = progressDetail.total
+										current = progressDetail.current
+									} else {
+										if (this.currentInstallAppProgress[id] != undefined) {
+											total = this.currentInstallAppProgress[id].total
+										}
+									}
+									let dl = 0
+									let ex = 0
+									switch(status) {
+										case "Downloading":
+											dl = current
+											break
+										case "Download complete":
+											dl = total
+											break
+										case "Extracting":
+											dl = total
+											ex = current
+											break
+										case "Pull complete":
+											dl = ex = total
+											break
+										default:
+											return //can ignore other actions
+									}
+									this.$set(this.currentInstallAppProgress, id, { "download": dl, "extract": ex, "total": total } )
+									// sum the values across all the ids:
+									this.currentInstallAppProgressTotals = Object.values(this.currentInstallAppProgress)
+										.reduce((memo, layer) => {
+											Object.keys(memo).forEach( (key) => {memo[key] += layer[key] } )
+											return memo
+										}, {"download": 0, "extract": 0, "total": 0 })
+								} else {
+									this.currentInstallAppText = status
+								}
 							}
 						})
-						const lastMessage = last(messageArray)
-						const info = JSON.parse(lastMessage)
-						const id = (info.id != undefined) ? info.id : "";
-						let progress = ""
-						if (info.progressDetail != undefined) {
-							let progressDetail = info.progressDetail
-							if (!isNaN(progressDetail.current / progressDetail.total)) {
-								progress = `[ ${String(Math.floor((progressDetail.current / progressDetail.total) * 100))}% ]`
-							}
-						}
-						let status = info.status
-						this.currentInstallAppText = status + ":" + id + " " + progress
 					}
 				} else {
 					this.currentInstallAppText = resData.message
