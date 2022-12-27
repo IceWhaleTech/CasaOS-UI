@@ -55,7 +55,7 @@
           <a class="is-flex is-justify-content-center" @click="openApp(item)">
             <b-image :class="item.state | dotClass" :src="item.icon"
                      :src-fallback="require('@/assets/img/app/default.png')"
-                     class="is-64x64 is-flex-grow-1" webp-fallback=".jpg"></b-image>
+                     class="is-64x64" webp-fallback=".jpg"></b-image>
             <!-- Unstable-->
             <cTooltip v-if="newAppIds.includes(item.id)" class="__position"></cTooltip>
           </a>

@@ -20,6 +20,7 @@ import Vue2TouchEvents from 'vue2-touch-events'
 import VueTour from 'vue-tour'
 import VueSocialSharing from 'vue-social-sharing'
 import VueSocketIOExt from 'vue-socket.io-extended';
+import message_bus from '@/events/message_bus.js'
 
 // Import Styles
 import '@/assets/scss/app.scss'
@@ -61,7 +62,7 @@ Vue.prototype.$wsProtocol = wsProtocol;
 
 // Create an EventBus
 Vue.prototype.$EventBus = new Vue();
-// Vue.prototype.$messageBus = message_bus;
+Vue.prototype.$messageBus = message_bus;
 
 new Vue({
     router,
