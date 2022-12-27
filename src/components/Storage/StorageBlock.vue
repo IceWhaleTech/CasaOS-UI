@@ -179,7 +179,7 @@ export default {
 	},
 	sockets: {
 		app_install(res) {
-			const data = res.body.data
+			const data = res.data
 			if (data.finished) {
 				this.checkSyncStatus();
 			}

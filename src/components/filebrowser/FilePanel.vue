@@ -229,7 +229,7 @@ import OperationStatusBar from './components/OperationStatusBar.vue';
 import GlobalActionButton from './components/GlobalActionButton.vue';
 import MountActionButton from './components/MountActionButton.vue';
 // storage settings requirement document
-import StorageSettings from "@/components/Storage/StorageSettings";
+import MergeStorages from "@/components/Storage/MergeStorages.vue";
 import {nanoid} from "nanoid";
 
 export default {
@@ -925,7 +925,7 @@ export default {
 		showStorageSettingsModal() {
 			this.$buefy.modal.open({
 				parent: this,
-				component: StorageSettings,
+				component: MergeStorages,
 				hasModalCard: true,
 				canCancel: false,
 				animation: "zoom-in",
@@ -938,7 +938,7 @@ export default {
 	},
 	sockets: {
 		file_operate(data) {
-			const taskList = data.body.file_operate.data
+			const taskList = data.file_operate.data
 			taskList.forEach(task => {
 				if (task.finished && task.to === this.currentPath) {
 					this.reload()

@@ -11,6 +11,7 @@
 import {api} from "./service.js";
 
 const PREFIX = "/container"
+const PREFIX2 = "/v2/app_management/container"
 
 const container = {
     // get container networks
@@ -24,8 +25,8 @@ const container = {
     },
 
     // get my app list
-    getMyAppList() {
-        return api.get(`${PREFIX}`);
+    getMyAppList(data) {
+        return api.get(`${PREFIX}`, data);
     },
 
     // get container info
@@ -81,6 +82,11 @@ const container = {
             docker_root_dir: value
         });
     },
+
+    // check container launch status
+    containerLauncherCheck(id) {
+        return api.get(`${PREFIX2}/${id}/healthcheck`);
+    }
 
 }
 
