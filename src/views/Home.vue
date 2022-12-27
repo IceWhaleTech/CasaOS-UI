@@ -135,12 +135,12 @@ export default {
       localStorage.removeItem('is_update')
     }
     if (sessionStorage.getItem('fromWelcome')) {
-      this.$messageBus['global_newvisit']()
+      this.$messageBus('global_newvisit')
       this.rssConfirm()
       // one-off consumption
       sessionStorage.removeItem('fromWelcome')
     }
-    this.$messageBus['global_visit']()
+    this.$messageBus('global_visit')
   },
   methods: {
 
