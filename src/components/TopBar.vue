@@ -25,7 +25,8 @@
       <!-- Account Dropmenu Start -->
       <b-dropdown animation="fade1" aria-role="list" class="navbar-item " @active-change="getUserInfo">
         <template #trigger>
-          <b-tooltip :active="!$store.state.isMobile" :label="$t('Account')" position="is-right" type="is-dark">
+          <b-tooltip :active="!$store.state.isMobile" :label="$t('Account')" position="is-right" type="is-dark"
+                     @click.native="$messageBus('account_setting')">
             <p role="button">
               <b-icon class="picon" icon="account" pack="casa"></b-icon>
             </p>

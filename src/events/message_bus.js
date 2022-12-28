@@ -19,8 +19,8 @@ module.exports = {
     global_visit: () => {
         return intermediateProcessor(`${sourceID}:global:global_visit`)
     },
-    account_setting: (a) => {
-        return intermediateProcessor("casaos-ui:topbar:account_setting", {value: a})
+    account_setting: () => {
+        return intermediateProcessor("casaos-ui:topbar:account_setting")
     },
     account_setting_logout: (a) => {
         return intermediateProcessor("casaos-ui:topbar:dashboardsetting_showsearchbar", {value: a})
