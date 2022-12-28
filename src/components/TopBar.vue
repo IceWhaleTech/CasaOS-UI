@@ -65,7 +65,8 @@
       <!-- Settings Dropmenu Start -->
       <b-dropdown ref="settingsDrop" animation="fade1" aria-role="list" class="navbar-item" @active-change="onOpen">
         <template #trigger>
-          <b-tooltip :active="!$store.state.isMobile" :label="$t('Settings')" position="is-right" type="is-dark">
+          <b-tooltip :active="!$store.state.isMobile" :label="$t('Settings')" position="is-right" type="is-dark"
+                     @click.native="$messageBus('dashboardsetting')">
             <p role="button">
               <b-icon :class="{'update-icon-dot': updateInfo.need_update }" class="picon" icon="tune"
                       pack="casa"></b-icon>
@@ -403,20 +404,32 @@ export default {
   },
   watch: {
     'barData.lang': {
-      handler(val) {
+      handler(val, oldValue) {
+        if (val === oldValue) {
+          return
+        }
         const lang = val.includes("_") ? val : "en_us";
+        this.$messageBus('dashboardsetting_language', val);
         this.setLang(lang)
       },
       deep: true
     },
     'barData.search_engine': {
-      handler(val) {
+      handler(val, oldValue) {
+        if (val === oldValue) {
+          return
+        }
+        this.$messageBus('dashboardsetting_searchengine', val);
         this.$store.commit('SET_SEARCH_ENGINE', val);
       },
       deep: true
     },
     'barData.search_switch': {
-      handler(val) {
+      handler(val, oldValue) {
+        if (val === oldValue) {
+          return
+        }
+        this.$messageBus('dashboardsetting_showsearchbar', val);
         this.$store.commit('SET_SEARCH_ENGINE_SWITCH', val);
       },
       deep: true
@@ -680,6 +693,7 @@ export default {
     },
 
     logout() {
+      this.$messageBus('account_setting_logout')
       this.$store.commit('SET_DEFAULT_WALLPAPER')
       this.$router.push("/logout");
     },

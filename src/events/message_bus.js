@@ -1,5 +1,24 @@
 const sourceID = "casaos-ui";
-const publicParameter = {};
+const store = {
+    state: {
+        device_id: "xxx",
+        access_id: "dsdad",
+        casaos_version: "1.0.0",
+        casaos_channels: "1.0.0",
+        casaos_lang: "zh",
+        hw_id: "ddddd",
+        hw_brand: "dsasdsa"
+    }
+}
+const publicParameter = {
+    "device_id": store.state.device_id,
+    "access_id": "dsdad",
+    "casaos_version": "1.0.0",
+    "casaos_channels": "1.0.0",
+    "casaos_lang": "zh",
+    "hw_id": "ddddd",
+    "hw_brand": "dsasdsa"
+};
 
 function intermediateProcessor(name, ownParameter) {
     return {
@@ -202,6 +221,5 @@ module.exports = {
     appstore_close: () => {
         return intermediateProcessor("casaos-ui:appstore:appstore_close")
     },
-
 
 }
