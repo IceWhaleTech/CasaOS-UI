@@ -83,12 +83,7 @@
           <b-button v-else-if="noticeData.operate.type === 'casaUI:eventBus'" :disabled="false" class="width" rounded
                     size="is-small"
                     type="is-primary"
-                    @click="$EventBus.$emit(noticeData.operate.event, noticeData.operate.path)">
-            {{ $t(noticeData.operate.title) }}
-          </b-button>
-          <b-button v-else :disabled="false" class="width" rounded size="is-small"
-                    type="is-primary"
-                    @click="$EventBus.$emit(noticeData.operate.event, noticeData.operate.path)">
+                    @click="eventBus">
             {{ $t(noticeData.operate.title) }}
           </b-button>
         </template>
@@ -191,6 +186,8 @@ export default {
 
   methods: {
     close() {
+      this.$messageBus('youshouldknow_cardclose');
+
       if (this.noticeData.contentType === 'progress') {
         this.$emit('deleteNotice', this.noticeData, this.noticeType);
         return
@@ -203,6 +200,10 @@ export default {
         this.$emit('deleteNotice', this.noticeData, this.noticeType);
       });
     },
+    eventBus(){
+      this.$messageBus('youshouldknow_cardaction');
+      this.$EventBus.$emit(this.noticeData.operate.event, this.noticeData.operate.path)
+    }
   }
 }
 </script>

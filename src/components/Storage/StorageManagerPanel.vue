@@ -55,20 +55,6 @@
             </b-button>
             <cToolTip isBlock></cToolTip>
           </div>
-					<div v-if="activeTab == 0 && !mergeConbinationsStorageData.length"
-					     class="is-flex is-flex-direction-row-reverse">
-						<b-button v-show="hasMergeState" :type="state_mainstorage_operability" class="width" rounded size="is-small"
-						          @click="showStorageSettingsModal">{{ $t('Merge Storages') }}
-						</b-button>
-						<cToolTip isBlock></cToolTip>
-					</div>
-          <div v-if="activeTab == 0 && !mergeConbinationsStorageData.length"
-               class="is-flex is-flex-direction-row-reverse">
-            <b-button :type="state_mainstorage_operability" class="width" rounded size="is-small"
-                      @click="showStorageSettingsModal">{{ $t('Merge Storages') }}
-            </b-button>
-            <cToolTip isBlock></cToolTip>
-          </div>
 
         </div>
         <!-- Storage and Disk List End -->
@@ -232,8 +218,25 @@ export default {
       if (this.unDiskData.length == 0) {
         return "is-link"
       }
-
     },
+  },
+
+  watch:{
+    'activeTab':{
+      handler(val, oldVal){
+        if(val === oldVal){
+          return
+        }
+        switch(val){
+          case 0:
+            this.$messageBus('storagemanager_storage');
+            break;
+          case 1:
+            this.$messageBus('storagemanager_drive');
+            break;
+        }
+      }
+    }
   },
 
   async created() {
@@ -418,6 +421,7 @@ export default {
       this.creatIsShow = false
     },
     showCreate() {
+      this.$messageBus('storagemanager_createstorage');
       this.creatIsShow = true
       let diskNumArray = this.storageData.map(disk => {
         if (disk.name.includes("Storage")) {
@@ -433,7 +437,7 @@ export default {
 
     // show storage settings modal
     showStorageSettingsModal() {
-      // TODO storage settings
+      this.$messageBus('storagemanager_mergestorage');
       this.$buefy.modal.open({
         parent: this,
         component: MergeStorages,

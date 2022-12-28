@@ -1,15 +1,15 @@
 <template>
-  <fullscreen class="fullScreen  pl-2 pt-2 pb-2" :class="[{'mt-5':!fullscreen},isVaild?'fdark-bg':'flight-bg']"
-              :fullscreen.sync="fullscreen" :teleport="true" :page-only="true" @change="onWindowResize">
-    <a class="fullscreen-button" @click="toggleFullScreen" v-if="isVaild">
+  <fullscreen :class="[{'mt-5':!fullscreen},isVaild?'fdark-bg':'flight-bg']" :fullscreen.sync="fullscreen"
+              :page-only="true" :teleport="true" class="fullScreen  pl-2 pt-2 pb-2" @change="onWindowResize">
+    <a v-if="isVaild" class="fullscreen-button" @click="toggleFullScreen">
       <b-icon :icon="buttonIcon"></b-icon>
     </a>
     <div id="terminal" class="is-flex is-align-items-center is-justify-content-center">
-      <div class="card card-shadow mb-6" v-if="!isVaild">
+      <div v-if="!isVaild" class="card card-shadow mb-6">
         <div class="card-content">
           <div class="content">
-            <b-notification auto-close type="is-danger" v-model="notificationShow" aria-close-label="Close notification"
-                            role="alert" :closable="false">
+            <b-notification v-model="notificationShow" :closable="false" aria-close-label="Close notification" auto-close
+                            role="alert" type="is-danger">
               {{ $t(message) }}
             </b-notification>
             <b-field :label="$t('Username')">
@@ -17,15 +17,15 @@
             </b-field>
 
             <b-field :label="$t('Password')">
-              <b-input type="password" v-model="sshPassword" name="password" password-reveal>
+              <b-input v-model="sshPassword" name="password" password-reveal type="password">
               </b-input>
             </b-field>
 
             <b-field :label="$t('Port')">
-              <b-input type="number" v-model="sshPort" name="port"></b-input>
+              <b-input v-model="sshPort" name="port" type="number"></b-input>
             </b-field>
             <div class="buttons mt-5">
-              <b-button type="is-primary" rounded expanded @click="checkLogin" :loading="isConnecting">{{
+              <b-button :loading="isConnecting" expanded rounded type="is-primary" @click="checkLogin">{{
                   $t('Connect')
                 }}
               </b-button>
@@ -34,7 +34,7 @@
         </div>
       </div>
 
-      <div id="xterm" class="xterm" :class="[fullscreen ? 'fullheight':'sheight']" v-else></div>
+      <div v-else id="xterm" :class="[fullscreen ? 'fullheight':'sheight']" class="xterm"></div>
     </div>
   </fullscreen>
 </template>
@@ -100,6 +100,7 @@ export default {
 
   methods: {
     async checkLogin() {
+      this.$messageBus('terminallogs_connect')
       this.isConnecting = true
       let postData = {
         username: String(this.sshUser),

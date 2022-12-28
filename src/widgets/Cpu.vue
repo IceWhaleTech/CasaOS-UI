@@ -104,6 +104,23 @@ export default {
 			powerList: [],
 		}
 	},
+  watch:{
+    'activeTab':{
+      handler(val, oldVal){
+        if(val === oldVal){
+          return
+        }
+        switch(val){
+          case 0:
+            this.$messageBus('widget_cpu');
+            break;
+          case 1:
+            this.$messageBus('widget_ram');
+            break;
+        }
+      }
+    }
+  },
 	created() {
 		this.cpuCores = this.$store.state.hardwareInfo.cpu.num
 		this.totalMemory = this.$store.state.hardwareInfo.mem.total
@@ -202,6 +219,12 @@ export default {
 		 */
 		showMoreInfo() {
 			this.showMore = !this.showMore;
+      if(this.showMore){
+        this.$messageBus('widget_systemstatus', 'open')
+      }else {
+        this.$messageBus('widget_systemstatus', 'close')
+
+      }
 		},
 
 		pushPower(power) {

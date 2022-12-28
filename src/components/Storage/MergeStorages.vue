@@ -355,6 +355,8 @@ export default {
       this.$emit('close')
     },
     async test() {
+      // submit
+      this.$messageBus('storagemanager_mergestorage');
       let notEmpty = await this.$api.folder.getFolderSize('/DATA').then(res => {
         return res.data.data
       }).catch(e => {

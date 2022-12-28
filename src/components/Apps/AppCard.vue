@@ -24,7 +24,7 @@
         <b-dropdown-item :focusable="false" aria-role="menu-item" custom>
           <b-button expanded tag="a" type="is-text" @click="openApp(item)">{{ $t('Open') }}</b-button>
           <b-button expanded type="is-text" @click="configApp">{{ $t('Setting') }}</b-button>
-          <b-button expanded type="is-text" @click="qucikInstall(item.id)">{{ $t('Clone') }}</b-button>
+          <b-button expanded type="is-text" @click="qucikInstall(item.storeId)">{{ $t('Clone') }}</b-button>
           <b-button :loading="isUninstalling" class="mb-1" expanded type="is-text" @click="uninstallConfirm">
             {{ $t('Uninstall') }}
           </b-button>
@@ -184,6 +184,7 @@ export default {
      * @return {*} void
      */
     restartApp() {
+      this.$messageBus('apps_restart', this.item.name);
       this.isRestarting = true
       this.$api.container.updateState(this.item.id, "restart").then((res) => {
         if (res.data.success === 200) {
@@ -206,6 +207,7 @@ export default {
      * @return {*} void
      */
     uninstallConfirm() {
+      this.$messageBus('apps_uninstall', this.item.name);
       this.$refs.dro.isActive = false
       this.$buefy.dialog.confirm({
         title: this.$t('Attention'),
@@ -277,6 +279,7 @@ export default {
      * @return {*} void
      */
     configApp() {
+      this.$messageBus('apps_setting', this.item.name);
       this.$refs.dro.isActive = false
       this.$emit("configApp", this.item, true)
     },
@@ -287,6 +290,7 @@ export default {
      * @return {*} void
      */
     toggle(item) {
+      this.$messageBus('apps_stop', item.name);
       this.isStarting = true;
       const state = item.state === "running" ? "stop" : "start"
 
@@ -397,9 +401,6 @@ export default {
     },
   },
 
-  mounted() {
-    console.log(this.item)
-  }
 }
 </script>
 

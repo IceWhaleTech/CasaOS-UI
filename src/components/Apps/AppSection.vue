@@ -256,7 +256,9 @@ export default {
 		 * @return {*} void
 		 */
 		async showInstall(storeId = 0, mode) {
-
+      if(mode === 'custom'){
+        this.$messageBus('apps_custominstall');
+      }
 			this.isShowing = true
 
 			const networks = await this.$api.container.getNetworks();
@@ -297,6 +299,7 @@ export default {
 		 * @return {*}
 		 */
 		async showConfigPanel(item, isCasa) {
+      this.$messageBus('appsexsiting_open', item.name);
 			if (item.type === 'LinkApp') {
 				await this.showExternalLinkPanel(item)
 				return
@@ -346,6 +349,7 @@ export default {
 				animation: "zoom-in",
 				events: {
 					'updateState': () => {
+            this.$messageBus('apps_external');
 						this.getList()
 					}
 				},

@@ -23,6 +23,7 @@ export default {
             window.open(routeUrl.href, '_blank');
         },
         openThirdApp(appInfo) {
+            this.$messageBus('apps_open', appInfo.name);
             if (appInfo.host !== "" || appInfo.port !== "" || appInfo.index !== "") {
                 const hostIp = appInfo.host || this.$baseIp
                 const protocol = appInfo.protocol || 'http'

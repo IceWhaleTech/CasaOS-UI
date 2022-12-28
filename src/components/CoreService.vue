@@ -56,6 +56,20 @@ export default {
       return this.noticeLength === 1 && !this.recommendShow
     }
   },
+  watch:{
+    noticeLength:{
+      handler(val, oldValue) {
+        if (val === oldValue) {
+          return
+        }
+        if(val === 0){
+          this.$messageBus('youshouldknow_show', false);
+        }else if(oldValue === 0){
+          this.$messageBus('youshouldknow_show', true);
+        }
+      },
+    }
+  },
   data() {
     return {
       notice: "local-storage",
@@ -80,6 +94,12 @@ export default {
           prevEl: '.swiper-button-prev'
         },
         observer: true,
+        on:{
+          slideChangeTransitionStart:()=>{
+            console.log(this)
+            this.$messageBus('youshouldknow_slide');
+          },
+        }
       },
       noticesData: {
         // example data:

@@ -114,6 +114,7 @@ export default {
 		},
 
 		showDiskManagement() {
+      this.$messageBus('widget_storagemanager');
 			this.$buefy.modal.open({
 				parent: this,
 				component: StorageManagerPanel,

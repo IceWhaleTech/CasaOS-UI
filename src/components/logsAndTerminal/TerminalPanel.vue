@@ -15,7 +15,7 @@
     <section class="modal-card-body " style="overflow:hidden">
       <h3 class="title is-3">CasaOS</h3>
       <div class="close-container">
-        <button type="button" class="delete" @click="$emit('close')"/>
+        <button class="delete" type="button" @click="$emit('close')"/>
       </div>
       <div class="is-flex-grow-1">
         <b-tabs :animated="false" @input="onInput">
@@ -32,7 +32,7 @@
     </section>
     <!-- Modal-Card Body End -->
 
-    <b-loading :is-full-page="false" v-model="isLoading"></b-loading>
+    <b-loading v-model="isLoading" :is-full-page="false"></b-loading>
   </div>
 </template>
 
@@ -72,9 +72,11 @@ export default {
       if (e == "terminal") {
         this.$refs.terminal.active(true)
         this.$refs.logs.active(false)
+        this.$messageBus('terminallogs_terminal')
       } else {
         this.$refs.terminal.active(false)
         this.$refs.logs.active(true)
+        this.$messageBus('terminallogs_logs')
       }
     }
   },

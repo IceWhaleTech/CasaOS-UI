@@ -435,7 +435,11 @@ export default {
       deep: true
     },
     "barData.existing_apps_switch": {
-      handler(val) {
+      handler(val, oldValue) {
+        if (val === oldValue) {
+          return
+        }
+        this.$messageBus('dashboardsetting_showexistingapp', val);
         this.$store.commit('SET_EXISTING_APPS_SWITCH', val);
       },
       deep: true
@@ -447,7 +451,11 @@ export default {
       deep: true
     },
     'barData.rss_switch': {
-      handler(val) {
+      handler(val,oldValue) {
+        if (val === oldValue) {
+          return
+        }
+        this.$messageBus('dashboardsetting_news', val);
         this.rss_switch = val;
         this.$store.commit('SET_RSS_SWITCH', val);
       },
@@ -592,6 +600,7 @@ export default {
      */
     usbAutoMount() {
       if (this.autoUsbMount) {
+        this.$messageBus('dashboardsetting_automountusb', true)
         this.$api.sys.toggleUsbAutoMount({state: "on"})
         // Show
         if (this.isRaspberryPi) {
@@ -603,6 +612,7 @@ export default {
         }
 
       } else {
+        this.$messageBus('dashboardsetting_automountusb', false)
         this.$api.sys.toggleUsbAutoMount({state: "off"})
       }
     },
@@ -631,6 +641,9 @@ export default {
       this.$api.sys.getVersion().then(res => {
         if (res.data.success == 200) {
           this.updateInfo = res.data.data
+          if (res.data.data.need_update) {
+            this.$messageBus('dashboardsetting_versionavailable_show', true)
+          }
         }
       })
     },
@@ -640,6 +653,7 @@ export default {
      * @return {*} void
      */
     showUpdateModal() {
+      this.$messageBus('dashboardsetting_versionupdate', true);
       this.$buefy.modal.open({
         parent: this,
         component: UpdateModal,
@@ -708,6 +722,7 @@ export default {
      * @return {*} void
      */
     showTerminalPanel() {
+      this.$messageBus('terminallogs')
       this.$store.commit('SET_SIDEBAR_CLOSE')
       this.$buefy.modal.open({
         parent: this,
@@ -751,11 +766,13 @@ export default {
       this.showPower = true
       switch (key) {
         case "Restart":
+          this.$messageBus('dashboardsetting_reboot');
           this[key.toLowerCase()] = key
           this.showPowerTitle = 'Restarting now'
           this.showPowerMessage = 'Please wait for about 30 seconds before cutting off the power.'
           break;
         case "Shutdown":
+          this.$messageBus('dashboardsetting_shutdown');
           this[key.toLowerCase()] = key
           this.showPowerTitle = 'Now shutting down'
           this.showPowerMessage = 'Please wait for about 90 seconds.'
