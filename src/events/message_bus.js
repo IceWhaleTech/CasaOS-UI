@@ -141,7 +141,7 @@ module.exports = {
     },
 
     youshouldknow_show: isShow => {
-        return intermediateProcessor("casaos-ui:youshouldknow:youshouldknow_show", {value: isShow.toString()})
+        return intermediateProcessor("casaos-ui:youshouldknow:youshouldknow_show", {value: isShow})
     },
     youshouldknow_slide: () => {
         return intermediateProcessor("casaos-ui:youshouldknow:youshouldknow_slide")

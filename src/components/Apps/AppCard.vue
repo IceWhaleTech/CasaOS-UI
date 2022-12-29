@@ -153,7 +153,6 @@ export default {
 				window.open(item.host, '_blank');
 			} else {
 				this.$refs.dro.isActive = false
-				debugger
 				if (item.state === 'running') {
 					this.openAppToNewWindow(item)
 				}
