@@ -1,3 +1,12 @@
+/*
+ * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ * @LastEditTime: 2022/12/29 下午1:17
+ * @FilePath: /CasaOS-UI/src/events/message_bus.js
+ * @Description:
+ *
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
+ */
+
 const sourceID = "casaos-ui";
 const store = {
     state: {
@@ -132,7 +141,7 @@ module.exports = {
     },
 
     youshouldknow_show: isShow => {
-        return intermediateProcessor("casaos-ui:youshouldknow:youshouldknow_show", {value: isShow})
+        return intermediateProcessor("casaos-ui:youshouldknow:youshouldknow_show", {value: isShow.toString()})
     },
     youshouldknow_slide: () => {
         return intermediateProcessor("casaos-ui:youshouldknow:youshouldknow_slide")
