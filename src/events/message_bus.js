@@ -8,25 +8,29 @@
  */
 
 const sourceID = "casaos-ui";
-const store = {
-    state: {
-        device_id: "xxx",
-        access_id: "dsdad",
-        casaos_version: "1.0.0",
-        casaos_channels: "1.0.0",
-        casaos_lang: "zh",
-        hw_id: "ddddd",
-        hw_brand: "dsasdsa"
-    }
-}
+// const store = {
+//     state: {
+//         device_id: "xxx",
+//         access_id: "dsdad",
+//         casaos_version: "1.0.0",
+//         casaos_channels: "1.0.0",
+//         casaos_lang: "zh",
+//         hw_id: "ddddd",
+//         hw_brand: "dsasdsa"
+//     }
+// }
+// import state from "@/store/state.js";
+// import store from '@/store'
+let store = require('@/store');
+
 const publicParameter = {
-    "device_id": store.state.device_id,
-    "access_id": "dsdad",
-    "casaos_version": "1.0.0",
-    "casaos_channels": "1.0.0",
-    "casaos_lang": "zh",
-    "hw_id": "ddddd",
-    "hw_brand": "dsasdsa"
+    "device_id": store.default.state.device_id,
+    "access_id": store.default.state.access_id,
+    "casaos_version": store.default.state.casaos_version,
+    "casaos_channels": store.default.state.casaos_channels,
+    "casaos_lang": store.default.state.casaos_lang,
+    "hw_id": store.default.state.hw_id,
+    "hw_brand": store.default.state.hw_brand,
 };
 
 function intermediateProcessor(name, ownParameter) {

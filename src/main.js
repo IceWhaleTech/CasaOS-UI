@@ -21,6 +21,7 @@ import VueTour from 'vue-tour'
 import VueSocialSharing from 'vue-social-sharing'
 import VueSocketIOExt from 'vue-socket.io-extended';
 import messageBus from '@/events/index.js'
+// let messageBus = require('@/events/index.js');
 // Import Styles
 import '@/assets/scss/app.scss'
 import 'vue-tour/dist/vue-tour.css'

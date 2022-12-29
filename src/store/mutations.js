@@ -108,5 +108,9 @@ const mutations = {
         return state.shortcutData
     },
 
+    // public params
+    SET_DEVICE_ID(state, val) {
+        state.device_id = val
+    }
 }
 export default mutations
