@@ -12,7 +12,8 @@
 	<div :class="{'_max-width-320': currentStep===1 ||currentStep===3 || currentStep ===4 }" class="modal-card">
 		<!--    head-->
 		<header :class="{'pri-head':currentStep<=2}" class="modal-card-head ">
-			<b-icon v-if="currentStep === 1" class="mr-2" custom-class="_has-text-red-default" icon="danger" pack="casa"
+			<b-icon v-if="currentStep === 1" class="mr-2 has-text-red" custom-class="_has-text-red-default" icon="danger"
+			        pack="casa"
 			        size="is-20"></b-icon>
 			<div class="is-flex-grow-1">
 				<h3 class=" title is-3">{{ $t(title) }}
