@@ -24,7 +24,7 @@
 				<b-dropdown-item :focusable="false" aria-role="menu-item" custom>
 					<b-button expanded tag="a" type="is-text" @click="openApp(item)">{{ $t('Open') }}</b-button>
 					<b-button expanded type="is-text" @click="configApp">{{ $t('Setting') }}</b-button>
-					<b-button expanded type="is-text" @click="qucikInstall(item.storeId)">{{ $t('Clone') }}</b-button>
+					<b-button expanded type="is-text" @click="qucikInstall(item.appstore_id)">{{ $t('Clone') }}</b-button>
 					<b-button :loading="isUninstalling" class="mb-1" expanded type="is-text" @click="uninstallConfirm">
 						{{ $t('Uninstall') }}
 					</b-button>
@@ -57,7 +57,7 @@
 						         :src-fallback="require('@/assets/img/app/default.png')"
 						         class="is-64x64" webp-fallback=".jpg"></b-image>
 						<!-- Unstable-->
-						<cTooltip v-if="newAppIds.includes(item.id)" class="__position"></cTooltip>
+						<cTooltip v-if="newAppIds.includes(item.id)" class="__position" content="New"></cTooltip>
 					</a>
 					<p class="mt-3 one-line">
 						<a class="one-line" @click="openApp(item)">
@@ -350,6 +350,7 @@ export default {
 					initData.cmd = isNull(respData.cmd) ? [] : respData.cmd
 					initData.privileged = respData.privileged
 					initData.host_name = respData.host_name
+					initData.appstore_id = id
 
 					this.$api.container.install(initData).then((res) => {
 						this.isLoading = false;

@@ -27,7 +27,7 @@ export default {
 		},
 		content: {
 			type: String,
-			default: "Bate"
+			default: "Beta"
 		}
 	},
 	computed: {
