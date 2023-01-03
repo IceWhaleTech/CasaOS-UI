@@ -1,3 +1,12 @@
+/*
+ * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ * @LastEditTime: 2023/1/3 下午8:51
+ * @FilePath: /CasaOS-UI/message_bus.build.js
+ * @Description:
+ *
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
+ */
+
 const events = require('./src/events/message_bus.js');
 const fs = require('fs');
 const path = require('path');
@@ -24,7 +33,7 @@ Object.keys(events).forEach((key) => {
 
 
 // Create the output folder
-fs.mkdir(outPath, { recursive: true }, (err) => {
+fs.mkdir(outPath, {recursive: true}, (err) => {
     if (err) {
         console.log(err);
     } else {
@@ -40,12 +49,9 @@ fs.mkdir(outPath, { recursive: true }, (err) => {
 });
 
 
-
-
-
 // Copy the register shell file to the output folder
 
-fs.mkdir(registerShellPath, { recursive: true }, (err) => {
+fs.mkdir(registerShellPath, {recursive: true}, (err) => {
     if (err) {
         console.log(err);
     } else {
