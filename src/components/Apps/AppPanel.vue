@@ -212,9 +212,11 @@
 												<p class="is-size-7 two-line">{{ item.tagline }}</p>
 											</div>
 											<div>
-												<b-button :loading="item.id == currentInstallId" rounded size="is-small"
-												          type="is-primary is-light"
-												          @click="qucikInstall(item.id)">{{ $t('Install') }}
+												<b-button v-if="item.state===0" :loading="item.id == currentInstallId" rounded size="is-small"
+												          type="is-primary is-light" @click="qucikInstall(item.id)">{{ $t('Install') }}
+												</b-button>
+												<b-button v-if="item.state===1" :loading="item.id == currentInstallId" rounded size="is-small"
+												          type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">{{ $t('Open') }}
 												</b-button>
 											</div>
 										</div>
@@ -337,8 +339,11 @@
 									</div>
 									<div class="mt-1 ml-7 is-flex is-align-items-center">
 										<div class="is-flex-grow-1 is-size-7 has-text-grey-light	">{{ item.category }}</div>
-										<b-button :loading="item.id == currentInstallId" rounded size="is-small" type="is-primary is-light"
-										          @click="qucikInstall(item.id)">{{ $t('Install') }}
+										<b-button v-if="item.state===0" :loading="item.id == currentInstallId" rounded size="is-small"
+										          type="is-primary is-light" @click="qucikInstall(item.id)">{{ $t('Install') }}
+										</b-button>
+										<b-button v-if="item.state===1" :loading="item.id == currentInstallId" rounded size="is-small"
+										          type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">{{ $t('Open') }}
 										</b-button>
 									</div>
 								</div>

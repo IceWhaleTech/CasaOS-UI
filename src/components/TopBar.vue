@@ -769,13 +769,13 @@ export default {
 					this.$messageBus('dashboardsetting_reboot');
 					this[key.toLowerCase()] = key
 					this.showPowerTitle = 'Restarting now'
-					this.showPowerMessage = 'Please wait for about 30 seconds before cutting off the power.'
+					this.showPowerMessage = 'Please wait for about 90 seconds.'
 					break;
 				case "Shutdown":
 					this.$messageBus('dashboardsetting_shutdown');
 					this[key.toLowerCase()] = key
 					this.showPowerTitle = 'Now shutting down'
-					this.showPowerMessage = 'Please wait for about 90 seconds.'
+					this.showPowerMessage = 'Please wait for about 30 seconds before cutting off the power.'
 					break;
 			}
 			let timer;

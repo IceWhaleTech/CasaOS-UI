@@ -418,7 +418,12 @@ export default {
 						try {
 							await container.updateState(item.id, "start")
 						} catch (e) {
-							console.log(e)
+							this.$buefy.toast.open({
+								duration: 5000,
+								message: e.response.data.data || e.response.data.message,
+								position: "is-top",
+								type: 'is-danger'
+							})
 						}
 					})
 				}).catch((e) => {
