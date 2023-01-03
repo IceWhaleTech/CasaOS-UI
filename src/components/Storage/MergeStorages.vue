@@ -411,17 +411,24 @@ export default {
 				Promise.all(dockerInfo.map(async item => {
 					await container.updateState(item.id, "stop")
 				})).then(() => {
-					this.$api.local_storage.initMergerfs({"mount_point": "/DATA"}).catch(e => {
-						this.$buefy.toast.open({
-							message: e.response.data.data || e.response.data.message,
-							type: "is-danger",
-							position: "is-top",
-							duration: 5000,
-						});
+					this.$api.local_storage.getInitMergerfsStatus().then(res => {
+						if (res.data.data !== 'initialized') {
+							this.$api.local_storage.initMergerfs({"mount_point": "/DATA"}).then(() => {
+								this.updateMerge(dockerInfo)
+								this.isConnecting = false
+							}).catch(e => {
+								this.$buefy.toast.open({
+									message: e.response.data.data || e.response.data.message,
+									type: "is-danger",
+									position: "is-top",
+									duration: 5000,
+								});
+							})
+						} else {
+							this.updateMerge(dockerInfo)
+							this.isConnecting = false
+						}
 					})
-				}).then(() => {
-					this.updateMerge(dockerInfo)
-					this.isConnecting = false
 				}).catch((e) => {
 					this.isConnecting = false
 					this.$buefy.toast.open({

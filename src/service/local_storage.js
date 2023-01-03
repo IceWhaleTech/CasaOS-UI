@@ -32,6 +32,11 @@ const local_storage = {
         return api.post(`${PREFIX}/merge/init`, data);
     },
 
+    // get mergerfs status
+    getInitMergerfsStatus() {
+        return api.get(`${PREFIX}/merge/init`);
+    },
+
     // delete the storage list mounted to the mergerfs
     delete(data) {
         return api.delete(`${PREFIX}/mount`, data);
