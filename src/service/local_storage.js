@@ -27,6 +27,11 @@ const local_storage = {
         return api.put(`${PREFIX}/mount?mount_point=${data.mount_point}`, data);
     },
 
+    // init mergerfs
+    initMergerfs(data) {
+        return api.post(`${PREFIX}/merge/init`, data);
+    },
+
     // delete the storage list mounted to the mergerfs
     delete(data) {
         return api.delete(`${PREFIX}/mount`, data);
