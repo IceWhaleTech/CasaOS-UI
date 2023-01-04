@@ -13,7 +13,7 @@ const sourceID = "casaos-ui";
 
 // console.log(store.default.state.access_id)
 
-function intermediateProcessor(name, ownParameter) {
+async function intermediateProcessor(name, ownParameter) {
     // let publicParameter = {
     //     "device_id": store.default.state.device_id.toString(),
     //     "access_id": store.default.state.access_id.toString(),
@@ -33,7 +33,8 @@ function intermediateProcessor(name, ownParameter) {
         "hw_brand": "123456789",
     }
     if (typeof window !== 'undefined') {
-        store = import('../store').default.state;
+        let state = await import('../store').then((module) => module.default);
+        store = state.state;
     }
     let publicParameter = {
         "device_id": store.device_id.toString(),
@@ -56,194 +57,194 @@ function intermediateProcessor(name, ownParameter) {
 }
 
 module.exports = {
-    global_newvisit: () => {
-        return intermediateProcessor(`${sourceID}:global:global_newvisit`)
+    global_newvisit: async () => {
+        return await intermediateProcessor(`${sourceID}:global:global_newvisit`)
     },
-    global_visit: () => {
-        return intermediateProcessor(`${sourceID}:global:global_visit`)
+    global_visit: async () => {
+        return await intermediateProcessor(`${sourceID}:global:global_visit`)
     },
-    account_setting: () => {
-        return intermediateProcessor("casaos-ui:topbar:account_setting")
+    account_setting: async () => {
+        return await intermediateProcessor("casaos-ui:topbar:account_setting")
     },
-    account_setting_logout: (a) => {
-        return intermediateProcessor("casaos-ui:topbar:dashboardsetting_showsearchbar", {value: a})
+    account_setting_logout: async (a) => {
+        return await intermediateProcessor("casaos-ui:topbar:dashboardsetting_showsearchbar", {value: a})
     },
-    dashboardsetting: () => {
-        return intermediateProcessor("casaos-ui:topbar:dashboardsetting_setting")
+    dashboardsetting: async () => {
+        return await intermediateProcessor("casaos-ui:topbar:dashboardsetting_setting")
     },
-    dashboardsetting_showsearchbar: (isTrue) => {
-        return intermediateProcessor("casaos-ui:topbar:dashboardsetting_showsearchbar", {value: isTrue})
+    dashboardsetting_showsearchbar: async (isTrue) => {
+        return await intermediateProcessor("casaos-ui:topbar:dashboardsetting_showsearchbar", {value: isTrue})
     },
-    dashboardsetting_searchengine: (whichSearchengine) => {
-        return intermediateProcessor("casaos-ui:topbar:dashboardsetting_searchengine", {value: whichSearchengine})
+    dashboardsetting_searchengine: async (whichSearchengine) => {
+        return await intermediateProcessor("casaos-ui:topbar:dashboardsetting_searchengine", {value: whichSearchengine})
     },
-    dashboardsetting_language: (whichLanguage) => {
-        return intermediateProcessor("casaos-ui:topbar:dashboardsetting_language", {value: whichLanguage})
+    dashboardsetting_language: async (whichLanguage) => {
+        return await intermediateProcessor("casaos-ui:topbar:dashboardsetting_language", {value: whichLanguage})
     },
-    dashboardsetting_webuiport: num => {
-        return intermediateProcessor("casaos-ui:topbar:dashboardsetting_webuiport", {value: num})
+    dashboardsetting_webuiport: async num => {
+        return await intermediateProcessor("casaos-ui:topbar:dashboardsetting_webuiport", {value: num})
     },
-    dashboardsetting_wallpaper: wallpaper => {
-        return intermediateProcessor("casaos-ui:topbar:dashboardsetting_wallpaper", {value: wallpaper})
+    dashboardsetting_wallpaper: async wallpaper => {
+        return await intermediateProcessor("casaos-ui:topbar:dashboardsetting_wallpaper", {value: wallpaper})
     },
-    dashboardsetting_showexistingapp: isShow => {
-        return intermediateProcessor("casaos-ui:topbar:dashboardsetting_showexistingapp", {value: isShow})
+    dashboardsetting_showexistingapp: async isShow => {
+        return await intermediateProcessor("casaos-ui:topbar:dashboardsetting_showexistingapp", {value: isShow})
     },
-    dashboardsetting_news: isShow => {
-        return intermediateProcessor("casaos-ui:topbar:dashboardsetting_news", {value: isShow})
+    dashboardsetting_news: async isShow => {
+        return await intermediateProcessor("casaos-ui:topbar:dashboardsetting_news", {value: isShow})
     },
-    dashboardsetting_automountusb: isShow => {
-        return intermediateProcessor("casaos-ui:topbar:dashboardsetting_automountusb", {value: isShow})
+    dashboardsetting_automountusb: async isShow => {
+        return await intermediateProcessor("casaos-ui:topbar:dashboardsetting_automountusb", {value: isShow})
     },
-    dashboardsetting_versionavailable_show: isTrue => {
-        return intermediateProcessor("casaos-ui:topbar:dashboardsetting_versionavailable_show", {value: isTrue})
+    dashboardsetting_versionavailable_show: async isTrue => {
+        return await intermediateProcessor("casaos-ui:topbar:dashboardsetting_versionavailable_show", {value: isTrue})
     },
-    dashboardsetting_versionupdate: isTrue => {
-        return intermediateProcessor("casaos-ui:topbar:dashboardsetting_versionupdate", {value: isTrue})
+    dashboardsetting_versionupdate: async isTrue => {
+        return await intermediateProcessor("casaos-ui:topbar:dashboardsetting_versionupdate", {value: isTrue})
     },
-    dashboardsetting_reboot: () => {
-        return intermediateProcessor("casaos-ui:topbar:dashboardsetting_reboot")
+    dashboardsetting_reboot: async () => {
+        return await intermediateProcessor("casaos-ui:topbar:dashboardsetting_reboot")
     },
-    dashboardsetting_shutdown: () => {
-        return intermediateProcessor("casaos-ui:topbar:dashboardsetting_shutdown")
+    dashboardsetting_shutdown: async () => {
+        return await intermediateProcessor("casaos-ui:topbar:dashboardsetting_shutdown")
     },
-    terminallogs: () => {
-        return intermediateProcessor("casaos-ui:topbar:terminallogs")
+    terminallogs: async () => {
+        return await intermediateProcessor("casaos-ui:topbar:terminallogs")
     },
-    terminallogs_terminal: () => {
-        return intermediateProcessor("casaos-ui:topbar:terminallogs_terminal")
+    terminallogs_terminal: async () => {
+        return await intermediateProcessor("casaos-ui:topbar:terminallogs_terminal")
     },
-    terminallogs_connect: () => {
-        return intermediateProcessor("casaos-ui:topbar:terminallogs_connect")
+    terminallogs_connect: async () => {
+        return await intermediateProcessor("casaos-ui:topbar:terminallogs_connect")
     },
-    terminallogs_logs: () => {
-        return intermediateProcessor("casaos-ui:topbar:terminallogs_logs")
-    },
-
-    widget_systemstatus: (status) => {
-        return intermediateProcessor("casaos-ui:topbar:widget_systemstatus", {value: status})
-    },
-    widget_cpu: () => {
-        return intermediateProcessor("casaos-ui:widget:widget_cpu")
-    },
-    widget_ram: () => {
-        return intermediateProcessor("casaos-ui:widget:widget_ram")
-    },
-    widget_storagemanager: () => {
-        return intermediateProcessor("casaos-ui:widget:widget_storagemanager")
-    },
-    storagemanager_storage: () => {
-        return intermediateProcessor("casaos-ui:widget:storagemanager_storage")
-    },
-    storagemanager_createstorage: () => {
-        return intermediateProcessor("casaos-ui:widget:storagemanager_createstorage")
-    },
-    storagemanager_mergestorage: () => {
-        return intermediateProcessor("casaos-ui:widget:storagemanager_mergestorage")
-    },
-    storagemanager_drive: () => {
-        return intermediateProcessor("casaos-ui:widget:storagemanager_drive")
-    },
-    widget_widgetsetting: () => {
-        return intermediateProcessor("casaos-ui:widget:widget_widgetsetting")
+    terminallogs_logs: async () => {
+        return await intermediateProcessor("casaos-ui:topbar:terminallogs_logs")
     },
 
-    searchbar_show: () => {
-        return intermediateProcessor("casaos-ui:searchbar:searchbar_show")
+    widget_systemstatus: async (status) => {
+        return await intermediateProcessor("casaos-ui:topbar:widget_systemstatus", {value: status})
     },
-    searchbar_search: () => {
-        return intermediateProcessor("casaos-ui:searchbar:searchbar_search")
+    widget_cpu: async () => {
+        return await intermediateProcessor("casaos-ui:widget:widget_cpu")
     },
-
-    youshouldknow_show: isShow => {
-        return intermediateProcessor("casaos-ui:youshouldknow:youshouldknow_show", {value: isShow})
+    widget_ram: async () => {
+        return await intermediateProcessor("casaos-ui:widget:widget_ram")
     },
-    youshouldknow_slide: () => {
-        return intermediateProcessor("casaos-ui:youshouldknow:youshouldknow_slide")
+    widget_storagemanager: async () => {
+        return await intermediateProcessor("casaos-ui:widget:widget_storagemanager")
     },
-    youshouldknow_cardclose: () => {
-        return intermediateProcessor("casaos-ui:youshouldknow:youshouldknow_cardclose")
+    storagemanager_storage: async () => {
+        return await intermediateProcessor("casaos-ui:widget:storagemanager_storage")
     },
-    youshouldknow_cardaction: () => {
-        return intermediateProcessor("casaos-ui:youshouldknow:youshouldknow_cardaction")
+    storagemanager_createstorage: async () => {
+        return await intermediateProcessor("casaos-ui:widget:storagemanager_createstorage")
     },
-
-    apps_open: (name) => {
-        return intermediateProcessor("casaos-ui:app:apps_open", {value: name})
+    storagemanager_mergestorage: async () => {
+        return await intermediateProcessor("casaos-ui:widget:storagemanager_mergestorage")
     },
-    apps_setting: (name) => {
-        return intermediateProcessor("casaos-ui:app:apps_setting", {value: name})
+    storagemanager_drive: async () => {
+        return await intermediateProcessor("casaos-ui:widget:storagemanager_drive")
     },
-    apps_uninstall: (name) => {
-        return intermediateProcessor("casaos-ui:app:apps_uninstall", {value: name})
-    },
-    apps_restart: (name) => {
-        return intermediateProcessor("casaos-ui:app:apps_restart", {value: name})
-    },
-    apps_stop: (name) => {
-        return intermediateProcessor("casaos-ui:app:apps_stop", {value: name})
-    },
-    appsexsiting_open: (name) => {
-        return intermediateProcessor("casaos-ui:app:appsexsiting_open", {value: name})
-    },
-    appsexsiting_setting: (name) => {
-        return intermediateProcessor("casaos-ui:app:appsexsiting_setting", {value: name})
-    },
-    appscustom_open: (name) => {
-        return intermediateProcessor("casaos-ui:app:appscustom_open", {value: name})
-    },
-    appscustom_setting: (name) => {
-        return intermediateProcessor("casaos-ui:app:appscustom_setting", {value: name})
-    },
-    apps_custominstall: (name) => {
-        return intermediateProcessor("casaos-ui:app:apps_custominstall", {value: name})
-    },
-    apps_external: (name) => {
-        return intermediateProcessor("casaos-ui:app:apps_external", {value: name})
+    widget_widgetsetting: async () => {
+        return await intermediateProcessor("casaos-ui:widget:widget_widgetsetting")
     },
 
-    connect_news: () => {
-        return intermediateProcessor("casaos-ui:connect:connect_news")
+    searchbar_show: async () => {
+        return await intermediateProcessor("casaos-ui:searchbar:searchbar_show")
     },
-    connect_feedback: () => {
-        return intermediateProcessor("casaos-ui:connect:connect_feedback")
-    },
-    connect_discord: () => {
-        return intermediateProcessor("casaos-ui:connect:connect_discord")
-    },
-    connect_github: () => {
-        return intermediateProcessor("casaos-ui:connect:connect_github")
-    },
-    connect_sharecasaos: () => {
-        return intermediateProcessor("casaos-ui:connect:connect_sharecasaos")
+    searchbar_search: async () => {
+        return await intermediateProcessor("casaos-ui:searchbar:searchbar_search")
     },
 
-    appstore_install: (name) => {
-        return intermediateProcessor("casaos-ui:appstore:appstore_install", {value: name})
+    youshouldknow_show: async isShow => {
+        return await intermediateProcessor("casaos-ui:youshouldknow:youshouldknow_show", {value: isShow})
     },
-    appstore_detail: (name) => {
-        return intermediateProcessor("casaos-ui:appstore:appstore_detail", {value: name})
+    youshouldknow_slide: async () => {
+        return await intermediateProcessor("casaos-ui:youshouldknow:youshouldknow_slide")
     },
-    appstorecommunity_install: (name) => {
-        return intermediateProcessor("casaos-ui:appstore:appstorecommunity_install", {value: name})
+    youshouldknow_cardclose: async () => {
+        return await intermediateProcessor("casaos-ui:youshouldknow:youshouldknow_cardclose")
     },
-    appstorecommunity_detail: (name) => {
-        return intermediateProcessor("casaos-ui:appstore:appstorecommunity_detail", {value: name})
+    youshouldknow_cardaction: async () => {
+        return await intermediateProcessor("casaos-ui:youshouldknow:youshouldknow_cardaction")
     },
-    appstore_slide: () => {
-        return intermediateProcessor("casaos-ui:appstore:appstore_slide")
+
+    apps_open: async (name) => {
+        return await intermediateProcessor("casaos-ui:app:apps_open", {value: name})
     },
-    appstore_type: (type) => {
-        return intermediateProcessor("casaos-ui:appstore:appstore_type", {value: type})
+    apps_setting: async (name) => {
+        return await intermediateProcessor("casaos-ui:app:apps_setting", {value: name})
     },
-    appstore_sort: (type) => {
-        return intermediateProcessor("casaos-ui:appstore:appstore_sort", {value: type})
+    apps_uninstall: async (name) => {
+        return await intermediateProcessor("casaos-ui:app:apps_uninstall", {value: name})
     },
-    appstore_custominstall: () => {
-        return intermediateProcessor("casaos-ui:appstore:appstore_custominstall")
+    apps_restart: async (name) => {
+        return await intermediateProcessor("casaos-ui:app:apps_restart", {value: name})
     },
-    appstore_close: () => {
-        return intermediateProcessor("casaos-ui:appstore:appstore_close")
+    apps_stop: async (name) => {
+        return await intermediateProcessor("casaos-ui:app:apps_stop", {value: name})
+    },
+    appsexsiting_open: async (name) => {
+        return await intermediateProcessor("casaos-ui:app:appsexsiting_open", {value: name})
+    },
+    appsexsiting_setting: async (name) => {
+        return await intermediateProcessor("casaos-ui:app:appsexsiting_setting", {value: name})
+    },
+    appscustom_open: async (name) => {
+        return await intermediateProcessor("casaos-ui:app:appscustom_open", {value: name})
+    },
+    appscustom_setting: async (name) => {
+        return await intermediateProcessor("casaos-ui:app:appscustom_setting", {value: name})
+    },
+    apps_custominstall: async (name) => {
+        return await intermediateProcessor("casaos-ui:app:apps_custominstall", {value: name})
+    },
+    apps_external: async (name) => {
+        return await intermediateProcessor("casaos-ui:app:apps_external", {value: name})
+    },
+
+    connect_news: async () => {
+        return await intermediateProcessor("casaos-ui:connect:connect_news")
+    },
+    connect_feedback: async () => {
+        return await intermediateProcessor("casaos-ui:connect:connect_feedback")
+    },
+    connect_discord: async () => {
+        return await intermediateProcessor("casaos-ui:connect:connect_discord")
+    },
+    connect_github: async () => {
+        return await intermediateProcessor("casaos-ui:connect:connect_github")
+    },
+    connect_sharecasaos: async () => {
+        return await intermediateProcessor("casaos-ui:connect:connect_sharecasaos")
+    },
+
+    appstore_install: async (name) => {
+        return await intermediateProcessor("casaos-ui:appstore:appstore_install", {value: name})
+    },
+    appstore_detail: async (name) => {
+        return await intermediateProcessor("casaos-ui:appstore:appstore_detail", {value: name})
+    },
+    appstorecommunity_install: async (name) => {
+        return await intermediateProcessor("casaos-ui:appstore:appstorecommunity_install", {value: name})
+    },
+    appstorecommunity_detail: async (name) => {
+        return await intermediateProcessor("casaos-ui:appstore:appstorecommunity_detail", {value: name})
+    },
+    appstore_slide: async () => {
+        return await intermediateProcessor("casaos-ui:appstore:appstore_slide")
+    },
+    appstore_type: async (type) => {
+        return await intermediateProcessor("casaos-ui:appstore:appstore_type", {value: type})
+    },
+    appstore_sort: async (type) => {
+        return await intermediateProcessor("casaos-ui:appstore:appstore_sort", {value: type})
+    },
+    appstore_custominstall: async () => {
+        return await intermediateProcessor("casaos-ui:appstore:appstore_custominstall")
+    },
+    appstore_close: async () => {
+        return await intermediateProcessor("casaos-ui:appstore:appstore_close")
     },
 
 }

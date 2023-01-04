@@ -65,9 +65,9 @@ export default {
 					return
 				}
 				if (val === 0) {
-					this.$messageBus('youshouldknow_show', false);
+					this.$messageBus('youshouldknow_show', 'false');
 				} else if (oldValue === 0) {
-					this.$messageBus('youshouldknow_show', true);
+					this.$messageBus('youshouldknow_show', 'true');
 				}
 			},
 		}

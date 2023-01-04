@@ -18,17 +18,18 @@ var array = [];
 
 // Parse the event to array
 Object.keys(events).forEach((key) => {
-    let eventObj = events[key]();
-    eventObj.propertyTypeList = Object.keys(eventObj.properties)
-    eventObj.propertyTypeList = eventObj.propertyTypeList.map((key) => {
-        return {
-            "name": key,
-            "discription": "",
-            "example": ""
-        }
+    events[key]().then(eventObj => {
+        eventObj.propertyTypeList = Object.keys(eventObj.properties)
+        eventObj.propertyTypeList = eventObj.propertyTypeList.map((key) => {
+            return {
+                "name": key,
+                "discription": "",
+                "example": ""
+            }
+        });
+        delete eventObj.properties
+        array.push(eventObj);
     });
-    delete eventObj.properties
-    array.push(eventObj);
 });
 
 

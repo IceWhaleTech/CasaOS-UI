@@ -452,12 +452,12 @@ export default {
 		},
 		'barData.rss_switch': {
 			handler(val, oldValue) {
-				if (val === oldValue) {
+				this.rss_switch = val;
+				this.$store.commit('SET_RSS_SWITCH', val);
+				if (val === oldValue || val === undefined) {
 					return
 				}
 				this.$messageBus('dashboardsetting_news', val.toString());
-				this.rss_switch = val;
-				this.$store.commit('SET_RSS_SWITCH', val);
 			},
 			deep: true
 		},

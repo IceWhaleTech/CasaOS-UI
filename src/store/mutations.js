@@ -110,7 +110,6 @@ const mutations = {
 
     // public params
     SET_DEVICE_ID(state, val) {
-        console.log('====', val)
         state.device_id = val
     },
 

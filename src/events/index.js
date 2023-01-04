@@ -14,12 +14,10 @@ export default function messageBus(name, params) {
     if (!params) {
         params = null
     }
-    // console.log(this.$store.state.device_id)
-    // message_bus.publicParameter = {
-    //     "device_id": this.$store.state.device_id,
-    // }
 
-    let properties = message_bus[name](params).properties;
-    let eventName = message_bus[name](params).name;
-    api.post(`/v2/message_bus/event/casaos-ui/${eventName}`, properties);
+    message_bus[name](params).then(res => {
+        let properties = res.properties;
+        let eventName = res.name;
+        api.post(`/v2/message_bus/event/casaos-ui/${eventName}`, properties);
+    })
 }
