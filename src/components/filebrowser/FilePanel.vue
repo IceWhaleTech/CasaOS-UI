@@ -922,16 +922,27 @@ export default {
 		* storage settings modal
 		* */
 		// show storage settings modal
-		showStorageSettingsModal() {
+		async showStorageSettingsModal() {
+			// TODO: the part is repetition
+			//  with APPs Installation Location requirement document
+			// 获取merge信息
+			let mergeStorageList
+			try {
+				mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => res.data.data[0]['source_volume_uuids'])
+			} catch (e) {
+				mergeStorageList = []
+				console.log(e)
+			}
 			this.$buefy.modal.open({
 				parent: this,
 				component: MergeStorages,
 				hasModalCard: true,
 				canCancel: false,
 				animation: "zoom-in",
-				props: {},
+				props: {
+					mergeStorageList
+				},
 				events: {}
-
 			})
 		},
 

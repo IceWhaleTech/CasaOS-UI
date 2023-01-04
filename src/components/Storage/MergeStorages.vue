@@ -133,12 +133,12 @@
 				          expaned @click="currentStep = 0"/>
 			</div>
 			<div>
-				<b-button v-show="currentStep === 0" :label="$t(affirm)" expaned rounded
+				<b-button v-show="currentStep === 0" :label="$t(affirm)" :loading="isConnecting" expaned rounded
 				          type="is-primary" @click="test"/>
-				<b-button v-show="currentStep === 1" :label="$t(affirm)"
+				<b-button v-show="currentStep === 1" :label="$t(affirm)" :loading="isConnecting"
 				          class="_has-background-red-default _radius-line _has-text-white"
 				          expaned @click="currentStep = 2"/>
-				<b-button v-show="currentStep === 2" :label="$t(affirm)" expaned rounded
+				<b-button v-show="currentStep === 2" :label="$t(affirm)" :loading="isConnecting" expaned rounded
 				          type="is-primary" @click="verifyPassword(password)"/>
 				<b-button v-show="currentStep === 3" :label="$t(affirm)" :loading="isConnecting" expaned rounded
 				          type="is-primary" @click="restart"/>
@@ -159,19 +159,17 @@ import cToolTip from '@/components/basicComponents/tooltip/tooltip.vue';
 export default {
 	name: "MergeStorages",
 	mixins: [mixin],
+	props: {
+		mergeStorageList: {
+			type: Array,
+			required: true,
+			default: () => []
+		},
+	},
 	components: {
 		cToolTip
 	},
-	async mounted() {
-		// TODO: the part is repetition
-		//  with APPs Installation Location requirement document
-		// 获取merge信息
-		try {
-			this.mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => res.data.data[0]['source_volume_uuids'])
-		} catch (e) {
-			this.mergeStorageList = []
-			console.log(e)
-		}
+	mounted() {
 		this.checkBoxGroup.push(...this.mergeStorageList)
 		this.getDiskList();
 	},
@@ -230,7 +228,6 @@ export default {
 			mergeInfo: [],
 			password: '',
 			runName: '',
-			mergeStorageList: [],
 			notEmpty: false
 		}
 	}
@@ -308,8 +305,12 @@ export default {
 			})
 		},
 
+		/**
+		 * @description: update merge info
+		 * sync function
+		 */
 		updateMerge(dockerInfo) {
-			// merge api
+			// update merge api
 			this.$api.local_storage.updateMergerfsInfo({
 				"fstype": "fuse.mergerfs",
 				"mount_point": "/DATA",
@@ -317,26 +318,31 @@ export default {
 					...this.checkBoxGroup, ...this.checkBoxMissGroup
 				]
 			}).then(res => {
+				// started all containers
 				Promise.all(dockerInfo.map(async item => {
 					await this.$api.container.updateState(item.id, "start")
-				})).catch(e => {
+				})).then(() => {
+					this.$EventBus.$emit(events.RELOAD_APP_LIST)
+				}).catch(e => {
 					this.$buefy.toast.open({
 						message: e.response.data.data || e.response.data.message,
 						type: "is-danger",
 						position: "is-top",
 						duration: 5000,
 					});
+				}).then(() => {
+					// TODO : need to check the result by the states code
+					switch (res.status) {
+						case 200:
+						case 400:
+						default:
+							this.isConnecting = false
+							// refresh local storage
+							this.$EventBus.$emit(events.RELOAD_MOUNT_LIST)
+							// close the modal
+							this.$emit('close')
+					}
 				})
-				// TODO : need to check the result by the states code
-				switch (res.status) {
-					case 200:
-					case 400:
-					default:
-						// refresh local storage
-						this.$EventBus.$emit(events.RELOAD_MOUNT_LIST)
-						// close the modal
-						this.$emit('close')
-				}
 			})
 		}
 		,
@@ -355,6 +361,7 @@ export default {
 			this.$emit('close')
 		},
 		async test() {
+			this.isConnecting = true
 			// submit
 			this.$messageBus('storagemanager_mergestorage');
 			this.notEmpty = await this.$api.folder.getFolderSize('/DATA').then(res => {
@@ -366,6 +373,8 @@ export default {
 					position: "is-top",
 					duration: 5000,
 				});
+			}).then(() => {
+				this.isConnecting = false
 			})
 			// business :: If storage is empty, no reminder
 			if (this.notEmpty) {
@@ -415,8 +424,8 @@ export default {
 						if (res.data.data !== 'initialized') {
 							this.$api.local_storage.initMergerfs({"mount_point": "/DATA"}).then(() => {
 								this.updateMerge(dockerInfo)
-								this.isConnecting = false
 							}).catch(e => {
+								this.isConnecting = false
 								this.$buefy.toast.open({
 									message: e.response.data.data || e.response.data.message,
 									type: "is-danger",
@@ -426,7 +435,6 @@ export default {
 							})
 						} else {
 							this.updateMerge(dockerInfo)
-							this.isConnecting = false
 						}
 					})
 				}).catch((e) => {
