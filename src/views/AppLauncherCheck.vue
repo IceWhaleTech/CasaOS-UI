@@ -61,7 +61,7 @@ export default {
 				}
 				return false
 			});
-			console.log(this.appDetailData)
+
 			if (isOk) {
 				clearInterval(timer)
 				this.openThirdApp(this.appDetailData);

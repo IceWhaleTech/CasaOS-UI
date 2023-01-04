@@ -12,7 +12,7 @@
 			<img :src="require('@/assets/img/logo/logo.svg')">
 		</figure>
 		<span v-if="!rssShow || rss.length === 0" class="intro-text ml-4">Made with ❤️ by IceWhale and YOU!</span>
-		<span v-else class="window ml-4 is-flex is-align-items-center">
+		<span v-else class="window ml-4">
       <ul :style="{'--time': 5*line+'s', '--perc': perc, '--line': line}" class="scroll">
         <li v-for="(item,key) in rss" :key="key"><a :href="item.link" class="intro-text" target="_blank">{{
 		        item.title

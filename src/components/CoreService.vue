@@ -98,7 +98,6 @@ export default {
 				observer: true,
 				on: {
 					slideChangeTransitionStart: () => {
-						console.log(this)
 						this.$messageBus('youshouldknow_slide');
 					},
 				}
