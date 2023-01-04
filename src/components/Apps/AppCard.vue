@@ -327,6 +327,9 @@ export default {
 			let data = this.$api.apps.getAppInfo(id).then(resp => {
 				if (resp.data.success == 200) {
 					let respData = resp.data.data
+					// messageBus :: installApp
+					this.$messageBus('appstore_install', respData.title.toString());
+
 					let initData = {}
 					initData.protocol = respData.protocol
 					initData.host = respData.host

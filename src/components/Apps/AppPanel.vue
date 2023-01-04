@@ -22,7 +22,8 @@
 						}}</h3>
 				</div>
 				<!--				<button class="delete" type="button" @click="$emit('close')"/>-->
-				<b-icon class="_polymorphic" icon="close" pack="casa" @click.native="$emit('close')"/>
+				<b-icon class="_polymorphic" icon="close" pack="casa"
+				        @click.native="$emit('close'); $messageBus('appstore_close')"/>
 			</header>
 			<p class="modal-card-body">
 				{{ $t('Please choose a location with enough storage space and stable connection.') }}
@@ -66,7 +67,8 @@
 										<p class="subtitle is-size-14px two-line">{{ appDetailData.tagline }}</p>
 										<p class="description">
 											<b-button v-if="appDetailData.state===0" :loading="appDetailData.id == currentInstallId" rounded
-											          size="is-normal" type="is-primary" @click="qucikInstall(appDetailData.id)">
+											          size="is-normal" type="is-primary"
+											          @click="qucikInstall(appDetailData.id);$messageBus('appstore_install', appDetailData.title)">
 												{{ $t('Install') }}
 											</b-button>
 											<b-button v-if="appDetailData.state===1" :loading="appDetailData.id == currentInstallId" rounded
@@ -207,13 +209,16 @@
 												         :src-fallback="require('@/assets/img/app/default.png')"
 												         class="is-64x64 is-clickable icon-shadow"></b-image>
 											</div>
-											<div class="is-flex-grow-1 mr-4 is-clickable" @click="showAppDetial(item.id)">
+											<div class="is-flex-grow-1 mr-4 is-clickable"
+											     @click="showAppDetial(item.id);$messageBus('appstore_detail', item.title)">
 												<h6 class="title is-6 mb-2 ">{{ item.title }}</h6>
 												<p class="is-size-7 two-line">{{ item.tagline }}</p>
 											</div>
 											<div>
 												<b-button v-if="item.state===0" :loading="item.id == currentInstallId" rounded size="is-small"
-												          type="is-primary is-light" @click="qucikInstall(item.id)">{{ $t('Install') }}
+												          type="is-primary is-light"
+												          @click="qucikInstall(item.id);$messageBus('appstore_install', item.title)">
+													{{ $t('Install') }}
 												</b-button>
 												<b-button v-if="item.state===1" :loading="item.id == currentInstallId" rounded size="is-small"
 												          type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">{{ $t('Open') }}
@@ -224,9 +229,9 @@
 
 								</swiper>
 								<div :class="{'swiper-button-disabled':disFeaturedPrev}" class="swiper-button-prev"
-								     @click="$refs.featureSwiper.$swiper.slidePrev()"></div>
+								     @click="$refs.featureSwiper.$swiper.slidePrev();$messageBus('appstore_slide')"></div>
 								<div :class="{'swiper-button-disabled':disFeaturedNext}" class="swiper-button-next"
-								     @click="$refs.featureSwiper.$swiper.slideNext()"></div>
+								     @click="$refs.featureSwiper.$swiper.slideNext();$messageBus('appstore_slide')"></div>
 							</div>
 						</template>
 						<!-- Featured Slider End -->
@@ -247,7 +252,7 @@
 									<b-dropdown-item v-for="menu in cateMenu" :key="menu.id"
 									                 :class="menu.id == currentCate.id?'is-active':''" :data-title="menu.count"
 									                 :value="menu" aria-role="listitem">
-										<div class="media is-align-items-center is-flex">
+										<div class="media is-align-items-center is-flex" @click="$messageBus('appstore_type', menu.name)">
 											<b-icon :icon="menu.font" class="mr-1" size="is-small"></b-icon>
 											<div class="media-content">
 												<h3>{{ menu.name }}</h3>
@@ -274,7 +279,7 @@
 									<b-dropdown-item v-for="(menu,index) in sortMenu" :key="'sort_'+index"
 									                 :class="menu.slash == currentSort.slash?'is-active':''"
 									                 :value="menu" aria-role="listitem">
-										<div class="media align-items-center is-flex">
+										<div class="media align-items-center is-flex" @click="$messageBus('appstore_sort', menu.name)">
 											<div class="media-content">
 												<h3>{{ menu.name }}</h3>
 											</div>
@@ -295,7 +300,8 @@
 										<b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')"
 										         class="is-64x64 icon-shadow" webp-fallback=".jpg"></b-image>
 									</div>
-									<div class="is-flex-grow-1 mr-4 is-clickable" @click="showAppDetial(item.id)">
+									<div class="is-flex-grow-1 mr-4 is-clickable"
+									     @click="showAppDetial(item.id);$messageBus('appstore_detail', item.title)">
 										<h6 class="title is-6 mb-2">{{ item.title }}</h6>
 										<p class="is-size-7 two-line">{{ item.tagline }}</p>
 									</div>
@@ -304,7 +310,9 @@
 								<div class="mt-1 ml-7 is-flex is-align-items-center">
 									<div class="is-flex-grow-1 is-size-7 has-text-grey-light	">{{ item.category }}</div>
 									<b-button v-if="item.state===0" :loading="item.id == currentInstallId" rounded size="is-small"
-									          type="is-primary is-light" @click="qucikInstall(item.id)">{{ $t('Install') }}
+									          type="is-primary is-light"
+									          @click="qucikInstall(item.id);$messageBus('appstore_install', item.title)">
+										{{ $t('Install') }}
 									</b-button>
 									<b-button v-if="item.state===1" :loading="item.id == currentInstallId" rounded size="is-small"
 									          type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">{{ $t('Open') }}
@@ -331,7 +339,8 @@
 											<b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')"
 											         class="is-64x64 icon-shadow" webp-fallback=".jpg"></b-image>
 										</div>
-										<div class="is-flex-grow-1 mr-4 is-clickable" @click="showAppDetial(item.id)">
+										<div class="is-flex-grow-1 mr-4 is-clickable"
+										     @click="showAppDetial(item.id);$messageBus('appstorecommunity_detail', item.title)">
 											<h6 class="title is-6 mb-2">{{ item.title }}</h6>
 											<p class="is-size-7 two-line">{{ item.tagline }}</p>
 										</div>
@@ -340,7 +349,10 @@
 									<div class="mt-1 ml-7 is-flex is-align-items-center">
 										<div class="is-flex-grow-1 is-size-7 has-text-grey-light	">{{ item.category }}</div>
 										<b-button v-if="item.state===0" :loading="item.id == currentInstallId" rounded size="is-small"
-										          type="is-primary is-light" @click="qucikInstall(item.id)">{{ $t('Install') }}
+										          type="is-primary is-light"
+										          @click="qucikInstall(item.id);$messageBus('appstorecommunity_install', item.title)">{{
+												$t('Install')
+											}}
 										</b-button>
 										<b-button v-if="item.state===1" :loading="item.id == currentInstallId" rounded size="is-small"
 										          type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">{{ $t('Open') }}
@@ -1041,6 +1053,8 @@ export default {
 				this.isLoading = false;
 				this.sidebarOpen = true;
 				this.appDetailData = resp.data.data
+				// messageBus :: appstore_detail
+				// this.$messageBus('appstore_detail', resp.data.data.title.toString())
 			}).catch(() => {
 				this.isLoading = false;
 				this.$buefy.toast.open({
@@ -1068,6 +1082,9 @@ export default {
 			this.currentInstallId = id
 			this.$api.apps.getAppInfo(id).then(resp => {
 				if (resp.data.success == 200) {
+					// messageBus :: installApp
+					// this.$messageBus('appstore_install', respData.title.toString())
+
 					let respData = resp.data.data
 					this.initData.protocol = respData.protocol
 					this.initData.host = respData.host

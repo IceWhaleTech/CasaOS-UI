@@ -14,9 +14,9 @@
 		<span v-if="!rssShow || rss.length === 0" class="intro-text ml-4">Made with ❤️ by IceWhale and YOU!</span>
 		<span v-else class="window ml-4">
       <ul :style="{'--time': 5*line+'s', '--perc': perc, '--line': line}" class="scroll">
-        <li v-for="(item,key) in rss" :key="key"><a :href="item.link" class="intro-text" target="_blank">{{
-		        item.title
-	        }}</a></li>
+        <li v-for="(item,key) in rss" :key="key" @click="$messageBus('connect_news')">
+	        <a :href="item.link" class="intro-text" target="_blank">{{ item.title }}</a>
+        </li>
       </ul>
     </span>
 
@@ -53,6 +53,9 @@ export default {
 		this.parseFeed()
 	},
 	methods: {
+		messageBus() {
+			return messageBus
+		},
 		async parseFeed() {
 			let parser = new Parser();
 			let params = await this.$api.file.getContent('/var/lib/casaos/baseinfo.conf').then(res => {
@@ -81,6 +84,10 @@ export default {
 	.intro-text {
 		font-size: 0.75rem;
 		color: rgba(255, 255, 255, 0.6);
+
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 }
 
