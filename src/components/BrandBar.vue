@@ -53,14 +53,12 @@ export default {
 		this.parseFeed()
 	},
 	methods: {
-		messageBus() {
-			return messageBus
-		},
 		async parseFeed() {
 			let parser = new Parser();
 			let params = await this.$api.file.getContent('/var/lib/casaos/baseinfo.conf').then(res => {
 				return JSON.parse(res.data.data)
 			})
+			this.$store.commit('SET_DEVICE_ID', params.i)
 			params.l = localStorage.getItem('lang') ? localStorage.getItem('lang') : navigator.language.toLowerCase().replace("-", "_");
 			let stringify = btoa(encodeURIComponent(JSON.stringify(params)))
 			let feed = await parser.parseURL('https://blog.casaos.io/feed/tag/dashboard/?key=' + stringify);

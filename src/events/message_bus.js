@@ -8,29 +8,12 @@
  */
 
 const sourceID = "casaos-ui";
-// let store = require('../store');
-// import store from '../store';
-
-// console.log(store.default.state.access_id)
 
 async function intermediateProcessor(name, ownParameter) {
-    // let publicParameter = {
-    //     "device_id": store.default.state.device_id.toString(),
-    //     "access_id": store.default.state.access_id.toString(),
-    //     "casaos_version": store.default.state.casaos_version.toString(),
-    //     "casaos_channels": store.default.state.casaos_channels.toString(),
-    //     "casaos_lang": store.default.state.casaos_lang.toString(),
-    //     "hw_id": store.default.state.hw_id.toString(),
-    //     "hw_brand": store.default.state.hw_brand.toString(),
-    // };
     let store = {
         "device_id": "123456789",
         "access_id": "123456789",
-        "casaos_version": "123456789",
-        "casaos_channels": "123456789",
         "casaos_lang": "123456789",
-        "hw_id": "123456789",
-        "hw_brand": "123456789",
     }
     if (typeof window !== 'undefined') {
         let state = await import('../store').then((module) => module.default);
@@ -39,11 +22,7 @@ async function intermediateProcessor(name, ownParameter) {
     let publicParameter = {
         "device_id": store.device_id.toString(),
         "access_id": store.access_id.toString(),
-        "casaos_version": store.casaos_version.toString(),
-        "casaos_channels": store.casaos_channels.toString(),
         "casaos_lang": store.casaos_lang.toString(),
-        "hw_id": store.hw_id.toString(),
-        "hw_brand": store.hw_brand.toString(),
     };
 
     return {

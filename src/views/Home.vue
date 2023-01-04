@@ -80,6 +80,7 @@ import UpdateCompleteModal from '@/components/settings/UpdateCompleteModal.vue'
 
 import {mixin} from '../mixins/mixin';
 import events from '@/events/events';
+import {nanoid} from 'nanoid';
 
 const wallpaperConfig = "wallpaper"
 
@@ -126,7 +127,8 @@ export default {
 		this.getHardwareInfo();
 		this.getWallpaperConfig();
 		this.getConfig();
-		this.$store.commit('SET_DEVICE_ID', 123321);
+
+		this.$store.commit('SET_ACCESS_ID', nanoid());
 	},
 	mounted() {
 		window.addEventListener("resize", this.onResize);
