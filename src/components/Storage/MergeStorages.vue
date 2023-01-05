@@ -155,6 +155,7 @@ import jwt_decode from "jwt-decode";
 import MD5 from 'md5-es';
 import events from '@/events/events';
 import cToolTip from '@/components/basicComponents/tooltip/tooltip.vue';
+import _ from 'lodash';
 
 export default {
   name: "MergeStorages",
@@ -427,6 +428,8 @@ export default {
       try {
         // get docker info
         let dockerInfo = await this.$api.container.getInfo('').then(res => res.data.data.casaos_apps)
+        dockerInfo = _.filter(dockerInfo, {state: "running"})
+        debugger
         let container = this.$api.container
         Promise.all(dockerInfo.map(async item => {
           await container.updateState(item.id, "stop")
