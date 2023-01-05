@@ -143,7 +143,7 @@
                     type="is-primary" @click="createStorge(false)"/>
         </div>
       </template>
-      <template v-if="activeTab == 0 && !mergeConbinationsStorageData.length">
+      <template v-if="!creatIsShow && activeTab == 0 && !mergeConbinationsStorageData.length">
         <div class="is-flex-grow-1"></div>
         <div class="is-flex is-flex-direction-row-reverse">
           <b-button :type="state_mainstorage_operability" class="width" rounded size="is-small"
