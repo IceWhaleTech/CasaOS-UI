@@ -51,9 +51,11 @@ export default {
                 if (appInfo.image.toLowerCase().indexOf("qbittorrent") === -1) {
                     window.location.replace(url);
                 } else {
-                    // window.location.replace('javascript:window.name;')
-                    // window.name = '\u003cscript\u003elocation.replace("' + url + '")\u003c/script\u003e';
-                    window.open('javascript:window.name;', '\u003cscript\u003elocation.replace("' + url + '")\u003c/script\u003e')
+                    let html = document.createElement('a');
+                    html.href = url;
+                    html.rel = 'noreferrer';
+                    document.getElementById('app').appendChild(html)
+                    html.click();
                 }
             }
         },
