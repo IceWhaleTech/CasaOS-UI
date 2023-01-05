@@ -429,7 +429,6 @@ export default {
         // get docker info
         let dockerInfo = await this.$api.container.getInfo('').then(res => res.data.data.casaos_apps)
         dockerInfo = _.filter(dockerInfo, {state: "running"})
-        debugger
         let container = this.$api.container
         Promise.all(dockerInfo.map(async item => {
           await container.updateState(item.id, "stop")
