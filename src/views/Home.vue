@@ -80,6 +80,7 @@ import UpdateCompleteModal from '@/components/settings/UpdateCompleteModal.vue'
 
 import {mixin} from '../mixins/mixin';
 import events from '@/events/events';
+import {nanoid} from 'nanoid';
 
 const wallpaperConfig = "wallpaper"
 
@@ -126,6 +127,8 @@ export default {
 		this.getHardwareInfo();
 		this.getWallpaperConfig();
 		this.getConfig();
+
+		this.$store.commit('SET_ACCESS_ID', nanoid());
 	},
 	mounted() {
 		window.addEventListener("resize", this.onResize);
@@ -135,10 +138,12 @@ export default {
 			localStorage.removeItem('is_update')
 		}
 		if (sessionStorage.getItem('fromWelcome')) {
+			this.$messageBus('global_newvisit')
 			this.rssConfirm()
 			// one-off consumption
 			sessionStorage.removeItem('fromWelcome')
 		}
+		this.$messageBus('global_visit')
 	},
 	methods: {
 

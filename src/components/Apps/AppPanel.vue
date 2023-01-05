@@ -9,8 +9,6 @@
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
 
 -->
-
-
 <template>
 	<div
 			:class="{'narrow': currentSlide > 0 ,'card-width': isFirstInstall}"
@@ -23,7 +21,9 @@
 							$t('Apps Installation Location')
 						}}</h3>
 				</div>
-				<button class="delete" type="button" @click="$emit('close')"/>
+				<!--				<button class="delete" type="button" @click="$emit('close')"/>-->
+				<b-icon class="_polymorphic" icon="close" pack="casa"
+				        @click.native="$emit('close'); $messageBus('appstore_close')"/>
 			</header>
 			<p class="modal-card-body">
 				{{ $t('Please choose a location with enough storage space and stable connection.') }}
@@ -66,8 +66,14 @@
 										<h4 class="title store-title is-4 ">{{ appDetailData.title }}</h4>
 										<p class="subtitle is-size-14px two-line">{{ appDetailData.tagline }}</p>
 										<p class="description">
-											<b-button :loading="appDetailData.id == currentInstallId" rounded size="is-normal"
-											          type="is-primary" @click="qucikInstall(appDetailData.id)">{{ $t('Install') }}
+											<b-button v-if="appDetailData.state===0" :loading="appDetailData.id == currentInstallId" rounded
+											          size="is-normal" type="is-primary"
+											          @click="qucikInstall(appDetailData.id);$messageBus('appstore_install', appDetailData.title)">
+												{{ $t('Install') }}
+											</b-button>
+											<b-button v-if="appDetailData.state===1" :loading="appDetailData.id == currentInstallId" rounded
+											          size="is-normal" type="is-primary" @click="openThirdContainerByAppInfo(appDetailData)">
+												{{ $t('Open') }}
 											</b-button>
 										</p>
 									</div>
@@ -146,9 +152,9 @@
 			<!-- Sidebar End -->
 
 			<!-- Modal-Card Header Start -->
-			<header class="modal-card-head">
+			<header class="modal-card-head _b-line">
 				<div class="is-flex-grow-1">
-					<h3 class="title is-3">{{ panelTitle }}</h3>
+					<h3 class="_title is-5">{{ panelTitle }}</h3>
 				</div>
 				<div class="is-flex is-align-items-center">
 					<b-button v-if="currentSlide == 0" :label="$t('Custom Install')" class="mr-2" icon-left="view-grid-plus"
@@ -166,8 +172,12 @@
 						<button class="icon-button mdi mdi-export-variant" type="button" @click="exportJSON"/>
 					</b-tooltip>
 					<div v-if="currentSlide < 2"
-					     class="is-flex is-align-items-center modal-close-container modal-close-container-line">
-						<button class="delete" type="button" @click="$emit('close')"/>
+					     class="is-flex is-align-items-center modal-close-container modal-close-container-line ">
+						<!--						<button class="delete" type="button" @click="$emit('close')"/>-->
+						<b-icon class="_polymorphic" icon="close" pack="casa" @click.native="$emit('close')"/>
+					</div>
+					<div v-else-if="currentSlide === 2" class="is-flex is-align-items-center">
+						<b-icon class="_polymorphic" icon="close" pack="casa" @click.native="$emit('close')"/>
 					</div>
 
 				</div>
@@ -199,14 +209,19 @@
 												         :src-fallback="require('@/assets/img/app/default.png')"
 												         class="is-64x64 is-clickable icon-shadow"></b-image>
 											</div>
-											<div class="is-flex-grow-1 mr-4 is-clickable" @click="showAppDetial(item.id)">
+											<div class="is-flex-grow-1 mr-4 is-clickable"
+											     @click="showAppDetial(item.id);$messageBus('appstore_detail', item.title)">
 												<h6 class="title is-6 mb-2 ">{{ item.title }}</h6>
 												<p class="is-size-7 two-line">{{ item.tagline }}</p>
 											</div>
 											<div>
-												<b-button :loading="item.id == currentInstallId" rounded size="is-small"
+												<b-button v-if="item.state===0" :loading="item.id == currentInstallId" rounded size="is-small"
 												          type="is-primary is-light"
-												          @click="qucikInstall(item.id)">{{ $t('Install') }}
+												          @click="qucikInstall(item.id);$messageBus('appstore_install', item.title)">
+													{{ $t('Install') }}
+												</b-button>
+												<b-button v-if="item.state===1" :loading="item.id == currentInstallId" rounded size="is-small"
+												          type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">{{ $t('Open') }}
 												</b-button>
 											</div>
 										</div>
@@ -214,9 +229,9 @@
 
 								</swiper>
 								<div :class="{'swiper-button-disabled':disFeaturedPrev}" class="swiper-button-prev"
-								     @click="$refs.featureSwiper.$swiper.slidePrev()"></div>
+								     @click="$refs.featureSwiper.$swiper.slidePrev();$messageBus('appstore_slide')"></div>
 								<div :class="{'swiper-button-disabled':disFeaturedNext}" class="swiper-button-next"
-								     @click="$refs.featureSwiper.$swiper.slideNext()"></div>
+								     @click="$refs.featureSwiper.$swiper.slideNext();$messageBus('appstore_slide')"></div>
 							</div>
 						</template>
 						<!-- Featured Slider End -->
@@ -237,7 +252,7 @@
 									<b-dropdown-item v-for="menu in cateMenu" :key="menu.id"
 									                 :class="menu.id == currentCate.id?'is-active':''" :data-title="menu.count"
 									                 :value="menu" aria-role="listitem">
-										<div class="media is-align-items-center is-flex">
+										<div class="media is-align-items-center is-flex" @click="$messageBus('appstore_type', menu.name)">
 											<b-icon :icon="menu.font" class="mr-1" size="is-small"></b-icon>
 											<div class="media-content">
 												<h3>{{ menu.name }}</h3>
@@ -264,7 +279,7 @@
 									<b-dropdown-item v-for="(menu,index) in sortMenu" :key="'sort_'+index"
 									                 :class="menu.slash == currentSort.slash?'is-active':''"
 									                 :value="menu" aria-role="listitem">
-										<div class="media align-items-center is-flex">
+										<div class="media align-items-center is-flex" @click="$messageBus('appstore_sort', menu.name)">
 											<div class="media-content">
 												<h3>{{ menu.name }}</h3>
 											</div>
@@ -285,7 +300,8 @@
 										<b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')"
 										         class="is-64x64 icon-shadow" webp-fallback=".jpg"></b-image>
 									</div>
-									<div class="is-flex-grow-1 mr-4 is-clickable" @click="showAppDetial(item.id)">
+									<div class="is-flex-grow-1 mr-4 is-clickable"
+									     @click="showAppDetial(item.id);$messageBus('appstore_detail', item.title)">
 										<h6 class="title is-6 mb-2">{{ item.title }}</h6>
 										<p class="is-size-7 two-line">{{ item.tagline }}</p>
 									</div>
@@ -293,8 +309,13 @@
 								</div>
 								<div class="mt-1 ml-7 is-flex is-align-items-center">
 									<div class="is-flex-grow-1 is-size-7 has-text-grey-light	">{{ item.category }}</div>
-									<b-button :loading="item.id == currentInstallId" rounded size="is-small" type="is-primary is-light"
-									          @click="qucikInstall(item.id)">{{ $t('Install') }}
+									<b-button v-if="item.state===0" :loading="item.id == currentInstallId" rounded size="is-small"
+									          type="is-primary is-light"
+									          @click="qucikInstall(item.id);$messageBus('appstore_install', item.title)">
+										{{ $t('Install') }}
+									</b-button>
+									<b-button v-if="item.state===1" :loading="item.id == currentInstallId" rounded size="is-small"
+									          type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">{{ $t('Open') }}
 									</b-button>
 								</div>
 							</div>
@@ -318,7 +339,8 @@
 											<b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')"
 											         class="is-64x64 icon-shadow" webp-fallback=".jpg"></b-image>
 										</div>
-										<div class="is-flex-grow-1 mr-4 is-clickable" @click="showAppDetial(item.id)">
+										<div class="is-flex-grow-1 mr-4 is-clickable"
+										     @click="showAppDetial(item.id);$messageBus('appstorecommunity_detail', item.title)">
 											<h6 class="title is-6 mb-2">{{ item.title }}</h6>
 											<p class="is-size-7 two-line">{{ item.tagline }}</p>
 										</div>
@@ -326,8 +348,14 @@
 									</div>
 									<div class="mt-1 ml-7 is-flex is-align-items-center">
 										<div class="is-flex-grow-1 is-size-7 has-text-grey-light	">{{ item.category }}</div>
-										<b-button :loading="item.id == currentInstallId" rounded size="is-small" type="is-primary is-light"
-										          @click="qucikInstall(item.id)">{{ $t('Install') }}
+										<b-button v-if="item.state===0" :loading="item.id == currentInstallId" rounded size="is-small"
+										          type="is-primary is-light"
+										          @click="qucikInstall(item.id);$messageBus('appstorecommunity_install', item.title)">{{
+												$t('Install')
+											}}
+										</b-button>
+										<b-button v-if="item.state===1" :loading="item.id == currentInstallId" rounded size="is-small"
+										          type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">{{ $t('Open') }}
 										</b-button>
 									</div>
 								</div>
@@ -481,11 +509,11 @@
 				<!-- App Install Form End -->
 
 				<!-- App Install Process Start -->
-				<section v-if="currentSlide == 2">
-					<div class="installing-warpper">
+				<section v-if="currentSlide == 2" class="_b-line">
+					<div class="installing-warpper mb-5">
 						<div class="is-flex is-align-items-center is-justify-content-center">
-							<lottie-animation :animationData="require('@/assets/ani/rocket-launching.json')" :autoPlay="true"
-							                  :loop="true" class="install-animation"></lottie-animation>
+							<lottie-animation :animationData="require('@/assets/ani/loading.json')" :autoPlay="true" :loop="true"
+							                  class="install-animation mt-5 mb-2"></lottie-animation>
 						</div>
 						<b-progress type="is-primary" :max="currentInstallAppProgressTotals.total * 2"
 							:value="currentInstallAppProgressTotals.download + currentInstallAppProgressTotals.extract"
@@ -556,6 +584,8 @@ import {Swiper, SwiperSlide} from 'vue-awesome-swiper'
 // import AppsInstallationLocation from "@/components/Apps/AppsInstallationLocation";
 // import storageItem from "@/components/Storage/StorageItem";
 import AppsInstallationLocation from "@/components/Apps/AppsInstallationLocation";
+import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
+import business_OpenThirdApp from "@/mixins/app/Business_OpenThirdApp";
 
 
 const data = [
@@ -603,6 +633,7 @@ export default {
 		SwiperSlide,
 		AppsInstallationLocation,
 	},
+	mixins: [business_ShowNewAppTag, business_OpenThirdApp],
 	props: {
 		id: String,
 		state: String,
@@ -670,6 +701,7 @@ export default {
 				privileged: false,
 				host_name: "",
 				container_name: "",
+				appstore_id: "",
 			},
 			portSelected: null,
 			capArray: data,
@@ -771,7 +803,6 @@ export default {
 
 		// Set Front-end base url
 		this.baseUrl = `${document.domain}`;
-		// this.initData.host = `${document.domain}:`
 		//Get Max memory info form device
 		this.totalMemory = Math.floor(this.configData.memory.total / 1048576);
 		this.initData.memory = this.totalMemory
@@ -1026,6 +1057,8 @@ export default {
 				this.isLoading = false;
 				this.sidebarOpen = true;
 				this.appDetailData = resp.data.data
+				// messageBus :: appstore_detail
+				// this.$messageBus('appstore_detail', resp.data.data.title.toString())
 			}).catch(() => {
 				this.isLoading = false;
 				this.$buefy.toast.open({
@@ -1053,6 +1086,8 @@ export default {
 			this.currentInstallId = id
 			this.$api.apps.getAppInfo(id).then(resp => {
 				if (resp.data.success == 200) {
+					// messageBus :: installApp
+					// this.$messageBus('appstore_install', respData.title.toString())
 
 					let respData = resp.data.data
 					this.initData.protocol = respData.protocol
@@ -1077,7 +1112,7 @@ export default {
 					this.initData.cmd = isNull(respData.cmd) ? [] : respData.cmd
 					this.initData.privileged = respData.privileged
 					this.initData.host_name = respData.host_name
-
+					this.initData.appstore_id = id
 
 					this.currentInstallId = 0
 					if (respData.tip !== "null" && respData.tip !== "[]" && respData.tip !== "") {
@@ -1191,7 +1226,6 @@ export default {
 		installAppData() {
 			this.processData();
 			this.isLoading = true;
-			// console.log(this.initData);
 			this.$api.container.install(this.initData).then((res) => {
 				this.isLoading = false;
 				if (res.data.success == 200) {
@@ -1497,8 +1531,7 @@ export default {
 
 	sockets: {
 		app_install(res) {
-			const resData = res.body.data
-			if (this.currentInstallAppName != resData.name) {
+			if (this.currentInstallAppName != res.name) {
 				return false
 			}
 			if (!resData.finished) {
@@ -1558,10 +1591,14 @@ export default {
 						})
 					}
 				} else {
-					this.currentInstallAppText = resData.message
+					this.currentInstallAppText = res.message
 				}
 			} else {
 				localStorage.removeItem("app_data")
+
+				// business :: Tagging of new app / scrollIntoView
+				this.addIdToLocalStorage(res.properties['app-management:app:id'])
+
 				setTimeout(() => {
 					this.$emit('updateState')
 					this.$emit('close')
@@ -1590,8 +1627,8 @@ export default {
 }
 
 .install-animation {
-	width: 200px;
-	height: 200px;
+	width: 100px;
+	height: 100px;
 }
 
 .creating-animation {
@@ -1808,5 +1845,40 @@ export default {
 .card-width {
 	max-width: 35rem;
 	min-width: 30rem;
+}
+</style>
+<style lang="scss" scoped>
+._polymorphic {
+	height: 2rem;
+	width: 2rem;
+	border-radius: 0.375rem;
+}
+
+._polymorphic:hover {
+	background: hsla(208, 16%, 96%, 1);
+}
+
+//._polymorphic:active {
+//	background: blue;
+//}
+._title {
+	/* Text 500Medium/Text02 */
+
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 1rem;
+	line-height: 1.5rem;
+	/* identical to box height, or 150% */
+
+	font-feature-settings: 'pnum' on, 'lnum' on;
+
+	/* Gary/800 */
+
+	color: #29343D;
+}
+
+._b-line {
+	border-bottom: 1px solid hsla(208, 16%, 94%, 1) !important;
 }
 </style>

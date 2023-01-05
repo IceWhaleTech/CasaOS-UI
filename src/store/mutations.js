@@ -108,5 +108,18 @@ const mutations = {
         return state.shortcutData
     },
 
+    // public params
+    SET_DEVICE_ID(state, val) {
+        state.device_id = val
+    },
+
+    SET_ACCESS_ID(state, val) {
+        state.access_id = val
+    },
+
+    SET_LANGUAGE(state, val) {
+        state.lang = val
+    },
+
 }
 export default mutations

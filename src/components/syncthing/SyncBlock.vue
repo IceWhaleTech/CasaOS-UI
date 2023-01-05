@@ -150,8 +150,7 @@ export default {
 	},
 	sockets: {
 		app_install(res) {
-			const data = res.body.data
-			if (data.finished) {
+			if (res.finished) {
 				this.checkSyncStatus();
 			}
 		}

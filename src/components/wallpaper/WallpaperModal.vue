@@ -13,7 +13,7 @@
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
       <div class="is-flex-grow-1">
-        <h3 class="title is-3">{{$t('Change wallpaper')}}</h3>
+        <h3 class="title is-3">{{ $t('Change wallpaper') }}</h3>
       </div>
 
     </header>
@@ -21,26 +21,27 @@
     <!-- Modal-Card Body Start -->
     <section class="modal-card-body ">
       <div class="preview-card">
-        <div class="preview-image" :style="backgroundStyleObj">
+        <div :style="backgroundStyleObj" class="preview-image">
           <b-image :src="require('@/assets/background/preview-widget.svg')" class="preview-widget"></b-image>
           <b-image :src="require('@/assets/background/blank.png')"></b-image>
         </div>
       </div>
 
       <div class="columns mt-5 mb-5 is-variable is-2">
-        <div class="column" v-for="(item,index) in wallpaperItems" :key="'wallpaper'+index">
-          <div class="image-list-item is-clickable" :class="{active:checkActive(item.path)}" @click="changeWallpaper(item.path)">
+        <div v-for="(item,index) in wallpaperItems" :key="'wallpaper'+index" class="column">
+          <div :class="{active:checkActive(item.path)}" class="image-list-item is-clickable"
+               @click="changeWallpaper(item.path)">
             <b-image :src="item.path"></b-image>
           </div>
         </div>
 
         <div class="column is-relative is-one-quarter">
-          <div class="upload-button-container is-clickable" :class="{active:checkActiveFrom('Upload')}">
-            <div class="upload-button is-flex is-align-items-center is-justify-content-center " id="upload-wallpaper">
-              <b-icon pack="casa" icon="picture-upload" size="is-large"></b-icon>
+          <div :class="{active:checkActiveFrom('Upload')}" class="upload-button-container is-clickable">
+            <div id="upload-wallpaper" class="upload-button is-flex is-align-items-center is-justify-content-center ">
+              <b-icon icon="picture-upload" pack="casa" size="is-large"></b-icon>
 
             </div>
-            <b-loading :is-full-page="false" v-model="isUpLoading" :can-cancel="false"></b-loading>
+            <b-loading v-model="isUpLoading" :can-cancel="false" :is-full-page="false"></b-loading>
           </div>
 
         </div>
@@ -51,8 +52,8 @@
     <footer class="modal-card-foot is-flex is-align-items-center">
       <div class="is-flex-grow-1"></div>
       <div>
-        <b-button :label="$t('Cancel')" @click="$emit('close')" rounded />
-        <b-button :label="$t('Apply')" type="is-primary" rounded expaned @click="saveChange" :loading="isLoading" />
+        <b-button :label="$t('Cancel')" rounded @click="$emit('close')"/>
+        <b-button :label="$t('Apply')" :loading="isLoading" expaned rounded type="is-primary" @click="saveChange"/>
       </div>
     </footer>
     <!-- Modal-Card Footer End -->
@@ -89,9 +90,7 @@ export default {
       from: this.$store.state.wallpaperObject.from
     }
   },
-  components: {
-
-  },
+  components: {},
   created() {
     this.uploader = new Uploader({
       target: this.getTargetUrl(),
@@ -121,7 +120,7 @@ export default {
       const res = JSON.parse(message)
 
       if (res.success === 200) {
-        const uploadPath = "SERVER_URL"  + res.data.online_path + "&time=" + new Date().getTime()
+        const uploadPath = "SERVER_URL" + res.data.online_path + "&time=" + new Date().getTime()
         this.backgroundStyleObj.backgroundImage = `url(${this.parseUrl(uploadPath)})`
         this.path = uploadPath
         this.from = "Upload"
@@ -145,7 +144,7 @@ export default {
       this.$api.users.setCustomStorage(wallpaperConfig, data).then(res => {
         this.isLoading = false
         if (res.data.success === 200) {
-
+          this.$messageBus('dashboardsetting_wallpaper', res.data.data.path)
           this.$emit("close")
           setTimeout(() => {
             this.$store.commit('SET_WALLPAPER', {
@@ -198,14 +197,15 @@ export default {
   background-clip: padding-box, border-box;
   background-origin: padding-box, border-box;
   background-image: linear-gradient(to right, #fff, #fff),
-    linear-gradient(
-      108.27deg,
-      rgba(57, 60, 64, 1) 1.44%,
-      rgba(92, 96, 102, 1) 55.8%,
-      rgba(34, 36, 38, 1) 110.95%
-    );
+  linear-gradient(
+          108.27deg,
+          rgba(57, 60, 64, 1) 1.44%,
+          rgba(92, 96, 102, 1) 55.8%,
+          rgba(34, 36, 38, 1) 110.95%
+  );
   box-shadow: 0px 16px 24px rgba(115, 120, 128, 0.4);
   overflow: hidden;
+
   .preview-image {
     position: relative;
     overflow: hidden;
@@ -234,15 +234,18 @@ export default {
   &.active {
     border-color: $primary;
   }
+
   &:hover {
     border-color: $primary;
   }
+
   .image {
     border-radius: 4px;
     border: #fff 1px solid;
     overflow: hidden;
     background-size: cover;
   }
+
   .upload-button {
     width: 100%;
     height: 100%;
@@ -252,6 +255,7 @@ export default {
     background-color: rgba(240, 242, 245, 1);
   }
 }
+
 .preview-image {
   background-size: cover;
   background-repeat: no-repeat;

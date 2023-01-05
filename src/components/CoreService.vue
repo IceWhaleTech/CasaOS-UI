@@ -36,11 +36,16 @@ import {mixin} from '@/mixins/mixin';
 import _ from 'lodash';
 import SyncBlock from "@/components/syncthing/SyncBlock.vue";
 import SmartBlock from "@/components/smartHome/SmartBlock.vue";
+import last from "lodash/last";
+import events from "@/events/events";
+import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
+import StorageManagerPanel from "@/components/Storage/StorageManagerPanel.vue";
+import DiskLearnMore from "@/components/Storage/DiskLearnMore.vue";
 
 export default {
 	components: {SmartBlock, SyncBlock, noticeBlock, Swiper, SwiperSlide},
 	name: "core-service",
-	mixins: [mixin],
+	mixins: [mixin, business_ShowNewAppTag],
 	computed: {
 		recommendShow() {
 			return this.$store.state.recommendSwitch
@@ -51,6 +56,20 @@ export default {
 		// full width to show with single notice card
 		showFullCard() {
 			return this.noticeLength === 1 && !this.recommendShow
+		}
+	},
+	watch: {
+		noticeLength: {
+			handler(val, oldValue) {
+				if (val === oldValue) {
+					return
+				}
+				if (val === 0) {
+					this.$messageBus('youshouldknow_show', 'false');
+				} else if (oldValue === 0) {
+					this.$messageBus('youshouldknow_show', 'true');
+				}
+			},
 		}
 	},
 	data() {
@@ -77,6 +96,11 @@ export default {
 					prevEl: '.swiper-button-prev'
 				},
 				observer: true,
+				on: {
+					slideChangeTransitionStart: () => {
+						this.$messageBus('youshouldknow_slide');
+					},
+				}
 			},
 			noticesData: {
 				// example data:
@@ -106,7 +130,8 @@ export default {
 		}
 	},
 	created() {
-		this.getMessage();
+		this.getMessageFromLetter();
+		this.initUIEventBus();
 	},
 	mounted() {
 		this.WSHub = this.initMessageBus();
@@ -132,6 +157,33 @@ export default {
 			return socket
 		},
 		initUIEventBus() {
+			this.$EventBus.$on('casaUI:openInFiles', (path) => {
+				this.homeShowFiles(path);
+			});
+			this.$EventBus.$on('casaUI:openInStorageManager', () => {
+				this.$buefy.modal.open({
+					parent: this,
+					component: StorageManagerPanel,
+					hasModalCard: true,
+					customClass: 'storage-modal',
+					trapFocus: true,
+					canCancel: [],
+					scroll: "keep",
+					animation: "zoom-in",
+				})
+			});
+			this.$EventBus.$on('casaUI:openDiskLearnMore', () => {
+				this.$buefy.modal.open({
+					parent: this,
+					component: DiskLearnMore,
+					hasModalCard: true,
+					customClass: 'storage-modal',
+					trapFocus: true,
+					canCancel: [],
+					scroll: "keep",
+					animation: "zoom-in",
+				})
+			});
 		},
 		triggerUIEventBus(event) {
 			let eventJson = JSON.parse(event)
@@ -146,7 +198,7 @@ export default {
 			})
 			return WSHub
 		},
-		getMessage() {
+		getMessageFromLetter() {
 			this.$api.users.getLetter().then(res => {
 				let sortedData = _.sortBy(res.data, ['timestamp']);
 				sortedData.forEach(item => {
@@ -173,22 +225,21 @@ export default {
 				return
 			}
 			// Business : whether formatting is required
-			let eventType = eventJson.properties['children:num'] > 0 ? eventJson.properties['tran'] : 'newDisk';
+			let eventType
+			if (eventJson.properties['children:num'] > 0) {
+				eventType = eventJson.properties['tran'];
+			} else if (false) {
+				// TODO: notice user to add disk.
+				eventType = 'newDisk';
+			} else {
+				eventType = '';
+			}
 
 			let operateType = eventJson.name.split(':')[2]
 			let entityUUID = eventJson.properties['serial'] || eventJson.properties['local-storage:uuid'];
 			switch (eventType) {
 				case 'usb':
 					this.transformUSB(eventJson, operateType, entityUUID)
-					break;
-					// case 'sata':
-					// case 'nvme':
-					// case 'spi':
-					// case 'sas':
-					// 	this.transformLocalStorage(eventJson, operateType, entityUUID)
-					// 	break;
-				case 'app':
-					this.transformApp(eventJson, operateType, entityUUID)
 					break;
 				case 'newDisk':
 					this.transformNewDisk(eventJson, operateType, entityUUID)
@@ -206,7 +257,7 @@ export default {
 				this.$set(this.noticesData, eventType, {
 					prelude: {
 						title: 'Found a new drive',
-						icon: 'mdi-usb',
+						icon: '',
 					},
 					content: {},
 					contentType: 'list',
@@ -252,7 +303,7 @@ export default {
 				this.$set(this.noticesData, driveType, {
 					prelude: {
 						title: 'Found a new drive',
-						icon: 'mdi-usb',
+						icon: '',
 					},
 					content: {},
 					contentType: 'list',
@@ -297,8 +348,8 @@ export default {
 			if (!this.noticesData[eventType]) {
 				this.$set(this.noticesData, eventType, {
 					prelude: {
-						title: 'Found a new drive',
-						icon: 'mdi-usb',
+						title: 'Need to add a new disk',
+						icon: '',
 					},
 					content: {},
 					contentType: 'list',
@@ -335,6 +386,74 @@ export default {
 					this.$delete(this.noticesData, eventType)
 				}
 			}
+		},
+		addNotice(Json, rootName) {
+			this.$set(this.noticesData, rootName, {
+				prelude: {
+					title: Json.title,
+					icon: Json.icon,
+				},
+				content: Json.content,
+				contentType: Json.contentType,
+				operate: Json.operate,
+			})
+		},
+		removeNotice(rootName) {
+			this.$delete(this.noticesData, rootName)
+		},
+		transformAppInstallationProgress(res) {
+			if (this.noticesData[res.name]) {
+				// update progress
+				if (res.finished) {
+					this.removeNotice(res.name)
+					// business :: Tagging of new app / scrollIntoView
+					this.addIdToLocalStorage(res.properties['app-management:app:id'])
+
+				} else if (res.message !== "") {
+					const messageArray = res.message.split(/[(\r\n)\r\n]+/);
+					messageArray.forEach((item, index) => {
+						if (!item) {
+							messageArray.splice(index, 1);
+						}
+					})
+					const lastMessage = last(messageArray)
+					if (/Err/.test(lastMessage)) {
+						console.error(lastMessage)
+						return;
+					}
+					const info = JSON.parse(lastMessage)
+					const id = (info.id != undefined) ? info.id : "";
+					let progress = ""
+					if (info.progressDetail != undefined) {
+						let progressDetail = info.progressDetail
+						if (!isNaN(progressDetail.current / progressDetail.total)) {
+							progress = `[ ${String(Math.floor((progressDetail.current / progressDetail.total) * 100))}% ]`
+						}
+					}
+					let status = info.status
+					let currentInstallAppText = status + ":" + id + " " + progress
+					this.$set(this.noticesData[res.name], 'content', currentInstallAppText)
+				}
+				return
+			}
+			// add new app install notice
+			const data = {
+				title: 'Installing app',
+				icon: res.icon,
+				content: res.message || "",
+				// show progress
+				contentType: 'progress',
+				// show Cancel button
+				operate: false,
+			}
+			this.addNotice(data, res.name)
+			// this.$emit('updateState')
+			this.$EventBus.$emit(events.RELOAD_APP_LIST)
+		}
+	},
+	sockets: {
+		'app_install': function (res) {
+			this.transformAppInstallationProgress(res)
 		},
 	},
 	beforeDestroy() {

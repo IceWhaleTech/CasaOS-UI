@@ -17,7 +17,8 @@
 			<!-- start of section head-->
 			<div class="widget-header is-flex is-flex-shrink-0">
 				<div class="image is-24x24 is-flex-shrink-0">
-					<img :src="require('@/assets/img/logo/casa-white.svg')"/>
+					<img v-if="noticeData.prelude.icon" :src="noticeData.prelude.icon" alt=""/>
+					<img v-else :src="require('@/assets/img/logo/casa-white.svg')" alt=""/>
 				</div>
 				<div class="header-title pl-2 is-flex-grow-1">
 					{{ $t(noticeData.prelude.title) }}
@@ -29,13 +30,16 @@
 			<!-- end of section head-->
 
 			<!-- start of section body-->
+			<!--			list-->
 			<div
+					v-if="noticeData.contentType === 'list'"
 					class="info is-flex is-flex-direction-column is-justify-content-space-around is-flex-grow-1">
 				<div class="_widget-body is-flex mr-0">
 					<div class="image is-24x24 is-flex-shrink-0">
 						<img v-if="!noticeData.content[Object.keys(noticeData.content)[0]].icon"
-						     :src="require(`@/assets/img/logo/casa-white.svg`)"/>
-						<img v-else :src="require(`@/assets/img${noticeData.content[Object.keys(noticeData.content)[0]].icon}`)"/>
+						     :src="require(`@/assets/img/logo/casa-white.svg`)" alt=""/>
+						<img v-else :src="require(`@/assets/img${noticeData.content[Object.keys(noticeData.content)[0]].icon}`)"
+						     alt=""/>
 					</div>
 					<div class="body-title is-flex-grow-1 _nowrap ml-2">
 						{{ $t(noticeData.content[Object.keys(noticeData.content)[0]].title) }}
@@ -48,8 +52,9 @@
 				<div v-if="Object.keys(noticeData.content).length > 1" class="_widget-body is-flex mr-0">
 					<div class="image is-24x24 is-flex-shrink-0">
 						<img v-if="!noticeData.content[Object.keys(noticeData.content)[1]].icon"
-						     :src="require(`@/assets/img/logo/casa-white.svg`)"/>
-						<img v-else :src="require(`@/assets/img${noticeData.content[Object.keys(noticeData.content)[1]].icon}`)"/>
+						     :src="require(`@/assets/img/logo/casa-white.svg`)" alt=""/>
+						<img v-else :src="require(`@/assets/img${noticeData.content[Object.keys(noticeData.content)[1]].icon}`)"
+						     alt=""/>
 					</div>
 					<div class="body-title is-flex-grow-1 _nowrap ml-2">
 						{{ $t(noticeData.content[Object.keys(noticeData.content)[1]].title) }}
@@ -59,25 +64,31 @@
 					</p>
 				</div>
 			</div>
+			<div v-else-if="noticeData.contentType === 'progress'"
+			     class="info is-flex is-flex-direction-column is-justify-content-center is-flex-grow-1">
+				<div class="has-text-grey-200 _is-normal mb-1 is-flex-wrap-nowrap _nowrap">
+					{{ noticeData.content }}
+				</div>
+				<b-progress size="c-is-small"></b-progress>
+			</div>
 			<!-- end of section body-->
 
 			<!-- start of section footer-->
-			<div class="is-flex is-flex-direction-row-reverse is-flex-shrink-0 is-align-items-end">
-				<b-button v-if="!noticeData.operate" :disabled="false" class="width" rounded size="is-small" type="is-primary"
-				          @click="close">
-					{{ $t('Cancel') }}
-				</b-button>
-				<b-button v-else-if="noticeData.operate.type === 'casaUI:eventBus'" :disabled="false" class="width" rounded
-				          size="is-small"
-				          type="is-primary"
-				          @click="$EventBus.$emit(noticeData.operate.event, noticeData.operate.path)">
-					{{ $t(noticeData.operate.title) }}
-				</b-button>
-				<b-button v-else :disabled="false" class="width" rounded size="is-small"
-				          type="is-primary" @click="$EventBus.$emit(noticeData.operate.event, noticeData.operate.path)">
-					{{ $t(noticeData.operate.title) }}
-				</b-button>
-				<div v-if="Object.keys(noticeData.content).length > 1" class="is-flex-grow-1 footer-hint">
+			<div :style="{height: '24px'}" class="is-flex is-flex-direction-row-reverse is-flex-shrink-0 is-align-items-end">
+				<template v-if="noticeData.contentType !== 'progress'">
+					<b-button v-if="!noticeData.operate" :disabled="false" class="width" rounded size="is-small" type="is-primary"
+					          @click="close">
+						{{ $t('Cancel') }}
+					</b-button>
+					<b-button v-else-if="noticeData.operate.type === 'casaUI:eventBus'" :disabled="false" class="width" rounded
+					          size="is-small"
+					          type="is-primary"
+					          @click="eventBus">
+						{{ $t(noticeData.operate.title) }}
+					</b-button>
+				</template>
+				<div v-if="Object.keys(noticeData.content).length > 1 && noticeData.contentType === 'list'"
+				     class="is-flex-grow-1 footer-hint">
 					{{ $t('{num} items', {num: Object.keys(noticeData.content).length}) }}
 				</div>
 			</div>
@@ -96,40 +107,40 @@ export default {
 	props: {
 		noticeData: {
 			type: Object,
-			default: () => {
-				return {
-					prelude: {
-						title: 'Found a New USB Drive',
-						icon: 'mdi-usb',
-					},
-					content: {
-						123: {
-							title: 'Found a new drive',
-							icon: 'mdi-usb',
-							color: 'is-primary',
-							path: '/storage',
-							uuid: '123',
-							value: '100G/1000G'
-						},
-						345: {
-							title: 'Found a new drive',
-							icon: 'mdi-usb',
-							color: 'is-primary',
-							path: '/storage',
-							uuid: '456',
-							value: '100G/1001G'
-						},
-					},
-					contentType: 'list',
-					operate: {
-						type: 'casaUI:eventBus',
-						event: 'openFile',
-						title: 'More',
-						path: '/storage',
-						icon: 'mdi-arrow-right',
-					},
-				};
-			},
+			// default: () => {
+			// 	return {
+			// 		prelude: {
+			// 			title: 'Found a New USB Drive',
+			// 			icon: '',
+			// 		},
+			// 		content: {
+			// 			123: {
+			// 				title: 'Found a new drive',
+			// 				icon: 'mdi-usb',
+			// 				color: 'is-primary',
+			// 				path: '/storage',
+			// 				uuid: '123',
+			// 				value: '100G/1000G'
+			// 			},
+			// 			345: {
+			// 				title: 'Found a new drive',
+			// 				icon: 'mdi-usb',
+			// 				color: 'is-primary',
+			// 				path: '/storage',
+			// 				uuid: '456',
+			// 				value: '100G/1001G'
+			// 			},
+			// 		},
+			// 		contentType: 'list',
+			// 		operate: {
+			// 			type: 'casaUI:eventBus',
+			// 			event: 'openFile',
+			// 			title: 'More',
+			// 			path: '/storage',
+			// 			icon: 'mdi-arrow-right',
+			// 		},
+			// 	};
+			// },
 		},
 		noticeType: {
 			type: String,
@@ -141,33 +152,7 @@ export default {
 	},
 	inject: ['homeShowFiles'],
 	created() {
-		this.$EventBus.$on('casaUI:openInFiles', (path) => {
-			this.homeShowFiles(path);
-		});
-		this.$EventBus.$on('casaUI:openInStorageManager', () => {
-			this.$buefy.modal.open({
-				parent: this,
-				component: StorageManagerPanel,
-				hasModalCard: true,
-				customClass: 'storage-modal',
-				trapFocus: true,
-				canCancel: [],
-				scroll: "keep",
-				animation: "zoom-in",
-			})
-		});
-		this.$EventBus.$on('casaUI:openDiskLearnMore', () => {
-			this.$buefy.modal.open({
-				parent: this,
-				component: DiskLearnMore,
-				hasModalCard: true,
-				customClass: 'storage-modal',
-				trapFocus: true,
-				canCancel: [],
-				scroll: "keep",
-				animation: "zoom-in",
-			})
-		});
+
 	},
 	beforeDestroy() {
 	},
@@ -175,6 +160,12 @@ export default {
 
 	methods: {
 		close() {
+			this.$messageBus('youshouldknow_cardclose');
+
+			if (this.noticeData.contentType === 'progress') {
+				this.$emit('deleteNotice', this.noticeData, this.noticeType);
+				return
+			}
 			let promises = [];
 			for (const contentKey in this.noticeData.content) {
 				promises.push(this.$api.users.delLetter(this.noticeData.content[contentKey].messageUUID));
@@ -183,9 +174,10 @@ export default {
 				this.$emit('deleteNotice', this.noticeData, this.noticeType);
 			});
 		},
-		TODO() {
-			// this.$refs.mySwiper.$swiper.slideNext()
-		},
+		eventBus() {
+			this.$messageBus('youshouldknow_cardaction');
+			this.$EventBus.$emit(this.noticeData.operate.event, this.noticeData.operate.path)
+		}
 	}
 }
 </script>
@@ -257,5 +249,11 @@ export default {
 
 ._close-polymorphic:hover {
 	cursor: pointer;
+}
+
+::v-deep .progress.c-is-small {
+	height: 0.5rem !important;
+	background-image: linear-gradient(to right, hsla(215, 100%, 60%, 1) 30%, hsla(0, 0%, 100%, 0.4) 30%);
+	border-radius: 0.5rem;
 }
 </style>

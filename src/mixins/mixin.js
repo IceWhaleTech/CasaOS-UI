@@ -1,4 +1,13 @@
 /*
+ * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ * @LastEditTime: 2023/1/4 下午5:33
+ * @FilePath: /CasaOS-UI/src/mixins/mixin.js
+ * @Description:
+ *
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
+ */
+
+/*
  * @Author: JerryK
  * @Date: 2022-01-20 12:01:07
  * @LastEditors: zhanghengxin ezreal.ice@icloud.com
@@ -90,6 +99,7 @@ export const mixin = {
          */
         //
         setLang(lang) {
+            this.$store.commit('SET_LANGUAGE', lang);
             localStorage.setItem('lang', lang)
             this.$i18n.locale = lang;
         },
@@ -431,7 +441,7 @@ export const mixin = {
             if (null == value || value == '' || value == 0) {
                 return "0 bps";
             }
-            var unitArr = new Array("bps", "Kbps", "Mbps", "Gbps", "TB", "PB", "EB", "ZB", "YB");
+            var unitArr = ["bps", "Kbps", "Mbps", "Gbps", "TB", "PB", "EB", "ZB", "YB"];
             var index = 0,
                 srcsize = parseFloat(value);
             index = Math.floor(Math.log(srcsize) / Math.log(1024));

@@ -11,32 +11,32 @@
   <div class="widget has-text-white clock is-relative ">
     <div class="blur-background"></div>
 
-    <div class="wsettings" ref="wsettings">
-      <b-dropdown aria-role="list" animation="fade1" :mobile-modal="false" :position="position">
+    <div ref="wsettings" class="wsettings">
+      <b-dropdown :mobile-modal="false" :position="position" animation="fade1" aria-role="list">
         <template #trigger>
-          <div class=" widget-content">
+          <div class=" widget-content" @click="$messageBus('widget_widgetsetting')">
             <!-- Header Start -->
             <div class="widget-header is-flex is-clickable	">
               <div class="widget-title is-flex-grow-1">
                 {{ $t('Widgets Settings') }}
               </div>
               <div class="widget-icon-button is-flex-shrink-0">
-                <b-icon pack="casa" icon="right" size="is-20"></b-icon>
+                <b-icon icon="right" pack="casa" size="is-20"></b-icon>
               </div>
             </div>
             <!-- Header End -->
           </div>
         </template>
-        <b-dropdown-item aria-role="menu-item" :focusable="false" custom class="has-text-white has-text-left">
+        <b-dropdown-item :focusable="false" aria-role="menu-item" class="has-text-white has-text-left" custom>
           <h2 class="title is-5 has-text-white">{{ $t('Widgets Settings') }}</h2>
-          <div class="is-flex is-align-items-center item" v-for="(item,index) in settingsData"
-               :key="`setting_${index}`">
+          <div v-for="(item,index) in settingsData" :key="`setting_${index}`"
+               class="is-flex is-align-items-center item">
             <div class="is-flex is-align-items-center is-flex-grow-1">
               <b-icon :icon="getIcon(item.name)" class="mr-2"></b-icon>
               <b>{{ $t(getTitle(item.name)) }}</b>
             </div>
             <b-field>
-              <b-switch type="is-dark" v-model="item.show" size="is-small" class="is-flex-direction-row-reverse mr-0"
+              <b-switch v-model="item.show" class="is-flex-direction-row-reverse mr-0" size="is-small" type="is-dark"
                         @input="handleInput"></b-switch>
             </b-field>
           </div>

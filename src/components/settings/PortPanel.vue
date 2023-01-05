@@ -10,15 +10,17 @@
     <!-- Modal-Card Header Start -->
     <header class="modal-card-head">
       <div class="is-flex-grow-1">
-        <h3 class="title is-3">{{$t('Edit Web UI port')}}</h3>
+        <h3 class="title is-3">{{ $t('Edit Web UI port') }}</h3>
       </div>
-      <div><button type="button" class="delete" @click="$emit('close')" /></div>
+      <div>
+        <button class="delete" type="button" @click="$emit('close')"/>
+      </div>
     </header>
     <!-- Modal-Card Header End -->
     <!-- Modal-Card Body Start -->
     <section class="modal-card-body ">
-      <b-field class="mb-5 mt-5 has-text-light" :type="errorType" :message="errors" expanded>
-        <b-input type="number" v-model="port" v-on:keyup.enter.native="savePort"></b-input>
+      <b-field :message="errors" :type="errorType" class="mb-5 mt-5 has-text-light" expanded>
+        <b-input v-model="port" type="number" v-on:keyup.enter.native="savePort"></b-input>
       </b-field>
     </section>
     <!-- Modal-Card Body End -->
@@ -26,12 +28,12 @@
     <footer class="modal-card-foot is-flex is-align-items-center">
       <div class="is-flex-grow-1"></div>
       <div>
-        <b-button :label="$t('Cancel')" @click="$emit('close')" rounded />
-        <b-button :label="$t('Submit')" type="is-primary" rounded expaned @click="savePort" />
+        <b-button :label="$t('Cancel')" rounded @click="$emit('close')"/>
+        <b-button :label="$t('Submit')" expaned rounded type="is-primary" @click="savePort"/>
       </div>
     </footer>
     <!-- Modal-Card Footer End -->
-    <b-loading :is-full-page="false" v-model="isLoading"></b-loading>
+    <b-loading v-model="isLoading" :is-full-page="false"></b-loading>
   </div>
 </template>
 
@@ -60,8 +62,9 @@ export default {
 
   methods: {
     savePort() {
+      this.$messageBus('dashboardsetting_webuiport', this.port)
       this.isLoading = true;
-      this.$api.sys.editServerPort({ port: this.port }).then(res => {
+      this.$api.sys.editServerPort({port: this.port}).then(res => {
 
         if (res.data.success == 200) {
           this.errorType = "is-success";

@@ -6,22 +6,12 @@
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
   -->
-
-<!--
- * @Author: JerryK
- * @Date: 2021-09-18 21:32:13
- * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-08-30 17:35:39
- * @Description: App Card item
- * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
--->
-
 <template>
 	<div class="common-card is-flex is-align-items-center is-justify-content-center p-55 app-card"
 	     @mouseleave="hover = true" @mouseover="hover = true">
 
 		<!-- Action Button Start -->
-		<div v-if="item.type != 'system' && isCasa && !isUninstalling" class="action-btn">
+		<div v-if="item.type !== 'system' && isCasa && !isUninstalling" class="action-btn">
 			<b-dropdown ref="dro" :mobile-modal="false" :triggers="['contextmenu','click']" animation="fade1"
 			            append-to-body aria-role="list" class="app-card-drop" position="is-bottom-left"
 			            @active-change="setDropState">
@@ -34,6 +24,7 @@
 				<b-dropdown-item :focusable="false" aria-role="menu-item" custom>
 					<b-button expanded tag="a" type="is-text" @click="openApp(item)">{{ $t('Open') }}</b-button>
 					<b-button expanded type="is-text" @click="configApp">{{ $t('Setting') }}</b-button>
+					<b-button expanded type="is-text" @click="qucikInstall(item.appstore_id)">{{ $t('Clone') }}</b-button>
 					<b-button :loading="isUninstalling" class="mb-1" expanded type="is-text" @click="uninstallConfirm">
 						{{ $t('Uninstall') }}
 					</b-button>
@@ -59,12 +50,14 @@
 		<div class="blur-background"></div>
 		<div class="cards-content">
 			<!-- Card Content Start -->
-			<b-tooltip :animated="true" :label="tooltipLable" :triggers="tooltipTriger" animation="fade1" type="is-dark">
+			<b-tooltip :animated="true" :label="tooltipLabel" :triggers="tooltipTriger" animation="fade1" type="is-dark">
 				<div class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-3 pb-3 img-c">
 					<a class="is-flex is-justify-content-center" @click="openApp(item)">
 						<b-image :class="item.state | dotClass" :src="item.icon"
 						         :src-fallback="require('@/assets/img/app/default.png')"
 						         class="is-64x64" webp-fallback=".jpg"></b-image>
+						<!-- Unstable-->
+						<cTooltip v-if="newAppIds.includes(item.id)" class="__position" content="New"></cTooltip>
 					</a>
 					<p class="mt-3 one-line">
 						<a class="one-line" @click="openApp(item)">
@@ -86,9 +79,17 @@
 
 <script>
 import events from '@/events/events';
+import cTooltip from '@/components/basicComponents/tooltip/tooltip.vue';
+import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
+import business_OpenThirdApp from "@/mixins/app/Business_OpenThirdApp";
+import isNull from "lodash/isNull";
 
 export default {
 	name: "app-card",
+	components: {
+		cTooltip
+	},
+	mixins: [business_ShowNewAppTag, business_OpenThirdApp],
 	inject: ["homeShowFiles", "openAppStore"],
 	data() {
 		return {
@@ -110,11 +111,11 @@ export default {
 		}
 	},
 	computed: {
-		tooltipLable() {
+		tooltipLabel() {
 			if (!this.isCasa) {
 				return this.$t('Import to CasaOS')
 			} else {
-				if (this.item.type === "system" || this.item.port != "" && this.item.state == 'running') {
+				if (this.item.type === "system" || this.item.port !== "" && this.item.state === 'running') {
 					return this.$t('Open')
 				} else {
 					return this.$t('Setting')
@@ -125,7 +126,7 @@ export default {
 			if (!this.isCasa) {
 				return ['hover']
 			} else {
-				if (this.item.type === "system" || this.item.port != "" && this.item.state == 'running') {
+				if (this.item.type === "system" || this.item.port !== "" && this.item.state === 'running') {
 					return ['hover']
 				} else {
 					return []
@@ -152,36 +153,8 @@ export default {
 				window.open(item.host, '_blank');
 			} else {
 				this.$refs.dro.isActive = false
-				if ((item.host != "" || item.port != "" || item.index != "") && item.state == 'running') {
-					const hostIp = item.host || this.$baseIp
-					const protocol = item.protocol || 'http'
-					const port = item.port ? `:${item.port}` : ''
-					const url = `${protocol}://${hostIp}${port}${item.index}`
-					let href = window.location.href.split("#")[0]
-					if (url === href) {
-						this.$buefy.toast.open({
-							message: this.$t('The page to be opened is the same as current page'),
-							type: 'is-warning',
-							position: 'is-top',
-							duration: 3000,
-							queue: false,
-							container: null,
-							animation: 'fade',
-							onOpen: () => {
-							},
-							onClose: () => {
-							},
-							ariaRole: 'alert',
-							ariaLive: 'polite'
-						})
-						return
-					}
-					if (item.image.toLowerCase().indexOf("qbittorrent") == -1) {
-						window.open(url, '_blank');
-					} else {
-						var arg = '\u003cscript\u003elocation.replace("' + url + '")\u003c/script\u003e';
-						window.open('javascript:window.name;', arg);
-					}
+				if (item.state === 'running') {
+					this.openAppToNewWindow(item)
 				}
 			}
 		},
@@ -213,16 +186,17 @@ export default {
 		 * @return {*} void
 		 */
 		restartApp() {
+			this.$messageBus('apps_restart', this.item.name);
 			this.isRestarting = true
 			this.$api.container.updateState(this.item.id, "restart").then((res) => {
-				if (res.data.success == 200) {
+				if (res.data.success === 200) {
 					this.updateState()
 				}
 				this.isRestarting = false;
 			}).catch((err) => {
 				this.isRestarting = false;
 				this.$buefy.toast.open({
-					message: err.response.data.data,
+					message: err.response.data.data || err.response.data.message,
 					type: 'is-danger',
 					position: 'is-top',
 					duration: 5000
@@ -235,6 +209,7 @@ export default {
 		 * @return {*} void
 		 */
 		uninstallConfirm() {
+			this.$messageBus('apps_uninstall', this.item.name);
 			this.$refs.dro.isActive = false
 			this.$buefy.dialog.confirm({
 				title: this.$t('Attention'),
@@ -266,7 +241,7 @@ export default {
 				let listLinkApp = JSON.parse(localStorage.getItem("listLinkApp"))
 				listLinkApp = listLinkApp.filter((o) => o.name !== this.item.name)
 				this.$api.users.saveLinkAppDetail(listLinkApp).then((res) => {
-					if (res.data.success == 200) {
+					if (res.data.success === 200) {
 						localStorage.setItem("listLinkApp", JSON.stringify(res.data.data))
 						this.$EventBus.$emit(events.RELOAD_APP_LIST);
 					}
@@ -274,7 +249,7 @@ export default {
 				})
 			} else {
 				this.$api.container.uninstall(this.item.id, {'delete_config_folder': checkDelConfig}).then((res) => {
-					if (res.data.success == 200) {
+					if (res.data.success === 200) {
 						this.$EventBus.$emit(events.UPDATE_SYNC_STATUS);
 					}
 					this.isUninstalling = false;
@@ -306,22 +281,24 @@ export default {
 		 * @return {*} void
 		 */
 		configApp() {
+			this.$messageBus('apps_setting', this.item.name);
 			this.$refs.dro.isActive = false
 			this.$emit("configApp", this.item, true)
 		},
 
 		/**
-		 * @description: Start or Stop a App
+		 * @description: Start or Stop App
 		 * @param {Object} item the app info object
 		 * @return {*} void
 		 */
 		toggle(item) {
+			this.$messageBus('apps_stop', item.name);
 			this.isStarting = true;
-			const state = item.state == "running" ? "stop" : "start"
+			const state = item.state === "running" ? "stop" : "start"
 
 			this.$api.container.updateState(item.id, state).then((res) => {
 				this.isStarting = false
-				if (res.data.success == 200) {
+				if (res.data.success === 200) {
 					item.state = res.data.data
 					this.updateState()
 				} else {
@@ -346,6 +323,67 @@ export default {
 			})
 		},
 
+		qucikInstall(id) {
+			let data = this.$api.apps.getAppInfo(id).then(resp => {
+				if (resp.data.success == 200) {
+					let respData = resp.data.data
+					// messageBus :: installApp
+					this.$messageBus('appstore_install', respData.title.toString());
+
+					let initData = {}
+					initData.protocol = respData.protocol
+					initData.host = respData.host
+					initData.port_map = respData.port_map
+					initData.cpu_shares = 50
+					initData.memory = respData.max_memory
+					initData.restart = "always"
+					initData.label = respData.title
+					initData.position = true
+					initData.index = respData.index
+					initData.icon = respData.icon
+					initData.network_model = respData.network_model
+					initData.image = respData.image
+					initData.description = respData.description
+					initData.origin = respData.origin
+					initData.ports = isNull(respData.ports) ? [] : respData.ports
+					initData.volumes = isNull(respData.volumes) ? [] : respData.volumes
+					initData.envs = isNull(respData.envs) ? [] : respData.envs
+					initData.devices = isNull(respData.devices) ? [] : respData.devices
+					initData.cap_add = isNull(respData.cap_add) ? [] : respData.cap_add
+					initData.cmd = isNull(respData.cmd) ? [] : respData.cmd
+					initData.privileged = respData.privileged
+					initData.host_name = respData.host_name
+					initData.appstore_id = id
+
+					this.$api.container.install(initData).then((res) => {
+						this.isLoading = false;
+						if (res.data.success == 200) {
+							this.currentInstallAppName = res.data.data
+							this.currentSlide = 2;
+							this.currentInstallAppText = "Start Installation..."
+							this.cancelButtonText = 'Continue in background'
+						} else {
+							this.$buefy.toast.open({
+								message: res.data.message,
+								type: 'is-warning'
+							})
+						}
+					}).catch((err) => {
+						this.isLoading = false;
+						this.$buefy.toast.open({
+							message: err.response.data.message,
+							type: 'is-warning'
+						})
+					})
+				}
+			}).catch(() => {
+				this.$buefy.toast.open({
+					message: this.$t(`There was an error loading the data, please try again!`),
+					type: 'is-danger'
+				})
+			})
+		}
+
 	},
 	watch: {
 		hover(val) {
@@ -363,11 +401,12 @@ export default {
 			if (state === "0") {
 				return "start"
 			} else {
-				return state == 'running' ? 'start' : 'stop'
+				return state === 'running' ? 'start' : 'stop'
 			}
 
 		},
-	}
+	},
+
 }
 </script>
 
@@ -456,6 +495,12 @@ export default {
 			}
 		}
 	}
+}
+
+.__position {
+	position: absolute !important;
+	top: 0.125rem !important;
+	left: 3rem !important;
 }
 </style>
 <style lang="scss">

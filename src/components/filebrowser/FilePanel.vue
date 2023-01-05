@@ -229,7 +229,7 @@ import OperationStatusBar from './components/OperationStatusBar.vue';
 import GlobalActionButton from './components/GlobalActionButton.vue';
 import MountActionButton from './components/MountActionButton.vue';
 // storage settings requirement document
-import StorageSettings from "@/components/Storage/StorageSettings";
+import MergeStorages from "@/components/Storage/MergeStorages.vue";
 import {nanoid} from "nanoid";
 
 export default {
@@ -922,23 +922,34 @@ export default {
 		* storage settings modal
 		* */
 		// show storage settings modal
-		showStorageSettingsModal() {
+		async showStorageSettingsModal() {
+			// TODO: the part is repetition
+			//  with APPs Installation Location requirement document
+			// 获取merge信息
+			let mergeStorageList
+			try {
+				mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => res.data.data[0]['source_volume_uuids'])
+			} catch (e) {
+				mergeStorageList = []
+				console.log(e)
+			}
 			this.$buefy.modal.open({
 				parent: this,
-				component: StorageSettings,
+				component: MergeStorages,
 				hasModalCard: true,
 				canCancel: false,
 				animation: "zoom-in",
-				props: {},
+				props: {
+					mergeStorageList
+				},
 				events: {}
-
 			})
 		},
 
 	},
 	sockets: {
 		file_operate(data) {
-			const taskList = data.body.file_operate.data
+			const taskList = data.file_operate.data
 			taskList.forEach(task => {
 				if (task.finished && task.to === this.currentPath) {
 					this.reload()

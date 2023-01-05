@@ -22,51 +22,25 @@ module.exports = {
     css: {
         extract: true
     },
-    // configureWebpack: {
-    //
-    //
-    //     module: {
-    //         rules: [
-    //             {
-    //                 test: /\.tsx?$/,
-    //                 loader: 'ts-loader',
-    //                 exclude: /node_modules/,
-    //                 options: {
-    //                     appendTsSuffixTo: [/\.vue$/],
-    //                     happyPackMode: true,
-    //                     // resolveTypeReferenceDirective: {
-    //                     //     '@': path.resolve(__dirname, 'src')
-    //                     // },
-    //
-    //                 },
-    //                 // "paths": {
-    //                 //     "@/*": [
-    //                 //         path.resolve(__dirname, 'src/*')
-    //                 //     ]
-    //                 // },
-    //                 // "compilerOptions": {
-    //                 //     "target": "esnext",
-    //                 //     "module": "esnext",
-    //                 //     "strict": true,
-    //                 //     "jsx": "preserve",
-    //                 //     "importHelpers": true,
-    //                 //     "moduleResolution": "node",
-    //                 //     "experimentalDecorators": true,
-    //                 //     "esModuleInterop": true,
-    //                 //     "allowSyntheticDefaultImports": true,
-    //                 //     "sourceMap": true,
-    //                 //     "baseUrl": ".",
-    //                 //     "types": [
-    //                 //         "webpack-env",
-    //                 //         "mocha",
-    //                 //         "chai"
-    //                 //     ],
-    //                 //
-    //                 // }
-    //             },
-    //         ],
-    //     },
-    // },
+    configureWebpack: {
+        module: {
+            rules: [
+                // architecture :: openAPI
+                {
+                    test: /\.tsx?$/,
+                    loader: 'ts-loader',
+                    exclude: /node_modules/,
+                    options: {
+                        appendTsSuffixTo: [/\.vue$/],
+                        happyPackMode: true,
+                    },
+                    resolve: {
+                        extensions: ['.ts', '.tsx', '.js', '.vue', '.json']
+                    },
+                },
+            ],
+        },
+    },
     chainWebpack: config => {
         // config.entry('app').clear().add('./src/main.js')
         // config.module.rule('ts').test(/\.tsx?$/).use('ts-loader').loader('ts-loader').end().use('cache-loader').loader('cache-loader').end().use('babel-loader').loader('babel-loader').end()
@@ -91,7 +65,6 @@ module.exports = {
                     exclude: /node_modules/
                 })
             )
-        //
         if (process.env.NODE_ENV === "prod") {
             config.output.filename('[name].[contenthash:8].js').end()
             config.output.chunkFilename('[name].[contenthash:8].js').end()
@@ -115,24 +88,9 @@ module.exports = {
         }
     },
     devServer: {
-        // overlay: { //Show eslink error information on Browser
-        //     warnings: true,
-        //     errors: true
-        // },
         contentBase: path.join(__dirname, 'src'),
         open: true,
-        // host: 'localhost',
         port: 8080,
-        // proxy: {
-        //     "/": {        // 自己的服务器
-        //         target: `http://192.168.2.119`,  // 要进入的服务器地址
-        //         changeOrigin: true,
-        //         // pathRewrite: {
-        //         //     "/": "/"
-        //         // }
-        //     },
-        // },
-        before: require('./mock/v2_mock.js')
-
+        before: require('./mock/meta_data.js')
     }
 }

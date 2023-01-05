@@ -1,3 +1,11 @@
+<!--
+  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+  * @LastEditTime: 2022/12/19 下午12:50
+  * @FilePath: /CasaOS-UI/src/components/Storage/StorageCombination.vue
+  * @Description:
+  *
+  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
+  -->
 <template>
   <div v-show="showCombination" class="mb-5 mt-2 pt-5 pb-5 border-1">
     <div class="is-relative is-flex is-justify-content-center top--2rem">
@@ -7,7 +15,7 @@
       <div class="is-flex-grow-1">
         <div v-for="(item,index) in storageData" :key="'mergeStorage' + index" class="ml-5 is-flex mb-3">
           <div class="header-icon">
-            <b-icon icon="danger" pack="casa" class="warn is-16x16" v-show="!item.name"></b-icon>
+            <b-icon v-show="!item.name" class="warn is-16x16" icon="danger" pack="casa"></b-icon>
             <b-image :src="require('@/assets/img/storage/storage.png')" class="is-64x64"></b-image>
           </div>
           <div class="ml-3 is-flex-grow-1 is-flex is-align-items-center">
@@ -36,9 +44,13 @@
         </div>
       </div>
       <div class="mr-5 is-flex is-flex-direction-column is-justify-content-space-between">
-        <b-button :type="type" class="width" rounded size="is-small"
-                  @click="showStorageSettingsModal">{{ $t('Merge Storages') }}
-        </b-button>
+        <div class="is-flex is-flex-direction-row-reverse">
+          <b-button :type="type" class="width" rounded size="is-small"
+                    @click="showStorageSettingsModal">{{ $t('Merge Storages') }}
+          </b-button>
+          <cToolTip isBlock modal="is-success"></cToolTip>
+        </div>
+
         <div class="is-size-6 has-text-weight-medium mb-1">{{ renderSize(usage) }}/{{ renderSize(totleSize) }}</div>
       </div>
     </div>
@@ -49,12 +61,15 @@
 
 <script>
 import {mixin} from '@/mixins/mixin';
-import storageSettings from "@/components/Storage/StorageSettings";
+import MergeStorages from "@/components/Storage/MergeStorages.vue";
+import cToolTip from "@/components/basicComponents/tooltip/tooltip.vue";
 
 export default {
   name: "drive-combination",
   mixins: [mixin],
-  components: {},
+  components: {
+    cToolTip,
+  },
   props: {
     storageData: {
       type: Array,
@@ -98,11 +113,22 @@ export default {
   },
   methods: {
     // show storage settings modal
-    showStorageSettingsModal() {
+    async showStorageSettingsModal() {
       // src/components/Storage/StorageManagerPanel.vue:406
+      // TODO: the part is repetition
+      //  with APPs Installation Location requirement document
+      // 获取merge信息
+      let mergeStorageList
+      try {
+        mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => res.data.data[0]['source_volume_uuids'])
+      } catch (e) {
+        mergeStorageList = []
+        console.log(e)
+      }
+      
       this.$buefy.modal.open({
         parent: this,
-        component: storageSettings,
+        component: MergeStorages,
         hasModalCard: true,
         trapFocus: true,
         onCancel: () => {
@@ -112,6 +138,9 @@ export default {
             this.$emit("reload");
           }
         },
+        props: {
+          mergeStorageList
+        }
       })
     },
 
