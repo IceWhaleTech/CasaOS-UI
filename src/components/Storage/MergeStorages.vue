@@ -114,7 +114,7 @@
           <b-icon class="is-38x38" custom-size="is-size-2" icon="danger" pack="casa"></b-icon>
         </div>
         {{
-          `${runName.split(',').length} ` + $t('APPs is running') + ` (${runName}), ` + $t('restart APPs to continue.')
+          `${runName.split(',').length} ` + $t('APPs is running') + ` , ` + $t('restart APPs to continue.')
         }}
       </div>
       <div v-if="currentStep === 4" class="is-flex is-align-items-center font">
