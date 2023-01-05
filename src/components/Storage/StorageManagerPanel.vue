@@ -11,13 +11,13 @@
 
     <!-- Modal-Card Body Start -->
     <template v-if="!isCreating">
-      <header class="ml-5 mt-4 pt-1">
-        <h3 class="title is-3">{{ title }}</h3>
+      <header class="pl-5 mt-4 pt-1 b-line">
+        <h3 class="title is-3 mb-3">{{ title }}</h3>
         <div class="close-container">
           <button class="delete" type="button" @click="$emit('close')"/>
         </div>
       </header>
-      <section class="mr-5 ml-5">
+      <section class="pr-5 pl-5 mt-4 pb-2 b-line mb-2">
         <!-- Storage and Disk List Start -->
         <div v-if="!creatIsShow" class="is-flex-grow-1 is-relative">
           <div v-if="activeTab == 0" class="create-container">
@@ -48,14 +48,6 @@
               <drive-item v-for="(item,index) in diskData" :key="'disk'+index" :item="item"></drive-item>
             </b-tab-item>
           </b-tabs>
-
-          <div v-if="activeTab == 0 && !mergeConbinationsStorageData.length"
-               class="is-flex is-flex-direction-row-reverse">
-            <b-button :type="state_mainstorage_operability" class="width" rounded size="is-small"
-                      @click="showStorageSettingsModal">{{ $t('Merge Storages') }}
-            </b-button>
-            <cToolTip isBlock></cToolTip>
-          </div>
 
         </div>
         <!-- Storage and Disk List End -->
@@ -136,13 +128,12 @@
         </div>
         <h3 class="title is-4 has-text-centered has-text-weight-light">{{ $t('Creation in progress') }}...</h3>
       </div>
-      <b-loading v-model="isLoading" :can-cancel="false" :is-full-page="false"></b-loading>
     </section>
 
     <!-- Modal-Card Body End -->
     <!-- Modal-Card Footer Start-->
-    <footer v-if="creatIsShow && !isCreating" class="modal-card-foot is-flex is-align-items-center ">
-      <template>
+    <footer class="modal-card-foot is-flex is-align-items-center ">
+      <template v-if="creatIsShow && !isCreating">
         <div class="is-flex-grow-1"></div>
         <div>
           <b-button :label="$t('Cancel')" rounded @click="showDefault"/>
@@ -150,6 +141,15 @@
                     :type="createStorageType == 'format'?'is-primary':''" rounded @click="createStorge(true)"/>
           <b-button v-if="createStorageType == 'mountable'" :label="$t('Create')" :loading="isValiding" rounded
                     type="is-primary" @click="createStorge(false)"/>
+        </div>
+      </template>
+      <template v-if="activeTab == 0 && !mergeConbinationsStorageData.length">
+        <div class="is-flex-grow-1"></div>
+        <div class="is-flex is-flex-direction-row-reverse">
+          <b-button :type="state_mainstorage_operability" class="width" rounded size="is-small"
+                    @click="showStorageSettingsModal">{{ $t('Merge Storages') }}
+          </b-button>
+          <cToolTip isBlock></cToolTip>
         </div>
       </template>
 
@@ -591,6 +591,10 @@ export default {
   border-radius: 6px;
   font-size: 0.85rem;
   font-weight: 400;
+}
+
+.b-line {
+  border-bottom: 1px solid hsla(208, 16%, 94%, 1);
 }
 </style>
 
