@@ -342,6 +342,7 @@ export default {
 						position: "is-top",
 						duration: 5000,
 					});
+					console.error(e)
 				}).then(() => {
 					// TODO : need to check the result by the states code
 					switch (res.status) {
@@ -385,6 +386,7 @@ export default {
 					position: "is-top",
 					duration: 5000,
 				});
+				console.error(e)
 			}).then(() => {
 				this.isConnecting = false
 			})
@@ -446,6 +448,7 @@ export default {
 									position: "is-top",
 									duration: 5000,
 								});
+								console.error(e)
 							})
 						} else {
 							this.updateMerge(dockerInfo)
@@ -459,6 +462,7 @@ export default {
 						position: "is-top",
 						type: 'is-danger'
 					})
+					console.error(e)
 				})
 			} catch (e) {
 				console.log(e)
@@ -480,6 +484,7 @@ export default {
 				message: this.$t("Password is incorrect"),
 				type: 'is-danger'
 			})
+			console.error(e)
 		}
 
 	}

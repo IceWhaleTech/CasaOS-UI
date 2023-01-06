@@ -129,12 +129,6 @@ export default {
 		}
 	},
 	async created() {
-		// Get the shortcut detail for the first time and save it to store
-		// try{
-		//   await this.$store.dispatch('GET_SHORTCUT_DATA')
-		// }catch(e){
-		//   console.log(e);
-		// }
 		this.getNewList()
 	},
 	methods: {

@@ -314,7 +314,7 @@ export default {
 			let hasMergeState = await this.$api.local_storage.getMergerfsInfo().then(res => res.status);
 			this.hasMergerFunction = hasMergeState == 200
 		} catch (e) {
-			console.log(e)
+			console.error(e)
 		}
 	},
 

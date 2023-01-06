@@ -166,6 +166,7 @@ export default {
 										message: this.$t(`Failed to start, please try again.`),
 										type: 'is-danger'
 									})
+									console.error(`Failed to start, please try again.`)
 								}
 							})
 						}
