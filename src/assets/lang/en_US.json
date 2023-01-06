@@ -327,5 +327,16 @@
   "Set Mainstorage": "Set MainStorage",
   "Found a new drive": "Found a new drive",
   "Data cannot be recovered after deletion! <br/>Continue on to uninstall this application?<br/>{divS}Delete userdata ( config folder ){divE}": "Data cannot be recovered after deletion! <br/>Continue on to uninstall this application?<br/>{divS}Delete userdata ( config folder ){divE}",
-  "try to open the APP, if it does not work, please restart or try again later.": "try to open the app, if it does not work, please restart or try again later."
+  "try to open the APP, if it does not work, please restart or try again later.": "try to open the app, if it does not work, please restart or try again later.",
+  "Beta": "Beta",
+  "Clone": "Clone",
+  "All the checked Storage will be merged into CasaOS HD.": "All the checked Storage will be merged into CasaOS HD.",
+  "* This feature is now testing and verifying, enabling it may clear personal data and destroy the installed APPs, so it is recommended to use it only during the startup.": "* This feature is now testing and verifying, enabling it may clear personal data and destroy the installed apps, so it is recommended to use it only during the startup.",
+  "NEW": "NEW",
+  "Preparing for launch": "Preparing for launch",
+  "Open": "Open",
+  "to open the app. If it does not work, please restart or try again later.": "to open the app. If it does not work, please restart or try again later.",
+  "This operation may clear all personal data and destroy the installed APPs.": "This operation may clear all personal data and destroy the installed apps.",
+  "Reset": "Reset",
+  "Warning": "Warning"
 }

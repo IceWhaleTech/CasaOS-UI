@@ -19,8 +19,8 @@
 		<span v-else class="has-text-full-03 has-text-grey-600 mt-6">{{
 				$t('Please')
 			}}
-    <a @click="openThirdApp(appDetailData);">{{ $t('click here') }}
-    </a> {{ $t('try to open the APP, if it does not work, please restart or try again later.') }}
+    <a @click="openThirdApp(appDetailData);">{{ $t('Click here') }}
+    </a> {{ $t('to open the app. If it does not work, please restart or try again later.') }}
   </span>
 		<img :src="require('@/assets/img/logo/logo.svg')" alt="" class="is-absolute position"/>
 	</div>
