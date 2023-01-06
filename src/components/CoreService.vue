@@ -41,6 +41,7 @@ import events from "@/events/events";
 import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
 import StorageManagerPanel from "@/components/Storage/StorageManagerPanel.vue";
 import DiskLearnMore from "@/components/Storage/DiskLearnMore.vue";
+import DockerProgress from "@/components/Apps/progress.js";
 
 export default {
 	components: {SmartBlock, SyncBlock, noticeBlock, Swiper, SwiperSlide},
@@ -126,7 +127,9 @@ export default {
 						icon: 'mdi-arrow-right',
 					},
 				},*/
-			}
+			},
+			dockerProgress: null,
+			totalPercentage: 0,
 		}
 	},
 	created() {
@@ -184,6 +187,7 @@ export default {
 					animation: "zoom-in",
 				})
 			});
+			this.dockerProgress = new DockerProgress();
 		},
 		triggerUIEventBus(event) {
 			let eventJson = JSON.parse(event)
@@ -408,39 +412,29 @@ export default {
 					this.removeNotice(res.name)
 					// business :: Tagging of new app / scrollIntoView
 					this.addIdToLocalStorage(res.properties['app-management:app:id'])
+					this.$delete(this.noticesData, res.name);
 
 				} else if (res.message !== "") {
-					console.log(res.message);
+					console.log('元数据', res.message);
 					const messageArray = res.message.split(/[(\r\n)\r\n]+/);
 					messageArray.forEach((item, index) => {
 						if (!item) {
 							messageArray.splice(index, 1);
+							return;
 						}
+						const evt = JSON.parse(item)
+						this.totalPercentage = this.dockerProgress.getProgress(evt)
 					})
-					const noticeMessage = messageArray.join(' ');
-					if (/Err/.test(noticeMessage)) {
-						this.$buefy.toast.open({
-							message: noticeMessage,
-							type: 'is-danger',
-							duration: 5000,
-							position: 'is-top',
-							queue: false,
-						})
-						console.error(noticeMessage);
-						return;
+					let currentInstallAppText = 'Starting installation...'
+					if (this.totalPercentage === 0) {
+						currentInstallAppText = 'Starting installation...'
+					} else if (this.totalPercentage === 100) {
+						currentInstallAppText = 'Installation completed '
+					} else {
+						currentInstallAppText = 'Installing... [' + this.totalPercentage + '%]'
 					}
-					const info = JSON.parse(noticeMessage)
-					const id = (info.id != undefined) ? info.id : "";
-					let progress = ""
-					if (info.progressDetail != undefined) {
-						let progressDetail = info.progressDetail
-						if (!isNaN(progressDetail.current / progressDetail.total)) {
-							progress = `[ ${String(Math.floor((progressDetail.current / progressDetail.total) * 100))}% ]`
-						}
-					}
-					let status = info.status
-					let currentInstallAppText = status + ":" + id + " " + progress
-					this.$set(this.noticesData[res.name], 'content', currentInstallAppText)
+
+					this.$set(this.noticesData[res.name], 'content', {text: currentInstallAppText, value: this.totalPercentage})
 				}
 				return
 			}

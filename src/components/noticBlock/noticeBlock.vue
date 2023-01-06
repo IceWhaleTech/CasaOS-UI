@@ -66,10 +66,11 @@
 			</div>
 			<div v-else-if="noticeData.contentType === 'progress'"
 			     class="info is-flex is-flex-direction-column is-justify-content-center is-flex-grow-1">
-				<div class="has-text-grey-200 _is-normal mb-1 is-flex-wrap-nowrap _nowrap">
-					{{ noticeData.content }}
+				<div class="has-text-grey-200 _is-normal mb-2 is-flex-wrap-nowrap _nowrap">
+					{{ noticeData.content.text }}
 				</div>
-				<b-progress size="c-is-small"></b-progress>
+				<b-progress :value="noticeData.content.value" size="c-is-small"
+				            type="is-primary"></b-progress>
 			</div>
 			<!-- end of section body-->
 
@@ -252,8 +253,12 @@ export default {
 }
 
 ::v-deep .progress.c-is-small {
-	height: 0.5rem !important;
-	background-image: linear-gradient(to right, hsla(215, 100%, 60%, 1) 30%, hsla(0, 0%, 100%, 0.4) 30%);
+	height: 0.75rem !important;
 	border-radius: 0.5rem;
+	background: rgba(172, 184, 195, 0.4);
+
+	&::-webkit-progress-bar {
+		background: rgba(172, 184, 195, 0.4);
+	}
 }
 </style>

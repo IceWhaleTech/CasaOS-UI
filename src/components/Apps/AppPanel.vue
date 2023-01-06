@@ -515,10 +515,10 @@
 							<lottie-animation :animationData="require('@/assets/ani/loading.json')" :autoPlay="true" :loop="true"
 							                  class="install-animation mt-5 mb-2"></lottie-animation>
 						</div>
-						<b-progress :max="currentInstallAppProgressTotals.total * 2"
-						            :value="currentInstallAppProgressTotals.download + currentInstallAppProgressTotals.extract"
-						            format="percent"
-						            show-value type="is-primary"></b-progress>
+						<b-progress
+								:value="totalPercentage"
+								format="percent"
+								show-value type="is-primary"></b-progress>
 						<h3 :class="currentInstallAppTextClass" class="title is-6 has-text-centered"
 						    v-html="currentInstallAppText"></h3>
 					</div>
@@ -586,6 +586,8 @@ import {Swiper, SwiperSlide} from 'vue-awesome-swiper'
 import AppsInstallationLocation from "@/components/Apps/AppsInstallationLocation";
 import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
 import business_OpenThirdApp from "@/mixins/app/Business_OpenThirdApp";
+import DockerProgress from "@/components/Apps/progress.js";
+import last from 'lodash/last';
 
 
 const data = [
@@ -795,7 +797,8 @@ export default {
 			storage_item_scence: 'select installation location',
 			isFirstInstall: false,
 			installationLocation: '',
-
+			dockerProgress: null,
+			totalPercentage: 0,
 		}
 	},
 
@@ -1233,6 +1236,7 @@ export default {
 					this.currentSlide = 2;
 					this.currentInstallAppText = "Start Installation..."
 					this.cancelButtonText = 'Continue in background'
+					this.dockerProgress = new DockerProgress();
 				} else {
 					this.$buefy.toast.open({
 						message: res.data.message,
@@ -1540,60 +1544,25 @@ export default {
 					this.currentInstallAppType = resData.type;
 					if (resData.message !== "") {
 						const messageArray = resData.message.split(/[(\r\n)\r\n]+/);
-						messageArray.forEach((item) => {
-							if (item) {
-								const info = JSON.parse(item)
-								//console.log(info) //debug
-								const status = info.status
-								if (info.progressDetail != undefined) {
-									const id = info.id
-									let progressDetail = info.progressDetail
-									let total = 0
-									let current = 0
-									if (progressDetail.total != undefined) {
-										total = progressDetail.total
-										current = progressDetail.current
-									} else {
-										if (this.currentInstallAppProgress[id] != undefined) {
-											total = this.currentInstallAppProgress[id].total
-										}
-									}
-									let dl = 0
-									let ex = 0
-									switch (status) {
-										case "Downloading":
-											dl = current
-											break
-										case "Download complete":
-											dl = total
-											break
-										case "Extracting":
-											dl = total
-											ex = current
-											break
-										case "Pull complete":
-											dl = ex = total
-											break
-										default:
-											return //can ignore other actions
-									}
-									this.$set(this.currentInstallAppProgress, id, {"download": dl, "extract": ex, "total": total})
-									// sum the values across all the ids:
-									this.currentInstallAppProgressTotals = Object.values(this.currentInstallAppProgress)
-											.reduce((memo, layer) => {
-												Object.keys(memo).forEach((key) => {
-													memo[key] += layer[key]
-												})
-												return memo
-											}, {"download": 0, "extract": 0, "total": 0})
-								} else {
-									this.currentInstallAppText = status
-								}
+						messageArray.forEach((item, index) => {
+							if (!item) {
+								messageArray.splice(index, 1);
 							}
 						})
+						messageArray.forEach(item => {
+							const evt = JSON.parse(item)
+							this.totalPercentage = this.dockerProgress.getProgress(evt)
+						})
+						if (this.totalPercentage === 0) {
+							this.currentInstallAppText = 'Starting installation'
+						} else if (this.totalPercentage === 100) {
+							this.currentInstallAppText = 'Installation completed'
+						} else {
+							this.currentInstallAppText = 'Installing'
+						}
 					}
 				} else {
-					this.currentInstallAppText = res.message
+					this.currentInstallAppText = resData.message
 				}
 			} else {
 				localStorage.removeItem("app_data")
@@ -1882,5 +1851,18 @@ export default {
 
 ._b-line {
 	border-bottom: 1px solid hsla(208, 16%, 94%, 1) !important;
+}
+
+.progress {
+	border-radius: 6px;
+	height: 12px;
+
+	&::-webkit-progress-bar {
+		background: rgba(172, 184, 195, 0.4);
+	}
+
+	&::-webkit-progress-value {
+		opacity: 1;
+	}
 }
 </style>

@@ -114,7 +114,7 @@ export default {
 		},
 
 		showDiskManagement() {
-      this.$messageBus('widget_storagemanager');
+			this.$messageBus('widget_storagemanager');
 			this.$buefy.modal.open({
 				parent: this,
 				component: StorageManagerPanel,
@@ -147,11 +147,11 @@ export default {
 <style lang="scss">
 .disk {
 	.progress {
-		border-radius: 2px;
+		border-radius: 6px;
 		height: 12px;
 
 		&::-webkit-progress-bar {
-			background: rgba(255, 255, 255, 0.4);
+			background: rgba(172, 184, 195, 0.4);
 		}
 
 		&::-webkit-progress-value {
