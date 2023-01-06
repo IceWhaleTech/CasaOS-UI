@@ -18,8 +18,16 @@ export default {
         this.newAppIds = this.getIdFromLocalStorage();
     },
     methods: {
-        addIdToLocalStorage(appId) {
+        getLocalStorageOutputArray(item) {
             let newAppTag = localStorage.getItem('newAppTag');
+            if (newAppTag === null) {
+                return [];
+            } else {
+                return JSON.parse(newAppTag);
+            }
+        },
+        addIdToLocalStorage(appId) {
+            let newAppTag = this.getLocalStorageOutputArray('newAppTag');
             if (newAppTag) {
                 newAppTag = JSON.parse(newAppTag);
                 if (newAppTag.indexOf(appId) === -1) {
@@ -32,7 +40,7 @@ export default {
             localStorage.setItem('newAppTag', JSON.stringify(newAppTag));
         },
         removeIdFromLocalStorage(appId) {
-            let newAppTag = localStorage.getItem('newAppTag');
+            let newAppTag = this.getLocalStorageOutputArray('newAppTag');
             if (newAppTag) {
                 newAppTag = JSON.parse(newAppTag);
                 if (newAppTag.indexOf(appId) !== -1) {
@@ -43,7 +51,7 @@ export default {
             localStorage.setItem('newAppTag', JSON.stringify(newAppTag));
         },
         getIdFromLocalStorage() {
-            let newAppTag = localStorage.getItem('newAppTag');
+            let newAppTag = this.getLocalStorageOutputArray('newAppTag');
             if (newAppTag) {
                 newAppTag = JSON.parse(newAppTag);
                 return newAppTag;
