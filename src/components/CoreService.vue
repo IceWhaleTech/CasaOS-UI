@@ -36,7 +36,7 @@ import {mixin} from '@/mixins/mixin';
 import _ from 'lodash';
 import SyncBlock from "@/components/syncthing/SyncBlock.vue";
 import SmartBlock from "@/components/smartHome/SmartBlock.vue";
-import last from "lodash/last";
+import first from "lodash/first";
 import events from "@/events/events";
 import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
 import StorageManagerPanel from "@/components/Storage/StorageManagerPanel.vue";
@@ -410,18 +410,26 @@ export default {
 					this.addIdToLocalStorage(res.properties['app-management:app:id'])
 
 				} else if (res.message !== "") {
+					console.log(res.message);
 					const messageArray = res.message.split(/[(\r\n)\r\n]+/);
 					messageArray.forEach((item, index) => {
 						if (!item) {
 							messageArray.splice(index, 1);
 						}
 					})
-					const lastMessage = last(messageArray)
-					if (/Err/.test(lastMessage)) {
-						console.error(lastMessage)
+					const noticeMessage = messageArray.join(' ');
+					if (/Err/.test(noticeMessage)) {
+						this.$buefy.toast.open({
+							message: noticeMessage,
+							type: 'is-danger',
+							duration: 5000,
+							position: 'is-top',
+							queue: false,
+						})
+						console.error(noticeMessage);
 						return;
 					}
-					const info = JSON.parse(lastMessage)
+					const info = JSON.parse(noticeMessage)
 					const id = (info.id != undefined) ? info.id : "";
 					let progress = ""
 					if (info.progressDetail != undefined) {
