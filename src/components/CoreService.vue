@@ -128,7 +128,7 @@ export default {
 					},
 				},*/
 			},
-			dockerProgress: null,
+			dockerProgress: {},
 			totalPercentage: 0,
 		}
 	},
@@ -187,7 +187,6 @@ export default {
 					animation: "zoom-in",
 				})
 			});
-			this.dockerProgress = new DockerProgress();
 		},
 		triggerUIEventBus(event) {
 			let eventJson = JSON.parse(event)
@@ -413,30 +412,35 @@ export default {
 					// business :: Tagging of new app / scrollIntoView
 					this.addIdToLocalStorage(res.properties['app-management:app:id'])
 					this.$delete(this.noticesData, res.name);
+					this.dockerProgress[res.name] = null;
 
 				} else if (res.message !== "") {
-					console.log('元数据', res.message);
 					const messageArray = res.message.split(/[(\r\n)\r\n]+/);
 					messageArray.forEach((item, index) => {
 						if (!item) {
 							messageArray.splice(index, 1);
-							return;
 						}
+					})
+					let totalPercentage
+					messageArray.forEach(item => {
 						const evt = JSON.parse(item)
-						this.totalPercentage = this.dockerProgress.getProgress(evt)
+						totalPercentage = this.dockerProgress[res.name].getProgress(evt)
+
 					})
 					let currentInstallAppText = 'Starting installation...'
-					if (this.totalPercentage === 0) {
+					if (totalPercentage === 0) {
 						currentInstallAppText = 'Starting installation...'
-					} else if (this.totalPercentage === 100) {
+					} else if (totalPercentage === 100) {
 						currentInstallAppText = 'Installation completed '
 					} else {
-						currentInstallAppText = 'Installing... [' + this.totalPercentage + '%]'
+						currentInstallAppText = 'Installing... [' + totalPercentage + '%]'
 					}
 
-					this.$set(this.noticesData[res.name], 'content', {text: currentInstallAppText, value: this.totalPercentage})
+					this.$set(this.noticesData[res.name], 'content', {text: currentInstallAppText, value: totalPercentage})
 				}
 				return
+			} else {
+				this.dockerProgress[res.name] = new DockerProgress()
 			}
 			// add new app install notice
 			const data = {
