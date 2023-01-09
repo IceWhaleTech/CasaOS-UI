@@ -8,8 +8,9 @@
   -->
 <template>
 	<div class="brand-bar is-flex is-align-items-flex-end has-text-white">
-		<figure class="image _is-125x24">
-			<img :src="require('@/assets/img/logo/logo.svg')">
+		<figure class="image _is-136x26">
+			<!--			<img alt="logo" :srcset="`${require('@/assets/img/logo/logo.svg')} 2x, ${require('@/assets/img/logo/logo.png')} 1x`">-->
+			<img alt="logo" srcset="../assets/img/logo/logo.svg 2x, ../assets/img/logo/logo.png 1x">
 		</figure>
 		<span v-if="!rssShow || rss.length === 0" class="intro-text ml-4">Made with ❤️ by IceWhale and YOU!</span>
 		<span v-else class="window ml-4">
@@ -109,9 +110,9 @@ export default {
 	}
 }
 
-._is-125x24 {
-	width: 7.8125rem;
-	height: 1.5rem;
+._is-136x26 {
+	width: 8.5rem;
+	height: 1.625rem;
 }
 
 // -----------------scroll start-----------------
@@ -145,7 +146,7 @@ export default {
 		height: 1rem;
 		overflow: hidden;
 		text-overflow: ellipsis;
-		no-wrap: true;
+		white-space: nowrap;
 	}
 
 	li:hover {
