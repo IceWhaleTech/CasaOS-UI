@@ -16,42 +16,45 @@
 		<!-- Content Start -->
 		<div class="contents  pt-55 contextmenu-canvas" @contextmenu.prevent="openHomeContaxtMenu">
 			<div class="container">
-				<div class="is-flex">
-					<!-- SideBar Start -->
-					<side-bar v-if="!hardwareInfoLoading"></side-bar>
-					<!-- SideBar End -->
-
-					<!-- MainContent Start -->
-					<div :class="{'open':sidebarOpen}" class="main-content contextmenu-canvas is-flex-grow-1">
-						<!-- SearchBar Start -->
-						<section>
-							<transition name="fade">
-								<search-bar v-if="searchbarShow"></search-bar>
-							</transition>
-						</section>
-						<!-- SearchBar End -->
-
-						<!-- core-service Start -->
-						<section>
-							<transition name="fade">
-								<core-service></core-service>
-							</transition>
-						</section>
-						<!-- core-service End -->
-
-						<!-- Apps Start -->
-						<section>
-							<app-section ref="apps"></app-section>
-						</section>
-						<!-- Apps End -->
-
-						<!-- Shortcuts Start -->
-						<!-- <section>
-							<shortcuts></shortcuts>
-						</section> -->
-						<!-- Shortcuts End -->
+				<div class="columns is-variable is-2">
+					<div class="column is-one-quarter slider-content">
+						<!-- SideBar Start -->
+						<side-bar v-if="!hardwareInfoLoading"></side-bar>
+						<!-- SideBar End -->
 					</div>
-					<!-- MainContent End -->
+					<div :class="{'open':sidebarOpen}" class="column is-three-quarters main-content">
+						<!-- MainContent Start -->
+						<div class=" contextmenu-canvas">
+							<!-- SearchBar Start -->
+							<section>
+								<transition name="fade">
+									<search-bar v-if="searchbarShow"></search-bar>
+								</transition>
+							</section>
+							<!-- SearchBar End -->
+
+							<!-- core-service Start -->
+							<section>
+								<transition name="fade">
+									<core-service></core-service>
+								</transition>
+							</section>
+							<!-- core-service End -->
+
+							<!-- Apps Start -->
+							<section>
+								<app-section ref="apps"></app-section>
+							</section>
+							<!-- Apps End -->
+
+							<!-- Shortcuts Start -->
+							<!-- <section>
+								<shortcuts></shortcuts>
+							</section> -->
+							<!-- Shortcuts End -->
+						</div>
+						<!-- MainContent End -->
+					</div>
 				</div>
 			</div>
 		</div>
@@ -310,10 +313,7 @@ export default {
 }
 
 .main-content {
-	margin-left: 17.5rem;
-	position: relative;
 	z-index: 10;
-	width: calc(100% - 17.5rem);
 }
 
 .dark-bg {
@@ -335,22 +335,33 @@ export default {
 }
 
 @media screen and (max-width: 480px) {
+	.slider-content {
+		position: absolute;
+		width: 100%;
+	}
+
 	.contents {
 		height: calc(100vh - 4rem) !important;
 	}
-
+	.container {
+		height: 100%;
+	}
+	.columns {
+		height: 100%;
+	}
+	.column {
+		padding: 0;
+		width: 100%;
+		right: 0;
+	}
 	.main-content {
 		margin-left: 0;
 		transition: all 0.3s;
-		width: 100%;
 
 		&.open {
-			transform: scale(0.9);
-			opacity: 0;
+			transform: scale(0);
+			opacity: 1;
 		}
 	}
 }
-</style>
-
-<style lang="scss">
 </style>

@@ -12,8 +12,8 @@
 <template>
 	<div class="home-section has-text-left">
 		<!-- Title Bar Start -->
-		<div class=" is-flex is-align-items-center mb-5">
-			<app-section-title-tip id="appTitle1" class="is-flex-grow-1" label="Drag icons to sort."
+		<div class="is-flex is-align-items-center mb-4">
+			<app-section-title-tip id="appTitle1" class="is-flex-grow-1 has-text-sub-04" label="Drag icons to sort."
 			                       title="Apps"></app-section-title-tip>
 
 			<b-dropdown animation="fade1" aria-role="menu" class="file-dropdown" position="is-bottom-left">
@@ -50,7 +50,7 @@
 		<!-- App List End -->
 		<template v-if="notImportedList.length > 0 && exsitingAppsShow">
 			<!-- Title Bar Start -->
-			<div class="title-bar is-flex is-align-items-center mt-2rem  mb-5">
+			<div class="title-bar is-flex is-align-items-center mt-2rem  mb-4">
 				<app-section-title-tip id="appTitle2" label="Click icon to import." title="Existing Docker Apps">
 				</app-section-title-tip>
 			</div>
@@ -143,7 +143,7 @@ export default {
 			};
 		},
 		showDragTip() {
-			return this.draggable == ".handle"
+			return this.draggable === ".handle"
 		},
 		exsitingAppsShow() {
 			return this.$store.state.existingAppsSwitch
@@ -256,9 +256,9 @@ export default {
 		 * @return {*} void
 		 */
 		async showInstall(storeId = 0, mode) {
-      if(mode === 'custom'){
-        this.$messageBus('apps_custominstall');
-      }
+			if (mode === 'custom') {
+				this.$messageBus('apps_custominstall');
+			}
 			this.isShowing = true
 
 			const networks = await this.$api.container.getNetworks();
@@ -299,7 +299,7 @@ export default {
 		 * @return {*}
 		 */
 		async showConfigPanel(item, isCasa) {
-      this.$messageBus('appsexsiting_open', item.name);
+			this.$messageBus('appsexsiting_open', item.name);
 			if (item.type === 'LinkApp') {
 				await this.showExternalLinkPanel(item)
 				return
@@ -349,7 +349,7 @@ export default {
 				animation: "zoom-in",
 				events: {
 					'updateState': () => {
-            this.$messageBus('apps_external');
+						this.$messageBus('apps_external');
 						this.getList()
 					}
 				},
@@ -364,8 +364,8 @@ export default {
 
 		scrollToNewApp() {
 			// business :: scroll to last position
-      let showEl = document.getElementById("app-" + last(this.getIdFromLocalStorage()))
-      showEl && showEl.scrollIntoView();
+			let showEl = document.getElementById("app-" + last(this.getIdFromLocalStorage()))
+			showEl && showEl.scrollIntoView();
 		}
 	},
 	sockets: {

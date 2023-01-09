@@ -1,3 +1,12 @@
+/*!
+ *  @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ *  @LastEditTime: 2023/1/9 下午10:15
+ *  @FilePath: /CasaOS-UI/src/assets/scss/common/_variables.scss
+ *  @Description:
+ *
+ *  Copyright (c) 2022 by IceWhale, All Rights Reserved.
+ */
+
 // Included below are all the defined variables from Bulma
 // Modify as needed, removing the !default attribute.
 // Bulma Variables
@@ -23,7 +32,7 @@ $orange: hsl(14, 100%, 53%) !default;
 $yellow: hsl(48, 100%, 67%) !default;
 $green: hsl(141, 71%, 48%) !default;
 $turquoise: hsl(171, 100%, 41%) !default;
-$casablue:hsl(216, 90%, 54%) !default;
+$casablue: hsl(216, 90%, 54%) !default;
 $cyan: hsl(204, 86%, 53%) !default;
 $blue: hsl(216, 90%, 54%) !default;
 $purple: hsl(271, 100%, 71%) !default;
@@ -71,11 +80,11 @@ $desktop: 960px+(2 * $gap) !default;
 // 1152px container + 4rem
 $widescreen: 1152px+(2 * $gap) !default;
 // 1344px container + 4rem;
-$fullhd: 1344px+(2 * $gap) !default;
+$fullhd: 1304px+(2 * $gap) !default;
 
 // Miscellaneous
-$image-placeholder-blur-enabled:false;
-$image-placeholder-blur:0px;
+$image-placeholder-blur-enabled: false;
+$image-placeholder-blur: 0px;
 $easing: ease-out !default;
 $radius-small: 2px !default;
 $radius: 3px !default;
@@ -156,8 +165,8 @@ $link-focus-border: $blue !default;
 $link-active: $grey-darker !default;
 $link-active-border: $grey-dark !default;
 
-$link-light:findLightColor($link);
-$link-dark:findDarkColor($link);
+$link-light: findLightColor($link);
+$link-dark: findDarkColor($link);
 
 // Typography
 
@@ -173,7 +182,7 @@ $size-large: $size-4 !default;
 // CasaOS Variables
 
 // Colors
-$casablue:hsl(216, 90%, 54%) !default;
+$casablue: hsl(216, 90%, 54%) !default;
 
 $primary: $casablue;
 $primary-light: findLightColor($primary);
@@ -184,9 +193,9 @@ $ghost-light: findLightColor($ghost);
 $ghost-dark: findDarkColor($ghost);
 $ghost-invert: findColorInvert($ghost);
 
-$facebook:#1977F3;
-$twitter:#1D9BF0;
-$reddit:#FF4500;
+$facebook: #1977F3;
+$twitter: #1D9BF0;
+$reddit: #FF4500;
 
 
 // Lists and maps
@@ -195,59 +204,55 @@ $custom-shades: null !default;
 
 // Setup $colors to use as bulma classes (e.g. 'is-twitter')
 $colors: mergeColorMaps(("white": ($white,
-            $black,
-        ),
+$black,
+),
         "black": ($black,
-            $white,
+        $white,
         ),
         "light": ($light,
-            $light-invert,
+        $light-invert,
         ),
         "dark": ($dark,
-            $dark-invert,
+        $dark-invert,
         ),
         "primary": ($primary,
-            $primary-invert,
-            $primary-light,
-            $primary-dark,
+        $primary-invert,
+        $primary-light,
+        $primary-dark,
         ),
         "link": ($link,
-            $link-invert,
-            $link-light,
-            $link-dark,
+        $link-invert,
+        $link-light,
+        $link-dark,
         ),
         "info": ($info,
-            $info-invert,
-            $info-light,
-            $info-dark,
+        $info-invert,
+        $info-light,
+        $info-dark,
         ),
         "success": ($success,
-            $success-invert,
-            $success-light,
-            $success-dark,
+        $success-invert,
+        $success-light,
+        $success-dark,
         ),
         "warning": ($warning,
-            $warning-invert,
-            $warning-light,
-            $warning-dark,
+        $warning-invert,
+        $warning-light,
+        $warning-dark,
         ),
         "danger": ($danger,
-            $danger-invert,
-            $danger-light,
-            $danger-dark,
+        $danger-invert,
+        $danger-light,
+        $danger-dark,
         ),
-
         "facebook":($facebook,
-            $white),
-
+        $white),
         "twitter":($twitter,
-            $white),
-
+        $white),
         "reddit":($reddit,
-            $white),
-
-    ),
-    $custom-colors);
+        $white),
+),
+        $custom-colors);
 
 // Links
 $link: $primary;
@@ -261,7 +266,7 @@ $backDropBlur: none;
 $backDropBorderRadius: 0.5rem;
 
 // Avatar
-$avatar-border-color:hsl(0, 0%, 89%);
+$avatar-border-color: hsl(0, 0%, 89%);
 
 // Loading
 $loading-icon-size: 2.5rem;
