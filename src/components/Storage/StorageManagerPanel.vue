@@ -457,6 +457,7 @@ export default {
         hasModalCard: true,
         trapFocus: true,
         ariaModal: true,
+        canCancel: ['escape'],
         onCancel: () => {
           this.getDiskList()
         },

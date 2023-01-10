@@ -125,12 +125,13 @@ export default {
         mergeStorageList = []
         console.log(e)
       }
-      
+
       this.$buefy.modal.open({
         parent: this,
         component: MergeStorages,
         hasModalCard: true,
         trapFocus: true,
+        canCancel: ['escape'],
         onCancel: () => {
         },
         events: {
