@@ -300,8 +300,8 @@ export default {
       try {
         // get storage list info
         const storageRes = await this.$api.storage.list({system: "show"}).then(v => v.data.data)
-        const storageArray = []
-        const mergeConbinations = []
+        let storageArray = []
+        let mergeConbinations = []
         let testMergeMiss = mergeStorageList
         storageRes.forEach(item => {
           item.children.forEach(part => {
@@ -316,9 +316,12 @@ export default {
             }
           })
         })
+        // sort
+        let storageArraySort = _.orderBy(storageArray, ['diskName', 'label'], ['desc', 'asc']);
+        let mergeConbinationsSort = _.orderBy(mergeConbinations, ['diskName', 'label'], ['desc', 'asc']);
         // mergeConbinations.reverse();
         testMergeMiss.forEach(item => {
-          mergeConbinations.push({
+          mergeConbinationsSort.push({
             "uuid": "",
             "mount_point": "",
             "size": "",
@@ -333,7 +336,7 @@ export default {
           })
         })
 
-        this.storageData = storageArray.map((storage) => {
+        this.storageData = storageArraySort.map((storage) => {
           return {
             uuid: storage.uuid,
             name: storage.label,
@@ -348,7 +351,7 @@ export default {
             disk: storage.disk
           }
         })
-        this.mergeConbinationsStorageData = mergeConbinations.map((storage) => {
+        this.mergeConbinationsStorageData = mergeConbinationsSort.map((storage) => {
           return {
             uuid: storage.uuid,
             name: storage.label,
