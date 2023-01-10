@@ -17,7 +17,7 @@
           <button class="delete" type="button" @click="$emit('close')"/>
         </div>
       </header>
-      <section class="pr-5 pl-5 mt-4 pb-2 b-line mb-2">
+      <section :class="{'b-line': storageData.length > 0}" class="pr-5 pl-5 mt-4 pb-2 mb-2">
         <!-- Storage and Disk List Start -->
         <div v-if="!creatIsShow" class="is-flex-grow-1 is-relative">
           <div v-if="activeTab == 0" class="create-container">
