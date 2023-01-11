@@ -412,8 +412,9 @@ export default {
 					// business :: Tagging of new app / scrollIntoView
 					this.addIdToLocalStorage(res.properties['app-management:app:id'])
 					this.$delete(this.noticesData, res.name);
-					this.dockerProgress[res.name] = null;
-
+					if (this.dockerProgress[res.name]) {
+						this.dockerProgress[res.name] = null;
+					}
 				} else if (res.message !== "") {
 					const messageArray = res.message.split(/[(\r\n)\r\n]+/);
 					messageArray.forEach((item, index) => {
@@ -434,6 +435,9 @@ export default {
 						currentInstallAppText = 'Installation completed '
 					} else {
 						currentInstallAppText = 'Installing... [' + totalPercentage + '%]'
+						setTimeout(() => {
+							this.dockerProgress[res.name] = null;
+						}, 1000)
 					}
 
 					this.$set(this.noticesData[res.name], 'content', {text: currentInstallAppText, value: totalPercentage})
