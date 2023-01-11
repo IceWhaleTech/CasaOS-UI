@@ -703,7 +703,7 @@ export default {
 				privileged: false,
 				host_name: "",
 				container_name: "",
-				appstore_id: "",
+				appstore_id: 0,
 			},
 			portSelected: null,
 			capArray: data,
