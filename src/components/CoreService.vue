@@ -436,7 +436,7 @@ export default {
 					} else {
 						currentInstallAppText = 'Installing... [' + totalPercentage + '%]'
 						setTimeout(() => {
-							this.dockerProgress[res.name] = null;
+							this.$delete(this.noticesData, res.name);
 						}, 1000)
 					}
 
