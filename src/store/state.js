@@ -59,10 +59,6 @@ const state = {
     // public params
     device_id: "xxx",
     access_id: "dsdad",
-    casaos_version: "1.0.0",
-    casaos_channels: "1.0.0",
     casaos_lang: "zh",
-    hw_id: "ddddd",
-    hw_brand: "dsasdsa"
 }
 export default state

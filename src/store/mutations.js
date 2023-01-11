@@ -118,7 +118,7 @@ const mutations = {
     },
 
     SET_LANGUAGE(state, val) {
-        state.lang = val
+        state.casaos_lang = val
     },
 
 }
