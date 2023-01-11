@@ -409,7 +409,7 @@ export default {
 					return
 				}
 				const lang = val.includes("_") ? val : "en_us";
-				this.$messageBus('dashboardsetting_language', val);
+				this.$messageBus('dashboardsetting_language', lang);
 				this.setLang(lang)
 			},
 			deep: true
@@ -419,7 +419,7 @@ export default {
 				if (val === oldValue) {
 					return
 				}
-				this.$messageBus('dashboardsetting_searchengine', val);
+				this.$messageBus('dashboardsetting_searchengine', val.toString());
 				this.$store.commit('SET_SEARCH_ENGINE', val);
 			},
 			deep: true
@@ -429,7 +429,7 @@ export default {
 				if (val === oldValue) {
 					return
 				}
-				this.$messageBus('dashboardsetting_showsearchbar', val);
+				this.$messageBus('dashboardsetting_showsearchbar', val.toString());
 				this.$store.commit('SET_SEARCH_ENGINE_SWITCH', val);
 			},
 			deep: true
@@ -439,7 +439,7 @@ export default {
 				if (val === oldValue) {
 					return
 				}
-				this.$messageBus('dashboardsetting_showexistingapp', val);
+				this.$messageBus('dashboardsetting_showexistingapp', val.toString());
 				this.$store.commit('SET_EXISTING_APPS_SWITCH', val);
 			},
 			deep: true
@@ -600,7 +600,7 @@ export default {
 		 */
 		usbAutoMount() {
 			if (this.autoUsbMount) {
-				this.$messageBus('dashboardsetting_automountusb', true)
+				this.$messageBus('dashboardsetting_automountusb', true.toString())
 				this.$api.sys.toggleUsbAutoMount({state: "on"})
 				// Show
 				if (this.isRaspberryPi) {
@@ -612,7 +612,7 @@ export default {
 				}
 
 			} else {
-				this.$messageBus('dashboardsetting_automountusb', false)
+				this.$messageBus('dashboardsetting_automountusb', false.toString())
 				this.$api.sys.toggleUsbAutoMount({state: "off"})
 			}
 		},
@@ -642,7 +642,7 @@ export default {
 				if (res.data.success === 200) {
 					this.updateInfo = res.data.data
 					if (res.data.data.need_update) {
-						this.$messageBus('dashboardsetting_versionavailable_show', true)
+						this.$messageBus('dashboardsetting_versionavailable_show', true.toString())
 					}
 				}
 			})
@@ -653,7 +653,7 @@ export default {
 		 * @return {*} void
 		 */
 		showUpdateModal() {
-			this.$messageBus('dashboardsetting_versionupdate', true);
+			this.$messageBus('dashboardsetting_versionupdate', true.toString());
 			this.$buefy.modal.open({
 				parent: this,
 				component: UpdateModal,

@@ -46,7 +46,7 @@ module.exports = {
         return await intermediateProcessor("casaos-ui:topbar:account_setting")
     },
     account_setting_logout: async (a) => {
-        return await intermediateProcessor("casaos-ui:topbar:dashboardsetting_showsearchbar", {value: a})
+        return await intermediateProcessor("casaos-ui:topbar:dashboardsetting_showsearchbar")
     },
     dashboardsetting: async () => {
         return await intermediateProcessor("casaos-ui:topbar:dashboardsetting_setting")
@@ -176,10 +176,10 @@ module.exports = {
         return await intermediateProcessor("casaos-ui:app:appscustom_setting", {value: name})
     },
     apps_custominstall: async (name) => {
-        return await intermediateProcessor("casaos-ui:app:apps_custominstall", {value: name})
+        return await intermediateProcessor("casaos-ui:app:apps_custominstall")
     },
     apps_external: async (name) => {
-        return await intermediateProcessor("casaos-ui:app:apps_external", {value: name})
+        return await intermediateProcessor("casaos-ui:app:apps_external")
     },
 
     connect_news: async () => {
