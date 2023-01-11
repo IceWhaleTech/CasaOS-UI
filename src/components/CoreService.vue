@@ -433,11 +433,11 @@ export default {
 						currentInstallAppText = 'Starting installation...'
 					} else if (totalPercentage === 100) {
 						currentInstallAppText = 'Installation completed '
-					} else {
-						currentInstallAppText = 'Installing... [' + totalPercentage + '%]'
 						setTimeout(() => {
 							this.$delete(this.noticesData, res.name);
 						}, 1000)
+					} else {
+						currentInstallAppText = 'Installing... [' + totalPercentage + '%]'
 					}
 
 					this.$set(this.noticesData[res.name], 'content', {text: currentInstallAppText, value: totalPercentage})
