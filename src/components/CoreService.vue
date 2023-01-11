@@ -410,7 +410,7 @@ export default {
 				if (res.finished) {
 					this.removeNotice(res.name)
 					// business :: Tagging of new app / scrollIntoView
-					this.addIdToLocalStorage(res.properties['app-management:app:id'])
+					this.addIdToSessionStorage(res.properties['app-management:app:id'])
 					this.$delete(this.noticesData, res.name);
 					if (this.dockerProgress[res.name]) {
 						this.dockerProgress[res.name] = null;

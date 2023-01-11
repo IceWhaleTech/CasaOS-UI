@@ -15,19 +15,19 @@ export default {
         }
     },
     mounted() {
-        this.newAppIds = this.getIdFromLocalStorage();
+        this.newAppIds = this.getIdFromSessionStorage();
     },
     methods: {
-        getLocalStorageOutputArray(item) {
-            let newAppTag = localStorage.getItem('newAppTag');
+        getSessionStorageOutputArray(item) {
+            let newAppTag = sessionStorage.getItem('newAppTag');
             if (newAppTag === null) {
                 return [];
             } else {
                 return JSON.parse(newAppTag);
             }
         },
-        addIdToLocalStorage(appId) {
-            let newAppTag = this.getLocalStorageOutputArray('newAppTag');
+        addIdToSessionStorage(appId) {
+            let newAppTag = this.getSessionStorageOutputArray('newAppTag');
             if (newAppTag.length > 0) {
                 if (newAppTag.indexOf(appId) === -1) {
                     newAppTag.push(appId);
@@ -36,20 +36,20 @@ export default {
                 newAppTag = [appId];
             }
             this.newAppIds = newAppTag;
-            localStorage.setItem('newAppTag', JSON.stringify(newAppTag));
+            sessionStorage.setItem('newAppTag', JSON.stringify(newAppTag));
         },
-        removeIdFromLocalStorage(appId) {
-            let newAppTag = this.getLocalStorageOutputArray('newAppTag');
+        removeIdFromSessionStorage(appId) {
+            let newAppTag = this.getSessionStorageOutputArray('newAppTag');
             if (newAppTag.length > 0) {
                 if (newAppTag.indexOf(appId) !== -1) {
                     newAppTag.splice(newAppTag.indexOf(appId), 1);
                 }
             }
             this.newAppIds = newAppTag;
-            localStorage.setItem('newAppTag', JSON.stringify(newAppTag));
+            sessionStorage.setItem('newAppTag', JSON.stringify(newAppTag));
         },
-        getIdFromLocalStorage() {
-            return this.getLocalStorageOutputArray('newAppTag');
+        getIdFromSessionStorage() {
+            return this.getSessionStorageOutputArray('newAppTag');
         }
     }
 }

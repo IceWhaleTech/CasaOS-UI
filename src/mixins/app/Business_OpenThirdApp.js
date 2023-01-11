@@ -12,7 +12,7 @@ import container from "@/service/container";
 export default {
     methods: {
         openAppToNewWindow(appInfo) {
-            this.removeIdFromLocalStorage(appInfo.id);
+            this.removeIdFromSessionStorage(appInfo.id);
             let routeUrl = this.$router.resolve({
                 name: 'AppLauncherCheck',
                 path: '/launch',

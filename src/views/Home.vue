@@ -314,6 +314,9 @@ export default {
 
 .main-content {
 	z-index: 10;
+	@include until-widescreen {
+		width: calc(100% - 18rem);
+	}
 }
 
 .dark-bg {
@@ -332,6 +335,10 @@ export default {
 		opacity: 1;
 		visibility: visible;
 	}
+}
+
+.slider-content {
+	min-width: 18rem;
 }
 
 @media screen and (max-width: 480px) {

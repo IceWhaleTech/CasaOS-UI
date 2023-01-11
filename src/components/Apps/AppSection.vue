@@ -201,9 +201,6 @@ export default {
 					});
 				}
 				this.appList = casaAppList;
-				this.$nextTick(() => {
-					this.scrollToNewApp();
-				})
 				if (xor(sortList, newList).length > 0) {
 					this.saveSortData()
 				}
@@ -364,14 +361,16 @@ export default {
 
 		scrollToNewApp() {
 			// business :: scroll to last position
-			let showEl = document.getElementById("app-" + last(this.getIdFromLocalStorage()))
-			showEl && showEl.scrollIntoView();
+			let id = last(this.newAppIds);
+			let showEl = document.getElementById("app-" + id)
+			showEl && showEl.scrollIntoView({behavior: "smooth", block: 'end'});
 		}
 	},
 	sockets: {
 		app_install(res) {
 			if (res.finished) {
 				this.getList();
+				this.scrollToNewApp();
 			}
 		},
 		app_uninstall() {
