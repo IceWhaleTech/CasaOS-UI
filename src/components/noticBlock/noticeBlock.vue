@@ -69,8 +69,7 @@
 				<div class="has-text-grey-200 _is-normal mb-2 is-flex-wrap-nowrap _nowrap _fixed-height">
 					{{ noticeData.content.text }}
 				</div>
-				<b-progress :value="noticeData.content.value" size="c-is-small"
-				            type="is-primary"></b-progress>
+				<b-progress :value="noticeData.content.value" size="c-is-small" type="is-primary"></b-progress>
 			</div>
 			<!-- end of section body-->
 

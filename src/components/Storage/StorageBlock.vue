@@ -59,7 +59,7 @@
 				</div>
 				<div class="is-flex is-flex-direction-row-reverse">
 					<b-button :disabled="false" class="width" rounded size="is-small" type="is-primary" @click="TODO">
-						{{ $t('Set MainStorage') }}
+						{{ $t('Storage Manager') }}
 					</b-button>
 				</div>
 				<!-- Init State End -->

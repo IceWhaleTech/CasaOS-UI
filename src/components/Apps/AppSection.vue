@@ -206,7 +206,6 @@ export default {
 			} catch (error) {
 				this.isLoading = false;
 			}
-
 		},
 
 		/**
@@ -344,7 +343,9 @@ export default {
 				events: {
 					'updateState': () => {
 						this.$messageBus('apps_external');
-						this.getList()
+						this.getList().then(() => {
+							this.scrollToNewApp();
+						})
 					}
 				},
 				props: {
@@ -366,10 +367,9 @@ export default {
 	sockets: {
 		app_install(res) {
 			if (res.finished) {
-				this.getList();
-				this.$nextTick(() => {
+				this.getList().then(() => {
 					this.scrollToNewApp();
-				})
+				});
 			}
 		},
 		app_uninstall() {

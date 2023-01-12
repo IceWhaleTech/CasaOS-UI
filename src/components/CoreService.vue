@@ -38,16 +38,16 @@ import SyncBlock from "@/components/syncthing/SyncBlock.vue";
 import SmartBlock from "@/components/smartHome/SmartBlock.vue";
 import first from "lodash/first";
 import events from "@/events/events";
-import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
+import Business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
 import StorageManagerPanel from "@/components/Storage/StorageManagerPanel.vue";
 import DiskLearnMore from "@/components/Storage/DiskLearnMore.vue";
-import DockerProgress from "@/components/Apps/progress.js";
+// import DockerProgress from "@/components/Apps/progress.js";
 import last from "lodash/last";
 
 export default {
 	components: {SmartBlock, SyncBlock, noticeBlock, Swiper, SwiperSlide},
 	name: "core-service",
-	mixins: [mixin, business_ShowNewAppTag],
+	mixins: [mixin, Business_ShowNewAppTag],
 	computed: {
 		recommendShow() {
 			return this.$store.state.recommendSwitch
@@ -313,7 +313,7 @@ export default {
 					contentType: 'list',
 					operate: {
 						type: 'casaUI:eventBus',
-						title: 'Set MainStorage',
+						title: 'Storage Merger',
 						event: 'casaUI:openInStorageManager',
 						path: '/Storage',
 						icon: 'mdi-arrow-right',
@@ -412,7 +412,7 @@ export default {
 				if (res.finished) {
 					this.removeNotice(res.name)
 					// business :: Tagging of new app / scrollIntoView
-					this.addIdToLocalStorage(res.properties['app-management:app:id'])
+					this.addIdToSessionStorage(res.properties['app-management:app:id'])
 					// this.$emit('updateState')
 					this.$EventBus.$emit(events.RELOAD_APP_LIST)
 				} else if (res.message !== "") {
@@ -428,19 +428,23 @@ export default {
 						console.error(lastMessage)
 						return;
 					}
-					const info = JSON.parse(lastMessage)
-					const id = (info.id != undefined) ? info.id : "";
-					let progress = ""
-					if (info.progressDetail != undefined) {
-						let progressDetail = info.progressDetail
-						if (!isNaN(progressDetail.current / progressDetail.total)) {
-							progress = `[ ${String(Math.floor((progressDetail.current / progressDetail.total) * 100))}% ]`
+					try {
+						const info = JSON.parse(lastMessage)
+						const id = (info.id != undefined) ? info.id : "";
+						let progress = ""
+						if (info.progressDetail != undefined) {
+							let progressDetail = info.progressDetail
+							if (!isNaN(progressDetail.current / progressDetail.total)) {
+								progress = `[ ${String(Math.floor((progressDetail.current / progressDetail.total) * 100))}% ]`
+							}
 						}
+						let status = info.status
+						let currentInstallAppText = status + ":" + id + " " + progress
+						// this.$set(this.noticesData[res.name], 'content', currentInstallAppText)
+						this.$set(this.noticesData[res.name], 'content', {text: currentInstallAppText, value: totalPercentage})
+					} catch (e) {
+						console.error(e)
 					}
-					let status = info.status
-					let currentInstallAppText = status + ":" + id + " " + progress
-					// this.$set(this.noticesData[res.name], 'content', currentInstallAppText)
-					this.$set(this.noticesData[res.name], 'content', {text: currentInstallAppText, value: totalPercentage})
 				}
 				return
 			}
