@@ -411,10 +411,9 @@ export default {
 					this.removeNotice(res.name)
 					// business :: Tagging of new app / scrollIntoView
 					this.addIdToSessionStorage(res.properties['app-management:app:id'])
-					this.$delete(this.noticesData, res.name);
-					if (this.dockerProgress[res.name]) {
-						this.dockerProgress[res.name] = null;
-					}
+					this.dockerProgress[res.name] = null;
+					// this.$emit('updateState')
+					this.$EventBus.$emit(events.RELOAD_APP_LIST)
 				} else if (res.message !== "") {
 					const messageArray = res.message.split(/[(\r\n)\r\n]+/);
 					messageArray.forEach((item, index) => {
@@ -433,9 +432,10 @@ export default {
 						currentInstallAppText = 'Starting installation...'
 					} else if (totalPercentage === 100) {
 						currentInstallAppText = 'Installation completed '
-						setTimeout(() => {
-							this.$delete(this.noticesData, res.name);
-						}, 1000)
+
+						// setTimeout(() => {
+						// 	this.$delete(this.noticesData, res.name);
+						// }, 1000)
 					} else {
 						currentInstallAppText = 'Installing... [' + totalPercentage + '%]'
 					}
@@ -457,8 +457,6 @@ export default {
 				operate: false,
 			}
 			this.addNotice(data, res.name)
-			// this.$emit('updateState')
-			this.$EventBus.$emit(events.RELOAD_APP_LIST)
 		}
 	},
 	sockets: {
