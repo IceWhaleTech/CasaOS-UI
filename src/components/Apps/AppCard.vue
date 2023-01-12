@@ -24,14 +24,21 @@
 				<b-dropdown-item :focusable="false" aria-role="menu-item" custom>
 					<b-button expanded tag="a" type="is-text" @click="openApp(item)">{{ $t('Open') }}</b-button>
 					<b-button expanded type="is-text" @click="configApp">{{ $t('Setting') }}</b-button>
-					<b-button v-if="item.appstore_id != 0" :loading="isCloning" expanded type="is-text"
+					<b-button v-if="item.appstore_id != 0 && item.appstore_id != undefined" :loading="isCloning" expanded
+					          type="is-text"
 					          @click="qucikInstall(item.appstore_id)">{{
 							$t('Clone')
 						}}
 					</b-button>
-					<b-button :loading="isUninstalling" class="mb-1" expanded type="is-text" @click="uninstallConfirm">
+
+					<b-button v-if="item.appstore_id != undefined" :loading="isUninstalling" class="mb-1" expanded type="is-text"
+					          @click="uninstallConfirm">
 						{{ $t('Uninstall') }}
 					</b-button>
+					<b-button v-else :loading="isUninstalling" class="mb-1" expanded type="is-text" @click="uninstallApp(true)">
+						{{ $t('Delete') }}
+					</b-button>
+
 					<div v-if="item.type !== 'LinkApp'" class="gap">
 						<div class="columns is-gapless bbor is-flex">
 							<div class="column is-flex is-justify-content-center is-align-items-center">
@@ -87,6 +94,7 @@ import cTooltip from '@/components/basicComponents/tooltip/tooltip.vue';
 import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
 import business_OpenThirdApp from "@/mixins/app/Business_OpenThirdApp";
 import isNull from "lodash/isNull";
+import Business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
 
 export default {
 	name: "app-card",
@@ -242,6 +250,7 @@ export default {
 		 */
 		uninstallApp(checkDelConfig) {
 			this.isUninstalling = true
+			this.removeIdFromSessionStorage(this.item.id);
 			if (this.item.type === "LinkApp") {
 				let listLinkApp = JSON.parse(localStorage.getItem("listLinkApp"))
 				listLinkApp = listLinkApp.filter((o) => o.name !== this.item.name)
@@ -531,11 +540,11 @@ export default {
 		font-size: 14px;
 		font-weight: 400;
 		line-height: 20px;
-		letter-spacing: 0em;
+		letter-spacing: 0;
 		text-align: left;
 
 		.button {
-			margin-right: 0rem;
+			margin-right: 0;
 		}
 
 		.is-dark {

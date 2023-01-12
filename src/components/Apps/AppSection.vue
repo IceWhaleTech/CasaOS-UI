@@ -160,9 +160,6 @@ export default {
 			this.getList();
 		});
 	},
-	// mounted() {
-	//
-	// },
 	beforeDestroy() {
 		this.$EventBus.$off(events.OPEN_APP_STORE_AND_GOTO_SYNCTHING);
 	},
