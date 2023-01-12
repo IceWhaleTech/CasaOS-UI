@@ -42,6 +42,7 @@ import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
 import StorageManagerPanel from "@/components/Storage/StorageManagerPanel.vue";
 import DiskLearnMore from "@/components/Storage/DiskLearnMore.vue";
 import DockerProgress from "@/components/Apps/progress.js";
+import last from "lodash/last";
 
 export default {
 	components: {SmartBlock, SyncBlock, noticeBlock, Swiper, SwiperSlide},
@@ -404,14 +405,14 @@ export default {
 		removeNotice(rootName) {
 			this.$delete(this.noticesData, rootName)
 		},
+
 		transformAppInstallationProgress(res) {
 			if (this.noticesData[res.name]) {
 				// update progress
 				if (res.finished) {
 					this.removeNotice(res.name)
 					// business :: Tagging of new app / scrollIntoView
-					this.addIdToSessionStorage(res.properties['app-management:app:id'])
-					this.dockerProgress[res.name] = null;
+					this.addIdToLocalStorage(res.properties['app-management:app:id'])
 					// this.$emit('updateState')
 					this.$EventBus.$emit(events.RELOAD_APP_LIST)
 				} else if (res.message !== "") {
@@ -421,30 +422,27 @@ export default {
 							messageArray.splice(index, 1);
 						}
 					})
-					let totalPercentage
-					messageArray.forEach(item => {
-						const evt = JSON.parse(item)
-						totalPercentage = this.dockerProgress[res.name].getProgress(evt)
-
-					})
-					let currentInstallAppText = 'Starting installation...'
-					if (totalPercentage === 0) {
-						currentInstallAppText = 'Starting installation...'
-					} else if (totalPercentage === 100) {
-						currentInstallAppText = 'Installation completed '
-
-						// setTimeout(() => {
-						// 	this.$delete(this.noticesData, res.name);
-						// }, 1000)
-					} else {
-						currentInstallAppText = 'Installing... [' + totalPercentage + '%]'
+					let totalPercentage = undefined;
+					const lastMessage = last(messageArray)
+					if (/Err/.test(lastMessage)) {
+						console.error(lastMessage)
+						return;
 					}
-
+					const info = JSON.parse(lastMessage)
+					const id = (info.id != undefined) ? info.id : "";
+					let progress = ""
+					if (info.progressDetail != undefined) {
+						let progressDetail = info.progressDetail
+						if (!isNaN(progressDetail.current / progressDetail.total)) {
+							progress = `[ ${String(Math.floor((progressDetail.current / progressDetail.total) * 100))}% ]`
+						}
+					}
+					let status = info.status
+					let currentInstallAppText = status + ":" + id + " " + progress
+					// this.$set(this.noticesData[res.name], 'content', currentInstallAppText)
 					this.$set(this.noticesData[res.name], 'content', {text: currentInstallAppText, value: totalPercentage})
 				}
 				return
-			} else {
-				this.dockerProgress[res.name] = new DockerProgress()
 			}
 			// add new app install notice
 			const data = {

@@ -11,7 +11,7 @@
 export default {
     data() {
         return {
-            newAppIds: Object.freeze([]),
+            newAppIds: [],
         }
     },
     mounted() {

@@ -367,7 +367,9 @@ export default {
 		app_install(res) {
 			if (res.finished) {
 				this.getList();
-				this.scrollToNewApp();
+				this.$nextTick(() => {
+					this.scrollToNewApp();
+				})
 			}
 		},
 		app_uninstall() {

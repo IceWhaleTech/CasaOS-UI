@@ -66,7 +66,7 @@
 			</div>
 			<div v-else-if="noticeData.contentType === 'progress'"
 			     class="info is-flex is-flex-direction-column is-justify-content-center is-flex-grow-1">
-				<div class="has-text-grey-200 _is-normal mb-2 is-flex-wrap-nowrap _nowrap">
+				<div class="has-text-grey-200 _is-normal mb-2 is-flex-wrap-nowrap _nowrap _fixed-height">
 					{{ noticeData.content.text }}
 				</div>
 				<b-progress :value="noticeData.content.value" size="c-is-small"
@@ -248,6 +248,10 @@ export default {
 	text-overflow: ellipsis;
 }
 
+._fixed-height {
+	height: 1.25rem;
+}
+
 ._close-polymorphic:hover {
 	cursor: pointer;
 }
@@ -255,10 +259,12 @@ export default {
 ::v-deep .progress.c-is-small {
 	height: 0.75rem !important;
 	border-radius: 0.5rem;
-	background: rgba(172, 184, 195, 0.4);
-
-	&::-webkit-progress-bar {
-		background: rgba(172, 184, 195, 0.4);
-	}
+	//background: rgba(172, 184, 195, 0.4);
+	//
+	//&::-webkit-progress-bar {
+	//	background: rgba(172, 184, 195, 0.4);
+	//}
+	//
+	//background-image: linear-gradient(to right, hsl(216deg, 90%, 54%) 30%, hsl(0deg, 0%, 93%) 30%) !important;
 }
 </style>
