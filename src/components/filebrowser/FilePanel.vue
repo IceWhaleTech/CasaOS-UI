@@ -1,7 +1,7 @@
 <!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2022/12/7 下午5:31
-  * @FilePath: /CasaOS-UI/src/components/filebrowser/FilePanel.vue
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-01-11 22:50:58
+ * @FilePath: \CasaOS-UI-0.4.1\src\components\filebrowser\FilePanel.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -31,12 +31,14 @@
 								<div class=" is-flex-grow-1">
 									<h3 class="title is-3 mb-0 pb-3 pt-3 has-text-left">{{ $t('Files') }}</h3>
 								</div>
-								<div v-show="hasMergerFunction" class="is-flex-shrink-0  mr-5" @click="showStorageSettingsModal">
+								<div v-show="hasMergerFunction" class="is-flex-shrink-0  mr-5"
+								     @click="showStorageSettingsModal">
 									<b-icon custom-size="mdi-18px" icon="cog-outline"></b-icon>
 								</div>
 							</div>
 							<div class="list-container scrollbars-light pt-0 is-flex-grow-1">
-								<tree-list ref="navBar" :autoLoad="true" :isActive="!isShareList" :path="rootPath"></tree-list>
+								<tree-list ref="navBar" :autoLoad="true" :isActive="!isShareList"
+								           :path="rootPath"></tree-list>
 							</div>
 						</div>
 
@@ -55,8 +57,7 @@
 
 							<div class="list-container pt-0 is-flex-grow-1">
 								<mount-list ref="mountedList" :autoLoad="true" :hasMergerFunction="hasMergerFunction"
-								            :isActive="!isShareList"
-								            :path="rootPath"></mount-list>
+								            :isActive="!isShareList" :path="rootPath"></mount-list>
 							</div>
 
 						</div>
@@ -85,8 +86,8 @@
 
 								<!-- Paste Button Start -->
 								<b-button v-if="hasPasteData" :label="$t('Paste')" :loading="isPasting" class="mr-3"
-								          icon-left="content-paste"
-								          rounded size="is-small" type="is-success" @click="paste('overwrite')"/>
+								          icon-left="content-paste" rounded size="is-small" type="is-success"
+								          @click="paste('overwrite')"/>
 								<!-- Paste Button End -->
 
 								<!-- Operation Status Start-->
@@ -99,7 +100,8 @@
 								<!-- Upload Button End -->
 
 								<!--  Close Button Start -->
-								<div class="is-flex is-align-items-center modal-close-container modal-close-container-line ">
+								<div
+										class="is-flex is-align-items-center modal-close-container modal-close-container-line ">
 									<button class="delete" type="button" @click="$emit('close')"/>
 								</div>
 								<!--  Close Button End -->
@@ -112,7 +114,8 @@
 						<div class="tool-bar is-flex mb-2">
 							<div class=" is-flex-grow-1 has-text-left is-flex  is-align-items-center">
 								<b-field class="ml-3 is-flex is-size-14px mb-0">
-									<b-checkbox v-model="isSelectAll" :class="selectState" size="is-small" @input="handleSelect">
+									<b-checkbox v-model="isSelectAll" :class="selectState" size="is-small"
+									            @input="handleSelect">
 										{{ $t("select-items", selectLabel) }}
 									</b-checkbox>
 								</b-field>
@@ -131,7 +134,8 @@
 						<div id="dropTarget">
 
 							<!-- Drag and Drop Mask Start -->
-							<div v-if="isDragIn" class="drag-mask is-flex is-align-items-flex-end is-flex-direction-row">
+							<div v-if="isDragIn"
+							     class="drag-mask is-flex is-align-items-flex-end is-flex-direction-row">
 								<div class="mb-6">
 									<div class="upload-icon">
 										<b-icon icon="arrow-up" size="is-medium" type="is-white"></b-icon>
@@ -146,7 +150,8 @@
 							<component :is="listView" ref="listview" v-model="listData" :isLoading="isLoading"
 							           @change="handelListChange" @gotoFolder="getFileList" @reload="reload"
 							           @showDetailModal="showDetailModal">
-								<empty-holder @newFile="showNewFileModal" @newFolder="showNewFolderModal"></empty-holder>
+								<empty-holder @newFile="showNewFileModal"
+								              @newFolder="showNewFolderModal"></empty-holder>
 							</component>
 
 						</div>
@@ -156,9 +161,11 @@
 						<div v-show="showUploadList" class="upload-list">
 							<b-collapse ref="uploadList" animation="slide1" aria-id="contentIdForA11y3" class="card">
 								<template #trigger="props">
-									<div :aria-expanded="props.open" aria-controls="contentIdForA11y3" class="card-header" role="button">
+									<div :aria-expanded="props.open" aria-controls="contentIdForA11y3"
+									     class="card-header" role="button">
 										<p class="card-header-title">
-											<b-icon :icon="props.open?'chevron-down':'chevron-up'" class="mr-2"></b-icon>
+											<b-icon :icon="props.open ? 'chevron-down' : 'chevron-up'"
+											        class="mr-2"></b-icon>
 											{{ $t(uploaderListHeaderText) }}
 										</p>
 										<a class="card-header-icon" @click.prevent="closeUploaderList">
@@ -179,8 +186,8 @@
 
 					</uploader>
 					<!-- Toolbar Start -->
-					<operation-toolbar v-model="isToolbarShow" @close="handleClose" @copy="handleCopy" @download="handleDownload"
-					                   @move="handleMove" @remove="handleRemove"></operation-toolbar>
+					<operation-toolbar v-model="isToolbarShow" @close="handleClose" @copy="handleCopy"
+					                   @download="handleDownload" @move="handleMove" @remove="handleRemove"></operation-toolbar>
 					<!-- Toolbar End -->
 				</div>
 
@@ -306,6 +313,14 @@ export default {
 			uploadMethod: "POST",
 			successStatuses: [200, 201, 202, 2002],
 			allowDuplicateUploads: true,
+			headers: {
+				"Authorization": this.$store.state.access_token
+			},
+			query: (file) => {
+				return {
+					path: file.targetPath
+				}
+			}
 			// generateUniqueIdentifier: nanoid(),
 			// chunkSize: 1024 * 1024 * 1024 * 1024
 		}
@@ -447,9 +462,10 @@ export default {
 					this.isLoading = false;
 
 					this.currentPathName = path.split("/").pop()
-					this.uploaderInstance.opts.query = {
-						path: this.currentPath,
-					}
+					// this.uploaderInstance.opts.query = {
+					// 	path: this.currentPath,
+					// }
+
 
 					const fileList = res.data.data
 					const newFileList = fileList.map(item => {
@@ -593,7 +609,7 @@ export default {
 		 * @return {*}
 		 */
 		getTargetUrl() {
-			return `${this.$protocol}//${this.$baseURL}/v1/file/upload?token=${this.$store.state.access_token}`
+			return `${this.$protocol}//${this.$baseURL}/v1/file/upload`
 		},
 
 		/**
@@ -603,6 +619,10 @@ export default {
 		setUploaderOpts() {
 			this.uploaderInstance = this.$refs.uploader.uploader
 			this.assignUploadButtons();
+
+			this.uploaderInstance.on('fileAdded', (file) => {
+				file.targetPath = this.currentPath;
+			})
 
 			// Drag Over
 			this.uploaderInstance.on('dragover', (event) => {
@@ -975,3 +995,5 @@ export default {
 	}
 }
 </script>
+
+    
