@@ -14,6 +14,7 @@ import id_id from './id_ID.json' // Indonesian: Bahasa Indonesia
 import ja_jp from './ja_JP.json' // Japanese: やまと
 import ko_kr from './ko_KR.json' // Korean: 한국어
 import nb_no from './nb_NO.json' // Norwegian: Norsk
+import uk_ua from './uk_UA.json' // Ukrainian: Українська
 
 export default {
     zh_cn,
@@ -31,5 +32,6 @@ export default {
     id_id,
     ja_jp,
     ko_kr,
-    nb_no
+    nb_no,
+    uk_ua
 }
