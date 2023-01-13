@@ -1,4 +1,4 @@
-name: Development CI form branch
+name: push_test_server
 
 on:
   push:
