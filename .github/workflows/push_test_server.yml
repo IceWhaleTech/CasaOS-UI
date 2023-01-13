@@ -53,7 +53,7 @@ jobs:
           cp ./build/sysroot/var/lib/casaos/www/img/wallpaper0*.jpg ./build/sysroot/var/lib/casaos/www/ui/img/
           tar -zcvf linux-all-casaos-${{ env.VERSION }}.tar.gz build
       - name: install sshpass
-        run: apt install sshpass --yes
+        run: sudo apt install sshpass --yes
 
       - name: copy tar to target host
         shell: bash
