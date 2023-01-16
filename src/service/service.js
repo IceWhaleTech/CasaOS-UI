@@ -1,8 +1,8 @@
 /*
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
- * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-09-21 00:54:33
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-01-16 19:02:51
  * @Description:
  * @FilePath: /CasaOS-UI/src/service/service.js
  */
@@ -11,7 +11,7 @@ import router from '@/router'
 import store from '@/store'
 // import { ToastProgrammatic as Toast } from 'buefy'
 
-const axiosBaseURL1 = (process.env.NODE_ENV === "dev") ? `${document.location.protocol}//${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}` : ``
+// const axiosBaseURL1 = (process.env.NODE_ENV === "dev") ? `${document.location.protocol}//${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}` : ``
 const axiosBaseURL = (process.env.NODE_ENV === "dev") ? `` : ``
 
 //Create a axios instance, And set timeout to 30s
@@ -74,7 +74,7 @@ instance.interceptors.response.use(
                         const refresh_token = localStorage.getItem("refresh_token")
                         if (refresh_token) {
                             try {
-                                const tokenRes = await instance.post("/users/refresh", {
+                                const tokenRes = await instance.post("/v1/users/refresh", {
                                     refresh_token: refresh_token,
                                 });
                                 if (tokenRes.data.success == 200) {

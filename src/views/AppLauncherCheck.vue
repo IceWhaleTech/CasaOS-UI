@@ -6,25 +6,24 @@
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
   -->
-<template>
-	<div
-			class="is-flex is-flex-direction-column is-align-items-center is-justify-content-center is-fullheight">
+  <template>
+	<div class="is-flex is-flex-direction-column is-align-items-center is-justify-content-center is-fullheight" v-if="isCheckFailed">
 		<b-image :key="appDetailData.icon" :src="appDetailData.icon"
-		         :src-fallback="require('@/assets/img/app/default.png')" class="is-64x64 icon-shadow"
-		         webp-fallback=".jpg"></b-image>
+			:src-fallback="require('@/assets/img/app/default.png')" class="is-64x64 icon-shadow"
+			webp-fallback=".jpg"></b-image>
 		<h2 class="has-text-emphasis-01 has-text-white mt-2">{{ appDetailData.name }}</h2>
 		<h1 v-if="status === 'pending'" class="has-text-sub-03 has-text-white mt-6">{{ $t('Preparing for launch') }}
 		</h1>
 		<h1 v-else class="has-text-sub-03 has-text-white mt-6">{{ $t('APP may not be available') }}</h1>
-		<b-image v-if="status === 'pending' || !isCheckFailed" :src="require('@/assets/img/waiting.svg')" alt="pending"
-		         class="is-48x48 mt-6"/>
+		<b-image v-if="status === 'pending'" :src="require('@/assets/img/waiting.svg')" alt="pending"
+			class="is-48x48 mt-6" />
 		<span v-else class="has-text-full-03 has-text-grey-600 mt-6">{{
-				$t('Please')
-			}}
+			$t('Please')
+		}}
 			<a @click="openThirdApp(appDetailData);">{{ $t('Click here') }}
 			</a> {{ $t('to open the app. If it does not work, please restart or try again later.') }}
 		</span>
-		<img :src="require('@/assets/img/logo/logo.svg')" alt="" class="is-absolute position"/>
+		<img :src="require('@/assets/img/logo/logo.svg')" alt="" class="is-absolute position" />
 	</div>
 </template>
 
@@ -42,7 +41,7 @@ export default {
 			},
 			status: "pending",
 			timer: null,
-			isCheckFailed: false
+			isCheckFailed:false
 		}
 	},
 
@@ -50,7 +49,7 @@ export default {
 		this.appDetailData = JSON.parse(this.$route.query.appDetailData)
 		let counter = 0
 		this.timer && clearInterval(this.timer)
-		this.timer = setInterval(async () => {
+		this.timer = setInterval((async () => {
 			counter += 1
 			let isOk = await this.$api.container.containerLauncherCheck(this.appDetailData.id).then((res) => {
 				return res.status === 200
@@ -66,18 +65,18 @@ export default {
 					})
 				}
 				return false
-			})
-			if (!isOk) {
+			});
+			if(!isOk){
 				this.isCheckFailed = true
 			}
 			if (isOk) {
 				clearInterval(this.timer)
 				this.openThirdApp(this.appDetailData);
-			} else if (counter > 19) {
+			} else if (counter > 10) {
 				this.status = "reject"
 				clearInterval(this.timer)
 			}
-		}, 1000)
+		})(), 1000)
 	},
 }
 </script>

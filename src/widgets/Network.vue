@@ -1,7 +1,7 @@
 <!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2022/12/14 下午1:42
-  * @FilePath: /CasaOS-UI/src/widgets/Network.vue
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-01-16 16:22:46
+ * @FilePath: /CasaOS-UI/src/widgets/Network.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -13,31 +13,31 @@
 
     <div class="network widget-content">
       <!-- Header Start -->
-      <div class="widget-header is-flex">
+      <div class="widget-header is-flex mr-0">
         <div class="widget-title is-flex-grow-1">
           {{ $t('Network Status') }}
+        </div>
+        <div class="is-flex-shrink-0">
+          <b-dropdown v-model="networkId" :mobile-modal="false" animation="fade1" aria-role="list"
+            class="netowrk-dropdown" position="is-bottom-left">
+            <template #trigger="{ active }">
+              <b-button :icon-right="active ? 'chevron-up' : 'chevron-down'" :label="initNetwork[networkId].name"
+                type="is-primary" />
+            </template>
+            <b-dropdown-item v-for="(item, index) in initNetwork" :key="'net' + index" :value="index" aria-role="listitem">
+              {{ item.name }}
+            </b-dropdown-item>
+          </b-dropdown>
         </div>
       </div>
       <!-- Header End -->
       <!-- Chart Start -->
       <div class="chart-container">
-        <vue-apex-charts ref="chart" :options="chartOptions" :series="networks[networkId]" height="130" type="area"/>
+        <vue-apex-charts ref="chart" :options="chartOptions" :series="networks[networkId]" height="130" type="area" />
       </div>
       <!-- Chart End -->
       <!-- Status Start -->
       <div class="is-flex ">
-        <div class=" is-flex-grow-1">
-          <b-dropdown v-model="networkId" :mobile-modal="false" animation="fade1" aria-role="list"
-                      class="netowrk-dropdown" position="is-top-right">
-            <template #trigger="{ active }">
-              <b-button :icon-right="active ? 'chevron-up' : 'chevron-down'" :label="initNetwork[networkId].name"
-                        type="is-primary"/>
-            </template>
-            <b-dropdown-item v-for="(item,index) in initNetwork" :key="'net'+index" :value="index" aria-role="listitem">
-              {{ item.name }}
-            </b-dropdown-item>
-          </b-dropdown>
-        </div>
         <div class=" is-flex-shrink-0 is-size-7 is-flex is-align-items-center">
           <div>
             <b-icon class="up" icon="arrow-up-bold" size="is-small">
@@ -56,7 +56,7 @@
 
 <script>
 // import VueApexCharts from 'vue-apexcharts'
-import {mixin} from '@/mixins/mixin';
+import { mixin } from '@/mixins/mixin';
 
 export default {
   mixins: [mixin],
@@ -257,6 +257,12 @@ export default {
     height: 130px;
     overflow: hidden;
     margin: 0 -0.875rem;
+  }
+}
+
+.icon.is-small {
+  .mdi::before {
+    font-size: 0.875rem;
   }
 }
 </style>

@@ -1,7 +1,7 @@
 <!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2022/12/1 下午8:00
-  * @FilePath: /CasaOS-UI/src/views/Login.vue
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-01-16 18:50:20
+ * @FilePath: /CasaOS-UI/src/views/Login.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -12,13 +12,14 @@
 		<div v-if="!isLoading" class="login-panel step4 is-shadow">
 			<div class="is-flex is-justify-content-center ">
 				<div class="has-text-centered">
-					<b-image :src="require('@/assets/img/account/default-avatar.svg')" class="is-128x128" rounded></b-image>
+					<b-image :src="require('@/assets/img/account/default-avatar.svg')" class="is-128x128"
+						rounded></b-image>
 					<p class="is-size-5 has-text-weight-bold mt-3">{{ username }}</p>
 				</div>
 
 			</div>
 			<b-notification v-model="notificationShow" aria-close-label="Close notification" auto-close role="alert"
-			                type="is-danger">
+				type="is-danger">
 				{{ message }}
 			</b-notification>
 			<ValidationObserver ref="observer" v-slot="{ handleSubmit }">
@@ -29,9 +30,9 @@
 				</ValidationProvider> -->
 				<ValidationProvider v-slot="{ errors, valid }" name="Password" rules="required|min:5" vid="password">
 					<b-field :label="$t('Password')" :message="$t(errors)"
-					         :type="{ 'is-danger': errors[0], 'is-success': valid }" class="mt-5 has-text-light">
+						:type="{ 'is-danger': errors[0], 'is-success': valid }" class="mt-5 has-text-light">
 						<b-input v-model="password" password-reveal type="password"
-						         v-on:keyup.enter.native="handleSubmit(login)"></b-input>
+							v-on:keyup.enter.native="handleSubmit(login)"></b-input>
 					</b-field>
 				</ValidationProvider>
 				<b-button class="mt-5" expanded rounded type="is-primary" @click="handleSubmit(login)">{{ $t('Login') }}
@@ -42,7 +43,7 @@
 </template>
 
 <script>
-import {ValidationObserver, ValidationProvider} from "vee-validate";
+import { ValidationObserver, ValidationProvider } from "vee-validate";
 import "@/plugins/vee-validate";
 
 export default {

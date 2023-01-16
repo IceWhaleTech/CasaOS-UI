@@ -1,8 +1,8 @@
 <!--
    *
-   * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-   * @LastEditTime: 2022/12/1 下午1:51
-   * @FilePath: /CasaOS-UI/src/components/CoreService.vue
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-01-16 18:31:24
+ * @FilePath: /CasaOS-UI/src/components/CoreService.vue
    * @Description:
    *
    * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -11,7 +11,7 @@
 
 <template>
 	<swiper ref="mySwiper" :options="swiperOptions">
-		<swiper-slide v-for="(noticeCard,key) in noticesData" :key="key" :class="{_singleWidth:showFullCard}">
+		<swiper-slide v-for="(noticeCard, key) in noticesData" :key="key" :class="{ _singleWidth: showFullCard }">
 			<noticeBlock :noticeData="noticeCard" :noticeType="key" @deleteNotice="refreshNotice"></noticeBlock>
 		</swiper-slide>
 		<swiper-slide v-if="recommendShow">
@@ -23,29 +23,28 @@
 		<div v-show="recommendShow || noticeLength !== 0" slot="pagination" class="swiper-pagination">
 		</div>
 		<img slot="button-prev" :src="require('@/assets/img/widgets/swiper-left.svg')" alt="prev"
-		     class="swiper-button-prev"/>
+			class="swiper-button-prev" />
 		<img slot="button-next" :src="require('@/assets/img/widgets/swiper-right.svg')" alt="next"
-		     class="swiper-button-next"/>
+			class="swiper-button-next" />
 	</swiper>
 </template>
 
 <script>
 import noticeBlock from "@/components/noticBlock/noticeBlock";
-import {Swiper, SwiperSlide} from 'vue-awesome-swiper'
-import {mixin} from '@/mixins/mixin';
-import _ from 'lodash';
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
+import { mixin } from '@/mixins/mixin';
+import sortBy from 'lodash/sortBy';
 import SyncBlock from "@/components/syncthing/SyncBlock.vue";
 import SmartBlock from "@/components/smartHome/SmartBlock.vue";
-import first from "lodash/first";
 import events from "@/events/events";
 import Business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
-import StorageManagerPanel from "@/components/Storage/StorageManagerPanel.vue";
+// import StorageManagerPanel from "@/components/Storage/StorageManagerPanel.vue";
 import DiskLearnMore from "@/components/Storage/DiskLearnMore.vue";
 // import DockerProgress from "@/components/Apps/progress.js";
 import last from "lodash/last";
 
 export default {
-	components: {SmartBlock, SyncBlock, noticeBlock, Swiper, SwiperSlide},
+	components: { SmartBlock, SyncBlock, noticeBlock, Swiper, SwiperSlide },
 	name: "core-service",
 	mixins: [mixin, Business_ShowNewAppTag],
 	computed: {
@@ -164,18 +163,7 @@ export default {
 			this.$EventBus.$on('casaUI:openInFiles', (path) => {
 				this.homeShowFiles(path);
 			});
-			this.$EventBus.$on('casaUI:openInStorageManager', () => {
-				this.$buefy.modal.open({
-					parent: this,
-					component: StorageManagerPanel,
-					hasModalCard: true,
-					customClass: 'storage-modal',
-					trapFocus: true,
-					canCancel: [],
-					scroll: "keep",
-					animation: "zoom-in",
-				})
-			});
+
 			this.$EventBus.$on('casaUI:openDiskLearnMore', () => {
 				this.$buefy.modal.open({
 					parent: this,
@@ -204,7 +192,7 @@ export default {
 		},
 		getMessageFromLetter() {
 			this.$api.users.getLetter().then(res => {
-				let sortedData = _.sortBy(res.data, ['timestamp']);
+				let sortedData = sortBy(res.data, ['timestamp']);
 				sortedData.forEach(item => {
 					let json = {
 						...item,
@@ -232,9 +220,6 @@ export default {
 			let eventType
 			if (eventJson.properties['children:num'] > 0) {
 				eventType = eventJson.properties['tran'];
-			} else if (false) {
-				// TODO: notice user to add disk.
-				eventType = 'newDisk';
 			} else {
 				eventType = '';
 			}
@@ -299,7 +284,7 @@ export default {
 			}
 		},
 		transformLocalStorage(eventJson, /*operateType*/) {
-			let eventType = eventJson.properties['tran']
+			// let eventType = eventJson.properties['tran']
 			let operateType = eventJson.name.split(':')[2]
 			let driveType = eventJson.name.split(':')[1]
 			let entityUUID = eventJson.properties['serial'] || eventJson.properties['local-storage:uuid'];
@@ -313,7 +298,7 @@ export default {
 					contentType: 'list',
 					operate: {
 						type: 'casaUI:eventBus',
-						title: 'Storage Merger',
+						title: 'Merge Storages',
 						event: 'casaUI:openInStorageManager',
 						path: '/Storage',
 						icon: 'mdi-arrow-right',
@@ -441,7 +426,7 @@ export default {
 						let status = info.status
 						let currentInstallAppText = status + ":" + id + " " + progress
 						// this.$set(this.noticesData[res.name], 'content', currentInstallAppText)
-						this.$set(this.noticesData[res.name], 'content', {text: currentInstallAppText, value: totalPercentage})
+						this.$set(this.noticesData[res.name], 'content', { text: currentInstallAppText, value: totalPercentage })
 					} catch (e) {
 						console.error(e)
 					}
@@ -480,7 +465,8 @@ export default {
 	width: 100% !important;
 }
 
-.swiper-button-prev, .swiper-button-next {
+.swiper-button-prev,
+.swiper-button-next {
 	width: 2rem;
 	height: 2rem;
 	margin: 0 0.5rem;
@@ -505,5 +491,4 @@ export default {
 		background: #FFFFFF;
 	}
 }
-
 </style>

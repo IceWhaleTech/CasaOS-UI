@@ -1,6 +1,6 @@
 <template>
-  <fullscreen :class="[{'mt-5':!fullscreen},isVaild?'fdark-bg':'flight-bg']" :fullscreen.sync="fullscreen"
-              :page-only="true" :teleport="true" class="fullScreen  pl-2 pt-2 pb-2" @change="onWindowResize">
+  <fullscreen :class="[{ 'mt-5': !fullscreen }, isVaild ? 'fdark-bg' : 'flight-bg']" :fullscreen.sync="fullscreen"
+    :page-only="true" :teleport="true" class="fullScreen  pl-2 pt-2 pb-2" @change="onWindowResize">
     <a v-if="isVaild" class="fullscreen-button" @click="toggleFullScreen">
       <b-icon :icon="buttonIcon"></b-icon>
     </a>
@@ -8,33 +8,34 @@
       <div v-if="!isVaild" class="card card-shadow mb-6">
         <div class="card-content">
           <div class="content">
-            <b-notification v-model="notificationShow" :closable="false" aria-close-label="Close notification" auto-close
-                            role="alert" type="is-danger">
+            <b-notification v-model="notificationShow" :closable="false" aria-close-label="Close notification"
+              auto-close role="alert" type="is-danger">
               {{ $t(message) }}
             </b-notification>
             <b-field :label="$t('Username')">
-              <b-input v-model="sshUser" name="username"></b-input>
+              <b-input v-model="sshUser" name="username" v-on:keyup.enter.native="checkLogin"></b-input>
             </b-field>
 
             <b-field :label="$t('Password')">
-              <b-input v-model="sshPassword" name="password" password-reveal type="password">
+              <b-input v-model="sshPassword" name="password" password-reveal type="password"
+                v-on:keyup.enter.native="checkLogin">
               </b-input>
             </b-field>
 
             <b-field :label="$t('Port')">
-              <b-input v-model="sshPort" name="port" type="number"></b-input>
+              <b-input v-model="sshPort" name="port" type="number" v-on:keyup.enter.native="checkLogin"></b-input>
             </b-field>
             <div class="buttons mt-5">
               <b-button :loading="isConnecting" expanded rounded type="is-primary" @click="checkLogin">{{
-                  $t('Connect')
-                }}
+                $t('Connect')
+              }}
               </b-button>
             </div>
           </div>
         </div>
       </div>
 
-      <div v-else id="xterm" :class="[fullscreen ? 'fullheight':'sheight']" class="xterm"></div>
+      <div v-else id="xterm" :class="[fullscreen ? 'fullheight' : 'sheight']" class="xterm"></div>
     </div>
   </fullscreen>
 </template>
@@ -42,9 +43,9 @@
 <script>
 import qs from 'qs'
 import 'xterm/css/xterm.css'
-import {Terminal} from 'xterm'
-import {FitAddon} from 'xterm-addon-fit'
-import {AttachAddon} from 'xterm-addon-attach'
+import { Terminal } from 'xterm'
+import { FitAddon } from 'xterm-addon-fit'
+import { AttachAddon } from 'xterm-addon-attach'
 
 const fitAddon = new FitAddon();
 export default {
@@ -130,7 +131,7 @@ export default {
         fontSize: 14,
         cursorStyle: 'underline', //光标样式
         cursorBlink: true, //光标闪烁
-        theme: {background: '#1E1E1E'},
+        theme: { background: '#1E1E1E' },
         rows: parseInt(this.rows), //行数
         cols: parseInt(this.cols), // 不指定行数，自动回车后光标从下一行开始
       });

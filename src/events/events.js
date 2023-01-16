@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-14 11:17:17
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-05 12:07:58
+ * @LastEditTime: 2023-01-16 18:50:35
  * @FilePath: /CasaOS-UI/src/events/events.js
  * @Description: 
  * 
@@ -20,5 +20,7 @@ const events = {
     GOTO: 'goto',
     SELECT_SHARE: 'selectShare',
     RELOAD_MOUNT_LIST: 'reloadMountList',
+    SHOW_MERGER_PANEL: 'showMergerPanel',
+    REFRESH_DISKLIST: 'refreshDiskList',
 };
 export default events;

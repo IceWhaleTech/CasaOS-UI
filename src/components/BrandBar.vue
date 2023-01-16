@@ -1,7 +1,7 @@
 <!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2022/12/1 下午5:01
-  * @FilePath: /CasaOS-UI/src/components/BrandBar.vue
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-01-16 15:20:18
+ * @FilePath: /CasaOS-UI/src/components/BrandBar.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -14,12 +14,12 @@
 		</figure>
 		<span v-if="!rssShow || rss.length === 0" class="intro-text ml-4">Made with ❤️ by IceWhale and YOU!</span>
 		<span v-else class="window ml-4">
-      <ul :style="{'--time': 5*line+'s', '--perc': perc, '--line': line}" class="scroll">
-        <li v-for="(item,key) in rss" :key="key" @click="$messageBus('connect_news')">
-	        <a :href="item.link" class="intro-text" target="_blank">{{ item.title }}</a>
-        </li>
-      </ul>
-    </span>
+			<ul :style="{ '--time': 5 * line + 's', '--perc': perc, '--line': line }" class="scroll">
+				<li v-for="(item, key) in rss" :key="key" @click="$messageBus('connect_news')" class="has-text-left">
+					<a :href="item.link" class="intro-text" target="_blank">{{ item.title }}</a>
+				</li>
+			</ul>
+		</span>
 
 	</div>
 </template>
@@ -122,6 +122,7 @@ export default {
 	0% {
 		transform: translate(0, 0);
 	}
+
 	100% {
 		//transform: translate(0, var(--perc)); // slide
 		transform: translate(0, -100%); // Jump upwards
@@ -162,5 +163,4 @@ export default {
 }
 
 // -----------------scroll end-----------------
-
 </style>

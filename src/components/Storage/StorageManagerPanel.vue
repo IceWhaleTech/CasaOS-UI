@@ -1,7 +1,7 @@
 <!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2022/12/12 下午6:36
-  * @FilePath: /CasaOS-UI/src/components/Storage/StorageManagerPanel.vue
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-01-16 18:59:52
+ * @FilePath: /CasaOS-UI/src/components/Storage/StorageManagerPanel.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -14,22 +14,22 @@
       <header class="pl-5 mt-4 pt-1 b-line">
         <h3 class="title is-3 mb-3">{{ title }}</h3>
         <div class="close-container">
-          <button class="delete" type="button" @click="$emit('close')"/>
+          <button class="delete" type="button" @click="$emit('close')" />
         </div>
       </header>
-      <section :class="{'b-line': storageData.length > 0}" class="pr-5 pl-5 mt-4 pb-2 mb-2">
+      <section :class="{ 'b-line': storageData.length > 0 }" class="pr-5 pl-5 mt-4 pb-2 mb-2">
         <!-- Storage and Disk List Start -->
         <div v-if="!creatIsShow" class="is-flex-grow-1 is-relative">
           <div v-if="activeTab == 0" class="create-container">
 
-            <popper :options="{placement: 'bottom', modifiers: { offset: { offset: '0,4px' } } }" append-to-body
-                    trigger="hover">
+            <popper :options="{ placement: 'bottom', modifiers: { offset: { offset: '0,4px' } } }" append-to-body
+              trigger="hover">
               <div v-show="unDiskData.length == 0" class="popper  tooltip-content dark">
                 {{ $t('Please insert a Drive to Create Storage') }}
               </div>
               <div slot="reference">
                 <b-button :disabled="unDiskData.length == 0" :type="state_createstorage_operability" class="o" rounded
-                          size="is-small" @click="showCreate">{{ $t('Create Storage') }}
+                  size="is-small" @click="showCreate">{{ $t('Create Storage') }}
                 </b-button>
               </div>
             </popper>
@@ -37,15 +37,15 @@
           </div>
           <b-tabs v-model="activeTab" :animated="false">
             <b-tab-item :label="$t('Storage')" class="scrollbars-light-auto tab-item">
-              <storage-combination :storageData="mergeConbinationsStorageData"
-                                   :type="state_mainstorage_operability" @reload="getDiskList"></storage-combination>
+              <storage-combination :storageData="mergeConbinationsStorageData" :type="state_mainstorage_operability"
+                @reload="getDiskList"></storage-combination>
               <template v-if="storageData.length">
-                <storage-item v-for="(item,index) in storageData" :key="'storage'+index" :item="item"
-                              @getDiskList="getDiskList"></storage-item>
+                <storage-item v-for="(item, index) in storageData" :key="'storage' + index" :item="item"
+                  @getDiskList="getDiskList"></storage-item>
               </template>
             </b-tab-item>
             <b-tab-item :label="$t('Drive')" class="scrollbars-light-auto tab-item">
-              <drive-item v-for="(item,index) in diskData" :key="'disk'+index" :item="item"></drive-item>
+              <drive-item v-for="(item, index) in diskData" :key="'disk' + index" :item="item"></drive-item>
             </b-tab-item>
           </b-tabs>
 
@@ -57,16 +57,16 @@
           <ValidationObserver ref="ob1">
             <ValidationProvider v-slot="{ errors, valid }" name="StorageName" rules="required">
               <b-field :label="$t('Storage Name')" :message="$t(errors)"
-                       :type="{ 'is-danger': errors[0], 'is-success': valid }">
+                :type="{ 'is-danger': errors[0], 'is-success': valid }">
                 <b-input v-model="createStorageName"
-                         @keyup.native="createStorageName=createStorageName.replace(/[^\w]/g,'')"
-                         @paste.native="createStorageName=createStorageName.replace(/[^\w]/g,'')"></b-input>
+                  @keyup.native="createStorageName = createStorageName.replace(/[^\w]/g, '')"
+                  @paste.native="createStorageName = createStorageName.replace(/[^\w]/g, '')"></b-input>
               </b-field>
             </ValidationProvider>
 
             <b-field :label="$t('Choose Drive')">
               <b-select v-model="activeDisk" expanded @input="onDiskChoose">
-                <option v-for="(option,index) in unDiskData" :key="option.path" :value="index">
+                <option v-for="(option, index) in unDiskData" :key="option.path" :value="index">
                   {{ option.name }} ({{ option.model }} - {{ renderSize(option.size) }})
                 </option>
               </b-select>
@@ -85,7 +85,8 @@
                   <p class="is-size-14px">
                     {{ $t("The selected drive will be emptied.") }}<br>
                     {{
-                      $t("Please make sure again that there is no important data on the selected drive that needs to be backed up.")
+                      $t(`Please make sure again that there is no important data on the selected drive that needs to be
+                                        backed up.`)
                     }}
                   </p>
                 </div>
@@ -104,10 +105,12 @@
                   <p class="is-size-14px">
                     {{ $t("The drive you select can be used directly as storage.") }}<br>
                     {{
-                      $t("You can also choose to create it after formatting. If formatted, the selected drive will be emptied.")
+                      $t(`You can also choose to create it after formatting. If formatted, the selected drive will be
+                                        emptied.`)
                     }}<br>
                     {{
-                      $t("Please make sure again that there is no important data on the selected drive that needs to be backed up.")
+                      $t(`Please make sure again that there is no important data on the selected drive that needs to be
+                                        backed up.`)
                     }}
                   </p>
                 </div>
@@ -124,7 +127,7 @@
       <div class="installing-warpper mt-6 mb-6">
         <div class="is-flex is-align-items-center is-justify-content-center mb-5">
           <lottie-animation :animationData="require('@/assets/ani/creating.json')" :autoPlay="true" :loop="true"
-                            class="creating-animation"></lottie-animation>
+            class="creating-animation"></lottie-animation>
         </div>
         <h3 class="title is-4 has-text-centered has-text-weight-light">{{ $t('Creation in progress') }}...</h3>
       </div>
@@ -136,18 +139,18 @@
       <template v-if="creatIsShow && !isCreating">
         <div class="is-flex-grow-1"></div>
         <div>
-          <b-button :label="$t('Cancel')" rounded @click="showDefault"/>
+          <b-button :label="$t('Cancel')" rounded @click="showDefault" />
           <b-button :label="$t('Format and Create')" :loading="isValiding"
-                    :type="createStorageType == 'format'?'is-primary':''" rounded @click="createStorge(true)"/>
+            :type="createStorageType == 'format' ? 'is-primary' : ''" rounded @click="createStorge(true)" />
           <b-button v-if="createStorageType == 'mountable'" :label="$t('Create')" :loading="isValiding" rounded
-                    type="is-primary" @click="createStorge(false)"/>
+            type="is-primary" @click="createStorge(false)" />
         </div>
       </template>
       <template v-if="!creatIsShow && activeTab == 0 && !mergeConbinationsStorageData.length">
         <div class="is-flex-grow-1"></div>
         <div class="is-flex is-flex-direction-row-reverse">
           <b-button :type="state_mainstorage_operability" class="width" rounded size="is-small"
-                    @click="showStorageSettingsModal">{{ $t('Merge Storages') }}
+            @click="showStorageSettingsModal">{{ $t('Merge Storages') }}
           </b-button>
           <cToolTip isBlock></cToolTip>
         </div>
@@ -164,14 +167,16 @@ import LottieAnimation from "lottie-web-vue";
 import smoothReflow from 'vue-smooth-reflow'
 import delay from 'lodash/delay';
 import max from 'lodash/max';
-import {ValidationObserver, ValidationProvider} from "vee-validate";
-import {mixin} from '../../mixins/mixin';
+import orderBy from 'lodash/orderBy';
+import { ValidationObserver, ValidationProvider } from "vee-validate";
+import { mixin } from '../../mixins/mixin';
 import DriveItem from './DriveItem.vue'
 import StorageItem from './StorageItem.vue'
 import Popper from 'vue-popperjs';
-import MergeStorages from '@/components/Storage/MergeStorages.vue';
+// import MergeStorages from '@/components/Storage/MergeStorages.vue';
 import StorageCombination from "./StorageCombination.vue";
 import cToolTip from '@/components/basicComponents/tooltip/tooltip.vue';
+import events from '@/events/events';
 
 export default {
   name: "storage-manager-panel",
@@ -220,6 +225,7 @@ export default {
       if (this.unDiskData.length == 0) {
         return "is-link"
       }
+      return ""
     },
   },
 
@@ -266,6 +272,14 @@ export default {
     delay(function () {
       _this.getDiskList()
     }, 150);
+
+    this.$EventBus.$on(events.REFRESH_DISKLIST, () => {
+      this.getDiskList()
+    });
+  },
+
+  beforeDestroy() {
+    this.$EventBus.$off(events.REFRESH_DISKLIST)
   },
 
   methods: {
@@ -299,7 +313,7 @@ export default {
 
       try {
         // get storage list info
-        const storageRes = await this.$api.storage.list({system: "show"}).then(v => v.data.data)
+        const storageRes = await this.$api.storage.list({ system: "show" }).then(v => v.data.data)
         let storageArray = []
         let mergeConbinations = []
         let testMergeMiss = mergeStorageList
@@ -317,8 +331,8 @@ export default {
           })
         })
         // sort
-        let storageArraySort = _.orderBy(storageArray, ['diskName', 'label'], ['desc', 'asc']);
-        let mergeConbinationsSort = _.orderBy(mergeConbinations, ['diskName', 'label'], ['desc', 'asc']);
+        let storageArraySort = orderBy(storageArray, ['diskName', 'label'], ['desc', 'asc']);
+        let mergeConbinationsSort = orderBy(mergeConbinations, ['diskName', 'label'], ['desc', 'asc']);
         // mergeConbinations.reverse();
         testMergeMiss.forEach(item => {
           mergeConbinationsSort.push({
@@ -441,38 +455,38 @@ export default {
 
     // show storage settings modal
     async showStorageSettingsModal() {
-      this.$messageBus('storagemanager_mergestorage');
-
+      // this.$messageBus('storagemanager_mergestorage');
+      this.$EventBus.$emit('casaUI:openInStorageManager');
       // TODO: the part is repetition
       //  with APPs Installation Location requirement document
       // 获取merge信息
-      let mergeStorageList
-      try {
-        mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => res.data.data[0]['source_volume_uuids'])
-      } catch (e) {
-        mergeStorageList = []
-        console.log(e)
-      }
+      // let mergeStorageList
+      // try {
+      //   mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => res.data.data[0]['source_volume_uuids'])
+      // } catch (e) {
+      //   mergeStorageList = []
+      //   console.log(e)
+      // }
 
-      this.$buefy.modal.open({
-        parent: this,
-        component: MergeStorages,
-        hasModalCard: true,
-        trapFocus: true,
-        ariaModal: true,
-        canCancel: ['escape'],
-        onCancel: () => {
-          this.getDiskList()
-        },
-        events: {
-          close: () => {
-            this.getDiskList()
-          }
-        },
-        props: {
-          mergeStorageList
-        }
-      })
+      // this.$buefy.modal.open({
+      //   parent: this,
+      //   component: MergeStorages,
+      //   hasModalCard: true,
+      //   trapFocus: true,
+      //   ariaModal: true,
+      //   canCancel: ['escape'],
+      //   onCancel: () => {
+      //     this.getDiskList()
+      //   },
+      //   events: {
+      //     close: () => {
+      //       this.getDiskList()
+      //     }
+      //   },
+      //   props: {
+      //     mergeStorageList
+      //   }
+      // })
 
     },
     /**

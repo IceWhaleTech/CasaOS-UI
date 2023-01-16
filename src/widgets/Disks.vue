@@ -1,11 +1,3 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2022/12/14 下午12:01
-  * @FilePath: /CasaOS-UI/src/widgets/Disks.vue
-  * @Description:
-  *
-  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
-  -->
 <template>
 	<div>
 		<!-- Disk Info Start -->
@@ -29,7 +21,8 @@
 								<b-image :src="require('@/assets/img/storage/storage.svg')" class="is-68x68"></b-image>
 							</div>
 							<div class="ml-3 is-flex-grow-1 ">
-								<h4 class="title is-size-14px mb-2 mt-1 has-text-left has-text-white one-line is-align-items-center is-flex">
+								<h4
+									class="title is-size-14px mb-2 mt-1 has-text-left has-text-white one-line is-align-items-center is-flex">
 									<b-tag v-if="health" type="is-success">{{ $t('Healthy') }}</b-tag>
 									<b-tag v-else type="is-danger">{{ $t('Damage') }}</b-tag>
 								</h4>
@@ -40,7 +33,7 @@
 							</div>
 						</div>
 						<b-progress :type="totalPercent | getProgressType" :value="totalPercent" class="mt-2"
-						            size="is-small"></b-progress>
+							size="is-small"></b-progress>
 					</div>
 				</div>
 			</div>
@@ -51,15 +44,15 @@
 			<div class="blur-background"></div>
 			<div class="widget-content">
 				<div class="columns is-mobile is-multiline pt-2 ">
-					<div v-for="(item) in usbDisks" :key="'usb_'+item.name" class="column is-full pb-1">
+					<div v-for="(item) in usbDisks" :key="'usb_' + item.name" class="column is-full pb-1">
 						<div class="is-flex">
 							<div class="header-icon is-flex-shrink-0">
-								<b-image :src="require('@/assets/img/storage/USB.png')" class="is-68x68"></b-image>
+								<b-image :src="require('@/assets/img/storage/USB.svg')" class="is-68x68"></b-image>
 							</div>
 							<div class="ml-3 is-flex-grow-1 ">
 								<h4 class="title is-size-14px mb-2 mt-1 has-text-left has-text-white one-line ">
 									{{ item.model }}</h4>
-								<p class="has-text-left is-size-6 mt-1 ">
+								<p class="has-text-left is-size-14px mt-1 ">
 									<span class="op65">{{ $t('Used') }}:</span> {{ renderSize(item.size - item.avail) }}
 									<br>
 									<span class="op65"> {{ $t('Total') }}:</span> {{ renderSize(item.size) }}
@@ -67,8 +60,8 @@
 							</div>
 						</div>
 						<b-progress :type="(Math.floor((item.size - item.avail) * 100 / item.size)) | getProgressType"
-						            :value=" Math.floor((item.size - item.avail) * 100 / item.size)" class="mt-2"
-						            size="is-small"></b-progress>
+							:value="Math.floor((item.size - item.avail) * 100 / item.size)" class="mt-2"
+							size="is-small"></b-progress>
 					</div>
 				</div>
 			</div>
@@ -81,7 +74,7 @@
 
 <script>
 import StorageManagerPanel from '@/components/Storage/StorageManagerPanel.vue'
-import {mixin} from '../mixins/mixin';
+import { mixin } from '../mixins/mixin';
 
 export default {
 	// eslint-disable-next-line vue/multi-word-component-names

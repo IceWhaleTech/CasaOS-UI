@@ -1,7 +1,7 @@
 <!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2022/12/2 下午4:28
-  * @FilePath: /CasaOS-UI/src/views/Home.vue
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-01-16 18:51:56
+ * @FilePath: /CasaOS-UI/src/views/Home.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -22,7 +22,7 @@
 						<side-bar v-if="!hardwareInfoLoading"></side-bar>
 						<!-- SideBar End -->
 					</div>
-					<div :class="{'open':sidebarOpen}" class="column is-three-quarters main-content">
+					<div :class="{ 'open': sidebarOpen }" class="column is-three-quarters main-content">
 						<!-- MainContent Start -->
 						<div class=" contextmenu-canvas">
 							<!-- SearchBar Start -->
@@ -60,8 +60,8 @@
 		</div>
 		<!-- Content End -->
 		<!-- File Panel Start -->
-		<b-modal v-model="isFileActive" :can-cancel="[]" :destroy-on-hide="false" animation="zoom-in"
-		         aria-modal custom-class="file-panel" full-screen has-modal-card @after-enter="afterFileEnter">
+		<b-modal v-model="isFileActive" :can-cancel="[]" :destroy-on-hide="false" animation="zoom-in" aria-modal
+			custom-class="file-panel" full-screen has-modal-card @after-enter="afterFileEnter">
 			<template #default="props">
 				<file-panel ref="filePanel" @close="props.close"></file-panel>
 			</template>
@@ -81,9 +81,9 @@ import AppSection from '../components/Apps/AppSection.vue'
 import FilePanel from '@/components/filebrowser/FilePanel.vue'
 import UpdateCompleteModal from '@/components/settings/UpdateCompleteModal.vue'
 
-import {mixin} from '../mixins/mixin';
+import { mixin } from '../mixins/mixin';
 import events from '@/events/events';
-import {nanoid} from 'nanoid';
+import { nanoid } from 'nanoid';
 
 const wallpaperConfig = "wallpaper"
 
@@ -147,6 +147,10 @@ export default {
 			sessionStorage.removeItem('fromWelcome')
 		}
 		this.$messageBus('global_visit')
+
+		this.$EventBus.$on('casaUI:openInStorageManager', () => {
+			this.showStorageSettingsModal();
+		});
 	},
 	methods: {
 
@@ -289,11 +293,49 @@ export default {
 					this.barData.rss_switch = false
 				}
 			})
-		}
+		},
+
+		// show storage settings modal
+		async showStorageSettingsModal() {
+			this.$messageBus('storagemanager_mergestorage');
+
+			// TODO: the part is repetition
+			//  with APPs Installation Location requirement document
+			// 获取merge信息
+			let mergeStorageList
+			try {
+				mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => res.data.data[0]['source_volume_uuids'])
+			} catch (e) {
+				mergeStorageList = []
+				console.log(e)
+			}
+
+			this.$buefy.modal.open({
+				parent: this,
+				component: () => import('@/components/Storage/MergeStorages.vue'),
+				hasModalCard: true,
+				trapFocus: true,
+				ariaModal: true,
+				canCancel: ['escape'],
+				onCancel: () => {
+					this.$EventBus.$emit(events.REFRESH_DISKLIST);
+				},
+				events: {
+					close: () => {
+						this.$EventBus.$emit(events.REFRESH_DISKLIST);
+					}
+				},
+				props: {
+					mergeStorageList
+				}
+			})
+
+		},
 
 	},
 	beforeDestroy() {
 		window.removeEventListener("resize", this.onResize);
+		this.$EventBus.$off('casaUI:openInStorageManager');
 	},
 
 }
@@ -314,6 +356,7 @@ export default {
 
 .main-content {
 	z-index: 10;
+
 	@include until-widescreen {
 		width: calc(100% - 18rem);
 	}
@@ -339,6 +382,7 @@ export default {
 
 .slider-content {
 	min-width: 18rem;
+	position: relative;
 }
 
 @media screen and (max-width: 480px) {
@@ -350,24 +394,28 @@ export default {
 	.contents {
 		height: calc(100vh - 4rem) !important;
 	}
+
 	.container {
 		height: 100%;
 	}
+
 	.columns {
 		height: 100%;
 	}
+
 	.column {
 		padding: 0;
 		width: 100%;
 		right: 0;
 	}
+
 	.main-content {
 		margin-left: 0;
 		transition: all 0.3s;
 
 		&.open {
-			transform: scale(0);
-			opacity: 1;
+			transform: scale(0.9);
+			opacity: 0;
 		}
 	}
 }

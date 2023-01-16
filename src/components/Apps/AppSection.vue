@@ -1,8 +1,8 @@
 <!--
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
- * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-08-26 00:45:18
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-01-16 17:49:12
  * @FilePath: /CasaOS-UI/src/components/Apps/AppSection.vue
  * @Description:
  *
@@ -14,7 +14,7 @@
 		<!-- Title Bar Start -->
 		<div class="is-flex is-align-items-center mb-4">
 			<app-section-title-tip id="appTitle1" class="is-flex-grow-1 has-text-sub-04" label="Drag icons to sort."
-			                       title="Apps"></app-section-title-tip>
+				title="Apps"></app-section-title-tip>
 
 			<b-dropdown animation="fade1" aria-role="menu" class="file-dropdown" position="is-bottom-left">
 				<template #trigger>
@@ -32,14 +32,15 @@
 
 		<!-- App List Start -->
 		<draggable v-model="appList" :draggable="draggable"
-		           class="columns is-variable is-2 is-multiline app-list contextmenu-canvas"
-		           tag="div" v-bind="dragOptions" @end="onSortEnd" @start="drag = true">
+			class="columns is-variable is-2 is-multiline app-list contextmenu-canvas" tag="div" v-bind="dragOptions"
+			@end="onSortEnd" @start="drag = true">
 			<template v-if="!isLoading">
 
 				<!-- App Icon Card Start -->
 				<div v-for="(item) in appList" :id="'app-' + item.id" :key="'app-' + item.id"
-				     class="column is-narrow is-3 handle">
-					<app-card :isCasa="true" :item="item" @configApp="showConfigPanel" @updateState="getList"></app-card>
+					class="column is-narrow is-3 handle">
+					<app-card :isCasa="true" :item="item" @configApp="showConfigPanel"
+						@updateState="getList"></app-card>
 				</div>
 				<!-- App Icon Card End -->
 
@@ -61,7 +62,7 @@
 				<!-- Application not imported Start -->
 				<div v-for="(item) in notImportedList" :key="'app-' + item.id" class="column is-narrow is-3">
 					<app-card :isCasa="false" :item="item" @configApp="showConfigPanel" @importApp="showConfigPanel"
-					          @updateState="getList"></app-card>
+						@updateState="getList"></app-card>
 				</div>
 				<!-- Application not imported End -->
 			</div>
@@ -80,7 +81,7 @@ import draggable from 'vuedraggable'
 import xor from 'lodash/xor'
 import concat from 'lodash/concat'
 import events from '@/events/events';
-import {last} from 'lodash';
+import { last } from 'lodash';
 import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
 
 const SYNCTHING_STORE_ID = 74
@@ -361,7 +362,7 @@ export default {
 			// business :: scroll to last position
 			let id = last(this.newAppIds);
 			let showEl = document.getElementById("app-" + id)
-			showEl && showEl.scrollIntoView({behavior: "smooth", block: 'end'});
+			showEl && showEl.scrollIntoView({ behavior: "smooth", block: 'end' });
 		}
 	},
 	sockets: {

@@ -1,102 +1,100 @@
 <!--
  * @Author: zhanghengxin hengxin.zhang@icewhale.org
  * @Date:  2022-09-13 17:01:37
- * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-09-29 20:35:39
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-01-16 18:06:48
  * @FilePath: /CasaOS-UI/src/components/Storage/MergeStorages.vue
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
 -->
 <template>
-	<div :class="{'_max-width-320': currentStep===1 ||currentStep===3 || currentStep ===4 }" class="modal-card">
+	<div :class="{ '_max-width-320': currentStep === 1 || currentStep === 3 || currentStep === 4 }" class="modal-card">
 		<!--    head-->
-		<header :class="{'pri-head':currentStep<=2}" class="modal-card-head ">
-			<b-icon v-if="currentStep === 1" class="mr-2 has-text-red" custom-class="_has-text-red-default" icon="danger"
-			        pack="casa"
-			        size="is-20"></b-icon>
+		<header :class="{ 'pri-head': currentStep <= 2 }" class="modal-card-head ">
+			<b-icon v-if="currentStep === 1" class="mr-2 has-text-red" custom-class="_has-text-red-default"
+				icon="danger" pack="casa" size="is-20"></b-icon>
 			<div class="is-flex-grow-1">
 				<h3 class=" title is-3">{{ $t(title) }}
 					<cToolTip v-if="currentStep === 0" modal="is-success"></cToolTip>
 				</h3>
 			</div>
-			<button class="delete" type="button" @click="cancel"/>
+			<button class="delete" type="button" @click="cancel" />
 		</header>
 		<!--remind-->
 
 		<section v-if="currentStep === 0"
-		         class="notification is-overlay mr-5 ml-5 mb-0 pr-0 pl-0 pt-5 pb-3 non-backgroud">
+			class="notification is-overlay mr-5 ml-5 mb-0 pr-0 pl-0 pt-5 pb-3 non-backgroud">
 			<div v-if="currentStep === 0" class="_is-normal _has-text-gray-600 mb-4">
 				{{ $t('All the checked Storage will be merged into CasaOS HD.') }}
 			</div>
 
-			<div v-for="(item, index) in storageData" :key="item.path+index"
-			     class="is-flex mb-1 radius _height-40">
+			<div v-for="(item, index) in storageData" :key="item.path + index" class="is-flex mb-1 radius _height-40">
 				<div class="ml-2 mr-1 is-flex is-align-items-center _has-text-gray-600">
 					<b-icon icon="storage-other" pack="casa" size="is-20"></b-icon>
 				</div>
 				<div class="is-flex is-flex-grow-1 is-flex-direction-column is-justify-content-center ">
 					<span class="is-uppercase one-line _is-text-emphasis-03 _has-text-gray-800">{{
-							item.name || $t('undefined')
-						}}</span>
+						item.name || $t('undefined')
+					}}</span>
 				</div>
 				<div class="is-flex is-flex-shrink-0 is-flex-direction-column is-justify-content-center mr-2">
-          <span class="is-uppercase _is-text-full-03 _has-text-gray-600">{{
-		          renderSize(item.size - item.availSize)
-	          }}/{{
-		          renderSize(item.size)
-	          }}</span>
+					<span class="is-uppercase _is-text-full-03 _has-text-gray-600">{{
+						renderSize(item.size -
+							item.availSize)
+					}}/{{ renderSize(item.size) }}</span>
 				</div>
 				<b-checkbox v-model="checkBoxGroup" :disabled="item.persistedIn !== 'casaos'" :native-value="item.uuid"
-				            class="mr-2"></b-checkbox>
+					class="mr-2"></b-checkbox>
 			</div>
 
-			<div v-for="(item, index) in storageMissData" :key="item.path+index"
-			     class="is-flex mb-1 radius _height-40">
+			<div v-for="(item, index) in storageMissData" :key="item.path + index"
+				class="is-flex mb-1 radius _height-40">
 				<div class="ml-2 mr-1 is-flex is-align-items-center _has-text-gray-600">
 					<b-icon icon="storage-other" pack="casa" size="is-20"></b-icon>
 				</div>
 				<div class="is-flex is-flex-grow-1 is-flex-direction-column is-justify-content-center ">
 					<span class="is-uppercase one-line  _is-text-emphasis-03 _has-text-gray-800">{{
-							item.name || $t('undefined')
-						}}</span>
+						item.name || $t('undefined')
+					}}</span>
 				</div>
 				<div class="is-flex is-flex-shrink-0 is-flex-direction-column is-justify-content-center mr-2">
-          <span class="is-flex is-align-items-center has-text-danger small-font">
-            <b-icon class="warn" custom-size="casa-16px" icon="danger" pack="casa"></b-icon>
-            {{ $t('Missing') }}
-          </span>
+					<span class="is-flex is-align-items-center has-text-danger small-font">
+						<b-icon class="warn" custom-size="casa-16px" icon="danger" pack="casa"></b-icon>
+						{{ $t('Missing') }}
+					</span>
 				</div>
 				<b-checkbox v-model="checkBoxMissGroup" :native-value="item.path" class="mr-2"></b-checkbox>
 			</div>
 		</section>
 
 		<div v-if="currentStep === 0 && checkBoxGroup.length > 0"
-		     class="_has-background-yellow-default _has-text-white _is-normal is-flex is-align-items-center font ml-5 mr-5 mb-4 pt-2 pb-2 _radius-line">
+			class="_has-background-yellow-default _has-text-white _is-normal is-flex is-align-items-center font ml-5 mr-5 mb-4 pt-2 pb-2 _radius-line">
 			<div class="is-flex left ml-3 mr-2 is-align-items-center">
 				<b-icon class="is-16x16" custom-size="casa-19px" icon="danger" pack="casa"></b-icon>
 			</div>
 			{{ $t('If the chosen storage is not empty, format better first.') }}
 		</div>
 		<div v-if="currentStep === 0 && isSplit"
-		     class="_has-background-red-default _has-text-white _is-normal is-flex is-align-items-center ml-5 mr-5 mb-4 pt-2 pb-2 _radius-line">
+			class="_has-background-red-default _has-text-white _is-normal is-flex is-align-items-center ml-5 mr-5 mb-4 pt-2 pb-2 _radius-line">
 			<div class="is-flex left ml-3 mr-2 is-align-items-center">
 				<b-icon custom-size="casa-19px" icon="danger" pack="casa"></b-icon>
 			</div>
 			{{ $t('Please back up your data in storage, otherwise the data may be lost.') }}
 		</div>
-		<div v-if="currentStep === 0 "
-		     class="_has-background-red-default _has-text-white _is-normal is-flex is-align-items-center ml-5 mr-5 mb-4 pt-2 pb-2 _radius-line">
+		<div v-if="currentStep === 0"
+			class="_has-background-red-default _has-text-white _is-normal is-flex is-align-items-center ml-5 mr-5 mb-4 pt-2 pb-2 _radius-line">
 			<div class="is-flex left ml-3 mr-2 is-align-items-center">
 				<b-icon custom-size="casa-19px" icon="danger" pack="casa"></b-icon>
 			</div>
 			{{
-				$t('* This feature is now testing and verifying, enabling it may clear personal data and destroy the installed APPs, so it is recommended to use it only during the startup.')
+				$t(`* This feature is now testing and verifying, enabling it may clear personal data and destroy the
+						installed APPs, so it is recommended to use it only during the startup.`)
 			}}
 		</div>
 
 		<section v-if="currentStep > 0"
-		         class="notification is-overlay mr-5 ml-5 mb-0 pr-0 pl-0 pt-5 pb-4 non-backgroud">
+			class="notification is-overlay mr-5 ml-5 mb-0 pr-0 pl-0 pt-5 pb-4 non-backgroud">
 			<div v-if="currentStep === 1" class="is-flex is-align-items-center _is-normal">
 				{{
 					$t('This operation may clear all personal data and destroy the installed APPs.')
@@ -107,15 +105,13 @@
 					{{ $t('Enter the password to continue.') }}
 				</div>
 				<b-input ref="inputPassword" v-model="password" class="mt-4" password-reveal type="password"
-				         @keyup.enter.native="verifyPassword(password)"></b-input>
+					@keyup.enter.native="verifyPassword(password)"></b-input>
 			</template>
 			<div v-if="currentStep === 3" class="is-flex is-align-items-center font">
 				<div class="message-danger left mr-2 is-flex is-align-items-center">
 					<b-icon class="is-38x38" custom-size="is-size-2" icon="danger" pack="casa"></b-icon>
 				</div>
-				{{
-					`${runName.split(',').length} ` + $t('APPs is running') + ` , ` + $t('restart APPs to continue.')
-				}}
+				{{ $t('APPs is running') + ` , ` + $t('restart APPs to continue.')}}
 			</div>
 			<div v-if="currentStep === 4" class="is-flex is-align-items-center font">
 				<div class="message-danger left mr-2 is-flex is-align-items-center">
@@ -125,32 +121,30 @@
 			</div>
 		</section>
 
-		<footer :class="{'t-line': currentStep <= 2}" class="modal-card-foot is-flex is-align-items-center ">
+		<footer :class="{ 't-line': currentStep <= 2 }" class="modal-card-foot is-flex is-align-items-center ">
 			<div class="is-flex-grow-1"></div>
 			<div class="mr-4">
 				<b-button v-show="currentStep > 2 || currentStep === 1" :label="$t('Cancel')"
-				          class="_has-background-gray-100 _radius-line"
-				          expaned @click="currentStep = 0"/>
+					class="_has-background-gray-100 _radius-line" expaned @click="currentStep = 0" />
 			</div>
 			<div>
 				<b-button v-show="currentStep === 0" :label="$t(affirm)" :loading="isConnecting" expaned rounded
-				          type="is-primary" @click="test"/>
+					type="is-primary" @click="test" />
 				<b-button v-show="currentStep === 1" :label="$t(affirm)" :loading="isConnecting"
-				          class="_has-background-red-default _radius-line _has-text-white"
-				          expaned @click="currentStep = 2"/>
+					class="_has-background-red-default _radius-line _has-text-white" expaned @click="currentStep = 2" />
 				<b-button v-show="currentStep === 2" :label="$t(affirm)" :loading="isConnecting" expaned rounded
-				          type="is-primary" @click="verifyPassword(password)"/>
+					type="is-primary" @click="verifyPassword(password)" />
 				<b-button v-show="currentStep === 3" :label="$t(affirm)" :loading="isConnecting" expaned rounded
-				          type="is-primary" @click="restart"/>
+					type="is-primary" @click="restart" />
 				<b-button v-show="currentStep === 4" :label="$t(affirm)" :loading="isConnecting" expaned rounded
-				          type="is-primary" @click="restart"/>
+					type="is-primary" @click="restart" />
 			</div>
 		</footer>
 	</div>
 </template>
 
 <script>
-import {mixin} from "@/mixins/mixin";
+import { mixin } from "@/mixins/mixin";
 import jwt_decode from "jwt-decode";
 import MD5 from 'md5-es';
 import events from '@/events/events';
@@ -331,7 +325,7 @@ export default {
 						queue: true,
 						indefinite: false,
 						onDismiss: () => {
-							this.$router.push({name: 'StorageManager'})
+							this.$router.push({ name: 'StorageManager' })
 						}
 					})
 					this.$EventBus.$emit(events.RELOAD_APP_LIST)
@@ -406,7 +400,7 @@ export default {
 			if (notSplit || nextStep) {
 				// get docker info
 				let dockerInfo = await this.$api.container.getInfo('').then(res => res.data.data.casaos_apps);
-				dockerInfo = _.filter(dockerInfo, {state: "running"})
+				dockerInfo = _.filter(dockerInfo, { state: "running" })
 				if (this.notEmpty) {
 					this.restart()
 					return
@@ -431,14 +425,14 @@ export default {
 			try {
 				// get docker info
 				let dockerInfo = await this.$api.container.getInfo('').then(res => res.data.data.casaos_apps)
-				dockerInfo = _.filter(dockerInfo, {state: "running"})
+				dockerInfo = _.filter(dockerInfo, { state: "running" })
 				let container = this.$api.container
 				Promise.all(dockerInfo.map(async item => {
 					await container.updateState(item.id, "stop")
 				})).then(() => {
 					this.$api.local_storage.getInitMergerfsStatus().then(res => {
 						if (res.data.data !== 'initialized') {
-							this.$api.local_storage.initMergerfs({"mount_point": "/DATA"}).then(() => {
+							this.$api.local_storage.initMergerfs({ "mount_point": "/DATA" }).then(() => {
 								this.updateMerge(dockerInfo)
 							}).catch(e => {
 								this.isConnecting = false
@@ -681,5 +675,4 @@ export default {
 .pri-mtr-3px .control-label {
 	display: none;
 }
-
 </style>

@@ -49,7 +49,7 @@
   "Dashboard Setting": "Impostazioni Dashboard",
   "Search Engine": "Motore di ricerca",
   "WebUI Port": "Porta WebUI",
-  "Currently at the latest version": "Currently at the latest version",
+  "Currently at the latest version": "Al momento hai la versione più recente",
   "A new version is available!": "È disponibile una nuova versione!",
   "Edit Web UI port": "Modifica porta WebUI",
   "Automount USB Drive": "Monta in automatico unità USB",
@@ -224,7 +224,7 @@
   "Don't Save": "Non salvare",
   "Drop your files here to upload": "Lascia i file qui per caricarli",
   "or": "oppure",
-  "File name": "Name",
+  "File name": "Nome",
   "Date Modified": "Data modifica",
   "Size": "Dimensioni",
   "Play in IINA": "Apri in IINA",
@@ -337,8 +337,8 @@
   "This operation may clear all personal data and destroy the installed APPs.": "Questa operazione potrebbe cancellare tutti i dati personali e distruggere le applicazioni installate.",
   "Warning": "Attenzione",
   "Click here": "Clicca qui",
-  "Installing app": "Installing app",
-  "Installation completed": "Installation completed",
-  "Starting installation": "Starting installation",
-  "New": "New"
+  "Installing app": "Installazione app",
+  "Installation completed": "Installazione completata",
+  "Starting installation": "Avvio installazione",
+  "New": "Nuovo"
 }

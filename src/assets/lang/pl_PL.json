@@ -49,7 +49,7 @@
   "Dashboard Setting": "Ustawienia pulpitu",
   "Search Engine": "Wyszukiwarka",
   "WebUI Port": "WebUI port",
-  "Currently at the latest version": "Currently at the latest version",
+  "Currently at the latest version": "Posiadasz najnowszą wersję",
   "A new version is available!": "Dostępna jest nowa wersja!",
   "Edit Web UI port": "WebUI edycja portu",
   "Automount USB Drive": "Automatyczne montowanie dysku USB",
@@ -224,7 +224,7 @@
   "Don't Save": "Nie zapisuj",
   "Drop your files here to upload": "Upuść tu pliki, aby je załadować",
   "or": "lub",
-  "File name": "Name",
+  "File name": "Nazwa",
   "Date Modified": "Data modyfikacji",
   "Size": "Rozmiar",
   "Play in IINA": "Odtwórz w IINA",
@@ -337,8 +337,8 @@
   "This operation may clear all personal data and destroy the installed APPs.": "Ta operacja może wyczyścić wszystkie dane osobowe i zniszczyć zainstalowane aplikacje.",
   "Warning": "Uwaga",
   "Click here": "Kliknij tutaj",
-  "Installing app": "Installing app",
-  "Installation completed": "Installation completed",
-  "Starting installation": "Starting installation",
-  "New": "New"
+  "Installing app": "Instalowanie aplikacji",
+  "Installation completed": "Instalacja zakończona",
+  "Starting installation": "Uruchamianie instalacji",
+  "New": "Nowość"
 }
