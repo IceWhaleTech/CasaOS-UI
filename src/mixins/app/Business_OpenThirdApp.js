@@ -30,24 +30,24 @@ export default {
                 const port = appInfo.port ? `:${appInfo.port}` : ''
                 const url = `${protocol}://${hostIp}${port}${appInfo.index}`
                 let href = window.location.href.split("#")[0]
-                if (url === href) {
-                    this.$buefy.toast.open({
-                        message: this.$t('The page to be opened is the same as current page'),
-                        type: 'is-warning',
-                        position: 'is-top',
-                        duration: 5000,
-                        queue: false,
-                        container: null,
-                        animation: 'fade',
-                        onOpen: () => {
-                        },
-                        onClose: () => {
-                        },
-                        ariaRole: 'alert',
-                        ariaLive: 'polite'
-                    })
-                    return
-                }
+                // if (url === href) {
+                //     this.$buefy.toast.open({
+                //         message: this.$t('The page to be opened is the same as current page'),
+                //         type: 'is-warning',
+                //         position: 'is-top',
+                //         duration: 5000,
+                //         queue: false,
+                //         container: null,
+                //         animation: 'fade',
+                //         onOpen: () => {
+                //         },
+                //         onClose: () => {
+                //         },
+                //         ariaRole: 'alert',
+                //         ariaLive: 'polite'
+                //     })
+                //     return
+                // }
                 if (appInfo.image.toLowerCase().indexOf("qbittorrent") === -1) {
                     window.location.replace(url);
                 } else {
