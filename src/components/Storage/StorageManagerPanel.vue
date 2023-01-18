@@ -14,7 +14,7 @@
       <header class="pl-5 mt-4 pt-1 b-line">
         <h3 class="title is-3 mb-3">{{ title }}</h3>
         <div class="close-container">
-          <button class="delete" type="button" @click="$emit('close')" />
+          <button class="delete" type="button" @click="$emit('close')"/>
         </div>
       </header>
       <section :class="{ 'b-line': storageData.length > 0 }" class="pr-5 pl-5 mt-4 pb-2 mb-2">
@@ -23,13 +23,13 @@
           <div v-if="activeTab == 0" class="create-container">
 
             <popper :options="{ placement: 'bottom', modifiers: { offset: { offset: '0,4px' } } }" append-to-body
-              trigger="hover">
+                    trigger="hover">
               <div v-show="unDiskData.length == 0" class="popper  tooltip-content dark">
                 {{ $t('Please insert a Drive to Create Storage') }}
               </div>
               <div slot="reference">
                 <b-button :disabled="unDiskData.length == 0" :type="state_createstorage_operability" class="o" rounded
-                  size="is-small" @click="showCreate">{{ $t('Create Storage') }}
+                          size="is-small" @click="showCreate">{{ $t('Create Storage') }}
                 </b-button>
               </div>
             </popper>
@@ -38,10 +38,10 @@
           <b-tabs v-model="activeTab" :animated="false">
             <b-tab-item :label="$t('Storage')" class="scrollbars-light-auto tab-item">
               <storage-combination :storageData="mergeConbinationsStorageData" :type="state_mainstorage_operability"
-                @reload="getDiskList"></storage-combination>
+                                   @reload="getDiskList"></storage-combination>
               <template v-if="storageData.length">
                 <storage-item v-for="(item, index) in storageData" :key="'storage' + index" :item="item"
-                  @getDiskList="getDiskList"></storage-item>
+                              @getDiskList="getDiskList"></storage-item>
               </template>
             </b-tab-item>
             <b-tab-item :label="$t('Drive')" class="scrollbars-light-auto tab-item">
@@ -57,10 +57,10 @@
           <ValidationObserver ref="ob1">
             <ValidationProvider v-slot="{ errors, valid }" name="StorageName" rules="required">
               <b-field :label="$t('Storage Name')" :message="$t(errors)"
-                :type="{ 'is-danger': errors[0], 'is-success': valid }">
+                       :type="{ 'is-danger': errors[0], 'is-success': valid }">
                 <b-input v-model="createStorageName"
-                  @keyup.native="createStorageName = createStorageName.replace(/[^\w]/g, '')"
-                  @paste.native="createStorageName = createStorageName.replace(/[^\w]/g, '')"></b-input>
+                         @keyup.native="createStorageName = createStorageName.replace(/[^\w]/g, '')"
+                         @paste.native="createStorageName = createStorageName.replace(/[^\w]/g, '')"></b-input>
               </b-field>
             </ValidationProvider>
 
@@ -127,7 +127,7 @@
       <div class="installing-warpper mt-6 mb-6">
         <div class="is-flex is-align-items-center is-justify-content-center mb-5">
           <lottie-animation :animationData="require('@/assets/ani/creating.json')" :autoPlay="true" :loop="true"
-            class="creating-animation"></lottie-animation>
+                            class="creating-animation"></lottie-animation>
         </div>
         <h3 class="title is-4 has-text-centered has-text-weight-light">{{ $t('Creation in progress') }}...</h3>
       </div>
@@ -139,18 +139,18 @@
       <template v-if="creatIsShow && !isCreating">
         <div class="is-flex-grow-1"></div>
         <div>
-          <b-button :label="$t('Cancel')" rounded @click="showDefault" />
+          <b-button :label="$t('Cancel')" rounded @click="showDefault"/>
           <b-button :label="$t('Format and Create')" :loading="isValiding"
-            :type="createStorageType == 'format' ? 'is-primary' : ''" rounded @click="createStorge(true)" />
+                    :type="createStorageType == 'format' ? 'is-primary' : ''" rounded @click="createStorge(true)"/>
           <b-button v-if="createStorageType == 'mountable'" :label="$t('Create')" :loading="isValiding" rounded
-            type="is-primary" @click="createStorge(false)" />
+                    type="is-primary" @click="createStorge(false)"/>
         </div>
       </template>
       <template v-if="!creatIsShow && activeTab == 0 && !mergeConbinationsStorageData.length">
         <div class="is-flex-grow-1"></div>
         <div class="is-flex is-flex-direction-row-reverse">
           <b-button :type="state_mainstorage_operability" class="width" rounded size="is-small"
-            @click="showStorageSettingsModal">{{ $t('Merge Storages') }}
+                    @click="$EventBus.$emit('casaUI:openInStorageManager');">{{ $t('Merge Storages') }}
           </b-button>
           <cToolTip isBlock></cToolTip>
         </div>
@@ -168,8 +168,8 @@ import smoothReflow from 'vue-smooth-reflow'
 import delay from 'lodash/delay';
 import max from 'lodash/max';
 import orderBy from 'lodash/orderBy';
-import { ValidationObserver, ValidationProvider } from "vee-validate";
-import { mixin } from '../../mixins/mixin';
+import {ValidationObserver, ValidationProvider} from "vee-validate";
+import {mixin} from '../../mixins/mixin';
 import DriveItem from './DriveItem.vue'
 import StorageItem from './StorageItem.vue'
 import Popper from 'vue-popperjs';
@@ -313,7 +313,7 @@ export default {
 
       try {
         // get storage list info
-        const storageRes = await this.$api.storage.list({ system: "show" }).then(v => v.data.data)
+        const storageRes = await this.$api.storage.list({system: "show"}).then(v => v.data.data)
         let storageArray = []
         let mergeConbinations = []
         let testMergeMiss = mergeStorageList
@@ -453,42 +453,6 @@ export default {
       this.createStorageName = "Storage" + nextMaxNum
     },
 
-    // show storage settings modal
-    async showStorageSettingsModal() {
-      // this.$messageBus('storagemanager_mergestorage');
-      this.$EventBus.$emit('casaUI:openInStorageManager');
-      // TODO: the part is repetition
-      //  with APPs Installation Location requirement document
-      // 获取merge信息
-      // let mergeStorageList
-      // try {
-      //   mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => res.data.data[0]['source_volume_uuids'])
-      // } catch (e) {
-      //   mergeStorageList = []
-      //   console.log(e)
-      // }
-
-      // this.$buefy.modal.open({
-      //   parent: this,
-      //   component: MergeStorages,
-      //   hasModalCard: true,
-      //   trapFocus: true,
-      //   ariaModal: true,
-      //   canCancel: ['escape'],
-      //   onCancel: () => {
-      //     this.getDiskList()
-      //   },
-      //   events: {
-      //     close: () => {
-      //       this.getDiskList()
-      //     }
-      //   },
-      //   props: {
-      //     mergeStorageList
-      //   }
-      // })
-
-    },
     /**
      * @description: Validate form async
      * @param {Object} ref ref of component

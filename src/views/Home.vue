@@ -147,6 +147,11 @@ export default {
       sessionStorage.removeItem('fromWelcome')
     }
     this.$messageBus('global_visit')
+
+    this.$EventBus.$on('casaUI:openInStorageManager', () => {
+      this.showStorageSettingsModal();
+    });
+    
   },
   methods: {
 
