@@ -148,10 +148,10 @@ export default {
     }
     this.$messageBus('global_visit')
 
-    this.$EventBus.$on('casaUI:openInStorageManager', () => {
+    this.$EventBus.$on('casaUI:openStorageManager', () => {
       this.showStorageSettingsModal();
     });
-    
+
   },
   methods: {
 
@@ -336,6 +336,7 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener("resize", this.onResize);
+    this.$EventBus.$off('casaUI:openStorageManager');
   },
 
 }

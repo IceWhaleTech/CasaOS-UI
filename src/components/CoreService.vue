@@ -42,7 +42,6 @@ import Business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
 import DiskLearnMore from "@/components/Storage/DiskLearnMore.vue";
 // import DockerProgress from "@/components/Apps/progress.js";
 import last from "lodash/last";
-import StorageManagerPanel from "@/components/Storage/StorageManagerPanel.vue";
 
 export default {
   components: {SmartBlock, SyncBlock, noticeBlock, Swiper, SwiperSlide},
@@ -178,24 +177,14 @@ export default {
         })
       });
 
-      this.$EventBus.$on('casaUI:openStorageManager', () => {
-        this.$messageBus('widget_storagemanager');
-        this.$buefy.modal.open({
-          parent: this,
-          component: StorageManagerPanel,
-          hasModalCard: true,
-          customClass: 'storage-modal',
-          trapFocus: true,
-          canCancel: [],
-          scroll: "keep",
-          animation: "zoom-in",
-        })
-      });
+      // this.$EventBus.$on('casaUI:openStorageManager', () => {
+      //  this.showStorageSettingsModal();
+      // });
     },
     destroyUIEventBus() {
       this.$EventBus.$off('casaUI:openInFiles');
       this.$EventBus.$off('casaUI:openDiskLearnMore');
-      this.$EventBus.$off('casaUI:openStorageManager');
+      // this.$EventBus.$off('casaUI:openStorageManager');
     },
     triggerUIEventBus(event) {
       let eventJson = JSON.parse(event)
@@ -464,7 +453,44 @@ export default {
         operate: false,
       }
       this.addNotice(data, res.name)
-    }
+    },
+
+    // show storage settings modal
+    // async showStorageSettingsModal() {
+    //   this.$messageBus('storagemanager_mergestorage');
+    //
+    //   // TODO: the part is repetition
+    //   //  with APPs Installation Location requirement document
+    //   // 获取merge信息
+    //   let mergeStorageList
+    //   try {
+    //     mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => res.data.data[0]['source_volume_uuids'])
+    //   } catch (e) {
+    //     mergeStorageList = []
+    //     console.log(e)
+    //   }
+    //
+    //   this.$buefy.modal.open({
+    //     parent: this,
+    //     component: () => import('@/components/Storage/MergeStorages.vue'),
+    //     hasModalCard: true,
+    //     trapFocus: true,
+    //     ariaModal: true,
+    //     canCancel: ['escape'],
+    //     onCancel: () => {
+    //       this.$EventBus.$emit(events.REFRESH_DISKLIST);
+    //     },
+    //     events: {
+    //       close: () => {
+    //         this.$EventBus.$emit(events.REFRESH_DISKLIST);
+    //       }
+    //     },
+    //     props: {
+    //       mergeStorageList
+    //     }
+    //   })
+    //
+    // },
   },
   sockets: {
     'app_install': function (res) {
