@@ -150,7 +150,7 @@
         <div class="is-flex-grow-1"></div>
         <div class="is-flex is-flex-direction-row-reverse">
           <b-button :type="state_mainstorage_operability" class="width" rounded size="is-small"
-                    @click="$EventBus.$emit('casaUI:openInStorageManager');">{{ $t('Merge Storages') }}
+                    @click="$EventBus.$emit('casaUI:openStorageManager');">{{ $t('Merge Storages') }}
           </b-button>
           <cToolTip isBlock></cToolTip>
         </div>
@@ -250,13 +250,13 @@ export default {
   async created() {
     // get merge info
     // TODO how to invoke this states code
-    try {
-      let hasMergeState = await this.$api.local_storage.getMergerfsInfo().then(res => res.status
-      ).catch(err => err)
-      this.hasMergeState = hasMergeState == 200;
-    } catch (e) {
-      console.log(e)
-    }
+    // try {
+    //   let hasMergeState = await this.$api.local_storage.getMergerfsInfo().then(res => res.status
+    //   ).catch(err => err)
+    //   this.hasMergeState = hasMergeState == 200;
+    // } catch (e) {
+    //   console.log(e)
+    // }
 
   },
   mounted() {

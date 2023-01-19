@@ -341,5 +341,6 @@
   "Installation completed": "Installation completed",
   "Starting installation": "Starting installation",
   "New": "New",
-  "Check then update": "Check then update"
+  "Check then update": "Check then update",
+  "At least one extra hard drive is needed for this feature.": "At least one extra hard drive is needed for this feature."
 }
