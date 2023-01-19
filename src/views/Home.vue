@@ -85,6 +85,7 @@ import {mixin} from '../mixins/mixin';
 import events from '@/events/events';
 import {nanoid} from 'nanoid';
 
+
 const wallpaperConfig = "wallpaper"
 
 export default {
@@ -149,7 +150,7 @@ export default {
     this.$messageBus('global_visit')
 
     this.$EventBus.$on('casaUI:openStorageManager', () => {
-      this.showStorageSettingsModal();
+      this.showStorageManagerPanelModal();
     });
 
   },
@@ -297,40 +298,18 @@ export default {
     },
 
     // show storage settings modal
-    async showStorageSettingsModal() {
-      this.$messageBus('storagemanager_mergestorage');
-
-      // TODO: the part is repetition
-      //  with APPs Installation Location requirement document
-      // 获取merge信息
-      let mergeStorageList
-      try {
-        mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => res.data.data[0]['source_volume_uuids'])
-      } catch (e) {
-        mergeStorageList = []
-        console.log(e)
-      }
-
+    async showStorageManagerPanelModal() {
+      this.$messageBus('widget_storagemanager');
       this.$buefy.modal.open({
         parent: this,
-        component: () => import('@/components/Storage/MergeStorages.vue'),
+        component: () => import("@/components/Storage/StorageManagerPanel.vue"),
         hasModalCard: true,
+        customClass: 'storage-modal',
         trapFocus: true,
-        ariaModal: true,
-        canCancel: ['escape'],
-        onCancel: () => {
-          this.$EventBus.$emit(events.REFRESH_DISKLIST);
-        },
-        events: {
-          close: () => {
-            this.$EventBus.$emit(events.REFRESH_DISKLIST);
-          }
-        },
-        props: {
-          mergeStorageList
-        }
+        canCancel: [],
+        scroll: "keep",
+        animation: "zoom-in",
       })
-
     },
 
   },

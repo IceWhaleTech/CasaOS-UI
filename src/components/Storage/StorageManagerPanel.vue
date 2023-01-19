@@ -17,7 +17,7 @@
           <button class="delete" type="button" @click="$emit('close')"/>
         </div>
       </header>
-      <section :class="{ 'b-line': storageData.length > 0 }" class="pr-5 pl-5 mt-4 pb-2 mb-2">
+      <section :class="{ 'b-line': storageData.length > 0 && activeTab === 0}" class="pr-5 pl-5 mt-4 pb-2 mb-2">
         <!-- Storage and Disk List Start -->
         <div v-if="!creatIsShow" class="is-flex-grow-1 is-relative">
           <div v-if="activeTab == 0" class="create-container">
@@ -150,7 +150,7 @@
         <div class="is-flex-grow-1"></div>
         <div class="is-flex is-flex-direction-row-reverse">
           <b-button :type="state_mainstorage_operability" class="width" rounded size="is-small"
-                    @click="$EventBus.$emit('casaUI:openStorageManager');">{{ $t('Merge Storages') }}
+                    @click="showStorageSettingsModal">{{ $t('Merge Storages') }}
           </b-button>
           <cToolTip isBlock></cToolTip>
         </div>
@@ -245,19 +245,6 @@ export default {
         }
       }
     }
-  },
-
-  async created() {
-    // get merge info
-    // TODO how to invoke this states code
-    // try {
-    //   let hasMergeState = await this.$api.local_storage.getMergerfsInfo().then(res => res.status
-    //   ).catch(err => err)
-    //   this.hasMergeState = hasMergeState == 200;
-    // } catch (e) {
-    //   console.log(e)
-    // }
-
   },
   mounted() {
     //Smooth
@@ -451,6 +438,42 @@ export default {
       })
       let nextMaxNum = max(diskNumArray) + 1;
       this.createStorageName = "Storage" + nextMaxNum
+    },
+
+    // show storage settings modal
+    async showStorageSettingsModal() {
+      this.$messageBus('storagemanager_mergestorage');
+      // TODO: the part is repetition
+      //  with APPs Installation Location requirement document
+      // 获取merge信息
+      let mergeStorageList
+      try {
+        mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => res.data.data[0]['source_volume_uuids'])
+      } catch (e) {
+        mergeStorageList = []
+        console.log(e)
+      }
+
+      this.$buefy.modal.open({
+        parent: this,
+        component: () => import('@/components/Storage/MergeStorages.vue'),
+        hasModalCard: true,
+        trapFocus: true,
+        ariaModal: true,
+        canCancel: ['escape'],
+        onCancel: () => {
+          this.$EventBus.$emit(events.REFRESH_DISKLIST);
+        },
+        events: {
+          close: () => {
+            this.$EventBus.$emit(events.REFRESH_DISKLIST);
+          }
+        },
+        props: {
+          mergeStorageList
+        }
+      })
+
     },
 
     /**
