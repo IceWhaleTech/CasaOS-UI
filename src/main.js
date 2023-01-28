@@ -1,6 +1,6 @@
 /*
- * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
- * @LastEditTime: 2022/12/7 上午9:56
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-01-28 11:09:45
  * @FilePath: /CasaOS-UI/src/main.js
  * @Description:
  *
@@ -26,7 +26,6 @@ import messageBus from '@/events/index.js'
 import '@/assets/scss/app.scss'
 import 'vue-tour/dist/vue-tour.css'
 import VAnimateCss from 'v-animate-css';
-
 const io = require("socket.io-client");
 
 const isDev = process.env.NODE_ENV === 'dev';
@@ -47,7 +46,7 @@ const socket = io(wsURL, {
 
 Vue.use(Buefy)
 Vue.use(VueFullscreen)
-Vue.use(VAnimateCss)
+Vue.use(VAnimateCss, { animateCSSPath: '/css/animate.min.css' });
 Vue.use(Vue2TouchEvents)
 Vue.use(VueTour)
 Vue.use(VueSocketIOExt, socket);

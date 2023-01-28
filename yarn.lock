@@ -10027,10 +10027,10 @@ uuid@^8.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
-v-animate-css@^0.0.5:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/v-animate-css/-/v-animate-css-0.0.5.tgz#ff5895abd450c7710baa13bbb962b00920f87fef"
-  integrity sha512-FML26yVYX3hCTWTKioTNAIXjaWIFWa1mSczb92cLkMYI9QI6uRacKx7QnBNB17IOFLFEv8mc14aawe2In/ba1w==
+v-animate-css@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/v-animate-css/-/v-animate-css-0.0.6.tgz#0d52ffd2e330c551f2ba44031cfc802405bfc638"
+  integrity sha512-xzuWuavsB1LcaUy418QjuwoJBNKqe8Pp8Z/WdDjsVyy393DV+xL9liquCOwOh6qe9duHJrdiQFXsJFKnpKBjVA==
   dependencies:
     scrollmonitor "^1.2.4"
 
