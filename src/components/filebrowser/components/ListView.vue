@@ -1,20 +1,11 @@
 <!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/1/13 下午2:59
-  * @FilePath: /CasaOS-UI/src/components/filebrowser/components/ListView.vue
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-01-28 17:57:01
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/components/ListView.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
   -->
-
-<!--
- * @Author: JerryK
- * @Date: 2022-02-21 11:06:26
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-07 21:41:06
- * @Description: 
- * @FilePath: \CasaOS-UI\src\components\filebrowser\components\ListView.vue
--->
 <template>
 	<div class="node-list fliebroswer">
 		<!-- Table header Start -->
@@ -36,27 +27,27 @@
 		<!-- Table body Start -->
 		<div class="tbody">
 			<div id="select-container" class="scroll-container scrollbars-light is-relative "
-			     @contextmenu.prevent="openContextMenu" @mousedown.stop="onDragSelectionStart">
+				@contextmenu.prevent="openContextMenu" @mousedown.stop="onDragSelectionStart">
 				<!-- Empty Content Slot Start -->
 				<div v-if="listData.length == 0 && !isLoading"
-				     class="is-flex is-align-items-center is-justify-content-center empty-container">
+					class="is-flex is-align-items-center is-justify-content-center empty-container">
 					<slot></slot>
 				</div>
 				<!-- Empty Content Slot End -->
 				<div class="select-parent">
 					<div class="card-container">
-						<div v-for="(item,index) in listData" :key="'list-'+index+item.name" :data-rel="index"
-						     class="tr-wrapper rdata">
-							<div :class="{'isCutting':getCardState(item),'active':item.isSelected}" class="tr is-unselectable"
-							     @click="onCardClick($event,item,index)" @contextmenu.prevent="openContextMenu($event,item)"
-							     @mousedown.stop="">
+						<div v-for="(item, index) in listData" :key="'list-' + index + item.name" :data-rel="index"
+							class="tr-wrapper rdata">
+							<div :class="{ 'isCutting': getCardState(item), 'active': item.isSelected }"
+								class="tr is-unselectable" @click="onCardClick($event, item, index)"
+								@contextmenu.prevent="openContextMenu($event, item)" @mousedown.stop="">
 
 								<div class="td">
 									<!-- CheckBox Start -->
-									<b-field :class="{'show':isMobile || item.isSelected}"
-									         class="checkbox-container is-flex  mr-0 ml-2 mb-0">
+									<b-field :class="{ 'show': isMobile || item.isSelected }"
+										class="checkbox-container is-flex  mr-0 ml-2 mb-0">
 										<b-checkbox v-model="item.isSelected" size="is-small"
-										            @input="handleCheckboxInput($event,index)"></b-checkbox>
+											@input="handleCheckboxInput($event, index)"></b-checkbox>
 									</b-field>
 									<!-- CheckBox End -->
 								</div>
@@ -66,14 +57,15 @@
 									</div>
 									<p class="text ">
 										{{ item.name }}
-										<span v-if="isMobile"
-										      class="is-size-7 is-block has-text-grey-light">{{ item.date | dateFmt }}</span>
+										<span v-if="isMobile" class="is-size-7 is-block has-text-grey-light">{{
+											item.date | dateFmt
+										}}</span>
 									</p>
 									<div class="action-wrapper">
 										<!-- Action Button Start -->
-										<action-button :class="{'show':isMobile}" :cols="cols" :index="index" :item="item"
-										               @reload="$emit('reload')"
-										               @showDetailModal="$emit('showDetailModal', item)"></action-button>
+										<action-button :class="{ 'show': isMobile }" :cols="cols" :index="index"
+											:item="item" @reload="$emit('reload')"
+											@showDetailModal="$emit('showDetailModal', item)"></action-button>
 										<!-- Action Button End -->
 									</div>
 								</div>
@@ -106,7 +98,7 @@
 </template>
 
 <script>
-import {mixin} from '@/mixins/mixin';
+import { mixin } from '@/mixins/mixin';
 import ListViewMixin from '@/mixins/ListViewMixin'
 import ActionButton from './ActionButton.vue';
 import ContextMenu from './ContextMenu.vue';

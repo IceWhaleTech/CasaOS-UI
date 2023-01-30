@@ -1,6 +1,6 @@
 <!--
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-01-16 16:22:46
+ * @LastEditTime: 2023-01-28 17:55:07
  * @FilePath: /CasaOS-UI/src/widgets/Network.vue
   * @Description:
   *
@@ -24,7 +24,8 @@
               <b-button :icon-right="active ? 'chevron-up' : 'chevron-down'" :label="initNetwork[networkId].name"
                 type="is-primary" />
             </template>
-            <b-dropdown-item v-for="(item, index) in initNetwork" :key="'net' + index" :value="index" aria-role="listitem">
+            <b-dropdown-item v-for="(item, index) in initNetwork" :key="'net' + index" :value="index"
+              aria-role="listitem">
               {{ item.name }}
             </b-dropdown-item>
           </b-dropdown>
@@ -165,6 +166,7 @@ export default {
 
     // select the network last time
     localStorage.getItem('networkId') && (this.networkId = localStorage.getItem('networkId'))
+
   },
 
   watch: {
@@ -216,7 +218,7 @@ export default {
         this.networks[index][1].cacheData = el.bytesRecv;
         this.networks[index][1].cacheTime = el.time;
       });
-
+      this.networkId = this.networkId > this.networks.length - 1 ? 0 : this.networkId
       this.$refs.chart.updateSeries(this.networks[this.networkId])
       const upSpeed = this.networks[this.networkId][0].data[this.networks[this.networkId][0].data.length - 1]
       const downSpeed = this.networks[this.networkId][1].data[this.networks[this.networkId][1].data.length - 1]
