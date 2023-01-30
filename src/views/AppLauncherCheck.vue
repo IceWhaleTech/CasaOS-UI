@@ -1,30 +1,29 @@
 <!--
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-01-10 12:35:37
- * @FilePath: \CasaOS-UI-0.4.1\src\views\AppLauncherCheck.vue
+ * @LastEditTime: 2023-01-30 15:06:13
+ * @FilePath: /CasaOS-UI/src/views/AppLauncherCheck.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
   -->
 <template>
   <div v-if="isCheckFailed"
-       class="is-flex is-flex-direction-column is-align-items-center is-justify-content-center is-fullheight">
-    <b-image :key="appDetailData.icon" :src="appDetailData.icon"
-             :src-fallback="require('@/assets/img/app/default.png')" class="is-64x64 icon-shadow"
-             webp-fallback=".jpg"></b-image>
+    class="is-flex is-flex-direction-column is-align-items-center is-justify-content-center is-fullheight">
+    <b-image :key="appDetailData.icon" :src="appDetailData.icon" :src-fallback="require('@/assets/img/app/default.png')"
+      class="is-64x64 icon-shadow" webp-fallback=".jpg"></b-image>
     <h2 class="has-text-emphasis-01 has-text-white mt-2">{{ appDetailData.name }}</h2>
     <h1 v-if="status === 'pending'" class="has-text-sub-03 has-text-white mt-6">{{ $t('Preparing for launch') }}
     </h1>
     <h1 v-else class="has-text-sub-03 has-text-white mt-6">{{ $t('APP may not be available') }}</h1>
     <b-image v-if="status === 'pending'" :src="require('@/assets/img/waiting.svg')" alt="pending"
-             class="is-48x48 mt-6"/>
+      class="is-48x48 mt-6" />
     <span v-else class="has-text-full-03 has-text-grey-600 mt-6">{{
-        $t('Please')
-      }}
-			<a @click="openThirdApp(appDetailData);">{{ $t('Click here') }}
-			</a> {{ $t('to open the app. If it does not work, please restart or try again later.') }}
-		</span>
-    <img :src="require('@/assets/img/logo/logo.svg')" alt="" class="is-absolute position"/>
+      $t('Please')
+    }}
+      <a @click="openThirdApp(appDetailData);">{{ $t('Click here') }}
+      </a> {{ $t('to open the app. If it does not work, please restart or try again later.') }}
+    </span>
+    <img :src="require('@/assets/img/logo/logo.svg')" alt="" class="is-absolute position" />
   </div>
 </template>
 
@@ -42,42 +41,72 @@ export default {
       },
       status: "pending",
       timer: null,
-      isCheckFailed: false
+      isCheckFailed: false,
+      checkCounts: 60,
+      counter: 0
     }
   },
 
-  created() {
+  async created() {
     this.appDetailData = JSON.parse(this.$route.query.appDetailData)
-    let counter = 0
-    this.timer && clearInterval(this.timer)
-    this.timer = setInterval((async () => {
-      counter += 1
-      let isOk = await this.$api.container.containerLauncherCheck(this.appDetailData.id).then((res) => {
-        return res.status === 200
-      }).catch(async () => {
-        if (counter === 1) {
-          await this.$api.container.updateState(this.appDetailData.id, "start").catch((err) => {
-            this.$buefy.toast.open({
-              message: err.response.data.data || err.response.data.message,
-              type: 'is-danger',
-              position: 'is-top',
-              duration: 5000
-            })
-          })
-        }
-        return false
-      });
-      if (!isOk) {
+    const appState = await this.getContainerState()
+    if (appState.state == "exited") {
+      const startRes = await this.startContainer()
+      if (startRes != "running") {
         this.isCheckFailed = true
+        this.status = "reject"
+        return
       }
+    }
+    this.timer && clearInterval(this.timer)
+    this.timer = setInterval(this.check, 1000)
+    this.check()
+  },
+
+  methods: {
+    // Get container running state
+    async getContainerState() {
+      try {
+        let res = await this.$api.container.getState(this.appDetailData.id)
+        return res.data.data
+      } catch (error) {
+        return {
+          state: "error"
+        }
+      }
+    },
+    // Start container
+    async startContainer() {
+      try {
+        let res = await this.$api.container.updateState(this.appDetailData.id, "start")
+        return res.data.data
+      } catch (error) {
+        return "error"
+      }
+    },
+    // Check container health
+    async healthCheck() {
+      try {
+        let res = await this.$api.container.containerLauncherCheck(this.appDetailData.id)
+        return res.status === 200
+      } catch (error) {
+        return false
+      }
+    },
+
+    async check() {
+      this.counter += 1
+      const isOk = await this.healthCheck()
       if (isOk) {
         clearInterval(this.timer)
         this.openThirdApp(this.appDetailData)
-      } else if (counter > 10) {
+      } else if (this.counter >= this.checkCounts) {
         this.status = "reject"
         clearInterval(this.timer)
+      } else {
+        this.isCheckFailed = true
       }
-    })(), 1000)
+    }
   },
 }
 </script>

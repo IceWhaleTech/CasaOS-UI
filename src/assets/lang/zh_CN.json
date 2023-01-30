@@ -340,5 +340,8 @@
   "Installing app": "正在安装 app",
   "Installation completed": "安装完成",
   "Starting installation": "开始安装",
-  "New": "New"
+  "New": "New",
+  "APP may not be available": "App 可能不可用",
+  "Please": "请",
+  "": ""
 }
