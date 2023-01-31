@@ -40,7 +40,7 @@ jobs:
         id: get_version
         # run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
         # run: echo "VERSION=$(git describe --abbrev=0 --tags | awk -F- '{print $1}')" >> $GITHUB_ENV
-        run: echo "VERSION=$(git describe --tags $(git rev-list --tags --max-count=1) )" >> $GITHUB_ENV
+        run: echo "VERSION=$(git describe --tags $(git rev-list --tags --max-count=1) | awk -F- '{print $1}' )" >> $GITHUB_ENV
 
       - name: show version
         id: show_version
