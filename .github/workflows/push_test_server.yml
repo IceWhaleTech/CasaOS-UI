@@ -33,26 +33,28 @@ jobs:
       - name: git global
         run: sudo git config --global --add safe.directory '*'
         
+      - name: change branch
+        run: git checkout -b main
+        
       - name: Fetch all tags
         run: sudo git fetch --force --tags
         
       - name: Get version
         id: get_version
-        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-        # run: echo "VERSION=$(git describe --abbrev=0 --tags | awk -F- '{print $1}')" >> $GITHUB_ENV
+        # run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+        run: echo "VERSION=$(git describe --abbrev=0 --tags | awk -F- '{print $1}')" >> $GITHUB_ENV
 
       - name: show version
         id: show_version
-        # run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-        # run: echo ${{ env.VERSION }}
-        run: echo ${{ steps.get_version.outputs.VERSION }}
+        run: echo ${{ env.VERSION }}
+        # run: echo ${{ steps.get_version.outputs.VERSION }}
    
           
       - run: yarn install
       - run: yarn build
       - run: |
           cp ./build/sysroot/var/lib/casaos/www/img/wallpaper0*.jpg ./build/sysroot/var/lib/casaos/www/ui/img/
-          tar -zcvf linux-all-casaos-${{ steps.get_version.outputs.VERSION }}.tar.gz build
+          tar -zcvf linux-all-casaos-${{ env.VERSION }}.tar.gz build
           
       - name: install sshpass
         run: sudo apt install sshpass --yes
