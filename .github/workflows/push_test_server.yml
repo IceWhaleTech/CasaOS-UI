@@ -27,7 +27,7 @@ jobs:
           path: node_modules
           key: ${{runner.OS}}-${{hashFiles('**/yarn.lock')}}
           
-      - name: isntall git
+      - name: install git
         run: sudo apt install --yes git
 
       - name: git global
@@ -39,7 +39,7 @@ jobs:
       - name: Get version
         id: get_version
         # run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-        run: echo "VERSION=$(git describe --abbrev=0 --tags | awk -F- '{print $1}')" >> $GITHUB_ENV
+        run: echo "VERSION=$(git describe --abbrev=0 --tags --always | awk -F- '{print $1}')" >> $GITHUB_ENV
 
       - name: show version
         id: show_version
