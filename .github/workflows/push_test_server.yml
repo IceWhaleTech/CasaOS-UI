@@ -39,7 +39,7 @@ jobs:
       - name: Get version
         id: get_version
         # run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-        run: echo "VERSION=$(git describe --tags| awk -F- '{print $1}')" >> $GITHUB_ENV
+        run: echo "VERSION=$(git describe --abbrev=0 --tags)" >> $GITHUB_ENV
 
       - name: show version
         id: show_version
@@ -61,3 +61,6 @@ jobs:
         run: |
           sshpass -p "${{ secrets.ssh_password }}" scp -r -o StrictHostKeyChecking=no -P ${{ secrets.ssh_port }} ./*.gz root@${{ secrets.ssh_ip }}:/var/www/download
           echo "ping success"
+      - name: send message
+        run: |
+          curl -X POST -H "Content-Type: application/json" -d '{"msg_type":"text","content":{"text":"CasaOS-UI测试环境已更新"}}'  https://open.feishu.cn/open-apis/bot/v2/hook/eb8f45c7-9636-4b64-84f2-a66d9aeb9d30
