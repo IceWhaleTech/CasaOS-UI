@@ -33,16 +33,14 @@ jobs:
       - name: git global
         run: sudo git config --global --add safe.directory '*'
         
-      - name: change branch
-        run: git checkout -b main
-        
       - name: Fetch all tags
         run: sudo git fetch --force --tags
         
       - name: Get version
         id: get_version
         # run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-        run: echo "VERSION=$(git describe --abbrev=0 --tags | awk -F- '{print $1}')" >> $GITHUB_ENV
+        # run: echo "VERSION=$(git describe --abbrev=0 --tags | awk -F- '{print $1}')" >> $GITHUB_ENV
+        run: echo "VERSION=$(git describe --tags $(git rev-list --tags --max-count=1)" >> $GITHUB_ENV
 
       - name: show version
         id: show_version
