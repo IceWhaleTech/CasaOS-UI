@@ -39,7 +39,7 @@ jobs:
       - name: Get version
         id: get_version
         # run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-        run: echo "VERSION=$(git describe --abbrev=0 --tags)" >> $GITHUB_ENV
+        run: echo "VERSION=$(git describe)" >> $GITHUB_ENV
 
       - name: show version
         id: show_version
