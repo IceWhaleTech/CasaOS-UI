@@ -39,7 +39,7 @@ jobs:
       - name: Get version
         id: get_version
         # run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-        run: echo "VERSION=$(git describe --abbrev=0 --tags| awk -F- '{print $1}')" >> $GITHUB_ENV
+        run: echo "VERSION=$(git describe --tags| awk -F- '{print $1}')" >> $GITHUB_ENV
 
       - name: show version
         id: show_version
@@ -52,6 +52,7 @@ jobs:
       - run: |
           cp ./build/sysroot/var/lib/casaos/www/img/wallpaper0*.jpg ./build/sysroot/var/lib/casaos/www/ui/img/
           tar -zcvf linux-all-casaos-${{ env.VERSION }}.tar.gz build
+          
       - name: install sshpass
         run: sudo apt install sshpass --yes
 
