@@ -1,16 +1,45 @@
+/*!
+ *  @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ *  @LastEditTime: 2023/2/1 下午4:35
+ *  @FilePath: /CasaOS-UI/src/assets/scss/common/_size.scss
+ *  @Description:
+ *
+ *  Copyright (c) 2023 by IceWhale, All Rights Reserved.
+ */
+
 .is-size-16px {
-    font-size: 1rem !important;
+  font-size: 1rem !important;
 }
 
 .is-size-14px {
-    font-size: 0.875rem !important;
+  font-size: 0.875rem !important;
 }
 
 .is-size-12px {
-    font-size: 0.75rem !important;
+  font-size: 0.75rem !important;
 }
 
 
 .is-size-7 {
-    word-break: keep-all;
+  word-break: keep-all;
+}
+
+.is-20x20 {
+  width: 20px;
+  height: 20px;
+}
+
+.is-24x24 {
+  width: 24px;
+  height: 24px;
+}
+
+.is-32x32 {
+  width: 32px;
+  height: 32px;
+}
+
+.is-64x64 {
+  width: 64px;
+  height: 64px;
 }

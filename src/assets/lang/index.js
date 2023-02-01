@@ -21,7 +21,7 @@ import pl_pl from './pl_PL.json' // Polish: Polski
 import pt_br from './pt_BR.json' // Portuguese: Português
 import ru_ru from './ru_RU.json' // Russian: Русский
 import es_es from './es_ES.json' // Spanish: Español
-import sv_se from './sv_SE.json' // Swedish: Svenska
+import sv_se from './sv_SE.json' // Swedish: Svenska :瑞典语
 import nb_no from './nb_NO.json' // Norwegian: Norsk
 import uk_ua from './uk_UA.json' // Ukrainian: Українська
 

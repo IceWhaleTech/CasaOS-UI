@@ -1,7 +1,7 @@
 <!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2022/12/13 下午4:43
-  * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
+ * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ * @LastEditTime: 2023-02-01 15:40:41
+ * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -12,7 +12,7 @@
 
 		<!-- Action Button Start -->
 		<div v-if="item.type !== 'system' && isCasa && !isUninstalling" class="action-btn">
-			<b-dropdown ref="dro" :mobile-modal="false" :triggers="['contextmenu','click']" animation="fade1"
+			<b-dropdown ref="dro" :mobile-modal="false" :triggers="['contextmenu', 'click']" animation="fade1"
 			            append-to-body aria-role="list" class="app-card-drop" position="is-bottom-left"
 			            @active-change="setDropState">
 				<template #trigger>
@@ -24,38 +24,36 @@
 				<b-dropdown-item :focusable="false" aria-role="menu-item" custom>
 					<b-button expanded tag="a" type="is-text" @click="openApp(item)">{{ $t('Open') }}</b-button>
 					<b-button expanded type="is-text" @click="configApp">{{ $t('Setting') }}</b-button>
-					<b-button v-if="item.appstore_id != 0 && item.appstore_id != undefined" :loading="isCloning" expanded
-					          type="is-text"
-					          @click="qucikInstall(item.appstore_id)">{{
+					<b-button v-if="item.appstore_id != 0 && item.appstore_id != undefined" :loading="isCloning"
+					          expanded type="is-text" @click="quickInstall(item.appstore_id)">{{
 							$t('Clone')
 						}}
 					</b-button>
 
-					<b-button expanded type="is-text" @click="isCheckThenUpdate = true">{{
+					<b-button expanded type="is-text" @click="checkAppVersion">{{
 							$t('Check then update')
 						}}
-						<b-loading v-model="isCheckThenUpdate" :is-full-page="false">
-							<img :src="require('@/assets/img/loading/waiting.svg')"
-							     alt="pending" class="ml-4 is-24x24"/>
+						<b-loading :active="isCheckThenUpdate || isUpdating" :is-full-page="false">
+							<img :src="require('@/assets/img/loading/waiting.svg')" alt="pending"
+							     class="ml-4 is-24x24"/>
 						</b-loading>
 					</b-button>
 
 
-					<b-button v-if="item.appstore_id != undefined" class="mb-1 has-text-red" expanded
-					          type="is-text"
+					<b-button v-if="item.appstore_id != undefined" class="mb-1 has-text-red" expanded type="is-text"
 					          @click="uninstallConfirm">
 						{{ $t('Uninstall') }}
 						<b-loading v-model="isUninstalling" :is-full-page="false">
-							<img :src="require('@/assets/img/loading/waiting.svg')"
-							     alt="pending" class="ml-4 is-24x24"/>
+							<img :src="require('@/assets/img/loading/waiting.svg')" alt="pending"
+							     class="ml-4 is-24x24"/>
 						</b-loading>
 					</b-button>
 
 					<b-button v-else class="mb-1" expanded type="is-text" @click="uninstallApp(true)">
 						{{ $t('Delete') }}
 						<b-loading v-model="isUninstalling" :is-full-page="false">
-							<img :src="require('@/assets/img/loading/waiting.svg')"
-							     alt="pending" class="ml-4 is-24x24"/>
+							<img :src="require('@/assets/img/loading/waiting.svg')" alt="pending"
+							     class="ml-4 is-24x24"/>
 						</b-loading>
 					</b-button>
 
@@ -67,8 +65,8 @@
 								</b-button>
 							</div>
 							<div class="column is-flex is-justify-content-center is-align-items-center">
-								<b-button :class="item.state" :loading="isStarting" class="has-text-red" expanded type="is-text"
-								          @click="toggle(item)">
+								<b-button :class="item.state" :loading="isStarting" class="has-text-red" expanded
+								          type="is-text" @click="toggle(item)">
 									<b-icon custom-size="mdi-18px" icon="power-standby"></b-icon>
 								</b-button>
 							</div>
@@ -82,26 +80,30 @@
 		<div class="blur-background"></div>
 		<div class="cards-content">
 			<!-- Card Content Start -->
-			<b-tooltip :animated="true" :label="tooltipLabel" :triggers="tooltipTriger" animation="fade1" type="is-white">
+			<b-tooltip :animated="true" :label="tooltipLabel" :triggers="tooltipTriger" animation="fade1"
+			           type="is-white">
 
-				<div class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-3 pb-3 img-c">
-					<div :class="{loadingLayer:isLoading}" class="is-flex is-justify-content-center" @click="openApp(item)">
-						<b-image :class="item.state | dotClass" :src="item.icon"
-						         :src-fallback="require('@/assets/img/app/default.png')"
-						         class="is-64x64" webp-fallback=".jpg"></b-image>
+				<div
+						class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-5 pb-3 img-c">
+					<div class="is-flex is-justify-content-center">
+						<b-image :class="item.state, isLoading | dotClass" :src="item.icon"
+						         :src-fallback="require('@/assets/img/app/default.png')" class="is-64x64"
+						         webp-fallback=".jpg" @click.native="openApp(item)"></b-image>
 						<!-- Unstable-->
 						<cTooltip v-if="newAppIds.includes(item.id)" class="__position" content="New"></cTooltip>
 
 						<!-- Loading Bar Start -->
-						<b-loading v-model="isLoading" :can-cancel="false" :is-full-page="false">
-							<img :src="require('@/assets/img/loading/waiting-white.svg')"
-							     alt="loading" class="ml-4 is-24x24 "/>
+						<b-loading v-model="isLoading" :can-cancel="false" :is-full-page="false"
+						           class="has-background-gray-800 op80 is-64x64"
+						           style="top: auto;bottom: auto; right: auto; left: auto; border-radius: 11.5px">
+							<img :src="require('@/assets/img/loading/waiting-white.svg')" alt="loading"
+							     class="is-20x20"/>
 						</b-loading>
 						<!-- Loading Bar End -->
 					</div>
 
 					<p class="mt-3 one-line">
-						<a class="one-line" @click="openApp(item)">
+						<a class="one-line" style="cursor:default">
 							{{ item.name }}
 						</a>
 					</p>
@@ -124,6 +126,7 @@ import cTooltip from '@/components/basicComponents/tooltip/tooltip.vue';
 import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
 import business_OpenThirdApp from "@/mixins/app/Business_OpenThirdApp";
 import isNull from "lodash/isNull";
+// import {patch} from "@/service/service.js";
 
 export default {
 	name: "app-card",
@@ -139,10 +142,11 @@ export default {
 			isUninstalling: false,
 			isCloning: false,
 			isCheckThenUpdate: false,
+			isUpdating: false,
 			isRestarting: false,
 			isStarting: false,
-			isStoping: false,
-			isSaving: false,
+			// isStoping: false,
+			// isSaving: false,
 		}
 	},
 	props: {
@@ -400,7 +404,7 @@ export default {
 			})
 		},
 
-		qucikInstall(id) {
+		quickInstall(id) {
 			this.isCloning = true;
 			let data = this.$api.apps.getAppInfo(id).then(resp => {
 				if (resp.data.success == 200) {
@@ -449,6 +453,29 @@ export default {
 					type: 'is-danger'
 				})
 			})
+		},
+
+		checkAppVersion() {
+			this.isCheckThenUpdate = true;
+			// patch(`/v2/app_management/container/${this.item.id}`).then(resp => {
+			this.$api.apps.checkAppVersion(this.item.id).then(resp => {
+				console.log(resp)
+				if (resp.status === 200) {
+					this.isUpdating = true;
+				} else {
+					this.$buefy.toast.open({
+						message: this.$t(`Currently is the latest version!`),
+						type: 'is-warning'
+					})
+				}
+			}).catch(() => {
+				this.$buefy.toast.open({
+					message: this.$t(`Unable to update at the moment!`),
+					type: 'is-danger'
+				})
+			}).finally(() => {
+				this.isCheckThenUpdate = false;
+			})
 		}
 
 	},
@@ -464,7 +491,14 @@ export default {
 		 * @param {String} state
 		 * @return {String}
 		 */
-		dotClass(state) {
+		dotClass(state, loadState) {
+			// For updating
+			if (loadState) {
+				if (state === "0" || state === "running") {
+					return 'disabled start'
+				}
+				return 'disabled stop'
+			}
 			if (state === "0") {
 				return "start"
 			} else {
@@ -473,6 +507,25 @@ export default {
 
 		},
 	},
+
+	sockets: {
+		/**
+		 * @description: Update App Status
+		 * @param {Object} data
+		 * @return {void}
+		 */
+		'app:update-begin'(data) {
+			console.log(data, 123)
+		},
+		/**
+		 * @description: Update App Version
+		 * @param {Object} data
+		 * @return {void}
+		 */
+		'app:update-end'(data) {
+			console.log(data, 321)
+		}
+	}
 
 }
 </script>
@@ -596,7 +649,8 @@ export default {
 
 .b-tooltip {
 	&.is-top .tooltip-content {
-		bottom: calc(100%);
+		bottom: auto;
+		top: -15%;
 	}
 
 	.tooltip-content {
@@ -619,10 +673,6 @@ export default {
 
 	}
 
-}
-
-.loadingLayer::before {
-	background-color: rgba(0, 0, 0, 0.5);
 }
 
 .__position {
