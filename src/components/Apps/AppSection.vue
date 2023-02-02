@@ -376,6 +376,35 @@ export default {
 		app_uninstall() {
 			this.getList();
 		},
+		/**
+		 * @description: Update App Version
+		 * @param {Object} data
+		 * @return {void}
+		 */
+		'app:update-end'(data) {
+			// business :: Tagging of new app / scrollIntoView
+			this.addIdToSessionStorage(data.Properties['cid'])
+
+			this.$buefy.toast.open({
+				message: this.$t(`{name} has been updated to the latest version!`, {
+					name: data.Properties.name
+				}),
+				type: 'is-success'
+			})
+			this.getList().then(() => {
+				this.scrollToNewApp();
+			});
+		},
+		'app:update-error'(data) {
+			if (data.Properties.cid === this.item.id) {
+				this.isUpdating = false;
+				this.$buefy.toast.open({
+					message: this.$t(data),
+					type: 'is-danger'
+				})
+			}
+		},
+
 	}
 }
 </script>

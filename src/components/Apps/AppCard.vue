@@ -90,7 +90,7 @@
 						         :src-fallback="require('@/assets/img/app/default.png')" class="is-64x64"
 						         webp-fallback=".jpg" @click.native="openApp(item)"></b-image>
 						<!-- Unstable-->
-						<cTooltip v-if="newAppIds.includes(item.id)" class="__position" content="New"></cTooltip>
+						<cTooltip v-if="newAppIds.includes(item.id)" class="__position" content="NEW"></cTooltip>
 
 						<!-- Loading Bar Start -->
 						<b-loading v-model="isLoading" :can-cancel="false" :is-full-page="false"
@@ -166,31 +166,14 @@ export default {
 					return this.$t('Open')
 				} else {
 					console.log(this.item.state)
-					switch (this.item.state) {
-						case 'running':
-							return this.$t('Open')
-						case 'stopped':
-							return this.$t('Stopped')
-						case 'uninstalling':
-							return this.$t('Uninstalling')
-						case 'installing':
-							return this.$t('Installing')
-						case 'updating':
-							return this.$t('Updating')
-						case 'cloning':
-							return this.$t('Cloning')
-						case 'checking':
-							return this.$t('Checking')
-						case 'restarting':
-							return this.$t('Restarting')
-						case 'starting':
-							return this.$t('Starting')
-						case 'stopping':
-							return this.$t('Stopping')
-						case 'saving':
-							return this.$t('Saving')
-						default:
-							return this.$t('')
+					if (this.isUpdating) {
+						return this.$t('Updating')
+					} else if (this.isUninstalling) {
+						return this.$t('Uninstalling')
+					} else if (this.isCloning) {
+						return this.$t('Cloning')
+					} else if (this.item.state === 'running') {
+						return this.$t('Open')
 					}
 				}
 			}
@@ -214,7 +197,7 @@ export default {
 			}
 		},
 		isLoading() {
-			return this.isUninstalling || this.isCheckThenUpdate // || this.isRestarting || this.isStarting || this.isStoping || this.isSaving
+			return this.isUninstalling || this.isUpdating // || this.isRestarting || this.isStarting || this.isStoping || this.isSaving
 		},
 	},
 	methods: {
@@ -458,13 +441,14 @@ export default {
 		checkAppVersion() {
 			this.isCheckThenUpdate = true;
 			// patch(`/v2/app_management/container/${this.item.id}`).then(resp => {
-			this.$api.apps.checkAppVersion(this.item.id).then(resp => {
-				console.log(resp)
+			const params = `${this.item.id}?name=${this.item.name}&pull=true&cid=${this.item.id}`
+
+			this.$api.apps.checkAppVersion(params).then(resp => {
 				if (resp.status === 200) {
 					this.isUpdating = true;
 				} else {
 					this.$buefy.toast.open({
-						message: this.$t(`Currently is the latest version!`),
+						message: this.$t(`Unable to update at the moment!`),
 						type: 'is-warning'
 					})
 				}
@@ -515,16 +499,10 @@ export default {
 		 * @return {void}
 		 */
 		'app:update-begin'(data) {
-			console.log(data, 123)
+			// if (data.Properties.cid === this.item.id) {
+			// 	this.loadState = true;
+			// }
 		},
-		/**
-		 * @description: Update App Version
-		 * @param {Object} data
-		 * @return {void}
-		 */
-		'app:update-end'(data) {
-			console.log(data, 321)
-		}
 	}
 
 }
@@ -677,8 +655,9 @@ export default {
 
 .__position {
 	position: absolute !important;
-	top: 0.125rem !important;
+	top: 0.75rem !important;
 	left: 3rem !important;
+	z-index: 30;
 }
 </style>
 <style lang="scss">

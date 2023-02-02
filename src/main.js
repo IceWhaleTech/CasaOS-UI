@@ -20,12 +20,14 @@ import Vue2TouchEvents from 'vue2-touch-events'
 import VueTour from 'vue-tour'
 import VueSocialSharing from 'vue-social-sharing'
 import VueSocketIOExt from 'vue-socket.io-extended';
+// import VueSocketIo from 'vue-socket.io';
 import messageBus from '@/events/index.js'
 // let messageBus = require('@/events/index.js');
 // Import Styles
 import '@/assets/scss/app.scss'
 import 'vue-tour/dist/vue-tour.css'
 import VAnimateCss from 'v-animate-css';
+
 const io = require("socket.io-client");
 
 const isDev = process.env.NODE_ENV === 'dev';
@@ -44,12 +46,31 @@ const socket = io(wsURL, {
     path: '/v1/socketio/',
 });
 
+// const vueSocketIo_v1 = new VueSocketIo({
+//     // connection: io(`${wsURL}/v1/socketio/`, {
+//     //     useConnectionNamespace: true,
+//     // }),
+//     connection: socket_v1,
+//     vuex: {},
+//     options: {
+//         useConnectionNamespace: true
+//     }
+// })
+const socket_v2 = io(wsURL, {
+    transports: ['websocket', 'polling'],
+    path: '/v2/message_bus/socket.io/',
+    // useConnectionNamespace: true,
+});
+
 Vue.use(Buefy)
 Vue.use(VueFullscreen)
-Vue.use(VAnimateCss, { animateCSSPath: '/css/animate.min.css' });
+Vue.use(VAnimateCss, {animateCSSPath: '/css/animate.min.css'});
 Vue.use(Vue2TouchEvents)
 Vue.use(VueTour)
-Vue.use(VueSocketIOExt, socket);
+// Vue.use(VueSocketIOExt, socket);
+Vue.use(VueSocketIOExt, socket_v2);
+// Vue.use(vueSocketIo_v1);
+// Vue.use(vueSocketIo_v2);
 Vue.use(VueSocialSharing);
 
 Vue.config.productionTip = false
