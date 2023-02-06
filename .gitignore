@@ -26,3 +26,6 @@ pnpm-debug.log*
 
 # warnings
 unused-files.json
+
+.yarnrc.yml
+.yarn/
