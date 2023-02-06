@@ -80,8 +80,8 @@
 		<div class="blur-background"></div>
 		<div class="cards-content">
 			<!-- Card Content Start -->
-			<b-tooltip :animated="true" :label="tooltipLabel" :triggers="tooltipTriger" animation="fade1"
-			           type="is-white">
+			<b-tooltip :always="isActiveTooltip" :animated="true" :label="tooltipLabel"
+			           :triggers="tooltipTriger" animation="fade1" type="is-white">
 
 				<div
 						class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-5 pb-3 img-c">
@@ -147,6 +147,7 @@ export default {
 			isStarting: false,
 			// isStoping: false,
 			// isSaving: false,
+			isActiveTooltip: false,
 		}
 	},
 	props: {
@@ -165,14 +166,17 @@ export default {
 				if (this.item.type === "system") {
 					return this.$t('Open')
 				} else {
-					console.log(this.item.state)
 					if (this.isUpdating) {
 						return this.$t('Updating')
 					} else if (this.isUninstalling) {
 						return this.$t('Uninstalling')
 					} else if (this.isCloning) {
 						return this.$t('Cloning')
+					} else if (this.isCheckThenUpdate || this.isActiveTooltip) { // this.isCheckThenUpdate !!!
+						console.log('isCheckThenUpdate', this.isActiveTooltip)
+						return this.$t('CheckThenUpdate')
 					} else if (this.item.state === 'running') {
+						console.log('running', this.isActiveTooltip)
 						return this.$t('Open')
 					}
 				}
@@ -188,8 +192,8 @@ export default {
 					switch (this.item.state) {
 						case 'running':
 							return ['hover']
-						case 'stopped':
-							return ['hover']
+							// case 'stopped':
+							// 	return ['hover']
 						default:
 							return []
 					}
@@ -197,7 +201,30 @@ export default {
 			}
 		},
 		isLoading() {
-			return this.isUninstalling || this.isUpdating // || this.isRestarting || this.isStarting || this.isStoping || this.isSaving
+			let active = this.isUninstalling || this.isUpdating // || this.isRestarting || this.isStarting || this.isStoping || this.isSaving
+
+			// design :: The first display is three seconds long
+			if ((active === true || this.isCheckThenUpdate) && this.activeTimer === undefined) {
+				this.activeTimer = setTimeout(() => {
+					this.isActiveTooltip = false;
+					clearTimeout(this.activeTimer);
+					this.activeTimer = undefined;
+				}, 10000)
+				this.isActiveTooltip = true;
+			} else if (active === false && this.isCheckThenUpdate === false) {
+				clearInterval(this.activeTimer);
+				this.activeTimer = undefined;
+				this.isActiveTooltip = false;
+			}
+
+			return active
+		},
+
+	},
+	watch: {
+		hover(val) {
+			if (!val && this.dropState)
+				this.$refs.dro.toggle();
 		},
 	},
 	methods: {
@@ -445,7 +472,7 @@ export default {
 
 			this.$api.apps.checkAppVersion(params).then(resp => {
 				if (resp.status === 200) {
-					this.isUpdating = true;
+					// this.isUpdating = true;
 				} else {
 					this.$buefy.toast.open({
 						message: this.$t(`Unable to update at the moment!`),
@@ -458,16 +485,10 @@ export default {
 					type: 'is-danger'
 				})
 			}).finally(() => {
-				this.isCheckThenUpdate = false;
+				this.$refs.dro.isActive = false
 			})
 		}
 
-	},
-	watch: {
-		hover(val) {
-			if (!val && this.dropState)
-				this.$refs.dro.toggle();
-		}
 	},
 	filters: {
 		/**
@@ -502,6 +523,38 @@ export default {
 			// if (data.Properties.cid === this.item.id) {
 			// 	this.loadState = true;
 			// }
+		},
+
+		'docker:image:pull-end'(data) {
+			if (data.Properties.cid === this.item.id) {
+				if (data.Properties['docker:image:updated'] === 'true') {
+					this.isUpdating = true;
+				}
+				this.isCheckThenUpdate = false;
+			}
+		},
+
+		'docker:image:pull-error'(data) {
+			if (data.Properties.cid === this.item.id) {
+				this.isCheckThenUpdate = false;
+			}
+		},
+
+		/**
+		 * @description: Update App Version
+		 * @param {Object} data
+		 * @return {void}
+		 */
+		'app:update-end'(data) {
+			if (data.Properties['docker:image:updated'] === 'true') {
+				return
+			}
+			this.isUpdating = false;
+			this.$buefy.toast.open({
+				message: this.$t(`Currently is the latest version!`),
+				type: 'is-success',
+				duration: 5000
+			})
 		},
 	}
 

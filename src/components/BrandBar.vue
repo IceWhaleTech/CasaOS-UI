@@ -8,14 +8,14 @@
   -->
 <template>
 	<div class="brand-bar is-flex is-align-items-flex-end has-text-white">
-		<figure class="image _is-136x26">
+		<figure class="image _is-136x26 mb-1">
 			<!--			<img alt="logo" :srcset="`${require('@/assets/img/logo/logo.svg')} 2x, ${require('@/assets/img/logo/logo.png')} 1x`">-->
 			<img alt="logo" srcset="../assets/img/logo/logo.svg 2x, ../assets/img/logo/logo.png 1x">
 		</figure>
 		<span v-if="!rssShow || rss.length === 0" class="intro-text ml-4">Made with ❤️ by IceWhale and YOU!</span>
 		<span v-else class="window ml-4">
 			<ul :style="{ '--time': 5 * line + 's', '--perc': perc, '--line': line }" class="scroll">
-				<li v-for="(item, key) in rss" :key="key" @click="$messageBus('connect_news')" class="has-text-left">
+				<li v-for="(item, key) in rss" :key="key" class="has-text-left" @click="$messageBus('connect_news')">
 					<a :href="item.link" class="intro-text" target="_blank">{{ item.title }}</a>
 				</li>
 			</ul>
@@ -73,7 +73,8 @@ export default {
 .brand-bar {
 	position: fixed;
 	left: 2rem;
-	bottom: 1.125rem;
+	//bottom: 1.125rem;
+	bottom: 0.875rem;
 	z-index: 30;
 
 	.logo-text {
