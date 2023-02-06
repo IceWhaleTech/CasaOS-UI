@@ -1,8 +1,8 @@
 <!--
  * @Author: JerryK
  * @Date: 2022-03-03 13:10:35
- * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-09-20 23:38:43
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-02-06 17:54:39
  * @Description:
  * @FilePath: /CasaOS-UI/src/components/filebrowser/sidebar/TreeList.vue
 -->
@@ -139,7 +139,7 @@ export default {
       this.shortcutList = this.$store.state.shortcutData
       this.dataList = [...this.initFolders, ...this.shortcutList]
       let contactList = [];
-      contactList.push(...newList.data.data, ...dataList.data.data, ...this.shortcutList);
+      contactList.push(...newList.data.data.content, ...dataList.data.data.content, ...this.shortcutList);
       this.dataList.forEach(dir => {
         dir.visible = contactList.some(item => item.path == dir.path && item.is_dir);
         const isInArray = contactList.find(item => item.path == dir.path && item.is_dir)

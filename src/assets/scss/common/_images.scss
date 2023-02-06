@@ -24,6 +24,10 @@
       max-height: 40px !important;
     }
   }
+  &.is-28x28 {
+    height: 28px;
+    width: 28px;
+  }
 
   &.is-54x54 {
     height: 54px;
@@ -41,6 +45,11 @@
   }
 
   &.is-80x80 {
+    height: 80px;
+    width: 80px;
+  }
+
+  &.is-100x100 {
     height: 80px;
     width: 80px;
   }

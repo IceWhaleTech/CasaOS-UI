@@ -2,12 +2,16 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-12-24 15:06:48
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-12-24 22:10:43
- * @FilePath: \CasaOS-UI-ZHX\src\components\Apps\progress.js
+ * @LastEditTime: 2023-02-06 18:34:40
+ * @FilePath: /CasaOS-UI/src/components/Apps/progress.js
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
  */
+
+import filter from 'lodash/filter';
+import meanBy from 'lodash/meanBy';
+
 class ProgressTracker {
     constructor(coalesceBelow = 0) {
         this.coalesceBelow = coalesceBelow;
@@ -15,7 +19,7 @@ class ProgressTracker {
     }
 
     addLayer(id) {
-        this.layers[id] = {progress: null, coalesced: false};
+        this.layers[id] = { progress: null, coalesced: false };
     }
 
     linkLayer(id, tracker) {
@@ -36,12 +40,12 @@ class ProgressTracker {
     }
 
     finishLayer(id) {
-        this.updateLayer(id, {current: 1, total: 1});
+        this.updateLayer(id, { current: 1, total: 1 });
     }
 
     getProgress() {
-        const layers = _.filter(this.layers, {coalesced: false});
-        const avgProgress = _.meanBy(layers, 'progress') || 0;
+        const layers = filter(this.layers, { coalesced: false });
+        const avgProgress = meanBy(layers, 'progress') || 0;
         return Math.round(100 * avgProgress);
     }
 
@@ -67,7 +71,7 @@ class DockerProgress {
         try {
             let downloadedPercentage;
             let extractedPercentage;
-            ({id, status} = evt);
+            ({ id, status } = evt);
             if (id == null) {
                 id = '';
             }
@@ -78,7 +82,7 @@ class DockerProgress {
                 this.downloadProgressTracker.addLayer(id);
                 this.extractionProgressTracker.addLayer(id);
             } else if (status === 'Ready to download') {
-                this.downloadProgressTracker.linkLayer(id, extractionProgressTracker);
+                this.downloadProgressTracker.linkLayer(id, evt.extractionProgressTracker);
             } else if (status === 'Downloading') {
                 this.downloadProgressTracker.updateLayer(id, evt.progressDetail);
             } else if (status === 'Extracting') {

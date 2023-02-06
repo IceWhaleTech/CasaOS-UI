@@ -1,8 +1,8 @@
 /*
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
- * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-09-29 16:51:55
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-02-06 17:56:20
  * @FilePath: /CasaOS-UI/vue.config.js
  * @Description:
  *
@@ -77,8 +77,10 @@ module.exports = {
 
             config.optimization
                 .minimizer('css')
-                .use(require.resolve('optimize-css-assets-webpack-plugin'), [{cssProcessorOptions: {safe: true}}])
+                .use(require.resolve('optimize-css-assets-webpack-plugin'), [{ cssProcessorOptions: { safe: true } }])
         } else {
+            config.plugin('webpack-bundle-analyzer')
+                .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
             config.devServer.proxy({
                 '/': {
                     target: `http://${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}`,

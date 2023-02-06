@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-31 20:24:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-01 18:10:05
+ * @LastEditTime: 2023-02-06 17:53:42
  * @FilePath: /CasaOS-UI/src/components/filebrowser/shared/SelectShareModal.vue
  * @Description:
  *
@@ -142,7 +142,7 @@ export default {
 			this.shortcutList = this.$store.state.shortcutData
 			this.dataList = [...this.initFolders, ...this.shortcutList]
 			const contactList = []
-			contactList.push(...newList.data.data, ...dataList.data.data, ...this.shortcutList)
+			contactList.push(...newList.data.data.content, ...dataList.data.data.content, ...this.shortcutList)
 			this.dataList.forEach(dir => {
 				dir.visible = contactList.some(item => item.path == dir.path && item.is_dir)
 				dir.extensions = contactList.find(item => item.path == dir.path && item.is_dir).extensions;

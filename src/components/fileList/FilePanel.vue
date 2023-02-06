@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2021-10-14 14:08:40
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-03 12:21:53
+ * @LastEditTime: 2023-02-06 17:45:53
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/fileList/FilePanel.vue
 -->
@@ -120,9 +120,9 @@ export default {
         if (res.data.success == 200) {
           this.path = path
           if (this.showFile) {
-            this.fileList = res.data.data;
+            this.fileList = res.data.data.content;
           } else {
-            this.fileList = res.data.data.filter((item) => {
+            this.fileList = res.data.data.content.filter((item) => {
               return item.is_dir
             });
           }

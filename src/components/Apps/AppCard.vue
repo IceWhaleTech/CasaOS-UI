@@ -1,6 +1,6 @@
 <!--
- * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
- * @LastEditTime: 2023-02-01 15:40:41
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-02-06 18:20:59
  * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
   * @Description:
   *
@@ -8,13 +8,13 @@
   -->
 <template>
 	<div class="common-card is-flex is-align-items-center is-justify-content-center p-55 app-card"
-	     @mouseleave="hover = true" @mouseover="hover = true">
+		@mouseleave="hover = true" @mouseover="hover = true">
 
 		<!-- Action Button Start -->
 		<div v-if="item.type !== 'system' && isCasa && !isUninstalling" class="action-btn">
 			<b-dropdown ref="dro" :mobile-modal="false" :triggers="['contextmenu', 'click']" animation="fade1"
-			            append-to-body aria-role="list" class="app-card-drop" position="is-bottom-left"
-			            @active-change="setDropState">
+				append-to-body aria-role="list" class="app-card-drop" position="is-bottom-left"
+				@active-change="setDropState">
 				<template #trigger>
 					<p role="button">
 						<b-icon class="is-clickable" icon="dots-horizontal"></b-icon>
@@ -25,27 +25,27 @@
 					<b-button expanded tag="a" type="is-text" @click="openApp(item)">{{ $t('Open') }}</b-button>
 					<b-button expanded type="is-text" @click="configApp">{{ $t('Setting') }}</b-button>
 					<b-button v-if="item.appstore_id != 0 && item.appstore_id != undefined" :loading="isCloning"
-					          expanded type="is-text" @click="quickInstall(item.appstore_id)">{{
+						expanded type="is-text" @click="quickInstall(item.appstore_id)">{{
 							$t('Clone')
 						}}
 					</b-button>
 
 					<b-button expanded type="is-text" @click="checkAppVersion">{{
-							$t('Check then update')
-						}}
+						$t('Check then update')
+					}}
 						<b-loading :active="isCheckThenUpdate || isUpdating" :is-full-page="false">
 							<img :src="require('@/assets/img/loading/waiting.svg')" alt="pending"
-							     class="ml-4 is-24x24"/>
+								class="ml-4 is-24x24" />
 						</b-loading>
 					</b-button>
 
 
 					<b-button v-if="item.appstore_id != undefined" class="mb-1 has-text-red" expanded type="is-text"
-					          @click="uninstallConfirm">
+						@click="uninstallConfirm">
 						{{ $t('Uninstall') }}
 						<b-loading v-model="isUninstalling" :is-full-page="false">
 							<img :src="require('@/assets/img/loading/waiting.svg')" alt="pending"
-							     class="ml-4 is-24x24"/>
+								class="ml-4 is-24x24" />
 						</b-loading>
 					</b-button>
 
@@ -53,7 +53,7 @@
 						{{ $t('Delete') }}
 						<b-loading v-model="isUninstalling" :is-full-page="false">
 							<img :src="require('@/assets/img/loading/waiting.svg')" alt="pending"
-							     class="ml-4 is-24x24"/>
+								class="ml-4 is-24x24" />
 						</b-loading>
 					</b-button>
 
@@ -66,7 +66,7 @@
 							</div>
 							<div class="column is-flex is-justify-content-center is-align-items-center">
 								<b-button :class="item.state" :loading="isStarting" class="has-text-red" expanded
-								          type="is-text" @click="toggle(item)">
+									type="is-text" @click="toggle(item)">
 									<b-icon custom-size="mdi-18px" icon="power-standby"></b-icon>
 								</b-button>
 							</div>
@@ -80,24 +80,24 @@
 		<div class="blur-background"></div>
 		<div class="cards-content">
 			<!-- Card Content Start -->
-			<b-tooltip :always="isActiveTooltip" :animated="true" :label="tooltipLabel"
-			           :triggers="tooltipTriger" animation="fade1" type="is-white">
+			<b-tooltip :always="isActiveTooltip" :animated="true" :label="tooltipLabel" :triggers="tooltipTriger"
+				animation="fade1" type="is-white">
 
 				<div
-						class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-5 pb-3 img-c">
+					class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-5 pb-3 img-c">
 					<div class="is-flex is-justify-content-center">
 						<b-image :class="item.state, isLoading | dotClass" :src="item.icon"
-						         :src-fallback="require('@/assets/img/app/default.png')" class="is-64x64"
-						         webp-fallback=".jpg" @click.native="openApp(item)"></b-image>
+							:src-fallback="require('@/assets/img/app/default.png')" class="is-64x64"
+							webp-fallback=".jpg" @click.native="openApp(item)"></b-image>
 						<!-- Unstable-->
 						<cTooltip v-if="newAppIds.includes(item.id)" class="__position" content="NEW"></cTooltip>
 
 						<!-- Loading Bar Start -->
 						<b-loading v-model="isLoading" :can-cancel="false" :is-full-page="false"
-						           class="has-background-gray-800 op80 is-64x64"
-						           style="top: auto;bottom: auto; right: auto; left: auto; border-radius: 11.5px">
+							class="has-background-gray-800 op80 is-64x64"
+							style="top: auto;bottom: auto; right: auto; left: auto; border-radius: 11.5px">
 							<img :src="require('@/assets/img/loading/waiting-white.svg')" alt="loading"
-							     class="is-20x20"/>
+								class="is-20x20" />
 						</b-loading>
 						<!-- Loading Bar End -->
 					</div>
@@ -180,6 +180,7 @@ export default {
 						return this.$t('Open')
 					}
 				}
+				return ""
 			}
 		},
 		tooltipTriger() {
@@ -192,8 +193,8 @@ export default {
 					switch (this.item.state) {
 						case 'running':
 							return ['hover']
-							// case 'stopped':
-							// 	return ['hover']
+						// case 'stopped':
+						// 	return ['hover']
 						default:
 							return []
 					}
@@ -339,7 +340,7 @@ export default {
 					this.isUninstalling = false;
 				})
 			} else {
-				this.$api.container.uninstall(this.item.id, {'delete_config_folder': checkDelConfig}).then((res) => {
+				this.$api.container.uninstall(this.item.id, { 'delete_config_folder': checkDelConfig }).then((res) => {
 					if (res.data.success === 200) {
 						this.$EventBus.$emit(events.UPDATE_SYNC_STATUS);
 					}
@@ -416,7 +417,7 @@ export default {
 
 		quickInstall(id) {
 			this.isCloning = true;
-			let data = this.$api.apps.getAppInfo(id).then(resp => {
+			this.$api.apps.getAppInfo(id).then(resp => {
 				if (resp.data.success == 200) {
 					let respData = resp.data.data
 					// messageBus :: installApp
@@ -700,7 +701,7 @@ export default {
 
 		/* Gary/800 */
 
-		color: hsla(208, 20%, 20%, 1) !important;
+		color: hsla(208, 20%, 20%, 1);
 
 	}
 
