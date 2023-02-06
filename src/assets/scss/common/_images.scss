@@ -1,3 +1,12 @@
+/*!
+ *  @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ *  @LastEditTime: 2023/2/1 下午4:01
+ *  @FilePath: /CasaOS-UI/src/assets/scss/common/_images.scss
+ *  @Description:
+ *
+ *  Copyright (c) 2022 by IceWhale, All Rights Reserved.
+ */
+
 /************************************
 *
 * Images
@@ -50,12 +59,22 @@
 
 .img-c {
   .image {
+    cursor: pointer;
     transition: all 0.3s;
+  }
+
+  .image.disabled {
+    transition: none;
   }
 
   &:hover {
     .image {
       transform: scale3d(1.1, 1.1, 1.1);
+    }
+
+    .image.disabled {
+      pointer-events: none;
+      transform: scale3d(1, 1, 1);
     }
   }
 }

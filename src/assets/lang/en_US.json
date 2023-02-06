@@ -341,8 +341,13 @@
   "Installation completed": "Installation completed",
   "Starting installation": "Starting installation",
   "New": "New",
+  "NEW": "NEW",
   "Check then update": "Check then update",
   "At least one extra hard drive is needed for this feature.": "At least one extra hard drive is needed for this feature.",
   "APP may not be available": "App may not be available",
-  "Please": "Please"
+  "Please": "Please",
+  "Currently is the latest version!": "Currently is the latest version!",
+  "{name} has been updated to the latest version!": "{name} has been updated to the latest version!",
+  "Unable to update at the moment!": "Unable to update at the moment!",
+  "Updating": "Updating"
 }

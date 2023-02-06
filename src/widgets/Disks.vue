@@ -1,3 +1,11 @@
+<!--
+  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+  * @LastEditTime: 2023/2/6 下午4:47
+  * @FilePath: /CasaOS-UI/src/widgets/Disks.vue
+  * @Description:
+  *
+  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
+  -->
 <template>
 	<div>
 		<!-- Disk Info Start -->
@@ -22,7 +30,7 @@
 							</div>
 							<div class="ml-3 is-flex-grow-1 ">
 								<h4
-									class="title is-size-14px mb-2 mt-1 has-text-left has-text-white one-line is-align-items-center is-flex">
+										class="title is-size-14px mb-2 mt-1 has-text-left has-text-white one-line is-align-items-center is-flex">
 									<b-tag v-if="health" type="is-success">{{ $t('Healthy') }}</b-tag>
 									<b-tag v-else type="is-danger">{{ $t('Damage') }}</b-tag>
 								</h4>
@@ -33,7 +41,7 @@
 							</div>
 						</div>
 						<b-progress :type="totalPercent | getProgressType" :value="totalPercent" class="mt-2"
-							size="is-small"></b-progress>
+						            size="is-small"></b-progress>
 					</div>
 				</div>
 			</div>
@@ -60,8 +68,8 @@
 							</div>
 						</div>
 						<b-progress :type="(Math.floor((item.size - item.avail) * 100 / item.size)) | getProgressType"
-							:value="Math.floor((item.size - item.avail) * 100 / item.size)" class="mt-2"
-							size="is-small"></b-progress>
+						            :value="Math.floor((item.size - item.avail) * 100 / item.size)" class="mt-2"
+						            size="is-small"></b-progress>
 					</div>
 				</div>
 			</div>
@@ -74,7 +82,7 @@
 
 <script>
 import StorageManagerPanel from '@/components/Storage/StorageManagerPanel.vue'
-import { mixin } from '../mixins/mixin';
+import {mixin} from '../mixins/mixin';
 
 export default {
 	// eslint-disable-next-line vue/multi-word-component-names
@@ -127,11 +135,12 @@ export default {
 		sys_usb(data) {
 			this.usbDisks = data.data
 		},
-		sys_hardware_status(data) {
+		"casaos:system:utilization"(res) {
+			let data = res.Properties
 			// DISK
-			this.getDiskInfo(data.sys_disk)
+			this.getDiskInfo(JSON.parse(data.sys_disk))
 			// USB
-			this.usbDisks = data.sys_usb
+			this.usbDisks = JSON.parse(data.sys_usb)
 		}
 	}
 }

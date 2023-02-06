@@ -8,9 +8,10 @@
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
  */
-import { api } from "./service.js";
+import {api} from "./service.js";
 
 const PREFIX = "/apps";
+const PREFIX2 = "/v2/app_management";
 
 const apps = {
     // get app list
@@ -22,6 +23,11 @@ const apps = {
     getAppInfo(id) {
         return api.get(`${PREFIX}/${id}`);
     },
+
+    // Check app version
+    checkAppVersion(id) {
+        return api.patch(`${PREFIX2}/container/${id}`);
+    }
 }
 
 export default apps;

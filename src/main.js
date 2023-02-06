@@ -26,6 +26,7 @@ import messageBus from '@/events/index.js'
 import '@/assets/scss/app.scss'
 import 'vue-tour/dist/vue-tour.css'
 import VAnimateCss from 'v-animate-css';
+
 const io = require("socket.io-client");
 
 const isDev = process.env.NODE_ENV === 'dev';
@@ -41,12 +42,12 @@ const wsURL = `${wsProtocol}//${baseURL}`
 
 const socket = io(wsURL, {
     transports: ['websocket', 'polling'],
-    path: '/v1/socketio/',
+    path: '/v2/message_bus/socket.io/',
 });
 
 Vue.use(Buefy)
 Vue.use(VueFullscreen)
-Vue.use(VAnimateCss, { animateCSSPath: '/css/animate.min.css' });
+Vue.use(VAnimateCss, {animateCSSPath: '/css/animate.min.css'});
 Vue.use(Vue2TouchEvents)
 Vue.use(VueTour)
 Vue.use(VueSocketIOExt, socket);

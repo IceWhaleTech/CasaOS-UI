@@ -1,4 +1,13 @@
 /*
+ * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ * @LastEditTime: 2023/2/1 下午6:39
+ * @FilePath: /CasaOS-UI/src/service/service.js
+ * @Description:
+ *
+ * Copyright (c) 2023 by IceWhale, All Rights Reserved.
+ */
+
+/*
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
@@ -12,7 +21,7 @@ import store from '@/store'
 // import { ToastProgrammatic as Toast } from 'buefy'
 
 // const axiosBaseURL1 = (process.env.NODE_ENV === "dev") ? `${document.location.protocol}//${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}` : ``
-const axiosBaseURL = (process.env.NODE_ENV === "dev") ? `` : ``
+const axiosBaseURL = ``
 
 //Create a axios instance, And set timeout to 30s
 const instance = axios.create({
@@ -164,6 +173,10 @@ const api = {
     delete(url, data) {
         url = testVisionNum(url)
         return instance.delete(url, {data: data})
+    },
+    patch(url, data) {
+        url = testVisionNum(url)
+        return instance.patch(url, data)
     },
 }
 export {api}

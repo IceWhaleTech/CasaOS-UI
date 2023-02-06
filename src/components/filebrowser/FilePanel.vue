@@ -16,7 +16,7 @@
 			<!-- Viewer Start -->
 			<transition name="c-zoom-in">
 				<component :is="panelType" v-if="isShowDetial" ref="previewPanel" :item="currentItem" :list="listData"
-					@close="isShowDetial = false; isModalOpen = false"></component>
+				           @close="isShowDetial = false; isModalOpen = false"></component>
 			</transition>
 			<!-- Viewer End -->
 
@@ -32,13 +32,13 @@
 									<h3 class="title is-3 mb-0 pb-3 pt-3 has-text-left">{{ $t('Files') }}</h3>
 								</div>
 								<div v-show="hasMergerFunction" class="is-flex-shrink-0  mr-5"
-									@click="showStorageSettingsModal">
+								     @click="showStorageSettingsModal">
 									<b-icon custom-size="mdi-18px" icon="cog-outline"></b-icon>
 								</div>
 							</div>
 							<div class="list-container scrollbars-light pt-0 is-flex-grow-1">
 								<tree-list ref="navBar" :autoLoad="true" :isActive="!isShareList"
-									:path="rootPath"></tree-list>
+								           :path="rootPath"></tree-list>
 							</div>
 						</div>
 
@@ -57,7 +57,7 @@
 
 							<div class="list-container pt-0 is-flex-grow-1">
 								<mount-list ref="mountedList" :autoLoad="true" :hasMergerFunction="hasMergerFunction"
-									:isActive="!isShareList" :path="rootPath"></mount-list>
+								            :isActive="!isShareList" :path="rootPath"></mount-list>
 							</div>
 
 						</div>
@@ -86,8 +86,8 @@
 
 								<!-- Paste Button Start -->
 								<b-button v-if="hasPasteData" :label="$t('Paste')" :loading="isPasting" class="mr-3"
-									icon-left="content-paste" rounded size="is-small" type="is-success"
-									@click="paste('overwrite')" />
+								          icon-left="content-paste" rounded size="is-small" type="is-success"
+								          @click="paste('overwrite')"/>
 								<!-- Paste Button End -->
 
 								<!-- Operation Status Start-->
@@ -96,13 +96,13 @@
 
 								<!-- Upload Button Start -->
 								<global-action-button @showNewFileModal="showNewFileModal"
-									@showNewFolderModal="showNewFolderModal"></global-action-button>
+								                      @showNewFolderModal="showNewFolderModal"></global-action-button>
 								<!-- Upload Button End -->
 
 								<!--  Close Button Start -->
 								<div
-									class="is-flex is-align-items-center modal-close-container modal-close-container-line ">
-									<button class="delete" type="button" @click="$emit('close')" />
+										class="is-flex is-align-items-center modal-close-container modal-close-container-line ">
+									<button class="delete" type="button" @click="$emit('close')"/>
 								</div>
 								<!--  Close Button End -->
 
@@ -115,8 +115,8 @@
 							<div class=" is-flex-grow-1 has-text-left is-flex  is-align-items-center">
 								<b-field class="ml-3 is-flex is-size-14px mb-0">
 									<b-checkbox v-model="isSelectAll" :class="selectState" size="is-small"
-										@input="handleSelect">
-										{{ selectState!="none"?$t("select-items", selectLabel):$t("total-items", selectLabel) }}
+									            @input="handleSelect">
+										{{ selectState != "none" ? $t("select-items", selectLabel) : $t("total-items", selectLabel) }}
 									</b-checkbox>
 								</b-field>
 							</div>
@@ -135,7 +135,7 @@
 
 							<!-- Drag and Drop Mask Start -->
 							<div v-if="isDragIn"
-								class="drag-mask is-flex is-align-items-flex-end is-flex-direction-row">
+							     class="drag-mask is-flex is-align-items-flex-end is-flex-direction-row">
 								<div class="mb-6">
 									<div class="upload-icon">
 										<b-icon icon="arrow-up" size="is-medium" type="is-white"></b-icon>
@@ -148,10 +148,10 @@
 							<!-- Drag and Drop Mask End -->
 
 							<component :is="listView" ref="listview" v-model="listData" :isLoading="isLoading"
-								@change="handelListChange" @gotoFolder="getFileList" @reload="reload"
-								@showDetailModal="showDetailModal">
+							           @change="handelListChange" @gotoFolder="getFileList" @reload="reload"
+							           @showDetailModal="showDetailModal">
 								<empty-holder @newFile="showNewFileModal"
-									@newFolder="showNewFolderModal"></empty-holder>
+								              @newFolder="showNewFolderModal"></empty-holder>
 							</component>
 
 						</div>
@@ -162,10 +162,10 @@
 							<b-collapse ref="uploadList" animation="slide1" aria-id="contentIdForA11y3" class="card">
 								<template #trigger="props">
 									<div :aria-expanded="props.open" aria-controls="contentIdForA11y3"
-										class="card-header" role="button">
+									     class="card-header" role="button">
 										<p class="card-header-title">
 											<b-icon :icon="props.open ? 'chevron-down' : 'chevron-up'"
-												class="mr-2"></b-icon>
+											        class="mr-2"></b-icon>
 											{{ $t(uploaderListHeaderText) }}
 										</p>
 										<a class="card-header-icon" @click.prevent="closeUploaderList">
@@ -187,7 +187,7 @@
 					</uploader>
 					<!-- Toolbar Start -->
 					<operation-toolbar v-model="isToolbarShow" @close="handleClose" @copy="handleCopy"
-						@download="handleDownload" @move="handleMove" @remove="handleRemove"></operation-toolbar>
+					                   @download="handleDownload" @move="handleMove" @remove="handleRemove"></operation-toolbar>
 					<!-- Toolbar End -->
 				</div>
 
@@ -208,7 +208,7 @@ import orderBy from 'lodash/orderBy'
 import dropRight from 'lodash/dropRight'
 import isEqual from 'lodash/isEqual'
 
-import { mixin } from '@/mixins/mixin';
+import {mixin} from '@/mixins/mixin';
 import events from '@/events/events';
 
 import TreeList from './sidebar/TreeList.vue';
@@ -530,17 +530,17 @@ export default {
 			if (this.selectedArray.length == list.length && list.length > 0) {
 				this.selectState = "all"
 				this.isSelectAll = true
-				this.selectLabel = { num: list.length }
+				this.selectLabel = {num: list.length}
 				this.isToolbarShow = true
 			} else if (this.selectedArray.length < list.length && this.selectedArray.length > 0) {
 				this.selectState = "part"
 				this.isSelectAll = false
-				this.selectLabel = { num: this.selectedArray.length }
+				this.selectLabel = {num: this.selectedArray.length}
 				this.isToolbarShow = true
 			} else {
 				this.selectState = "none"
 				this.isSelectAll = false
-				this.selectLabel = { num: list.length }
+				this.selectLabel = {num: list.length}
 				this.isToolbarShow = false
 			}
 		},
@@ -969,7 +969,7 @@ export default {
 				}
 			})
 		},
-		sys_hardware_status() {
+		"casaos:system:utilization"() {
 			// USB
 			// this.usbDisks = data.body.sys_usb
 
