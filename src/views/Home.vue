@@ -59,6 +59,7 @@
 			</div>
 		</div>
 		<!-- Content End -->
+
 		<!-- File Panel Start -->
 		<b-modal v-model="isFileActive" :can-cancel="[]" :destroy-on-hide="false" animation="zoom-in" aria-modal
 		         custom-class="file-panel" full-screen has-modal-card @after-enter="afterFileEnter">

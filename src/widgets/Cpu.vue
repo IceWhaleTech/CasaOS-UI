@@ -104,23 +104,23 @@ export default {
 			powerList: [],
 		}
 	},
-  watch:{
-    'activeTab':{
-      handler(val, oldVal){
-        if(val === oldVal){
-          return
-        }
-        switch(val){
-          case 0:
-            this.$messageBus('widget_cpu');
-            break;
-          case 1:
-            this.$messageBus('widget_ram');
-            break;
-        }
-      }
-    }
-  },
+	watch: {
+		'activeTab': {
+			handler(val, oldVal) {
+				if (val === oldVal) {
+					return
+				}
+				switch (val) {
+					case 0:
+						this.$messageBus('widget_cpu');
+						break;
+					case 1:
+						this.$messageBus('widget_ram');
+						break;
+				}
+			}
+		}
+	},
 	created() {
 		this.cpuCores = this.$store.state.hardwareInfo.cpu.num
 		this.totalMemory = this.$store.state.hardwareInfo.mem.total
@@ -219,12 +219,12 @@ export default {
 		 */
 		showMoreInfo() {
 			this.showMore = !this.showMore;
-      if(this.showMore){
-        this.$messageBus('widget_systemstatus', 'open')
-      }else {
-        this.$messageBus('widget_systemstatus', 'close')
+			if (this.showMore) {
+				this.$messageBus('widget_systemstatus', 'open')
+			} else {
+				this.$messageBus('widget_systemstatus', 'close')
 
-      }
+			}
 		},
 
 		pushPower(power) {
@@ -235,21 +235,24 @@ export default {
 		}
 	},
 	sockets: {
-		sys_hardware_status(data) {
+		"casaos:system:utilization"(res) {
+			let data = res.Properties
+			let cpu = JSON.parse(data.sys_cpu)
+			let mem = JSON.parse(data.sys_mem)
 			// CPU
-			this.cpuCores = data.sys_cpu.num
-			this.cpuSeries = data.sys_cpu.percent
-			this.pushPower(data.sys_cpu.power)
-			this.temperature = data.sys_cpu.temperature == undefined ? "0°C" : data.sys_cpu.temperature + "°C"
-			if (this.powerList.length == 2 && data.sys_cpu.model === 'intel') {
+			this.cpuCores = cpu.num
+			this.cpuSeries = cpu.percent
+			this.pushPower(cpu.power)
+			this.temperature = cpu.temperature == undefined ? "0°C" : cpu.temperature + "°C"
+			if (this.powerList.length == 2 && cpu.model === 'intel') {
 				this.power = ((this.powerList[1].value - this.powerList[0].value) / 1000000 / (this.powerList[1].timestamp - this.powerList[0].timestamp)).toFixed(1) + "W / "
 			} else {
 				this.power = ''
 			}
 
 			// Memory
-			this.totalMemory = data.sys_mem.total
-			this.ramSeries = data.sys_mem.usedPercent
+			this.totalMemory = mem.total
+			this.ramSeries = mem.usedPercent
 		}
 	}
 }

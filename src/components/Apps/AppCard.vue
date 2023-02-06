@@ -209,7 +209,7 @@ export default {
 					this.isActiveTooltip = false;
 					clearTimeout(this.activeTimer);
 					this.activeTimer = undefined;
-				}, 10000)
+				}, 3000)
 				this.isActiveTooltip = true;
 			} else if (active === false && this.isCheckThenUpdate === false) {
 				clearInterval(this.activeTimer);
