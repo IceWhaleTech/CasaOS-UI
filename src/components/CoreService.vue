@@ -406,8 +406,7 @@ export default {
         if (res.finished) {
           this.removeNotice(res.name)
           // business :: Tagging of new app / scrollIntoView
-          this.addIdToSessionStorage(res.properties['app-management:app:id'])
-          // this.$emit('updateState')
+          this.addIdToSessionStorage(res.id)
           this.$EventBus.$emit(events.RELOAD_APP_LIST)
         } else if (res.message !== "") {
           const messageArray = res.message.split(/[(\r\n)\r\n]+/);
@@ -434,7 +433,6 @@ export default {
             }
             let status = info.status
             let currentInstallAppText = status + ":" + id + " " + progress
-            // this.$set(this.noticesData[res.name], 'content', currentInstallAppText)
             this.$set(this.noticesData[res.name], 'content', {text: currentInstallAppText, value: totalPercentage})
           } catch (e) {
             console.error(e)
@@ -455,46 +453,36 @@ export default {
       this.addNotice(data, res.name)
     },
 
-    // show storage settings modal
-    // async showStorageSettingsModal() {
-    //   this.$messageBus('storagemanager_mergestorage');
-    //
-    //   // TODO: the part is repetition
-    //   //  with APPs Installation Location requirement document
-    //   // 获取merge信息
-    //   let mergeStorageList
-    //   try {
-    //     mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => res.data.data[0]['source_volume_uuids'])
-    //   } catch (e) {
-    //     mergeStorageList = []
-    //     console.log(e)
-    //   }
-    //
-    //   this.$buefy.modal.open({
-    //     parent: this,
-    //     component: () => import('@/components/Storage/MergeStorages.vue'),
-    //     hasModalCard: true,
-    //     trapFocus: true,
-    //     ariaModal: true,
-    //     canCancel: ['escape'],
-    //     onCancel: () => {
-    //       this.$EventBus.$emit(events.REFRESH_DISKLIST);
-    //     },
-    //     events: {
-    //       close: () => {
-    //         this.$EventBus.$emit(events.REFRESH_DISKLIST);
-    //       }
-    //     },
-    //     props: {
-    //       mergeStorageList
-    //     }
-    //   })
-    //
-    // },
   },
   sockets: {
-    'app_install': function (res) {
-      this.transformAppInstallationProgress(res)
+    "app:install-end"(res) {
+      this.transformAppInstallationProgress({
+        finished: true,
+        name: res.Properties["app:name"],
+        id: res.Properties["docker:container:id"],
+        icon: res.Properties["app:icon"]
+      });
+    },
+    "app:install-error"(res) {
+      this.transformAppInstallationProgress({
+        finished: false,
+        name: res.Properties["app:name"],
+        id: res.Properties["docker:container:id"],
+        success: false,
+        message: res.Properties["message"],
+        icon: res.Properties["app:icon"]
+      });
+    },
+    "docker:image:pull-progress"(res) {
+      this.transformAppInstallationProgress({
+        finished: false,
+        name: res.Properties["app:name"],
+        id: res.Properties["docker:container:id"],
+        success: true,
+        type: "pull",
+        message: res.Properties["message"],
+        icon: res.Properties["app:icon"]
+      });
     },
   },
   beforeDestroy() {

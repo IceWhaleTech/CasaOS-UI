@@ -10,63 +10,63 @@
 -->
 
 <template>
-	<div class="home-section has-text-left">
-		<!-- Title Bar Start -->
-		<div class="is-flex is-align-items-center mb-4">
-			<app-section-title-tip id="appTitle1" class="is-flex-grow-1 has-text-sub-04" label="Drag icons to sort."
-				title="Apps"></app-section-title-tip>
+  <div class="home-section has-text-left">
+    <!-- Title Bar Start -->
+    <div class="is-flex is-align-items-center mb-4">
+      <app-section-title-tip id="appTitle1" class="is-flex-grow-1 has-text-sub-04" label="Drag icons to sort."
+                             title="Apps"></app-section-title-tip>
 
-			<b-dropdown animation="fade1" aria-role="menu" class="file-dropdown" position="is-bottom-left">
-				<template #trigger>
-					<b-icon icon="plus" pack="casa" size="is-20" type="is-white"></b-icon>
-				</template>
-				<b-dropdown-item aria-role="menuitem" @click="showInstall(0, 'custom')">
-					{{ $t('Custom Install APP') }}
-				</b-dropdown-item>
-				<b-dropdown-item aria-role="menuitem" @click="showExternalLinkPanel">
-					{{ $t('Add external link/APP') }}
-				</b-dropdown-item>
-			</b-dropdown>
-		</div>
-		<!-- Title Bar End -->
+      <b-dropdown animation="fade1" aria-role="menu" class="file-dropdown" position="is-bottom-left">
+        <template #trigger>
+          <b-icon icon="plus" pack="casa" size="is-20" type="is-white"></b-icon>
+        </template>
+        <b-dropdown-item aria-role="menuitem" @click="showInstall(0, 'custom')">
+          {{ $t('Custom Install APP') }}
+        </b-dropdown-item>
+        <b-dropdown-item aria-role="menuitem" @click="showExternalLinkPanel">
+          {{ $t('Add external link/APP') }}
+        </b-dropdown-item>
+      </b-dropdown>
+    </div>
+    <!-- Title Bar End -->
 
-		<!-- App List Start -->
-		<draggable v-model="appList" :draggable="draggable"
-			class="columns is-variable is-2 is-multiline app-list contextmenu-canvas" tag="div" v-bind="dragOptions"
-			@end="onSortEnd" @start="drag = true">
+    <!-- App List Start -->
+    <draggable v-model="appList" :draggable="draggable"
+               class="columns is-variable is-2 is-multiline app-list contextmenu-canvas" tag="div" v-bind="dragOptions"
+               @end="onSortEnd" @start="drag = true">
 
-				<!-- App Icon Card Start -->
-				<div v-for="(item) in appList" :id="'app-' + item.id" :key="'app-' + item.id"
-					class="column is-narrow is-3 handle">
-					<app-card :isCasa="true" :item="item" @configApp="showConfigPanel"
-						@updateState="getList"></app-card>
-				</div>
-				<!-- App Icon Card End -->
+      <!-- App Icon Card Start -->
+      <div v-for="(item) in appList" :id="'app-' + item.id" :key="'app-' + item.id"
+           class="column is-narrow is-3 handle">
+        <app-card :isCasa="true" :item="item" @configApp="showConfigPanel"
+                  @updateState="getList"></app-card>
+      </div>
+      <!-- App Icon Card End -->
 
-			<b-loading slot="footer" v-model="isLoading" :is-full-page="false"></b-loading>
-		</draggable>
-		<!-- App List End -->
-		<template v-if="notImportedList.length > 0 && exsitingAppsShow">
-			<!-- Title Bar Start -->
-			<div class="title-bar is-flex is-align-items-center mt-2rem  mb-4">
-				<app-section-title-tip id="appTitle2" label="Click icon to import." title="Existing Docker Apps">
-				</app-section-title-tip>
-			</div>
-			<!-- Title Bar End -->
+      <b-loading slot="footer" v-model="isLoading" :is-full-page="false"></b-loading>
+    </draggable>
+    <!-- App List End -->
+    <template v-if="notImportedList.length > 0 && exsitingAppsShow">
+      <!-- Title Bar Start -->
+      <div class="title-bar is-flex is-align-items-center mt-2rem  mb-4">
+        <app-section-title-tip id="appTitle2" label="Click icon to import." title="Existing Docker Apps">
+        </app-section-title-tip>
+      </div>
+      <!-- Title Bar End -->
 
-			<!-- App List Start -->
-			<div class="columns is-variable is-2 is-multiline app-list contextmenu-canvas">
-				<!-- Application not imported Start -->
-				<div v-for="(item) in notImportedList" :key="'app-' + item.id" class="column is-narrow is-3">
-					<app-card :isCasa="false" :item="item" @configApp="showConfigPanel" @importApp="showConfigPanel"
-						@updateState="getList"></app-card>
-				</div>
-				<!-- Application not imported End -->
-			</div>
-			<!-- App List End -->
-		</template>
+      <!-- App List Start -->
+      <div class="columns is-variable is-2 is-multiline app-list contextmenu-canvas">
+        <!-- Application not imported Start -->
+        <div v-for="(item) in notImportedList" :key="'app-' + item.id" class="column is-narrow is-3">
+          <app-card :isCasa="false" :item="item" @configApp="showConfigPanel" @importApp="showConfigPanel"
+                    @updateState="getList"></app-card>
+        </div>
+        <!-- Application not imported End -->
+      </div>
+      <!-- App List End -->
+    </template>
 
-	</div>
+  </div>
 </template>
 
 <script>
@@ -78,396 +78,399 @@ import draggable from 'vuedraggable'
 import xor from 'lodash/xor'
 import concat from 'lodash/concat'
 import events from '@/events/events';
-import last  from 'lodash/last';
+import last from 'lodash/last';
 import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
 
 const SYNCTHING_STORE_ID = 74
 
 // meta_data :: build-in app
 const builtInApplications = [
-	{
-		id: "1",
-		name: "App Store",
-		icon: require(`@/assets/img/app/appstore.svg`),
-		state: "0",
-		custom_id: "1",
-		type: "system"
-	},
-	{
-		id: "2",
-		name: "Files",
-		icon: require(`@/assets/img/app/files.svg`),
-		state: "0",
-		custom_id: "2",
-		type: "system"
-	},
+  {
+    id: "1",
+    name: "App Store",
+    icon: require(`@/assets/img/app/appstore.svg`),
+    state: "0",
+    custom_id: "1",
+    type: "system"
+  },
+  {
+    id: "2",
+    name: "Files",
+    icon: require(`@/assets/img/app/files.svg`),
+    state: "0",
+    custom_id: "2",
+    type: "system"
+  },
 ]
 
 const orderConfig = "app_order"
 
 export default {
-	mixins: [business_ShowNewAppTag],
-	data() {
-		return {
-			user_id: localStorage.getItem("user_id"),
-			appList: [],
-			notImportedList: [],
-			appConfig: {},
-			drag: false,
-			isLoading: true,
-			isShowing: false,
-			importHelpText: "Click icon to import.",
-			appHelpText: 'Drag icons to sort.',
-			draggable: ".handle"
-		}
-	},
-	components: {
-		AppCard,
-		draggable,
-		AppSectionTitleTip
-	},
-	provide() {
-		return {
-			openAppStore: this.showInstall,
-		};
-	},
-	computed: {
-		dragOptions() {
-			return {
-				animation: 300,
-				group: "description",
-				disabled: false,
-				ghostClass: "ghost"
-			};
-		},
-		showDragTip() {
-			return this.draggable === ".handle"
-		},
-		exsitingAppsShow() {
-			return this.$store.state.existingAppsSwitch
-		}
-	},
-	created() {
-		this.getList();
-		this.draggable = this.isMobile() ? "" : ".handle";
-		this.$EventBus.$on(events.OPEN_APP_STORE_AND_GOTO_SYNCTHING, () => {
-			this.showInstall(SYNCTHING_STORE_ID)
-		});
+  mixins: [business_ShowNewAppTag],
+  data() {
+    return {
+      user_id: localStorage.getItem("user_id"),
+      appList: [],
+      notImportedList: [],
+      appConfig: {},
+      drag: false,
+      isLoading: true,
+      isShowing: false,
+      importHelpText: "Click icon to import.",
+      appHelpText: 'Drag icons to sort.',
+      draggable: ".handle"
+    }
+  },
+  components: {
+    AppCard,
+    draggable,
+    AppSectionTitleTip
+  },
+  provide() {
+    return {
+      openAppStore: this.showInstall,
+    };
+  },
+  computed: {
+    dragOptions() {
+      return {
+        animation: 300,
+        group: "description",
+        disabled: false,
+        ghostClass: "ghost"
+      };
+    },
+    showDragTip() {
+      return this.draggable === ".handle"
+    },
+    exsitingAppsShow() {
+      return this.$store.state.existingAppsSwitch
+    }
+  },
+  created() {
+    this.getList();
+    this.draggable = this.isMobile() ? "" : ".handle";
+    this.$EventBus.$on(events.OPEN_APP_STORE_AND_GOTO_SYNCTHING, () => {
+      this.showInstall(SYNCTHING_STORE_ID)
+    });
 
-		this.$EventBus.$on(events.RELOAD_APP_LIST, () => {
-			this.getList();
-		});
-	},
-	beforeDestroy() {
-		this.$EventBus.$off(events.OPEN_APP_STORE_AND_GOTO_SYNCTHING);
-	},
-	methods: {
+    this.$EventBus.$on(events.RELOAD_APP_LIST, () => {
+      this.getList();
+    });
+  },
+  beforeDestroy() {
+    this.$EventBus.$off(events.OPEN_APP_STORE_AND_GOTO_SYNCTHING);
+  },
+  methods: {
 
-		isMobile() {
-			let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
-			return flag
-		},
-		/**
-		 * @description: Fetch the list of installed apps
-		 * @return {*} void
-		 */
-		async getList() {
-			this.isLoading = true;
-			try {
-				const listRes = await this.$api.container.getMyAppList();
-				let listLinkApp = await this.$api.users.getLinkAppDetail().then(v => v.data.data);
-				if (listLinkApp === "") {
-					listLinkApp = []
-				}
-				localStorage.setItem("listLinkApp", JSON.stringify(listLinkApp))
-				const orgAppList = listRes.data.data.casaos_apps
-				let casaAppList = concat(builtInApplications, orgAppList, listLinkApp)
-				casaAppList.reverse()
-				let sortRes = await this.$api.users.getCustomStorage(orderConfig)
-				let sortList = sortRes.data.data.data
-				let newList = casaAppList.map((item) => {
-					return item.custom_id
-				})
-				if (sortList != "") {
-					// Resort list
-					sortList = this.getNewSortList(sortList, newList)
-					casaAppList.sort((a, b) => {
-						return sortList.indexOf(a.custom_id) - sortList.indexOf(b.custom_id);
-					});
-				}
-				this.appList = casaAppList;
-				if (xor(sortList, newList).length > 0) {
-					this.saveSortData()
-				}
-				this.notImportedList = listRes.data.data.local_apps
-				this.isLoading = false;
-			} catch (error) {
-				this.isLoading = false;
-			}
-		},
+    isMobile() {
+      let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
+      return flag
+    },
+    /**
+     * @description: Fetch the list of installed apps
+     * @return {*} void
+     */
+    async getList() {
+      this.isLoading = true;
+      try {
+        const listRes = await this.$api.container.getMyAppList();
+        let listLinkApp = await this.$api.users.getLinkAppDetail().then(v => v.data.data);
+        if (listLinkApp === "") {
+          listLinkApp = []
+        }
+        localStorage.setItem("listLinkApp", JSON.stringify(listLinkApp))
+        const orgAppList = listRes.data.data.casaos_apps
+        let casaAppList = concat(builtInApplications, orgAppList, listLinkApp)
+        casaAppList.reverse()
+        let sortRes = await this.$api.users.getCustomStorage(orderConfig)
+        let sortList = sortRes.data.data.data
+        let newList = casaAppList.map((item) => {
+          return item.custom_id
+        })
+        if (sortList != "") {
+          // Resort list
+          sortList = this.getNewSortList(sortList, newList)
+          casaAppList.sort((a, b) => {
+            return sortList.indexOf(a.custom_id) - sortList.indexOf(b.custom_id);
+          });
+        }
+        this.appList = casaAppList;
+        if (xor(sortList, newList).length > 0) {
+          this.saveSortData()
+        }
+        this.notImportedList = listRes.data.data.local_apps
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+      }
+    },
 
-		/**
-		 * @description:
-		 * @param {Array} oriList
-		 * @param {Array} newList
-		 * @return {*}
-		 */
-		getNewSortList(oriList, newList) {
-			let xorList = xor(oriList, newList)
-			xorList.reverse()
-			return concat(oriList, xorList)
-		},
+    /**
+     * @description:
+     * @param {Array} oriList
+     * @param {Array} newList
+     * @return {*}
+     */
+    getNewSortList(oriList, newList) {
+      let xorList = xor(oriList, newList)
+      xorList.reverse()
+      return concat(oriList, xorList)
+    },
 
-		/**
-		 * @description: Save Sort Table
-		 * @param {*}
-		 * @return {*}
-		 */
-		saveSortData() {
-			let newList = this.appList.map((item) => {
-				return item.custom_id
-			})
-			let data = {
-				data: newList
-			}
-			this.$api.users.setCustomStorage(orderConfig, data)
-		},
-		/**
-		 * @description: Handle on Sort End
-		 * @param {*}
-		 * @return {*}
-		 */
-		onSortEnd() {
-			this.drag = false
-			this.saveSortData()
-		},
+    /**
+     * @description: Save Sort Table
+     * @param {*}
+     * @return {*}
+     */
+    saveSortData() {
+      let newList = this.appList.map((item) => {
+        return item.custom_id
+      })
+      let data = {
+        data: newList
+      }
+      this.$api.users.setCustomStorage(orderConfig, data)
+    },
+    /**
+     * @description: Handle on Sort End
+     * @param {*}
+     * @return {*}
+     */
+    onSortEnd() {
+      this.drag = false
+      this.saveSortData()
+    },
 
-		/**
-		 * @description: Show Install Panel Programmatic
-		 * @return {*} void
-		 */
-		async showInstall(storeId = 0, mode) {
-			if (mode === 'custom') {
-				this.$messageBus('apps_custominstall');
-			}
-			this.isShowing = true
+    /**
+     * @description: Show Install Panel Programmatic
+     * @return {*} void
+     */
+    async showInstall(storeId = 0, mode) {
+      if (mode === 'custom') {
+        this.$messageBus('apps_custominstall');
+      }
+      this.isShowing = true
 
-			const networks = await this.$api.container.getNetworks();
-			const memory = this.$store.state.hardwareInfo.mem;
-			const configData = {
-				networks: networks.data.data,
-				memory: memory
-			}
-			this.isShowing = false
-			this.$buefy.modal.open({
-				parent: this,
-				component: AppPanel,
-				hasModalCard: true,
-				customClass: 'app-panel',
-				trapFocus: true,
-				canCancel: ['escape'],
-				scroll: "keep",
-				animation: "zoom-in",
-				events: {
-					'updateState': () => {
-						this.getList()
-					}
-				},
-				props: {
-					id: "0",
-					state: "install",
-					configData: configData,
-					storeId: storeId,
-					settingData: mode !== 'custom' ? undefined : {}
-				}
-			})
-		},
+      const networks = await this.$api.container.getNetworks();
+      const memory = this.$store.state.hardwareInfo.mem;
+      const configData = {
+        networks: networks.data.data,
+        memory: memory
+      }
+      this.isShowing = false
+      this.$buefy.modal.open({
+        parent: this,
+        component: AppPanel,
+        hasModalCard: true,
+        customClass: 'app-panel',
+        trapFocus: true,
+        canCancel: ['escape'],
+        scroll: "keep",
+        animation: "zoom-in",
+        events: {
+          'updateState': () => {
+            this.getList()
+          }
+        },
+        props: {
+          id: "0",
+          state: "install",
+          configData: configData,
+          storeId: storeId,
+          settingData: mode !== 'custom' ? undefined : {}
+        }
+      })
+    },
 
-		/**
-		 * @description: Show Settings Panel Programmatic
-		 * @param {Object} {id:String,status:String }
-		 * @param {Boolean} isCasa
-		 * @return {*}
-		 */
-		async showConfigPanel(item, isCasa) {
-			this.$messageBus('appsexsiting_open', item.name);
-			if (item.type === 'LinkApp') {
-				await this.showExternalLinkPanel(item)
-				return
-			}
-			let state = item.state
-			let id = item.id
-			const networks = await this.$api.container.getNetworks();
-			const memory = this.$store.state.hardwareInfo.mem;
-			const configData = {
-				networks: networks.data.data,
-				memory: memory
-			}
-			const ret = await this.$api.container.getInfo(id);
-			this.$buefy.modal.open({
-				parent: this,
-				component: AppPanel,
-				hasModalCard: true,
-				customClass: '',
-				trapFocus: true,
-				canCancel: [''],
-				scroll: "keep",
-				animation: "zoom-in",
-				events: {
-					'updateState': () => {
-						this.getList()
-					}
-				},
-				props: {
-					id: id,
-					state: "update",
-					isCasa: isCasa,
-					runningStatus: state,
-					configData: configData,
-					settingData: ret.data.data
-				}
-			})
-		},
-		async showExternalLinkPanel(item = {}) {
-			this.$buefy.modal.open({
-				parent: this,
-				component: ExternalLinkPanel,
-				hasModalCard: true,
-				customClass: '',
-				trapFocus: true,
-				canCancel: [''],
-				scroll: "keep",
-				animation: "zoom-in",
-				events: {
-					'updateState': () => {
-						this.$messageBus('apps_external');
-						this.getList().then(() => {
-							this.scrollToNewApp();
-						})
-					}
-				},
-				props: {
-					linkId: item.id,
-					linkName: item.name,
-					linkHost: item.host,
-					linkIcon: item.icon
-				}
-			})
-		},
+    /**
+     * @description: Show Settings Panel Programmatic
+     * @param {Object} {id:String,status:String }
+     * @param {Boolean} isCasa
+     * @return {*}
+     */
+    async showConfigPanel(item, isCasa) {
+      this.$messageBus('appsexsiting_open', item.name);
+      if (item.type === 'LinkApp') {
+        await this.showExternalLinkPanel(item)
+        return
+      }
+      let state = item.state
+      let id = item.id
+      const networks = await this.$api.container.getNetworks();
+      const memory = this.$store.state.hardwareInfo.mem;
+      const configData = {
+        networks: networks.data.data,
+        memory: memory
+      }
+      const ret = await this.$api.container.getInfo(id);
+      this.$buefy.modal.open({
+        parent: this,
+        component: AppPanel,
+        hasModalCard: true,
+        customClass: '',
+        trapFocus: true,
+        canCancel: [''],
+        scroll: "keep",
+        animation: "zoom-in",
+        events: {
+          'updateState': () => {
+            this.getList()
+          }
+        },
+        props: {
+          id: id,
+          state: "update",
+          isCasa: isCasa,
+          runningStatus: state,
+          configData: configData,
+          settingData: ret.data.data
+        }
+      })
+    },
+    async showExternalLinkPanel(item = {}) {
+      this.$buefy.modal.open({
+        parent: this,
+        component: ExternalLinkPanel,
+        hasModalCard: true,
+        customClass: '',
+        trapFocus: true,
+        canCancel: [''],
+        scroll: "keep",
+        animation: "zoom-in",
+        events: {
+          'updateState': () => {
+            this.$messageBus('apps_external');
+            this.getList().then(() => {
+              this.scrollToNewApp();
+            })
+          }
+        },
+        props: {
+          linkId: item.id,
+          linkName: item.name,
+          linkHost: item.host,
+          linkIcon: item.icon
+        }
+      })
+    },
 
-		scrollToNewApp() {
-			// business :: scroll to last position
-			let id = last(this.newAppIds);
-			let showEl = document.getElementById("app-" + id)
-			showEl && showEl.scrollIntoView({ behavior: "smooth", block: 'end' });
-		}
-	},
-	sockets: {
-		app_install(res) {
-			if (res.finished) {
-				this.getList().then(() => {
-					this.scrollToNewApp();
-				});
-			}
-		},
-		app_uninstall() {
-			this.getList();
-		},
-		/**
-		 * @description: Update App Version
-		 * @param {Object} data
-		 * @return {void}
-		 */
-		'app:update-end'(data) {
-			if (data.Properties['docker:image:updated'] === "true") {
-				// business :: Tagging of new app / scrollIntoView
-				this.addIdToSessionStorage(data.Properties['cid'])
+    scrollToNewApp() {
+      // business :: scroll to last position
+      let id = last(this.newAppIds);
+      let showEl = document.getElementById("app-" + id)
+      showEl && showEl.scrollIntoView({behavior: "smooth", block: 'end'});
+    }
+  },
+  sockets: {
+    "app:install-end"() {
+      this.getList().then(() => {
+        this.scrollToNewApp();
+      });
+    },
+    "app:install-error"(res) {
+      // res.Properties['message']
+    },
+    "app:uninstall-end"(res) {
+      // res.Properties['app:name']
+      // res.Properties['id']
+      this.getList();
+    },
+    /**
+     * @description: Update App Version
+     * @param {Object} data
+     * @return {void}
+     */
+    'app:update-end'(data) {
+      if (data.Properties['docker:image:updated'] === "true") {
+        // business :: Tagging of new app / scrollIntoView
+        this.addIdToSessionStorage(data.Properties['cid'])
 
-				this.$buefy.toast.open({
-					message: this.$t(`{name} has been updated to the latest version!`, {
-						name: data.Properties.name
-					}),
-					type: 'is-success'
-				})
-				this.getList().then(() => {
-					this.scrollToNewApp();
-				});
-			}
-		},
-		'app:update-error'(data) {
-			if (data.Properties.cid === this.item.id) {
-				this.isUpdating = false;
-				this.$buefy.toast.open({
-					message: this.$t(data.Properties['error']),
-					type: 'is-danger'
-				})
-			}
-		},
+        this.$buefy.toast.open({
+          message: this.$t(`{name} has been updated to the latest version!`, {
+            name: data.Properties.name
+          }),
+          type: 'is-success'
+        })
+        this.getList().then(() => {
+          this.scrollToNewApp();
+        });
+      }
+    },
+    'app:update-error'(data) {
+      if (data.Properties.cid === this.item.id) {
+        this.isUpdating = false;
+        this.$buefy.toast.open({
+          message: this.$t(data.Properties['error']),
+          type: 'is-danger'
+        })
+      }
+    },
 
-	}
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .app-list {
-	position: relative;
+  position: relative;
 }
 
 @media screen and (max-width: 480px) {
-	.app-list {
-		display: flex;
+  .app-list {
+    display: flex;
 
-		.column {
-			flex: none;
-			width: 50%;
-		}
-	}
+    .column {
+      flex: none;
+      width: 50%;
+    }
+  }
 }
 
 @media screen and (max-width: $tablet) {
-	.app-list {
-		display: flex;
+  .app-list {
+    display: flex;
 
-		.column {
-			flex: none;
-			width: 50%;
-		}
-	}
+    .column {
+      flex: none;
+      width: 50%;
+    }
+  }
 }
 
 @media screen and (min-width: $tablet) {
-	.app-list {
-		.column {
-			flex: none;
-			width: 50%;
-		}
-	}
+  .app-list {
+    .column {
+      flex: none;
+      width: 50%;
+    }
+  }
 }
 
 @media screen and (min-width: $desktop) {
-	.app-list {
-		.column {
-			flex: none;
-			width: 33.333333%;
-		}
-	}
+  .app-list {
+    .column {
+      flex: none;
+      width: 33.333333%;
+    }
+  }
 }
 
 @media screen and (min-width: $widescreen) {
-	.app-list {
-		.column {
-			flex: none;
-			width: 25%;
-		}
-	}
+  .app-list {
+    .column {
+      flex: none;
+      width: 25%;
+    }
+  }
 }
 
 @media screen and (min-width: $fullhd) {
-	.app-list {
-		.column {
-			flex: none;
-			width: 20%;
-		}
-	}
+  .app-list {
+    .column {
+      flex: none;
+      width: 20%;
+    }
+  }
 }
 </style>
