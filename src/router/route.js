@@ -52,7 +52,7 @@ export default [
         path: '/developmentElement',
         name: 'DevelopmentElement',
         hidden: true,
-        component: () => import('@/components/Storage/MergeStorages.vue'),
+        component: () => import('@/components/Apps/AppPanel.vue'),
         meta: {
             requireAuth: true,
             showBackground: false
