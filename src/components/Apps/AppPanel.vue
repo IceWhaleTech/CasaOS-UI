@@ -1139,6 +1139,15 @@ export default {
 					this.initData.appstore_id = id
 
 					this.currentInstallId = 0
+
+					this.architectures = respData.architectures
+					if (this.unuseable) {
+						// this.showAppDetial(id);
+						this.sidebarOpen = true;
+						this.appDetailData = respData
+						return
+					}
+
 					if (respData.tip !== "null" && respData.tip !== "[]" && respData.tip !== "") {
 						this.$buefy.dialog.confirm({
 							title: this.$t('Attention'),
