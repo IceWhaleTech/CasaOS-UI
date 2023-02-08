@@ -171,7 +171,8 @@
 					<!-- Background End -->
 
 					<!--  Show other Docker container app(s) Switch Start  -->
-					<div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2" v-if="this.$store.state.notImportList.length > 0">
+					<div v-if="this.$store.state.notImportList.length > 0"
+					     class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="docker" pack="casa" size="is-20"></b-icon>
 							{{ $t('Show other Docker container app(s)') }}
@@ -644,6 +645,7 @@ export default {
 			this.$api.sys.hardwareInfo().then(res => {
 				if (res.data.success == 200) {
 					this.deviceModel = res.data.data.drive_model
+					localStorage.setItem('arch', res.data.data.arch || 'am64')
 				}
 			})
 		},
@@ -1110,7 +1112,7 @@ export default {
 			}
 		}
 	}
-
+	
 
 }
 </style>

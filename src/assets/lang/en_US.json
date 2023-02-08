@@ -351,5 +351,6 @@
   "Unable to update at the moment!": "Unable to update at the moment!",
   "Updating": "Updating",
   "Uninstalling": "Uninstalling",
-  "CheckThenUpdate": "CheckThenUpdate"
+  "CheckThenUpdate": "CheckThenUpdate",
+  "Not compatible with {arch} devices.": "Not compatible with {arch} devices."
 }
