@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-08 00:38:27
- * @FilePath: \CasaOS-UI-0.4.2\src\components\Apps\AppSection.vue
+ * @LastEditTime: 2023-02-08 19:27:09
+ * @FilePath: /CasaOS-UI/src/components/Apps/AppSection.vue
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -42,7 +42,7 @@
       </div>
       <div v-if="isLoading" v-for="(index) in skCount" :id="'app-' + index" :key="'app-' + index"
         class="column is-narrow is-3 handle">
-        <app-card-skeleton :index="index" ></app-card-skeleton>
+        <app-card-skeleton :index="index"></app-card-skeleton>
       </div>
       <!-- App Icon Card End -->
       <!-- <b-loading slot="footer" v-model="isLoading" :is-full-page="false"></b-loading> -->
@@ -117,7 +117,7 @@ export default {
       notImportedList: [],
       appConfig: {},
       drag: false,
-      isLoading: true,
+      isLoading: false,
       isShowing: false,
       importHelpText: "Click icon to import.",
       appHelpText: 'Drag icons to sort.',
@@ -199,7 +199,7 @@ export default {
      * @return {*} void
      */
     async getList() {
-      this.isLoading = true;
+
       try {
         const listRes = await this.$api.container.getMyAppList();
         let listLinkApp = await this.$api.users.getLinkAppDetail().then(v => v.data.data);
@@ -232,14 +232,19 @@ export default {
         this.retryCount = 0;
         this.appListErrorMessage = ""
       } catch (error) {
+        this.isLoading = true;
         if (this.retryCount < 5) {
           setTimeout(() => {
             this.retryCount++
             this.getList();
           }, 2000)
         } else {
-          this.isLoading = false;
+
           this.appListErrorMessage = "Failed to get app list."
+          this.$buefy.toast.open({
+            message: this.$t(`Failed to load apps, please refresh later.`),
+            type: 'is-danger'
+          })
         }
       }
     },
