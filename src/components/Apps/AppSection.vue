@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-06 17:47:30
- * @FilePath: /CasaOS-UI/src/components/Apps/AppSection.vue
+ * @LastEditTime: 2023-02-08 00:38:27
+ * @FilePath: \CasaOS-UI-0.4.2\src\components\Apps\AppSection.vue
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -14,7 +14,7 @@
     <!-- Title Bar Start -->
     <div class="is-flex is-align-items-center mb-4">
       <app-section-title-tip id="appTitle1" class="is-flex-grow-1 has-text-sub-04" label="Drag icons to sort."
-                             title="Apps"></app-section-title-tip>
+        title="Apps"></app-section-title-tip>
 
       <b-dropdown animation="fade1" aria-role="menu" class="file-dropdown" position="is-bottom-left">
         <template #trigger>
@@ -32,18 +32,20 @@
 
     <!-- App List Start -->
     <draggable v-model="appList" :draggable="draggable"
-               class="columns is-variable is-2 is-multiline app-list contextmenu-canvas" tag="div" v-bind="dragOptions"
-               @end="onSortEnd" @start="drag = true">
+      class="columns is-variable is-2 is-multiline app-list contextmenu-canvas" tag="div" v-bind="dragOptions"
+      @end="onSortEnd" @start="drag = true">
 
       <!-- App Icon Card Start -->
-      <div v-for="(item) in appList" :id="'app-' + item.id" :key="'app-' + item.id"
-           class="column is-narrow is-3 handle">
-        <app-card :isCasa="true" :item="item" @configApp="showConfigPanel"
-                  @updateState="getList"></app-card>
+      <div v-if="!isLoading" v-for="(item) in appList" :id="'app-' + item.id" :key="'app-' + item.id"
+        class="column is-narrow is-3 handle">
+        <app-card :isCasa="true" :item="item" @configApp="showConfigPanel" @updateState="getList"></app-card>
+      </div>
+      <div v-if="isLoading" v-for="(index) in skCount" :id="'app-' + index" :key="'app-' + index"
+        class="column is-narrow is-3 handle">
+        <app-card-skeleton :index="index" ></app-card-skeleton>
       </div>
       <!-- App Icon Card End -->
-
-      <b-loading slot="footer" v-model="isLoading" :is-full-page="false"></b-loading>
+      <!-- <b-loading slot="footer" v-model="isLoading" :is-full-page="false"></b-loading> -->
     </draggable>
     <!-- App List End -->
     <template v-if="notImportedList.length > 0 && exsitingAppsShow">
@@ -59,7 +61,7 @@
         <!-- Application not imported Start -->
         <div v-for="(item) in notImportedList" :key="'app-' + item.id" class="column is-narrow is-3">
           <app-card :isCasa="false" :item="item" @configApp="showConfigPanel" @importApp="showConfigPanel"
-                    @updateState="getList"></app-card>
+            @updateState="getList"></app-card>
         </div>
         <!-- Application not imported End -->
       </div>
@@ -71,6 +73,7 @@
 
 <script>
 import AppCard from './AppCard.vue'
+import AppCardSkeleton from './AppCardSkeleton.vue';
 import AppPanel from './AppPanel.vue'
 import ExternalLinkPanel from "@/components/Apps/ExternalLinkPanel";
 import AppSectionTitleTip from './AppSectionTitleTip.vue'
@@ -118,13 +121,17 @@ export default {
       isShowing: false,
       importHelpText: "Click icon to import.",
       appHelpText: 'Drag icons to sort.',
-      draggable: ".handle"
+      draggable: ".handle",
+      retryCount: 0,
+      appListErrorMessage: "",
+      skCount: 0,
     }
   },
   components: {
     AppCard,
     draggable,
-    AppSectionTitleTip
+    AppSectionTitleTip,
+    AppCardSkeleton
   },
   provide() {
     return {
@@ -137,7 +144,8 @@ export default {
         animation: 300,
         group: "description",
         disabled: false,
-        ghostClass: "ghost"
+        ghostClass: "ghost",
+
       };
     },
     showDragTip() {
@@ -160,6 +168,11 @@ export default {
   },
   beforeDestroy() {
     this.$EventBus.$off(events.OPEN_APP_STORE_AND_GOTO_SYNCTHING);
+    window.removeEventListener('resize', this.getSkCount);
+  },
+  mounted() {
+    window.addEventListener('resize', this.getSkCount);
+    this.getSkCount()
   },
   methods: {
 
@@ -167,6 +180,20 @@ export default {
       let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
       return flag
     },
+
+    getSkCount() {
+      const windowWidth = window.innerWidth
+      if (windowWidth < 1024) {
+        this.skCount = 4
+      } else if (windowWidth < 1216) {
+        this.skCount = 6
+      } else if (windowWidth < 1408) {
+        this.skCount = 8
+      } else {
+        this.skCount = 10
+      }
+    },
+
     /**
      * @description: Fetch the list of installed apps
      * @return {*} void
@@ -200,9 +227,20 @@ export default {
           this.saveSortData()
         }
         this.notImportedList = listRes.data.data.local_apps
+        this.$store.commit('SET_NOTIMPORT_LIST', this.notImportedList);
         this.isLoading = false;
+        this.retryCount = 0;
+        this.appListErrorMessage = ""
       } catch (error) {
-        this.isLoading = false;
+        if (this.retryCount < 5) {
+          setTimeout(() => {
+            this.retryCount++
+            this.getList();
+          }, 2000)
+        } else {
+          this.isLoading = false;
+          this.appListErrorMessage = "Failed to get app list."
+        }
       }
     },
 
@@ -359,7 +397,7 @@ export default {
       // business :: scroll to last position
       let id = last(this.newAppIds);
       let showEl = document.getElementById("app-" + id)
-      showEl && showEl.scrollIntoView({behavior: "smooth", block: 'end'});
+      showEl && showEl.scrollIntoView({ behavior: "smooth", block: 'end' });
     }
   },
   sockets: {
