@@ -1,9 +1,9 @@
 <!--
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-03-01 21:10:57
- * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-09-29 14:56:22
- * @FilePath: /CasaOS-UI/src/components/Apps/AppPanel.vue
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-02-07 21:07:35
+ * @FilePath: \CasaOS-UI-0.4.2\src\components\Apps\AppPanel.vue
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -1133,6 +1133,7 @@ export default {
           }
         }
       }).catch(() => {
+        this.currentInstallId = 0
         this.$buefy.toast.open({
           message: this.$t(`There was an error loading the data, please try again!`),
           type: 'is-danger'

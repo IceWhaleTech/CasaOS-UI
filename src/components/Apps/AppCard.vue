@@ -1,7 +1,7 @@
 <!--
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-06 18:20:59
- * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
+ * @LastEditTime: 2023-02-08 00:22:01
+ * @FilePath: \CasaOS-UI-0.4.2\src\components\Apps\AppCard.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -84,7 +84,7 @@
                  animation="fade1" type="is-white">
 
         <div
-            class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-5 pb-3 img-c">
+            class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-5 pb-3px img-c">
           <div class="is-flex is-justify-content-center">
             <b-image :class="item.state, isLoading | dotClass" :src="item.icon"
                      :src-fallback="require('@/assets/img/app/default.png')" class="is-64x64"
@@ -564,6 +564,9 @@ export default {
 </script>
 
 <style lang="scss">
+.pb-3px{
+  padding-bottom: 3px;
+}
 .app-card-drop {
   .dropdown-menu {
     min-width: 10rem;

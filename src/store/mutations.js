@@ -121,5 +121,9 @@ const mutations = {
         state.casaos_lang = val
     },
 
+    SET_NOTIMPORT_LIST(state, val) {
+        state.notImportList = val
+    },
+
 }
 export default mutations

@@ -1,7 +1,7 @@
 <!--
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-06 19:36:52
- * @FilePath: /CasaOS-UI/src/components/filebrowser/FilePanel.vue
+ * @LastEditTime: 2023-02-07 21:02:50
+ * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\FilePanel.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -977,8 +977,10 @@ export default {
 
 	},
 	sockets: {
-		file_operate(data) {
-			const taskList = data.file_operate.data
+
+		"casaos:file:operate"(res) {
+			const file_operate = JSON.parse(res.Properties.file_operate)
+			const taskList = file_operate.data
 			taskList.forEach(task => {
 				if (task.finished && task.to === this.currentPath) {
 					this.reload()
@@ -994,7 +996,7 @@ export default {
 			// Storage
 			this.reload()
 		},
-		sys_usb() {
+		"local-storage:disk:added"() {
 			setTimeout(() => {
 				if (this.currentPath == "/DATA") {
 					this.reload()

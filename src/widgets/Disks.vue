@@ -129,12 +129,6 @@ export default {
 		},
 	},
 	sockets: {
-		sys_disk(data) {
-			this.getDiskInfo(data.data)
-		},
-		sys_usb(data) {
-			this.usbDisks = data.data
-		},
 		"casaos:system:utilization"(res) {
 			let data = res.Properties
 			// DISK

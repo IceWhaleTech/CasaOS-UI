@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-08-03 14:08:02
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-06 18:14:49
- * @FilePath: /CasaOS-UI/src/components/filebrowser/sidebar/MountList.vue
+ * @LastEditTime: 2023-02-07 20:57:27
+ * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\sidebar\MountList.vue
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -368,29 +368,14 @@ export default {
 	},
 	sockets: {
 
-		sys_usb() {
+		"local-storage:disk:added"() {
 			setTimeout(() => {
-				this.$api.disks.getUsbs().then((res) => {
-					const usbStorageArray = []
-					res.data.data.forEach(item => {
-						item.children.forEach(part => {
-							usbStorageArray.push(part)
-						})
-					})
-					this.usbStorageList = usbStorageArray.map((storage) => {
-						return {
-							name: storage.name,
-							icon: 'storage-USB',
-							pack: 'casa',
-							path: storage.mount_point,
-							visible: true,
-							selected: true,
-							extensions: null
-						}
-					})
-				}).catch((error) => {
-					console.log(error.reponse.message)
-				})
+				this.getUsbStorage()
+			}, 500)
+		},
+		"local-storage:disk:removed"(){
+			setTimeout(() => {
+				this.getUsbStorage()
 			}, 500)
 		},
 		storage_status() {
@@ -418,9 +403,12 @@ export default {
 				})
 			}, 500)
 		},
-		recover_status(data) {
+		"casaos:file:recover"(data) {
+			data = data.Properties
 			var toastType;
-			switch (data.status) {
+			var reg = /^["|'](.*)["|']$/g;
+			const status = data.status.replace(reg, "$1");
+			switch (status) {
 				case 'warn':
 					toastType = 'is-warning'
 					break;
@@ -433,7 +421,7 @@ export default {
 					break;
 			}
 			this.$buefy.toast.open({
-				message: this.$t(data.message),
+				message: this.$t(data.message.replace(reg, "$1")),
 				duration: 5000,
 				type: toastType
 			})

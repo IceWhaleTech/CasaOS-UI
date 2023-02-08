@@ -2,16 +2,16 @@
  * @Author: JerryK
  * @Date: 2022-03-04 18:55:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 11:29:28
+ * @LastEditTime: 2023-02-08 00:37:40
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\filebrowser\viewers\VideoPlayer.vue
+ * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\viewers\VideoPlayer.vue
 -->
 <template>
   <div class="overlay">
     <header class="modal-card-head">
       <div class="is-flex-grow-1 is-flex ">
         <!-- Title Start -->
-        <h3 class="title is-5 one-line">{{item.name}}</h3>
+        <h3 class="title is-5 one-line">{{ item.name }}</h3>
         <!-- Title End -->
       </div>
       <div class="is-flex is-align-items-center">
@@ -30,16 +30,16 @@
 
     <!-- Player Start -->
     <div class="is-flex is-justify-content-center is-align-items-center is-flex-grow-1 v-container video">
-      <div class="video-container">
+      <div class="video-container " :class="{'is-align-items-center':isAudio}">
         <vue-plyr key="video-player" v-if="isVideo" ref="plyr" >
-          <video controls crossorigin >
+          <video controls crossorigin>
             <source :src="getFileUrl(item)" type="video/mp4" />
           </video>
 
         </vue-plyr>
-        <vue-plyr key="audio-player" v-if="isAudio" ref="plyr" >
+        <vue-plyr key="audio-player" v-if="isAudio" ref="plyr" class="plyr-audio">
           <audio controls crossorigin playsinline>
-            <source :src="getFileUrl(item)" :type="'audio/'+ext" />
+            <source :src="getFileUrl(item)" :type="'audio/' + ext" />
           </audio>
         </vue-plyr>
       </div>
@@ -82,9 +82,15 @@ export default {
         }
       }
     },
+    list: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    }
   },
   components: {
-    VuePlyr:()=>import("vue-plyr")
+    VuePlyr: () => import("vue-plyr")
   },
   data() {
     return {
@@ -118,11 +124,44 @@ export default {
       this.$emit("close");
     }
   },
-  beforeDestroy () {
+  beforeDestroy() {
     this.$refs.plyr.player.destroy();
   },
 }
 </script>
 
 <style>
+.plyr {
+  height: 100%;
+  width: 100%;
+}
+
+.plyr--audio{
+  height: auto !important;
+}
+
+.plyr__video-wrapper {
+  height: 100%;
+}
+
+.plyr__video-wrapper iframe {
+  width: 100%;
+  height: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </style>

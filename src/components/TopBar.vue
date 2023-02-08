@@ -1,7 +1,7 @@
 <!--
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-01-16 16:13:38
- * @FilePath: /CasaOS-UI/src/components/TopBar.vue
+ * @LastEditTime: 2023-02-07 22:35:06
+ * @FilePath: \CasaOS-UI-0.4.2\src\components\TopBar.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -171,7 +171,7 @@
 					<!-- Background End -->
 
 					<!--  Show other Docker container app(s) Switch Start  -->
-					<div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2">
+					<div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2" v-if="this.$store.state.notImportList.length > 0">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="docker" pack="casa" size="is-20"></b-icon>
 							{{ $t('Show other Docker container app(s)') }}

@@ -11,9 +11,9 @@
 <template>
 	<div v-if="isShow" class="mr-2 operation-status-bar">
 		<popper :options="{
-      placement: 'top',
-      modifiers: { offset: { offset: '0,5px' } }
-    }" enter-active-class="animated fadeIn" leave-active-class=" fadeOut" trigger="clickToOpen">
+			placement: 'top',
+			modifiers: { offset: { offset: '0,5px' } }
+		}" enter-active-class="animated fadeIn" leave-active-class=" fadeOut" trigger="clickToOpen">
 			<div class="popper">
 				<div class="is-flex is-align-items-center">
 					<div class=" is-flex-grow-1">
@@ -21,7 +21,7 @@
 					</div>
 					<div class=" is-flex-shrink-0 mr-2">
 						<b-button :label="$t('cancel-all')" :loading="isLoading" class="mr-2" rounded size="is-small"
-						          type="is-primary is-light" @click="cancel"/>
+							type="is-primary is-light" @click="cancel" />
 					</div>
 				</div>
 
@@ -68,8 +68,9 @@ export default {
 		}
 	},
 	sockets: {
-		file_operate(data) {
-			const taskList = data.file_operate.data
+		"casaos:file:operate"(res) {
+			const file_operate = JSON.parse(res.Properties.file_operate)
+			const taskList = file_operate.data
 			this.taskList = taskList.filter(task => {
 				return !task.finished
 			})
@@ -79,4 +80,5 @@ export default {
 </script>
 
 <style>
+
 </style>
