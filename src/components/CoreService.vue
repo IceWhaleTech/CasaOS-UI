@@ -139,6 +139,7 @@ export default {
   mounted() {
     this.WSHub = this.initMessageBus();
   },
+  inject: ['homeShowFiles'],
   methods: {
     createWS(domain) {
       let socket
