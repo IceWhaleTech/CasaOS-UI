@@ -6,7 +6,7 @@
  * @Description: File API
  * @FilePath: \CasaOS-UI\src\service\file.js
  */
-import { api } from "./service.js";
+import {api} from "./service.js";
 
 const PREFIX = "/file"
 
@@ -30,7 +30,7 @@ const file = {
 
     // create file
     create(path) {
-        return api.post(`${PREFIX}`, {
+        return api.post(`/v3${PREFIX}`, {
             path: path
         });
     },
