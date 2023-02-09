@@ -138,6 +138,8 @@ const testVisionNum = (prefix) => {
     // default version number is /v1
     if (/^http/.test(prefix)) {
         return prefix
+    } else if (/^\/v[3-9]/.test(prefix)) {
+        return prefix
     }
     return /^\/v2/.test(prefix) ? `${prefix}` : `/v1${prefix}`
 }
