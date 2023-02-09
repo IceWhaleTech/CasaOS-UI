@@ -30,7 +30,7 @@ const file = {
 
     // create file
     create(path) {
-        return api.post(`/v3${PREFIX}`, {
+        return api.post(`${PREFIX}`, {
             path: path
         });
     },
