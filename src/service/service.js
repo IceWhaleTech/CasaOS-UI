@@ -136,12 +136,11 @@ instance.interceptors.response.use(
 
 const testVisionNum = (prefix) => {
     // default version number is /v1
-    if (/^http/.test(prefix)) {
+    if (/^http/.test(prefix) || /^\/v[2-9]/.test(prefix)) {
         return prefix
-    } else if (/^\/v[3-9]/.test(prefix)) {
-        return prefix
+    } else {
+        return `/v1${prefix}`
     }
-    return /^\/v2/.test(prefix) ? `${prefix}` : `/v1${prefix}`
 }
 
 const CancelToken = axios.CancelToken;

@@ -25,7 +25,7 @@
           <b-button expanded tag="a" type="is-text" @click="openApp(item)">{{ $t('Open') }}</b-button>
           <b-button expanded type="is-text" @click="configApp">{{ $t('Setting') }}</b-button>
           <b-button v-if="item.appstore_id != 0 && item.appstore_id != undefined" :loading="isCloning"
-                    expanded type="is-text" @click="quickInstall(item.appstore_id)">{{
+                    expanded type="is-text" @click="appClone(item.appstore_id)">{{
               $t('Clone')
             }}
           </b-button>
@@ -410,13 +410,13 @@ export default {
       })
     },
 
-    quickInstall(id) {
+    appClone(id) {
       this.isCloning = true;
       this.$api.apps.getAppInfo(id).then(resp => {
         if (resp.data.success == 200) {
           let respData = resp.data.data
-          // messageBus :: installApp
-          this.$messageBus('appstore_install', respData.title.toString());
+          // messageBus :: apps_clone
+          this.$messageBus('apps_clone', this.item.name.toString());
 
           let initData = {}
           initData.protocol = respData.protocol
@@ -468,7 +468,8 @@ export default {
 
       this.$api.apps.checkAppVersion(params).then(resp => {
         if (resp.status === 200) {
-          // this.isUpdating = true;
+          // messageBus :: apps_checkThenUpdate
+          this.$messageBus('apps_checkupdate', this.item.name.toString());
         } else {
           this.$buefy.toast.open({
             message: this.$t(`Unable to update at the moment!`),
@@ -547,7 +548,7 @@ export default {
       }
       this.isUpdating = false;
       this.$buefy.toast.open({
-        message: this.$t(`Currently is the latest version!`),
+        message: this.$t(`{appName} is the latest version!`, {appName: this.item.name}),
         type: 'is-success',
         duration: 5000
       })
@@ -564,9 +565,10 @@ export default {
 </script>
 
 <style lang="scss">
-.pb-3px{
+.pb-3px {
   padding-bottom: 3px;
 }
+
 .app-card-drop {
   .dropdown-menu {
     min-width: 10rem;

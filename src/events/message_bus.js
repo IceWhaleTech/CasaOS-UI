@@ -154,6 +154,12 @@ module.exports = {
     apps_setting: async (name) => {
         return await intermediateProcessor("casaos-ui:app:apps_setting", {value: name})
     },
+    apps_checkupdate: async (name) => {
+        return await intermediateProcessor("casaos-ui:app:apps_checkupdate", {value: name})
+    },
+    apps_clone: async (name) => {
+        return await intermediateProcessor("casaos-ui:app:apps_checkupdate", {value: name})
+    },
     apps_uninstall: async (name) => {
         return await intermediateProcessor("casaos-ui:app:apps_uninstall", {value: name})
     },
