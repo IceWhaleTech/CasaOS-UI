@@ -243,6 +243,7 @@ export default {
         this.openSystemApps(item)
       } else if (item.type === "LinkApp") {
         window.open(item.host, '_blank');
+        this.removeIdFromSessionStorage(item.id);
       } else {
         this.$refs.dro.isActive = false
         if (item.state === 'running') {
