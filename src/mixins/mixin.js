@@ -198,7 +198,7 @@ export const mixin = {
                     parameters.files = path
                     return apiUrl + "?" + qs.stringify(parameters)
                 } else {
-                    apiUrl = `${this.baseUrl}file`;
+                    apiUrl = `${this.$protocol}//${this.$baseURL}/v3/file`;
                     parameters.path = items.path
                     return apiUrl + "?" + qs.stringify(parameters)
                 }

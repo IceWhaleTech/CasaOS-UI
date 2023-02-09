@@ -436,7 +436,7 @@ export default {
             let currentInstallAppText = status + ":" + id + " " + progress
             this.$set(this.noticesData[res.name], 'content', {text: currentInstallAppText, value: totalPercentage})
           } catch (e) {
-            console.error(e)
+            console.log(e)
           }
         }
         return
@@ -462,6 +462,14 @@ export default {
         name: res.Properties["app:name"],
         id: res.Properties["docker:container:id"],
         icon: res.Properties["app:icon"]
+      });
+    },
+    "app:update-end"(res) {
+      this.transformAppInstallationProgress({
+        finished: true,
+        name: res.Properties["name"],
+        id: res.Properties["cid"],
+        icon: ''
       });
     },
     "app:install-error"(res) {
