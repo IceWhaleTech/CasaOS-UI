@@ -620,7 +620,7 @@ export default {
      * @return {*}
      */
     getTargetUrl() {
-      return `${this.$protocol}//${this.$baseURL}/v3/file/upload`
+      return `${this.$protocol}//${this.$baseURL}/v1/file/upload`
     },
 
     /**
