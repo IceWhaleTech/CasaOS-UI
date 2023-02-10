@@ -468,6 +468,14 @@ export default {
 				icon: res.Properties["app:icon"]
 			});
 		},
+		"app:update-begin"(res) {
+			this.transformAppInstallationProgress({
+				finished: false,
+				name: res.Properties["name"],
+				id: res.Properties["cid"],
+				icon: ''
+			});
+		},
 		"app:update-end"(res) {
 			this.transformAppInstallationProgress({
 				finished: true,
