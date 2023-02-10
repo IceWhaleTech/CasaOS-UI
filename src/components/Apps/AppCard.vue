@@ -86,11 +86,14 @@
 				<div
 					class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-5 pb-3px img-c">
 					<div class="is-flex is-justify-content-center">
-						<b-image :class="item.state, isLoading | dotClass" :src="item.icon"
-						         :src-fallback="require('@/assets/img/app/default.svg')" class="is-64x64"
-						         webp-fallback=".jpg" @click.native="openApp(item)"></b-image>
-						<!-- Unstable-->
-						<cTooltip v-if="newAppIds.includes(item.id)" class="__position" content="NEW"></cTooltip>
+						<div class="is-relative">
+							<b-image :class="item.state, isLoading | dotClass" :src="item.icon"
+							         :src-fallback="require('@/assets/img/app/default.svg')" class="is-64x64"
+							         webp-fallback=".jpg" @click.native="openApp(item)"></b-image>
+							<!-- Unstable-->
+							<cTooltip v-if="newAppIds.includes(item.id)" class="__position" content="NEW"></cTooltip>
+						</div>
+						
 						
 						<!-- Loading Bar Start -->
 						<b-loading v-model="isLoading" :can-cancel="false" :is-full-page="false"
@@ -718,7 +721,7 @@ export default {
 
 .__position {
 	position: absolute !important;
-	top: 0.75rem !important;
+	top: -0.75rem !important;
 	left: 3rem !important;
 	z-index: 30;
 }
