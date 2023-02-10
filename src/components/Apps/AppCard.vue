@@ -87,7 +87,7 @@
 					class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-5 pb-3px img-c">
 					<div class="is-flex is-justify-content-center">
 						<b-image :class="item.state, isLoading | dotClass" :src="item.icon"
-						         :src-fallback="require('@/assets/img/app/default.png')" class="is-64x64"
+						         :src-fallback="require('@/assets/img/app/default.svg')" class="is-64x64"
 						         webp-fallback=".jpg" @click.native="openApp(item)"></b-image>
 						<!-- Unstable-->
 						<cTooltip v-if="newAppIds.includes(item.id)" class="__position" content="NEW"></cTooltip>

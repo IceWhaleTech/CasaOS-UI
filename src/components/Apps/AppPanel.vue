@@ -11,8 +11,8 @@
 -->
 <template>
 	<div
-			:class="{'narrow': currentSlide > 0 ,'card-width': isFirstInstall}"
-			class="app-card modal-card">
+		:class="{'narrow': currentSlide > 0 ,'card-width': isFirstInstall}"
+		class="app-card modal-card">
 		<!--    first setting！！ apps installation location-->
 		<template v-if="isFirstInstall">
 			<header class="modal-card-head b-line">
@@ -31,10 +31,11 @@
           {{ $t('(Cannot be changed)') }}
         </span>
 			</p>
-
+			
 			<section class="modal-card-body is-overlay">
 				<AppsInstallationLocation v-for="(item,index) in storageData" :key="'storage'+index" :item="item"
-				                          :scence="storage_item_scence" @selection="getSelection"></AppsInstallationLocation>
+				                          :scence="storage_item_scence"
+				                          @selection="getSelection"></AppsInstallationLocation>
 			</section>
 		</template>
 		<!--    first setting have done!!-->
@@ -58,7 +59,8 @@
 							<div class="app-header is-flex pb-4 b-line">
 								<div class="header-icon mr-5">
 									<b-image :key="appDetailData.icon" :src="appDetailData.icon"
-									         :src-fallback="require('@/assets/img/app/default.png')" class="is-128x128 icon-shadow"
+									         :src-fallback="require('@/assets/img/app/default.svg')"
+									         class="is-128x128 icon-shadow"
 									         webp-fallback=".jpg"></b-image>
 								</div>
 								<div class="is-flex-grow-1 is-flex is-align-items-center">
@@ -72,21 +74,24 @@
 											          @click="qucikInstall(appDetailData.id);$messageBus('appstore_install', appDetailData.title)">
 												{{ $t('Install') }}
 											</b-button>
-											<b-button v-if="appDetailData.state===1" :loading="appDetailData.id == currentInstallId" rounded
-											          size="is-normal" type="is-primary" @click="openThirdContainerByAppInfo(appDetailData)">
+											<b-button v-if="appDetailData.state===1"
+											          :loading="appDetailData.id == currentInstallId" rounded
+											          size="is-normal" type="is-primary"
+											          @click="openThirdContainerByAppInfo(appDetailData)">
 												{{ $t('Open') }}
 											</b-button>
 										</p>
-
+										
 										<p v-if="unuseable"
 										   class="has-background-red-tertiary has-text-red has-text-full-04 _is-normal is-flex is-align-items-center font pr-2"
 										   style="width: fit-content;height: 1.5rem;border-radius: 0.25rem">
 											<label class="is-flex ml-2 mr-1">
-												<b-icon class="is-16x16" custom-size="casa-19px" icon="close" pack="casa"></b-icon>
+												<b-icon class="is-16x16" custom-size="casa-19px" icon="close"
+												        pack="casa"></b-icon>
 											</label>
 											{{ $t('Not compatible with {arch} devices.', {arch}) }}
 										</p>
-
+									
 									</div>
 								</div>
 							</div>
@@ -113,40 +118,46 @@
 								</div>
 								<div class="level-item has-text-centered">
 									<div>
-										<p class="heading "><span class="is-hidden-mobile">{{ $t('REQUIRE') }} </span>{{ $t('MEMORY') }}</p>
+										<p class="heading "><span class="is-hidden-mobile">{{
+												$t('REQUIRE')
+											}} </span>{{ $t('MEMORY') }}</p>
 										<p class="title has-text-weight-normal">{{ appDetailData.min_memory }}</p>
 										<p class="footing is-size-14px">MB</p>
 									</div>
 								</div>
 								<div class="level-item has-text-centered">
 									<div>
-										<p class="heading"><span class="is-hidden-mobile">{{ $t('REQUIRE') }} </span>{{ $t('DISK') }}</p>
+										<p class="heading"><span class="is-hidden-mobile">{{
+												$t('REQUIRE')
+											}} </span>{{ $t('DISK') }}</p>
 										<p class="title has-text-weight-normal">{{ appDetailData.min_disk }}</p>
 										<p class="footing is-size-14px">MB</p>
 									</div>
 								</div>
 							</nav>
 							<!-- App Info Table End -->
-
+							
 							<!-- App Info Slider Start -->
 							<div v-if="showDetailSwiper" class="is-relative">
-								<swiper ref="infoSwiper" :options="swiperOptions" class="swiper swiper-responsive-breakpoints">
+								<swiper ref="infoSwiper" :options="swiperOptions"
+								        class="swiper swiper-responsive-breakpoints">
 									<swiper-slide v-for="item in appDetailData.screenshot_link" :key="'sc'+item">
 										<div class="gap">
-											<b-image :src="item" :src-fallback="require('@/assets/img/app/swiper_placeholder.png')"
+											<b-image :src="item"
+											         :src-fallback="require('@/assets/img/app/swiper_placeholder.png')"
 											         class="border-8" placeholder ratio="16by9"></b-image>
 										</div>
 									</swiper-slide>
-
+								
 								</swiper>
 								<div :class="{'swiper-button-disabled':disPrev}" class="swiper-button-prev"
 								     @click="$refs.infoSwiper.$swiper.slidePrev()"></div>
 								<div :class="{'swiper-button-disabled':disNext}" class="swiper-button-next"
 								     @click="$refs.infoSwiper.$swiper.slideNext()"></div>
 							</div>
-
+							
 							<!-- App Info Slider End -->
-
+							
 							<!-- App Info  Start -->
 							<div class="app-desc mt-4 mb-6">
 								<p class="is-size-14px mb-2 un-break-word">{{ appDetailData.tagline }}</p>
@@ -154,32 +165,35 @@
 								<!-- <p class="is-size-14px " v-html="appDetailData.tip"></p> -->
 							</div>
 							<!-- App Info  End -->
-
+						
 						</section>
 					</div>
-
+				
 				</template>
 			</app-side-bar>
 			<!-- Sidebar End -->
-
+			
 			<!-- Modal-Card Header Start -->
 			<header class="modal-card-head _b-line">
 				<div class="is-flex-grow-1">
 					<h3 class="_title is-5">{{ panelTitle }}</h3>
 				</div>
 				<div class="is-flex is-align-items-center">
-					<b-button v-if="currentSlide == 0" :label="$t('Custom Install')" class="mr-2" icon-left="view-grid-plus"
+					<b-button v-if="currentSlide == 0" :label="$t('Custom Install')" class="mr-2"
+					          icon-left="view-grid-plus"
 					          rounded size="is-small" type="is-primary" @click="currentSlide = 1"/>
-
+					
 					<b-tooltip v-if="showImportButton" :label="$t('Import')" position="is-bottom" type="is-dark">
 						<button class="icon-button mdi mdi-import" type="button" @click="showImportPanel"/>
 					</b-tooltip>
-
-					<b-tooltip v-if="showTerminalButton" :label="$t('Terminal & Logs')" position="is-bottom" type="is-dark">
+					
+					<b-tooltip v-if="showTerminalButton" :label="$t('Terminal & Logs')" position="is-bottom"
+					           type="is-dark">
 						<button class="icon-button mdi mdi-console" type="button" @click="showTerminalPanel"/>
 					</b-tooltip>
-
-					<b-tooltip v-if="showExportButton" :label="$t('Export AppFile')" position="is-bottom" type="is-dark">
+					
+					<b-tooltip v-if="showExportButton" :label="$t('Export AppFile')" position="is-bottom"
+					           type="is-dark">
 						<button class="icon-button mdi mdi-export-variant" type="button" @click="exportJSON"/>
 					</b-tooltip>
 					<div v-if="currentSlide < 2"
@@ -190,34 +204,37 @@
 					<div v-else-if="currentSlide === 2" class="is-flex is-align-items-center">
 						<b-icon class="_polymorphic" icon="close" pack="casa" @click.native="$emit('close')"/>
 					</div>
-
+				
 				</div>
-
+			
 			</header>
 			<!-- Modal-Card Header End -->
 			<!-- Modal-Card Body Start -->
 			<section class="modal-card-body">
 				<!-- App Store List Start -->
 				<section v-if="currentSlide == 0 ">
-
+					
 					<template v-if="!isLoadError">
-
+						
 						<template v-if="recommendList.length > 0">
 							<h3 class="title is-5 has-text-weight-normal">{{ $t('Featured Apps') }}</h3>
 							<!-- Featured Slider Start -->
 							<div class="is-relative featured-app b-line">
 								<swiper ref="featureSwiper" :options="featureSwiperOptions" class="swiper ">
-									<swiper-slide v-for="(item,index) in recommendList " :key="index+item.title+item.id" class="pb-5">
+									<swiper-slide v-for="(item,index) in recommendList " :key="index+item.title+item.id"
+									              class="pb-5">
 										<div class="gap" @click="showAppDetial(item.id)">
-											<b-image :placeholder="require('@/assets/img/app/swiper_placeholder.png')" :src="item.thumbnail"
+											<b-image :placeholder="require('@/assets/img/app/swiper_placeholder.png')"
+											         :src="item.thumbnail"
 											         :src-fallback="require('@/assets/img/app/swiper_placeholder.png')"
 											         class="border-8 is-clickable"
 											         ratio="16by9"></b-image>
 										</div>
 										<div class="is-flex pt-5 is-align-items-center">
 											<div class=" mr-3" @click="showAppDetial(item.id)">
-												<b-image :placeholder="require('@/assets/img/app/default.png')" :src="item.icon"
-												         :src-fallback="require('@/assets/img/app/default.png')"
+												<b-image :placeholder="require('@/assets/img/app/default.svg')"
+												         :src="item.icon"
+												         :src-fallback="require('@/assets/img/app/default.svg')"
 												         class="is-64x64 is-clickable icon-shadow"></b-image>
 											</div>
 											<div class="is-flex-grow-1 mr-4 is-clickable"
@@ -226,18 +243,21 @@
 												<p class="is-size-7 two-line">{{ item.tagline }}</p>
 											</div>
 											<div>
-												<b-button v-if="item.state===0" :loading="item.id == currentInstallId" rounded size="is-small"
+												<b-button v-if="item.state===0" :loading="item.id == currentInstallId"
+												          rounded size="is-small"
 												          type="is-primary is-light"
 												          @click="qucikInstall(item.id);$messageBus('appstore_install', item.title)">
 													{{ $t('Install') }}
 												</b-button>
-												<b-button v-if="item.state===1" :loading="item.id == currentInstallId" rounded size="is-small"
-												          type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">{{ $t('Open') }}
+												<b-button v-if="item.state===1" :loading="item.id == currentInstallId"
+												          rounded size="is-small"
+												          type="is-primary is-light"
+												          @click="openThirdContainerByAppInfo(item)">{{ $t('Open') }}
 												</b-button>
 											</div>
 										</div>
 									</swiper-slide>
-
+								
 								</swiper>
 								<div :class="{'swiper-button-disabled':disFeaturedPrev}" class="swiper-button-prev"
 								     @click="$refs.featureSwiper.$swiper.slidePrev();$messageBus('appstore_slide')"></div>
@@ -246,24 +266,28 @@
 							</div>
 						</template>
 						<!-- Featured Slider End -->
-
+						
 						<!-- List condition Start -->
 						<div class="is-flex mt-5 mb-5">
 							<!-- Cate Start -->
 							<div class="is-flex-grow-1">
 								<b-dropdown v-model="currentCate" :mobile-modal="false" animation="fade1"
-								            aria-role="list" class="app-select file-dropdown" position="is-bottom-right" scrollable>
+								            aria-role="list" class="app-select file-dropdown" position="is-bottom-right"
+								            scrollable>
 									<template #trigger="{ active }">
 										<div class="button is-text auto-height pl-0 pt-0 pb-0 ">
 											<b-icon :icon="currentCate.font" class="mr-1 ml-0" size="is-small"></b-icon>
 											{{ currentCate.name }}
-											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'" class="ml-1" size="is-normal"></b-icon>
+											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'" class="ml-1"
+											        size="is-normal"></b-icon>
 										</div>
 									</template>
 									<b-dropdown-item v-for="menu in cateMenu" :key="menu.id"
-									                 :class="menu.id == currentCate.id?'is-active':''" :data-title="menu.count"
+									                 :class="menu.id == currentCate.id?'is-active':''"
+									                 :data-title="menu.count"
 									                 :value="menu" aria-role="listitem">
-										<div class="media is-align-items-center is-flex" @click="$messageBus('appstore_type', menu.name)">
+										<div class="media is-align-items-center is-flex"
+										     @click="$messageBus('appstore_type', menu.name)">
 											<b-icon :icon="menu.font" class="mr-1" size="is-small"></b-icon>
 											<div class="media-content">
 												<h3>{{ menu.name }}</h3>
@@ -271,26 +295,29 @@
 										</div>
 									</b-dropdown-item>
 								</b-dropdown>
-
+							
 							</div>
 							<!-- Cate End -->
-
+							
 							<!-- Sort Start -->
 							<div>
 								{{ $t('Sort by') }}:
 								<b-dropdown v-model="currentSort" :mobile-modal="false" animation="fade1"
-								            aria-role="list" class="app-select file-dropdown" position="is-bottom-right">
+								            aria-role="list" class="app-select file-dropdown"
+								            position="is-bottom-right">
 									<template #trigger="{ active }">
 										<div class="button is-text auto-height pl-0 pt-0 pb-0 is-size-14px">
 											{{ currentSort.name }}
-											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'" class="ml-1" size="is-normal"></b-icon>
+											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'" class="ml-1"
+											        size="is-normal"></b-icon>
 										</div>
-
+									
 									</template>
 									<b-dropdown-item v-for="(menu,index) in sortMenu" :key="'sort_'+index"
 									                 :class="menu.slash == currentSort.slash?'is-active':''"
 									                 :value="menu" aria-role="listitem">
-										<div class="media align-items-center is-flex" @click="$messageBus('appstore_sort', menu.name)">
+										<div class="media align-items-center is-flex"
+										     @click="$messageBus('appstore_sort', menu.name)">
 											<div class="media-content">
 												<h3>{{ menu.name }}</h3>
 											</div>
@@ -300,7 +327,7 @@
 							</div>
 							<!-- Sort End -->
 						</div>
-
+						
 						<!-- List condition End -->
 						<!-- App list Start-->
 						<div class="columns f-list is-multiline is-mobile pb-3 mb-5">
@@ -308,7 +335,8 @@
 							     class="column app-item is-one-quarter">
 								<div class="is-flex  is-align-items-center">
 									<div class="list-icon mr-4 is-clickable" @click="showAppDetial(item.id)">
-										<b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')"
+										<b-image :src="item.icon"
+										         :src-fallback="require('@/assets/img/app/default.svg')"
 										         class="is-64x64 icon-shadow" webp-fallback=".jpg"></b-image>
 									</div>
 									<div class="is-flex-grow-1 mr-4 is-clickable"
@@ -316,24 +344,30 @@
 										<h6 class="title is-6 mb-2">{{ item.title }}</h6>
 										<p class="is-size-7 two-line">{{ item.tagline }}</p>
 									</div>
-
+								
 								</div>
 								<div class="mt-1 ml-7 is-flex is-align-items-center">
-									<div class="is-flex-grow-1 is-size-7 has-text-grey-light	">{{ item.category }}</div>
-									<b-button v-if="item.state===0" :loading="item.id == currentInstallId" rounded size="is-small"
+									<div class="is-flex-grow-1 is-size-7 has-text-grey-light	">{{
+											item.category
+										}}
+									</div>
+									<b-button v-if="item.state===0" :loading="item.id == currentInstallId" rounded
+									          size="is-small"
 									          type="is-primary is-light"
 									          @click="qucikInstall(item.id);$messageBus('appstore_install', item.title)">
 										{{ $t('Install') }}
 									</b-button>
-									<b-button v-if="item.state===1" :loading="item.id == currentInstallId" rounded size="is-small"
-									          type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">{{ $t('Open') }}
+									<b-button v-if="item.state===1" :loading="item.id == currentInstallId" rounded
+									          size="is-small"
+									          type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">
+										{{ $t('Open') }}
 									</b-button>
 								</div>
 							</div>
 						</div>
-
+						
 						<!-- App list End-->
-
+						
 						<!-- Community App List Start -->
 						<template v-if="communityList.length > 0">
 							<h3 class="title is-5 has-text-weight-normal">{{ $t('Community Apps') }}</h3>
@@ -341,13 +375,14 @@
 								{{
 									$t('From community contributors, not optimized for CasaOS, but provides a basic App experience.')
 								}}</h3>
-
+							
 							<div class="columns f-list is-multiline is-mobile  pb-3 mb-5">
 								<div v-for="(item,index) in communityList " :key="index+item.title+item.id"
 								     class="column is-one-quarter">
 									<div class="is-flex  is-align-items-center">
 										<div class="list-icon mr-4 is-clickable" @click="showAppDetial(item.id)">
-											<b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.png')"
+											<b-image :src="item.icon"
+											         :src-fallback="require('@/assets/img/app/default.svg')"
 											         class="is-64x64 icon-shadow" webp-fallback=".jpg"></b-image>
 										</div>
 										<div class="is-flex-grow-1 mr-4 is-clickable"
@@ -355,24 +390,31 @@
 											<h6 class="title is-6 mb-2">{{ item.title }}</h6>
 											<p class="is-size-7 two-line">{{ item.tagline }}</p>
 										</div>
-
+									
 									</div>
 									<div class="mt-1 ml-7 is-flex is-align-items-center">
-										<div class="is-flex-grow-1 is-size-7 has-text-grey-light	">{{ item.category }}</div>
-										<b-button v-if="item.state===0" :loading="item.id == currentInstallId" rounded size="is-small"
+										<div class="is-flex-grow-1 is-size-7 has-text-grey-light	">{{
+												item.category
+											}}
+										</div>
+										<b-button v-if="item.state===0" :loading="item.id == currentInstallId" rounded
+										          size="is-small"
 										          type="is-primary is-light"
-										          @click="qucikInstall(item.id);$messageBus('appstorecommunity_install', item.title)">{{
+										          @click="qucikInstall(item.id);$messageBus('appstorecommunity_install', item.title)">
+											{{
 												$t('Install')
 											}}
 										</b-button>
-										<b-button v-if="item.state===1" :loading="item.id == currentInstallId" rounded size="is-small"
-										          type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">{{ $t('Open') }}
+										<b-button v-if="item.state===1" :loading="item.id == currentInstallId" rounded
+										          size="is-small"
+										          type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">
+											{{ $t('Open') }}
 										</b-button>
 									</div>
 								</div>
 							</div>
 						</template>
-
+						
 						<!-- Community App List End -->
 					</template>
 					<template v-else>
@@ -382,21 +424,21 @@
 									<b-icon class="mr-2" icon="alert-circle" type="is-danger"></b-icon>
 									{{ $t('There was an error loading the data, please try again!') }}
 								</div>
-
+								
 								<b-button rounded type="is-primary" @click="retry()">Retry</b-button>
-
+							
 							</div>
-
+						
 						</div>
 					</template>
-
+				
 				</section>
 				<!-- App Store List End -->
-
+				
 				<!-- App Install Form Start -->
 				<section v-if="currentSlide == 1">
 					<ValidationObserver ref="ob1">
-
+						
 						<ValidationProvider v-slot="{ errors, valid }" name="Image" rules="required">
 							<b-field :label="$t('Docker Image')+' *'" :message="$t(errors)"
 							         :type="{ 'is-danger': errors[0], 'is-success': valid }">
@@ -408,19 +450,21 @@
 						<ValidationProvider v-slot="{ errors, valid }" name="Name" rules="required">
 							<b-field :label="$t('App name')+' *'" :message="errors"
 							         :type="{ 'is-danger': errors[0], 'is-success': valid }">
-								<b-input v-model="initData.label" :placeholder="$t('Your custom App Name')" maxlength="40"></b-input>
+								<b-input v-model="initData.label" :placeholder="$t('Your custom App Name')"
+								         maxlength="40"></b-input>
 							</b-field>
 						</ValidationProvider>
 						<b-field :label="$t('Icon URL')">
 							<p class="control">
               <span class="button is-static container-icon">
-                <b-image :key="appIcon" :src="appIcon" :src-fallback="require('@/assets/img/app/default.png')"
+                <b-image :key="appIcon" :src="appIcon" :src-fallback="require('@/assets/img/app/default.svg')"
                          class="is-32x32" ratio="1by1"></b-image>
               </span>
 							</p>
-							<b-input v-model="initData.icon" :placeholder="$t('Your custom icon URL')" expanded></b-input>
+							<b-input v-model="initData.icon" :placeholder="$t('Your custom icon URL')"
+							         expanded></b-input>
 						</b-field>
-
+						
 						<b-field label="Web UI">
 							<!-- <p class="control">
 								<span class="button is-static">{{baseUrl}}</span>
@@ -433,20 +477,22 @@
 							<b-autocomplete v-model="initData.port_map" :data="bridgePorts" :open-on-focus="true"
 							                :placeholder="$t('Port')" class="has-colon" field="host"
 							                @select="option => (portSelected = option)"></b-autocomplete>
-							<b-input v-model="initData.index" :placeholder="'/index.html '+ $t('[Optional]')" expanded></b-input>
+							<b-input v-model="initData.index" :placeholder="'/index.html '+ $t('[Optional]')"
+							         expanded></b-input>
 						</b-field>
 						<template v-if="isCasa">
-
+							
 							<b-field :label="$t('Network')">
 								<b-select v-model="initData.network_model" expanded placeholder="Select">
 									<optgroup v-for="net in networks" :key="net.driver" :label="net.driver">
-										<option v-for="(option,index) in net.networks" :key="option.name+index" :value="option.name">
+										<option v-for="(option,index) in net.networks" :key="option.name+index"
+										        :value="option.name">
 											{{ option.name }}
 										</option>
 									</optgroup>
 								</b-select>
 							</b-field>
-
+							
 							<ports v-if="showPorts" v-model="initData.ports" :showHostPost="showHostPort"></ports>
 							<input-group v-model="initData.volumes" :label="$t('Volumes')"
 							             :message="$t('No volumes now, click “+” to add one.')"
@@ -458,15 +504,15 @@
 							             type="device"></input-group>
 							<commands-input v-model="initData.cmd" :label="$t('Container Command')"
 							                :message="$t('No commands now, click “+” to add one.')"></commands-input>
-
+							
 							<b-field :label="$t('Privileged')">
 								<b-switch v-model="initData.privileged"></b-switch>
 							</b-field>
-
+							
 							<b-field :label="$t('Memory Limit')">
 								<vue-slider v-model="initData.memory" :max="totalMemory" :min="256"></vue-slider>
 							</b-field>
-
+							
 							<b-field :label="$t('CPU Shares')">
 								<b-select v-model="initData.cpu_shares" :placeholder="$t('Select')" expanded>
 									<option value="10">{{ $t('Low') }}</option>
@@ -474,7 +520,7 @@
 									<option value="90">{{ $t('High') }}</option>
 								</b-select>
 							</b-field>
-
+							
 							<b-field :label="$t('Restart Policy')">
 								<b-select v-model="initData.restart" :placeholder="$t('Select')" expanded>
 									<option value="on-failure">on-failure</option>
@@ -482,9 +528,10 @@
 									<option value="unless-stopped">unless-stopped</option>
 								</b-select>
 							</b-field>
-
+							
 							<b-field :label="$t('Container Capabilities (cap-add)')">
-								<b-taginput ref="taginput" v-model="initData.cap_add" :allow-new="false" :data="capArray"
+								<b-taginput ref="taginput" v-model="initData.cap_add" :allow-new="false"
+								            :data="capArray"
 								            :open-on-focus="false"
 								            autocomplete @typing="getFilteredTags">
 									<template slot-scope="props">
@@ -501,7 +548,7 @@
 									</template>
 								</b-taginput>
 							</b-field>
-
+							
 							<ValidationProvider v-slot="{ errors, valid }" name="Name" rules="rfc1123">
 								<b-field :label="$t('Container Hostname')" :message="$t(errors)"
 								         :type="{ 'is-danger': errors[0], 'is-success': valid }">
@@ -509,28 +556,30 @@
 									         value=""></b-input>
 								</b-field>
 							</ValidationProvider>
-
+							
 							<b-field :label="$t('App Description')">
 								<b-input v-model="initData.description"></b-input>
 							</b-field>
 						</template>
-
+					
 					</ValidationObserver>
 				</section>
 				<!-- App Install Form End -->
-
+				
 				<!-- App Install Process Start -->
 				<section v-if="currentSlide == 2" class="_b-line">
 					<div class="installing-warpper mb-5">
 						<div class="is-flex is-align-items-center is-justify-content-center">
-							<lottie-animation :animationData="require('@/assets/ani/loading.json')" :autoPlay="true" :loop="true"
+							<lottie-animation :animationData="require('@/assets/ani/loading.json')" :autoPlay="true"
+							                  :loop="true"
 							                  class="install-animation mt-5 mb-2"></lottie-animation>
 						</div>
 						<b-progress
-								:value="totalPercentage"
-								format="percent"
-								show-value type="is-primary"></b-progress>
-						<h3 :class="currentInstallAppTextClass" class="title is-6 has-text-centered" style="height: 20px"
+							:value="totalPercentage"
+							format="percent"
+							show-value type="is-primary"></b-progress>
+						<h3 :class="currentInstallAppTextClass" class="title is-6 has-text-centered"
+						    style="height: 20px"
 						    v-html="currentInstallAppText"></h3>
 					</div>
 				</section>
@@ -538,7 +587,7 @@
 				<b-loading v-model="isLoading" :can-cancel="false" :is-full-page="false"></b-loading>
 			</section>
 			<!-- Modal-Card Body End -->
-
+		
 		</template>
 		<!-- Modal-Card Footer Start-->
 		<footer :class="{'is-justify-content-center':currentSlide == 0}"
@@ -563,10 +612,10 @@
 					          @click="submitInstallationLocation(installationLocation)"/>
 				</div>
 			</template>
-
+		
 		</footer>
 		<!-- Modal-Card Footer End -->
-
+	
 	</div>
 </template>
 
@@ -663,7 +712,7 @@ export default {
 			type: Object
 		}
 	},
-
+	
 	data() {
 		return {
 			timer: 0,
@@ -680,7 +729,7 @@ export default {
 			currentInstallAppText: "",
 			currentInstallAppProgress: {},
 			currentInstallAppProgressTotals: {},
-
+			
 			appIcon: "",
 			sidebarOpen: false,
 			cancelButtonText: "Cancel",
@@ -725,7 +774,7 @@ export default {
 			recommendList: {},
 			currentSlide: 0,
 			currentInstallId: 0,
-
+			
 			//Image List Swiper
 			disPrev: false,
 			disNext: false,
@@ -790,7 +839,7 @@ export default {
 			arch: "",
 			// unusable: false, // computer unusable
 			architectures: [],
-
+			
 			// APPs Installation Location - requirement document
 			storageData: [{
 				name: 12,
@@ -814,15 +863,15 @@ export default {
 			totalPercentage: 0,
 		}
 	},
-
+	
 	created() {
-
+		
 		// Set Front-end base url
 		this.baseUrl = `${document.domain}`;
 		//Get Max memory info form device
 		this.totalMemory = Math.floor(this.configData.memory.total / 1048576);
 		this.initData.memory = this.totalMemory
-
+		
 		//Handling network types
 		this.tempNetworks = this.configData.networks;
 		this.networkModes = uniq(this.tempNetworks.map(item => {
@@ -842,7 +891,7 @@ export default {
 			this.isLoading = false
 			this.initData = this.preProcessData(Object.assign(this.initData, this.settingData))
 			this.currentSlide = 1
-
+			
 		} else {
 			let gg = find(this.tempNetworks, (o) => {
 				return o.driver == "bridge"
@@ -850,24 +899,24 @@ export default {
 			this.initData.network_model = gg.length > 0 ? gg[0].name : "bridge";
 			this.getCategoryList();
 		}
-
+		
 		// If StoreId is not 0
 		if (this.storeId != 0) {
 			this.showAppDetial(this.storeId);
 		}
-
+		
 		// prepare data - APPs Installation Location requirement document
 		this.getDiskList();
 		// close the function - APPs Installation Location
 		// this.askInstallationLocation();
-
+		
 		// get architecture
 		this.arch = localStorage.getItem('arch')
 		console.log('arch', this.arch)
 	},
-
+	
 	computed: {
-
+		
 		showPorts() {
 			if (this.initData.network_model.toLowerCase().indexOf("macvlan") > -1 || this.initData.network_model.indexOf("host") > -1) {
 				return false
@@ -891,14 +940,14 @@ export default {
 			return this.bridgePorts.filter(port => {
 				return port.host.indexOf(this.initData.port_map) >= 0
 			})
-
+			
 		},
 		showImportButton() {
 			return this.currentSlide == 1 && this.state == 'install'
 		},
 		showExportButton() {
 			return this.currentSlide == 1 && this.state == 'update'
-
+			
 		},
 		showTerminalButton() {
 			return this.currentSlide == 1 && this.state == 'update' && this.runningStatus == 'running'
@@ -912,7 +961,7 @@ export default {
 				} else {
 					return (this.settingData != undefined) ? this.initData.label + " " + this.$t("Setting") : this.$t("Install a new App manually")
 				}
-
+				
 			} else {
 				return this.$t("Installing") + " " + this.initData.image
 			}
@@ -926,7 +975,7 @@ export default {
 		unuseable() {
 			return this.architectures.indexOf(this.arch) < 0
 		}
-
+		
 	},
 	watch: {
 		// Watch if Icon url has changed
@@ -975,7 +1024,7 @@ export default {
 		}
 	},
 	methods: {
-
+		
 		/**
 		 * @description:
 		 * @param {*} function
@@ -984,11 +1033,11 @@ export default {
 		updateIconUrl: debounce(function (string) {
 			this.appIcon = string
 		}, 300),
-
+		
 		updateLabel: debounce(function (string) {
 			this.initData.label = string
 		}, 50),
-
+		
 		/**
 		 * @description:
 		 * @param {*} text
@@ -997,11 +1046,11 @@ export default {
 		getFilteredTags(text) {
 			this.capArray = data.filter((option) => {
 				return option
-						.toString()
-						.indexOf(text.toUpperCase()) >= 0
+					.toString()
+					.indexOf(text.toUpperCase()) >= 0
 			})
 		},
-
+		
 		/**
 		 * @description:
 		 * @param {*} swiper
@@ -1020,7 +1069,7 @@ export default {
 			this.disFeaturedPrev = (swiper.activeIndex == 0) ? true : false;
 			this.disFeaturedNext = swiper.isEnd;
 		},*/
-
+		
 		/**
 		 * @description: Get category list
 		 * @param {*}
@@ -1043,9 +1092,9 @@ export default {
 				this.isLoading = false;
 				this.isLoadError = true;
 			}
-
+			
 		},
-
+		
 		/**
 		 * @description: Get App store list
 		 * @param {*}
@@ -1068,7 +1117,7 @@ export default {
 				this.isLoadError = true;
 			})
 		},
-
+		
 		/**
 		 * @description: Show the details of app
 		 * @param {id} String
@@ -1091,7 +1140,7 @@ export default {
 				})
 			})
 		},
-
+		
 		retry() {
 			if (this.loadErrorStep === 1) {
 				this.getCategoryList()
@@ -1099,8 +1148,8 @@ export default {
 				this.getStoreList()
 			}
 		},
-
-
+		
+		
 		/**
 		 * @description: Quick Install App from app store
 		 * @param {*}
@@ -1112,7 +1161,7 @@ export default {
 				if (resp.data.success == 200) {
 					// messageBus :: installApp
 					// this.$messageBus('appstore_install', respData.title.toString())
-
+					
 					let respData = resp.data.data
 					this.initData.protocol = respData.protocol
 					this.initData.host = respData.host
@@ -1137,9 +1186,9 @@ export default {
 					this.initData.privileged = respData.privileged
 					this.initData.host_name = respData.host_name
 					this.initData.appstore_id = id
-
+					
 					this.currentInstallId = 0
-
+					
 					this.architectures = respData.architectures
 					if (this.unuseable) {
 						// this.showAppDetial(id);
@@ -1147,7 +1196,7 @@ export default {
 						this.appDetailData = respData
 						return
 					}
-
+					
 					if (respData.tip !== "null" && respData.tip !== "[]" && respData.tip !== "") {
 						this.$buefy.dialog.confirm({
 							title: this.$t('Attention'),
@@ -1189,7 +1238,7 @@ export default {
 			}
 			return html
 		},
-
+		
 		/**
 		 * @description: Pre-processed data before setting
 		 * @param {ConfigObject} data
@@ -1208,23 +1257,23 @@ export default {
 			data.restart = data.restart === "no" ? "unless-stopped" : data.restart
 			data.network_model = data.network_model === "default" ? "bridge" : data.network_model
 			data.icon = data.icon === "" ? this.getIconFromImage(data.image) : data.icon
-
+			
 			return data
 		},
-
-
+		
+		
 		/**
 		 * @description: Process the datas before submit
 		 * @param {*}
 		 * @return {*} void
 		 */
 		processData() {
-
+			
 			this.initData.cpu_shares = Number(this.initData.cpu_shares)
 			let model = this.initData.network_model.split("-");
 			this.initData.network_model = model[0]
 		},
-
+		
 		/**
 		 * @description: Back to prev Step
 		 * @param {*}
@@ -1233,7 +1282,7 @@ export default {
 		prevStep() {
 			this.currentSlide--;
 		},
-
+		
 		/**
 		 * @description: Validate form async
 		 * @param {Object} ref ref of component
@@ -1243,7 +1292,7 @@ export default {
 			let isValid = await ref.validate()
 			return isValid
 		},
-
+		
 		/**
 		 * @description: Submit datas after valid
 		 * @param {*}
@@ -1256,7 +1305,7 @@ export default {
 				}
 			})
 		},
-
+		
 		installAppData() {
 			this.processData();
 			this.isLoading = true;
@@ -1282,8 +1331,8 @@ export default {
 				})
 			})
 		},
-
-
+		
+		
 		/**
 		 * @description: Save edit update
 		 * @return {*} void
@@ -1311,7 +1360,7 @@ export default {
 				})
 			})
 		},
-
+		
 		/**
 		 * @description: Show import panel
 		 * @return {*} void
@@ -1336,15 +1385,15 @@ export default {
 						this.$buefy.dialog.alert({
 							title: '⚠️ ' + this.$t('Attention'),
 							message: '<div class="nobrk"><h4 class="title is-5">' + this.$t('AutoFill only helps you to complete most of the configuration.') + '</h4>' +
-									'<p class="mb-3">' + this.$t('Some configuration information such as:') + '</p>' +
-									'<ul>' +
-									'<li>1. ' + this.$t('the port and path of the Web UI') + '</li>' +
-									'<li>2. ' + this.$t('the mount location of the volume or file') + '</li>' +
-									'<li>3. ' + this.$t('the port mapping of the Host') + '</li>' +
-									'<li>4. ' + this.$t('optional configuration items') + '</li>' +
-									'</ul>' +
-									'<p class="mt-3">' + this.$t('These include but are not limited to these cases and <b>still need to be confirmed or modified by you.</b>') + '</p>' +
-									'<p class="mt-3">' + this.$t('Feel free to suggest improvements to this feature in Discord Server!') + '</p></div>',
+								'<p class="mb-3">' + this.$t('Some configuration information such as:') + '</p>' +
+								'<ul>' +
+								'<li>1. ' + this.$t('the port and path of the Web UI') + '</li>' +
+								'<li>2. ' + this.$t('the mount location of the volume or file') + '</li>' +
+								'<li>3. ' + this.$t('the port mapping of the Host') + '</li>' +
+								'<li>4. ' + this.$t('optional configuration items') + '</li>' +
+								'</ul>' +
+								'<p class="mt-3">' + this.$t('These include but are not limited to these cases and <b>still need to be confirmed or modified by you.</b>') + '</p>' +
+								'<p class="mt-3">' + this.$t('Feel free to suggest improvements to this feature in Discord Server!') + '</p></div>',
 							type: 'is-dark'
 						})
 					}
@@ -1357,7 +1406,7 @@ export default {
 				}
 			})
 		},
-
+		
 		/**
 		 * @description: Get remote synchronization information
 		 * @param {*} function
@@ -1370,17 +1419,17 @@ export default {
 			}
 			this.isFetching = true
 			axios.get(`https://hub.docker.com/api/content/v1/products/search?source=community&q=${name}&page=1&page_size=4`)
-					.then(({data}) => {
-						this.data = []
-						data.summaries.forEach((item) => this.data.push(item.name))
-					})
-					.catch((error) => {
-						this.data = []
-						throw error
-					})
-					.finally(() => {
-						this.isFetching = false
-					})
+				.then(({data}) => {
+					this.data = []
+					data.summaries.forEach((item) => this.data.push(item.name))
+				})
+				.catch((error) => {
+					this.data = []
+					throw error
+				})
+				.finally(() => {
+					this.isFetching = false
+				})
 		}, 500),
 		/**
 		 * @description: Export AppData to json file
@@ -1397,13 +1446,13 @@ export default {
 			const blob = new Blob([data], {type: ''});
 			FileSaver.saveAs(blob, `${exportData.label}.json`);
 		},
-
+		
 		/**
 		 * @description: change uuid to var
 		 * @param {*} function
 		 * @return {data} Object
 		 */
-
+		
 		uuid2var(data) {
 			data.volumes.forEach((item) => {
 				item.host = item.host.replace(this.id, '$AppID');
@@ -1413,7 +1462,7 @@ export default {
 			})
 			return data
 		},
-
+		
 		/**
 		 * @description: Get Network name from network list
 		 * @param {*}
@@ -1429,7 +1478,7 @@ export default {
 				return network[0].name
 			}
 		},
-
+		
 		/**
 		 * @description: Get App icon form image
 		 * @param {*} image
@@ -1443,7 +1492,7 @@ export default {
 				return `https://icon.casaos.io/main/all/${appIcon}.png`;
 			}
 		},
-
+		
 		/**
 		 * @description: Change App icon when image changed
 		 * @param {String} image
@@ -1452,12 +1501,12 @@ export default {
 		changeIcon(image) {
 			this.initData.icon = this.getIconFromImage(image)
 		},
-
+		
 		/**
 		 * @description: Show Terminal & Logs panel
 		 * @return {*} void
 		 */
-
+		
 		showTerminalPanel() {
 			this.$buefy.modal.open({
 				parent: this,
@@ -1474,7 +1523,7 @@ export default {
 				}
 			})
 		},
-
+		
 		async getDiskList() {
 			try {
 				const storageRes = await this.$api.storage.list({system: "show"})
@@ -1499,18 +1548,18 @@ export default {
 						mount_point: storage.mount_point,
 						disk: storage.disk
 					}
-
+					
 				})
 			} catch (error) {
 				console.log(error.response.message);
 			}
 		},
-
+		
 		getSelection(val) {
 			// console.log(val)
 			this.installationLocation = val
 		},
-
+		
 		async askInstallationLocation() {
 			try {
 				// get docker info
@@ -1526,7 +1575,7 @@ export default {
 				console.log(`${err} in askInstallationLocation`)
 			}
 		},
-
+		
 		async submitInstallationLocation(val) {
 			this.isLoading = true
 			let path = ''
@@ -1536,7 +1585,7 @@ export default {
 				path = val + '/docker'
 			}
 			try {
-
+				
 				await this.$api.folder.create(path)
 			} catch (e) {
 				this.$buefy.toast.open({
@@ -1545,7 +1594,7 @@ export default {
 				})
 				return
 			}
-
+			
 			this.$api.container.putInstallationLocation(path).then(data => {
 				this.isLoading = false
 				this.isFirstInstall = data.data.docker_root_dir
@@ -1558,7 +1607,7 @@ export default {
 				})
 			})
 		},
-
+		
 		installAppProgress(resData) {
 			if (this.currentInstallAppName != resData.name) {
 				return false
@@ -1591,10 +1640,10 @@ export default {
 				}
 			} else {
 				localStorage.removeItem("app_data")
-
+				
 				// business :: Tagging of new app / scrollIntoView
 				this.addIdToSessionStorage(resData.id)
-
+				
 				setTimeout(() => {
 					this.$emit('updateState')
 					this.$emit('close')
@@ -1602,11 +1651,11 @@ export default {
 			}
 		},
 	},
-
+	
 	destroyed() {
 		clearInterval(this.timer)
 	},
-
+	
 	sockets: {
 		// app_install(resData) {
 		//   this.installAppProgress(resData);
@@ -1646,7 +1695,7 @@ export default {
 .app-item {
 	border-radius: 0.5rem;
 	transition: background 0.3s ease;
-
+	
 	&:hover {
 		background-color: hsl(0, 0%, 97%);
 	}
@@ -1671,23 +1720,23 @@ export default {
 .app-detial {
 	overflow: auto;
 	height: 100%;
-
+	
 	.app-header {
 		position: relative;
 	}
-
+	
 	.level {
 		.footing {
 			color: hsl(0, 0%, 48%);
 		}
 	}
-
+	
 	.swiper-button-next,
 	.swiper-rtl .swiper-button-prev {
 		right: -20px;
 		left: auto;
 	}
-
+	
 	.swiper-button-prev,
 	.swiper-rtl .swiper-button-next {
 		left: -20px;
@@ -1702,14 +1751,14 @@ export default {
 		top: calc(50% - 2.25rem);
 		left: auto;
 	}
-
+	
 	.swiper-button-prev,
 	.swiper-rtl .swiper-button-next {
 		left: -20px;
 		top: calc(50% - 2.25rem);
 		right: auto;
 	}
-
+	
 	.button {
 		box-sizing: border-box !important;
 	}
@@ -1719,26 +1768,26 @@ export default {
 	.dropdown-menu {
 		min-width: 1rem !important;
 	}
-
+	
 	.dropdown-content {
 		border-radius: 0.5rem;
 		overflow-y: overlay !important;
-
+		
 		&::-webkit-scrollbar {
 			width: 8px;
 		}
-
+		
 		&::-webkit-scrollbar-track {
 			background: transparent;
 		}
-
+		
 		&::-webkit-scrollbar-thumb {
 			background: rgba(0, 0, 0, 0.2);
 			border-radius: 10px;
 			outline: none;
 		}
 	}
-
+	
 	a.dropdown-item {
 		padding-right: 1.5rem;
 		font-size: 0.875rem;
@@ -1750,11 +1799,11 @@ export default {
 		.animation-content {
 			max-width: 90% !important;
 		}
-
+		
 		.modal-card {
 			width: 90vw;
 			transition: all 0.3s;
-
+			
 			&.narrow {
 				width: 50rem !important;
 			}
@@ -1797,55 +1846,55 @@ export default {
 	.app-detial {
 		overflow: auto;
 		height: 100%;
-
+		
 		.modal-card-head {
 			.button {
 				-webkit-tap-highlight-color: transparent;
 			}
 		}
-
+		
 		.app-header {
 			position: relative;
-
+			
 			.header-icon {
 				.is-128x128 {
 					height: 96px;
 					width: 96px;
 				}
 			}
-
+			
 			.store-title {
 				font-size: 1.125rem;
 			}
-
+			
 			.subtitle {
 				font-size: 0.75rem;
 				margin-bottom: 0.75rem;
 			}
-
+			
 			.description {
 				.button {
 					font-size: 0.75rem;
 				}
 			}
 		}
-
+		
 		.level {
 			.mdi-36px.mdi-set,
 			.mdi-36px.mdi:before {
 				font-size: 24px;
 			}
-
+			
 			.title {
 				font-size: 24px;
 			}
-
+			
 			.footing {
 				font-size: 0.6rem !important;
 			}
 		}
 	}
-
+	
 	.f-list {
 		.is-one-quarter {
 			width: 100% !important;
@@ -1899,18 +1948,18 @@ export default {
 //}
 ._title {
 	/* Text 500Medium/Text02 */
-
+	
 	font-family: 'Roboto';
 	font-style: normal;
 	font-weight: 500;
 	font-size: 1rem;
 	line-height: 1.5rem;
 	/* identical to box height, or 150% */
-
+	
 	font-feature-settings: 'pnum' on, 'lnum' on;
-
+	
 	/* Gary/800 */
-
+	
 	color: #29343D;
 }
 
@@ -1921,11 +1970,11 @@ export default {
 .progress {
 	border-radius: 6px;
 	height: 12px;
-
+	
 	&::-webkit-progress-bar {
 		background: rgba(172, 184, 195, 0.4);
 	}
-
+	
 	&::-webkit-progress-value {
 		opacity: 1;
 	}
