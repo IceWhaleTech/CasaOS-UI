@@ -6,11 +6,10 @@
  *
  *  Copyright (c) 2022 by IceWhale, All Rights Reserved.
  */
-
 .has-text-title-01 {
   /* Title 600SemiBold/H1 */
 
-  font-family: 'Roboto';
+  font-family: $family-sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 2.5rem;
@@ -23,7 +22,7 @@
 .has-text-title-02 {
   /* Title 600SemiBold/H2 */
 
-  font-family: 'Roboto';
+  font-family: $family-sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 2rem;
@@ -36,7 +35,7 @@
 .has-text-title-03 {
   /* Title 600SemiBold/H3 */
 
-  font-family: 'Roboto';
+  font-family: $family-sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 1.5rem;
@@ -49,7 +48,7 @@
 .has-text-title-04 {
   /* Title 600SemiBold/H4 */
 
-  font-family: 'Roboto';
+  font-family: $family-sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 1.25rem;
@@ -62,7 +61,7 @@
 .has-text-sub-01 {
   /* Sub-title 500Medium/H1 */
 
-  font-family: 'Roboto';
+  font-family: $family-sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 2.5rem;
@@ -75,7 +74,7 @@
 .has-text-sub-02 {
   /* Sub-title 500Medium/H2 */
 
-  font-family: 'Roboto';
+  font-family: $family-sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 2rem;
@@ -88,7 +87,7 @@
 .has-text-sub-03 {
   /* Sub-title 500Medium/H3 */
 
-  font-family: 'Roboto';
+  font-family: $family-sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 1.5rem;
@@ -101,7 +100,7 @@
 .has-text-sub-04 {
   /* Sub-title 500Medium/H4 */
 
-  font-family: 'Roboto';
+  font-family: $family-sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 1.25rem;
@@ -114,7 +113,7 @@
 .has-text-emphasis-01 {
   /* Text 500Medium/Text01 */
 
-  font-family: 'Roboto';
+  font-family: $family-sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 1.125rem;
@@ -127,7 +126,7 @@
 .has-text-emphasis-02 {
   /* Text 500Medium/Text02 */
 
-  font-family: 'Roboto';
+  font-family: $family-sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 1rem;
@@ -140,7 +139,7 @@
 .has-text-emphasis-03 {
   /* Text 500Medium/Text03 */
 
-  font-family: 'Roboto';
+  font-family: $family-sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 0.875rem;
@@ -153,7 +152,7 @@
 .has-text-emphasis-04 {
   /* Text 500Medium/Text04 */
 
-  font-family: 'Roboto';
+  font-family: $family-sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 0.75rem;
@@ -166,7 +165,7 @@
 .has-text-full-01 {
   /* Text 400Regular/Text01 */
 
-  font-family: 'Roboto';
+  font-family: $family-sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 1.125rem;
@@ -178,7 +177,7 @@
 
 .has-text-full-02 { /* Text 400Regular/Text02 */
 
-  font-family: 'Roboto';
+  font-family: $family-sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 1rem;
@@ -191,7 +190,7 @@
 .has-text-full-03 {
   /* Text 400Regular/Text03 */
 
-  font-family: 'Roboto';
+  font-family: $family-sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 0.875rem;
@@ -204,7 +203,7 @@
 .has-text-full-04 {
   /* Text 400Regular/Text04 */
 
-  font-family: 'Roboto';
+  font-family: $family-sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 0.75rem;
@@ -217,7 +216,7 @@
 .has-text-auxiliary-01 {
   /* Text 300Light/Text01 */
 
-  font-family: 'Roboto';
+  font-family: $family-sans-serif;
   font-style: normal;
   font-weight: 300;
   font-size: 1.125rem;
@@ -230,7 +229,7 @@
 .has-text-auxiliary-02 {
   /* Text 300Light/Text02 */
 
-  font-family: 'Roboto';
+  font-family: $family-sans-serif;
   font-style: normal;
   font-weight: 300;
   font-size: 1rem;
@@ -243,7 +242,7 @@
 .has-text-auxiliary-03 {
   /* Text 300Light/Text03 */
 
-  font-family: 'Roboto';
+  font-family: $family-sans-serif;
   font-style: normal;
   font-weight: 300;
   font-size: 0.875rem;
@@ -256,7 +255,7 @@
 .has-text-auxiliary-04 {
   /* Text 300Light/Text04 */
 
-  font-family: 'Roboto';
+  font-family: $family-sans-serif;
   font-style: normal;
   font-weight: 300;
   font-size: 0.75rem;
