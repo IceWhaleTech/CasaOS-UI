@@ -81,7 +81,7 @@
 		<div class="cards-content">
 			<!-- Card Content Start -->
 			<b-tooltip :always="isActiveTooltip" :animated="true" :label="tooltipLabel" :triggers="tooltipTriger"
-			           animation="fade1" type="is-white">
+			           animation="fade1" class="in-card" type="is-white">
 				
 				<div
 					class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-5 pb-3px img-c">
@@ -688,7 +688,7 @@ export default {
 	}
 }
 
-.b-tooltip {
+.in-card.b-tooltip {
 	&.is-top .tooltip-content {
 		bottom: auto;
 		top: -15%;
