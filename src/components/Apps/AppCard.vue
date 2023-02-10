@@ -17,7 +17,7 @@
 			            @active-change="setDropState">
 				<template #trigger>
 					<p role="button">
-						<b-icon class="is-clickable" icon="dots-horizontal"></b-icon>
+						<b-icon class="is-clickable" icon="dots-vertical"></b-icon>
 					</p>
 				</template>
 				
