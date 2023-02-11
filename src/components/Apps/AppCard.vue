@@ -17,7 +17,7 @@
 			            @active-change="setDropState">
 				<template #trigger>
 					<p role="button">
-						<b-icon class="is-clickable" icon="dots-horizontal"></b-icon>
+						<b-icon class="is-clickable" icon="dots-vertical"></b-icon>
 					</p>
 				</template>
 				
@@ -81,16 +81,19 @@
 		<div class="cards-content">
 			<!-- Card Content Start -->
 			<b-tooltip :always="isActiveTooltip" :animated="true" :label="tooltipLabel" :triggers="tooltipTriger"
-			           animation="fade1" type="is-white">
+			           animation="fade1" class="in-card" type="is-white">
 				
 				<div
 					class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-5 pb-3px img-c">
 					<div class="is-flex is-justify-content-center">
-						<b-image :class="item.state, isLoading | dotClass" :src="item.icon"
-						         :src-fallback="require('@/assets/img/app/default.png')" class="is-64x64"
-						         webp-fallback=".jpg" @click.native="openApp(item)"></b-image>
-						<!-- Unstable-->
-						<cTooltip v-if="newAppIds.includes(item.id)" class="__position" content="NEW"></cTooltip>
+						<div class="is-relative">
+							<b-image :class="item.state, isLoading | dotClass" :src="item.icon"
+							         :src-fallback="require('@/assets/img/app/default.svg')" class="is-64x64"
+							         webp-fallback=".jpg" @click.native="openApp(item)"></b-image>
+							<!-- Unstable-->
+							<cTooltip v-if="newAppIds.includes(item.id)" class="__position" content="NEW"></cTooltip>
+						</div>
+						
 						
 						<!-- Loading Bar Start -->
 						<b-loading v-model="isLoading" :can-cancel="false" :is-full-page="false"
@@ -688,7 +691,7 @@ export default {
 	}
 }
 
-.b-tooltip {
+.in-card.b-tooltip {
 	&.is-top .tooltip-content {
 		bottom: auto;
 		top: -15%;
@@ -718,7 +721,7 @@ export default {
 
 .__position {
 	position: absolute !important;
-	top: 0.75rem !important;
+	top: -0.75rem !important;
 	left: 3rem !important;
 	z-index: 30;
 }

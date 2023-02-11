@@ -9,7 +9,8 @@
 <template>
 	<div v-if="isCheckFailed"
 	     class="is-flex is-flex-direction-column is-align-items-center is-justify-content-center is-fullheight">
-		<b-image :key="appDetailData.icon" :src="appDetailData.icon" :src-fallback="require('@/assets/img/app/default.png')"
+		<b-image :key="appDetailData.icon" :src="appDetailData.icon"
+		         :src-fallback="require('@/assets/img/app/default.svg')"
 		         class="is-64x64 icon-shadow" webp-fallback=".jpg"></b-image>
 		<h2 class="has-text-emphasis-01 has-text-white mt-2">{{ appDetailData.name }}</h2>
 		<h1 v-if="status === 'pending'" class="has-text-sub-03 has-text-white mt-6">{{ $t('Preparing for launch') }}
@@ -46,7 +47,7 @@ export default {
 			counter: 0
 		}
 	},
-
+	
 	async created() {
 		this.appDetailData = JSON.parse(this.$route.query.appDetailData)
 		const appState = await this.getContainerState()
@@ -62,7 +63,7 @@ export default {
 		this.timer = setInterval(this.check, 1000)
 		this.check()
 	},
-
+	
 	methods: {
 		// Get container running state
 		async getContainerState() {
@@ -93,7 +94,7 @@ export default {
 				return false
 			}
 		},
-
+		
 		async check() {
 			this.counter += 1
 			const isOk = await this.healthCheck()

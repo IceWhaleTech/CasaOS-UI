@@ -14,16 +14,16 @@
 			<!-- merge fs storage item -->
 			<li v-if="hasMergerFunction">
 				<div :class="{ 'active': isActived }" class="is-flex list-item new-list-item"
-					@click="filePanel.getFileList('/DATA')">
+				     @click="filePanel.getFileList('/DATA')">
 					<div class="cover mr-2 is-flex-shrink-0 is-relative">
 						<div class="icon" @click="warning" @mouseleave="hover = false" @mouseover="hover = true">
 							<i :class="{ 'casa-storage-merger': !dorpdown && !hover || mergeStorageList.length === 0, 'casa-expand': hover && !dorpdown && mergeStorageList.length !== 0, 'casa-expand-down': dorpdown && mergeStorageList.length !== 0 }"
-								class="casa casa-28px">
+							   class="casa casa-28px">
 							</i>
 						</div>
 						<div v-show="!dorpdown && !hover && mergeStorageList.length !== 0" class="hint">{{
-							mergeStorageList.length
-						}}
+								mergeStorageList.length
+							}}
 						</div>
 					</div>
 					<div class="is-flex-grow-1 one-line">CasaOS HD
@@ -34,30 +34,31 @@
 				</div>
 				<ul v-show="dorpdown && mergeStorageList.length > 0">
 					<tree-list-item v-for="item in mergeStorageList" :key="item.path" :isActive="isActive"
-						:item="item"></tree-list-item>
+					                :item="item"></tree-list-item>
 				</ul>
 			</li>
-
+			
 			<!-- Local Storage List Start -->
 			<tree-list-item v-for="item in localStorageList" :key="item.path" :isActive="isActive"
-				:item="item"></tree-list-item>
+			                :item="item"></tree-list-item>
 			<!-- Local Storage List End -->
-
+			
 			<!-- Network Storage List Start -->
 			<tree-list-item v-for="item in networkStorageList" :key="item.path" :isActive="isActive" :item="item"
-				iconName="eject" @rightIconClick="umountNetwork"></tree-list-item>
+			                iconName="eject" @rightIconClick="umountNetwork"></tree-list-item>
 			<!-- Network Storage List End -->
-
+			
 			<!-- USB List Start -->
 			<tree-list-item v-for="item in usbStorageList" :key="item.path" :isActive="isActive" :item="item"
-				iconName="eject" @rightIconClick="umountUsb"></tree-list-item>
+			                iconName="eject" @rightIconClick="umountUsb"></tree-list-item>
 			<!-- USB List End -->
-
+			
 			<!-- Cloud List Start -->
-			<tree-list-item v-for="item in cloudStorageList" :key="item.path" :isActive="isActive" :item="item"
-				:iconType="item.icon_type" iconName="eject" @rightIconClick="umountCloud"></tree-list-item>
+			<tree-list-item v-for="item in cloudStorageList" :key="item.path" :iconType="item.icon_type"
+			                :isActive="isActive"
+			                :item="item" iconName="eject" @rightIconClick="umountCloud"></tree-list-item>
 			<!-- Cloud List End -->
-
+		
 		</ul>
 		<b-loading v-model="isLoading" :is-full-page="false"></b-loading>
 	</div>
@@ -65,15 +66,15 @@
 </template>
 
 <script>
-import { mixin } from '@/mixins/mixin';
+import {mixin} from '@/mixins/mixin';
 import events from '@/events/events';
 import TreeListItem from './TreeListItem.vue';
 
 export default {
-	components: { TreeListItem },
+	components: {TreeListItem},
 	mixins: [mixin],
 	inject: ['filePanel'],
-
+	
 	props: {
 		path: {
 			type: String,
@@ -113,10 +114,10 @@ export default {
 	created() {
 		this.getStorageList()
 	},
-
+	
 	async mounted() {
 		this.$EventBus.$on(events.RELOAD_MOUNT_LIST, this.getStorageList);
-
+		
 	},
 	methods: {
 		getStorageList() {
@@ -124,7 +125,7 @@ export default {
 			this.getUsbStorage()
 			this.getNetworkStorage()
 			this.getCloudStorage()
-
+			
 		},
 		// Local Storage (include Mergerfs)
 		async getLocalStorage() {
@@ -135,7 +136,7 @@ export default {
 				mergeRes = []
 				console.log(error)
 			}
-
+			
 			// Local Storage
 			try {
 				const storageRes = await this.$api.storage.list()
@@ -161,7 +162,7 @@ export default {
 				this.isLoading = false;
 				console.log(error.reponse.message)
 			}
-
+			
 			// Merger Storage
 			try {
 				this.mergeStorageList = [];
@@ -211,7 +212,7 @@ export default {
 		// Network Storage
 		async getNetworkStorage() {
 			try {
-
+				
 				const networkRes = await this.$api.samba.getConnections()
 				this.networkStorageList = networkRes.data.data.map((storage) => {
 					return {
@@ -225,7 +226,7 @@ export default {
 						extensions: null
 					}
 				})
-
+				
 			} catch (error) {
 				this.isLoading = false;
 				console.log(error.reponse.message)
@@ -264,7 +265,7 @@ export default {
 				this.cloudStorageList = cloudRes.data.data.map((storage) => {
 					return {
 						id: storage.fs,
-						name: storage.fs,
+						name: storage.name,
 						icon: storage.icon,
 						icon_type: "svg",
 						pack: 'casa',
@@ -278,10 +279,10 @@ export default {
 				console.log(error.reponse.message)
 			}
 		},
-
+		
 		// umount cloud storage
 		umountCloud(item) {
-			this.$api.cloud.umount({ mount_point: item.path }).then(() => {
+			this.$api.cloud.umount({mount_point: item.path}).then(() => {
 				this.getStorageList()
 				this.goToDataFolder(item)
 				this.$buefy.toast.open({
@@ -295,10 +296,10 @@ export default {
 				})
 			})
 		},
-
+		
 		// umount usb storage
 		umountUsb(item) {
-			this.$api.disks.umountUsb({ mount_point: item.path }).then(() => {
+			this.$api.disks.umountUsb({mount_point: item.path}).then(() => {
 				this.getStorageList()
 				this.goToDataFolder(item)
 				this.$buefy.toast.open({
@@ -312,7 +313,7 @@ export default {
 				})
 			})
 		},
-
+		
 		// umount network storage
 		umountNetwork(item) {
 			this.$api.samba.deleteConnection(item.id).then(() => {
@@ -328,17 +329,17 @@ export default {
 					type: 'is-danger'
 				})
 			})
-
-
+			
+			
 		},
-
+		
 		// go to DATA folder
 		goToDataFolder(item) {
 			if (this.$store.state.currentPath.startsWith(item.path)) {
 				this.filePanel.getFileList('/DATA')
 			}
 		},
-
+		
 		async warning() {
 			if (this.dorpdown) {
 				this.dorpdown = false
@@ -364,16 +365,16 @@ export default {
 				}
 			})
 		},
-
+		
 	},
 	sockets: {
-
+		
 		"local-storage:disk:added"() {
 			setTimeout(() => {
 				this.getUsbStorage()
 			}, 500)
 		},
-		"local-storage:disk:removed"(){
+		"local-storage:disk:removed"() {
 			setTimeout(() => {
 				this.getUsbStorage()
 			}, 500)
@@ -427,7 +428,7 @@ export default {
 			})
 		}
 	}
-
+	
 }
 </script>
 
@@ -438,7 +439,7 @@ export default {
 	height: 100%;
 	left: 0;
 	top: 0;
-
+	
 	.icon {
 		position: absolute;
 		right: -0.15rem;
