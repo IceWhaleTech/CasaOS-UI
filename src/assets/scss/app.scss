@@ -33,6 +33,8 @@
 // Import CasaOS Styles
 // Commons
 @import "common/root";
+@import "common/font";
+@import "common/color";
 @import "common/spacing";
 @import "common/buttons";
 @import "common/title";
@@ -49,8 +51,7 @@
 @import "common/widgets";
 @import "common/sections";
 
-@import "common/font";
-@import "common/color";
+
 
 // Pages and Components
 @import "components/filebrowser";

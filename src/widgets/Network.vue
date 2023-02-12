@@ -1,7 +1,7 @@
 <!--
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-01-28 17:55:07
- * @FilePath: /CasaOS-UI/src/widgets/Network.vue
+ * @LastEditTime: 2023-02-12 17:36:21
+ * @FilePath: \CasaOS-UI-0.4.2\src\widgets\Network.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -19,13 +19,13 @@
 				</div>
 				<div class="is-flex-shrink-0">
 					<b-dropdown v-model="networkId" :mobile-modal="false" animation="fade1" aria-role="list"
-					            class="netowrk-dropdown" position="is-bottom-left">
+						class="netowrk-dropdown" position="is-bottom-left">
 						<template #trigger="{ active }">
-							<b-button :icon-right="active ? 'chevron-up' : 'chevron-down'" :label="initNetwork[networkId].name"
-							          type="is-primary"/>
+							<b-button icon-pack="casa" :icon-right="active ? 'up' : 'down'"
+								:label="initNetwork[networkId].name" type="is-primary" />
 						</template>
 						<b-dropdown-item v-for="(item, index) in initNetwork" :key="'net' + index" :value="index"
-						                 aria-role="listitem">
+							aria-role="listitem">
 							{{ item.name }}
 						</b-dropdown-item>
 					</b-dropdown>
@@ -34,12 +34,13 @@
 			<!-- Header End -->
 			<!-- Chart Start -->
 			<div class="chart-container">
-				<vue-apex-charts ref="chart" :options="chartOptions" :series="networks[networkId]" height="130" type="area"/>
+				<vue-apex-charts ref="chart" :options="chartOptions" :series="networks[networkId]" height="130"
+					type="area" />
 			</div>
 			<!-- Chart End -->
 			<!-- Status Start -->
 			<div class="is-flex ">
-				<div class=" is-flex-shrink-0 is-size-7 is-flex is-align-items-center">
+				<div class=" is-flex-shrink-0 is-size-65 is-flex is-align-items-center has-text-grey-100">
 					<div>
 						<b-icon class="up" icon="arrow-up-bold" size="is-small">
 						</b-icon>
@@ -57,7 +58,7 @@
 
 <script>
 // import VueApexCharts from 'vue-apexcharts'
-import {mixin} from '@/mixins/mixin';
+import { mixin } from '@/mixins/mixin';
 
 export default {
 	mixins: [mixin],
@@ -262,15 +263,16 @@ export default {
 		margin: 0 -0.875rem;
 	}
 }
-
-.icon.is-small {
-	.mdi::before {
-		font-size: 0.875rem;
-	}
-}
 </style>
 
 <style lang="scss">
+.up.is-small,
+.down.is-small {
+	.mdi {
+		font-size: 1rem;
+	}
+}
+
 .network {
 	.netowrk-dropdown {
 		.button {
@@ -284,6 +286,7 @@ export default {
 			z-index: 200;
 			outline: none;
 			border: 0;
+			color: $grey-100;
 
 			&:focus:not(:active) {
 				box-shadow: 0 0 0 0 !important;
@@ -301,6 +304,16 @@ export default {
 				-webkit-line-clamp: 1;
 				overflow: hidden;
 				max-width: 3rem;
+			}
+
+			.icon {
+				font-size: 1.25rem !important;
+				height: 1.5rem;
+				line-height: 1.5rem;
+				color: $grey-100;
+				&:last-child:not(:first-child) {
+					margin-right: 0;
+				}
 			}
 		}
 

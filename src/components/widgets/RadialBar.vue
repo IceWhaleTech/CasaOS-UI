@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-08-18 18:28:54
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-22 09:34:58
- * @FilePath: \CasaOS-UI\src\components\widgets\RadialBar.vue
+ * @LastEditTime: 2023-02-12 16:26:19
+ * @FilePath: \CasaOS-UI-0.4.2\src\components\widgets\RadialBar.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -123,26 +123,29 @@ export default {
   }
 
   .per {
-    font-size: 1.25rem;
-    font-weight: 400;
-    color: white;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: $grey-200;
     position: relative;
+    line-height: 2rem;
     &::after {
       content: "%";
       position: absolute;
       font-size: 0.875rem;
-      color: rgba(255, 255, 255, 0.6);
-      bottom: 0.15rem;
+      color: $grey-400;
+      bottom: 0.4rem;
+      line-height: 1em;
       margin-left: 0.1rem;
     }
   }
   .label {
     position: absolute;
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     font-weight: 400;
-    color: white;
+    color: $grey-200;
     bottom: 0;
     margin-bottom: 0;
+    line-height: 1.25rem;
   }
 }
 
@@ -150,6 +153,8 @@ export default {
   text-align: center;
   font-size: 0.875rem;
   font-weight: 500;
+  color: $grey-200;
+  line-height: 1.25rem;
   margin-top: 0.25rem;
 }
 

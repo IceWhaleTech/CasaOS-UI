@@ -351,6 +351,8 @@
   "Unable to update at the moment!": "Unable to update at the moment!",
   "Updating": "Updating",
   "Uninstalling": "Uninstalling",
-  "CheckThenUpdate": "CheckThenUpdate",
-  "Not compatible with {arch} devices.": "Not compatible with {arch} devices."
+  "CheckThenUpdate": "Check then update",
+  "Not compatible with {arch} devices.": "Not compatible with {arch} devices.",
+  "Connect Dropbox": "Connect Dropbox",
+  "Connect GoogleDrive": "Connect GoogleDrive"
 }

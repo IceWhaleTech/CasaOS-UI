@@ -2,14 +2,14 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-06-28 13:24:25
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-01-16 17:48:20
- * @FilePath: /CasaOS-UI/src/components/Apps/AppSectionTitleTip.vue
+ * @LastEditTime: 2023-02-12 17:45:45
+ * @FilePath: \CasaOS-UI-0.4.2\src\components\Apps\AppSectionTitleTip.vue
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
 -->
 <template>
-  <h1 class="title is-4  has-text-white is-flex-shrink-1 is-flex-grow-1 mb-0 contextmenu-canvas home-app-tip">
+  <h1 class="title is-3  has-text-grey-100 is-flex-shrink-1 is-flex-grow-1 mb-0 contextmenu-canvas home-app-tip">
     <b-tooltip type="is-dark" position="is-right" :active="active" always>
       <template v-slot:content>
         <div class="mr-1">{{ $t(label) }}</div>

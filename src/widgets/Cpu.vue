@@ -1,13 +1,13 @@
 <!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2022/12/12 下午5:21
-  * @FilePath: /CasaOS-UI/src/widgets/Cpu.vue
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-02-12 16:30:37
+ * @FilePath: \CasaOS-UI-0.4.2\src\widgets\Cpu.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
   -->
 <template>
-	<div class="widget has-text-white cpu">
+	<div class="widget has-text-grey-100 cpu">
 		<div class="blur-background"></div>
 		<div class="widget-content  pb-1">
 			<!-- Header Start -->
@@ -16,54 +16,54 @@
 					{{ $t('System Status') }}
 				</div>
 				<div class="widget-icon-button is-flex-shrink-0" @click="showMoreInfo">
-					<b-icon :class="{'open':showMore}" class="arrow-btn" icon="right" pack="casa" size="is-20"></b-icon>
+					<b-icon :class="{ 'open': showMore }" class="arrow-btn" icon="right" pack="casa"></b-icon>
 				</div>
 			</div>
 			<!-- Header End -->
-			
-			<div class="columns is-mobile mt-0 ">
-				
+
+			<div class="columns is-mobile mt-0 mb-1 ">
+
 				<div class="column is-half has-text-centered">
-					<radial-bar :extendContent="power+temperature" :percent="parseInt(cpuSeries)"
-					            label="CPU"></radial-bar>
+					<radial-bar :extendContent="power + temperature" :percent="parseInt(cpuSeries)"
+						label="CPU"></radial-bar>
 				</div>
 				<div class="column is-half has-text-centered">
 					<radial-bar :extendContent="renderSize(totalMemory)" :percent="parseInt(ramSeries)"
-					            label="RAM"></radial-bar>
+						label="RAM"></radial-bar>
 				</div>
 			</div>
 			<div v-if="showMore">
 				<div class="more-info pt-1 pb-1">
 					<b-tabs v-model="activeTab">
 						<b-tab-item label="CPU">
-							<div v-for="(item,index) in containerCpuList" :key="item.title+index+'-cpu'">
+							<div v-for="(item, index) in containerCpuList" :key="item.title + index + '-cpu'">
 								<div v-if="!isNaN(item.usage)" class="is-flex is-size-7 is-align-items-center mb-2">
 									<div class="is-flex-grow-1 is-flex is-align-items-center">
 										<b-image :lazy="false" :src="item.icon"
-										         :src-fallback="require('@/assets/img/app/default.svg')"
-										         class="is-16x16 mr-2 is-flex-shrink-0"></b-image>
+											:src-fallback="require('@/assets/img/app/default.svg')"
+											class="is-16x16 mr-2 is-flex-shrink-0"></b-image>
 										<span class="one-line">{{ item.title }}</span>
 									</div>
 									<div class=" is-flex-shrink-0">{{ item.usage }}%</div>
 								</div>
 							</div>
 						</b-tab-item>
-						
+
 						<b-tab-item label="RAM">
-							<div v-for="(item,index) in containerRamList" :key="item.title+index+'-rem'">
+							<div v-for="(item, index) in containerRamList" :key="item.title + index + '-rem'">
 								<div v-if="!isNaN(item.usage) && renderSize(item.usage).split(' ')[0] != 0"
-								     class="is-flex is-size-7 is-align-items-center mb-2">
+									class="is-flex is-size-7 is-align-items-center mb-2">
 									<div class="is-flex-grow-1 is-flex is-align-items-center">
 										<b-image :src="item.icon"
-										         :src-fallback="require('@/assets/img/app/default.svg')"
-										         class="is-16x16 mr-2 is-flex-shrink-0"></b-image>
+											:src-fallback="require('@/assets/img/app/default.svg')"
+											class="is-16x16 mr-2 is-flex-shrink-0"></b-image>
 										<span class="one-line">{{ item.title }}</span>
 									</div>
 									<div class=" is-flex-shrink-0">{{ item.usage | renderSize }}</div>
 								</div>
 							</div>
 						</b-tab-item>
-					
+
 					</b-tabs>
 				</div>
 			</div>
@@ -77,7 +77,7 @@ import smoothReflow from 'vue-smooth-reflow'
 import orderBy from 'lodash/orderBy';
 import has from 'lodash/has';
 import slice from 'lodash/slice';
-import {mixin} from '../mixins/mixin';
+import { mixin } from '../mixins/mixin';
 import RadialBar from '@/components/widgets/RadialBar.vue';
 
 export default {
@@ -90,7 +90,7 @@ export default {
 	components: {
 		RadialBar
 	},
-	
+
 	data() {
 		return {
 			timmer: null,
@@ -173,9 +173,9 @@ export default {
 					if (item.previous == null) {
 						usage = 0;
 					} else {
-						
+
 						// Look at here  https://docs.docker.com/engine/api/v1.41/#operation/ContainerStats
-						
+
 						const cpu_delta = item.data.cpu_stats.cpu_usage.total_usage - item.previous.cpu_stats.cpu_usage.total_usage
 						const system_cpu_delta = item.data.cpu_stats.system_cpu_usage - item.previous.cpu_stats.system_cpu_usage + 1
 						// const number_cpus = item.data.cpu_stats.online_cpus
@@ -189,7 +189,7 @@ export default {
 						title: item.title
 					};
 				})
-				
+
 				this.containerRamList = res.data.data.map(item => {
 					let cache = 0
 					let id = 0
@@ -215,7 +215,7 @@ export default {
 				this.containerRamList = slice(orderBy(this.containerRamList, ['usage'], ['desc']), 0, 8)
 			})
 		},
-		
+
 		/**
 		 * @description: Toggle more info
 		 * @param {*}
@@ -227,10 +227,9 @@ export default {
 				this.$messageBus('widget_systemstatus', 'open')
 			} else {
 				this.$messageBus('widget_systemstatus', 'close')
-				
 			}
 		},
-		
+
 		pushPower(power) {
 			if (this.powerList.length >= 2) {
 				this.powerList.shift()
@@ -253,7 +252,7 @@ export default {
 			} else {
 				this.power = ''
 			}
-			
+
 			// Memory
 			this.totalMemory = mem.total
 			this.ramSeries = mem.usedPercent
@@ -268,23 +267,23 @@ export default {
 		.tabs {
 			ul {
 				border-bottom: 1px solid transparent;
-				
+
 				li {
 					font-size: 0.875rem;
-					
+
 					&:first-child {
 						a {
 							margin-left: 0;
 						}
 					}
-					
+
 					a {
 						color: #fff !important;
 						border-bottom: transparent 2px solid !important;
 						padding: 0.5rem 0 0rem 0;
 						margin: 0 0.5rem;
 					}
-					
+
 					&.is-active {
 						a {
 							font-weight: 700;
@@ -294,15 +293,15 @@ export default {
 				}
 			}
 		}
-		
+
 		.arrow-btn {
 			transition: all 0.3s;
-			
+
 			&.open {
 				transform: rotate(90deg);
 			}
 		}
-		
+
 		.more-info {
 			border-top: 1px solid rgba(255, 255, 255, 0.1);
 		}

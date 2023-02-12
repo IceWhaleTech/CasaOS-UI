@@ -2,16 +2,14 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-06 17:56:20
- * @FilePath: /CasaOS-UI/vue.config.js
+ * @LastEditTime: 2023-02-12 13:18:35
+ * @FilePath: \CasaOS-UI-0.4.2\vue.config.js
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
  */
 
 const webpack = require('webpack')
-// const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
-const UselessFile = require('useless-files-webpack-plugin')
 const path = require("path")
 module.exports = {
     publicPath: '/',
@@ -20,7 +18,9 @@ module.exports = {
     productionSourceMap: true,
     pluginOptions: {},
     css: {
-        extract: true
+        extract: {
+            ignoreOrder: true
+        }
     },
     configureWebpack: {
         module: {
@@ -50,27 +50,20 @@ module.exports = {
                 .use("style-resources-loader")
                 .loader("style-resources-loader")
                 .options({
-                    patterns: ["./src/assets/scss/common/_variables.scss"]
+                    patterns: [
+                        "./src/assets/scss/common/_variables.scss",
+                        "./src/assets/scss/common/_color.scss"
+                    ]
                 })
                 .end()
         })
         config.plugin('ignore')
             .use(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
-
-        config.plugin('uselessFile')
-            .use(
-                new UselessFile({
-                    root: path.resolve(__dirname, './src/assets/images'),
-                    clean: true,
-                    exclude: /node_modules/
-                })
-            )
+        // Production only
         if (process.env.NODE_ENV === "prod") {
             config.output.filename('[name].[contenthash:8].js').end()
             config.output.chunkFilename('[name].[contenthash:8].js').end()
             config.optimization.minimize(true);
-            // config.plugin('webpack-bundle-analyzer')
-            //     .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
             config.optimization.splitChunks({
                 chunks: 'all'
             })
@@ -79,6 +72,7 @@ module.exports = {
                 .minimizer('css')
                 .use(require.resolve('optimize-css-assets-webpack-plugin'), [{ cssProcessorOptions: { safe: true } }])
         } else {
+            // Development only
             config.plugin('webpack-bundle-analyzer')
                 .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
             config.devServer.proxy({

@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-03-01 21:10:57
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-19 20:49:37
- * @FilePath: \CasaOS-UI\src\widgets\Clock.vue
+ * @LastEditTime: 2023-02-12 15:53:20
+ * @FilePath: \CasaOS-UI-0.4.2\src\widgets\Clock.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -12,7 +12,7 @@
   <div class="widget has-text-white clock">
     <div class="blur-background"></div>
     <div class="widget-content">
-      <div class="time">{{timeText}}</div>
+      <div class="time mb-2">{{timeText}}</div>
       <div class="date">{{dateText}}</div>
     </div>
   </div>
@@ -67,17 +67,23 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .clock {
   font-style: normal;
   font-weight: 300;
   text-align: left;
   .time {
     font-size: 2rem;
-    font-weight: 500;
+    font-weight: 600;
+    line-height: 1.125em;
+    color: $grey-100;
+
   }
   .date {
     font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.25rem;
+    color: $grey-400;
   }
 }
 </style>

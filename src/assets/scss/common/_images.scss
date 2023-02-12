@@ -24,6 +24,7 @@
       max-height: 40px !important;
     }
   }
+
   &.is-28x28 {
     height: 28px;
     width: 28px;
@@ -32,6 +33,11 @@
   &.is-54x54 {
     height: 54px;
     width: 54px;
+  }
+
+  &.is-64x64 {
+    height: 64px;
+    width: 64px;
   }
 
   &.is-68x68 {

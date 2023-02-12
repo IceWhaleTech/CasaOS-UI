@@ -30,18 +30,20 @@ $white: hsl(0, 0%, 100%) !default;
 
 $orange: hsl(14, 100%, 53%) !default;
 $yellow: hsl(48, 100%, 67%) !default;
-$green: hsl(141, 71%, 48%) !default;
+$green: hsla(118, 70%, 45%, 1) !default;
 $turquoise: hsl(171, 100%, 41%) !default;
 $casablue: hsl(216, 90%, 54%) !default;
 $cyan: hsl(204, 86%, 53%) !default;
-$blue: hsl(216, 90%, 54%) !default;
+$blue: hsla(208, 100%, 45%, 1)!default;
 $purple: hsl(271, 100%, 71%) !default;
 $red: hsl(348, 100%, 61%) !default;
 $pot: rgb(214, 167, 56) !default;
 
 // Typography
 
-$family-sans-serif: -apple-system, BlinkMacSystemFont, Roboto,
+$family-sans-serif: -apple-system,
+BlinkMacSystemFont,
+Roboto,
 "Segoe UI",
 "Helvetica Neue",
 "Noto Sans",
@@ -51,7 +53,9 @@ $family-sans-serif: -apple-system, BlinkMacSystemFont, Roboto,
 "微软雅黑",
 sans-serif !default;
 
-$family-sans-serif1: -apple-system, BlinkMacSystemFont, Roboto,
+$family-sans-serif1: -apple-system,
+BlinkMacSystemFont,
+Roboto,
 "Segoe UI",
 "Helvetica Neue",
 "Noto Sans",
@@ -213,54 +217,54 @@ $custom-shades: null !default;
 
 // Setup $colors to use as bulma classes (e.g. 'is-twitter')
 $colors: mergeColorMaps(("white": ($white,
-$black,
-),
-        "black": ($black,
-        $white,
+                        $black,
+                ),
+                "black": ($black,
+                        $white,
+                ),
+                "light": ($light,
+                        $light-invert,
+                ),
+                "dark": ($dark,
+                        $dark-invert,
+                ),
+                "primary": ($primary,
+                        $primary-invert,
+                        $primary-light,
+                        $primary-dark,
+                ),
+                "link": ($link,
+                        $link-invert,
+                        $link-light,
+                        $link-dark,
+                ),
+                "info": ($info,
+                        $info-invert,
+                        $info-light,
+                        $info-dark,
+                ),
+                "success": ($success,
+                        $success-invert,
+                        $success-light,
+                        $success-dark,
+                ),
+                "warning": ($warning,
+                        $warning-invert,
+                        $warning-light,
+                        $warning-dark,
+                ),
+                "danger": ($danger,
+                        $danger-invert,
+                        $danger-light,
+                        $danger-dark,
+                ),
+                "facebook":($facebook,
+                        $white),
+                "twitter":($twitter,
+                        $white),
+                "reddit":($reddit,
+                        $white),
         ),
-        "light": ($light,
-        $light-invert,
-        ),
-        "dark": ($dark,
-        $dark-invert,
-        ),
-        "primary": ($primary,
-        $primary-invert,
-        $primary-light,
-        $primary-dark,
-        ),
-        "link": ($link,
-        $link-invert,
-        $link-light,
-        $link-dark,
-        ),
-        "info": ($info,
-        $info-invert,
-        $info-light,
-        $info-dark,
-        ),
-        "success": ($success,
-        $success-invert,
-        $success-light,
-        $success-dark,
-        ),
-        "warning": ($warning,
-        $warning-invert,
-        $warning-light,
-        $warning-dark,
-        ),
-        "danger": ($danger,
-        $danger-invert,
-        $danger-light,
-        $danger-dark,
-        ),
-        "facebook":($facebook,
-        $white),
-        "twitter":($twitter,
-        $white),
-        "reddit":($reddit,
-        $white),
-),
         $custom-colors);
 
 // Links
@@ -270,9 +274,9 @@ $link-focus-border: $primary;
 
 
 // BackDrop 
-$backDropColor: rgba(115, 120, 128, 0.35);
+$backDropColor: rgba(90, 108, 124, 0.4);
 $backDropBlur: none;
-$backDropBorderRadius: 0.5rem;
+$backDropBorderRadius: 10px;
 
 // Avatar
 $avatar-border-color: hsl(0, 0%, 89%);

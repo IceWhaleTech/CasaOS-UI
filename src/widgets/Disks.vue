@@ -1,7 +1,7 @@
 <!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/2/6 下午4:47
-  * @FilePath: /CasaOS-UI/src/widgets/Disks.vue
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-02-12 17:07:39
+ * @FilePath: \CasaOS-UI-0.4.2\src\widgets\Disks.vue
   * @Description:
   *
   * Copyright (c) 2023 by IceWhale, All Rights Reserved.
@@ -23,25 +23,24 @@
 				</div>
 				<!-- Header End -->
 				<div class="columns is-mobile is-multiline pt-2 ">
-					<div class="column is-full pb-1">
+					<div class="column is-full pb-0">
 						<div class="is-flex is-align-items-center">
 							<div class="header-icon">
-								<b-image :src="require('@/assets/img/storage/storage.svg')" class="is-68x68"></b-image>
+								<b-image :src="require('@/assets/img/storage/storage.svg')" class="is-64x64"></b-image>
 							</div>
-							<div class="ml-3 is-flex-grow-1 ">
-								<h4
-										class="title is-size-14px mb-2 mt-1 has-text-left has-text-white one-line is-align-items-center is-flex">
+							<div class="ml-2 is-flex-grow-1 ">
+								<h4 class="title mb-1 mt-0 has-text-left one-line is-align-items-center is-flex">
 									<b-tag v-if="health" type="is-success">{{ $t('Healthy') }}</b-tag>
 									<b-tag v-else type="is-danger">{{ $t('Damage') }}</b-tag>
 								</h4>
-								<p class="has-text-left is-size-14px mt-1">
-									<span class="op65">{{ $t('Used') }}: </span>{{ renderSize(totalUsed) }}<br>
-									<span class="op65">{{ $t('Total') }}: </span>{{ renderSize(totalSize) }}
+								<p class="has-text-left is-size-14px disk-info">
+									{{ $t('Used') }}: {{ renderSize(totalUsed) }}<br>
+									{{ $t('Total') }}: {{ renderSize(totalSize) }}
 								</p>
 							</div>
 						</div>
 						<b-progress :type="totalPercent | getProgressType" :value="totalPercent" class="mt-2"
-						            size="is-small"></b-progress>
+							size="is-small"></b-progress>
 					</div>
 				</div>
 			</div>
@@ -52,24 +51,24 @@
 			<div class="blur-background"></div>
 			<div class="widget-content">
 				<div class="columns is-mobile is-multiline pt-2 ">
-					<div v-for="(item) in usbDisks" :key="'usb_' + item.name" class="column is-full pb-1">
+					<div v-for="(item) in usbDisks" :key="'usb_' + item.name" class="column is-full pb-0">
 						<div class="is-flex">
 							<div class="header-icon is-flex-shrink-0">
-								<b-image :src="require('@/assets/img/storage/USB.svg')" class="is-68x68"></b-image>
+								<b-image :src="require('@/assets/img/storage/USB.svg')" class="is-64x64"></b-image>
 							</div>
-							<div class="ml-3 is-flex-grow-1 ">
-								<h4 class="title is-size-14px mb-2 mt-1 has-text-left has-text-white one-line ">
-									{{ item.model }}</h4>
-								<p class="has-text-left is-size-14px mt-1 ">
-									<span class="op65">{{ $t('Used') }}:</span> {{ renderSize(item.size - item.avail) }}
-									<br>
-									<span class="op65"> {{ $t('Total') }}:</span> {{ renderSize(item.size) }}
+							<div class="ml-2 is-flex-grow-1 ">
+								<h4 class="title is-size-14px mb-1 mt-0 has-text-left has-text-white one-line ">
+									{{ item.model }}
+								</h4>
+								<p class="has-text-left is-size-14px disk-info">
+									{{ $t('Used') }}: {{ renderSize(item.size - item.avail) }}<br>
+									{{ $t('Total') }}: {{ renderSize(item.size) }}
 								</p>
 							</div>
 						</div>
 						<b-progress :type="(Math.floor((item.size - item.avail) * 100 / item.size)) | getProgressType"
-						            :value="Math.floor((item.size - item.avail) * 100 / item.size)" class="mt-2"
-						            size="is-small"></b-progress>
+							:value="Math.floor((item.size - item.avail) * 100 / item.size)" class="mt-2"
+							size="is-small"></b-progress>
 					</div>
 				</div>
 			</div>
@@ -82,7 +81,7 @@
 
 <script>
 import StorageManagerPanel from '@/components/Storage/StorageManagerPanel.vue'
-import {mixin} from '../mixins/mixin';
+import { mixin } from '../mixins/mixin';
 
 export default {
 	// eslint-disable-next-line vue/multi-word-component-names
@@ -152,14 +151,43 @@ export default {
 
 		&::-webkit-progress-value {
 			opacity: 1;
+			border-radius: 6px;
 		}
+		
 	}
 
-	.tag {
-		height: 1.125rem;
-		border-radius: 2px;
-		padding-left: 0.5rem;
-		padding-right: 0.5rem;
+	.disk-info {
+		font-size: 0.875rem;
+		line-height: 1.25rem;
+		font-weight: 400;
+		color: $grey-400;
 	}
+}
+</style>
+
+<style lang="scss" scoped>
+.tag {
+	font-size: 0.75rem;
+	line-height: 1rem;
+	font-weight: 400;
+	height: 1.25rem;
+	border-radius: 4px;
+	padding-left: 0.375rem;
+	padding-right: 0.375rem;
+	border-width: 1px;
+	border-style: solid;
+
+	&.is-success {
+		background-color: transparent;
+		color: $green;
+		border-color: $green;
+	}
+
+	&.is-danger {
+		background-color: transparent;
+		color: $red;
+		border-color: $red;
+	}
+
 }
 </style>

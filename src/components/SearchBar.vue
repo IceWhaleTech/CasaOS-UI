@@ -1,7 +1,7 @@
 <!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/1/9 下午10:15
-  * @FilePath: /CasaOS-UI/src/components/SearchBar.vue
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-02-12 17:42:11
+ * @FilePath: \CasaOS-UI-0.4.2\src\components\SearchBar.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -18,9 +18,9 @@
 
 <template>
 	<b-field class="search-bar has-text-white mb-4" position="is-centered ">
-		<b-input v-model="keyText" :class="['ovh',isFocus?'fo':'']" :placeholder="$t('Search...')" expanded icon="magnifier"
-		         icon-pack="casa" icon-right="magnifier" icon-right-clickable size="is-medium"
-		         @blur="onBlur" @focus="onFocus" @icon-right-click="gotoSearch" @keyup.enter.native="gotoSearch">
+		<b-input v-model="keyText" :class="['ovh', isFocus ? 'fo' : '']" :placeholder="$t('Search...')" expanded
+			icon="magnifier" icon-pack="casa" icon-right="magnifier" icon-right-clickable size="is-medium"
+			@blur="onBlur" @focus="onFocus" @icon-right-click="gotoSearch" @keyup.enter.native="gotoSearch">
 		</b-input>
 	</b-field>
 </template>
@@ -81,7 +81,7 @@ export default {
 		outline: none;
 		font-size: 0.875rem !important;
 		color: rgba(255, 255, 255, 0.6);
-		height: 3rem;
+		height: 3.5rem;
 
 		&:focus {
 			border: none;
@@ -89,8 +89,12 @@ export default {
 		}
 
 		&::placeholder {
-			color: rgba(255, 255, 255, 0.6);
+			color: $grey-400;
 		}
+	}
+
+	.icon {
+		height: 3.5rem !important;
 	}
 
 	.ovh {
@@ -99,12 +103,13 @@ export default {
 		.icon.is-left {
 			transition: all 0.2s;
 			left: 0;
+			color: $grey-100 !important;
 		}
 
 		.icon.is-right {
 			transition: all 0.2s;
 			right: -3rem !important;
-			color: white !important;
+			color: $grey-100 !important;
 		}
 
 		input {

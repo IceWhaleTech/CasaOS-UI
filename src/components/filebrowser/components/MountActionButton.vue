@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-08-03 14:10:43
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-06 17:49:20
- * @FilePath: /CasaOS-UI/src/components/filebrowser/components/MountActionButton.vue
+ * @LastEditTime: 2023-02-12 17:50:33
+ * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\components\MountActionButton.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -31,7 +31,7 @@
           <div class="img-container mr-1">
             <b-image :src="getDriverIcon(driver)" class="is-16x16"></b-image>
           </div>
-          {{ $t(driver.name) }}
+          {{ $t("Connect " + driver.name) }}
         </div>
       </b-dropdown-item>
       <hr class="dropdown-divider" v-if="platforms.length > 0">
