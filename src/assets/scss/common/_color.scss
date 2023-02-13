@@ -7,13 +7,6 @@
  *  Copyright (c) 2022 by IceWhale, All Rights Reserved.
  */
 
- $grey-100:hsla(208, 16%, 96%, 1) !default;
- $grey-200: hsla(208, 16%, 94%, 1);
- $grey-600: hsla(208, 14%, 58%, 1);
- $grey-400:hsla(208, 16%, 85%, 1) !default;
- $gray-800: hsla(208, 20%, 20%, 1);
-
-
 .op80 {
   opacity: 0.8;
 }
@@ -34,7 +27,7 @@
   color: $grey-600;
 }
 
-.has-text-grey-100{
+.has-text-grey-100 {
   color: $grey-100;
 }
 

@@ -91,10 +91,12 @@ export default {
 				pagination: {
 					el: '.swiper-pagination',
 					bulletClass: 'swiper-pagination-bullet',
+					clickable: true,
 				},
 				navigation: {
 					nextEl: '.swiper-button-next',
-					prevEl: '.swiper-button-prev'
+					prevEl: '.swiper-button-prev',
+					disabledClass: 'swiper-button-disabled',
 				},
 				observer: true,
 				on: {
@@ -405,10 +407,12 @@ export default {
 			if (this.noticesData[res.name]) {
 				// update progress
 				if (res.finished) {
-					this.removeNotice(res.name)
-					// business :: Tagging of new app / scrollIntoView
-					this.addIdToSessionStorage(res.id)
-					this.$EventBus.$emit(events.RELOAD_APP_LIST)
+					this.removeNotice(res.name);
+					this.$EventBus.$emit(events.RELOAD_APP_LIST);
+					if (res.isNewTag) {
+						// business :: Tagging of new app / scrollIntoView
+						this.addIdToSessionStorage(res.id)
+					}
 				} else if (res.message !== "") {
 					const messageArray = res.message.split(/[(\r\n)\r\n]+/);
 					messageArray.forEach((item, index) => {
@@ -465,7 +469,8 @@ export default {
 				// First name. Second app:name.The name from CheckThenUpdate.The app:name from install.
 				name: res.Properties["name"] || res.Properties["app:name"],
 				id: res.Properties["docker:container:id"],
-				icon: res.Properties["app:icon"]
+				icon: res.Properties["app:icon"],
+				isNewTag: true
 			});
 		},
 		"app:update-begin"(res) {
@@ -481,7 +486,8 @@ export default {
 				finished: true,
 				name: res.Properties["name"],
 				id: res.Properties["cid"],
-				icon: ''
+				icon: '',
+				isNewTag: res.Properties["docker:image:updated"] === "true"
 			});
 		},
 		"app:install-error"(res) {
@@ -523,13 +529,24 @@ export default {
 	width: 100% !important;
 }
 
+.swiper-container {
+	&:hover > .swiper-button-next:not(.swiper-button-disabled), &:hover > .swiper-button-prev:not(.swiper-button-disabled) {
+		opacity: 1;
+	}
+	
+	& > .swiper-button-disabled {
+		opacity: 0;
+	}
+}
+
 .swiper-button-prev,
 .swiper-button-next {
 	width: 2rem;
 	height: 2rem;
 	margin: 0 0.5rem;
 	top: calc(50% - 2rem);
-	z-index: 20;
+	z-index: 1;
+	opacity: 0;
 }
 
 .swiper-pagination {
