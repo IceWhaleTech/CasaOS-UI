@@ -412,6 +412,7 @@ export default {
 			switch (status) {
 				case 'warn':
 					toastType = 'is-warning'
+					this.getCloudStorage();
 					break;
 				case 'fail':
 					toastType = 'is-danger'
