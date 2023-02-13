@@ -67,7 +67,7 @@ export default {
 
   },
   created() {
-    //this.items = this.vdata;
+    this.items = this.vdata;
   },
   watch: {
 
@@ -81,18 +81,18 @@ export default {
         container: "",
         host: ""
       }
-      this.vdata.push(itemObj)
+      this.items.push(itemObj)
     },
 
     removeItem(index) {
-      this.vdata.splice(index, 1)
+      this.items.splice(index, 1)
       this.filterArray()
     },
     handleInput() {
       this.filterArray()
     },
     filterArray() {
-      this.$emit('change', this.vdata)
+      this.$emit('change', this.items)
 
     }
   },

@@ -52,7 +52,7 @@
 <script>
 
 export default {
-  name: 'ports',
+  name: 'ports-form',
   data() {
     return {
       isLoading: false,
@@ -69,7 +69,7 @@ export default {
     showHostPost: Boolean
   },
   created() {
-    //this.items = this.vdata;
+    this.items = this.vdata;
   },
   mounted() {
     if (this.vdata.length == 0) {
@@ -83,11 +83,11 @@ export default {
         host: "",
         protocol: "tcp"
       }
-      this.vdata.push(itemObj)
+      this.items.push(itemObj)
     },
 
     removeItem(index) {
-      this.vdata.splice(index, 1)
+      this.items.splice(index, 1)
       this.filterArray()
     },
     handleInput() {
@@ -102,7 +102,7 @@ export default {
       //   }
       // })
 
-      this.$emit('change', this.vdata)
+      this.$emit('change', this.items)
 
 
     }

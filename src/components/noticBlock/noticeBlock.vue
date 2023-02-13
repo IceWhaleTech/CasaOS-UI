@@ -1,9 +1,9 @@
 <!--
  * @Author: zhanghengxin ezreal.ice@icloud.com
  * @Date: 2022-09-06 14:42:24
- * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-09-06 15:31:14
- * @FilePath: /CasaOS-UI/src/components/Storage/noticeBlock.vue
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-02-12 18:31:45
+ * @FilePath: \CasaOS-UI-0.4.2\src\components\noticBlock\noticeBlock.vue
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -99,8 +99,8 @@
 
 <script>
 
-import StorageManagerPanel from "@/components/Storage/StorageManagerPanel.vue";
-import DiskLearnMore from "@/components/Storage/DiskLearnMore.vue";
+// import StorageManagerPanel from "@/components/Storage/StorageManagerPanel.vue";
+// import DiskLearnMore from "@/components/Storage/DiskLearnMore.vue";
 
 export default {
 	name: "notice-block",

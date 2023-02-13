@@ -1,9 +1,9 @@
 <!--
  * @Author: zhanghengxin ezreal.ice@icloud.com
  * @Date: 2022-09-06 14:42:24
- * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-09-06 15:31:14
- * @FilePath: /CasaOS-UI/src/components/Storage/noticeBlock.vue
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-02-12 18:31:56
+ * @FilePath: \CasaOS-UI-0.4.2\src\components\Storage\StorageBlock.vue
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -179,11 +179,11 @@ export default {
     }
   },
   sockets: {
-    "app:install-end"(res) {
+    "app:install-end"() {
       // res.Properties['app:name']
       this.checkSyncStatus();
     },
-    "app:install-error"(res) {
+    "app:install-error"() {
       this.checkSyncStatus();
     },
   }

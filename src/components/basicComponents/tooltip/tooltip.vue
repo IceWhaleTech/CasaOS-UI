@@ -1,7 +1,7 @@
 <!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2022/12/19 下午1:51
-  * @FilePath: /CasaOS-UI/src/components/basicComponents/tooltip/tooltip.vue
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-02-12 18:14:43
+ * @FilePath: \CasaOS-UI-0.4.2\src\components\basicComponents\tooltip\tooltip.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -12,7 +12,7 @@
 
 <script>
 export default {
-	name: "tooltip.vue",
+	name: "tooltip-vue",
 	props: {
 		modal: {
 			type: String,
@@ -83,4 +83,6 @@ span._tooltip-right-block {
 	top: -0.375rem;
 	right: -0.5rem;
 }
+
+
 </style>

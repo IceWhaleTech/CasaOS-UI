@@ -1,7 +1,7 @@
 /*
- * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
- * @LastEditTime: 2022/12/20 下午3:14
- * @FilePath: /CasaOS-UI/src/mixins/Business_ShowNewAppTag.js
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-02-12 18:30:18
+ * @FilePath: \CasaOS-UI-0.4.2\src\mixins\app\Business_ShowNewAppTag.js
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -18,7 +18,7 @@ export default {
         this.newAppIds = this.getIdFromSessionStorage();
     },
     methods: {
-        getSessionStorageOutputArray(item) {
+        getSessionStorageOutputArray() {
             let newAppTag = sessionStorage.getItem('newAppTag');
             if (newAppTag === null) {
                 return [];

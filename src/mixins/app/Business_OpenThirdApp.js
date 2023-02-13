@@ -1,7 +1,7 @@
 /*
- * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
- * @LastEditTime: 2022/12/20 下午6:36
- * @FilePath: /CasaOS-UI/src/mixins/app/Business_OpenThirdApp.js
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-02-12 18:32:17
+ * @FilePath: \CasaOS-UI-0.4.2\src\mixins\app\Business_OpenThirdApp.js
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -29,7 +29,7 @@ export default {
                 const protocol = appInfo.protocol || 'http'
                 const port = appInfo.port ? `:${appInfo.port}` : ''
                 const url = `${protocol}://${hostIp}${port}${appInfo.index}`
-                let href = window.location.href.split("#")[0]
+                // let href = window.location.href.split("#")[0]
                 // if (url === href) {
                 //     this.$buefy.toast.open({
                 //         message: this.$t('The page to be opened is the same as current page'),

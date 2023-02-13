@@ -1,7 +1,7 @@
 /*
- * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
- * @LastEditTime: 2022/12/29 下午1:17
- * @FilePath: /CasaOS-UI/src/events/message_bus.js
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-02-12 18:32:12
+ * @FilePath: \CasaOS-UI-0.4.2\src\events\message_bus.js
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -45,7 +45,7 @@ module.exports = {
     account_setting: async () => {
         return await intermediateProcessor("casaos-ui:topbar:account_setting")
     },
-    account_setting_logout: async (a) => {
+    account_setting_logout: async () => {
         return await intermediateProcessor("casaos-ui:topbar:dashboardsetting_showsearchbar")
     },
     dashboardsetting: async () => {
@@ -181,10 +181,10 @@ module.exports = {
     appscustom_setting: async (name) => {
         return await intermediateProcessor("casaos-ui:app:appscustom_setting", {value: name})
     },
-    apps_custominstall: async (name) => {
+    apps_custominstall: async () => {
         return await intermediateProcessor("casaos-ui:app:apps_custominstall")
     },
-    apps_external: async (name) => {
+    apps_external: async () => {
         return await intermediateProcessor("casaos-ui:app:apps_external")
     },
 

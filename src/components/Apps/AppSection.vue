@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-08 19:27:09
- * @FilePath: /CasaOS-UI/src/components/Apps/AppSection.vue
+ * @LastEditTime: 2023-02-12 18:13:52
+ * @FilePath: \CasaOS-UI-0.4.2\src\components\Apps\AppSection.vue
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -36,14 +36,17 @@
       @end="onSortEnd" @start="drag = true">
 
       <!-- App Icon Card Start -->
-      <div v-if="!isLoading" v-for="(item) in appList" :id="'app-' + item.id" :key="'app-' + item.id"
-        class="column is-narrow is-3 handle">
-        <app-card :isCasa="true" :item="item" @configApp="showConfigPanel" @updateState="getList"></app-card>
-      </div>
-      <div v-if="isLoading" v-for="(index) in skCount" :id="'app-' + index" :key="'app-' + index"
-        class="column is-narrow is-3 handle">
-        <app-card-skeleton :index="index"></app-card-skeleton>
-      </div>
+      <template v-if="!isLoading">
+        <div v-for="(item) in appList" :id="'app-' + item.id" :key="'app-' + item.id"
+          class="column is-narrow is-3 handle">
+          <app-card :isCasa="true" :item="item" @configApp="showConfigPanel" @updateState="getList"></app-card>
+        </div>
+      </template>
+      <template v-else>
+        <div v-for="(index) in skCount" :id="'app-' + index" :key="'app-' + index" class="column is-narrow is-3 handle">
+          <app-card-skeleton :index="index"></app-card-skeleton>
+        </div>
+      </template>
       <!-- App Icon Card End -->
       <!-- <b-loading slot="footer" v-model="isLoading" :is-full-page="false"></b-loading> -->
     </draggable>
@@ -411,10 +414,10 @@ export default {
         this.scrollToNewApp();
       });
     },
-    "app:install-error"(res) {
+    "app:install-error"() {
       // res.Properties['message']
     },
-    "app:uninstall-end"(res) {
+    "app:uninstall-end"() {
       // res.Properties['app:name']
       // res.Properties['id']
       this.getList();

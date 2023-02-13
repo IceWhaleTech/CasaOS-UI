@@ -1,7 +1,7 @@
 /*
- * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
- * @LastEditTime: 2023/2/1 下午6:39
- * @FilePath: /CasaOS-UI/src/service/service.js
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-02-13 02:06:42
+ * @FilePath: \CasaOS-UI-0.4.2\src\service\service.js
  * @Description:
  *
  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
@@ -50,11 +50,11 @@ instance.interceptors.request.use(
     (config) => {
         config.headers.common["Language"] = getInitLang()
         const token = localStorage.getItem("access_token")
-        const rtoken = localStorage.getItem("refresh_token")
+        // const rtoken = localStorage.getItem("refresh_token")
         if (token) {
             config.headers.Authorization = token
-            store.commit("SET_ACCESS_TOKEN", token);
-            store.commit("SET_REFRESH_TOKEN", rtoken);
+            // store.commit("SET_ACCESS_TOKEN", token);
+            // store.commit("SET_REFRESH_TOKEN", rtoken);
         }
         return config;
     }, (error) => {
@@ -68,66 +68,57 @@ instance.interceptors.request.use(
 let isRefreshing = false
 let requests = []
 
+function logout() {
+    router.replace({ //Jump to the logout page
+        path: '/logout'
+    })
+}
+
 instance.interceptors.response.use(
     (response) => {
         return response;
     },
     async (error) => {
         const originalConfig = error?.config;
-        if (originalConfig.url !== "/users/register" && error.response) {
+        const refresh_token = localStorage.getItem("refresh_token")
+        if (originalConfig.url !== "/users/register" && error?.response?.status === 401) {
             // Access Token was expired
-            if (error?.response?.status === 401) {
-                if (!isRefreshing) {
-                    isRefreshing = true
-                    try {
-                        const refresh_token = localStorage.getItem("refresh_token")
-                        if (refresh_token) {
-                            try {
-                                const tokenRes = await instance.post("/v1/users/refresh", {
-                                    refresh_token: refresh_token,
-                                });
-                                if (tokenRes.data.success == 200) {
-                                    localStorage.setItem("access_token", tokenRes.data.data.access_token);
-                                    localStorage.setItem("refresh_token", tokenRes.data.data.refresh_token);
-                                    localStorage.setItem("expires_at", tokenRes.data.data.expires_at);
+            if (!isRefreshing) {
+                isRefreshing = true
 
-                                    store.commit("SET_ACCESS_TOKEN", tokenRes.data.data.access_token);
-                                    store.commit("SET_REFRESH_TOKEN", tokenRes.data.data.refresh_token);
+                instance.post("/v1/users/refresh", {
+                    refresh_token: refresh_token,
+                }).then(tokenRes => {
+                    if (tokenRes.data.success == 200) {
+                        localStorage.setItem("access_token", tokenRes.data.data.access_token);
+                        localStorage.setItem("refresh_token", tokenRes.data.data.refresh_token);
+                        localStorage.setItem("expires_at", tokenRes.data.data.expires_at);
 
-                                    originalConfig.headers.Authorization = tokenRes.data.data.access_token
-                                    Promise.resolve().then(() => {
-                                        requests.forEach(cb => cb())
-                                        requests = []
-                                    })
-                                } else {
-                                    router.replace({ //Jump to the logout page
-                                        path: '/logout'
-                                    })
-                                }
-                            } catch (error) {
-                                router.replace({ //Jump to the logout page
-                                    path: '/logout'
-                                })
-                            }
-
-                        } else {
-                            router.replace({ //Jump to the login page
-                                path: '/login'
-                            })
-                        }
-                    } catch (_error) {
-                        return Promise.reject(_error);
+                        store.commit("SET_ACCESS_TOKEN", tokenRes.data.data.access_token);
+                        store.commit("SET_REFRESH_TOKEN", tokenRes.data.data.refresh_token);
+                        originalConfig.headers.Authorization = tokenRes.data.data.access_token
+                        instance.defaults.headers.Authorization = tokenRes.data.data.access_token
+                        isRefreshing = false
+                        return tokenRes.data.data.access_token
+                    } else {
+                        logout()
                     }
-                    isRefreshing = false
-
-                }
-                return new Promise(resolve => {
-                    requests.push(() => {
-                        resolve(instance(originalConfig))
-                    })
+                }).then(token => {
+                    requests.forEach(cb => cb(token))
+                    requests = []
+                }).catch(error => {
+                    logout()
+                    console.log(error);
                 })
 
             }
+            return new Promise(resolve => {
+                requests.push((token) => {
+                    originalConfig.headers = {}
+                    originalConfig.headers.Authorization = token
+                    resolve(instance(originalConfig))
+                })
+            })
         }
         return Promise.reject(error)
 
@@ -173,11 +164,11 @@ const api = {
     },
     delete(url, data) {
         url = testVisionNum(url)
-        return instance.delete(url, {data: data})
+        return instance.delete(url, { data: data })
     },
     patch(url, data) {
         url = testVisionNum(url)
         return instance.patch(url, data)
     },
 }
-export {api}
+export { api }

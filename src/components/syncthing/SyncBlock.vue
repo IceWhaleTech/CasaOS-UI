@@ -1,7 +1,7 @@
 <!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2022/12/1 下午1:57
-  * @FilePath: /CasaOS-UI/src/components/syncthing/SyncBlock.vue
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-02-12 18:32:06
+ * @FilePath: \CasaOS-UI-0.4.2\src\components\syncthing\SyncBlock.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -149,10 +149,10 @@ export default {
 
   },
   sockets: {
-    "app:install-end"(res) {
+    "app:install-end"() {
       this.checkSyncStatus();
     },
-    "app:install-error"(res) {
+    "app:install-error"() {
       this.checkSyncStatus();
     },
   }
