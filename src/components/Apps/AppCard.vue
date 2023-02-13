@@ -8,55 +8,55 @@
   -->
 <template>
 	<div class="common-card is-flex is-align-items-center is-justify-content-center p-55 app-card"
-		@mouseleave="hover = true" @mouseover="hover = true">
-
+	     @mouseleave="hover = true" @mouseover="hover = true">
+		
 		<!-- Action Button Start -->
 		<div v-if="item.type !== 'system' && isCasa && !isUninstalling" class="action-btn">
 			<b-dropdown ref="dro" :mobile-modal="false" :triggers="['contextmenu', 'click']" animation="fade1"
-				append-to-body aria-role="list" class="app-card-drop" position="is-bottom-left"
-				@active-change="setDropState">
+			            append-to-body aria-role="list" class="app-card-drop" position="is-bottom-left"
+			            @active-change="setDropState">
 				<template #trigger>
 					<p role="button">
 						<b-icon class="is-clickable" icon="dots-vertical"></b-icon>
 					</p>
 				</template>
-
+				
 				<b-dropdown-item :focusable="false" aria-role="menu-item" custom>
 					<b-button expanded tag="a" type="is-text" @click="openApp(item)">{{ $t('Open') }}</b-button>
 					<b-button expanded type="is-text" @click="configApp">{{ $t('Setting') }}</b-button>
 					<b-button v-if="item.appstore_id != 0 && item.appstore_id != undefined" :loading="isCloning"
-						expanded type="is-text" @click="appClone(item.appstore_id)">{{
+					          expanded type="is-text" @click="appClone(item.appstore_id)">{{
 							$t('Clone')
 						}}
 					</b-button>
-
+					
 					<b-button expanded type="is-text" @click="checkAppVersion">{{
-						$t('Check then update')
-					}}
+							$t('Check then update')
+						}}
 						<b-loading :active="isCheckThenUpdate || isUpdating" :is-full-page="false">
 							<img :src="require('@/assets/img/loading/waiting.svg')" alt="pending"
-								class="ml-4 is-24x24" />
+							     class="ml-4 is-24x24"/>
 						</b-loading>
 					</b-button>
-
-
+					
+					
 					<b-button v-if="item.appstore_id != undefined" class="mb-1 has-text-red" expanded type="is-text"
-						@click="uninstallConfirm">
+					          @click="uninstallConfirm">
 						{{ $t('Uninstall') }}
 						<b-loading v-model="isUninstalling" :is-full-page="false">
 							<img :src="require('@/assets/img/loading/waiting.svg')" alt="pending"
-								class="ml-4 is-24x24" />
+							     class="ml-4 is-24x24"/>
 						</b-loading>
 					</b-button>
-
+					
 					<b-button v-else class="mb-1" expanded type="is-text" @click="uninstallApp(true)">
 						{{ $t('Delete') }}
 						<b-loading v-model="isUninstalling" :is-full-page="false">
 							<img :src="require('@/assets/img/loading/waiting.svg')" alt="pending"
-								class="ml-4 is-24x24" />
+							     class="ml-4 is-24x24"/>
 						</b-loading>
 					</b-button>
-
+					
 					<div v-if="item.type !== 'LinkApp'" class="gap">
 						<div class="columns is-gapless _b-bor is-flex">
 							<div class="column is-flex is-justify-content-center is-align-items-center">
@@ -66,13 +66,13 @@
 							</div>
 							<div class="column is-flex is-justify-content-center is-align-items-center">
 								<b-button :class="item.state" :loading="isStarting" class="has-text-red" expanded
-									type="is-text" @click="toggle(item)">
+								          type="is-text" @click="toggle(item)">
 									<b-icon custom-size="mdi-18px" icon="power-standby"></b-icon>
 								</b-button>
 							</div>
 						</div>
 					</div>
-
+				
 				</b-dropdown-item>
 			</b-dropdown>
 		</div>
@@ -81,39 +81,39 @@
 		<div class="cards-content">
 			<!-- Card Content Start -->
 			<b-tooltip :always="isActiveTooltip" :animated="true" :label="tooltipLabel" :triggers="tooltipTriger"
-				animation="fade1" class="in-card" type="is-white">
-
+			           animation="fade1" class="in-card" type="is-white">
+				
 				<div
 					class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-5 pb-3px img-c">
 					<div class="is-flex is-justify-content-center">
 						<div class="is-relative">
-							<b-image :class="[item.state, isLoading | dotClass]" :src="item.icon"
-								:src-fallback="require('@/assets/img/app/default.svg')" class="is-64x64"
-								webp-fallback=".jpg" @click.native="openApp(item)"></b-image>
+							<b-image :class="dotClass(item.state, isLoading)" :src="item.icon"
+							         :src-fallback="require('@/assets/img/app/default.svg')" class="is-64x64"
+							         webp-fallback=".jpg" @click.native="openApp(item)"></b-image>
 							<!-- Unstable-->
 							<cTooltip v-if="newAppIds.includes(item.id)" class="__position" content="NEW"></cTooltip>
 						</div>
-
+						
 						<!-- Loading Bar Start -->
-						<b-loading v-model="isLoading" :can-cancel="false" :is-full-page="false"
-							class="has-background-gray-800 op80 is-64x64"
-							style="top: auto;bottom: auto; right: auto; left: auto; border-radius: 11.5px">
+						<b-loading :active="isLoading" :can-cancel="false" :is-full-page="false"
+						           class="has-background-gray-800 op80 is-64x64"
+						           style="top: auto;bottom: auto; right: auto; left: auto; border-radius: 11.5px">
 							<img :src="require('@/assets/img/loading/waiting-white.svg')" alt="loading"
-								class="is-20x20" />
+							     class="is-20x20"/>
 						</b-loading>
 						<!-- Loading Bar End -->
 					</div>
-
+					
 					<p class="mt-3 one-line">
 						<a class="one-line" style="cursor:default">
 							{{ item.name }}
 						</a>
 					</p>
-
+				
 				</div>
 			</b-tooltip>
 			<!-- Card Content End -->
-
+			
 			<!-- Loading Bar Start -->
 			<!--			<b-loading v-model="isLoading" :can-cancel="false" :is-full-page="false"></b-loading>-->
 			<!-- Loading Bar End -->
@@ -203,7 +203,17 @@ export default {
 		},
 		isLoading() {
 			let active = this.isUninstalling || this.isUpdating // || this.isRestarting || this.isStarting || this.isStoping || this.isSaving
-
+			return active
+		},
+		
+	},
+	watch: {
+		hover(val) {
+			if (!val && this.dropState)
+				this.$refs.dro.toggle();
+		},
+		isLoading(active) {
+			console.log('isLoading', active)
 			// design :: The first display is three seconds long
 			if ((active === true || this.isCheckThenUpdate) && this.activeTimer === undefined) {
 				this.activeTimer = setTimeout(() => {
@@ -217,15 +227,6 @@ export default {
 				this.activeTimer = undefined;
 				this.isActiveTooltip = false;
 			}
-
-			return active
-		},
-
-	},
-	watch: {
-		hover(val) {
-			if (!val && this.dropState)
-				this.$refs.dro.toggle();
 		},
 	},
 	methods: {
@@ -253,7 +254,7 @@ export default {
 				}
 			}
 		},
-
+		
 		openSystemApps(item) {
 			switch (item.name) {
 				case "App Store":
@@ -266,7 +267,7 @@ export default {
 					break;
 			}
 		},
-
+		
 		/**
 		 * @description: Set drop-down menu status
 		 * @param {Boolean} e
@@ -275,7 +276,7 @@ export default {
 		setDropState(e) {
 			this.dropState = e
 		},
-
+		
 		/**
 		 * @description: Restart Application
 		 * @return {*} void
@@ -298,7 +299,7 @@ export default {
 				})
 			})
 		},
-
+		
 		/**
 		 * @description: Confirm before uninstall
 		 * @return {*} void
@@ -321,7 +322,7 @@ export default {
 				}
 			})
 		},
-
+		
 		/**
 		 * @description: Uninstall app
 		 * @return {*} void
@@ -340,7 +341,7 @@ export default {
 					// this.isUninstalling = false;
 				})
 			} else {
-				this.$api.container.uninstall(this.item.id, { 'delete_config_folder': checkDelConfig }).then((res) => {
+				this.$api.container.uninstall(this.item.id, {'delete_config_folder': checkDelConfig}).then((res) => {
 					if (res.data.success === 200) {
 						this.$EventBus.$emit(events.UPDATE_SYNC_STATUS);
 					}
@@ -353,9 +354,9 @@ export default {
 					})
 				})
 			}
-
+			
 		},
-
+		
 		/**
 		 * @description: Emit the event that the app has been updated
 		 * @return {*} void
@@ -365,7 +366,7 @@ export default {
 			this.$emit("updateState")
 			this.$EventBus.$emit(events.UPDATE_SYNC_STATUS);
 		},
-
+		
 		/**
 		 * @description: Emit the event that the app has been updated with custom_id
 		 * @return {*} void
@@ -375,7 +376,7 @@ export default {
 			this.$refs.dro.isActive = false
 			this.$emit("configApp", this.item, true)
 		},
-
+		
 		/**
 		 * @description: Start or Stop App
 		 * @param {Object} item the app info object
@@ -385,7 +386,7 @@ export default {
 			this.$messageBus('apps_stop', item.name);
 			this.isStarting = true;
 			const state = item.state === "running" ? "stop" : "start"
-
+			
 			this.$api.container.updateState(item.id, state).then((res) => {
 				this.isStarting = false
 				if (res.data.success === 200) {
@@ -412,7 +413,7 @@ export default {
 				})
 			})
 		},
-
+		
 		appClone(id) {
 			this.isCloning = true;
 			this.$api.apps.getAppInfo(id).then(resp => {
@@ -420,7 +421,7 @@ export default {
 					let respData = resp.data.data
 					// messageBus :: apps_clone
 					this.$messageBus('apps_clone', this.item.name.toString());
-
+					
 					let initData = {}
 					initData.protocol = respData.protocol
 					initData.host = respData.host
@@ -445,7 +446,7 @@ export default {
 					initData.privileged = respData.privileged
 					initData.host_name = respData.host_name
 					initData.appstore_id = id
-
+					
 					this.$api.container.install(initData).catch((err) => {
 						this.$buefy.toast.open({
 							message: err.response.data.message,
@@ -463,12 +464,12 @@ export default {
 				})
 			})
 		},
-
+		
 		checkAppVersion() {
 			this.isCheckThenUpdate = true;
 			// patch(`/v2/app_management/container/${this.item.id}`).then(resp => {
 			const params = `${this.item.id}?name=${this.item.name}&pull=true&cid=${this.item.id}`
-
+			
 			this.$api.apps.checkAppVersion(params).then(resp => {
 				if (resp.status === 200) {
 					// messageBus :: apps_checkThenUpdate
@@ -506,33 +507,11 @@ export default {
 			} else {
 				return state === 'running' ? 'start' : 'stop'
 			}
-
+			
 		},
-
+		
 	},
-	filters: {
-		/**
-		 * @description: Format Dot Class
-		 * @param {String} state
-		 * @return {String}
-		 */
-		dotClass(state, loadState) {
-			// For updating
-			if (loadState) {
-				if (state === "0" || state === "running") {
-					return 'disabled start'
-				}
-				return 'disabled stop'
-			}
-			if (state === "0") {
-				return "start"
-			} else {
-				return state === 'running' ? 'start' : 'stop'
-			}
-
-		},
-	},
-
+	
 	sockets: {
 		/**
 		 * @description: Update App Status
@@ -544,7 +523,7 @@ export default {
 			// 	this.loadState = true;
 			// }
 		},
-
+		
 		'docker:image:pull-end'(data) {
 			if (data.Properties.cid === this.item.id) {
 				if (data.Properties['docker:image:updated'] === 'true') {
@@ -553,13 +532,13 @@ export default {
 				this.isCheckThenUpdate = false;
 			}
 		},
-
+		
 		'docker:image:pull-error'(data) {
 			if (data.Properties.cid === this.item.id) {
 				this.isCheckThenUpdate = false;
 			}
 		},
-
+		
 		/**
 		 * @description: Update App Version
 		 * @param {Object} data
@@ -573,19 +552,19 @@ export default {
 			}
 			this.isUpdating = false;
 			this.$buefy.toast.open({
-				message: this.$t(`{appName} is the latest version!`, { appName: this.item.name }),
+				message: this.$t(`{appName} is the latest version!`, {appName: this.item.name}),
 				type: 'is-success',
 				duration: 5000
 			})
 		},
-
+		
 		"app:uninstall-error"(res) {
 			if (res.Properties['id'] === this.item.id) {
 				this.isUninstalling = false;
 			}
 		},
 	}
-
+	
 }
 </script>
 
@@ -597,7 +576,7 @@ export default {
 .app-card-drop {
 	.dropdown-menu {
 		min-width: 10rem;
-
+		
 		.dropdown-content {
 			padding: 4px !important;
 			width: 160px;
@@ -605,17 +584,17 @@ export default {
 			padding: 0;
 			background: hsla(0, 0%, 100%, 1);
 			border-radius: 10px;
-
+			
 			.dropdown-item {
 				padding: 0;
 			}
-
+			
 			.button {
 				border-radius: 0;
 				padding-left: 1rem;
 				padding-right: 1rem;
 				border-radius: 5px;
-
+				
 				&.is-text {
 					text-decoration: none;
 					justify-content: flex-start;
@@ -625,87 +604,87 @@ export default {
 					height: 2rem;
 					font-size: 0.875rem;
 					color: hsla(208, 20%, 20%, 1);
-
+					
 					&.running {
 						color: #779e2a !important;
 					}
-
+					
 					&.exited {
 						color: #ff1616 !important;
 					}
 				}
-
+				
 				&.has-text-red {
 					&:hover {
 						background: hsla(18, 98%, 94%, 1);
 					}
-
+					
 					&:active {
 						background: hsla(18, 100%, 80%, 1);
 					}
 				}
-
+				
 				&:focus {
 					background: none;
 					box-shadow: none;
 					outline: none;
 				}
-
+				
 				&:hover {
 					background-color: hsla(208, 16%, 96%, 1);
 				}
-
+				
 				&:active {
 					/* Gary/200 */
 					background-color: hsla(208, 16%, 94%, 1);
 				}
 			}
-
+			
 			.gap {
 				margin-left: -4px;
 				margin-right: -4px;
 			}
-
+			
 			._b-bor {
 				border-top: hsla(208, 16%, 94%, 1) 1px solid;
-
+				
 				.is-text {
 					text-decoration: none;
 					justify-content: center !important;
 				}
-
+				
 				.column {
 					margin-bottom: -4px;
-
+					
 					.button {
 						margin: 4px;
 						height: 2rem;
 					}
 				}
-
+				
 				.column:first-child {
 					border-right: hsla(208, 16%, 94%, 1) 1px solid;
 				}
 			}
-
+			
 			/*common*/
 			.loading-overlay {
 				&.is-active {
 					background: hsla(208, 16%, 96%, 1) !important;
 					justify-content: flex-start;
 				}
-
+				
 				.loading-background {
 					background: none;
 				}
 			}
-
-
+			
+			
 			.is-24x24 {
 				width: 1.5rem;
 				height: 1.5rem;
 			}
-
+			
 		}
 	}
 }
@@ -715,27 +694,27 @@ export default {
 		bottom: auto;
 		top: -15%;
 	}
-
+	
 	.tooltip-content {
 		box-shadow: none;
 		padding: 0.375rem 0.75rem;
 		border-radius: 0.5rem;
-
+		
 		/* Text 400Regular/Text03 */
-
+		
 		font-family: 'Roboto';
 		font-style: normal;
 		line-height: 1.25rem;
 		/* identical to box height, or 143% */
-
+		
 		font-feature-settings: 'pnum' on, 'lnum' on;
-
+		
 		/* Gary/800 */
-
+		
 		color: hsla(208, 20%, 20%, 1);
-
+		
 	}
-
+	
 }
 
 .__position {
@@ -755,24 +734,24 @@ export default {
 		padding-bottom: 0.75rem;
 		border: 1px solid hsla(208, 16%, 94%, 1);
 	}
-
+	
 	.modal-card-body {
 		padding: 1rem 1.5rem 1.5rem;
-
+		
 		#checkDelConfig {
 			margin-right: 0.5rem;
 			height: 1.25rem;
 			width: 1.25rem;
 		}
-
+		
 		border: 1px solid hsla(208, 16%, 94%, 1);
 	}
-
+	
 	.modal-card-foot {
 		padding-top: 0.75rem;
 		padding-bottom: 1.5rem;
 		padding-right: 1.5rem;
-
+		
 		//styleName: Text 400Regular/Text03;
 		font-family: Roboto;
 		font-size: 14px;
@@ -780,11 +759,11 @@ export default {
 		line-height: 20px;
 		letter-spacing: 0;
 		text-align: left;
-
+		
 		.button {
 			margin-right: 0;
 		}
-
+		
 		.is-dark {
 			margin-left: 1rem;
 			background: hsla(208, 100%, 45%, 1);
