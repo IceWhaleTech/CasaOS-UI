@@ -50,11 +50,11 @@ instance.interceptors.request.use(
     (config) => {
         config.headers.common["Language"] = getInitLang()
         const token = localStorage.getItem("access_token")
-        // const rtoken = localStorage.getItem("refresh_token")
+        const rtoken = localStorage.getItem("refresh_token")
         if (token) {
             config.headers.Authorization = token
-            // store.commit("SET_ACCESS_TOKEN", token);
-            // store.commit("SET_REFRESH_TOKEN", rtoken);
+            store.commit("SET_ACCESS_TOKEN", token);
+            store.commit("SET_REFRESH_TOKEN", rtoken);
         }
         return config;
     }, (error) => {
@@ -164,11 +164,11 @@ const api = {
     },
     delete(url, data) {
         url = testVisionNum(url)
-        return instance.delete(url, { data: data })
+        return instance.delete(url, {data: data})
     },
     patch(url, data) {
         url = testVisionNum(url)
         return instance.patch(url, data)
     },
 }
-export { api }
+export {api}
