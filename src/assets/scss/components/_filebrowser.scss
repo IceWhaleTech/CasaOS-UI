@@ -1,3 +1,12 @@
+/*!
+ *  @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ *  @LastEditTime: 2023/2/15 下午5:51
+ *  @FilePath: /CasaOS-UI/src/assets/scss/components/_filebrowser.scss
+ *  @Description:
+ *
+ *  Copyright (c) 2023 by IceWhale, All Rights Reserved.
+ */
+
 .file-panel {
   .animation-content {
     .modal-card {
@@ -97,7 +106,6 @@
           .title {
             padding: 1.5rem;
           }
-
 
 
           .list-container {
@@ -294,7 +302,7 @@
 
             .CodeMirror {
               height: 100%;
-              font-family: Consolas, "Courier New", monospace;
+              font-family: Consolas, "Courier New", monospace !important;
               font-size: 14px;
             }
           }
@@ -461,7 +469,7 @@
           padding-left: 0;
         }
 
-        &+li::before {
+        & + li::before {
           color: #b5b5b5;
           content: ">";
         }
@@ -596,14 +604,14 @@
     z-index: 3000;
     background: rgba(255, 255, 255, 0.8);
     background: -moz-linear-gradient(top,
-        rgba(255, 255, 255, 0.8) 0%,
-        rgba(255, 255, 255, 1) 100%);
+            rgba(255, 255, 255, 0.8) 0%,
+            rgba(255, 255, 255, 1) 100%);
     background: -webkit-linear-gradient(top,
-        rgba(255, 255, 255, 0.8) 0%,
-        rgba(255, 255, 255, 1) 100%);
+            rgba(255, 255, 255, 0.8) 0%,
+            rgba(255, 255, 255, 1) 100%);
     background: linear-gradient(to bottom,
-        rgba(255, 255, 255, 0.8) 0%,
-        rgba(255, 255, 255, 1) 100%);
+            rgba(255, 255, 255, 0.8) 0%,
+            rgba(255, 255, 255, 1) 100%);
     text-align: center;
 
     font-size: 1.25rem;
@@ -634,7 +642,7 @@
   }
 
   // Re-style Checkbox
-  input[type=checkbox]+.check {
+  input[type=checkbox] + .check {
     border-radius: 50% !important;
     border: 2px solid rgb(201, 201, 201) !important;
     transition: all 0.3s !important;
@@ -644,12 +652,12 @@
     }
   }
 
-  input[type=checkbox]:checked+.check {
+  input[type=checkbox]:checked + .check {
     border: 2px solid #2276f3 !important;
   }
 
   .part {
-    input[type=checkbox]+.check {
+    input[type=checkbox] + .check {
       border: 2px solid #2276f3 !important;
       background: #2276f3 url("data:image/svg+xml;utf8,%3C?xml version='1.0' encoding='UTF-8'?%3E%3C!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'%3E%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' width='15' height='15' viewBox='0 0 24 24'%3E %3Cpath fill='%23ffffff' d='M19,13H5V11H19V13Z' /%3E%3C/svg%3E") no-repeat center center !important;
     }

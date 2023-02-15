@@ -17,14 +17,12 @@
 
 * {
   -webkit-tap-highlight-color: transparent;
+  font-family: $family-sans-serif;
 }
 
 body,
 html {
   overflow: hidden;
-  // To -- cannot override bulma's default font-family
-  font-family: $family-sans-serif1;
-
 }
 
 

@@ -551,7 +551,6 @@ export default {
 
 .swiper-pagination {
 	position: relative;
-	//display: inline-block;
 	
 	::v-deep span {
 		margin-left: 0.5rem;
@@ -561,7 +560,7 @@ export default {
 		background: rgba(255, 255, 255, 0.4);
 		border-radius: 0.125rem;
 		display: inline-block;
-		//position: relative;
+		position: relative;
 		
 		&:after {
 			display: block;
@@ -569,8 +568,7 @@ export default {
 			height: 2rem;
 			position: absolute;
 			content: '';
-			background: rgba(234, 7, 7, 0);
-			//background: rgba(255, 255, 255, 0);
+			background: rgba(255, 255, 255, 0);
 			border-radius: 0.125rem;
 			top: -0.875rem;
 			left: 0;
