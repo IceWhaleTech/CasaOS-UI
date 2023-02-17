@@ -10,7 +10,7 @@
 <template>
 	<div class="widget has-text-white clock is-relative">
 		<div class="blur-background"></div>
-
+		
 		<div class="network widget-content">
 			<!-- Header Start -->
 			<div class="widget-header is-flex mr-0">
@@ -19,13 +19,13 @@
 				</div>
 				<div class="is-flex-shrink-0">
 					<b-dropdown v-model="networkId" :mobile-modal="false" animation="fade1" aria-role="list"
-						class="netowrk-dropdown" position="is-bottom-left">
+					            class="netowrk-dropdown" position="is-bottom-left">
 						<template #trigger="{ active }">
-							<b-button icon-pack="casa" :icon-right="active ? 'up' : 'down'"
-								:label="initNetwork[networkId].name" type="is-primary" />
+							<b-button :icon-right="active ? 'up' : 'down'" :label="initNetwork[networkId].name"
+							          icon-pack="casa" type="is-primary"/>
 						</template>
 						<b-dropdown-item v-for="(item, index) in initNetwork" :key="'net' + index" :value="index"
-							aria-role="listitem">
+						                 aria-role="listitem">
 							{{ item.name }}
 						</b-dropdown-item>
 					</b-dropdown>
@@ -35,7 +35,7 @@
 			<!-- Chart Start -->
 			<div class="chart-container">
 				<vue-apex-charts ref="chart" :options="chartOptions" :series="networks[networkId]" height="130"
-					type="area" />
+				                 type="area"/>
 			</div>
 			<!-- Chart End -->
 			<!-- Status Start -->
@@ -58,7 +58,7 @@
 
 <script>
 // import VueApexCharts from 'vue-apexcharts'
-import { mixin } from '@/mixins/mixin';
+import {mixin} from '@/mixins/mixin';
 
 export default {
 	mixins: [mixin],
@@ -92,7 +92,7 @@ export default {
 						enabled: false,
 					},
 				},
-
+				
 				markers: {
 					size: 0,
 				},
@@ -164,12 +164,12 @@ export default {
 	},
 	created() {
 		this.initNetwork = this.$store.state.hardwareInfo.net
-
+		
 		// select the network last time
 		localStorage.getItem('networkId') && (this.networkId = localStorage.getItem('networkId'))
-
+		
 	},
-
+	
 	watch: {
 		networkId(val, oldVal) {
 			if (val !== oldVal) {
@@ -177,7 +177,7 @@ export default {
 			}
 		}
 	},
-
+	
 	methods: {
 		buildDatas(data) {
 			data.forEach((el, index) => {
@@ -207,7 +207,7 @@ export default {
 				}
 				this.networks[index][0].cacheData = el.bytesSent;
 				this.networks[index][0].cacheTime = el.time;
-
+				
 				// RecvData
 				if (this.networks[index][1].data.length >= 60) {
 					this.networks[index][1].data.shift()
@@ -248,15 +248,15 @@ export default {
 .network {
 	position: relative;
 	z-index: 10;
-
+	
 	.up {
 		color: rgb(0, 143, 251);
 	}
-
+	
 	.down {
 		color: rgb(0, 227, 150);
 	}
-
+	
 	.chart-container {
 		height: 130px;
 		overflow: hidden;
@@ -287,50 +287,51 @@ export default {
 			outline: none;
 			border: 0;
 			color: $grey-100;
-
+			
 			&:focus:not(:active) {
 				box-shadow: 0 0 0 0 !important;
 			}
-
+			
 			&:hover,
 			&:active {
 				outline: none;
 				background-color: transparent;
 			}
-
+			
 			span {
 				display: -webkit-box;
 				-webkit-box-orient: vertical;
 				-webkit-line-clamp: 1;
 				overflow: hidden;
-				max-width: 3rem;
+				max-width: 5rem;
 			}
-
+			
 			.icon {
 				font-size: 1.25rem !important;
 				height: 1.5rem;
 				line-height: 1.5rem;
 				color: $grey-100;
+				
 				&:last-child:not(:first-child) {
 					margin-right: 0;
 				}
 			}
 		}
-
+		
 		.dropdown-menu {
 			min-width: 5rem;
-
+			
 			.dropdown-content {
 				max-width: 7rem;
 				border-radius: 10px;
 				padding: 4px !important;
 				background: rgba(0, 0, 0, 0.8);
 				backdrop-filter: blur(1rem);
-
+				
 				.dropdown-divider {
 					margin: 4px;
 				}
-
+				
 				.dropdown-item {
 					padding: 0.25rem 0.5rem 0.25rem 0.5rem;
 					border-radius: 5px;
@@ -341,15 +342,15 @@ export default {
 					color: #fff;
 					font-size: 0.75rem;
 					margin-bottom: 0.25rem;
-
+					
 					&:last-child {
 						margin-bottom: 0;
 					}
-
+					
 					&:hover {
 						background: rgba(0, 0, 0, 0.2) !important;
 					}
-
+					
 					&.is-active {
 						background: rgba(0, 0, 0, 0.2) !important;
 					}
