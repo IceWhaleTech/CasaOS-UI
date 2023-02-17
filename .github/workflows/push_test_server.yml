@@ -39,21 +39,18 @@ jobs:
         id: get_version
         # run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
         # run: echo "VERSION=$(git describe --abbrev=0 --tags | awk -F- '{print $1}')" >> $GITHUB_ENV
-        run: echo "VERSION=$(git describe --tags $(git rev-list --tags --max-count=1) | awk -F- '{print $1}' )" >> $GITHUB_ENV
+        run: echo "VERSION=v99.99.99" >> $GITHUB_ENV
 
       - name: show version
         id: show_version
         run: echo ${{ env.VERSION }}
         # run: echo ${{ steps.get_version.outputs.VERSION }}
-      
-      - name: set version
-        run: VERSION="v99.99.99"
           
       - run: yarn install
       - run: yarn build
       - run: |
           cp ./build/sysroot/var/lib/casaos/www/img/wallpaper0*.jpg ./build/sysroot/var/lib/casaos/www/ui/img/
-          tar -zcvf linux-all-casaos-$VERSION.tar.gz build
+          tar -zcvf linux-all-casaos-${{ env.VERSION }}.tar.gz build
           ls
           
       - name: install sshpass
