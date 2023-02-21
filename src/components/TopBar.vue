@@ -383,6 +383,7 @@ export default {
 			deviceModel: "",
 			// Language Sets
 			languages: [
+                {lang: "ar-sa", name: "العربية"},
 				{lang: "de_de", name: "Deutsch"},
 				{lang: "en_us", name: "English"},
 				{lang: "es_es", name: "Español"},

@@ -183,7 +183,7 @@
   "CasaOS reserves 1% of file space when creating storage in EXT4 format.": "CasaOS reserves 1% of file space when creating storage in EXT4 format.",
   "The selected drive will be emptied.": "The selected drive will be emptied.",
   "Please make sure again that there is no important data on the selected drive that needs to be backed up.": "Please make sure again that there is no important data on the selected drive that needs to be backed up.",
-  "The drive you select can be used directly as storage.": "The drive you have selected can be userd directly as storage.",
+  "The drive you select can be used directly as storage.": "The drive you have selected can be used directly as storage.",
   "You can also choose to create it after formatting. If formatted, the selected drive will be emptied.": "You can also choose to create it after formatting. Once formatted, the selected drive will be emptied.",
   "Format and Create": "Format and create",
   "Please insert a Drive to Create Storage": "Please plug a drive to create storage",

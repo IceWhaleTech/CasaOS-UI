@@ -341,7 +341,18 @@
   "Installation completed": "安装完成",
   "Starting installation": "开始安装",
   "New": "New",
-  "APP may not be available": "App 可能不可用",
+  "NEW": "NEW",
+  "Check then update": "检查并更新",
+  "At least one extra hard drive is needed for this feature.": "此功能至少需要一个额外的硬盘驱动器。",
+  "APP may not be available": "应用暂时不可用",
   "Please": "请",
-  "": ""
+  "{appName} is the latest version!": "{appName} 已经是最新版本！",
+  "{name} has been updated to the latest version!": "{name} 已经更新到最新版本!",
+  "Unable to update at the moment!": "暂时无法获取更新！",
+  "Updating": "正在更新",
+  "Uninstalling": "正在卸载",
+  "CheckThenUpdate": "检查并更新",
+  "Not compatible with {arch} devices.": "不兼容 {arch} 设备。",
+  "Connect Dropbox": "绑定 Dropbox",
+  "Connect GoogleDrive": "绑定 Google云端硬盘"
 }

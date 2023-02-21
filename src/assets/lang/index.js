@@ -24,6 +24,7 @@ import es_es from './es_ES.json' // Spanish: Español
 import sv_se from './sv_SE.json' // Swedish: Svenska :瑞典语
 import nb_no from './nb_NO.json' // Norwegian: Norsk
 import uk_ua from './uk_UA.json' // Ukrainian: Українська
+import ar_sa from './ar_SA.json' // Arabic: العربية :阿拉伯语
 
 
 export default {
@@ -43,5 +44,7 @@ export default {
 
     be_by,
     id_id,
-    ko_kr
+    ko_kr,
+
+    ar_sa
 }

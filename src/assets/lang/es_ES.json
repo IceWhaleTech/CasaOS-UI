@@ -340,5 +340,19 @@
   "Installing app": "Instalando aplicación",
   "Installation completed": "Instalación completada",
   "Starting installation": "Iniciando la instalación",
-  "New": "Nuevo"
+  "New": "Nuevo",
+  "NEW": "NUEVO",
+  "Check then update": "Comprobar y después actualizar",
+  "At least one extra hard drive is needed for this feature.": "Para esta función se necesita al menos un disco duro adicional.",
+  "APP may not be available": "La aplicación puede no estar disponible",
+  "Please": "Por favor",
+  "{appName} is the latest version!": "¡{appName} es la última versión!",
+  "{name} has been updated to the latest version!": "¡{name} ha sido actualizado a la última versión!",
+  "Unable to update at the moment!": "¡No se puede actualizar de momento!",
+  "Updating": "Actualizando",
+  "Uninstalling": "Desinstalando",
+  "CheckThenUpdate": "Comprobar y después actualizar",
+  "Not compatible with {arch} devices.": "No compatible con dispositivos {arch}.",
+  "Connect Dropbox": "Conectar Dropbox",
+  "Connect GoogleDrive": "Conectar Google Drive"
 }
