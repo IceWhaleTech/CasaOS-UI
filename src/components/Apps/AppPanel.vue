@@ -972,6 +972,9 @@ export default {
 			return this.currentInstallAppError ? 'has-text-danger' : 'has-text-black'
 		},
 		unuseable() {
+			if (this.architectures.length === 0 || !this.arch) {
+				return false
+			}
 			return this.architectures.indexOf(this.arch) < 0
 		}
 		

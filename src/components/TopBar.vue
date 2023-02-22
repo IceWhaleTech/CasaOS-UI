@@ -383,7 +383,7 @@ export default {
 			deviceModel: "",
 			// Language Sets
 			languages: [
-                {lang: "ar-sa", name: "العربية"},
+				{lang: "ar-sa", name: "العربية"},
 				{lang: "de_de", name: "Deutsch"},
 				{lang: "en_us", name: "English"},
 				{lang: "es_es", name: "Español"},
@@ -655,7 +655,7 @@ export default {
 			this.$api.sys.hardwareInfo().then(res => {
 				if (res.data.success == 200) {
 					this.deviceModel = res.data.data.drive_model
-					localStorage.setItem('arch', res.data.data.arch || 'am64')
+					localStorage.setItem('arch', res.data.data.arch || "")
 				}
 			})
 		},
