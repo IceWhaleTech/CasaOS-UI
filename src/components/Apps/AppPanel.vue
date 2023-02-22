@@ -18,7 +18,7 @@
 			<header class="modal-card-head b-line">
 				<div class="is-flex-grow-1">
 					<h3 class="is-flex-grow-1 title is-3 pri-line-height has-text-black">{{
-							$t('Apps Installation Location')
+						$t('Apps Installation Location')
 						}}</h3>
 				</div>
 				<!--				<button class="delete" type="button" @click="$emit('close')"/>-->
@@ -28,8 +28,8 @@
 			<p class="modal-card-body">
 				{{ $t('Please choose a location with enough storage space and stable connection.') }}
 				<span class="has-text-danger">
-          {{ $t('(Cannot be changed)') }}
-        </span>
+		            {{ $t('(Cannot be changed)') }}
+		        </span>
 			</p>
 			
 			<section class="modal-card-body is-overlay">
@@ -348,7 +348,7 @@
 								</div>
 								<div class="mt-1 ml-7 is-flex is-align-items-center">
 									<div class="is-flex-grow-1 is-size-7 has-text-grey-light	">{{
-											item.category
+										item.category
 										}}
 									</div>
 									<b-button v-if="item.state===0" :loading="item.id == currentInstallId" rounded
@@ -373,7 +373,8 @@
 							<h3 class="title is-5 has-text-weight-normal">{{ $t('Community Apps') }}</h3>
 							<h3 class="subtitle is-7 has-text-grey-light">
 								{{
-									$t('From community contributors, not optimized for CasaOS, but provides a basic App experience.')
+								$t('From community contributors, not optimized for CasaOS, but provides a basic App
+								experience.')
 								}}</h3>
 							
 							<div class="columns f-list is-multiline is-mobile  pb-3 mb-5">
@@ -394,7 +395,7 @@
 									</div>
 									<div class="mt-1 ml-7 is-flex is-align-items-center">
 										<div class="is-flex-grow-1 is-size-7 has-text-grey-light	">{{
-												item.category
+											item.category
 											}}
 										</div>
 										<b-button v-if="item.state===0" :loading="item.id == currentInstallId" rounded
@@ -402,7 +403,7 @@
 										          type="is-primary is-light"
 										          @click="qucikInstall(item.id);$messageBus('appstorecommunity_install', item.title)">
 											{{
-												$t('Install')
+											$t('Install')
 											}}
 										</b-button>
 										<b-button v-if="item.state===1" :loading="item.id == currentInstallId" rounded
@@ -437,132 +438,8 @@
 				
 				<!-- App Install Form Start -->
 				<section v-if="currentSlide == 1">
-					<ValidationObserver ref="ob1">
-						
-						<ValidationProvider v-slot="{ errors, valid }" name="Image" rules="required">
-							<b-field :label="$t('Docker Image')+' *'" :message="$t(errors)"
-							         :type="{ 'is-danger': errors[0], 'is-success': valid }">
-								<b-input v-model="initData.image" :placeholder="$t('e.g.,hello-world:latest')"
-								         :readonly="state == 'update'" @input="changeIcon"></b-input>
-								<!-- <b-autocomplete :data="data" placeholder="e.g. hello-world:latest" field="image" :loading="isFetching" @typing="getAsyncData" @select="option => portSelected = option" v-model="initData.image" :readonly="state == 'update'"></b-autocomplete> -->
-							</b-field>
-						</ValidationProvider>
-						<ValidationProvider v-slot="{ errors, valid }" name="Name" rules="required">
-							<b-field :label="$t('App name')+' *'" :message="errors"
-							         :type="{ 'is-danger': errors[0], 'is-success': valid }">
-								<b-input v-model="initData.label" :placeholder="$t('Your custom App Name')"
-								         maxlength="40"></b-input>
-							</b-field>
-						</ValidationProvider>
-						<b-field :label="$t('Icon URL')">
-							<p class="control">
-              <span class="button is-static container-icon">
-                <b-image :key="appIcon" :src="appIcon" :src-fallback="require('@/assets/img/app/default.svg')"
-                         class="is-32x32" ratio="1by1"></b-image>
-              </span>
-							</p>
-							<b-input v-model="initData.icon" :placeholder="$t('Your custom icon URL')"
-							         expanded></b-input>
-						</b-field>
-						
-						<b-field label="Web UI">
-							<!-- <p class="control">
-							  <span class="button is-static">{{baseUrl}}</span>
-							</p> -->
-							<b-select v-model="initData.protocol">
-								<option value="http">http://</option>
-								<option value="https">https://</option>
-							</b-select>
-							<b-input v-model="initData.host" :placeholder="baseUrl" expanded></b-input>
-							<b-autocomplete v-model="initData.port_map" :data="bridgePorts" :open-on-focus="true"
-							                :placeholder="$t('Port')" class="has-colon" field="host"
-							                @select="option => (portSelected = option)"></b-autocomplete>
-							<b-input v-model="initData.index" :placeholder="'/index.html '+ $t('[Optional]')"
-							         expanded></b-input>
-						</b-field>
-						<template v-if="isCasa">
-							
-							<b-field :label="$t('Network')">
-								<b-select v-model="initData.network_model" expanded placeholder="Select">
-									<optgroup v-for="net in networks" :key="net.driver" :label="net.driver">
-										<option v-for="(option,index) in net.networks" :key="option.name+index"
-										        :value="option.name">
-											{{ option.name }}
-										</option>
-									</optgroup>
-								</b-select>
-							</b-field>
-							
-							<ports v-if="showPorts" v-model="initData.ports" :showHostPost="showHostPort"></ports>
-							<input-group v-model="initData.volumes" :label="$t('Volumes')"
-							             :message="$t('No volumes now, click “+” to add one.')"
-							             type="volume"></input-group>
-							<env-input-group v-model="initData.envs" :label="$t('Environment Variables')"
-							                 :message="$t('No environment variables now, click “+” to add one.')"></env-input-group>
-							<input-group v-model="initData.devices" :label="$t('Devices')"
-							             :message="$t('No devices now, click “+” to add one.')"
-							             type="device"></input-group>
-							<commands-input v-model="initData.cmd" :label="$t('Container Command')"
-							                :message="$t('No commands now, click “+” to add one.')"></commands-input>
-							
-							<b-field :label="$t('Privileged')">
-								<b-switch v-model="initData.privileged"></b-switch>
-							</b-field>
-							
-							<b-field :label="$t('Memory Limit')">
-								<vue-slider v-model="initData.memory" :max="totalMemory" :min="256"></vue-slider>
-							</b-field>
-							
-							<b-field :label="$t('CPU Shares')">
-								<b-select v-model="initData.cpu_shares" :placeholder="$t('Select')" expanded>
-									<option value="10">{{ $t('Low') }}</option>
-									<option value="50">{{ $t('Medium') }}</option>
-									<option value="90">{{ $t('High') }}</option>
-								</b-select>
-							</b-field>
-							
-							<b-field :label="$t('Restart Policy')">
-								<b-select v-model="initData.restart" :placeholder="$t('Select')" expanded>
-									<option value="on-failure">on-failure</option>
-									<option value="always">always</option>
-									<option value="unless-stopped">unless-stopped</option>
-								</b-select>
-							</b-field>
-							
-							<b-field :label="$t('Container Capabilities (cap-add)')">
-								<b-taginput ref="taginput" v-model="initData.cap_add" :allow-new="false"
-								            :data="capArray"
-								            :open-on-focus="false"
-								            autocomplete @typing="getFilteredTags">
-									<template slot-scope="props">
-										{{ props.option }}
-									</template>
-									<template #empty>
-										There are no items
-									</template>
-									<template #portSelected="props">
-										<b-tag v-for="(tag, index) in props.tags" :key="index" :tabstop="false" closable
-										       @close="$refs.taginput.removeTag(index, $event)">
-											{{ tag }}
-										</b-tag>
-									</template>
-								</b-taginput>
-							</b-field>
-							
-							<ValidationProvider v-slot="{ errors, valid }" name="Name" rules="rfc1123">
-								<b-field :label="$t('Container Hostname')" :message="$t(errors)"
-								         :type="{ 'is-danger': errors[0], 'is-success': valid }">
-									<b-input v-model="initData.host_name" :placeholder="$t('Hostname of app container')"
-									         value=""></b-input>
-								</b-field>
-							</ValidationProvider>
-							
-							<b-field :label="$t('App Description')">
-								<b-input v-model="initData.description"></b-input>
-							</b-field>
-						</template>
-					
-					</ValidationObserver>
+					<ComposeConfig v-model="initData" :cap-array="capArray" :is-casa="isCasa" :networks="networks"
+					               :state="state" :total-memory="totalMemory"></ComposeConfig>
 				</section>
 				<!-- App Install Form End -->
 				
@@ -620,18 +497,10 @@
 </template>
 
 <script>
-import axios from 'axios'
-import InputGroup from '../forms/InputGroup.vue';
-import EnvInputGroup from '../forms/EnvInputGroup.vue';
-import CommandsInput from '../forms/CommandsInput.vue';
-import Ports from '../forms/Ports.vue'
 import AppSideBar from './AppSideBar.vue'
 import ImportPanel from '../forms/ImportPanel.vue'
 import AppTerminalPanel from './AppTerminalPanel.vue'
 import LottieAnimation from "lottie-web-vue";
-import VueSlider from 'vue-slider-component'
-import 'vue-slider-component/theme/default.css'
-import {ValidationObserver, ValidationProvider} from "vee-validate";
 import "@/plugins/vee-validate";
 import debounce from 'lodash/debounce'
 import find from 'lodash/find';
@@ -648,6 +517,7 @@ import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
 import business_OpenThirdApp from "@/mixins/app/Business_OpenThirdApp";
 import DockerProgress from "@/components/Apps/progress.js";
 
+import ComposeConfig from "@/components/Apps/ComposeConfig.vue";
 
 const data = [
 	"AUDIT_CONTROL",
@@ -681,18 +551,12 @@ const data = [
 
 export default {
 	components: {
-		Ports,
-		InputGroup,
-		EnvInputGroup,
-		CommandsInput,
-		ValidationObserver,
-		ValidationProvider,
 		AppSideBar,
 		LottieAnimation,
-		VueSlider,
 		Swiper,
 		SwiperSlide,
 		AppsInstallationLocation,
+		ComposeConfig,
 	},
 	mixins: [business_ShowNewAppTag, business_OpenThirdApp],
 	props: {
@@ -730,10 +594,8 @@ export default {
 			currentInstallAppProgress: {},
 			currentInstallAppProgressTotals: {},
 			
-			appIcon: "",
 			sidebarOpen: false,
 			cancelButtonText: "Cancel",
-			baseUrl: "",
 			totalMemory: 0,
 			networks: [],
 			tempNetworks: [],
@@ -764,7 +626,6 @@ export default {
 				container_name: "",
 				appstore_id: 0,
 			},
-			portSelected: null,
 			capArray: data,
 			pageIndex: 1,
 			pageSize: 5,
@@ -865,9 +726,6 @@ export default {
 	},
 	
 	created() {
-		
-		// Set Front-end base url
-		this.baseUrl = `${document.domain}`;
 		//Get Max memory info form device
 		this.totalMemory = Math.floor(this.configData.memory.total / 1048576);
 		this.initData.memory = this.totalMemory
@@ -915,32 +773,6 @@ export default {
 	},
 	
 	computed: {
-		
-		showPorts() {
-			if (this.initData.network_model.toLowerCase().indexOf("macvlan") > -1 || this.initData.network_model.indexOf("host") > -1) {
-				return false
-			} else {
-				return true
-			}
-		},
-		showHostPort() {
-			if (this.initData.network_model.indexOf("host") > -1) {
-				return false
-			} else {
-				return true
-			}
-		},
-		bridgePorts() {
-			return this.initData.ports.filter(function (item) {
-				return item.host != ""
-			})
-		},
-		filteredBeidgePort() {
-			return this.bridgePorts.filter(port => {
-				return port.host.indexOf(this.initData.port_map) >= 0
-			})
-			
-		},
 		showImportButton() {
 			return this.currentSlide == 1 && this.state == 'install'
 		},
@@ -980,10 +812,6 @@ export default {
 		
 	},
 	watch: {
-		// Watch if Icon url has changed
-		'initData.icon'(val) {
-			this.updateIconUrl(val)
-		},
 		// Watch if Section index changes
 		currentSlide(val) {
 			if (val == 1) {
@@ -1026,32 +854,9 @@ export default {
 		}
 	},
 	methods: {
-		
-		/**
-		 * @description:
-		 * @param {*} function
-		 * @return {*}
-		 */
-		updateIconUrl: debounce(function (string) {
-			this.appIcon = string
-		}, 300),
-		
-		updateLabel: debounce(function (string) {
-			this.initData.label = string
-		}, 50),
-		
-		/**
-		 * @description:
-		 * @param {*} text
-		 * @return {*}
-		 */
-		getFilteredTags(text) {
-			this.capArray = data.filter((option) => {
-				return option
-					.toString()
-					.indexOf(text.toUpperCase()) >= 0
-			})
-		},
+		// updateLabel: debounce(function (string) {
+		// 	this.initData.label = string
+		// }, 50),
 		
 		/**
 		 * @description:
@@ -1410,30 +1215,6 @@ export default {
 		},
 		
 		/**
-		 * @description: Get remote synchronization information
-		 * @param {*} function
-		 * @return {*} void
-		 */
-		getAsyncData: debounce(function (name) {
-			if (!name.length) {
-				this.data = []
-				return
-			}
-			this.isFetching = true
-			axios.get(`https://hub.docker.com/api/content/v1/products/search?source=community&q=${name}&page=1&page_size=4`)
-				.then(({data}) => {
-					this.data = []
-					data.summaries.forEach((item) => this.data.push(item.name))
-				})
-				.catch((error) => {
-					this.data = []
-					throw error
-				})
-				.finally(() => {
-					this.isFetching = false
-				})
-		}, 500),
-		/**
 		 * @description: Export AppData to json file
 		 * @param {*} function
 		 * @return {*} void
@@ -1482,33 +1263,9 @@ export default {
 		},
 		
 		/**
-		 * @description: Get App icon form image
-		 * @param {*} image
-		 * @return {*}
-		 */
-		getIconFromImage(image) {
-			if (image == "") {
-				return ""
-			} else {
-				let appIcon = image.split(":")[0].split("/").pop();
-				return `https://icon.casaos.io/main/all/${appIcon}.png`;
-			}
-		},
-		
-		/**
-		 * @description: Change App icon when image changed
-		 * @param {String} image
-		 * @return {*} void
-		 */
-		changeIcon(image) {
-			this.initData.icon = this.getIconFromImage(image)
-		},
-		
-		/**
 		 * @description: Show Terminal & Logs panel
 		 * @return {*} void
 		 */
-		
 		showTerminalPanel() {
 			this.$buefy.modal.open({
 				parent: this,
