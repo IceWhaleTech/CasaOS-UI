@@ -372,11 +372,9 @@
 						<template v-if="communityList.length > 0">
 							<h3 class="title is-5 has-text-weight-normal">{{ $t('Community Apps') }}</h3>
 							<h3 class="subtitle is-7 has-text-grey-light">
-								{{
-								$t('From community contributors, not optimized for CasaOS, but provides a basic App
-								experience.')
-								}}</h3>
-							
+								{{ $t('From community contributors, not optimized for CasaOS, but provides a basic App experience.') }}
+                            </h3>
+
 							<div class="columns f-list is-multiline is-mobile  pb-3 mb-5">
 								<div v-for="(item,index) in communityList " :key="index+item.title+item.id"
 								     class="column is-one-quarter">
@@ -394,9 +392,8 @@
 									
 									</div>
 									<div class="mt-1 ml-7 is-flex is-align-items-center">
-										<div class="is-flex-grow-1 is-size-7 has-text-grey-light	">{{
-											item.category
-											}}
+										<div class="is-flex-grow-1 is-size-7 has-text-grey-light	">
+                                            {{item.category }}
 										</div>
 										<b-button v-if="item.state===0" :loading="item.id == currentInstallId" rounded
 										          size="is-small"
@@ -438,8 +435,8 @@
 				
 				<!-- App Install Form Start -->
 				<section v-if="currentSlide == 1">
-					<ComposeConfig v-model="initData" :cap-array="capArray" :is-casa="isCasa" :networks="networks"
-					               :state="state" :total-memory="totalMemory"></ComposeConfig>
+					<ComposeConfig :config-data="initData" :cap-array="capArray" :is-casa="isCasa" :networks="networks"
+					               :state="state" :total-memory="totalMemory" @update-configData="updateConfig" ref="compose"></ComposeConfig>
 				</section>
 				<!-- App Install Form End -->
 				
@@ -1067,7 +1064,20 @@ export default {
 			
 			return data
 		},
-		
+
+        /**
+         * @description: Get App icon form image
+         * @param {*} image
+         * @return {*}
+         */
+        getIconFromImage(image) {
+            if (image == "") {
+                return ""
+            } else {
+                let appIcon = image.split(":")[0].split("/").pop();
+                return `https://icon.casaos.io/main/all/${appIcon}.png`;
+            }
+        },
 		
 		/**
 		 * @description: Process the datas before submit
@@ -1089,7 +1099,7 @@ export default {
 		prevStep() {
 			this.currentSlide--;
 		},
-		
+
 		/**
 		 * @description: Validate form async
 		 * @param {Object} ref ref of component
@@ -1106,11 +1116,11 @@ export default {
 		 * @return {*} void
 		 */
 		installApp() {
-			this.checkStep(this.$refs.ob1).then(val => {
-				if (val) {
-					this.installAppData(this.id);
-				}
-			})
+            this.$refs.compose.checkStep().then((valid) => {
+                if (valid) {
+                    this.installAppData(this.id);
+                }
+            })
 		},
 		
 		installAppData() {
@@ -1408,6 +1418,11 @@ export default {
 				}, 500)
 			}
 		},
+
+        updateConfig(val) {
+            console.log(val, 'updateConfig');
+            this.initData = val
+        },
 	},
 	
 	destroyed() {
