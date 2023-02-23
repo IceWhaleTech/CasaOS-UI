@@ -12,15 +12,7 @@ import container from "@/service/container";
 export default {
     methods: {
         openAppToNewWindow(appInfo) {
-            this.removeIdFromSessionStorage(appInfo.id);
-            let routeUrl = this.$router.resolve({
-                name: 'AppLauncherCheck',
-                path: '/launch',
-                query: {
-                    appDetailData: JSON.stringify(appInfo)
-                }
-            });
-            window.open(routeUrl.href, '_blank');
+            this.hasNewTag(appInfo.id) ? this.firstOpenThirdApp(appInfo) : this.openThirdApp(appInfo);
         },
         openThirdApp(appInfo) {
             this.$messageBus('apps_open', appInfo.name);
@@ -67,5 +59,16 @@ export default {
             let containerInfo = await container.getMyAppList(data).then(res => res.data.data.casaos_apps)
             this.openAppToNewWindow(containerInfo[0])
         },
+        firstOpenThirdApp(appInfo) {
+            this.removeIdFromSessionStorage(appInfo.id);
+            let routeUrl = this.$router.resolve({
+                name: 'AppLauncherCheck',
+                path: '/launch',
+                query: {
+                    appDetailData: JSON.stringify(appInfo)
+                }
+            });
+            window.open(routeUrl.href, '_blank');
+        }
     }
 }
