@@ -12,9 +12,9 @@ import container from "@/service/container";
 export default {
     methods: {
         openAppToNewWindow(appInfo) {
-            this.hasNewTag(appInfo.id) ? this.firstOpenThirdApp(appInfo) : this.openThirdApp(appInfo);
+            this.hasNewTag(appInfo.id) ? this.firstOpenThirdApp(appInfo) : this.openThirdApp(appInfo, true);
         },
-        openThirdApp(appInfo) {
+        openThirdApp(appInfo, isNewWindows) {
             this.$messageBus('apps_open', appInfo.name);
             if (appInfo.host !== "" || appInfo.port !== "" || appInfo.index !== "") {
                 const hostIp = appInfo.host || this.$baseIp
@@ -41,7 +41,10 @@ export default {
                 //     return
                 // }
                 if (appInfo.image.toLowerCase().indexOf("qbittorrent") === -1) {
-                    window.location.replace(url);
+                    isNewWindows ? window.open(url, '_blank') : window.location.replace(url);
+                } else if (isNewWindows) {
+                    var arg = '\u003cscript\u003elocation.replace("' + url + '")\u003c/script\u003e';
+                    window.open('javascript:window.name;', arg);
                 } else {
                     let html = document.createElement('a');
                     html.href = url;
