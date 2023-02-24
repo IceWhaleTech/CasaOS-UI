@@ -492,7 +492,7 @@ export default {
 		},
 		"app:install-error"(res) {
 			this.transformAppInstallationProgress({
-				finished: false,
+				finished: true,
 				// First name. Second app:name.The name from CheckThenUpdate.The app:name from install.
 				name: res.Properties["name"] || res.Properties["app:name"],
 				id: res.Properties["docker:container:id"],
