@@ -43,7 +43,7 @@ export default {
 			status: "pending",
 			timer: null,
 			isCheckFailed: false,
-			checkCounts: 60,
+			checkCounts: 3,
 			counter: 0
 		}
 	},

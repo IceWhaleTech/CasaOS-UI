@@ -50,6 +50,9 @@ export default {
         },
         getIdFromSessionStorage() {
             return this.getSessionStorageOutputArray('newAppTag');
+        },
+        hasNewTag(appId) {
+            return this.newAppIds.indexOf(appId) !== -1;
         }
     }
 }
