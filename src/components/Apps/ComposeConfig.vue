@@ -148,6 +148,11 @@ import CommandsInput from '../forms/CommandsInput.vue';
 import InputGroup from '../forms/InputGroup.vue';
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
+import YAML from "yamljs";
+import upperFirst from "lodash/upperFirst";
+import lowerFirst from "lodash/lowerFirst";
+import isNull from "lodash/isNull";
+import find from "lodash/find";
 
 export default {
 	name: "ComposeConfig.vue",
@@ -166,32 +171,32 @@ export default {
 			baseUrl: "",
 			portSelected: null,
 			
-			// configData: {
-			// 	host: "",
-			// 	protocol: "http",
-			// 	port_map: null,
-			// 	cpu_shares: 10,
-			// 	memory: 300,
-			// 	restart: "always",
-			// 	label: "",
-			// 	position: true,
-			// 	index: "",
-			// 	icon: "",
-			// 	network_model: "",
-			// 	image: "",
-			// 	description: "",
-			// 	origin: "custom",
-			// 	ports: [],
-			// 	volumes: [],
-			// 	envs: [],
-			// 	devices: [],
-			// 	cap_add: [],
-			// 	cmd: [],
-			// 	privileged: false,
-			// 	host_name: "",
-			// 	container_name: "",
-			// 	appstore_id: 0,
-			// },
+			configData: {
+				host: "",
+				protocol: "http",
+				port_map: null,
+				cpu_shares: 10,
+				memory: this.totalMemory,
+				restart: "always",
+				label: "",
+				position: true,
+				index: "",
+				icon: "",
+				network_model: "",
+				image: "",
+				description: "",
+				origin: "custom",
+				ports: [],
+				volumes: [],
+				envs: [],
+				devices: [],
+				cap_add: [],
+				cmd: [],
+				privileged: false,
+				host_name: "",
+				container_name: "",
+				appstore_id: 0,
+			},
 		}
 	},
 	props: {
@@ -212,35 +217,39 @@ export default {
 			type: Array,
 			required: true,
 		},
-        configData: {
-            type: Object,
+        // configData: {
+        //     type: Object,
+        //     // required: true,
+        //     default: {
+        //             host: "",
+        //             protocol: "http",
+        //             port_map: null,
+        //             cpu_shares: 10,
+        //             memory: 300,
+        //             restart: "always",
+        //             label: "",
+        //             position: true,
+        //             index: "",
+        //             icon: "",
+        //             network_model: "",
+        //             image: "",
+        //             description: "",
+        //             origin: "custom",
+        //             ports: [],
+        //             volumes: [],
+        //             envs: [],
+        //             devices: [],
+        //             cap_add: [],
+        //             cmd: [],
+        //             privileged: false,
+        //             host_name: "",
+        //             container_name: "",
+        //             appstore_id: 0,
+        //         }
+        // },
+        dockerComposeCommands: {
+            type: String,
             // required: true,
-            default: {
-                    host: "",
-                    protocol: "http",
-                    port_map: null,
-                    cpu_shares: 10,
-                    memory: 300,
-                    restart: "always",
-                    label: "",
-                    position: true,
-                    index: "",
-                    icon: "",
-                    network_model: "",
-                    image: "",
-                    description: "",
-                    origin: "custom",
-                    ports: [],
-                    volumes: [],
-                    envs: [],
-                    devices: [],
-                    cap_add: [],
-                    cmd: [],
-                    privileged: false,
-                    host_name: "",
-                    container_name: "",
-                    appstore_id: 0,
-                }
         },
 	},
 	watch: {
@@ -258,14 +267,19 @@ export default {
 			},
 			deep: true
 		},
-        // Watch if configData changes
-        // configData: {
-        //     handler(val) {
-        //         console.log("configData changed", val)
-        //         this.configData = this.configData
-        //     },
-        //     deep: true
-        // },
+        dockerComposeCommands: {
+            handler(val) {
+                if(val != null) {
+                    this.parseComposeYaml(val)
+                }else {
+                    let gg = find(this.networks, (o) => {
+                        return o.driver == "bridge"
+                    }) || []
+                    this.configData.network_model = gg.length > 0 ? gg[0].name : "bridge";
+                }
+            },
+            deep: true
+        },
 	},
 	computed: {
 		showPorts() {
@@ -298,7 +312,7 @@ export default {
 		// Set Front-end base url
 		this.baseUrl = `${document.domain}`;
 	},
-	
+
 	methods: {
 		// migration !!! start !!!
 		/**
@@ -378,6 +392,137 @@ export default {
          */
         async checkStep(ref) {
             return await this.$refs.ob1.validate();
+        },
+
+        /**
+         * @description: Parse Import Docker Compose Commands
+         * @return {Boolean}
+         */
+        parseComposeYaml() {
+
+            try {
+                const yaml = YAML.parse(this.dockerComposeCommands)
+                if (yaml.version === undefined) {
+                    return false
+                }
+                const parsedInput = Object.values(yaml.services)[0]
+                // Image
+                this.configData.image = parsedInput.image
+                // Label
+                if (parsedInput.container_name != undefined) {
+                    this.configData.label = upperFirst(parsedInput.container_name)
+                } else {
+                    const imageArray = parsedInput.image.split("/")
+                    const lastNode = [...imageArray].pop()
+                    this.configData.label = upperFirst(lastNode.split(":")[0])
+                }
+                // Envs
+                if (parsedInput.environment) {
+                    let envArray = Array.isArray(parsedInput.environment) ? parsedInput.environment : Object.entries(parsedInput.environment)
+                    this.configData.envs = envArray.map(item => {
+                        let ii = typeof item === "object" ? Array.from(item) : item.split("=");
+                        return {
+                            host: ii[1].replace(/"/g, ""),
+                            container: ii[0]
+                        }
+                    })
+                } else {
+                    this.configData.envs = []
+                }
+
+
+                //Ports
+                this.configData.ports = this.makeArray(parsedInput.ports).map(item => {
+                    let pArray = item.split(":")
+                    let endArray = pArray[1].split("/")
+                    let protocol = (endArray[1]) ? endArray[1] : 'tcp';
+                    return {
+                        container: endArray[0],
+                        host: pArray[0],
+                        protocol: protocol
+                    }
+                })
+
+                //Volume
+                this.configData.volumes = this.makeArray(parsedInput.volumes).map(item => {
+                    let ii = item.split(":");
+                    if (ii.length > 1) {
+                        return {
+                            container: ii[1],
+                            host: this.volumeAutoCheck(ii[1], ii[0], lowerFirst(this.configData.label))
+                        }
+                    } else {
+                        return {
+                            container: ii[0],
+                            host: this.volumeAutoCheck(ii[0], "", lowerFirst(this.configData.label))
+                        }
+                    }
+                })
+
+                // Devices
+                this.configData.devices = this.makeArray(parsedInput.device).map(item => {
+                    let ii = item.split(":");
+                    return {
+                        container: ii[1],
+                        host: ii[0]
+                    }
+                })
+
+                //Network
+                let pnetwork = (parsedInput.network_mode != undefined) ? parsedInput.network_mode : (parsedInput.network != undefined) ? parsedInput.network[0] : undefined
+                if (pnetwork != undefined) {
+                    let network = (pnetwork == 'physical') ? 'macvlan' : pnetwork;
+                    let seletNetworks = this.netWorks.filter(item => {
+                        if (item.driver == network) {
+                            return true
+                        }
+                    })
+                    if (seletNetworks.length > 0) {
+                        this.configData.network_model = seletNetworks[0].networks[0].name;
+                    }
+                }
+
+                //hostname
+                this.configData.host_name = parsedInput.hostname != undefined ? parsedInput.hostname : ""
+                // privileged
+                this.configData.privileged = parsedInput.privileged != undefined
+
+                //cap-add
+                if (parsedInput.cap_add != undefined) {
+                    this.configData.cap_add = parsedInput.cap_add
+                }
+                //Restart
+                if (parsedInput.restart != undefined) {
+                    this.configData.restart = parsedInput.restart
+                }
+
+                return true
+            } catch (error) {
+                console.log(error);
+                return false
+            }
+        },
+
+        /**
+         * @description: Pre-processed data before setting
+         * @param {ConfigObject} data
+         * @return {ConfigObject} data
+         */
+        preProcessData(data) {
+            data.ports = isNull(data.ports) ? [] : data.ports
+            data.volumes = isNull(data.volumes) ? [] : data.volumes
+            data.envs = isNull(data.envs) ? [] : data.envs
+            data.devices = isNull(data.devices) ? [] : data.devices
+            data.cap_add = isNull(data.cap_add) ? [] : data.cap_add
+            data.cmd = isNull(data.cmd) ? [] : data.cmd
+            data.port_map = data.port_map === "" ? null : data.port_map
+            data.cpu_shares = (data.cpu_shares === 0 || data.cpu_shares > 99) ? 90 : data.cpu_shares
+            data.memory = data.memory === 0 ? this.totalMemory : data.memory
+            data.restart = data.restart === "no" ? "unless-stopped" : data.restart
+            data.network_model = data.network_model === "default" ? "bridge" : data.network_model
+            data.icon = data.icon === "" ? this.getIconFromImage(data.image) : data.icon
+
+            return data
         },
 		
 		// migration !!! end !!!

@@ -435,8 +435,8 @@
 				
 				<!-- App Install Form Start -->
 				<section v-if="currentSlide == 1">
-					<ComposeConfig :config-data="initData" :cap-array="capArray" :is-casa="isCasa" :networks="networks"
-					               :state="state" :total-memory="totalMemory" @update-configData="updateConfig" ref="compose"></ComposeConfig>
+                    <!--:config-data="initData"-->
+                    <ComposeConfig :docker-compose-commands="settingData" :cap-array="capArray" :is-casa="isCasa" :networks="networks" :state="state" :total-memory="totalMemory" @update-configData="updateConfig" ref="compose"></ComposeConfig>
 				</section>
 				<!-- App Install Form End -->
 				
@@ -573,7 +573,7 @@ export default {
 			type: Object
 		}
 	},
-	
+
 	data() {
 		return {
 			timer: 0,
@@ -725,7 +725,7 @@ export default {
 	created() {
 		//Get Max memory info form device
 		this.totalMemory = Math.floor(this.configData.memory.total / 1048576);
-		this.initData.memory = this.totalMemory
+		// this.initData.memory = this.totalMemory
 		
 		//Handling network types
 		this.tempNetworks = this.configData.networks;
@@ -744,14 +744,14 @@ export default {
 		//If it is edit, Init data
 		if (this.settingData != undefined) {
 			this.isLoading = false
-			this.initData = this.preProcessData(Object.assign(this.initData, this.settingData))
+			// this.initData = this.preProcessData(Object.assign(this.initData, this.settingData))
 			this.currentSlide = 1
 			
 		} else {
-			let gg = find(this.tempNetworks, (o) => {
-				return o.driver == "bridge"
-			}) || []
-			this.initData.network_model = gg.length > 0 ? gg[0].name : "bridge";
+			// let gg = find(this.tempNetworks, (o) => {
+			// 	return o.driver == "bridge"
+			// }) || []
+			// this.initData.network_model = gg.length > 0 ? gg[0].name : "bridge";
 			this.getCategoryList();
 		}
 		
