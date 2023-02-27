@@ -18,7 +18,7 @@
 			<header class="modal-card-head b-line">
 				<div class="is-flex-grow-1">
 					<h3 class="is-flex-grow-1 title is-3 pri-line-height has-text-black">{{
-						$t('Apps Installation Location')
+							$t('Apps Installation Location')
 						}}</h3>
 				</div>
 				<!--				<button class="delete" type="button" @click="$emit('close')"/>-->
@@ -348,7 +348,7 @@
 								</div>
 								<div class="mt-1 ml-7 is-flex is-align-items-center">
 									<div class="is-flex-grow-1 is-size-7 has-text-grey-light	">{{
-										item.category
+											item.category
 										}}
 									</div>
 									<b-button v-if="item.state===0" :loading="item.id == currentInstallId" rounded
@@ -372,9 +372,11 @@
 						<template v-if="communityList.length > 0">
 							<h3 class="title is-5 has-text-weight-normal">{{ $t('Community Apps') }}</h3>
 							<h3 class="subtitle is-7 has-text-grey-light">
-								{{ $t('From community contributors, not optimized for CasaOS, but provides a basic App experience.') }}
-                            </h3>
-
+								{{
+									$t('From community contributors, not optimized for CasaOS, but provides a basic App experience.')
+								}}
+							</h3>
+							
 							<div class="columns f-list is-multiline is-mobile  pb-3 mb-5">
 								<div v-for="(item,index) in communityList " :key="index+item.title+item.id"
 								     class="column is-one-quarter">
@@ -393,14 +395,14 @@
 									</div>
 									<div class="mt-1 ml-7 is-flex is-align-items-center">
 										<div class="is-flex-grow-1 is-size-7 has-text-grey-light	">
-                                            {{item.category }}
+											{{ item.category }}
 										</div>
 										<b-button v-if="item.state===0" :loading="item.id == currentInstallId" rounded
 										          size="is-small"
 										          type="is-primary is-light"
 										          @click="qucikInstall(item.id);$messageBus('appstorecommunity_install', item.title)">
 											{{
-											$t('Install')
+												$t('Install')
 											}}
 										</b-button>
 										<b-button v-if="item.state===1" :loading="item.id == currentInstallId" rounded
@@ -435,8 +437,12 @@
 				
 				<!-- App Install Form Start -->
 				<section v-if="currentSlide == 1">
-                    <!--:config-data="initData"-->
-                    <ComposeConfig :docker-compose-commands="settingData" :cap-array="capArray" :is-casa="isCasa" :networks="networks" :state="state" :total-memory="totalMemory" @update-configData="updateConfig" ref="compose"></ComposeConfig>
+					<!--:config-data="initConfigData"-->
+					<ComposeConfig ref="compose" :cap-array="capArray"
+					               :docker-compose-commands="configDataString"
+					               :is-casa="isCasa" :networks="networks" :state="state"
+					               :total-memory="totalMemory"
+					               @update-config-data-commands="updateConfig"></ComposeConfig>
 				</section>
 				<!-- App Install Form End -->
 				
@@ -515,6 +521,7 @@ import business_OpenThirdApp from "@/mixins/app/Business_OpenThirdApp";
 import DockerProgress from "@/components/Apps/progress.js";
 
 import ComposeConfig from "@/components/Apps/ComposeConfig.vue";
+import YAML from "yamljs";
 
 const data = [
 	"AUDIT_CONTROL",
@@ -570,10 +577,10 @@ export default {
 		runningStatus: String,
 		configData: Object,
 		settingData: {
-			type: Object
+			type: String,
 		}
 	},
-
+	
 	data() {
 		return {
 			timer: 0,
@@ -597,7 +604,7 @@ export default {
 			networks: [],
 			tempNetworks: [],
 			networkModes: [],
-			initData: {
+			initConfigData: {
 				host: "",
 				protocol: "http",
 				port_map: null,
@@ -623,6 +630,7 @@ export default {
 				container_name: "",
 				appstore_id: 0,
 			},
+			configDataString: '',
 			capArray: data,
 			pageIndex: 1,
 			pageSize: 5,
@@ -725,7 +733,7 @@ export default {
 	created() {
 		//Get Max memory info form device
 		this.totalMemory = Math.floor(this.configData.memory.total / 1048576);
-		// this.initData.memory = this.totalMemory
+		// this.initConfigData.memory = this.totalMemory
 		
 		//Handling network types
 		this.tempNetworks = this.configData.networks;
@@ -744,14 +752,14 @@ export default {
 		//If it is edit, Init data
 		if (this.settingData != undefined) {
 			this.isLoading = false
-			// this.initData = this.preProcessData(Object.assign(this.initData, this.settingData))
+			// this.initConfigData = this.preProcessData(Object.assign(this.initConfigData, this.settingData))
 			this.currentSlide = 1
 			
 		} else {
 			// let gg = find(this.tempNetworks, (o) => {
 			// 	return o.driver == "bridge"
 			// }) || []
-			// this.initData.network_model = gg.length > 0 ? gg[0].name : "bridge";
+			// this.initConfigData.network_model = gg.length > 0 ? gg[0].name : "bridge";
 			this.getCategoryList();
 		}
 		
@@ -785,13 +793,13 @@ export default {
 				return this.$t("App Store");
 			} else if (this.currentSlide == 1) {
 				if (!this.isCasa) {
-					return this.$t("Import") + " " + this.initData.label
+					return this.$t("Import") + " " + this.initConfigData.label
 				} else {
-					return (this.settingData != undefined) ? this.initData.label + " " + this.$t("Setting") : this.$t("Install a new App manually")
+					return (this.settingData != undefined) ? this.initConfigData.label + " " + this.$t("Setting") : this.$t("Install a new App manually")
 				}
 				
 			} else {
-				return this.$t("Installing") + " " + this.initData.image
+				return this.$t("Installing") + " " + this.initConfigData.image
 			}
 		},
 		showDetailSwiper() {
@@ -815,15 +823,21 @@ export default {
 				this.isLoading = false;
 			}
 		},
-		// Watch if initData changes
-		initData: {
-			handler(val) {
-				if (this.state == 'install') {
-					localStorage.setItem("app_data", JSON.stringify(val))
-				}
-			},
-			deep: true
-		},
+		// Watch if initConfigData changes
+		// initConfigData: {
+		// 	handler(val) {
+		// 		if (this.state == 'install') {
+		// 			localStorage.setItem("app_data", JSON.stringify(val))
+		// 		}
+		// 	},
+		// 	deep: true
+		// },
+		// initConfigData: {
+		// 	handler(val) {
+		// 		this.configDataString = YAML.stringify(val)
+		// 	},
+		// 	deep: true
+		// },
 		// Watch if the query data of app store changes
 		storeQueryData: {
 			handler() {
@@ -852,7 +866,7 @@ export default {
 	},
 	methods: {
 		// updateLabel: debounce(function (string) {
-		// 	this.initData.label = string
+		// 	this.initConfigData.label = string
 		// }, 50),
 		
 		/**
@@ -965,32 +979,35 @@ export default {
 				if (resp.data.success == 200) {
 					// messageBus :: installApp
 					// this.$messageBus('appstore_install', respData.title.toString())
+					resp.data.data.appstore_id = id
+					this.configDataString = YAML.stringify(resp.data.data)
 					
-					let respData = resp.data.data
-					this.initData.protocol = respData.protocol
-					this.initData.host = respData.host
-					this.initData.port_map = respData.port_map
-					this.initData.cpu_shares = 50
-					this.initData.memory = respData.max_memory
-					this.initData.restart = "always"
-					this.initData.label = respData.title
-					this.initData.position = true
-					this.initData.index = respData.index
-					this.initData.icon = respData.icon
-					this.initData.network_model = respData.network_model
-					this.initData.image = respData.image
-					this.initData.description = respData.description
-					this.initData.origin = respData.origin
-					this.initData.ports = isNull(respData.ports) ? [] : respData.ports
-					this.initData.volumes = isNull(respData.volumes) ? [] : respData.volumes
-					this.initData.envs = isNull(respData.envs) ? [] : respData.envs
-					this.initData.devices = isNull(respData.devices) ? [] : respData.devices
-					this.initData.cap_add = isNull(respData.cap_add) ? [] : respData.cap_add
-					this.initData.cmd = isNull(respData.cmd) ? [] : respData.cmd
-					this.initData.privileged = respData.privileged
-					this.initData.host_name = respData.host_name
-					this.initData.appstore_id = id
+					// let respData = resp.data.data
+					// this.initConfigData.protocol = respData.protocol
+					// this.initConfigData.host = respData.host
+					// this.initConfigData.port_map = respData.port_map
+					// this.initConfigData.cpu_shares = 50
+					// this.initConfigData.memory = respData.max_memory
+					// this.initConfigData.restart = "always"
+					// this.initConfigData.label = respData.title
+					// this.initConfigData.position = true
+					// this.initConfigData.index = respData.index
+					// this.initConfigData.icon = respData.icon
+					// this.initConfigData.network_model = respData.network_model
+					// this.initConfigData.image = respData.image
+					// this.initConfigData.description = respData.description
+					// this.initConfigData.origin = respData.origin
+					// this.initConfigData.ports = isNull(respData.ports) ? [] : respData.ports
+					// this.initConfigData.volumes = isNull(respData.volumes) ? [] : respData.volumes
+					// this.initConfigData.envs = isNull(respData.envs) ? [] : respData.envs
+					// this.initConfigData.devices = isNull(respData.devices) ? [] : respData.devices
+					// this.initConfigData.cap_add = isNull(respData.cap_add) ? [] : respData.cap_add
+					// this.initConfigData.cmd = isNull(respData.cmd) ? [] : respData.cmd
+					// this.initConfigData.privileged = respData.privileged
+					// this.initConfigData.host_name = respData.host_name
+					// this.initConfigData.appstore_id = id
 					
+					// currentInstallId is used to identify the app that is being installed
 					this.currentInstallId = 0
 					
 					this.architectures = respData.architectures
@@ -1064,20 +1081,20 @@ export default {
 			
 			return data
 		},
-
-        /**
-         * @description: Get App icon form image
-         * @param {*} image
-         * @return {*}
-         */
-        getIconFromImage(image) {
-            if (image == "") {
-                return ""
-            } else {
-                let appIcon = image.split(":")[0].split("/").pop();
-                return `https://icon.casaos.io/main/all/${appIcon}.png`;
-            }
-        },
+		
+		/**
+		 * @description: Get App icon form image
+		 * @param {*} image
+		 * @return {*}
+		 */
+		getIconFromImage(image) {
+			if (image == "") {
+				return ""
+			} else {
+				let appIcon = image.split(":")[0].split("/").pop();
+				return `https://icon.casaos.io/main/all/${appIcon}.png`;
+			}
+		},
 		
 		/**
 		 * @description: Process the datas before submit
@@ -1086,9 +1103,9 @@ export default {
 		 */
 		processData() {
 			
-			this.initData.cpu_shares = Number(this.initData.cpu_shares)
-			let model = this.initData.network_model.split("-");
-			this.initData.network_model = model[0]
+			this.initConfigData.cpu_shares = Number(this.initConfigData.cpu_shares)
+			let model = this.initConfigData.network_model.split("-");
+			this.initConfigData.network_model = model[0]
 		},
 		
 		/**
@@ -1099,7 +1116,7 @@ export default {
 		prevStep() {
 			this.currentSlide--;
 		},
-
+		
 		/**
 		 * @description: Validate form async
 		 * @param {Object} ref ref of component
@@ -1116,37 +1133,37 @@ export default {
 		 * @return {*} void
 		 */
 		installApp() {
-            this.$refs.compose.checkStep().then((valid) => {
-                if (valid) {
-                    this.installAppData(this.id);
-                }
-            })
+			this.$refs.compose.checkStep().then((valid) => {
+				if (valid) {
+					this.installAppData(this.id);
+				}
+			})
 		},
 		
 		installAppData() {
-			this.processData();
-			this.isLoading = true;
-			this.$api.container.install(this.initData).then((res) => {
-				this.isLoading = false;
-				if (res.data.success == 200) {
-					this.currentInstallAppName = res.data.data
-					this.currentSlide = 2;
-					this.currentInstallAppText = "Start Installation..."
-					this.cancelButtonText = 'Continue in background'
-					this.dockerProgress = new DockerProgress();
-				} else {
-					this.$buefy.toast.open({
-						message: res.data.message,
-						type: 'is-warning'
-					})
-				}
-			}).catch((err) => {
-				this.isLoading = false;
-				this.$buefy.toast.open({
-					message: err.response.data.message,
-					type: 'is-warning'
-				})
-			})
+			// this.processData();
+			// this.isLoading = true;
+			// this.$api.container.install(this.initConfigData).then((res) => {
+			// 	this.isLoading = false;
+			// 	if (res.data.success == 200) {
+			// 		this.currentInstallAppName = res.data.data
+			// 		this.currentSlide = 2;
+			// 		this.currentInstallAppText = "Start Installation..."
+			// 		this.cancelButtonText = 'Continue in background'
+			// 		this.dockerProgress = new DockerProgress();
+			// 	} else {
+			// 		this.$buefy.toast.open({
+			// 			message: res.data.message,
+			// 			type: 'is-warning'
+			// 		})
+			// 	}
+			// }).catch((err) => {
+			// 	this.isLoading = false;
+			// 	this.$buefy.toast.open({
+			// 		message: err.response.data.message,
+			// 		type: 'is-warning'
+			// 	})
+			// })
 		},
 		
 		
@@ -1155,27 +1172,27 @@ export default {
 		 * @return {*} void
 		 */
 		updateApp() {
-			this.processData();
-			this.isLoading = true;
-			let updateData = this.uuid2var(cloneDeep(this.initData));
-			this.$api.container.update(this.id, updateData).then((res) => {
-				if (res.data.success == 200) {
-					this.isLoading = false;
-					this.$emit('updateState')
-				} else {
-					this.$buefy.toast.open({
-						message: res.data.message.data,
-						type: 'is-warning'
-					})
-				}
-				this.$emit('close')
-			}).catch((err) => {
-				this.isLoading = false;
-				this.$buefy.toast.open({
-					message: err.response.data.message,
-					type: 'is-warning'
-				})
-			})
+			// this.processData();
+			// this.isLoading = true;
+			// let updateData = this.uuid2var(cloneDeep(this.initConfigData));
+			// this.$api.container.update(this.id, updateData).then((res) => {
+			// 	if (res.data.success == 200) {
+			// 		this.isLoading = false;
+			// 		this.$emit('updateState')
+			// 	} else {
+			// 		this.$buefy.toast.open({
+			// 			message: res.data.message.data,
+			// 			type: 'is-warning'
+			// 		})
+			// 	}
+			// 	this.$emit('close')
+			// }).catch((err) => {
+			// 	this.isLoading = false;
+			// 	this.$buefy.toast.open({
+			// 		message: err.response.data.message,
+			// 		type: 'is-warning'
+			// 	})
+			// })
 		},
 		
 		/**
@@ -1195,10 +1212,12 @@ export default {
 				events: {
 					'update': (e) => {
 						//localStorage.removeItem("app_data")
-						this.initData = this.preProcessData(e)
-						if (this.initData.icon == "") {
-							this.changeIcon(this.initData.image)
-						}
+						// this.initConfigData = this.preProcessData(e)
+						// if (this.initConfigData.icon == "") {
+						// 	this.changeIcon(this.initConfigData.image)
+						// }
+						this.configDataString = e;
+						// this.settingData = e;
 						this.$buefy.dialog.alert({
 							title: '⚠️ ' + this.$t('Attention'),
 							message: '<div class="nobrk"><h4 class="title is-5">' + this.$t('AutoFill only helps you to complete most of the configuration.') + '</h4>' +
@@ -1216,7 +1235,7 @@ export default {
 					}
 				},
 				props: {
-					initData: this.initData,
+					initData: this.initConfigData,
 					netWorks: this.networks,
 					oriNetWorks: this.tempNetworks,
 					deviceMemory: this.totalMemory
@@ -1230,8 +1249,8 @@ export default {
 		 * @return {*} void
 		 */
 		exportJSON() {
-			let exportData = cloneDeep(this.initData);
-			exportData.network_model = this.getNetworkName(this.initData.network_model);
+			let exportData = cloneDeep(this.initConfigData);
+			exportData.network_model = this.getNetworkName(this.initConfigData.network_model);
 			exportData.version = "1.0"
 			exportData = this.uuid2var(exportData)
 			delete exportData.memory
@@ -1288,7 +1307,7 @@ export default {
 				animation: "zoom-in",
 				props: {
 					appid: this.id,
-					appName: this.initData.label
+					appName: this.initConfigData.label
 				}
 			})
 		},
@@ -1418,11 +1437,11 @@ export default {
 				}, 500)
 			}
 		},
-
-        updateConfig(val) {
-            console.log(val, 'updateConfig');
-            this.initData = val
-        },
+		
+		updateConfig(val) {
+			console.log(val, 'updateConfig');
+			// this.initConfigData = val
+		},
 	},
 	
 	destroyed() {

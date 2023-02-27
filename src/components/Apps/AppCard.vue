@@ -422,7 +422,7 @@ export default {
 					// messageBus :: apps_clone
 					this.$messageBus('apps_clone', this.item.name.toString());
 					
-					let initData = {}
+					let initConfigData = {}
 					initData.protocol = respData.protocol
 					initData.host = respData.host
 					initData.port_map = respData.port_map

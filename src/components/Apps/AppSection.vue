@@ -89,6 +89,7 @@ import concat from 'lodash/concat'
 import events from '@/events/events';
 import last from 'lodash/last';
 import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
+import YAML from "yamljs";
 
 const SYNCTHING_STORE_ID = 74
 
@@ -327,7 +328,8 @@ export default {
 					state: "install",
 					configData: configData,
 					storeId: storeId,
-					settingData: mode !== 'custom' ? undefined : {}
+					// TODO transfer to yaml string.
+					settingData: mode !== 'custom' ? undefined : ""
 				}
 			})
 		},
@@ -373,7 +375,9 @@ export default {
 					isCasa: isCasa,
 					runningStatus: state,
 					configData: configData,
-					settingData: ret.data.data
+					// TODO transfer yaml string.
+					// settingData: ret.data.data
+					settingData: YAML.stringify(ret.data.data)
 				}
 			})
 		},
