@@ -172,6 +172,7 @@ import find from "lodash/find";
 import uniq from "lodash/uniq";
 import {isString} from "lodash/lang";
 import ports from "@/components/forms/Ports.vue";
+import cloneDeep from "lodash/cloneDeep";
 
 const main_app_schema = {
 	type: "object",
@@ -657,8 +658,7 @@ export default {
 				}
 				
 			})
-			console.log(configData.volumes)
-			
+
 			// Devices
 			configData.devices = this.makeArray(parsedInput.device).map(item => {
 				let ii = item.split(":");
@@ -798,7 +798,20 @@ export default {
 		// migration !!! end !!!
 		
 		updateConfigDataCommands(val) {
-			this.$emit('updateConfigDataCommands', YAML.stringify(val));
+            // configData tans to docker-compose.yml
+            let ConfigData = cloneDeep(val)
+            val.services.forEach(item => {
+                ConfigData.item.devices = item.devices.map(device => {
+                    return `${device.host}:${device.container}`
+                })
+                ConfigData.item.volumes = item.volumes.map(volume => {
+                    return `${volume.host}:${volume.container}`
+                })
+                ConfigData.item.ports = item.ports.map(port => {
+                    return `${port.host}:${port.container}`
+                })
+            })
+			this.$emit('updateConfigDataCommands', YAML.stringify(ConfigData));
 		},
 	}
 }
