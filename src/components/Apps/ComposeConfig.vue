@@ -7,6 +7,11 @@
   * Copyright (c) 2023 by IceWhale, All Rights Reserved.
   
   -->
+<!--
+	warning:
+	当用户自定义数据时，主应用名字为'main_app'.
+	当用户 文件导入、CLI导入、yaml 导入、安装应用商店时，按照应有数据展示.
+-->
 <template>
 	<b-tabs>
 		<template v-for="(service, key) in configData.services">
@@ -21,39 +26,40 @@
 							<!-- <b-autocomplete :data="data" placeholder="e.g. hello-world:latest" field="image" :loading="isFetching" @typing="getAsyncData" @select="option => portSelected = option" v-model="service.image" :readonly="state == 'update'"></b-autocomplete> -->
 						</b-field>
 					</ValidationProvider>
-					<ValidationProvider v-slot="{ errors, valid }" name="Name" rules="required">
+					<ValidationProvider v-if="key === main_name" v-slot="{ errors, valid }" name="Name"
+					                    rules="required">
 						<b-field :label="$t('App name')+' *'" :message="errors"
 						         :type="{ 'is-danger': errors[0], 'is-success': valid }">
 							<!--				<b-input v-model="service.label" :placeholder="$t('Your custom App Name')" maxlength="40"></b-input>-->
-							<b-input v-model="service.name" :placeholder="$t('Your custom App Name')"
+							<b-input v-model="configData.name" :placeholder="$t('Your custom App Name')"
 							         maxlength="40"></b-input>
 						</b-field>
 					</ValidationProvider>
-					<b-field :label="$t('Icon URL')">
+					<b-field v-if="key === main_name" :label="$t('Icon URL')">
 						<p class="control">
-				<span class="button is-static container-icon">
-					<b-image :key="appIcon" :src="appIcon"
-					         :src-fallback="require('@/assets/img/app/default.svg')"
-					         class="is-32x32" ratio="1by1"></b-image>
-				</span>
+							<span class="button is-static container-icon">
+								<b-image :key="appIcon" :src="appIcon"
+								         :src-fallback="require('@/assets/img/app/default.svg')"
+								         class="is-32x32" ratio="1by1"></b-image>
+							</span>
 						</p>
-						<b-input v-model="configData.icon" :placeholder="$t('Your custom icon URL')"
+						<b-input v-model="main_app.icon" :placeholder="$t('Your custom icon URL')"
 						         expanded></b-input>
 					</b-field>
 					
-					<b-field label="Web UI">
+					<b-field v-if="key === main_name" label="Web UI">
 						<!-- <p class="control">
 						  <span class="button is-static">{{baseUrl}}</span>
 						</p> -->
-						<b-select v-model="configData.protocol">
+						<b-select v-model="main_app.protocol">
 							<option value="http">http://</option>
 							<option value="https">https://</option>
 						</b-select>
-						<b-input v-model="configData.host" :placeholder="baseUrl" expanded></b-input>
-						<b-autocomplete v-model="configData.port_map" :data="bridgePorts" :open-on-focus="true"
+						<b-input v-model="main_app.host" :placeholder="baseUrl" expanded></b-input>
+						<b-autocomplete v-model="main_app.port_map" :data="bridgePorts" :open-on-focus="true"
 						                :placeholder="$t('Port')" class="has-colon" field="host"
 						                @select="option => (portSelected = option)"></b-autocomplete>
-						<b-input v-model="configData.index" :placeholder="'/index.html '+ $t('[Optional]')"
+						<b-input v-model="main_app.index" :placeholder="'/index.html '+ $t('[Optional]')"
 						         expanded></b-input>
 					</b-field>
 					
@@ -75,7 +81,7 @@
 						<input-group v-model="service.volumes" :label="$t('Volumes')"
 						             :message="$t('No volumes now, click “+” to add one.')"
 						             type="volume"></input-group>
-						<env-input-group v-model="service.envs" :label="$t('Environment Variables')"
+						<env-input-group v-model="service.environment" :label="$t('Environment Variables')"
 						                 :message="$t('No environment variables now, click “+” to add one.')"></env-input-group>
 						<input-group v-model="service.devices" :label="$t('Devices')"
 						             :message="$t('No devices now, click “+” to add one.')"
@@ -161,11 +167,13 @@ import 'vue-slider-component/theme/default.css'
 import YAML from "yamljs";
 import upperFirst from "lodash/upperFirst";
 import lowerFirst from "lodash/lowerFirst";
-import isNull from "lodash/isNull";
+import isNil from "lodash/isNil";
 import find from "lodash/find";
 import uniq from "lodash/uniq";
+import {isString} from "lodash/lang";
+import ports from "@/components/forms/Ports.vue";
 
-const main_app = {
+const main_app_schema = {
 	type: "object",
 	properties: {
 		"icon": {
@@ -186,6 +194,7 @@ const main_app = {
 }
 
 const ajv = new Ajv({allErrors: true, useDefaults: true});
+let main_name = "333";
 
 export default {
 	name: "ComposeConfig.vue",
@@ -205,62 +214,37 @@ export default {
 			portSelected: null,
 			
 			configData: {
-				host: "",
-				protocol: "http",
-				port_map: null,
-				cpu_shares: 10,
-				memory: this.totalMemory,
-				restart: "always",
-				label: "",
-				position: true,
-				index: "",
-				icon: "",
-				network_model: "",
-				image: "",
-				description: "",
-				origin: "custom",
-				ports: [],
-				volumes: [],
-				envs: [],
-				devices: [],
-				cap_add: [],
-				cmd: [],
+				name: 'default_name',
+				cpu_shares: 10, //
+				memory: this.totalMemory, //
+				restart: "always", //
+				label: "", // name
+				position: true, //
+				network_model: "", //
+				image: "", //
+				description: "", //
+				origin: "custom", //
+				ports: [], //
+				volumes: [], //
+				envs: [], //
+				devices: [], //
+				cap_add: [], //
+				cmd: [], //
 				privileged: false,
 				host_name: "",
 				container_name: "",
 				appstore_id: 0,
 				services: {
-					"gitea": {
-						"environment": [
-							"USER_GID= \"1000\"",
-							"USER_UID= \"1000\"",
-							"GITEA__database__DB_TYPE=mysql",
-							"GITEA__database__HOST=db:3306",
-							"GITEA__database__NAME=gitea",
-							"GITEA__database__USER=gitea",
-							"GITEA__database__PASSWD=gitea"
-						],
+					"main_app": {
 						"image": "gitea/gitea:1",
 						"mem_reservation": "268435456",
 						"network_mode": "bridge",
-						"ports": [
-							{
-								"target": 3000,
-								"published": "3000",
-								"protocol": "tcp"
-							},
-							{
-								"target": 22,
-								"published": "222",
-								"protocol": "tcp"
-							}
-						],
 						"restart": "unless-stopped",
 						"volumes": [
 							{
 								"type": "bind",
-								"source": "/DATA/AppData/$AppID/data",
-								"target": "/data"
+								"host": "/DATA/AppData/$AppID/data",
+								"container": "/data"
 							}
 						],
 						"depends_on": [
@@ -347,25 +331,23 @@ export default {
 							}
 						}
 					},
-					"db": {
-						"image": "mysql:8",
-						"restart": "always",
-						"environment": [
-							"MYSQL_ROOT_PASSWORD=gitea",
-							"MYSQL_USER=gitea",
-							"MYSQL_PASSWORD=gitea",
-							"MYSQL_DATABASE=gitea"
-						],
-						"networks": [
-							"gitea"
-						],
-						"volumes": [
-							"./mysql:/var/lib/mysql"
-						]
-					}
 				},
+				"x-casaos": '',
 			},
-			configDataX: {},
+			// main_app: ajc.compile(main_app_schema)(this.configData['x-casaos']),
+			main_app: {
+				// ...this.configData['x-casaos'],
+				container: {
+					host: '',
+					protocol: 'https',
+					index: '',
+					port_map: '',
+					host_name: '',
+					container_name: '',
+					appstore_id: '',
+				},
+				icon: '',
+			},
 		}
 	},
 	props: {
@@ -392,6 +374,12 @@ export default {
 		},
 	},
 	watch: {
+		// main_app: {
+		// 	handler(val) {
+		// 		this.configData["main_app"]
+		// 	},
+		// 	deep: true
+		// },
 		// Watch if Icon url has changed
 		"configData.icon": function (val) {
 			this.updateIconUrl(val)
@@ -422,25 +410,35 @@ export default {
 		},
 	},
 	computed: {
-		main_app: {
-			get() {
-				if (this.configData['x-casaos']) {
-					ajc.compile(main_app)(this.configData['x-casaos'])
-				}
-				return this.configData['x-casaos'];
-			},
-			set(val) {
-				this.configData['x-casaos'] = val
-			}
+		// tab_index() {
+		// 	return this.configData.services
+		// },
+		main_name() {
+			return this.configData["x-casaos"] || Object.keys(this.configData.services)[0] || 'main_app'
 		},
-		icon: {
-			get() {
-				return this.configData.services[this.main_app]['x-casaos']['icon'];
-			},
-			set(val) {
-				this.configData.services[this.main_app]['x-casaos']['icon'] = val
-			}
-		},
+		// main_name_value() {
+		// 	return this[main_name];
+		// },
+		// main_app: {
+		// 	get() {
+		// 		if (this.configData['x-casaos']) {
+		// 			ajc.compile(main_app_schema)(this.configData['x-casaos'])
+		// 			return this.configData['x-casaos'];
+		// 		}
+		// 		return {}
+		// 	},
+		// 	set(val) {
+		// 		this.configData['x-casaos'] = val
+		// 	}
+		// },
+		// icon: {
+		// 	get() {
+		// 		return this.configData.services[this.main_app]['x-casaos']['icon'];
+		// 	},
+		// 	set(val) {
+		// 		this.configData.services[this.main_app]['x-casaos']['icon'] = val
+		// 	}
+		// },
 		showPorts() {
 			if (this.configData.network_model.toLowerCase().indexOf("macvlan") > -1 || this.configData.network_model.indexOf("host") > -1) {
 				return false
@@ -470,6 +468,9 @@ export default {
 	created() {
 		// Set Front-end base url
 		this.baseUrl = `${document.domain}`;
+		// this.$set(this.configData.services, [this.main_name], this.configData.services['main_app'])
+		// this.$delete(this.configData.services, 'main_app')
+		this.preProcessConfigData(this.configData);
 	},
 	
 	methods: {
@@ -557,15 +558,20 @@ export default {
 		 * @description: Parse Import Docker Compose Commands
 		 * @return {Boolean}
 		 */
-		parseComposeYaml() {
+		parseComposeYaml(val) {
 			try {
-				const yaml = YAML.parse(this.dockerComposeCommands)
+				const yaml = YAML.parse(val)
+				console.log(yaml, yaml.services)
+				
 				if (yaml.version === undefined) {
 					return false
 				}
+				this.configData.name = yaml.name
 				for (const yamlKey in yaml.services) {
-					this.configData[yamlKey] = this.parseCompseItem(yaml.services[yamlKey])
+					this.$set(this.configData.services, yamlKey, this.parseCompseItem(yaml.services[yamlKey]))
 				}
+				this.$delete(this.configData.services, 'main_app')
+				this.preProcessConfigData(this.configData)
 				
 				return true
 			} catch (error) {
@@ -590,7 +596,7 @@ export default {
 			// Envs
 			if (parsedInput.environment) {
 				let envArray = Array.isArray(parsedInput.environment) ? parsedInput.environment : Object.entries(parsedInput.environment)
-				configData.envs = envArray.map(item => {
+				configData.environment = envArray.map(item => {
 					let ii = typeof item === "object" ? Array.from(item) : item.split("=");
 					return {
 						host: ii[1].replace(/"/g, ""),
@@ -598,37 +604,57 @@ export default {
 					}
 				})
 			} else {
-				configData.envs = []
+				configData.environment = []
 			}
 			
 			
 			//Ports
 			configData.ports = this.makeArray(parsedInput.ports).map(item => {
-				let pArray = item.split(":")
-				let endArray = pArray[1].split("/")
-				let protocol = (endArray[1]) ? endArray[1] : 'tcp';
-				return {
-					container: endArray[0],
-					host: pArray[0],
-					protocol: protocol
+				if (isString(item)) {
+					let pArray = item.split(":")
+					let endArray = pArray[1].split("/")
+					let protocol = (endArray[1]) ? endArray[1] : 'tcp';
+					return {
+						container: endArray[0],
+						host: pArray[0],
+						protocol: protocol
+					}
+				} else {
+					return {
+						container: item.target,
+						host: item.published,
+						protocol: item.protocol
+					}
 				}
+				
 			})
 			
 			//Volume
 			configData.volumes = this.makeArray(parsedInput.volumes).map(item => {
-				let ii = item.split(":");
-				if (ii.length > 1) {
-					return {
-						container: ii[1],
-						host: this.volumeAutoCheck(ii[1], ii[0], lowerFirst(configData.label))
+				if (isString(item)) {
+					let ii = item.split(":");
+					if (ii.length > 1) {
+						return {
+							container: ii[1],
+							host: this.volumeAutoCheck(ii[1], ii[0], lowerFirst(configData.label))
+						}
+					} else {
+						return {
+							container: ii[0],
+							host: this.volumeAutoCheck(ii[0], "", lowerFirst(configData.label))
+						}
 					}
-				} else {
+				} else if (item.type === 'bind') {
+					// q: what's source and target?
+					// a: https://docs.docker.com/compose/compose-file/compose-file-v3/#volumes
 					return {
-						container: ii[0],
-						host: this.volumeAutoCheck(ii[0], "", lowerFirst(configData.label))
+						container: item['target'],
+						host: item['source']
 					}
 				}
+				
 			})
+			console.log(configData.volumes)
 			
 			// Devices
 			configData.devices = this.makeArray(parsedInput.device).map(item => {
@@ -722,24 +748,35 @@ export default {
 			return (newArray == undefined) ? [] : newArray
 		},
 		
+		preProcessConfigData() {
+			let data = this.configData
+			data.port_map = data.port_map === "" ? null : data.port_map
+			data.icon = data.icon === "" ? this.getIconFromImage(data.image) : data.icon
+			for (const app in data.services) {
+				// data.services[app] = this.preProcessConfigDataItem(data.services[app])
+				// this.$set(data.services, app, this.preProcessConfigDataItem(data.services[app]))
+				this.preProcessConfigDataItem(app)
+			}
+		},
+		
 		/**
 		 * @description: Pre-processed data before setting
 		 * @param {ConfigObject} data
 		 * @return {ConfigObject} data
 		 */
-		preProcessData(data) {
-			data.ports = isNull(data.ports) ? [] : data.ports
-			data.volumes = isNull(data.volumes) ? [] : data.volumes
-			data.envs = isNull(data.envs) ? [] : data.envs
-			data.devices = isNull(data.devices) ? [] : data.devices
-			data.cap_add = isNull(data.cap_add) ? [] : data.cap_add
-			data.cmd = isNull(data.cmd) ? [] : data.cmd
-			data.port_map = data.port_map === "" ? null : data.port_map
+		preProcessConfigDataItem(app) {
+			let data = this.configData.services[app]
+			// data.ports = isNil(data.ports) ? [] : data.ports
+			isNil(data.ports) && this.$set(data, "ports", [])
+			isNil(data.volumes) && this.$set(data, "volumes", [])
+			isNil(data.environment) && this.$set(data, "environment", [])
+			isNil(data.devices) && this.$set(data, "devices", [])
+			isNil(data.cap_add) && this.$set(data, "cap_add", [])
+			isNil(data.cmd) && this.$set(data, "cmd", [])
 			data.cpu_shares = (data.cpu_shares === 0 || data.cpu_shares > 99) ? 90 : data.cpu_shares
-			data.memory = data.memory === 0 ? this.totalMemory : data.memory
+			data.memory = data.memory === 0 ? this.totalMemory : (data.memory / 1048576).toFixed(0)
 			data.restart = data.restart === "no" ? "unless-stopped" : data.restart
 			data.network_model = data.network_model === "default" ? "bridge" : data.network_model
-			data.icon = data.icon === "" ? this.getIconFromImage(data.image) : data.icon
 			
 			return data
 		},
@@ -750,7 +787,6 @@ export default {
 		 * @return {*} void
 		 */
 		processData() {
-			
 			this.initConfigData.cpu_shares = Number(this.initConfigData.cpu_shares)
 			let model = this.initConfigData.network_model.split("-");
 			this.initConfigData.network_model = model[0]
