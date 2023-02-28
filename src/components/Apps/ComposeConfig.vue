@@ -51,15 +51,15 @@
 						<!-- <p class="control">
 						  <span class="button is-static">{{baseUrl}}</span>
 						</p> -->
-						<b-select v-model="main_app.protocol">
+						<b-select v-model="main_app.container.protocol">
 							<option value="http">http://</option>
 							<option value="https">https://</option>
 						</b-select>
-						<b-input v-model="main_app.host" :placeholder="baseUrl" expanded></b-input>
-						<b-autocomplete v-model="main_app.port_map" :data="bridgePorts" :open-on-focus="true"
+						<b-input v-model="main_app.container.host" :placeholder="baseUrl" expanded></b-input>
+						<b-autocomplete v-model="main_app.container.port_map" :data="bridgePorts" :open-on-focus="true"
 						                :placeholder="$t('Port')" class="has-colon" field="host"
 						                @select="option => (portSelected = option)"></b-autocomplete>
-						<b-input v-model="main_app.index" :placeholder="'/index.html '+ $t('[Optional]')"
+						<b-input v-model="main_app.container.index" :placeholder="'/index.html '+ $t('[Optional]')"
 						         expanded></b-input>
 					</b-field>
 					
@@ -506,7 +506,7 @@ export default {
 		 * @return {*} void
 		 */
 		changeIcon(image) {
-			this.configData.icon = this.getIconFromImage(image)
+			this.main_app.icon = this.getIconFromImage(image)
 		},
 		
 		/**
@@ -566,6 +566,9 @@ export default {
 				if (yaml.version === undefined) {
 					return false
 				}
+				
+				this.configData['x-casaos'] = yaml['x-casaos']
+				this.main_app = yaml.services[yaml['x-casaos']]['x-casaos']
 				this.configData.name = yaml.name
 				for (const yamlKey in yaml.services) {
 					this.$set(this.configData.services, yamlKey, this.parseCompseItem(yaml.services[yamlKey]))
