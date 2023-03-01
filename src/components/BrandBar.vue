@@ -1,7 +1,7 @@
 <!--
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-01-16 15:20:18
- * @FilePath: /CasaOS-UI/src/components/BrandBar.vue
+ * @LastEditTime: 2023-02-27 23:35:25
+ * @FilePath: \CasaOS-UI-0.4.2\src\components\BrandBar.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -80,7 +80,7 @@ export default {
     left: 2rem;
     //bottom: 1.125rem;
     bottom: 0.875rem;
-    z-index: 30;
+    z-index: 10;
 
     .logo-text {
         font-size: 1.125rem;

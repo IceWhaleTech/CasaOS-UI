@@ -1,6 +1,6 @@
 /*
- * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
- * @LastEditTime: 2023/1/4 下午5:33
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-02-23 19:00:00
  * @FilePath: /CasaOS-UI/src/mixins/mixin.js
  * @Description:
  *
@@ -26,6 +26,7 @@ const typeMap = {
     "video-x-generic": ['mkv', 'mp4', '3gp', 'avi', 'm2ts', 'webm', 'flv', 'vob', 'ts', 'mts', 'mov', 'wmv', 'rm', 'rmvb', 'asf', 'wmv', 'mpg', 'm4v', 'mpeg', 'f4v'],
     "audio-x-generic": ['aac', 'aiff', 'alac', 'amr', 'ape', 'flac', 'm4a', 'mp3', 'ogg', 'opus', 'wma', 'wav'],
     "text-x-generic": ['txt', 'log', 'pages', 'md', 'conf', 'list', 'ini'],
+    "text-markdown":['md'],
     "text-css": ['php', 'css', 'less', 'scss', 'sass', 'aspx', 'lua', 'vue', 'js', 'go', 'asp', 'bat', 'c', 'cpp', 'cs', 'json', 'py', 'perl', 'sh', 'xml', 'yaml', 'vb', 'vbs', 'sql', 'swift', 'rust', 'rs', 'jsp', 'yml'],
     "text-html": ['html', 'htm', 'shtml', 'shtm'],
     "application-vnd.ms-word": ['doc', 'docx', 'wps'],
@@ -50,6 +51,7 @@ const filePanelMap = {
     'code-editor': union(typeMap['text-x-generic'], typeMap['text-css'], typeMap['text-html'], typeMap['text-x-cmake'], typeMap['text-dockerfile']),
     "video-player": union(typeMap['video-x-generic'], typeMap['audio-x-generic']),
     "image-viewer": typeMap['image-x-generic'],
+    "mark-down-editor":typeMap['text-markdown'],
     // "pdf-viewer": typeMap['application-pdf'],
 }
 export const wallpaperType = ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'svg']
@@ -198,7 +200,7 @@ export const mixin = {
                     parameters.files = path
                     return apiUrl + "?" + qs.stringify(parameters)
                 } else {
-                    apiUrl = `${this.$protocol}//${this.$baseURL}/v3/file`;
+                    apiUrl = `/v3/file`;
                     parameters.path = items.path
                     return apiUrl + "?" + qs.stringify(parameters)
                 }

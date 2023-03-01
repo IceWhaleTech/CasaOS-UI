@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-03-03 21:48:17
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 12:26:34
+ * @LastEditTime: 2023-02-23 18:46:30
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\filebrowser\viewers\CodeEditor.vue
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/viewers/CodeEditor.vue
 -->
 <template>
   <div class="overlay">
@@ -133,8 +133,8 @@ export default {
       type: Object,
       default: () => {
         return {
-          path: '/DATA/background.js',
-          name: 'background.js'
+          path: '',
+          name: ''
         }
       }
     },

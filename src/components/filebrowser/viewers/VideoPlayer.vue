@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-03-04 18:55:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-08 00:37:40
+ * @LastEditTime: 2023-02-23 18:08:37
  * @Description: 
- * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\viewers\VideoPlayer.vue
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/viewers/VideoPlayer.vue
 -->
 <template>
   <div class="overlay">
@@ -30,9 +30,9 @@
 
     <!-- Player Start -->
     <div class="is-flex is-justify-content-center is-align-items-center is-flex-grow-1 v-container video">
-      <div class="video-container " :class="{'is-align-items-center':isAudio}">
-        <vue-plyr key="video-player" v-if="isVideo" ref="plyr" >
-          <video controls crossorigin>
+      <div class="video-container " :class="{ 'is-align-items-center': isAudio }">
+        <vue-plyr key="video-player" v-if="isVideo" ref="plyr" :options="options">
+          <video controls crossorigin playsinline>
             <source :src="getFileUrl(item)" type="video/mp4" />
           </video>
 
@@ -41,25 +41,25 @@
           <audio controls crossorigin playsinline>
             <source :src="getFileUrl(item)" :type="'audio/' + ext" />
           </audio>
-        </vue-plyr>
-      </div>
+      </vue-plyr>
     </div>
-    <!-- Player Start -->
+  </div>
+  <!-- Player Start -->
 
-    <!-- Player Footer Start -->
-    <div class="v-footer is-flex is-justify-content-center">
-      <!-- <div class="buttons video-footer" v-if="isVideo">
+  <!-- Player Footer Start -->
+  <div class="v-footer is-flex is-justify-content-center">
+    <!-- <div class="buttons video-footer" v-if="isVideo">
         <b-tooltip :label="$t('Play in IINA')" type="is-dark">
           <b-button type="is-iina" class="mr-1" rounded @click="playVideo(item,'iina://weblink?url=')">IINA</b-button>
         </b-tooltip>
-        <b-tooltip :label="$t('Play in PotPlayer')" type="is-dark">
-          <b-button type="is-potplayer" class="mr-1 ml-1" rounded @click="playVideo(item,'potplayer://')">PotPlayer
-          </b-button>
-        </b-tooltip>
-        <b-tooltip :label="$t('Play in VLC')" type="is-dark">
-          <b-button type="is-vlc" class=" ml-1" rounded @click="playVideo(item,'vlc://')">VLC</b-button>
-        </b-tooltip>
-      </div> -->
+                <b-tooltip :label="$t('Play in PotPlayer')" type="is-dark">
+                  <b-button type="is-potplayer" class="mr-1 ml-1" rounded @click="playVideo(item,'potplayer://')">PotPlayer
+                  </b-button>
+                </b-tooltip>
+                <b-tooltip :label="$t('Play in VLC')" type="is-dark">
+                  <b-button type="is-vlc" class=" ml-1" rounded @click="playVideo(item,'vlc://')">VLC</b-button>
+                </b-tooltip>
+              </div> -->
     </div>
     <!-- Player Footer End -->
   </div>
@@ -96,7 +96,27 @@ export default {
     return {
       type: "",
       ext: "",
-      player: null
+      player: null,
+      options: {
+        controls: [
+          'play-large', // The large play button in the center
+          'restart', // Restart playback
+          'rewind', // Rewind by the seek time (default 10 seconds)
+          'play', // Play/pause playback
+          'fast-forward', // Fast forward by the seek time (default 10 seconds)
+          'progress', // The progress bar and scrubber for playback and buffering
+          'current-time', // The current time of playback
+          'duration', // The full duration of the media
+          'mute', // Toggle mute
+          'volume', // Volume control
+          'captions', // Toggle captions
+          'settings', // Settings menu
+          'pip', // Picture-in-picture (currently Safari only)
+          'airplay', // Airplay (currently Safari only)
+          'download', // Show a download button with a link to either the current source or a custom URL you specify in your options
+          'fullscreen', // Toggle fullscreen
+        ]
+      }
     }
   },
   computed: {
@@ -115,6 +135,7 @@ export default {
         this.type = _type
       }
     })
+
   },
   methods: {
     download() {
@@ -136,7 +157,7 @@ export default {
   width: 100%;
 }
 
-.plyr--audio{
+.plyr--audio {
   height: auto !important;
 }
 
@@ -148,20 +169,4 @@ export default {
   width: 100%;
   height: 100%;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </style>

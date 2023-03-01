@@ -1,20 +1,11 @@
 <!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/1/4 下午3:28
-  * @FilePath: /CasaOS-UI/src/components/ContactBar.vue
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-03-01 11:38:47
+ * @FilePath: /CasaOS-UI/src/components/ContactBar.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
   -->
-
-<!--
- * @Author: JerryK
- * @Date: 2021-09-18 21:32:13
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-08 16:07:20
- * @Description: The right bottom contact bar
- * @FilePath: /CasaOS-UI/src/components/ContactBar.vue
--->
 
 <template>
 	<div class="contact-bar is-flex is-align-items-center has-text-white">
@@ -121,7 +112,7 @@ export default {
 	position: fixed;
 	right: 0.875rem;
 	bottom: 0.35rem;
-	z-index: 30;
+	z-index: 10;
 
 	a {
 		color: #fff;

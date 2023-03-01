@@ -1,7 +1,7 @@
 <!--
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-01-16 18:51:56
- * @FilePath: /CasaOS-UI/src/views/Home.vue
+ * @LastEditTime: 2023-02-28 12:52:02
+ * @FilePath: \CasaOS-UI-0.4.2\src\views\Home.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -62,7 +62,7 @@
 
 		<!-- File Panel Start -->
 		<b-modal v-model="isFileActive" :can-cancel="[]" :destroy-on-hide="false" animation="zoom-in" aria-modal
-		         custom-class="file-panel" full-screen has-modal-card @after-enter="afterFileEnter">
+		         custom-class="file-panel" full-screen  has-modal-card @after-enter="afterFileEnter">
 			<template #default="props">
 				<file-panel ref="filePanel" @close="props.close"></file-panel>
 			</template>
@@ -213,7 +213,8 @@ export default {
 		},
 
 		afterFileEnter() {
-
+			console.log("afterFileEnter");
+			this.$EventBus.$emit(events.AFTER_FILES_ENTER);
 		},
 
 		/**

@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-05-20 19:18:19
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-16 17:47:23
- * @FilePath: \CasaOS-UI\src\mixins\ListViewMixin.js
+ * @LastEditTime: 2023-02-26 21:43:08
+ * @FilePath: \CasaOS-UI-0.4.2\src\mixins\ListViewMixin.js
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -11,6 +11,7 @@
 
 import pull from 'lodash/pull'
 import Hitbox from 'hitbox-js'
+import events from '@/events/events';
 
 export default {
     model: {
@@ -38,6 +39,7 @@ export default {
         this.selectBox = document.getElementById(this.SELECT_BOX);
         this.parentBox = document.getElementById(this.PARENT_BOX);
         window.addEventListener('resize', this.onResize);
+        this.$EventBus.$on(events.AFTER_FILES_ENTER, this.onResize);
         this.onResize();
         this.hitboxCheck();
         window.addEventListener('keydown', this.onKeydown)

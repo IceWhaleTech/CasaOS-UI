@@ -1,210 +1,208 @@
 <!--
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-07 21:02:50
- * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\FilePanel.vue
+ * @LastEditTime: 2023-03-01 14:03:24
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/FilePanel.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
   -->
 
 <template>
-  <div class="modal-card">
+  <div :class="containerClass">
+    <div class="modal-card">
 
-    <!-- Modal-Card Body Start -->
-    <section class="modal-card-body is-flex">
+      <!-- Modal-Card Body Start -->
+      <section class="modal-card-body is-flex">
 
-      <!-- Viewer Start -->
-      <transition name="c-zoom-in">
-        <component :is="panelType" v-if="isShowDetial" ref="previewPanel" :item="currentItem" :list="listData"
-                   @close="isShowDetial = false; isModalOpen = false"></component>
-      </transition>
-      <!-- Viewer End -->
+        <!-- Viewer Start -->
+        <transition name="c-zoom-in">
+          <component :is="panelType" v-if="isShowDetial" ref="previewPanel" :item="currentItem" :list="listData"
+            @close="isShowDetial = false; isModalOpen = false"></component>
+        </transition>
+        <!-- Viewer End -->
 
-      <template>
-        <!-- NavBar Start -->
-        <div class="nav-bar is-flex is-flex-direction-column">
-          <div class="is-flex-grow-1 is-flex-shrink-1 nav-bar-top  scrollbars-light">
-            <!-- Files Start -->
-            <div class="files-section ">
-              <!--  storage settings requirement document -->
-              <div class="is-flex is-align-items-center pt-3">
-                <div class=" is-flex-grow-1">
-                  <h3 class="title is-3 mb-0 pb-3 pt-3 has-text-left">{{ $t('Files') }}</h3>
+        <template>
+          <!-- NavBar Start -->
+          <div class="nav-bar is-flex is-flex-direction-column">
+            <div class="is-flex-grow-1 is-flex-shrink-1 nav-bar-top  scrollbars-light">
+              <!-- Files Start -->
+              <div class="files-section ">
+                <!--  storage settings requirement document -->
+                <div class="is-flex is-align-items-center pt-3">
+                  <div class=" is-flex-grow-1">
+                    <h3 class="title is-3 mb-0 pb-3 pt-3 has-text-left">{{ $t('Files') }}</h3>
+                  </div>
+                  <div v-show="hasMergerFunction" class="is-flex-shrink-0  mr-5" @click="showStorageSettingsModal">
+                    <b-icon custom-size="mdi-18px" icon="cog-outline"></b-icon>
+                  </div>
                 </div>
-                <div v-show="hasMergerFunction" class="is-flex-shrink-0  mr-5"
-                     @click="showStorageSettingsModal">
-                  <b-icon custom-size="mdi-18px" icon="cog-outline"></b-icon>
+                <div class="list-container scrollbars-light pt-0 is-flex-grow-1">
+                  <tree-list ref="navBar" :autoLoad="true" :isActive="pageType == `file`" :path="rootPath"></tree-list>
                 </div>
               </div>
-              <div class="list-container scrollbars-light pt-0 is-flex-grow-1">
-                <tree-list ref="navBar" :autoLoad="true" :isActive="!isShareList"
-                           :path="rootPath"></tree-list>
+              <!-- Files End -->
+
+
+              <!-- Mounted Start -->
+              <div class="mounted-section">
+                <div class="is-flex is-align-items-center">
+                  <div class=" is-flex-grow-1">
+                    <h3 class="title is-3 mb-0 pb-3 pt-3 has-text-left">{{ $t('Location') }}</h3>
+                  </div>
+                  <div class=" is-flex-shrink-0 mr-5">
+                    <mount-action-button></mount-action-button>
+                  </div>
+                </div>
+
+                <div class="list-container pt-0 is-flex-grow-1">
+                  <mount-list ref="mountedList" :autoLoad="true" :hasMergerFunction="hasMergerFunction"
+                    :isActive="pageType == `file`" :path="rootPath"></mount-list>
+                </div>
+
               </div>
+              <!-- Mounted End -->
             </div>
 
-            <!-- Files End -->
-
-            <!-- Mounted Start -->
-            <div class="mounted-section">
-              <div class="is-flex is-align-items-center">
-                <div class=" is-flex-grow-1">
-                  <h3 class="title is-3 mb-0 pb-3 pt-3 has-text-left">{{ $t('Location') }}</h3>
-                </div>
-                <div class=" is-flex-shrink-0 mr-5">
-                  <mount-action-button></mount-action-button>
-                </div>
-              </div>
-
-              <div class="list-container pt-0 is-flex-grow-1">
-                <mount-list ref="mountedList" :autoLoad="true" :hasMergerFunction="hasMergerFunction"
-                            :isActive="!isShareList" :path="rootPath"></mount-list>
-              </div>
-
+            <!-- Bottom Action Start -->
+            <div class="bottom-area">
+              <drop-entry-button :active="pageType == `drop`" :title="$t('FilesDrop')" @open="showDropPage"></drop-entry-button>
+              <share-entry-button :active="pageType == `share`" @open="showSharedList"></share-entry-button>
             </div>
-            <!-- Mounted End -->
+            <!-- Bottom Action End -->
           </div>
+          <!-- NavBar Start -->
 
-          <!-- Bottom Action Start -->
-          <div class="bottom-area">
-            <share-entry-button :active="isShareList" @open="showSharedList"></share-entry-button>
-          </div>
-          <!-- Bottom Action End -->
-        </div>
-        <!-- NavBar Start -->
-
-        <!-- Main Content Start -->
-        <div v-if="!isShareList" class="content is-flex-grow-1">
-          <uploader ref="uploader" :options="options" class="uploader-example">
-            <uploader-unsupport></uploader-unsupport>
-            <!-- Header Start -->
-            <header class="modal-card-head">
-              <div id="bread-container" class="is-flex-grow-1 is-flex breadcrumb-container">
-                <file-breadcrumb></file-breadcrumb>
-                <!-- <b-input placeholder="Search in folder..." size="is-small" rounded></b-input> -->
-              </div>
-              <div class="is-flex is-align-items-center">
-
-                <!-- Paste Button Start -->
-                <b-button v-if="hasPasteData" :label="$t('Paste')" :loading="isPasting" class="mr-3"
-                          icon-left="content-paste" rounded size="is-small" type="is-success"
-                          @click="paste('overwrite')"/>
-                <!-- Paste Button End -->
-
-                <!-- Operation Status Start-->
-                <operation-status-bar></operation-status-bar>
-                <!-- Operation Status End-->
-
-                <!-- Upload Button Start -->
-                <global-action-button @showNewFileModal="showNewFileModal"
-                                      @showNewFolderModal="showNewFolderModal"></global-action-button>
-                <!-- Upload Button End -->
-
-                <!--  Close Button Start -->
-                <div
-                    class="is-flex is-align-items-center modal-close-container modal-close-container-line ">
-                  <button class="delete" type="button" @click="$emit('close')"/>
+          <!-- Main Content Start -->
+          <div v-if="pageType == `file`" class="content is-flex-grow-1">
+            <uploader ref="uploader" :options="options" class="uploader-example">
+              <uploader-unsupport></uploader-unsupport>
+              <!-- Header Start -->
+              <header class="modal-card-head">
+                <div id="bread-container" class="is-flex-grow-1 is-flex breadcrumb-container">
+                  <file-breadcrumb></file-breadcrumb>
+                  <!-- <b-input placeholder="Search in folder..." size="is-small" rounded></b-input> -->
                 </div>
-                <!--  Close Button End -->
+                <div class="is-flex is-align-items-center">
 
-              </div>
-            </header>
-            <!-- Header End -->
+                  <!-- Paste Button Start -->
+                  <b-button v-if="hasPasteData" :label="$t('Paste')" :loading="isPasting" class="mr-3"
+                    icon-left="content-paste" rounded size="is-small" type="is-success" @click="paste('overwrite')" />
+                  <!-- Paste Button End -->
 
-            <!-- Tool Bar Start -->
-            <div v-if="isEmpty" class="tool-bar is-flex mb-2">
-              <div class=" is-flex-grow-1 has-text-left is-flex  is-align-items-center">
-                <b-field class="ml-3 is-flex is-size-14px mb-0">
-                  <b-checkbox v-model="isSelectAll" :class="selectState" size="is-small"
-                              @input="handleSelect">
-                    {{
-                      selectState != "none" ? $t("select-items", selectLabel) : $t("total-items",
+                  <!-- Operation Status Start-->
+                  <operation-status-bar></operation-status-bar>
+                  <!-- Operation Status End-->
+
+                  <!-- Upload Button Start -->
+                  <global-action-button @showNewFileModal="showNewFileModal"
+                    @showNewFolderModal="showNewFolderModal"></global-action-button>
+                  <!-- Upload Button End -->
+
+                  <!--  Close Button Start -->
+                  <div class="is-flex is-align-items-center modal-close-container modal-close-container-line ">
+                    <button class="delete" type="button" @click="$emit('close')" />
+                  </div>
+                  <!--  Close Button End -->
+
+                </div>
+              </header>
+              <!-- Header End -->
+
+              <!-- Tool Bar Start -->
+              <div v-if="isEmpty" class="tool-bar is-flex mb-2">
+                <div class=" is-flex-grow-1 has-text-left is-flex  is-align-items-center">
+                  <b-field class="ml-3 is-flex is-size-14px mb-0">
+                    <b-checkbox v-model="isSelectAll" :class="selectState" size="is-small" @input="handleSelect">
+                      {{
+                        selectState != "none" ? $t("select-items", selectLabel) : $t("total-items",
                           selectLabel)
-                    }}
-                  </b-checkbox>
-                </b-field>
-              </div>
-              <div class="view-btns is-flex-shrink-0">
-                <b-tooltip :label="$t('Change View')" position="is-left" type="is-dark">
-                  <p class="is-clickable none-line-height" role="button" @click="changeView">
-                    <b-icon :icon="viewIcon"></b-icon>
-                  </p>
-                </b-tooltip>
-              </div>
-            </div>
-            <!-- Tool Bar End -->
-
-            <!-- List View Start -->
-            <div id="dropTarget">
-
-              <!-- Drag and Drop Mask Start -->
-              <div v-if="isDragIn"
-                   class="drag-mask is-flex is-align-items-flex-end is-flex-direction-row">
-                <div class="mb-6">
-                  <div class="upload-icon">
-                    <b-icon icon="arrow-up" size="is-medium" type="is-white"></b-icon>
-                  </div>
-                  <p class="has-text-primary">
-                    {{ $t('Upload to') }} {{ currentPathName }}
-                  </p>
+                      }}
+                    </b-checkbox>
+                  </b-field>
                 </div>
-              </div>
-              <!-- Drag and Drop Mask End -->
-
-              <component :is="listView" ref="listview" v-model="listData" :isLoading="isLoading"
-                         @change="handelListChange" @gotoFolder="getFileList" @reload="reload"
-                         @showDetailModal="showDetailModal">
-                <empty-holder v-if="isEmpty" @newFile="showNewFileModal"
-                              @newFolder="showNewFolderModal"></empty-holder>
-                <error-holder v-else :error="errorMsg"></error-holder>
-              </component>
-
-            </div>
-            <!-- List View End -->
-
-            <!-- Upload List Start-->
-            <div v-show="showUploadList" class="upload-list">
-              <b-collapse ref="uploadList" animation="slide1" aria-id="contentIdForA11y3" class="card">
-                <template #trigger="props">
-                  <div :aria-expanded="props.open" aria-controls="contentIdForA11y3"
-                       class="card-header" role="button">
-                    <p class="card-header-title">
-                      <b-icon :icon="props.open ? 'chevron-down' : 'chevron-up'"
-                              class="mr-2"></b-icon>
-                      {{ $t(uploaderListHeaderText) }}
+                <div class="view-btns is-flex-shrink-0">
+                  <b-tooltip :label="$t('Change View')" position="is-left" type="is-dark">
+                    <p class="is-clickable none-line-height" role="button" @click="changeView">
+                      <b-icon :icon="viewIcon"></b-icon>
                     </p>
-                    <a class="card-header-icon" @click.prevent="closeUploaderList">
-                      <b-icon icon="close"></b-icon>
-                    </a>
-                  </div>
-                </template>
+                  </b-tooltip>
+                </div>
+              </div>
+              <!-- Tool Bar End -->
 
-                <div class="card-content scrollbars-light">
-                  <div class="content">
-                    <uploader-list></uploader-list>
+              <!-- List View Start -->
+              <div id="dropTarget">
+
+                <!-- Drag and Drop Mask Start -->
+                <div v-if="isDragIn" class="drag-mask is-flex is-align-items-flex-end is-flex-direction-row">
+                  <div class="mb-6">
+                    <div class="upload-icon">
+                      <b-icon icon="arrow-up" size="is-medium" type="is-white"></b-icon>
+                    </div>
+                    <p class="has-text-primary">
+                      {{ $t('Upload to') }} {{ currentPathName }}
+                    </p>
                   </div>
                 </div>
+                <!-- Drag and Drop Mask End -->
 
-              </b-collapse>
-            </div>
-            <!-- Upload List End-->
+                <component :is="listView" ref="listview" v-model="listData" :isLoading="isLoading"
+                  @change="handelListChange" @gotoFolder="getFileList" @reload="reload"
+                  @showDetailModal="showDetailModal">
+                  <empty-holder v-if="isEmpty" @newFile="showNewFileModal" @newFolder="showNewFolderModal"></empty-holder>
+                  <error-holder v-else :error="errorMsg"></error-holder>
+                </component>
 
-          </uploader>
-          <!-- Toolbar Start -->
-          <operation-toolbar v-model="isToolbarShow" @close="handleClose" @copy="handleCopy"
-                             @download="handleDownload" @move="handleMove" @remove="handleRemove"></operation-toolbar>
-          <!-- Toolbar End -->
-        </div>
+              </div>
+              <!-- List View End -->
 
-        <share-list-page v-else ref="shareList" @close="$emit('close')"></share-list-page>
+              <!-- Upload List Start-->
+              <div v-show="showUploadList" class="upload-list">
+                <b-collapse ref="uploadList" animation="slide1" aria-id="contentIdForA11y3" class="card">
+                  <template #trigger="props">
+                    <div :aria-expanded="props.open" aria-controls="contentIdForA11y3" class="card-header" role="button">
+                      <p class="card-header-title">
+                        <b-icon :icon="props.open ? 'chevron-down' : 'chevron-up'" class="mr-2"></b-icon>
+                        {{ $t(uploaderListHeaderText) }}
+                      </p>
+                      <a class="card-header-icon" @click.prevent="closeUploaderList">
+                        <b-icon icon="close"></b-icon>
+                      </a>
+                    </div>
+                  </template>
 
-      </template>
-      <!-- Main Content End -->
+                  <div class="card-content scrollbars-light">
+                    <div class="content">
+                      <uploader-list></uploader-list>
+                    </div>
+                  </div>
 
-    </section>
-    <!-- Modal-Card Body End -->
-    <b-loading v-model="isLoading" :is-full-page="false">
-      <b-image :src="require('@/assets/img/loading/waiting.svg')" alt="pending" class="is-100x100 mt-6"/>
-    </b-loading>
+                </b-collapse>
+              </div>
+              <!-- Upload List End-->
+
+            </uploader>
+            <!-- Toolbar Start -->
+            <operation-toolbar v-model="isToolbarShow" @close="handleClose" @copy="handleCopy" @download="handleDownload"
+              @move="handleMove" @remove="handleRemove"></operation-toolbar>
+            <!-- Toolbar End -->
+          </div>
+          <!-- Share Page Start -->
+          <share-list-page v-else-if="pageType == `share`" ref="shareList" @close="$emit('close')"></share-list-page>
+          <!-- Share Page End -->
+
+          <!-- Drop Page Start -->
+          <drop-page v-else-if="pageType == `drop`" ref="dropPage" @close="$emit('close')"> </drop-page>
+          <!-- Drop Page End -->
+        </template>
+        <!-- Main Content End -->
+
+      </section>
+      <!-- Modal-Card Body End -->
+      <b-loading v-model="isLoading" :is-full-page="false">
+        <b-image :src="require('@/assets/img/loading/waiting.svg')" alt="pending" class="is-100x100 mt-6" />
+      </b-loading>
+    </div>
   </div>
 </template>
 
@@ -214,13 +212,14 @@ import orderBy from 'lodash/orderBy'
 import dropRight from 'lodash/dropRight'
 import isEqual from 'lodash/isEqual'
 
-import {mixin} from '@/mixins/mixin';
+import { mixin } from '@/mixins/mixin';
 import events from '@/events/events';
 
 import TreeList from './sidebar/TreeList.vue';
 import MountList from './sidebar/MountList.vue';
 import ShareEntryButton from './shared/ShareEntryButton.vue';
 import ShareListPage from './shared/ShareListPage.vue';
+
 import SelectShareModal from './shared/SelectShareModal.vue'
 import ShareDetial from './shared/ShareDetial.vue'
 
@@ -245,6 +244,10 @@ import MountActionButton from './components/MountActionButton.vue';
 // storage settings requirement document
 import MergeStorages from "@/components/Storage/MergeStorages.vue";
 
+// Drop
+import DropPage from './drop/DropPage.vue';
+import DropEntryButton from './drop/DropEntryButton.vue';
+
 export default {
   name: "file-panel",
   mixins: [mixin],
@@ -264,6 +267,7 @@ export default {
     CodeEditor: () => import("./viewers/CodeEditor.vue"),
     VideoPlayer: () => import("./viewers/VideoPlayer.vue"),
     ImageViewer: () => import("./viewers/ImageViewer.vue"),
+    MarkDownEditor: () => import("./viewers/MarkdownEditor.vue"),
     EmptyHolder,
     ErrorHolder,
     OperationToolbar,
@@ -275,6 +279,9 @@ export default {
     ShareListPage,
     MountList,
     MountActionButton,
+    // Drop
+    DropPage,
+    DropEntryButton
   },
   data() {
     return {
@@ -284,7 +291,7 @@ export default {
       isDragIn: false,
       isPasting: false,
       isShowDetial: false,
-      isShareList: false,
+      pageType: "drop",
       panelType: null,
       currentItem: null,
       rootPath: "/DATA",
@@ -349,6 +356,9 @@ export default {
     listView() {
       return this.$store.state.isViewGird ? "gird-view" : "list-view"
     },
+    containerClass() {
+      return this.$route.path == "/files" ? "file-panel full-screen " : ""
+    },
   },
   watch: {
     '$store.state.operateObject': {
@@ -363,23 +373,35 @@ export default {
       }
 
     },
-    isShareList(val) {
-      if (val) {
-        this.destroyedAction()
-      } else {
-        if (document.onpaste === null) {
-          this.$nextTick(() => {
-            this.beforeInit()
-          })
-
-        }
+    pageType(val) {
+      switch (val) {
+        case "file":
+          if (document.onpaste === null) {
+            this.$nextTick(() => {
+              this.beforeInit()
+            })
+          }
+          break;
+        case "share":
+          this.destroyedAction()
+          break;
+        case "drop":
+          this.destroyedAction()
+          break;
+        default:
+          break;
       }
-    }
-
+    },
   },
+
   mounted() {
     this.init();
-    if (!this.isShareList) {
+    if (this.$route.path == "/files") {
+      // this.init()
+      this.isLoading = false
+    }
+
+    if (this.pageType == "file") {
       this.beforeInit()
     }
 
@@ -437,7 +459,11 @@ export default {
     },
 
     showSharedList() {
-      this.isShareList = true
+      this.pageType = "share"
+    },
+
+    showDropPage() {
+      this.pageType = "drop"
     },
 
     /**
@@ -463,11 +489,12 @@ export default {
     getFileList(path) {
       this.isLoading = true;
       // path = path.replace("//", "/")
-      this.isShareList = false
+      this.pageType = "file"
       this.currentPath = path
       this.$store.commit('SET_CURRENT_PATH', path)
       this.$api.folder.getList(path).then(res => {
         if (res.data.success == 200) {
+
           this.isLoading = false;
           this.currentPathName = path.split("/").pop()
           const fileList = res.data.data.content
@@ -548,17 +575,17 @@ export default {
       if (this.selectedArray.length == list.length && list.length > 0) {
         this.selectState = "all"
         this.isSelectAll = true
-        this.selectLabel = {num: list.length}
+        this.selectLabel = { num: list.length }
         this.isToolbarShow = true
       } else if (this.selectedArray.length < list.length && this.selectedArray.length > 0) {
         this.selectState = "part"
         this.isSelectAll = false
-        this.selectLabel = {num: this.selectedArray.length}
+        this.selectLabel = { num: this.selectedArray.length }
         this.isToolbarShow = true
       } else {
         this.selectState = "none"
         this.isSelectAll = false
-        this.selectLabel = {num: list.length}
+        this.selectLabel = { num: list.length }
         this.isToolbarShow = false
       }
     },
@@ -638,6 +665,7 @@ export default {
       // Drag Over
       this.uploaderInstance.on('dragover', (event) => {
         this.isDragIn = true;
+        this.showUploadList = false;
         if (this.timeout !== null) {
           clearTimeout(this.timeout);
         }
@@ -896,12 +924,18 @@ export default {
     },
 
     reloadShare() {
-      if (this.isShareList) {
-        this.$refs.shareList.getSharedList()
-        this.$EventBus.$emit(events.RELOAD_FILE_LIST);
-      } else {
-        this.reload()
+      switch (this.pageType) {
+        case "share":
+          this.$refs.shareList.getSharedList()
+          this.$EventBus.$emit(events.RELOAD_FILE_LIST);
+          break;
+        case "file":
+          this.reload()
+          break;
+        default:
+          break;
       }
+
     },
 
     handleSelectShare() {
@@ -919,12 +953,7 @@ export default {
             // this.isModalOpen = false
           },
           'reload': () => {
-            if (this.isShareList) {
-              this.$refs.shareList.getSharedList()
-              this.$EventBus.$emit(events.RELOAD_FILE_LIST);
-            } else {
-              this.reload()
-            }
+            this.reloadShare()
           }
         }
       })
@@ -1009,3 +1038,19 @@ export default {
 }
 </script>
 
+<style lang="scss" scoped>
+.full-screen {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  z-index: 20;
+  display: flex;
+
+  .modal-card {
+    height: 100% !important;
+    max-height: 100% !important;
+    overflow: hidden;
+  }
+}
+</style>

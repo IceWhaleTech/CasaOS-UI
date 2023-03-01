@@ -180,6 +180,11 @@ $size-large: $size-4 !default;
 
 
 // CasaOS Variables
+$grey-100: hsla(208, 16%, 96%, 1) !default;
+$grey-200: hsla(208, 16%, 94%, 1);
+$grey-600: hsla(208, 14%, 58%, 1);
+$grey-400: hsla(208, 16%, 85%, 1) !default;
+$gray-800: hsla(208, 20%, 20%, 1);
 
 // Colors
 $casablue: hsl(216, 90%, 54%) !default;
@@ -199,59 +204,59 @@ $reddit: #FF4500;
 
 
 // Lists and maps
-$custom-colors: null !default;
+$custom-colors: ("grey": ($grey-600, $white)) !default;
 $custom-shades: null !default;
 
 // Setup $colors to use as bulma classes (e.g. 'is-twitter')
 $colors: mergeColorMaps(("white": ($white,
-$black,
-),
-        "black": ($black,
-        $white,
+                        $black,
+                ),
+                "black": ($black,
+                        $white,
+                ),
+                "light": ($light,
+                        $light-invert,
+                ),
+                "dark": ($dark,
+                        $dark-invert,
+                ),
+                "primary": ($primary,
+                        $primary-invert,
+                        $primary-light,
+                        $primary-dark,
+                ),
+                "link": ($link,
+                        $link-invert,
+                        $link-light,
+                        $link-dark,
+                ),
+                "info": ($info,
+                        $info-invert,
+                        $info-light,
+                        $info-dark,
+                ),
+                "success": ($success,
+                        $success-invert,
+                        $success-light,
+                        $success-dark,
+                ),
+                "warning": ($warning,
+                        $warning-invert,
+                        $warning-light,
+                        $warning-dark,
+                ),
+                "danger": ($danger,
+                        $danger-invert,
+                        $danger-light,
+                        $danger-dark,
+                ),
+                "facebook":($facebook,
+                        $white),
+                "twitter":($twitter,
+                        $white),
+                "reddit":($reddit,
+                        $white),
         ),
-        "light": ($light,
-        $light-invert,
-        ),
-        "dark": ($dark,
-        $dark-invert,
-        ),
-        "primary": ($primary,
-        $primary-invert,
-        $primary-light,
-        $primary-dark,
-        ),
-        "link": ($link,
-        $link-invert,
-        $link-light,
-        $link-dark,
-        ),
-        "info": ($info,
-        $info-invert,
-        $info-light,
-        $info-dark,
-        ),
-        "success": ($success,
-        $success-invert,
-        $success-light,
-        $success-dark,
-        ),
-        "warning": ($warning,
-        $warning-invert,
-        $warning-light,
-        $warning-dark,
-        ),
-        "danger": ($danger,
-        $danger-invert,
-        $danger-light,
-        $danger-dark,
-        ),
-        "facebook":($facebook,
-        $white),
-        "twitter":($twitter,
-        $white),
-        "reddit":($reddit,
-        $white),
-),
         $custom-colors);
 
 // Links
@@ -279,8 +284,3 @@ $modal-background-background-color: rgba(0, 0, 0, 0.5);
 $sidebar-width: 22.5rem;
 
 // _colors.scss
-$grey-100: hsla(208, 16%, 96%, 1) !default;
-$grey-200: hsla(208, 16%, 94%, 1);
-$grey-600: hsla(208, 14%, 58%, 1);
-$grey-400: hsla(208, 16%, 85%, 1) !default;
-$gray-800: hsla(208, 20%, 20%, 1);

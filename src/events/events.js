@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-14 11:17:17
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-01-16 18:50:35
- * @FilePath: /CasaOS-UI/src/events/events.js
+ * @LastEditTime: 2023-02-27 22:54:58
+ * @FilePath: \CasaOS-UI-0.4.2\src\events\events.js
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -22,5 +22,7 @@ const events = {
     RELOAD_MOUNT_LIST: 'reloadMountList',
     SHOW_MERGER_PANEL: 'showMergerPanel',
     REFRESH_DISKLIST: 'refreshDiskList',
+    AFTER_FILES_ENTER: 'afterFilesEnter',
+    SHOW_DROP_CONTEXT_MENU: 'showDropContextMenu',
 };
 export default events;
