@@ -67,7 +67,7 @@
 					<template v-if="isCasa">
 						
 						<b-field :label="$t('Network')">
-							<b-select v-model="service.network_model" expanded placeholder="Select">
+							<b-select v-model="service.network_mode" expanded placeholder="Select">
 								<optgroup v-for="net in networks" :key="net.driver" :label="net.driver">
 									<option v-for="(option,index) in net.networks" :key="option.name+index"
 									        :value="option.name">
@@ -195,9 +195,11 @@ const main_app_schema = {
 }
 
 const ajv = new Ajv({allErrors: true, useDefaults: true});
-let main_name = "333";
+let main_name_x = "333";
+// let xCasaOS;
 
 export default {
+	xCasaOS: null,
 	name: "ComposeConfig.vue",
 	components: {
 		ValidationObserver,
@@ -221,7 +223,7 @@ export default {
 				restart: "always", //
 				label: "", // name
 				position: true, //
-				network_model: "", //
+				network_mode: "", //
 				image: "", //
 				description: "", //
 				origin: "custom", //
@@ -404,7 +406,7 @@ export default {
 					let gg = find(this.networks, (o) => {
 						return o.driver == "bridge"
 					}) || []
-					this.configData.network_model = gg.length > 0 ? gg[0].name : "bridge";
+					this.configData.network_mode = gg.length > 0 ? gg[0].name : "bridge";
 				}
 			},
 			deep: true
@@ -441,14 +443,14 @@ export default {
 		// 	}
 		// },
 		showPorts() {
-			if (this.configData.network_model.toLowerCase().indexOf("macvlan") > -1 || this.configData.network_model.indexOf("host") > -1) {
+			if (this.configData.network_mode.toLowerCase().indexOf("macvlan") > -1 || this.configData.network_mode.indexOf("host") > -1) {
 				return false
 			} else {
 				return true
 			}
 		},
 		showHostPort() {
-			if (this.configData.network_model.indexOf("host") > -1) {
+			if (this.configData.network_mode.indexOf("host") > -1) {
 				return false
 			} else {
 				return true
@@ -568,13 +570,36 @@ export default {
 					return false
 				}
 				
-				this.configData['x-casaos'] = yaml['x-casaos']
-				this.main_app = yaml.services[yaml['x-casaos']]['x-casaos']
+				// 导入数据不一定含有 x-casaos，但一定含有 services
+				// yaml['x-casaos'] 数据类型是 object
+				this.configData['x-casaos'] = yaml['x-casaos'] && yaml['x-casaos'].main_app || Object.keys(yaml.services)[0]
+				console.log('检测 x-casaos 是否正确', this.configData['x-casaos']);
+				// 导入数据main-app 中不一定含有 x-casaos，
+				// let main_app = yaml.services[this.configData['x-casaos']]['x-casaos'] || {}
+				let main_app = {};
+				let yaml_main_app = yaml.services[this.configData['x-casaos']]['x-casaos'];
+				// this.main_app = Object.assign(this.main_app, main_app)
+				this.main_app = yaml_main_app.icon;
+				this.main_app.container.host = yaml_main_app.container.host;
+				this.main_app.container.protocol = yaml_main_app.container.protocol;
+				this.main_app.container.index = yaml_main_app.container.index;
+				this.main_app.container.port_map = yaml_main_app.container.port_map;
+				this.main_app.container.host_name = yaml_main_app.container.host_name;
+				this.main_app.container.container_name = yaml_main_app.container.container_name;
+				this.main_app.container.appstore_id = yaml_main_app.container.appstore_id;
+				console.log('检测主应用中的 x-casaos 完成本地赋值', this.main_app);
+				// 将主应用的x-casaos 暂存到 xCasaOS中，等返回数据时，添加上。
+				this.xCasaOS = yaml.services[this.configData['x-casaos']]['x-casaos'];
+				
+				// set main app name
 				this.configData.name = yaml.name
+				// 解析 services，并将其赋值到 configData.services中。
 				for (const yamlKey in yaml.services) {
 					this.$set(this.configData.services, yamlKey, this.parseCompseItem(yaml.services[yamlKey]))
 				}
+				// 删除掉原默认主应用。
 				this.$delete(this.configData.services, 'main_app')
+				// 补全必要数据。
 				this.preProcessConfigData(this.configData)
 				
 				return true
@@ -613,27 +638,26 @@ export default {
 			
 			
 			//Ports
+			// 建议 - 仅处理数组格式！！！
+			// 已支持对象格式。
 			configData.ports = this.makeArray(parsedInput.ports).map(item => {
 				if (isString(item)) {
 					let pArray = item.split(":")
 					let endArray = pArray[1].split("/")
 					let protocol = (endArray[1]) ? endArray[1] : 'tcp';
 					return {
-						container: endArray[0],
-						host: pArray[0],
+						target: endArray[0],
+						published: pArray[0],
 						protocol: protocol
 					}
 				} else {
-					return {
-						container: item.target,
-						host: item.published,
-						protocol: item.protocol
-					}
+					return item
 				}
 				
 			})
 			
 			//Volume
+			// - 仅支持bind 模式
 			configData.volumes = this.makeArray(parsedInput.volumes).map(item => {
 				if (isString(item)) {
 					let ii = item.split(":");
@@ -658,7 +682,7 @@ export default {
 				}
 				
 			})
-
+			
 			// Devices
 			configData.devices = this.makeArray(parsedInput.device).map(item => {
 				let ii = item.split(":");
@@ -678,7 +702,7 @@ export default {
 					}
 				})
 				if (seletNetworks.length > 0) {
-					configData.network_model = seletNetworks[0].networks[0].name;
+					configData.network_mode = seletNetworks[0].networks[0].name;
 				}
 			}
 			
@@ -751,14 +775,14 @@ export default {
 			return (newArray == undefined) ? [] : newArray
 		},
 		
-		preProcessConfigData() {
-			let data = this.configData
+		preProcessConfigData(data) {
+			// let data = this.configData
 			data.port_map = data.port_map === "" ? null : data.port_map
 			data.icon = data.icon === "" ? this.getIconFromImage(data.image) : data.icon
-			for (const app in data.services) {
+			for (const appKey in data.services) {
 				// data.services[app] = this.preProcessConfigDataItem(data.services[app])
 				// this.$set(data.services, app, this.preProcessConfigDataItem(data.services[app]))
-				this.preProcessConfigDataItem(app)
+				this.preProcessConfigDataItem(data.services[appKey])
 			}
 		},
 		
@@ -768,20 +792,21 @@ export default {
 		 * @return {ConfigObject} data
 		 */
 		preProcessConfigDataItem(app) {
-			let data = this.configData.services[app]
-			// data.ports = isNil(data.ports) ? [] : data.ports
-			isNil(data.ports) && this.$set(data, "ports", [])
-			isNil(data.volumes) && this.$set(data, "volumes", [])
-			isNil(data.environment) && this.$set(data, "environment", [])
-			isNil(data.devices) && this.$set(data, "devices", [])
-			isNil(data.cap_add) && this.$set(data, "cap_add", [])
-			isNil(data.cmd) && this.$set(data, "cmd", [])
-			data.cpu_shares = (data.cpu_shares === 0 || data.cpu_shares > 99) ? 90 : data.cpu_shares
-			data.memory = data.memory === 0 ? this.totalMemory : (data.memory / 1048576).toFixed(0)
-			data.restart = data.restart === "no" ? "unless-stopped" : data.restart
-			data.network_model = data.network_model === "default" ? "bridge" : data.network_model
+			// let app = this.configData.services[app]
+			// app.ports = isNil(app.ports) ? [] : app.ports
+			isNil(app.ports) && this.$set(app, "ports", [])
+			isNil(app.volumes) && this.$set(app, "volumes", [])
+			isNil(app.environment) && this.$set(app, "environment", [])
+			isNil(app.devices) && this.$set(app, "devices", [])
+			isNil(app.cap_add) && this.$set(app, "cap_add", [])
+			isNil(app.cmd) && this.$set(app, "cmd", [])
+			app.cpu_shares = (app.cpu_shares === 0 || app.cpu_shares > 99) ? 90 : app.cpu_shares
+			// app.memory = app.memory === 0 ? this.totalMemory : (app.memory / 1048576).toFixed(0)
+			isNil(app.memory) && this.$set(app, "memory", this.totalMemory)
+			app.restart = app.restart === "no" ? "unless-stopped" : app.restart
+			app.network_mode = app.network_mode === "default" ? "bridge" : app.network_mode
 			
-			return data
+			return app
 		},
 		
 		/**
@@ -791,26 +816,30 @@ export default {
 		 */
 		processData() {
 			this.initConfigData.cpu_shares = Number(this.initConfigData.cpu_shares)
-			let model = this.initConfigData.network_model.split("-");
-			this.initConfigData.network_model = model[0]
+			let model = this.initConfigData.network_mode.split("-");
+			this.initConfigData.network_mode = model[0]
 		},
 		
 		// migration !!! end !!!
 		
 		updateConfigDataCommands(val) {
-            // configData tans to docker-compose.yml
-            let ConfigData = cloneDeep(val)
-            val.services.forEach(item => {
-                ConfigData.item.devices = item.devices.map(device => {
-                    return `${device.host}:${device.container}`
-                })
-                ConfigData.item.volumes = item.volumes.map(volume => {
-                    return `${volume.host}:${volume.container}`
-                })
-                ConfigData.item.ports = item.ports.map(port => {
-                    return `${port.host}:${port.container}`
-                })
-            })
+			// configData tans to docker-compose.yml
+			let ConfigData = cloneDeep(val)
+			for (const servicesKey in val.services) {
+				let service = val.services[servicesKey]
+				let outputService = ConfigData.services[servicesKey]
+				outputService.devices = service.devices.map(device => {
+					return `${device.host}:${device.container}`
+				})
+				outputService.volumes = service.volumes.map(volume => {
+					return `${volume.host}:${volume.container}`
+				})
+				// TODO: port
+				outputService.ports = service.ports.map(port => {
+					return `${port.host}:${port.container}`
+				})
+			}
+			console.log(ConfigData.services, 'ConfigData.services');
 			this.$emit('updateConfigDataCommands', YAML.stringify(ConfigData));
 		},
 	}
