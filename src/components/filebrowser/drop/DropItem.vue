@@ -1,23 +1,22 @@
 <template>
-    <div class="drop-item contextmenu-canvas" :class="[{ 'is-floating': isFloat }, customClass]"
-        :style="'left:' + position.x + 'px; top:' + position.y + 'px'" @dragenter="onDrag" @dragover="onDrag"
-        @dragleave="onDrop" @dragend="onDrop" @drop="onDrop">
+    <div class="drop-item contextmenu-canvas" :class="[{ 'is-floating': isFloat, 'disabled': isDisabled }, customClass]"
+        :style="positionStyle" @dragenter="onDrag" @dragover="onDrag" @dragleave="onDrop" @dragend="onDrop" @drop="onDrop">
 
         <b-upload v-model="dropFiles" multiple drag-drop :disabled="isSelf">
             <b-tooltip :label="tipText" type="is-grey" :position="tipPosition" :always="tipActive" multilined
                 size="is-small">
-                <div @contextmenu.stop.prevent="showContextMenu" class="circle-area animate__animated animate__bounceIn"
-                    :class="{ 'drag-over': dragOver, 'is-self': isSelf }">
+                <div ref="circleArea" class="circle-area" :class="{ 'drag-over': dragOver, 'is-self': isSelf }"
+                    @contextmenu.stop.prevent="showContextMenu">
 
-                    <div class="up-layer">
-                        <b-image :src="require('@/assets/img/drop/iPad.svg')" :alt="device.name.displayName"
+                    <div class="up-layer" :class="{ 'is-online': !device.offline }">
+                        <b-image :src="require(`@/assets/img/drop/${deviceIcon}.svg`)" :alt="device.name.displayName"
                             class="is-48x48 mr-0 ml-0 no-click" :class="stateClass"></b-image>
                     </div>
                     <vue-ellipse-progress :progress="progress" :size="80" :thickness="2" :emptyThickness="2" :legend="false"
                         emptyColor="#ffffff" lineMode="in-over" v-show="progress > 0"></vue-ellipse-progress>
                 </div>
             </b-tooltip>
-            <div class="device-name has-text-full-03 animate__animated animate__fadeIn">
+            <div ref="deviceName" class="device-name has-text-full-03">
                 {{ device.name.displayName }}
             </div>
         </b-upload>
@@ -28,6 +27,9 @@
 <script>
 import { VueEllipseProgress } from "vue-ellipse-progress";
 import events from '@/events/events';
+import { gsap } from 'gsap';
+import CustomEase from "gsap/CustomEase";
+
 export default {
     name: "drop-item",
     components: {
@@ -46,15 +48,6 @@ export default {
             type: Number,
             default: 0
         },
-        position: {
-            type: Object,
-            default: () => ({
-                x: 0,
-                y: 0,
-                first: false,
-                last: false
-            })
-        },
         device: {
             type: Object,
             default: () => ({
@@ -64,20 +57,49 @@ export default {
         customClass: {
             type: String,
             default: ''
+        },
+        radius: {
+            type: Number,
+            default: 0
+        },
+        center: {
+            type: Object,
+            default: () => ({
+                x: 0,
+                y: 0
+            })
+        },
+        index: {
+            type: Number,
+            default: 0
+        },
+        showIndex: {
+            type: Number,
+            default: 0
         }
     },
     data() {
         return {
             dropFiles: [],
             dragOver: false,
-            tipActive: false
+            tipActive: false,
+            isDisabled: true
         }
     },
     computed: {
+        positionStyle() {
+            const ratio = 1.86;
+            const angel = this.index < 5 ? 30 * (this.index + 1) : 45 * (this.index % 5);
+            const realRadius = this.index < 5 ? this.radius : this.radius / ratio;
+            return {
+                left: this.center.x + realRadius / 2 * Math.cos(angel * Math.PI / 180) + 'px',
+                top: this.center.y - realRadius / 2 * Math.sin(angel * Math.PI / 180) + 'px'
+            }
+        },
         tipPosition() {
-            if (this.position.first) {
+            if (this.index % 5 == 4) {
                 return "is-right";
-            } else if (this.position.last) {
+            } else if (this.index % 5 == 0) {
                 return "is-left";
             } else {
                 return "is-right";
@@ -100,7 +122,41 @@ export default {
                     return 'on-line';
                 }
             }
+        },
+        deviceIcon() {
+            if (this.isSelf) {
+                return 'self';
+            } else {
+                return 'iPad';
+            }
         }
+    },
+    beforeDestroy() {
+        console.log(this.device.id, "leave");
+    },
+    watch: {
+        device: {
+            handler: function (val, oldVal) {
+                console.log(val.id === oldVal.id);
+            },
+            deep: true
+        }
+    },
+
+    mounted() {
+        const esaeFunction = CustomEase.create("custom", "M0,0 C0.237,0.368 0.128,1.112 0.498,1.112 0.714,1.112 0.813,1.005 1,1 ");
+
+        gsap.to(this.$refs.circleArea, {
+            duration: 0.66, ease: esaeFunction, scale: 1, delay: this.showIndex * 0.16, onComplete: () => {
+                this.isDisabled = false;
+                this.$emit('showed', this.index);
+            }
+        });
+        gsap.from(this.$refs.deviceName, {
+            duration: 0.16, ease: "none", autoAlpha: 0, delay: (this.showIndex + 1) * 0.16
+        });
+
+
     },
     methods: {
         showContextMenu(e) {
@@ -141,6 +197,10 @@ export default {
     height: 5rem;
     border-radius: 50%;
 
+    &.disabled {
+        pointer-events: none;
+    }
+
 
     // transition: all 0.3s ease-in-out;
     .upload {
@@ -166,9 +226,12 @@ export default {
     .circle-area {
         width: 80px;
         height: 80px;
-        transition: all 0.2s ease-in-out;
+        border-radius: 50%;
+        // transition: all 0.2s ease-in-out;
         transform-origin: center;
-        animation-duration: 1s;
+        transform: scaleX(0) scaleY(0);
+
+
 
         .ep-container {
             position: absolute;
@@ -193,6 +256,10 @@ export default {
             align-items: center;
             transition: all 0.2s ease-in-out;
             border: 2px solid #ffffff;
+
+            &.is-online {
+                background-color: green !important;
+            }
 
             .b-image-wrapper {
                 &::after {
@@ -254,7 +321,6 @@ export default {
         word-break: break-all;
         -webkit-line-clamp: 1; //行数
         -webkit-box-orient: vertical;
-        animation-delay: 0.3s;
     }
 
     input[type="file"] {

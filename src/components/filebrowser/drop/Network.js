@@ -5,9 +5,9 @@ export class ServerConnection {
 
     constructor(url) {
         this._connect(url);
-        Events.on('beforeunload', e => this._disconnect());
-        Events.on('pagehide', e => this._disconnect());
-        document.addEventListener('visibilitychange', e => this._onVisibilityChange());
+        Events.on('beforeunload', () => this._disconnect());
+        Events.on('pagehide', () => this._disconnect());
+        document.addEventListener('visibilitychange', () => this._onVisibilityChange());
     }
 
     _connect(url) {
@@ -15,24 +15,27 @@ export class ServerConnection {
         if (this._isConnected() || this._isConnecting()) return;
         const ws = new WebSocket(url || this._endpoint());
         ws.binaryType = 'arraybuffer';
-        ws.onopen = e => console.log('WS: server connected');
+        ws.onopen = () => console.log('WS: server connected');
         ws.onmessage = e => this._onMessage(e.data);
-        ws.onclose = e => this._onDisconnect();
+        ws.onclose = () => this._onDisconnect();
         ws.onerror = e => console.error(e);
         this._socket = ws;
     }
 
     _onMessage(msg) {
         msg = JSON.parse(msg);
-        console.log('WS:', msg);
+
         switch (msg.type) {
             case 'peers':
+                console.log('WS:', msg);
                 Events.fire('peers', msg.peers);
                 break;
             case 'peer-joined':
+                console.log('WS:', msg);
                 Events.fire('peer-joined', msg.peer);
                 break;
             case 'peer-left':
+                console.log('WS:', msg);
                 Events.fire('peer-left', msg.peerId);
                 break;
             case 'signal':
@@ -72,7 +75,7 @@ export class ServerConnection {
         console.log('WS: server disconnected');
         Events.fire('notify-user', 'Connection lost. Retry in 5 seconds...');
         clearTimeout(this._reconnectTimer);
-        this._reconnectTimer = setTimeout(_ => this._connect(), 5000);
+        this._reconnectTimer = setTimeout(() => this._connect(), 5000);
     }
 
     _onVisibilityChange() {
@@ -265,7 +268,7 @@ class RTCPeer extends Peer {
     _onDescription(description) {
         // description.sdp = description.sdp.replace('b=AS:30', 'b=AS:1638400');
         this._conn.setLocalDescription(description)
-            .then(_ => this._sendSignal({ sdp: description }))
+            .then(() => this._sendSignal({ sdp: description }))
             .catch(e => this._onError(e));
     }
 
@@ -279,7 +282,7 @@ class RTCPeer extends Peer {
 
         if (message.sdp) {
             this._conn.setRemoteDescription(new RTCSessionDescription(message.sdp))
-                .then(_ => {
+                .then(() => {
                     if (message.sdp.type === 'offer') {
                         return this._conn.createAnswer()
                             .then(d => this._onDescription(d));
@@ -295,7 +298,7 @@ class RTCPeer extends Peer {
         console.log('RTC: channel opened with', this._peerId);
         const channel = event.channel || event.target;
         channel.onmessage = e => this._onMessage(e.data);
-        channel.onclose = e => this._onChannelClosed();
+        channel.onclose = () => this._onChannelClosed();
         this._channel = channel;
     }
 
@@ -305,7 +308,7 @@ class RTCPeer extends Peer {
         this._connect(this._peerId, true); // reopen the channel
     }
 
-    _onConnectionStateChange(e) {
+    _onConnectionStateChange() {
         console.log('RTC: state changed:', this._conn.connectionState);
         switch (this._conn.connectionState) {
             case 'disconnected':
@@ -486,7 +489,7 @@ class FileDigester {
     unchunk(chunk) {
         this._buffer.push(chunk);
         this._bytesReceived += chunk.byteLength || chunk.size;
-        const totalChunks = this._buffer.length;
+        // const totalChunks = this._buffer.length;
         this.progress = this._bytesReceived / this._size;
         if (isNaN(this.progress)) this.progress = 1
 
@@ -510,6 +513,10 @@ export class Events {
 
     static on(type, callback) {
         return window.addEventListener(type, callback, false);
+    }
+
+    static off(type, callback) {
+        return window.removeEventListener(type, callback, false);
     }
 }
 

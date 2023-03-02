@@ -27,30 +27,17 @@
         <!-- Contents Start -->
         <div class="action-area is-flex-grow-1 is-relative" :class="areaClass" :style="cssVariables">
             <div class="contents">
-
-                <!-- Bottom Center Icon End -->
-                <drop-item v-for="(item, index) in peersArray" :key="index" :position="item.posistion" :isFloat="isDesktop"
-                    :isSelf="item.id === selfId" :progress="progress" :customClass="areaClass" :device="item"></drop-item>
+                <drop-item v-for="(item, index) in peersArray" :key="item.id" :index="index" :center="centerPos"
+                    :showIndex="isFirstIn ? initIndexArray[index] : 0" :radius="bigRadius" :isFloat="isDesktop"
+                    :isSelf="item.id === selfId" :progress="progress" :customClass="areaClass" :device="item"
+                    @showed="isFirstIn = false" />
                 <!-- Cricle BG Start -->
-                <div class="bg is-absolute">
-                    <div class="circle" style="animation-delay: -3s"></div>
-                    <div class="circle" style="animation-delay: -2s"></div>
-                    <div class="circle" style="animation-delay: -1s"></div>
-                    <div class="circle" style="animation-delay: 0s"></div>
-                </div>
+                <drop-bg v-if="isDesktop" />
                 <!-- Circle Bg End -->
             </div>
             <!-- Bottom Center Icons Start -->
-            <div class="center-icon">
-                <div class="has-text-centered">
-                    <b-image :src="require('@/assets/img/drop/drop_icon.svg')"
-                        class="is-80x80 ml-auto mr-auto mb-2"></b-image>
-                    <p class="has-text-emphasis-02 has-text-grey-800 mb-2">{{ $t("FileDorp") }}</p>
-                    <p class="has-text-full-04 has-text-grey-600">{{ $t("Drop files to another device anytime,anywhere")
-                    }}</p>
-                </div>
-            </div>
-
+            <drop-center-icon v-if="isNotMobile" />
+            <!-- Bottom Center Icons End -->
         </div>
         <!-- Contents End -->
         <drop-context-menu />
@@ -58,22 +45,21 @@
 </template>
 
 <script>
-
-import DropItem from "./DropItem.vue";
-import DropContextMenu from "./DropContextMenu.vue";
 import { ServerConnection, PeersManager, Events } from "./Network.js"
 import shuffle from "lodash/shuffle";
-// import { UAParser} from "ua-parser-js";
+
 export default {
     name: "drop-page",
     components: {
-        DropItem,
-        DropContextMenu
+        DropItem: () => import("./DropItem.vue"),
+        DropContextMenu: () => import("./DropContextMenu.vue"),
+        DropCenterIcon: () => import("./DropCenterIcon.vue"),
+        DropBg: () => import("./DropBg.vue"),
     },
     data() {
         return {
+            isFirstIn: true,
             bigRadius: 100,
-            smallRadius: 50,
             bottomGap: 144,
             contentsWidth: 0,
             contentsHeight: 0,
@@ -81,7 +67,6 @@ export default {
                 x: 0,
                 y: 0
             },
-            posArray: [],
             progress: 0,
             deviceType: "desktop",
             initIndexArray: [],
@@ -93,16 +78,15 @@ export default {
         cssVariables() {
             return {
                 "--big-radius": this.bigRadius + "px",
-                "--small-radius": this.smallRadius + "px",
                 "--contents-width": this.contentsWidth + "px",
                 "--contents-height": this.contentsHeight + "px",
-                "--bottom-gap": this.bottomGap + "px",
-                "--center-pos-x": this.centerPos.x + "px",
-                "--center-pos-y": this.centerPos.y + "px",
             }
         },
         isDesktop() {
             return this.deviceType === "desktop";
+        },
+        isNotMobile() {
+            return this.deviceType !== "mobile";
         },
         areaClass() {
             if (this.deviceType === "desktop") {
@@ -129,40 +113,62 @@ export default {
         window.addEventListener('resize', this.resize);
         this.resize();
         document.ondragover = function (e) { e.preventDefault(); }; // 拖拽进入
-
-        const url = (this.selfId == "") ? "ws://192.168.2.221/v1/file/ws?token=" + localStorage.getItem("access_token") : "ws://192.168.2.221/v1/file/ws?token=" + localStorage.getItem("access_token") + "&peer=" + this.selfId;
+        const access_token = localStorage.getItem("access_token");
+        const url = `${this.$wsProtocol}//${this.$baseURL}/v1/file/ws?token=${access_token}&peer=${this.selfId}`;
         const server = new ServerConnection(url);
-        const peers = new PeersManager(server);
-
+        // const peers = new PeersManager(server);
+        new PeersManager(server);
         // 初始化列表
-        Events.on("peers", (e) => {
-            this.peersArray = e.detail.map((item, index) => {
-                item.posistion = this.posArray[this.initIndexArray[index]]
-                return item
-            })
-            console.log(this.peersArray);
-        });
-
+        Events.on("peers", this.handlePeers);
         // 获取我是我
-        Events.on("display-name", (e) => {
-            console.log(e.detail);
-            localStorage.setItem("peerid", e.detail.message.id);
-        });
-
+        Events.on("display-name", this.handleSelfJoined);
+        // 节点加入
+        Events.on("peer-joined", this.handlePeerJoined);
         // 节点离开
-        Events.on("peer-left", (e) => {
-            console.log(e.detail);
-            this.peersArray = this.peersArray.filter(item => item.id !== e.detail.message.id)
-            console.log(this.peersArray);
-        });
-
+        Events.on("peer-left", this.handlePeerleft);
 
     },
     methods: {
+        // handelPeers
+        handlePeers(peers) {
+            this.peersArray = shuffle(peers.detail);
+            // Only listen to peer join event once
+            Events.off("peers", this.handlePeers);
+        },
+
+        // Handle Self Joined
+        handleSelfJoined(e) {
+            localStorage.setItem("peerid", e.detail.message.id);
+        },
+
+        // Handle peer joined
+        handlePeerJoined(e) {
+            const peer = e.detail;
+            const even = (element) => element.id === peer.id;
+            const isInlist = this.peersArray.some(even);
+            if (!isInlist) {
+                this.peersArray.push(peer);
+            } else {
+                this.peersArray.forEach((element) => {
+                    if (element.id == peer.id) {
+                        for (let key in element) {
+                            element[key] = peer[key];
+                        }
+                    }
+                });
+            }
+        },
+        // Handle peer left
+        handlePeerleft(e) {
+            this.peersArray.forEach(element => {
+                if (element.id == e.detail) {
+                    element.offline = true;
+                }
+            });
+        },
         // handleResize
         resize() {
             const gap = 120;
-            const ratio = 1.86;
             const cWidth = document.querySelector('.action-area').clientWidth - gap;
             const cHeight = document.querySelector('.action-area').clientHeight - gap / 2 - this.bottomGap;
 
@@ -175,7 +181,6 @@ export default {
             }
 
             this.bigRadius = this.contentsWidth;
-            this.smallRadius = this.contentsWidth / ratio;
 
             const windowWidth = window.innerWidth;
             if (windowWidth < 768) {
@@ -187,7 +192,6 @@ export default {
             }
 
             this.getCenterPos();
-            this.getPosArray();
         },
         // get center position
         getCenterPos() {
@@ -196,66 +200,15 @@ export default {
                 y: this.contentsHeight - this.bottomGap
             }
         },
-        // get position array
-        getPosArray() {
-            this.posArray = [];
-            for (let index = 0; index < 5; index++) {
-                const angel = 30 * (index + 1);
-                const pos = {
-                    x: this.centerPos.x + this.bigRadius / 2 * Math.cos(angel * Math.PI / 180),
-                    y: this.centerPos.y - this.bigRadius / 2 * Math.sin(angel * Math.PI / 180),
-                    first: (index === 4),
-                    last: (index === 0)
-                };
-                this.posArray.push(pos);
-            }
-            for (let index = 0; index < 5; index++) {
-                const angel = 45 * index;
-                const pos = {
-                    x: this.centerPos.x + this.smallRadius / 2 * Math.cos(angel * Math.PI / 180),
-                    y: this.centerPos.y - this.smallRadius / 2 * Math.sin(angel * Math.PI / 180),
-                    first: (index === 4),
-                    last: (index === 0)
-                }
-                this.posArray.push(pos);
-            }
-
-        }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-@keyframes circle-scale {
-    from {
-        transform: scale(0.4);
-        opacity: 1;
-    }
-
-    to {
-        transform: scale(1.2);
-        opacity: 0.5;
-    }
-}
-
 .action-area {
     overflow: hidden;
 
-    .center-icon {
-        position: absolute;
-        width: 100%;
-        height: 11.5rem;
-        left: 50%;
-        bottom: 0;
-        transform: translateX(-50%);
-        z-index: 5;
-        display: flex;
-        justify-content: center;
-        pointer-events: none;
-    }
-
     .contents {
-
 
         .bg {
             width: 100%;
@@ -267,48 +220,11 @@ export default {
                 border-radius: 50%;
                 width: var(--big-radius);
                 height: var(--big-radius);
-                background-color: rgba(15, 143, 255, 0.02);
+                background-color: #0F8FFF;
                 position: absolute;
-                opacity: 0;
-                animation: circle-scale 4s infinite linear;
+                opacity: 0.06;
+                transform: scale(0);
             }
-
-            // &::before {
-            //     content: "";
-            //     position: absolute;
-            //     width: var(--big-radius);
-            //     height: var(--big-radius);
-            //     border-radius: 50%;
-            //     background-color: rgba(15, 143, 255, 0.02);
-            //     z-index: 1;
-            //     left: 50%;
-            //     top: calc(var(--contents-height) - var(--bottom-gap));
-            //     transform-origin: center;
-            //     pointer-events: none;
-            //     animation-name: circle-scale;
-            //     animation-duration: 2s;
-            //     animation-iteration-count: infinite;
-            //     animation-timing-function: ease-out;
-            // }
-
-            // &::after {
-            //     content: "";
-            //     position: absolute;
-            //     width: var(--small-radius);
-            //     height: var(--small-radius);
-            //     border-radius: 50%;
-            //     background-color: rgba(15, 143, 255, 0.03);
-            //     z-index: 2;
-            //     left: 50%;
-            //     top: calc(var(--contents-height) - var(--bottom-gap));
-            //     transform-origin: center;
-            //     pointer-events: none;
-            //     animation-name: circle-scale;
-            //     animation-duration: 2s;
-            //     animation-iteration-count: infinite;
-            //     animation-timing-function: ease-out;
-            //     animation-delay: 0.3s;
-            // }
         }
     }
 
@@ -332,11 +248,6 @@ export default {
             display: flex;
             flex-wrap: wrap;
             flex-direction: row;
-
-            .bg {
-                display: none;
-            }
-
         }
     }
 
@@ -349,14 +260,6 @@ export default {
             display: flex;
             flex-wrap: wrap;
             flex-direction: row;
-
-            .bg {
-                display: none;
-            }
-        }
-
-        .center-icon {
-            display: none;
         }
     }
 }
