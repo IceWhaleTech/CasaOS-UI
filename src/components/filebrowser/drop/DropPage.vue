@@ -208,26 +208,6 @@ export default {
 .action-area {
     overflow: hidden;
 
-    .contents {
-
-        .bg {
-            width: 100%;
-            height: 100%;
-            left: 0;
-            top: 0;
-
-            .circle {
-                border-radius: 50%;
-                width: var(--big-radius);
-                height: var(--big-radius);
-                background-color: #0F8FFF;
-                position: absolute;
-                opacity: 0.06;
-                transform: scale(0);
-            }
-        }
-    }
-
     &.desktop {
         .contents {
             position: absolute;
@@ -239,18 +219,7 @@ export default {
         }
     }
 
-    &.tablet {
-        display: flex;
-        align-items: center;
-
-        .contents {
-            position: relative;
-            display: flex;
-            flex-wrap: wrap;
-            flex-direction: row;
-        }
-    }
-
+    &.tablet,
     &.mobile {
         display: flex;
         align-items: center;
