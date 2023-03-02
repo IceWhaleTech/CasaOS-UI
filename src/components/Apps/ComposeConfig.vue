@@ -16,47 +16,43 @@
 	<b-tabs>
 		<template v-for="(service, key) in configData.services">
 			<b-tab-item :key="key" :label="key">
-				<ValidationObserver ref="ob1">
-					
+				<ValidationObserver :ref="key">
+					<ValidationProvider v-if="key === main_name" v-slot="{ errors, valid }" name="Name"
+					                    rules="required">
+						<b-field :label="$t('App name')+' *'" :message="$t(errors)"
+						         :type="{ 'is-danger': errors[0], 'is-success': valid }">
+							<b-input v-model="configData.name" :placeholder="$t('Your custom App Name')"
+							         maxlength="40"></b-input>
+						</b-field>
+					</ValidationProvider>
 					<ValidationProvider v-slot="{ errors, valid }" name="Image" rules="required">
 						<b-field :label="$t('Docker Image')+' *'" :message="$t(errors)"
 						         :type="{ 'is-danger': errors[0], 'is-success': valid }">
 							<b-input v-model="service.image" :placeholder="$t('e.g.,hello-world:latest')"
 							         :readonly="state == 'update'" @input="changeIcon"></b-input>
-							<!-- <b-autocomplete :data="data" placeholder="e.g. hello-world:latest" field="image" :loading="isFetching" @typing="getAsyncData" @select="option => portSelected = option" v-model="service.image" :readonly="state == 'update'"></b-autocomplete> -->
 						</b-field>
 					</ValidationProvider>
-					<ValidationProvider v-if="key === main_name" v-slot="{ errors, valid }" name="Name"
-					                    rules="required">
-						<b-field :label="$t('App name')+' *'" :message="errors"
-						         :type="{ 'is-danger': errors[0], 'is-success': valid }">
-							<!--				<b-input v-model="service.label" :placeholder="$t('Your custom App Name')" maxlength="40"></b-input>-->
-							<b-input v-model="configData.name" :placeholder="$t('Your custom App Name')"
-							         maxlength="40"></b-input>
-						</b-field>
-					</ValidationProvider>
+					
 					<b-field v-if="key === main_name" :label="$t('Icon URL')">
 						<p class="control">
-							<span class="button is-static container-icon">
-								<b-image :key="appIcon" :src="appIcon"
-								         :src-fallback="require('@/assets/img/app/default.svg')"
-								         class="is-32x32" ratio="1by1"></b-image>
-							</span>
+								<span class="button is-static container-icon">
+									<b-image :key="appIcon" :src="appIcon"
+									         :src-fallback="require('@/assets/img/app/default.svg')"
+									         class="is-32x32" ratio="1by1"></b-image>
+								</span>
 						</p>
 						<b-input v-model="main_app.icon" :placeholder="$t('Your custom icon URL')"
 						         expanded></b-input>
 					</b-field>
 					
 					<b-field v-if="key === main_name" label="Web UI">
-						<!-- <p class="control">
-						  <span class="button is-static">{{baseUrl}}</span>
-						</p> -->
 						<b-select v-model="main_app.container.protocol">
 							<option value="http">http://</option>
 							<option value="https">https://</option>
 						</b-select>
 						<b-input v-model="main_app.container.host" :placeholder="baseUrl" expanded></b-input>
-						<b-autocomplete v-model="main_app.container.port_map" :data="bridgePorts" :open-on-focus="true"
+						<b-autocomplete v-model="main_app.container.port_map" :data="bridgePorts"
+						                :open-on-focus="true"
 						                :placeholder="$t('Port')" class="has-colon" field="host"
 						                @select="option => (portSelected = option)"></b-autocomplete>
 						<b-input v-model="main_app.container.index" :placeholder="'/index.html '+ $t('[Optional]')"
@@ -78,9 +74,9 @@
 						</b-field>
 						
 						<ports v-if="showPorts" v-model="service.ports" :showHostPost="showHostPort"></ports>
-						<input-group v-model="service.volumes" :label="$t('Volumes')"
-						             :message="$t('No volumes now, click “+” to add one.')"
-						             type="volume"></input-group>
+						<volumes-input-group v-model="service.volumes" :label="$t('Volumes')"
+						                     :message="$t('No volumes now, click “+” to add one.')"
+						                     type="volume"></volumes-input-group>
 						<env-input-group v-model="service.environment" :label="$t('Environment Variables')"
 						                 :message="$t('No environment variables now, click “+” to add one.')"></env-input-group>
 						<input-group v-model="service.devices" :label="$t('Devices')"
@@ -158,10 +154,12 @@ import axios from "axios";
 
 import Ajv from "ajv";
 import {ValidationObserver, ValidationProvider} from "vee-validate";
+import "@/plugins/vee-validate";
 import Ports from '../forms/Ports.vue'
 import EnvInputGroup from '../forms/EnvInputGroup.vue';
 import CommandsInput from '../forms/CommandsInput.vue';
 import InputGroup from '../forms/InputGroup.vue';
+import VolumesInputGroup from "@/components/forms/VolumesInputGroup.vue";
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
 import YAML from "yamljs";
@@ -206,6 +204,7 @@ export default {
 		ValidationProvider,
 		Ports,
 		InputGroup,
+		VolumesInputGroup,
 		EnvInputGroup,
 		CommandsInput,
 		VueSlider,
@@ -548,13 +547,29 @@ export default {
 			})
 		},
 		
+		async checkStepItem(ref) {
+			let isValid = await ref.validate()
+			return isValid
+		},
+		
 		/**
 		 * @description: Validate form async
 		 * @param {Object} ref ref of component
 		 * @return {Boolean}
 		 */
-		async checkStep(ref) {
-			return await this.$refs.ob1.validate();
+		async checkStep() {
+			// const promises = [];
+			// for (const servicesKey in this.configData.services) {
+			// 	console.log('this', this);
+			// 	console.log('this.configData', this.configData);
+			// 	console.log('servicesKey', servicesKey);
+			// 	console.log('this.$refs[servicesKey]', this.$refs[servicesKey]);
+			//
+			// 	promises.push(this.$refs[servicesKey][0].validate());
+			// }
+			// return await Promise.all(promises);
+			console.log('this.$refs.main_app', this.$refs.main_app);
+			return await this.$refs.main_app.validate();
 		},
 		
 		/**
@@ -564,29 +579,32 @@ export default {
 		parseComposeYaml(val) {
 			try {
 				const yaml = YAML.parse(val)
-				console.log(yaml, yaml.services)
+				console.log('检测传入的 yarml 文件的 services', yaml.services);
 				
 				if (yaml.version === undefined) {
 					return false
 				}
 				
+				// 其他配置
+				this.volumes = yaml.volumes || {}
+				
 				// 导入数据不一定含有 x-casaos，但一定含有 services
 				// yaml['x-casaos'] 数据类型是 object
 				this.configData['x-casaos'] = yaml['x-casaos'] && yaml['x-casaos'].main_app || Object.keys(yaml.services)[0]
 				console.log('检测 x-casaos 是否正确', this.configData['x-casaos']);
+				
 				// 导入数据main-app 中不一定含有 x-casaos，
-				// let main_app = yaml.services[this.configData['x-casaos']]['x-casaos'] || {}
-				let main_app = {};
-				let yaml_main_app = yaml.services[this.configData['x-casaos']]['x-casaos'];
+				let yaml_main_app = yaml.services[this.configData['x-casaos']]['x-casaos'] || {};
 				// this.main_app = Object.assign(this.main_app, main_app)
-				this.main_app = yaml_main_app.icon;
-				this.main_app.container.host = yaml_main_app.container.host;
-				this.main_app.container.protocol = yaml_main_app.container.protocol;
-				this.main_app.container.index = yaml_main_app.container.index;
-				this.main_app.container.port_map = yaml_main_app.container.port_map;
-				this.main_app.container.host_name = yaml_main_app.container.host_name;
-				this.main_app.container.container_name = yaml_main_app.container.container_name;
-				this.main_app.container.appstore_id = yaml_main_app.container.appstore_id;
+				this.main_app.icon = yaml_main_app.icon;
+				let container = yaml_main_app.container || {};
+				this.main_app.container.host = container.host || '';
+				this.main_app.container.protocol = container.protocol || 'https';
+				this.main_app.container.index = container.index || '';
+				this.main_app.container.port_map = container.port_map || '';
+				this.main_app.container.host_name = container.host_name || '';
+				this.main_app.container.container_name = container.container_name || '';
+				this.main_app.container.appstore_id = container.appstore_id || '';
 				console.log('检测主应用中的 x-casaos 完成本地赋值', this.main_app);
 				// 将主应用的x-casaos 暂存到 xCasaOS中，等返回数据时，添加上。
 				this.xCasaOS = yaml.services[this.configData['x-casaos']]['x-casaos'];
@@ -657,28 +675,42 @@ export default {
 			})
 			
 			//Volume
-			// - 仅支持bind 模式
+			// - 仅支持bind 模式!!!
+			// https://yeasy.gitbook.io/docker_practice/compose/compose_file#volumes
 			configData.volumes = this.makeArray(parsedInput.volumes).map(item => {
 				if (isString(item)) {
+					// 1\ replace variable in string for example: ${VOLUME_PATH}:/data
+					// this.volumes 可能为空。
+					Object.keys(
+						(this.volumes || {})
+					).map((key) => {
+						item = item.replace(key, this.volumes[key]);
+					})
+					// 2\ split string
 					let ii = item.split(":");
 					if (ii.length > 1) {
 						return {
-							container: ii[1],
-							host: this.volumeAutoCheck(ii[1], ii[0], lowerFirst(configData.label))
+							target: ii[1],
+							source: this.volumeAutoCheck(ii[1], ii[0], lowerFirst(configData.label))
 						}
 					} else {
 						return {
-							container: ii[0],
-							host: this.volumeAutoCheck(ii[0], "", lowerFirst(configData.label))
+							target: ii[0],
+							source: this.volumeAutoCheck(ii[0], "", lowerFirst(configData.label))
 						}
 					}
-				} else if (item.type === 'bind') {
+				} else if (item) {
+					// 1\ replace value in object for example: {type: 'bind', source: '${VOLUME_PATH}', target: '/data'}
+					Object.keys(
+						(this.volumes || {})
+					).map((key) => {
+						item.source = item.source && item.source.replace(key, (this.volumes[key] || ""));
+						item.target = item.target && item.target.replace(key, (this.volumes[key] || ""));
+					})
+					
 					// q: what's source and target?
 					// a: https://docs.docker.com/compose/compose-file/compose-file-v3/#volumes
-					return {
-						container: item['target'],
-						host: item['source']
-					}
+					return item;
 				}
 				
 			})
@@ -779,6 +811,7 @@ export default {
 			// let data = this.configData
 			data.port_map = data.port_map === "" ? null : data.port_map
 			data.icon = data.icon === "" ? this.getIconFromImage(data.image) : data.icon
+			data.volumes = isNil(data.volumes) ? [] : data.volumes
 			for (const appKey in data.services) {
 				// data.services[app] = this.preProcessConfigDataItem(data.services[app])
 				// this.$set(data.services, app, this.preProcessConfigDataItem(data.services[app]))
@@ -831,12 +864,12 @@ export default {
 				outputService.devices = service.devices.map(device => {
 					return `${device.host}:${device.container}`
 				})
-				outputService.volumes = service.volumes.map(volume => {
-					return `${volume.host}:${volume.container}`
-				})
+				// outputService.volumes = service.volumes.map(volume => {
+				// 	return `${volume.source}:${volume.target}`
+				// })
 				// TODO: port
 				outputService.ports = service.ports.map(port => {
-					return `${port.host}:${port.container}`
+					return `${port.published}:${port.target}`
 				})
 			}
 			console.log(ConfigData.services, 'ConfigData.services');

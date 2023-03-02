@@ -727,6 +727,7 @@ export default {
 			installationLocation: '',
 			dockerProgress: null,
 			totalPercentage: 0,
+			configCommands: '',
 		}
 	},
 	
@@ -1138,6 +1139,7 @@ export default {
 					this.installAppData(this.id);
 				}
 			})
+			console.log('执行命令。', this.configCommands);
 		},
 		
 		installAppData() {
@@ -1440,7 +1442,7 @@ export default {
 		
 		updateConfig(val) {
 			console.log(val, 'updateConfig');
-			// this.initConfigData = val
+			this.configCommands = val
 		},
 	},
 	

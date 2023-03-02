@@ -59,6 +59,7 @@ export default {
                 "name": appInfo.title,
                 "image": appInfo.image,
             }
+            // TODO migrate to V2 api !!
             let containerInfo = await container.getMyAppList(data).then(res => res.data.data.casaos_apps)
             this.openAppToNewWindow(containerInfo[0])
         },
