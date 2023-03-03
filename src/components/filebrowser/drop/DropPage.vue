@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2023-02-24 17:28:31
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-01 18:30:04
+ * @LastEditTime: 2023-03-03 19:05:20
  * @FilePath: /CasaOS-UI/src/components/filebrowser/drop/DropPage.vue
  * @Description: 
  * 
@@ -31,6 +31,7 @@
                     :showIndex="isFirstIn ? initIndexArray[index] : 0" :radius="bigRadius" :isFloat="isDesktop"
                     :isSelf="item.id === selfId" :progress="progress" :customClass="areaClass" :device="item"
                     @showed="isFirstIn = false" />
+                <drop-add-button :index="peersArray.length" :radius="bigRadius" :center="centerPos" :isFloat="isDesktop"/>
                 <!-- Cricle BG Start -->
                 <drop-bg v-if="isDesktop" />
                 <!-- Circle Bg End -->
@@ -55,6 +56,7 @@ export default {
         DropContextMenu: () => import("./DropContextMenu.vue"),
         DropCenterIcon: () => import("./DropCenterIcon.vue"),
         DropBg: () => import("./DropBg.vue"),
+        DropAddButton: () => import("./DropAddButton.vue"),
     },
     data() {
         return {
@@ -113,25 +115,31 @@ export default {
         window.addEventListener('resize', this.resize);
         this.resize();
         document.ondragover = function (e) { e.preventDefault(); }; // 拖拽进入
-        const access_token = localStorage.getItem("access_token");
-        const url = `${this.$wsProtocol}//${this.$baseURL}/v1/file/ws?token=${access_token}&peer=${this.selfId}`;
-        const server = new ServerConnection(url);
-        // const peers = new PeersManager(server);
-        new PeersManager(server);
-        // 初始化列表
-        Events.on("peers", this.handlePeers);
-        // 获取我是我
-        Events.on("display-name", this.handleSelfJoined);
-        // 节点加入
-        Events.on("peer-joined", this.handlePeerJoined);
-        // 节点离开
-        Events.on("peer-left", this.handlePeerleft);
+
+        setTimeout(() => {
+            this.initServer();
+        }, 1000);
 
     },
     methods: {
+        initServer() {
+            const access_token = localStorage.getItem("access_token");
+            const url = `${this.$wsProtocol}//${this.$baseURL}/v1/file/ws?token=${access_token}&peer=${this.selfId}`;
+            const server = new ServerConnection(url);
+            // const peers = new PeersManager(server);
+            new PeersManager(server);
+            // 初始化列表
+            Events.on("peers", this.handlePeers);
+            // 获取我是我
+            Events.on("display-name", this.handleSelfJoined);
+            // 节点加入
+            Events.on("peer-joined", this.handlePeerJoined);
+            // 节点离开
+            Events.on("peer-left", this.handlePeerleft);
+        },
         // handelPeers
         handlePeers(peers) {
-            this.peersArray = shuffle(peers.detail);
+            this.peersArray = peers.detail;
             // Only listen to peer join event once
             Events.off("peers", this.handlePeers);
         },

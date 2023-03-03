@@ -2,10 +2,10 @@
     <div class="drop-item contextmenu-canvas" :class="[{ 'is-floating': isFloat, 'disabled': isDisabled }, customClass]"
         :style="positionStyle" @dragenter="onDrag" @dragover="onDrag" @dragleave="onDrop" @dragend="onDrop" @drop="onDrop">
 
-        <b-upload v-model="dropFiles" multiple drag-drop :disabled="isSelf">
+        <b-upload v-model="dropFiles" multiple drag-drop :disabled="isSelf || device.offline">
             <b-tooltip :label="tipText" type="is-grey" :position="tipPosition" :always="tipActive" multilined
                 size="is-small">
-                <div ref="circleArea" class="circle-area" :class="{ 'drag-over': dragOver, 'is-self': isSelf }"
+                <div ref="circleArea" class="circle-area" :class="{ 'drag-over': dragOver }"
                     @contextmenu.stop.prevent="showContextMenu">
 
                     <div class="up-layer" :class="{ 'is-online': !device.offline }">
@@ -109,7 +109,11 @@ export default {
             if (this.isSelf) {
                 return this.$t('You are using the device');
             } else {
-                return this.$t('Click to send the file to the device.');
+                if (this.device.offline) {
+                    return this.$t('The device is offline');
+                } else {
+                    return this.$t('Click to send the file to the device.');
+                }
             }
         },
         stateClass() {
@@ -127,7 +131,8 @@ export default {
             if (this.isSelf) {
                 return 'self';
             } else {
-                return 'iPad';
+                const onlineStatus = this.device.offline ? '_offline' : '_online';
+                return 'iPad' + onlineStatus;
             }
         }
     },
@@ -138,6 +143,7 @@ export default {
         device: {
             handler: function (val, oldVal) {
                 console.log(val.id === oldVal.id);
+                this.isDisabled = val.offline;
             },
             deep: true
         }
@@ -258,7 +264,7 @@ export default {
             border: 2px solid #ffffff;
 
             &.is-online {
-                background-color: green !important;
+                background-color: #ffffff !important;
             }
 
             .b-image-wrapper {
@@ -284,7 +290,7 @@ export default {
 
             .off-line {
                 &::after {
-                    background-color: rgba(172, 184, 195, 1);
+                    background-color: transparent;
                 }
             }
         }
