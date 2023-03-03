@@ -81,8 +81,8 @@ const container = {
     },
 
     //v2:: install container
-    installV2(data) {
-        return api.post(`${PREFIX2COMPOSE}`, data);
+    installV2(data, config) {
+        return api.post(`${PREFIX2COMPOSE}`, data, config);
     },
 
     // update contianer

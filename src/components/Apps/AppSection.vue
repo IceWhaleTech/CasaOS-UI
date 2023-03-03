@@ -354,6 +354,7 @@ export default {
 		 * @param {Boolean} isCasa
 		 * @return {*}
 		 */
+		// TODO migrate to v2!!
 		async showConfigPanel(item, isCasa) {
 			this.$messageBus('appsexsiting_open', item.name);
 			if (item.type === 'LinkApp') {
@@ -361,7 +362,7 @@ export default {
 				return
 			}
 			let state = item.state
-			let id = item.id
+			let id = item.name
 			const networks = await this.$api.container.getNetworks();
 			const memory = this.$store.state.hardwareInfo.mem;
 			const configData = {
@@ -370,7 +371,9 @@ export default {
 			}
 			// TODO migrate to v2!!
 			// 入参 需要为 container id
-			const ret = await this.$api.container.getInfo(id);
+			// const ret = await this.$api.container.getInfoV2(id);
+			const ret = await this.$openAPI.myComposeApp(id);
+			debugger
 			this.$buefy.modal.open({
 				parent: this,
 				component: AppPanel,

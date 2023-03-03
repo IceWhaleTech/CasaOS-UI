@@ -442,7 +442,7 @@
 					               :docker-compose-commands="configDataString"
 					               :is-casa="isCasa" :networks="networks" :state="state"
 					               :total-memory="totalMemory"
-					               @update-config-data-commands="updateConfig"></ComposeConfig>
+					               @updateConfigDataCommands="updateConfig"></ComposeConfig>
 				</section>
 				<!-- App Install Form End -->
 				
@@ -1136,7 +1136,31 @@ export default {
 		installApp() {
 			this.$refs.compose.checkStep().then((valid) => {
 				if (valid) {
-					this.installAppData(this.id);
+					// this.installAppData(this.id);
+					console.log(this.configCommands)
+					this.isLoading = true;
+					this.$api.container.installV2(this.configCommands,).then((res) => {
+						// this.$openAPI.installComposeApp(this.configCommands).then((res) => {
+						if (res.data.success == 200) {
+							this.currentInstallAppName = res.data.data
+							this.currentSlide = 2;
+							this.currentInstallAppText = "Start Installation..."
+							this.cancelButtonText = 'Continue in background'
+							this.dockerProgress = new DockerProgress();
+						} else {
+							this.$buefy.toast.open({
+								message: res.data.message,
+								type: 'is-warning'
+							})
+						}
+					}).catch(() => {
+						this.$buefy.toast.open({
+							message: this.$t(`There was an error loading the data, please try again!`),
+							type: 'is-danger'
+						})
+					}).finally(() => {
+						this.isLoading = false;
+					});
 				}
 			})
 			console.log('执行命令。', this.configCommands);

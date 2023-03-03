@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve --mode dev",
     "build": "node message_bus.build.js && vue-cli-service build --dest ./build/sysroot/var/lib/casaos/www/ --mode production",
     "lint": "vue-cli-service lint",
-    "build:messagebus": "node message_bus.build.js"
+    "build:messagebus": "node message_bus.build.js",
+    "openapi": "npx @openapitools/openapi-generator-cli generate -g typescript-axios -i https://raw.githubusercontent.com/IceWhaleTech/CasaOS-AppManagement/main/api/app_management/openapi.yaml -o ./src/codegen/app_management"
   },
   "dependencies": {
     "@fontsource/roboto": "^4.5.7",
@@ -82,6 +83,7 @@
     "style-resources-loader": "^1.5.0",
     "swiper": "^5.2.0",
     "terser-webpack-plugin": "4.2.3",
+    "ts-loader": "6.2.2",
     "typescript": "^4.8.3",
     "vue-cli-plugin-buefy": "~0.3.8",
     "vue-template-compiler": "^2.6.11",

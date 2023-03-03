@@ -10,23 +10,32 @@
 
 import axios from 'axios';
 // app_management
-import {Configuration, api} from "@/codegen/app_management";
+import {Configuration, ComposeMethodsApiFactory} from "@/codegen/app_management/index.ts";
+
 import store from "@/store";
 import router from "@/router";
 
+const axiosBaseURL = (process.env.NODE_ENV === "dev") ? `${document.location.protocol}//${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}` : ``
+
 // 初始化 openapi 配置
-const config = new Configuration({
-    basePath: process.env.VUE_APP_BASE_API,
-    withCredentials: false,
-});
-//
-const apiClient = new api(config);
+const config = new Configuration({});
+
 
 const instance = axios.create({
-    baseURL: Configuration.basePath,
-    withCredentials: false,
+    baseURL: '',
+    headers: {
+        "Content-Type": "application/yaml",
+        "Accept": "application/yaml"
+    }
 });
-
+const getLangFromBrowser = () => {
+    let lang = navigator.language || navigator.userLanguage;
+    return lang.toLowerCase().replace("-", "_");
+}
+const getInitLang = () => {
+    let lang = localStorage.getItem('lang') || getLangFromBrowser()
+    return lang
+}
 // 请求拦截器
 instance.interceptors.request.use(
     (config) => {
@@ -65,6 +74,10 @@ instance.interceptors.response.use(
 
                 instance.post("/v1/users/refresh", {
                     refresh_token: refresh_token,
+                }, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
                 }).then(tokenRes => {
                     if (tokenRes.data.success == 200) {
                         localStorage.setItem("access_token", tokenRes.data.data.access_token);
@@ -101,6 +114,7 @@ instance.interceptors.response.use(
 
     }
 )
-
-apiClient.axios = instance;
+//
+const apiClient = new ComposeMethodsApiFactory(config, '/v2/app_management', instance);
+// apiClient.axios = instance;
 export default apiClient;

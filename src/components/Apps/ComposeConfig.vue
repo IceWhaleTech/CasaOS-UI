@@ -16,8 +16,8 @@
 	<b-tabs>
 		<template v-for="(service, key) in configData.services">
 			<b-tab-item :key="key" :label="key">
-				<ValidationObserver :ref="key">
-					<ValidationProvider v-if="key === main_name" v-slot="{ errors, valid }" name="Name"
+				<ValidationObserver :ref="key+'valida'">
+					<ValidationProvider v-if="key === main_name" v-slot="{ errors, valid }" name="appName"
 					                    rules="required">
 						<b-field :label="$t('App name')+' *'" :message="$t(errors)"
 						         :type="{ 'is-danger': errors[0], 'is-success': valid }">
@@ -41,21 +41,24 @@
 									         class="is-32x32" ratio="1by1"></b-image>
 								</span>
 						</p>
-						<b-input v-model="main_app.icon" :placeholder="$t('Your custom icon URL')"
+						<b-input v-model="service['x-casaos'].icon" :placeholder="$t('Your custom icon URL')"
 						         expanded></b-input>
 					</b-field>
 					
 					<b-field v-if="key === main_name" label="Web UI">
-						<b-select v-model="main_app.container.protocol">
+						<b-select v-model="service['x-casaos'].icon.container.protocol">
 							<option value="http">http://</option>
 							<option value="https">https://</option>
 						</b-select>
-						<b-input v-model="main_app.container.host" :placeholder="baseUrl" expanded></b-input>
-						<b-autocomplete v-model="main_app.container.port_map" :data="bridgePorts"
+						<b-input v-model="service['x-casaos'].icon.container.host" :placeholder="baseUrl"
+						         expanded></b-input>
+						<b-autocomplete v-model="service['x-casaos'].icon.container.port_map"
+						                :data="bridgePorts(service)"
 						                :open-on-focus="true"
 						                :placeholder="$t('Port')" class="has-colon" field="host"
 						                @select="option => (portSelected = option)"></b-autocomplete>
-						<b-input v-model="main_app.container.index" :placeholder="'/index.html '+ $t('[Optional]')"
+						<b-input v-model="service['x-casaos'].icon.container.index"
+						         :placeholder="'/index.html '+ $t('[Optional]')"
 						         expanded></b-input>
 					</b-field>
 					
@@ -73,7 +76,8 @@
 							</b-select>
 						</b-field>
 						
-						<ports v-if="showPorts" v-model="service.ports" :showHostPost="showHostPort"></ports>
+						<ports v-if='showPorts(service)' v-model="service.ports"
+						       :showHostPost='showHostPort(service)'></ports>
 						<volumes-input-group v-model="service.volumes" :label="$t('Volumes')"
 						                     :message="$t('No volumes now, click “+” to add one.')"
 						                     type="volume"></volumes-input-group>
@@ -197,7 +201,7 @@ let main_name_x = "333";
 // let xCasaOS;
 
 export default {
-	xCasaOS: null,
+	// xCasaOS: {},
 	name: "ComposeConfig.vue",
 	components: {
 		ValidationObserver,
@@ -217,25 +221,25 @@ export default {
 			
 			configData: {
 				name: 'default_name',
-				cpu_shares: 10, //
-				memory: this.totalMemory, //
-				restart: "always", //
-				label: "", // name
-				position: true, //
-				network_mode: "", //
-				image: "", //
-				description: "", //
-				origin: "custom", //
-				ports: [], //
-				volumes: [], //
-				envs: [], //
-				devices: [], //
-				cap_add: [], //
-				cmd: [], //
-				privileged: false,
-				host_name: "",
-				container_name: "",
-				appstore_id: 0,
+				// cpu_shares: 10, //
+				// memory: this.totalMemory, //
+				// restart: "always", //
+				// label: "", // name
+				// position: true, //
+				// network_mode: "", //
+				// image: "", //
+				// description: "", //
+				// origin: "custom", //
+				// ports: [], //
+				// volumes: [], //
+				// envs: [], //
+				// devices: [], //
+				// cap_add: [], //
+				// cmd: [], //
+				// privileged: false,
+				// host_name: "",
+				// container_name: "",
+				// appstore_id: 0,
 				services: {
 					"main_app": {
 						"image": "gitea/gitea:1",
@@ -256,6 +260,13 @@ export default {
 							"author": "CasaOS Team",
 							"category": "Developer",
 							"container": {
+								host: '',
+								protocol: 'https',
+								"index": "/",
+								"port_map": "3000",
+								host_name: '',
+								container_name: '',
+								appstore_id: '',
 								"envs": [
 									{
 										"configurable": "advanced",
@@ -272,8 +283,6 @@ export default {
 										}
 									}
 								],
-								"index": "/",
-								"port_map": "3000",
 								"ports": [
 									{
 										"configurable": "advanced",
@@ -334,7 +343,9 @@ export default {
 						}
 					},
 				},
-				"x-casaos": '',
+				"x-casaos": {
+					main_name: ''
+				},
 			},
 			// main_app: ajc.compile(main_app_schema)(this.configData['x-casaos']),
 			main_app: {
@@ -350,6 +361,7 @@ export default {
 				},
 				icon: '',
 			},
+			xCasaOS: {},
 		}
 	},
 	props: {
@@ -389,7 +401,7 @@ export default {
 		// Watch if configData changes
 		configData: {
 			handler(val) {
-				this.$emit('update-configData', val)
+				// this.$emit('update-configData', val)
 				if (this.state == 'install') {
 					localStorage.setItem("app_data", JSON.stringify(val))
 				}
@@ -416,7 +428,12 @@ export default {
 		// 	return this.configData.services
 		// },
 		main_name() {
-			return this.configData["x-casaos"] || Object.keys(this.configData.services)[0] || 'main_app'
+			// 逐渐固定 x-casaos 数据格式。
+			let name = this.configData["x-casaos"] && this.configData['x-casaos']['main_app'] || Object.keys(this.configData.services)[0]
+			if (name === '') {
+				name = 'main_app'
+			}
+			return name;
 		},
 		// main_name_value() {
 		// 	return this[main_name];
@@ -441,31 +458,31 @@ export default {
 		// 		this.configData.services[this.main_app]['x-casaos']['icon'] = val
 		// 	}
 		// },
-		showPorts() {
-			if (this.configData.network_mode.toLowerCase().indexOf("macvlan") > -1 || this.configData.network_mode.indexOf("host") > -1) {
-				return false
-			} else {
-				return true
-			}
-		},
-		showHostPort() {
-			if (this.configData.network_mode.indexOf("host") > -1) {
-				return false
-			} else {
-				return true
-			}
-		},
-		bridgePorts() {
-			return this.configData.ports.filter(function (item) {
-				return item.host != ""
-			})
-		},
-		filteredBeidgePort() {
-			return this.bridgePorts.filter(port => {
-				return port.host.indexOf(this.configData.port_map) >= 0
-			})
-			
-		},
+		// showPorts() {
+		// 	if (this.configData.network_mode.toLowerCase().indexOf("macvlan") > -1 || this.configData.network_mode.indexOf("host") > -1) {
+		// 		return false
+		// 	} else {
+		// 		return true
+		// 	}
+		// },
+		// showHostPort() {
+		// 	if (this.configData.network_mode.indexOf("host") > -1) {
+		// 		return false
+		// 	} else {
+		// 		return true
+		// 	}
+		// },
+		// bridgePorts() {
+		// 	return this.configData.ports.filter(function (item) {
+		// 		return item.host != ""
+		// 	})
+		// },
+		// filteredBeidgePort() {
+		// 	return this.bridgePorts.filter(port => {
+		// 		return port.host.indexOf(this.configData.port_map) >= 0
+		// 	})
+		//
+		// },
 	},
 	created() {
 		// Set Front-end base url
@@ -558,18 +575,18 @@ export default {
 		 * @return {Boolean}
 		 */
 		async checkStep() {
-			// const promises = [];
-			// for (const servicesKey in this.configData.services) {
-			// 	console.log('this', this);
-			// 	console.log('this.configData', this.configData);
-			// 	console.log('servicesKey', servicesKey);
-			// 	console.log('this.$refs[servicesKey]', this.$refs[servicesKey]);
-			//
-			// 	promises.push(this.$refs[servicesKey][0].validate());
-			// }
-			// return await Promise.all(promises);
-			console.log('this.$refs.main_app', this.$refs.main_app);
-			return await this.$refs.main_app.validate();
+			const promises = [];
+			for (const servicesKey in this.configData.services) {
+				// console.log('this', this);
+				// console.log('this.configData', this.configData);
+				// console.log('servicesKey', servicesKey);
+				// console.log('this.$refs[servicesKey]', this.$refs[servicesKey + 'valida']);
+				
+				promises.push(this.$refs[servicesKey + 'valida'][0].validate());
+			}
+			return await Promise.all(promises);
+			// console.log('this.$refs.main_app', this.$refs.main_app);
+			// return await this.$refs.main_app.validate();
 		},
 		
 		/**
@@ -590,13 +607,15 @@ export default {
 				
 				// 导入数据不一定含有 x-casaos，但一定含有 services
 				// yaml['x-casaos'] 数据类型是 object
-				this.configData['x-casaos'] = yaml['x-casaos'] && yaml['x-casaos'].main_app || Object.keys(yaml.services)[0]
-				console.log('检测 x-casaos 是否正确', this.configData['x-casaos']);
+				// 确定： yaml ：： service[0 ] 此为最原始数据源
+				// 解析 yaml 的 main_app
+				this.configData['x-casaos'].main_app = yaml['x-casaos'] && yaml['x-casaos'].main_app || Object.keys(yaml.services)[0];
+				console.log('检测 x-casaos 是否正确', this.configData['x-casaos'].main_app);
 				
 				// 导入数据main-app 中不一定含有 x-casaos，
-				let yaml_main_app = yaml.services[this.configData['x-casaos']]['x-casaos'] || {};
+				let yaml_main_app = yaml.services[this.main_name]['x-casaos'] || {};
 				// this.main_app = Object.assign(this.main_app, main_app)
-				this.main_app.icon = yaml_main_app.icon;
+				this.main_app.icon = yaml_main_app.icon || '';
 				let container = yaml_main_app.container || {};
 				this.main_app.container.host = container.host || '';
 				this.main_app.container.protocol = container.protocol || 'https';
@@ -607,7 +626,7 @@ export default {
 				this.main_app.container.appstore_id = container.appstore_id || '';
 				console.log('检测主应用中的 x-casaos 完成本地赋值', this.main_app);
 				// 将主应用的x-casaos 暂存到 xCasaOS中，等返回数据时，添加上。
-				this.xCasaOS = yaml.services[this.configData['x-casaos']]['x-casaos'];
+				yaml.services[this.main_app]['x-casaos'] && (this.xCasaOS = yaml.services[this.main_app]['x-casaos']);
 				
 				// set main app name
 				this.configData.name = yaml.name
@@ -617,6 +636,7 @@ export default {
 				}
 				// 删除掉原默认主应用。
 				this.$delete(this.configData.services, 'main_app')
+				
 				// 补全必要数据。
 				this.preProcessConfigData(this.configData)
 				
@@ -752,6 +772,21 @@ export default {
 				configData.restart = parsedInput.restart
 			}
 			
+			// process Item x-casaos
+			configData['x-casaos'] = Object.assign({
+				// ...this.configData['x-casaos'],
+				container: {
+					host: '',
+					protocol: 'https',
+					index: '',
+					port_map: '',
+					host_name: '',
+					container_name: '',
+					appstore_id: '',
+				},
+				icon: '',
+			}, parsedInput['x-casaos'] || {});
+			
 			return configData
 		},
 		
@@ -807,6 +842,7 @@ export default {
 			return (newArray == undefined) ? [] : newArray
 		},
 		
+		// 给 configData 添加默认值
 		preProcessConfigData(data) {
 			// let data = this.configData
 			data.port_map = data.port_map === "" ? null : data.port_map
@@ -872,8 +908,43 @@ export default {
 					return `${port.published}:${port.target}`
 				})
 			}
-			console.log(ConfigData.services, 'ConfigData.services');
+			ConfigData.services[this.main_name]['x-casaos'] = Object.assign(this.xCasaOS, this.main_app)
 			this.$emit('updateConfigDataCommands', YAML.stringify(ConfigData));
+		},
+		
+		//
+		showPorts(service) {
+			if (!service.network_mode) {
+				return false
+			}
+			// 存在
+			if (service.network_mode.toLowerCase().indexOf("macvlan") > -1 || service.network_mode.indexOf("host") > -1) {
+				return false
+			} else {
+				return true
+			}
+		},
+		showHostPort(service) {
+			if (!service.network_mode) {
+				return true
+			}
+			// 存在
+			if (service.network_mode.indexOf("host") > -1) {
+				return false
+			} else {
+				return true
+			}
+		},
+		bridgePorts(service) {
+			return service.ports.filter(function (item) {
+				return item.host != ""
+			})
+		},
+		// unused
+		filteredBeidgePort(service) {
+			return this.bridgePorts(service).filter(port => {
+				return port.host.indexOf(service.port_map) >= 0
+			})
 		},
 	}
 }

@@ -7,14 +7,6 @@
  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
  */
 
-/*
- * @Author: JerryK
- * @Date: 2021-09-18 21:32:13
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-01-16 19:02:51
- * @Description:
- * @FilePath: /CasaOS-UI/src/service/service.js
- */
 import axios from 'axios'
 import router from '@/router'
 import store from '@/store'
@@ -154,9 +146,9 @@ const api = {
         }
 
     },
-    post(url, data) {
+    post(url, data, config) {
         url = testVisionNum(url)
-        return instance.post(url, data)
+        return instance.post(url, data, config)
     },
     put(url, data) {
         url = testVisionNum(url)
