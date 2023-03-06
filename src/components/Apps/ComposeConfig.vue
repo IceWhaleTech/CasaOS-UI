@@ -46,18 +46,18 @@
 					</b-field>
 					
 					<b-field v-if="key === main_name" label="Web UI">
-						<b-select v-model="service['x-casaos'].icon.container.protocol">
+						<b-select v-model="service['x-casaos'].container.protocol">
 							<option value="http">http://</option>
 							<option value="https">https://</option>
 						</b-select>
-						<b-input v-model="service['x-casaos'].icon.container.host" :placeholder="baseUrl"
+						<b-input v-model="service['x-casaos'].container.host" :placeholder="baseUrl"
 						         expanded></b-input>
-						<b-autocomplete v-model="service['x-casaos'].icon.container.port_map"
+						<b-autocomplete v-model="service['x-casaos'].container.port_map"
 						                :data="bridgePorts(service)"
 						                :open-on-focus="true"
 						                :placeholder="$t('Port')" class="has-colon" field="host"
 						                @select="option => (portSelected = option)"></b-autocomplete>
-						<b-input v-model="service['x-casaos'].icon.container.index"
+						<b-input v-model="service['x-casaos'].container.index"
 						         :placeholder="'/index.html '+ $t('[Optional]')"
 						         expanded></b-input>
 					</b-field>
@@ -221,25 +221,6 @@ export default {
 			
 			configData: {
 				name: 'default_name',
-				// cpu_shares: 10, //
-				// memory: this.totalMemory, //
-				// restart: "always", //
-				// label: "", // name
-				// position: true, //
-				// network_mode: "", //
-				// image: "", //
-				// description: "", //
-				// origin: "custom", //
-				// ports: [], //
-				// volumes: [], //
-				// envs: [], //
-				// devices: [], //
-				// cap_add: [], //
-				// cmd: [], //
-				// privileged: false,
-				// host_name: "",
-				// container_name: "",
-				// appstore_id: 0,
 				services: {
 					"main_app": {
 						"image": "gitea/gitea:1",
@@ -256,6 +237,11 @@ export default {
 						"depends_on": [
 							"db"
 						],
+						ports: [],
+						environment: [],
+						devices: [],
+						cmd: [],
+						memory: 257,
 						"x-casaos": {
 							"author": "CasaOS Team",
 							"category": "Developer",
@@ -344,7 +330,7 @@ export default {
 					},
 				},
 				"x-casaos": {
-					main_name: ''
+					main_app: ''
 				},
 			},
 			// main_app: ajc.compile(main_app_schema)(this.configData['x-casaos']),
@@ -412,6 +398,7 @@ export default {
 		dockerComposeCommands: {
 			handler(val) {
 				if (val != null) {
+					console.log("watch::dockerComposeCommands", val)
 					this.parseComposeYaml(val)
 				} else {
 					let gg = find(this.networks, (o) => {
@@ -489,11 +476,15 @@ export default {
 		this.baseUrl = `${document.domain}`;
 		// this.$set(this.configData.services, [this.main_name], this.configData.services['main_app'])
 		// this.$delete(this.configData.services, 'main_app')
-		this.preProcessConfigData(this.configData);
+		// this.preProcessConfigData(this.configData);
+		
+		if (this.dockerComposeCommands) {
+			this.parseComposeYaml(this.dockerComposeCommands.trim());
+		}
 	},
 	
 	methods: {
-		// migration !!! start !!!
+		// ****** migration !!! start !!!
 		/**
 		 * @description: Get remote synchronization information
 		 * @param {*} function
@@ -596,11 +587,13 @@ export default {
 		parseComposeYaml(val) {
 			try {
 				const yaml = YAML.parse(val)
+				console.log('检测传入的 yarml 文件', yaml);
 				console.log('检测传入的 yarml 文件的 services', yaml.services);
+				console.log('检测传入的 yarml 文件的 main_app name', yaml['x-casaos'].main_app);
 				
-				if (yaml.version === undefined) {
-					return false
-				}
+				// if (yaml.version === undefined) {
+				// 	return false
+				// }
 				
 				// 其他配置
 				this.volumes = yaml.volumes || {}
@@ -608,25 +601,28 @@ export default {
 				// 导入数据不一定含有 x-casaos，但一定含有 services
 				// yaml['x-casaos'] 数据类型是 object
 				// 确定： yaml ：： service[0 ] 此为最原始数据源
-				// 解析 yaml 的 main_app
+				// update configData :: x-casaos[main_app] ~ 解析 yaml 的 main_app
 				this.configData['x-casaos'].main_app = yaml['x-casaos'] && yaml['x-casaos'].main_app || Object.keys(yaml.services)[0];
-				console.log('检测 x-casaos 是否正确', this.configData['x-casaos'].main_app);
+				console.log('检测 x-casaos :: main_app 是否正确', this.configData['x-casaos'].main_app);
+				console.log('检测 main_name 是否正确', this.main_name);
 				
+				// ### start  ### everyone support x-casaos in all services.
 				// 导入数据main-app 中不一定含有 x-casaos，
-				let yaml_main_app = yaml.services[this.main_name]['x-casaos'] || {};
+				// let yaml_main_app = yaml.services[this.main_name]['x-casaos'] || {};
 				// this.main_app = Object.assign(this.main_app, main_app)
-				this.main_app.icon = yaml_main_app.icon || '';
-				let container = yaml_main_app.container || {};
-				this.main_app.container.host = container.host || '';
-				this.main_app.container.protocol = container.protocol || 'https';
-				this.main_app.container.index = container.index || '';
-				this.main_app.container.port_map = container.port_map || '';
-				this.main_app.container.host_name = container.host_name || '';
-				this.main_app.container.container_name = container.container_name || '';
-				this.main_app.container.appstore_id = container.appstore_id || '';
-				console.log('检测主应用中的 x-casaos 完成本地赋值', this.main_app);
+				// this.main_app.icon = yaml_main_app.icon || '';
+				// let container = yaml_main_app.container || {};
+				// this.main_app.container.host = container.host || '';
+				// this.main_app.container.protocol = container.protocol || 'https';
+				// this.main_app.container.index = container.index || '';
+				// this.main_app.container.port_map = container.port_map || '';
+				// this.main_app.container.host_name = container.host_name || '';
+				// this.main_app.container.container_name = container.container_name || '';
+				// this.main_app.container.appstore_id = container.appstore_id || '';
+				// console.log('检测主应用中的 x-casaos 完成本地赋值', this.main_app);
 				// 将主应用的x-casaos 暂存到 xCasaOS中，等返回数据时，添加上。
-				yaml.services[this.main_app]['x-casaos'] && (this.xCasaOS = yaml.services[this.main_app]['x-casaos']);
+				// yaml.services[this.main_name]['x-casaos'] && (this.xCasaOS = yaml.services[this.main_name]['x-casaos']);
+				// ### end
 				
 				// set main app name
 				this.configData.name = yaml.name
@@ -640,10 +636,10 @@ export default {
 				// 补全必要数据。
 				this.preProcessConfigData(this.configData)
 				
-				return true
+				// return true
 			} catch (error) {
 				console.log(error);
-				return false
+				// return false
 			}
 		},
 		
@@ -653,13 +649,13 @@ export default {
 			// Image
 			configData.image = parsedInput.image
 			// Label
-			if (parsedInput.container_name != undefined) {
-				configData.label = upperFirst(parsedInput.container_name)
-			} else {
-				const imageArray = parsedInput.image.split("/")
-				const lastNode = [...imageArray].pop()
-				configData.label = upperFirst(lastNode.split(":")[0])
-			}
+			// if (parsedInput.container_name != undefined) {
+			// 	configData.label = upperFirst(parsedInput.container_name)
+			// } else {
+			// 	const imageArray = parsedInput.image.split("/")
+			// 	const lastNode = [...imageArray].pop()
+			// 	configData.label = upperFirst(lastNode.split(":")[0])
+			// }
 			// Envs
 			if (parsedInput.environment) {
 				let envArray = Array.isArray(parsedInput.environment) ? parsedInput.environment : Object.entries(parsedInput.environment)
@@ -759,7 +755,7 @@ export default {
 			}
 			
 			//hostname
-			configData.host_name = parsedInput.hostname != undefined ? parsedInput.hostname : ""
+			// configData.host_name = parsedInput.hostname != undefined ? parsedInput.hostname : ""
 			// privileged
 			configData.privileged = parsedInput.privileged != undefined
 			
@@ -845,8 +841,8 @@ export default {
 		// 给 configData 添加默认值
 		preProcessConfigData(data) {
 			// let data = this.configData
-			data.port_map = data.port_map === "" ? null : data.port_map
-			data.icon = data.icon === "" ? this.getIconFromImage(data.image) : data.icon
+			// data.port_map = data.port_map === "" ? null : data.port_map
+			// data.icon = data.icon === "" ? this.getIconFromImage(data.image) : data.icon
 			data.volumes = isNil(data.volumes) ? [] : data.volumes
 			for (const appKey in data.services) {
 				// data.services[app] = this.preProcessConfigDataItem(data.services[app])
@@ -869,7 +865,7 @@ export default {
 			isNil(app.devices) && this.$set(app, "devices", [])
 			isNil(app.cap_add) && this.$set(app, "cap_add", [])
 			isNil(app.cmd) && this.$set(app, "cmd", [])
-			app.cpu_shares = (app.cpu_shares === 0 || app.cpu_shares > 99) ? 90 : app.cpu_shares
+			app.cpu_shares = (app.cpu_shares === 0 || app.cpu_shares > 99 || isNil(app.cpu_shares)) ? 90 : app.cpu_shares
 			// app.memory = app.memory === 0 ? this.totalMemory : (app.memory / 1048576).toFixed(0)
 			isNil(app.memory) && this.$set(app, "memory", this.totalMemory)
 			app.restart = app.restart === "no" ? "unless-stopped" : app.restart
@@ -889,8 +885,9 @@ export default {
 			this.initConfigData.network_mode = model[0]
 		},
 		
-		// migration !!! end !!!
+		// ****** migration !!! end !!!
 		
+		// follow this.configData
 		updateConfigDataCommands(val) {
 			// configData tans to docker-compose.yml
 			let ConfigData = cloneDeep(val)
@@ -900,16 +897,20 @@ export default {
 				outputService.devices = service.devices.map(device => {
 					return `${device.host}:${device.container}`
 				})
+				outputService.environment = service.environment.map(env => {
+					return `${env.host}=${env.container}`
+				})
 				// outputService.volumes = service.volumes.map(volume => {
 				// 	return `${volume.source}:${volume.target}`
 				// })
 				// TODO: port
-				outputService.ports = service.ports.map(port => {
-					return `${port.published}:${port.target}`
-				})
+				// outputService.ports = service.ports.map(port => {
+				// 	return `${port.published}:${port.target}`
+				// })
 			}
-			ConfigData.services[this.main_name]['x-casaos'] = Object.assign(this.xCasaOS, this.main_app)
-			this.$emit('updateConfigDataCommands', YAML.stringify(ConfigData));
+			console.log("updateConfigDataCommands :: ConfigData", ConfigData)
+			// ConfigData.services[this.main_name]['x-casaos'] = Object.assign(this.xCasaOS, this.main_app)
+			this.$emit('updateDockerComposeCommands', YAML.stringify(ConfigData));
 		},
 		
 		//

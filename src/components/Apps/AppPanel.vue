@@ -442,7 +442,7 @@
 					               :docker-compose-commands="configDataString"
 					               :is-casa="isCasa" :networks="networks" :state="state"
 					               :total-memory="totalMemory"
-					               @updateConfigDataCommands="updateConfig"></ComposeConfig>
+					               @updateDockerComposeCommands="updateDockerComposeCommands"></ComposeConfig>
 				</section>
 				<!-- App Install Form End -->
 				
@@ -727,7 +727,7 @@ export default {
 			installationLocation: '',
 			dockerProgress: null,
 			totalPercentage: 0,
-			configCommands: '',
+			dockerComposeCommands: '',
 		}
 	},
 	
@@ -754,6 +754,7 @@ export default {
 		if (this.settingData != undefined) {
 			this.isLoading = false
 			// this.initConfigData = this.preProcessData(Object.assign(this.initConfigData, this.settingData))
+			this.configDataString = this.settingData
 			this.currentSlide = 1
 			
 		} else {
@@ -1137,10 +1138,10 @@ export default {
 			this.$refs.compose.checkStep().then((valid) => {
 				if (valid) {
 					// this.installAppData(this.id);
-					console.log(this.configCommands)
+					console.log(this.dockerComposeCommands)
 					this.isLoading = true;
-					this.$api.container.installV2(this.configCommands,).then((res) => {
-						// this.$openAPI.installComposeApp(this.configCommands).then((res) => {
+					this.$api.container.installV2(this.dockerComposeCommands,).then((res) => {
+						// this.$openAPI.installComposeApp(this.dockerComposeCommands).then((res) => {
 						if (res.data.success == 200) {
 							this.currentInstallAppName = res.data.data
 							this.currentSlide = 2;
@@ -1163,7 +1164,7 @@ export default {
 					});
 				}
 			})
-			console.log('执行命令。', this.configCommands);
+			console.log('执行命令。', this.dockerComposeCommands);
 		},
 		
 		installAppData() {
@@ -1198,6 +1199,24 @@ export default {
 		 * @return {*} void
 		 */
 		updateApp() {
+			console.log('执行命令。', this.dockerComposeCommands);
+			this.$openAPI.appManagement.compose.updateComposeAppSettings('syncthing-1', this.dockerComposeCommands).then((res) => {
+				console.log('updateComposeAppSettings :: ', res);
+				if (res.data.success == 200) {
+					this.$emit('updateState')
+				} else {
+					this.$buefy.toast.open({
+						message: res.data.message,
+						type: 'is-warning'
+					})
+				}
+				this.$emit('close')
+			}).catch((err) => {
+				this.$buefy.toast.open({
+					message: err.response.data.message,
+					type: 'is-warning'
+				})
+			})
 			// this.processData();
 			// this.isLoading = true;
 			// let updateData = this.uuid2var(cloneDeep(this.initConfigData));
@@ -1464,9 +1483,9 @@ export default {
 			}
 		},
 		
-		updateConfig(val) {
+		updateDockerComposeCommands(val) {
 			console.log(val, 'updateConfig');
-			this.configCommands = val
+			this.dockerComposeCommands = val
 		},
 	},
 	

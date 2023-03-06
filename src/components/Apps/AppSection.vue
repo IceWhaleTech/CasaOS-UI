@@ -210,7 +210,10 @@ export default {
 			try {
 				// TODO migrate to v2!!
 				// 缺少store、等信息，缺少之前安装的应用，缺少链接应用
-				const listRes = await this.$api.container.getMyAppList();
+				// const listRes = await this.$api.container.getMyAppList();
+				// const listRes = await this.$api.container.getMyAppListV2();
+				const listRes = await this.$openAPI.appGrid.getAppGrid();
+				const orgAppList = listRes.data.data
 				// const listRes = await this.$api.container.getMyAppListV2();
 				// 缺少的字段
 				// appstore_id
@@ -220,33 +223,42 @@ export default {
 				// type 属于系统类型、还是属于链接类型
 				// image
 				// slogan \latest \created \protocol \volumes 无用
-				
+				orgAppList.forEach((item) => {
+					item.status = 'running';
+					item.name = item.title.en_US;
+					item.id = 'syncthing-1';
+					item.protocol = 'http';
+				})
 				let listLinkApp = await this.$api.users.getLinkAppDetail().then(v => v.data.data);
 				if (listLinkApp === "") {
 					listLinkApp = []
 				}
 				localStorage.setItem("listLinkApp", JSON.stringify(listLinkApp))
-				const orgAppList = listRes.data.data.casaos_apps
+				// all app list
 				let casaAppList = concat(builtInApplications, orgAppList, listLinkApp)
-				casaAppList.reverse()
+				// get app sort info.
 				let sortRes = await this.$api.users.getCustomStorage(orderConfig)
-				let sortList = sortRes.data.data.data
-				let newList = casaAppList.map((item) => {
-					return item.custom_id
+				let lateSortList = sortRes.data.data.data
+				let newestSortList = casaAppList.map((item) => {
+					return item.name
 				})
-				if (sortList != "") {
+				if (lateSortList != "") {
 					// Resort list
-					sortList = this.getNewSortList(sortList, newList)
+					const sortList = this.getNewSortList(lateSortList, newestSortList)
 					casaAppList.sort((a, b) => {
-						return sortList.indexOf(a.custom_id) - sortList.indexOf(b.custom_id);
+						return sortList.indexOf(a.name) - sortList.indexOf(b.name);
 					});
 				}
 				this.appList = casaAppList;
-				if (xor(sortList, newList).length > 0) {
+				// save sort info AFTER sort!
+				if (xor(lateSortList, newestSortList).length > 0) {
 					this.saveSortData()
 				}
-				this.notImportedList = listRes.data.data.local_apps
+				// business :: top-bar:: switch :: ShowOtherApp
+				// TODO $compose will not have this function!
+				this.notImportedList = [] //listRes.data.data
 				this.$store.commit('SET_NOTIMPORT_LIST', this.notImportedList);
+				
 				this.isLoading = false;
 				this.retryCount = 0;
 				this.appListErrorMessage = ""
@@ -287,13 +299,12 @@ export default {
 		 */
 		saveSortData() {
 			let newList = this.appList.map((item) => {
-				return item.custom_id
+				// compose milestone :: name is unique, global index.
+				return item.name
 			})
 			let data = {
 				data: newList
 			}
-			// TODO migrate to v2!!
-			// need to add custom_id for sort!
 			this.$api.users.setCustomStorage(orderConfig, data)
 		},
 		/**
@@ -343,7 +354,7 @@ export default {
 					configData: configData,
 					storeId: storeId,
 					// TODO transfer to yaml string.
-					settingData: mode !== 'custom' ? undefined : ""
+					settingData: mode !== 'custom' ? undefined : "",
 				}
 			})
 		},
@@ -372,8 +383,8 @@ export default {
 			// TODO migrate to v2!!
 			// 入参 需要为 container id
 			// const ret = await this.$api.container.getInfoV2(id);
-			const ret = await this.$openAPI.myComposeApp(id);
-			debugger
+			// const ret = await this.$openAPI.appManagement.compose.myComposeApp(item.name);
+			const ret = await this.$openAPI.appManagement.compose.myComposeApp('syncthing-1');
 			this.$buefy.modal.open({
 				parent: this,
 				component: AppPanel,
@@ -396,7 +407,8 @@ export default {
 					configData: configData,
 					// TODO transfer yaml string.
 					// settingData: ret.data.data
-					settingData: YAML.stringify(ret.data.data)
+					settingData: ret.data,
+					// dockerComposeCommands: YAML.stringify(ret.data)
 				}
 			})
 		},
