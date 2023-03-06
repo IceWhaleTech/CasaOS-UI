@@ -1,7 +1,7 @@
 <!--
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-12 18:32:06
- * @FilePath: \CasaOS-UI-0.4.2\src\components\syncthing\SyncBlock.vue
+ * @LastEditTime: 2023-03-06 16:29:36
+ * @FilePath: /CasaOS-UI/src/components/syncthing/SyncBlock.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -123,6 +123,7 @@ export default {
             onConfirm: (value, {close}) => {
               this.$buefy.toast.open({
                 message: this.$t(`Starting Syncthing...`),
+                type: 'is-white'
               })
               this.$api.container.updateState(this.syncId, "start").then((res) => {
                 this.isStarting = false

@@ -2,8 +2,8 @@
  * @Author: zhanghengxin ezreal.ice@icloud.com
  * @Date: 2022-09-06 14:42:24
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-12 18:31:56
- * @FilePath: \CasaOS-UI-0.4.2\src\components\Storage\StorageBlock.vue
+ * @LastEditTime: 2023-03-06 16:28:47
+ * @FilePath: /CasaOS-UI/src/components/Storage/StorageBlock.vue
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -150,6 +150,7 @@ export default {
             onConfirm: (value, {close}) => {
               this.$buefy.toast.open({
                 message: this.$t(`Starting Syncthing...`),
+                type: 'is-white'
               })
               this.$api.container.updateState(this.syncId, "start").then((res) => {
                 this.isStarting = false

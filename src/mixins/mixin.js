@@ -1,6 +1,6 @@
 /*
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-23 19:00:00
+ * @LastEditTime: 2023-03-06 16:29:55
  * @FilePath: /CasaOS-UI/src/mixins/mixin.js
  * @Description:
  *
@@ -176,7 +176,7 @@ export const mixin = {
         downloadFile(items) {
             this.$buefy.toast.open({
                 message: this.$t('Download in preparation...'),
-                type: 'is-light'
+                type: 'is-white'
             })
             let url = this.getFileUrl(items)
             window.open(url, '_blank');

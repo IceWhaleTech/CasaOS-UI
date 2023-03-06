@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2023-03-03 15:03:34
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-05 15:11:00
- * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\drop\DropAddButton.vue
+ * @LastEditTime: 2023-03-06 14:38:29
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/drop/DropAddButton.vue
  * @Description: 
  * 
  * Copyright (c) 2023 by IceWhale, All Rights Reserved. 
@@ -23,7 +23,7 @@
             <b-dropdown-item aria-role="menu-item" custom paddingless>
                 <div class="p-3">
                     <div class="close-button is-absolute" @click="closeDrop">
-                        <b-icon pack="casa" icon="close" size="is-small" ></b-icon>
+                        <b-icon pack="casa" icon="close" size="is-small"></b-icon>
                     </div>
                     <h6 class="has-text-title-06 mr-5 mb-3">{{ $t('Access the following address with another device') }}
                     </h6>
@@ -68,11 +68,11 @@ export default {
         tipPosition() {
             if (this.index < 10) {
                 if (this.index % 5 == 4) {
-                    return "is-bottom-left";
-                } else if (this.index % 5 == 0) {
                     return "is-bottom-right";
-                } else {
+                } else if (this.index % 5 == 0) {
                     return "is-bottom-left";
+                } else {
+                    return "is-bottom-right";
                 }
             } else {
                 return "is-top-left";
@@ -96,7 +96,6 @@ export default {
                     position: 'fixed',
                 }
             }
-
         },
         iconSize() {
             return this.index < 10 ? "is-36x36" : "is-24x24";
@@ -110,9 +109,9 @@ export default {
 
     created() {
         console.log(this.index);
-        
+
     },
-    mounted () {
+    mounted() {
         this.$refs.drop.isActive = true;
     },
     methods: {
@@ -130,16 +129,16 @@ export default {
     z-index: 100;
     border-radius: 50%;
     box-shadow: 0px 16px 32px -8px rgba(28, 31, 34, 0.12);
-
+    background-color: #FFFFFF;
     &.is-floating {
         .circle-area {
-            border: 1px solid #E4E8EC;
+            border: 1px solid transparent;
         }
     }
 
-    .close-button{
+    .close-button {
         display: flex;
-        align-items:center;
+        align-items: center;
         justify-content: center;
         width: 1rem;
         height: 1rem;
@@ -147,8 +146,10 @@ export default {
         top: 1rem;
         border-radius: 2px;
         cursor: pointer;
-        &:hover{
+
+        &:hover {
             background-color: rgba(0, 0, 0, 0.04);
+
         }
     }
 
@@ -158,12 +159,13 @@ export default {
         height: var(--item-size);
         border-radius: 50%;
         transition: all 0.3s;
+        border: 1px solid #E4E8EC;
 
         &:hover {
-            background-color: rgba(0, 0, 0, 0.04);
+            background-color: #F3F5F6;
+            border: 1px solid transparent;
+            transform: scale(1.1);
         }
-
-
 
         .up-layer {
             position: absolute;
