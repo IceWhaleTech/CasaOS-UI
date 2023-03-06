@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2023-02-28 17:07:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-28 17:22:48
+ * @LastEditTime: 2023-03-05 14:46:41
  * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\drop\DropContextMenu.vue
  * @Description: 
  * 
@@ -17,7 +17,7 @@
                 <template>
                     <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center" key="system-context11"
                         @click="showChangeWallpaperModal">
-                        <b-icon pack="casa" icon="picture" class="mr-1"></b-icon> {{ $t('Change wallpaper') }}
+                        <b-icon pack="casa" icon="picture" class="mr-1"></b-icon> {{ $t('Sending files') }}
                     </b-dropdown-item>
                 </template>
                 <!-- Blank End -->

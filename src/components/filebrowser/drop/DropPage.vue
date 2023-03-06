@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2023-02-24 17:28:31
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-03 19:05:20
- * @FilePath: /CasaOS-UI/src/components/filebrowser/drop/DropPage.vue
+ * @LastEditTime: 2023-03-05 20:11:18
+ * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\drop\DropPage.vue
  * @Description: 
  * 
  * Copyright (c) 2023 by IceWhale, All Rights Reserved. 
@@ -29,9 +29,9 @@
             <div class="contents">
                 <drop-item v-for="(item, index) in peersArray" :key="item.id" :index="index" :center="centerPos"
                     :showIndex="isFirstIn ? initIndexArray[index] : 0" :radius="bigRadius" :isFloat="isDesktop"
-                    :isSelf="item.id === selfId" :progress="progress" :customClass="areaClass" :device="item"
+                    :isSelf="item.id === selfId" :customClass="areaClass" :device="item"
                     @showed="isFirstIn = false" />
-                <drop-add-button :index="peersArray.length" :radius="bigRadius" :center="centerPos" :isFloat="isDesktop"/>
+                <drop-add-button :index="peersArray.length" :radius="bigRadius" :center="centerPos" :isFloat="isDesktop" />
                 <!-- Cricle BG Start -->
                 <drop-bg v-if="isDesktop" />
                 <!-- Circle Bg End -->
@@ -124,7 +124,8 @@ export default {
     methods: {
         initServer() {
             const access_token = localStorage.getItem("access_token");
-            const url = `${this.$wsProtocol}//${this.$baseURL}/v1/file/ws?token=${access_token}&peer=${this.selfId}`;
+            // const url = `${this.$wsProtocol}//${this.$baseURL}/v1/file/ws?token=${access_token}&peer=${this.selfId}`;
+            const url = "";
             const server = new ServerConnection(url);
             // const peers = new PeersManager(server);
             new PeersManager(server);
@@ -137,6 +138,7 @@ export default {
             // 节点离开
             Events.on("peer-left", this.handlePeerleft);
         },
+
         // handelPeers
         handlePeers(peers) {
             this.peersArray = peers.detail;

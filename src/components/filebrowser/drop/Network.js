@@ -1,10 +1,12 @@
 window.URL = window.URL || window.webkitURL;
 window.isRtcSupported = !!(window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection);
+import remove from 'lodash/remove';
 
 export class ServerConnection {
 
     constructor(url) {
         this._connect(url);
+        this.selfId = "";
         Events.on('beforeunload', () => this._disconnect());
         Events.on('pagehide', () => this._disconnect());
         document.addEventListener('visibilitychange', () => this._onVisibilityChange());
@@ -24,11 +26,11 @@ export class ServerConnection {
 
     _onMessage(msg) {
         msg = JSON.parse(msg);
-
+        console.log('WS:', msg);
         switch (msg.type) {
             case 'peers':
                 console.log('WS:', msg);
-                Events.fire('peers', msg.peers);
+                Events.fire('peers', this.deleteSelf(msg.peers));
                 break;
             case 'peer-joined':
                 console.log('WS:', msg);
@@ -45,11 +47,20 @@ export class ServerConnection {
                 this.send({ type: 'pong' });
                 break;
             case 'display-name':
+                this.selfId = msg.message.id;
                 Events.fire('display-name', msg);
                 break;
             default:
                 console.error('WS: unkown message type', msg);
         }
+    }
+
+    deleteSelf(peers) {
+
+        peers.forEach(element => {
+            // element.rtcSupported = true
+        });
+        return peers;
     }
 
     send(message) {
@@ -61,7 +72,7 @@ export class ServerConnection {
         // hack to detect if deployment or development environment
         const protocol = location.protocol.startsWith('https') ? 'wss' : 'ws';
         const webrtc = window.isRtcSupported ? '/webrtc' : '/fallback';
-        const url = protocol + '://' + location.host + location.pathname + 'server' + webrtc;
+        const url = protocol + '://localhost:3000'  + location.pathname + 'server' + webrtc;
         return url;
     }
 
@@ -98,6 +109,7 @@ export class Peer {
         this._server = serverConnection;
         this._peerId = peerId;
         this._filesQueue = [];
+        this._files = [];
         this._busy = false;
     }
 
@@ -106,6 +118,7 @@ export class Peer {
     }
 
     sendFiles(files) {
+        this._files = files;
         for (let i = 0; i < files.length; i++) {
             this._filesQueue.push(files[i]);
         }
@@ -156,6 +169,7 @@ export class Peer {
             return;
         }
         message = JSON.parse(message);
+        console.log('RTC:', message);
         switch (message.type) {
             case 'header':
                 this._onFileHeader(message);
@@ -201,7 +215,7 @@ export class Peer {
     }
 
     _onDownloadProgress(progress) {
-        Events.fire('file-progress', { sender: this._peerId, progress: progress });
+        Events.fire('file-progress', { sender: this._peerId, progress: progress, filesQueue: this._filesQueue.length + 1, files: this._files });
     }
 
     _onFileReceived(proxyFile) {
@@ -267,6 +281,7 @@ class RTCPeer extends Peer {
 
     _onDescription(description) {
         // description.sdp = description.sdp.replace('b=AS:30', 'b=AS:1638400');
+        console.log('RTC: Description', description);
         this._conn.setLocalDescription(description)
             .then(() => this._sendSignal({ sdp: description }))
             .catch(e => this._onError(e));
@@ -383,12 +398,14 @@ export class PeersManager {
     _onPeers(peers) {
         peers.forEach(peer => {
             if (this.peers[peer.id]) {
+                console.log("wwww", this.peers[peer.id]);
                 this.peers[peer.id].refresh();
                 return;
             }
             if (window.isRtcSupported && peer.rtcSupported) {
                 this.peers[peer.id] = new RTCPeer(this._server, peer.id);
             } else {
+
                 this.peers[peer.id] = new WSPeer(this._server, peer.id);
             }
         })
@@ -399,6 +416,8 @@ export class PeersManager {
     }
 
     _onFilesSelected(message) {
+
+        this.peers[message.to].sendText(message.files.length);
         this.peers[message.to].sendFiles(message.files);
     }
 

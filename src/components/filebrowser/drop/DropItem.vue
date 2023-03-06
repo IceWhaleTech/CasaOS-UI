@@ -2,7 +2,7 @@
     <div class="drop-item contextmenu-canvas" :class="[{ 'is-floating': isFloat, 'disabled': isDisabled }, customClass]"
         :style="positionStyle" @dragenter="onDrag" @dragover="onDrag" @dragleave="onDrop" @dragend="onDrop" @drop="onDrop">
 
-        <b-upload v-model="dropFiles" multiple drag-drop :disabled="isSelf || device.offline">
+        <b-upload v-model="dropFiles" multiple drag-drop :disabled="isSelf || device.offline" @input="fileDroped">
             <b-tooltip :label="tipText" type="is-grey" :position="tipPosition" :always="tipActive" multilined
                 size="is-small">
                 <div ref="circleArea" class="circle-area" :class="{ 'drag-over': dragOver }"
@@ -13,7 +13,8 @@
                             class="is-48x48 mr-0 ml-0 no-click" :class="stateClass"></b-image>
                     </div>
                     <vue-ellipse-progress :progress="progress" :size="80" :thickness="2" :emptyThickness="2" :legend="false"
-                        emptyColor="#ffffff" lineMode="in-over" v-show="progress > 0"></vue-ellipse-progress>
+                        emptyColor="#ffffff" lineMode="in-over" v-show="progress > 0"
+                        animation="default 0 0"></vue-ellipse-progress>
                 </div>
             </b-tooltip>
             <div ref="deviceName" class="device-name has-text-full-03">
@@ -29,6 +30,7 @@ import { VueEllipseProgress } from "vue-ellipse-progress";
 import events from '@/events/events';
 import { gsap } from 'gsap';
 import CustomEase from "gsap/CustomEase";
+import { Events } from "./Network.js"
 
 export default {
     name: "drop-item",
@@ -43,10 +45,6 @@ export default {
         isFloat: {
             type: Boolean,
             default: true
-        },
-        progress: {
-            type: Number,
-            default: 0
         },
         device: {
             type: Object,
@@ -76,14 +74,17 @@ export default {
         showIndex: {
             type: Number,
             default: 0
-        }
+        },
     },
     data() {
         return {
             dropFiles: [],
             dragOver: false,
             tipActive: false,
-            isDisabled: true
+            isDisabled: true,
+            progress: 0,
+            totalfiles: 0,
+            receivedfiles: 0,
         }
     },
     computed: {
@@ -162,10 +163,36 @@ export default {
             duration: 0.16, ease: "none", autoAlpha: 0, delay: (this.showIndex + 1) * 0.16
         });
 
+        Events.on("file-progress", this.handleFileProgress);
+
+        Events.on('file-received', () => {
+            // console.log("ddd", this.totalfiles, this.receivedfiles);
+
+        });
+
+        Events.on("text-received", (e) => {
+            const message = e.detail;
+            const peerId = message.sender || message.recipient;
+            if (this.device.id !== peerId) return;
+            console.log("text-received", message.text);
+        });
 
     },
     methods: {
+        handleFileProgress(e) {
+            const progress = e.detail
+            const peerId = progress.sender || progress.recipient;
+            if (this.device.id !== peerId) return;
+            this.totalfiles = progress.files.length;
+            this.receivedfiles = progress.filesQueue;
+            this.progress = progress.progress * 100;
+            if (progress.progress === 1) {
+                this.progress = 0;
+            }
+        },
         showContextMenu(e) {
+            if (this.device.offline) return;
+            console.log(this.device.id);
             this.$EventBus.$emit(events.SHOW_DROP_CONTEXT_MENU, e);
         },
         onDrop(e) {
@@ -181,6 +208,16 @@ export default {
                 return;
             }
             this.dragOver = true;
+        },
+        fileDroped(files) {
+            console.log(files);
+            console.log(this.device.id);
+            Events.fire('files-selected', {
+                files: files,
+                to: this.device.id
+            });
+
+            this.dropFiles = [];
         },
     },
 }

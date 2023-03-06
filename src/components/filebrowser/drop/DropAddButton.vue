@@ -2,15 +2,15 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2023-03-03 15:03:34
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-03 18:09:39
- * @FilePath: /CasaOS-UI/src/components/filebrowser/drop/DropAddButton.vue
+ * @LastEditTime: 2023-03-05 15:11:00
+ * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\drop\DropAddButton.vue
  * @Description: 
  * 
  * Copyright (c) 2023 by IceWhale, All Rights Reserved. 
 -->
 <template>
     <div class="drop-button" :style="positionStyle" :class="{ 'is-floating': isFloat }">
-        <b-dropdown :position="tipPosition" class="drop-tips" :style="cssVariables">
+        <b-dropdown :position="tipPosition" class="drop-tips" :style="cssVariables" ref="drop" :mobile-modal="false">
             <template #trigger>
                 <div ref="circleArea" class="circle-area is-clickable">
                     <div class="up-layer">
@@ -22,6 +22,9 @@
 
             <b-dropdown-item aria-role="menu-item" custom paddingless>
                 <div class="p-3">
+                    <div class="close-button is-absolute" @click="closeDrop">
+                        <b-icon pack="casa" icon="close" size="is-small" ></b-icon>
+                    </div>
                     <h6 class="has-text-title-06 mr-5 mb-3">{{ $t('Access the following address with another device') }}
                     </h6>
                     <div class="drop-grey-bg">
@@ -107,6 +110,16 @@ export default {
 
     created() {
         console.log(this.index);
+        
+    },
+    mounted () {
+        this.$refs.drop.isActive = true;
+    },
+    methods: {
+        closeDrop() {
+            console.log("close");
+            this.$refs.drop.isActive = false;
+        }
     },
 }
 </script>
@@ -116,14 +129,41 @@ export default {
     position: absolute;
     z-index: 100;
     border-radius: 50%;
+    box-shadow: 0px 16px 32px -8px rgba(28, 31, 34, 0.12);
+
+    &.is-floating {
+        .circle-area {
+            border: 1px solid #E4E8EC;
+        }
+    }
+
+    .close-button{
+        display: flex;
+        align-items:center;
+        justify-content: center;
+        width: 1rem;
+        height: 1rem;
+        right: 1rem;
+        top: 1rem;
+        border-radius: 2px;
+        cursor: pointer;
+        &:hover{
+            background-color: rgba(0, 0, 0, 0.04);
+        }
+    }
 
     .circle-area {
         position: relative;
         width: var(--item-size);
         height: var(--item-size);
         border-radius: 50%;
-        background-color: red;
-        box-shadow: 0px 32px 64px -16px rgba(28, 31, 34, 0.2);
+        transition: all 0.3s;
+
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.04);
+        }
+
+
 
         .up-layer {
             position: absolute;
