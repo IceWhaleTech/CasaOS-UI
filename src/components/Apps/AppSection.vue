@@ -208,10 +208,11 @@ export default {
 			try {
 				// TODO migrate to v2!!
 				// 缺少store、等信息，缺少之前安装的应用，缺少链接应用
-				const listRes = await this.$api.container.getMyAppList();
+				// const listRes = await this.$api.container.getMyAppList();
 				// const listRes = await this.$api.container.getMyAppListV2();
-				// const listRes = await this.$openAPI.appGrid.getAppGrid();
-				const orgAppList = listRes.data.data.casaos_apps
+				const listRes = await this.$openAPI.appGrid.getAppGrid();
+				// const orgAppList = listRes.data.data.casaos_apps
+				const orgAppList = listRes.data.data
 				// const listRes = await this.$api.container.getMyAppListV2();
 				// 缺少的字段
 				// appstore_id

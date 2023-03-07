@@ -94,7 +94,8 @@
 						</b-field>
 						
 						<b-field :label="$t('Memory Limit')">
-							<vue-slider v-model="service.mem_limit" :max="totalMemory" :min="256"></vue-slider>
+							<vue-slider v-model="service.deploy.resources.reservations.memory" :max="totalMemory"
+							            :min="256"></vue-slider>
 						</b-field>
 						
 						<b-field :label="$t('CPU Shares')">
@@ -242,7 +243,16 @@ export default {
 						environment: [],
 						devices: [],
 						command: [],
-						mem_limit: 257,
+						deploy: {
+							resources: {
+								limits: {
+									// memory: "256M"
+								},
+								reservations: {
+									memory: "256M"
+								}
+							}
+						},
 						"x-casaos": {
 							"author": "CasaOS Team",
 							"category": "Developer",
@@ -867,8 +877,17 @@ export default {
 			isNil(app.cap_add) && this.$set(app, "cap_add", [])
 			isNil(app.command) && this.$set(app, "command", [])
 			app.cpu_shares = (app.cpu_shares === 0 || app.cpu_shares > 99 || isNil(app.cpu_shares)) ? 90 : app.cpu_shares
-			// app.mem_limit = app.mem_limit === 0 ? this.totalMemory : (app.mem_limit / 1048576).toFixed(0)
-			isNil(app.mem_limit) && this.$set(app, "mem_limit", this.totalMemory)
+			// app.memory = app.memory === 0 ? this.totalMemory : (app.memory / 1048576).toFixed(0)
+			// isNil(app.memory) && this.$set(app, "memory", this.totalMemory)
+			// 赋 默认值
+			app.deploy = {
+				resources: {
+					reservations: {
+						memory: this.totalMemory
+					},
+				}
+			}
+			
 			app.restart = app.restart === "no" ? "unless-stopped" : app.restart
 			app.network_mode = app.network_mode === "default" ? "bridge" : app.network_mode
 			
@@ -897,7 +916,7 @@ export default {
 				let service = val.services[servicesKey]
 				// 输出结果
 				let outputService = ConfigData.services[servicesKey]
-				outputService.mem_limit = service.mem_limit + 'm';
+				outputService.memory = service.memory + 'm';
 				outputService.devices = service.devices.map(device => {
 					return `${device.host}:${device.container}`
 				})
