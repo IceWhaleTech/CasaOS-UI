@@ -70,7 +70,7 @@ import lowerFirst from 'lodash/lowerFirst'
 import parser from 'yargs-parser'
 import concat from 'lodash/concat'
 import has from 'lodash/has'
-import YAML from 'yamljs'
+import YAML from 'yaml'
 
 
 export default {

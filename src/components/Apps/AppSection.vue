@@ -89,7 +89,7 @@ import concat from 'lodash/concat'
 import events from '@/events/events';
 import last from 'lodash/last';
 import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
-import YAML from "yamljs";
+import YAML from "yaml";
 
 const SYNCTHING_STORE_ID = 74
 

@@ -166,8 +166,8 @@ import InputGroup from '../forms/InputGroup.vue';
 import VolumesInputGroup from "@/components/forms/VolumesInputGroup.vue";
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
-import YAML from "yamljs";
-// import YAML from "yaml/";
+// import YAML from "yaml";//
+import YAML from "yaml";
 import upperFirst from "lodash/upperFirst";
 import lowerFirst from "lodash/lowerFirst";
 import isNil from "lodash/isNil";
@@ -844,7 +844,7 @@ export default {
 			// let data = this.configData
 			// data.port_map = data.port_map === "" ? null : data.port_map
 			// data.icon = data.icon === "" ? this.getIconFromImage(data.image) : data.icon
-			data.volumes = isNil(data.volumes) ? [] : data.volumes
+			isNil(data.volumes) ? this.volumes = data.volumes : data.volumes;
 			for (const appKey in data.services) {
 				// data.services[app] = this.preProcessConfigDataItem(data.services[app])
 				// this.$set(data.services, app, this.preProcessConfigDataItem(data.services[app]))
@@ -893,8 +893,11 @@ export default {
 			// configData tans to docker-compose.yml
 			let ConfigData = cloneDeep(val)
 			for (const servicesKey in val.services) {
+				// 数据源
 				let service = val.services[servicesKey]
+				// 输出结果
 				let outputService = ConfigData.services[servicesKey]
+				outputService.mem_limit = service.mem_limit + 'm';
 				outputService.devices = service.devices.map(device => {
 					return `${device.host}:${device.container}`
 				})

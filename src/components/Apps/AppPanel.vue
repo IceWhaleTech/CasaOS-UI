@@ -521,7 +521,7 @@ import business_OpenThirdApp from "@/mixins/app/Business_OpenThirdApp";
 import DockerProgress from "@/components/Apps/progress.js";
 
 import ComposeConfig from "@/components/Apps/ComposeConfig.vue";
-import YAML from "yamljs";
+import YAML from "yaml";
 
 const data = [
 	"AUDIT_CONTROL",
