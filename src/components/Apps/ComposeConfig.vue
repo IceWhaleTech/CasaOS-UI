@@ -86,7 +86,7 @@
 						<input-group v-model="service.devices" :label="$t('Devices')"
 						             :message="$t('No devices now, click “+” to add one.')"
 						             type="device"></input-group>
-						<commands-input v-model="service.cmd" :label="$t('Container Command')"
+						<commands-input v-model="service.command" :label="$t('Container Command')"
 						                :message="$t('No commands now, click “+” to add one.')"></commands-input>
 						
 						<b-field :label="$t('Privileged')">
@@ -94,7 +94,7 @@
 						</b-field>
 						
 						<b-field :label="$t('Memory Limit')">
-							<vue-slider v-model="service.memory" :max="totalMemory" :min="256"></vue-slider>
+							<vue-slider v-model="service.mem_limit" :max="totalMemory" :min="256"></vue-slider>
 						</b-field>
 						
 						<b-field :label="$t('CPU Shares')">
@@ -167,6 +167,7 @@ import VolumesInputGroup from "@/components/forms/VolumesInputGroup.vue";
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
 import YAML from "yamljs";
+// import YAML from "yaml/";
 import upperFirst from "lodash/upperFirst";
 import lowerFirst from "lodash/lowerFirst";
 import isNil from "lodash/isNil";
@@ -240,8 +241,8 @@ export default {
 						ports: [],
 						environment: [],
 						devices: [],
-						cmd: [],
-						memory: 257,
+						command: [],
+						mem_limit: 257,
 						"x-casaos": {
 							"author": "CasaOS Team",
 							"category": "Developer",
@@ -864,10 +865,10 @@ export default {
 			isNil(app.environment) && this.$set(app, "environment", [])
 			isNil(app.devices) && this.$set(app, "devices", [])
 			isNil(app.cap_add) && this.$set(app, "cap_add", [])
-			isNil(app.cmd) && this.$set(app, "cmd", [])
+			isNil(app.command) && this.$set(app, "command", [])
 			app.cpu_shares = (app.cpu_shares === 0 || app.cpu_shares > 99 || isNil(app.cpu_shares)) ? 90 : app.cpu_shares
-			// app.memory = app.memory === 0 ? this.totalMemory : (app.memory / 1048576).toFixed(0)
-			isNil(app.memory) && this.$set(app, "memory", this.totalMemory)
+			// app.mem_limit = app.mem_limit === 0 ? this.totalMemory : (app.mem_limit / 1048576).toFixed(0)
+			isNil(app.mem_limit) && this.$set(app, "mem_limit", this.totalMemory)
 			app.restart = app.restart === "no" ? "unless-stopped" : app.restart
 			app.network_mode = app.network_mode === "default" ? "bridge" : app.network_mode
 			

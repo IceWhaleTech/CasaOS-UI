@@ -99,16 +99,14 @@ const builtInApplications = [
 		id: "1",
 		name: "App Store",
 		icon: require(`@/assets/img/app/appstore.svg`),
-		state: "0",
-		custom_id: "1",
+		status: "running",
 		type: "system"
 	},
 	{
 		id: "2",
 		name: "Files",
 		icon: require(`@/assets/img/app/files.svg`),
-		state: "0",
-		custom_id: "2",
+		status: "running",
 		type: "system"
 	},
 ]

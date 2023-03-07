@@ -87,7 +87,7 @@
 					class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-5 pb-3px img-c">
 					<div class="is-flex is-justify-content-center">
 						<div class="is-relative">
-							<b-image :class="dotClass(item.state, isLoading)" :src="item.icon"
+							<b-image :class="dotClass(item.status, isLoading)" :src="item.icon"
 							         :src-fallback="require('@/assets/img/app/default.svg')" class="is-64x64"
 							         webp-fallback=".jpg" @click.native="openApp(item)"></b-image>
 							<!-- Unstable-->
