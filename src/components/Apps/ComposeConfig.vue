@@ -46,11 +46,11 @@
 					</b-field>
 					
 					<b-field v-if="key === main_name" label="Web UI">
-						<b-select v-model="service['x-casaos'].container.protocol">
+						<b-select v-model="service['x-casaos'].container.scheme">
 							<option value="http">http://</option>
 							<option value="https">https://</option>
 						</b-select>
-						<b-input v-model="service['x-casaos'].container.host" :placeholder="baseUrl"
+						<b-input v-model="service['x-casaos'].container.hostname" :placeholder="baseUrl"
 						         expanded></b-input>
 						<b-autocomplete v-model="service['x-casaos'].container.port_map"
 						                :data="bridgePorts(service)"
@@ -136,7 +136,7 @@
 						<ValidationProvider v-slot="{ errors, valid }" name="Name" rules="rfc1123">
 							<b-field :label="$t('Container Hostname')" :message="$t(errors)"
 							         :type="{ 'is-danger': errors[0], 'is-success': valid }">
-								<b-input v-model="service.host_name" :placeholder="$t('Hostname of app container')"
+								<b-input v-model="service.container_name" :placeholder="$t('Hostname of app container')"
 								         value=""></b-input>
 							</b-field>
 						</ValidationProvider>
@@ -247,11 +247,11 @@ export default {
 							"author": "CasaOS Team",
 							"category": "Developer",
 							"container": {
-								host: '',
-								protocol: 'https',
+								hostname: '',
+								scheme: 'https',
 								"index": "/",
 								"port_map": "3000",
-								host_name: '',
+								name: '',
 								container_name: '',
 								appstore_id: '',
 								"envs": [
@@ -338,11 +338,11 @@ export default {
 			main_app: {
 				// ...this.configData['x-casaos'],
 				container: {
-					host: '',
-					protocol: 'https',
+					hostname: '',
+					scheme: 'https',
 					index: '',
 					port_map: '',
-					host_name: '',
+					// name: '',
 					container_name: '',
 					appstore_id: '',
 				},
@@ -773,8 +773,8 @@ export default {
 			configData['x-casaos'] = Object.assign({
 				// ...this.configData['x-casaos'],
 				container: {
-					host: '',
-					protocol: 'https',
+					hostname: '',
+					scheme: 'http',
 					index: '',
 					port_map: '',
 					host_name: '',

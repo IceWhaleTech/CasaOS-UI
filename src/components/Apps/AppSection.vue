@@ -208,10 +208,10 @@ export default {
 			try {
 				// TODO migrate to v2!!
 				// 缺少store、等信息，缺少之前安装的应用，缺少链接应用
-				// const listRes = await this.$api.container.getMyAppList();
+				const listRes = await this.$api.container.getMyAppList();
 				// const listRes = await this.$api.container.getMyAppListV2();
-				const listRes = await this.$openAPI.appGrid.getAppGrid();
-				const orgAppList = listRes.data.data
+				// const listRes = await this.$openAPI.appGrid.getAppGrid();
+				const orgAppList = listRes.data.data.casaos_apps
 				// const listRes = await this.$api.container.getMyAppListV2();
 				// 缺少的字段
 				// appstore_id
@@ -223,7 +223,7 @@ export default {
 				// slogan \latest \created \protocol \volumes 无用
 				orgAppList.forEach((item) => {
 					item.status = 'running';
-					item.name = item.title.en_US;
+					item.name = item.title && item.title.en_US;
 					item.id = 'syncthing-1';
 					item.protocol = 'http';
 				})
@@ -247,6 +247,7 @@ export default {
 						return sortList.indexOf(a.name) - sortList.indexOf(b.name);
 					});
 				}
+				console.log("casaAppList", casaAppList)
 				this.appList = casaAppList;
 				// save sort info AFTER sort!
 				if (xor(lateSortList, newestSortList).length > 0) {
@@ -261,6 +262,7 @@ export default {
 				this.retryCount = 0;
 				this.appListErrorMessage = ""
 			} catch (error) {
+				console.error(error);
 				this.isLoading = true;
 				if (this.retryCount < 5) {
 					setTimeout(() => {
