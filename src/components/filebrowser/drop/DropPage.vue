@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2023-02-24 17:28:31
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-06 19:30:28
- * @FilePath: /CasaOS-UI/src/components/filebrowser/drop/DropPage.vue
+ * @LastEditTime: 2023-03-07 21:22:09
+ * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\drop\DropPage.vue
  * @Description: 
  * 
  * Copyright (c) 2023 by IceWhale, All Rights Reserved. 
@@ -27,9 +27,12 @@
         <!-- Contents Start -->
         <div class="action-area is-flex-grow-1 is-relative" :class="areaClass" :style="cssVariables">
             <div class="contents">
-                <drop-item v-for="(item, index) in peersArray" :key="item.id" :index="initIndexArray[index]"
-                    :center="centerPos" :showIndex="initIndexArray[index]" :radius="bigRadius" :isFloat="isDesktop"
-                    :isSelf="item.id === selfId" :customClass="areaClass" :device="item" @showed="isFirstIn = false" />
+                <transition-group name="list-complete" tag="div">
+                    <drop-item v-for="(item, index) in peersArray" :key="item.id" :index="initIndexArray[index]"
+                        :center="centerPos" :showIndex="initIndexArray[index]" :radius="bigRadius" :isFloat="isDesktop"
+                        :isSelf="item.id === selfId" :customClass="areaClass" :device="item" @showed="isFirstIn = false"
+                        class="list-complete-item" />
+                </transition-group>
                 <drop-add-button :index="peersArray.length" :radius="bigRadius" :center="centerPos" :isFloat="isDesktop" />
                 <!-- Cricle BG Start -->
                 <drop-bg v-if="isDesktop" />
@@ -47,8 +50,9 @@
 <script>
 import { ServerConnection, PeersManager, Events } from "./Network.js"
 import { saveAs } from "file-saver";
+import { v4 as uuidv4 } from 'uuid';
 // import shuffle from "lodash/shuffle";
-import csnackbar from "../components/snackbar/index.js";
+// import csnackbar from "../components/snackbar/index.js";
 export default {
     name: "drop-page",
     components: {
@@ -61,6 +65,7 @@ export default {
     data() {
         return {
             isFirstIn: true,
+            slefPeer: {},
             bigRadius: 100,
             bottomGap: 144,
             contentsWidth: 0,
@@ -71,7 +76,7 @@ export default {
             },
             progress: 0,
             deviceType: "desktop",
-            initIndexArray: [4, 0, 2, 3, 9, 1, 8, 5, 6, 7],
+            initIndexArray: [7, 4, 2, 3, 8, 9, 1, 5, 0, 8],
             peersArray: [],
             selfId: "",
             filesQueue: [],
@@ -103,10 +108,12 @@ export default {
         }
     },
     created() {
-        console.log(this.initIndexArray);
         this.selfId = localStorage.getItem("peerid");
+        console.log("created", this.selfId);
     },
     beforeDestroy() {
+        console.log("beforeDestroy");
+        Events.fire("pagehide");
         window.removeEventListener('resize', this.resize);
         document.ondragover = null; // 拖拽进入
     },
@@ -115,11 +122,15 @@ export default {
         this.resize();
         document.ondragover = function (e) { e.preventDefault(); }; // 拖拽进入
 
-        setTimeout(() => {
-            this.initServer();
-        }, 1000);
+        this.$nextTick(() => {
+            setTimeout(() => {
+                this.initServer();
+            }, 1000);
+        })
+
     },
     methods: {
+        // Init Ws Server
         initServer() {
             // const access_token = localStorage.getItem("access_token");
             // const url = `${this.$wsProtocol}//${this.$baseURL}/v1/file/ws?token=${access_token}&peer=${this.selfId}`;
@@ -143,7 +154,7 @@ export default {
             Events.on("notify-user", this.handleNotifyUser);
         },
 
-        // Handle file received
+        // Handle file received (from other peer)
         handleFileReceived(e) {
             console.log("file-received", e.detail);
             this.nextFile(e.detail);
@@ -169,13 +180,12 @@ export default {
         },
 
         displayFile(file) {
-
             this.$buefy.snackbar.open({
                 indefinite: true,
                 message: file.name + " is received.",
                 type: 'is-white',
-                cancelText: 'Ignore',
-                actionText: 'Save',
+                cancelText: this.$t('Ignore'),
+                actionText: this.$t('Save'),
                 position: 'is-bottom',
                 container: '#drop-page',
                 onAction: () => {
@@ -191,7 +201,7 @@ export default {
         },
 
 
-        // Handle notify user
+        // Handle notify user (for sender)
         handleNotifyUser(e) {
             this.$buefy.toast.open({
                 duration: 2000,
@@ -203,6 +213,7 @@ export default {
 
         // handelPeers
         handlePeers(peers) {
+            console.log("peers", peers);
             this.peersArray = peers.detail;
             // Only listen to peer join event once
             Events.off("peers", this.handlePeers);
@@ -210,12 +221,31 @@ export default {
 
         // Handle Self Joined
         handleSelfJoined(e) {
-            localStorage.setItem("peerid", e.detail.message.id);
+            const message = e.detail.message;
+            const uuid = localStorage.getItem("peerid") || uuidv4();
+            console.log(uuid);
+            localStorage.setItem("peerid", uuid);
+            this.selfPeer = {
+                "id": uuid,
+                "name": {
+                    "os": "Windows",
+                    "browser": "Edge",
+                    "deviceName": message.deviceName,
+                    "displayName": message.displayName
+                },
+                "rtcSupported": true
+            }
+            const even = (element) => element.id === uuid;
+            const isInlist = this.peersArray.some(even);
+            if(!isInlist) {
+                this.peersArray.push(this.selfPeer);
+            }
         },
 
         // Handle peer joined
         handlePeerJoined(e) {
             const peer = e.detail;
+            console.log("peer-joined", peer);
             const even = (element) => element.id === peer.id;
             const isInlist = this.peersArray.some(even);
             if (!isInlist) {
@@ -232,11 +262,16 @@ export default {
         },
         // Handle peer left
         handlePeerleft(e) {
-            this.peersArray.forEach(element => {
-                if (element.id == e.detail) {
-                    element.offline = true;
-                }
+            this.peersArray = this.peersArray.filter((peer) => {
+                return peer.id !== e.detail;
             });
+            console.log(this.peersArray);
+            // this.$forceUpdate();
+            // this.peersArray.forEach(element => {
+            //     if (element.id == e.detail) {
+            //         element.offline = true;
+            //     }
+            // });
         },
         // handleResize
         resize() {
@@ -302,6 +337,15 @@ export default {
             flex-wrap: wrap;
             flex-direction: row;
         }
+    }
+
+    .list-complete-item {
+        transition: all 0.6s;
+    }
+
+    .list-complete-enter,
+    .list-complete-leave-to {
+        opacity: 0;
     }
 }
 </style>

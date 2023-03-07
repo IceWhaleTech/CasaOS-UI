@@ -80,6 +80,7 @@ export class ServerConnection {
         this.send({ type: 'disconnect' });
         this._socket.onclose = null;
         this._socket.close();
+        Events.fire('close-connection', 'Disconnected');
     }
 
     _onDisconnect() {
@@ -248,6 +249,7 @@ class RTCPeer extends Peer {
         super(serverConnection, peerId);
         if (!peerId) return; // we will listen for a caller
         this._connect(peerId, true);
+        Events.on('close-connection', () => this._closeConnection());
     }
 
     _connect(peerId, isCaller) {
@@ -267,6 +269,12 @@ class RTCPeer extends Peer {
         this._conn.onicecandidate = e => this._onIceCandidate(e);
         this._conn.onconnectionstatechange = e => this._onConnectionStateChange(e);
         this._conn.oniceconnectionstatechange = e => this._onIceConnectionStateChange(e);
+    }
+
+    _closeConnection() {
+        if (!this._conn) return;
+        this._conn.close();
+        this._conn = null;
     }
 
     _openChannel() {

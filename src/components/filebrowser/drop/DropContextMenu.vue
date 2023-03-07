@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2023-02-28 17:07:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-05 14:46:41
+ * @LastEditTime: 2023-03-07 22:44:09
  * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\drop\DropContextMenu.vue
  * @Description: 
  * 
@@ -15,10 +15,17 @@
                 :position="'is-' + verticalPos + '-' + horizontalPos" :animation="ani" :mobile-modal="false">
                 <!-- Blank Start -->
                 <template>
-                    <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center" key="system-context11"
-                        @click="showChangeWallpaperModal">
-                        <b-icon pack="casa" icon="picture" class="mr-1"></b-icon> {{ $t('Sending files') }}
+                    <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center has-text-danger"
+                        key="drop-context2" v-if="showCancel">
+                        <b-icon pack="casa" icon="close" class="mr-1 is-16x16" custom-size="casa-16px" /> {{ $t(cancelText) }}
                     </b-dropdown-item>
+                    <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center" key="drop-context1" v-else>
+                        <b-upload v-model="files" multiple
+                            class="is-clickable has-text-full-03 is-flex is-align-items-center" @input="activeDropUpload">
+                            <b-icon pack="casa" icon="view" class="mr-1 is-16x16" custom-size="casa-16px" /> {{ $t('Sending files') }}
+                        </b-upload>
+                    </b-dropdown-item>
+
                 </template>
                 <!-- Blank End -->
             </b-dropdown>
@@ -29,6 +36,7 @@
 <script>
 import { mixin } from '@/mixins/mixin';
 import events from '@/events/events';
+import { Events } from "./Network.js"
 export default {
     name: "drop-context-menu",
     mixins: [mixin],
@@ -39,26 +47,35 @@ export default {
             x: Number,
             y: Number,
             ani: "fade1",
+            showCancel: false,
+            files: [],
+            deviceId: undefined,
+            sender: undefined
         }
     },
 
     computed: {
         close() {
             return this.item == undefined
-        }
+        },
+        cancelText() {
+            return this.deviceId == this.sender ? 'Cancel Send' : 'Ignore'
+        },
+    },
+    beforeDestroy() {
+        this.$EventBus.$off(events.SHOW_DROP_CONTEXT_MENU);
+        Events.on("peer-left", this.handlePeerleft);
     },
     mounted() {
         console.log("init");
-        this.$EventBus.$on(events.SHOW_DROP_CONTEXT_MENU, (data) => {
-            console.log(data);
-            this.open(data)
-        });
-
-
+        this.$EventBus.$on(events.SHOW_DROP_CONTEXT_MENU, this.open);
+        Events.on("peer-left", this.handlePeerleft);
     },
     methods: {
         open(event) {
-
+            this.showCancel = event.isSending
+            this.deviceId = event.deviceId
+            this.sender = event.sender
             this.$refs.dropDown.isActive = false
             this.$nextTick(() => {
                 this.x = event.clientX
@@ -67,10 +84,19 @@ export default {
                 this.horizontalPos = rightOffset > 0 ? "right" : "left"
                 this.$refs.dropDown.isActive = true;
             })
-
         },
-        showChangeWallpaperModal() {
-            this.$EventBus.$emit(events.SHOW_CHANGE_WALLPAPER_MODAL);
+        activeDropUpload() {
+            const event = {
+                deviceId: this.deviceId,
+                files: this.files
+            }
+            this.$EventBus.$emit(events.ACTIVE_DROP_UPLOAD, event);
+            this.files = []
+        },
+        handlePeerleft(peerId) {
+            if (this.deviceId == peerId.detail) {
+                this.$refs.dropDown.isActive = false
+            }
         }
 
     },
@@ -81,5 +107,6 @@ export default {
 .drop-context-menu {
     position: fixed;
     z-index: 800;
-}
-</style>
+
+
+}</style>

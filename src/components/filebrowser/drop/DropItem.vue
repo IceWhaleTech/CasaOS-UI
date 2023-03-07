@@ -2,7 +2,8 @@
     <div class="drop-item contextmenu-canvas" :class="[{ 'is-floating': isFloat, 'disabled': isDisabled }, customClass]"
         :style="positionStyle" @dragenter="onDrag" @dragover="onDrag" @dragleave="onDrop" @dragend="onDrop" @drop="onDrop">
 
-        <b-upload v-model="dropFiles" multiple drag-drop :disabled="isSelf || device.offline" @input="fileDroped">
+        <b-upload v-model="dropFiles" multiple drag-drop :disabled="isSelf || device.offline || uploadDisabled"
+            @input="fileDroped">
             <b-tooltip :label="tipText" type="is-grey" :position="tipPosition" :always="tipActive" multilined
                 size="is-small">
                 <div ref="circleArea" class="circle-area" :class="{ 'drag-over': dragOver }"
@@ -85,6 +86,7 @@ export default {
             progress: 0,
             totalfiles: 0,
             receivedfiles: 0,
+            uploadDisabled: false,
         }
     },
     computed: {
@@ -139,6 +141,8 @@ export default {
     },
     beforeDestroy() {
         console.log(this.device.id, "leave");
+        Events.off("file-progress", this.handleFileProgress);
+        this.$EventBus.$off(events.ACTIVE_DROP_UPLOAD);
     },
     watch: {
         device: {
@@ -151,6 +155,7 @@ export default {
     },
 
     mounted() {
+        gsap.registerPlugin(CustomEase)
         const esaeFunction = CustomEase.create("custom", "M0,0 C0.237,0.368 0.128,1.112 0.498,1.112 0.714,1.112 0.813,1.005 1,1 ");
 
         gsap.to(this.$refs.circleArea, {
@@ -165,10 +170,6 @@ export default {
 
         Events.on("file-progress", this.handleFileProgress);
 
-        Events.on('file-received', () => {
-            // console.log("ddd", this.totalfiles, this.receivedfiles);
-
-        });
 
         Events.on("text-received", (e) => {
             const message = e.detail;
@@ -177,8 +178,16 @@ export default {
             console.log("text-received", message.text);
         });
 
+        this.$EventBus.$on(events.ACTIVE_DROP_UPLOAD, this.handleUpload);
+
     },
     methods: {
+        handleUpload(e) {
+            if (e.files.length == 0) return;
+            if (e.deviceId == this.device.id) {
+                this.fileDroped(e.files);
+            }
+        },
         handleFileProgress(e) {
             const progress = e.detail
             const peerId = progress.sender || progress.recipient;
@@ -186,13 +195,17 @@ export default {
             this.totalfiles = progress.files.length;
             this.receivedfiles = progress.filesQueue;
             this.progress = progress.progress * 100;
+            this.uploadDisabled = true;
             if (progress.progress === 1) {
                 this.progress = 0;
+                this.uploadDisabled = false;
             }
         },
         showContextMenu(e) {
-            if (this.device.offline) return;
-            console.log(this.device.id);
+            if (this.device.offline || this.isSelf) return;
+            e.isSending = this.uploadDisabled;
+            e.deviceId = this.device.id;
+            e.sender = localStorage.getItem('peerId');
             this.$EventBus.$emit(events.SHOW_DROP_CONTEXT_MENU, e);
         },
         onDrop(e) {
@@ -244,6 +257,12 @@ export default {
         pointer-events: none;
     }
 
+    &:hover {
+        .up-layer {
+            transform: scale(1.1);
+        }
+    }
+
 
     // transition: all 0.3s ease-in-out;
     .upload {
@@ -273,6 +292,7 @@ export default {
         // transition: all 0.2s ease-in-out;
         transform-origin: center;
         transform: scaleX(0) scaleY(0);
+
 
 
 

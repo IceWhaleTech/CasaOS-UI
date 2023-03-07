@@ -24,5 +24,6 @@ const events = {
     REFRESH_DISKLIST: 'refreshDiskList',
     AFTER_FILES_ENTER: 'afterFilesEnter',
     SHOW_DROP_CONTEXT_MENU: 'showDropContextMenu',
+    ACTIVE_DROP_UPLOAD: 'activeDropUpload',
 };
 export default events;

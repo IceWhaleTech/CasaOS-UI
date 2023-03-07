@@ -1,7 +1,7 @@
 <!--
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-01 14:03:24
- * @FilePath: /CasaOS-UI/src/components/filebrowser/FilePanel.vue
+ * @LastEditTime: 2023-03-07 16:33:11
+ * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\FilePanel.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -65,7 +65,8 @@
 
             <!-- Bottom Action Start -->
             <div class="bottom-area">
-              <drop-entry-button :active="pageType == `drop`" :title="$t('FilesDrop')" @open="showDropPage"></drop-entry-button>
+              <drop-entry-button :active="pageType == `drop`" :title="$t('FilesDrop')"
+                @open="showDropPage"></drop-entry-button>
               <share-entry-button :active="pageType == `share`" @open="showSharedList"></share-entry-button>
             </div>
             <!-- Bottom Action End -->
@@ -73,126 +74,135 @@
           <!-- NavBar Start -->
 
           <!-- Main Content Start -->
-          <div v-if="pageType == `file`" class="content is-flex-grow-1">
-            <uploader ref="uploader" :options="options" class="uploader-example">
-              <uploader-unsupport></uploader-unsupport>
-              <!-- Header Start -->
-              <header class="modal-card-head">
-                <div id="bread-container" class="is-flex-grow-1 is-flex breadcrumb-container">
-                  <file-breadcrumb></file-breadcrumb>
-                  <!-- <b-input placeholder="Search in folder..." size="is-small" rounded></b-input> -->
-                </div>
-                <div class="is-flex is-align-items-center">
-
-                  <!-- Paste Button Start -->
-                  <b-button v-if="hasPasteData" :label="$t('Paste')" :loading="isPasting" class="mr-3"
-                    icon-left="content-paste" rounded size="is-small" type="is-success" @click="paste('overwrite')" />
-                  <!-- Paste Button End -->
-
-                  <!-- Operation Status Start-->
-                  <operation-status-bar></operation-status-bar>
-                  <!-- Operation Status End-->
-
-                  <!-- Upload Button Start -->
-                  <global-action-button @showNewFileModal="showNewFileModal"
-                    @showNewFolderModal="showNewFolderModal"></global-action-button>
-                  <!-- Upload Button End -->
-
-                  <!--  Close Button Start -->
-                  <div class="is-flex is-align-items-center modal-close-container modal-close-container-line ">
-                    <button class="delete" type="button" @click="$emit('close')" />
+          <template v-if="pageType == `file`">
+            <div class="content is-flex-grow-1">
+              <uploader ref="uploader" :options="options" class="uploader-example">
+                <uploader-unsupport></uploader-unsupport>
+                <!-- Header Start -->
+                <header class="modal-card-head">
+                  <div id="bread-container" class="is-flex-grow-1 is-flex breadcrumb-container">
+                    <file-breadcrumb></file-breadcrumb>
+                    <!-- <b-input placeholder="Search in folder..." size="is-small" rounded></b-input> -->
                   </div>
-                  <!--  Close Button End -->
+                  <div class="is-flex is-align-items-center">
 
-                </div>
-              </header>
-              <!-- Header End -->
+                    <!-- Paste Button Start -->
+                    <b-button v-if="hasPasteData" :label="$t('Paste')" :loading="isPasting" class="mr-3"
+                      icon-left="content-paste" rounded size="is-small" type="is-success" @click="paste('overwrite')" />
+                    <!-- Paste Button End -->
 
-              <!-- Tool Bar Start -->
-              <div v-if="isEmpty" class="tool-bar is-flex mb-2">
-                <div class=" is-flex-grow-1 has-text-left is-flex  is-align-items-center">
-                  <b-field class="ml-3 is-flex is-size-14px mb-0">
-                    <b-checkbox v-model="isSelectAll" :class="selectState" size="is-small" @input="handleSelect">
-                      {{
-                        selectState != "none" ? $t("select-items", selectLabel) : $t("total-items",
-                          selectLabel)
-                      }}
-                    </b-checkbox>
-                  </b-field>
-                </div>
-                <div class="view-btns is-flex-shrink-0">
-                  <b-tooltip :label="$t('Change View')" position="is-left" type="is-dark">
-                    <p class="is-clickable none-line-height" role="button" @click="changeView">
-                      <b-icon :icon="viewIcon"></b-icon>
-                    </p>
-                  </b-tooltip>
-                </div>
-              </div>
-              <!-- Tool Bar End -->
+                    <!-- Operation Status Start-->
+                    <operation-status-bar></operation-status-bar>
+                    <!-- Operation Status End-->
 
-              <!-- List View Start -->
-              <div id="dropTarget">
+                    <!-- Upload Button Start -->
+                    <global-action-button @showNewFileModal="showNewFileModal"
+                      @showNewFolderModal="showNewFolderModal"></global-action-button>
+                    <!-- Upload Button End -->
 
-                <!-- Drag and Drop Mask Start -->
-                <div v-if="isDragIn" class="drag-mask is-flex is-align-items-flex-end is-flex-direction-row">
-                  <div class="mb-6">
-                    <div class="upload-icon">
-                      <b-icon icon="arrow-up" size="is-medium" type="is-white"></b-icon>
+                    <!--  Close Button Start -->
+                    <div class="is-flex is-align-items-center modal-close-container modal-close-container-line ">
+                      <button class="delete" type="button" @click="$emit('close')" />
                     </div>
-                    <p class="has-text-primary">
-                      {{ $t('Upload to') }} {{ currentPathName }}
-                    </p>
+                    <!--  Close Button End -->
+
                   </div>
-                </div>
-                <!-- Drag and Drop Mask End -->
+                </header>
+                <!-- Header End -->
 
-                <component :is="listView" ref="listview" v-model="listData" :isLoading="isLoading"
-                  @change="handelListChange" @gotoFolder="getFileList" @reload="reload"
-                  @showDetailModal="showDetailModal">
-                  <empty-holder v-if="isEmpty" @newFile="showNewFileModal" @newFolder="showNewFolderModal"></empty-holder>
-                  <error-holder v-else :error="errorMsg"></error-holder>
-                </component>
-
-              </div>
-              <!-- List View End -->
-
-              <!-- Upload List Start-->
-              <div v-show="showUploadList" class="upload-list">
-                <b-collapse ref="uploadList" animation="slide1" aria-id="contentIdForA11y3" class="card">
-                  <template #trigger="props">
-                    <div :aria-expanded="props.open" aria-controls="contentIdForA11y3" class="card-header" role="button">
-                      <p class="card-header-title">
-                        <b-icon :icon="props.open ? 'chevron-down' : 'chevron-up'" class="mr-2"></b-icon>
-                        {{ $t(uploaderListHeaderText) }}
+                <!-- Tool Bar Start -->
+                <div v-if="isEmpty" class="tool-bar is-flex mb-2">
+                  <div class=" is-flex-grow-1 has-text-left is-flex  is-align-items-center">
+                    <b-field class="ml-3 is-flex is-size-14px mb-0">
+                      <b-checkbox v-model="isSelectAll" :class="selectState" size="is-small" @input="handleSelect">
+                        {{
+                          selectState != "none" ? $t("select-items", selectLabel) : $t("total-items",
+                            selectLabel)
+                        }}
+                      </b-checkbox>
+                    </b-field>
+                  </div>
+                  <div class="view-btns is-flex-shrink-0">
+                    <b-tooltip :label="$t('Change View')" position="is-left" type="is-dark">
+                      <p class="is-clickable none-line-height" role="button" @click="changeView">
+                        <b-icon :icon="viewIcon"></b-icon>
                       </p>
-                      <a class="card-header-icon" @click.prevent="closeUploaderList">
-                        <b-icon icon="close"></b-icon>
-                      </a>
-                    </div>
-                  </template>
+                    </b-tooltip>
+                  </div>
+                </div>
+                <!-- Tool Bar End -->
 
-                  <div class="card-content scrollbars-light">
-                    <div class="content">
-                      <uploader-list></uploader-list>
+                <!-- List View Start -->
+                <div id="dropTarget">
+
+                  <!-- Drag and Drop Mask Start -->
+                  <div v-if="isDragIn" class="drag-mask is-flex is-align-items-flex-end is-flex-direction-row">
+                    <div class="mb-6">
+                      <div class="upload-icon">
+                        <b-icon icon="arrow-up" size="is-medium" type="is-white"></b-icon>
+                      </div>
+                      <p class="has-text-primary">
+                        {{ $t('Upload to') }} {{ currentPathName }}
+                      </p>
                     </div>
                   </div>
+                  <!-- Drag and Drop Mask End -->
 
-                </b-collapse>
-              </div>
-              <!-- Upload List End-->
+                  <component :is="listView" ref="listview" v-model="listData" :isLoading="isLoading"
+                    @change="handelListChange" @gotoFolder="getFileList" @reload="reload"
+                    @showDetailModal="showDetailModal">
+                    <empty-holder v-if="isEmpty" @newFile="showNewFileModal"
+                      @newFolder="showNewFolderModal"></empty-holder>
+                    <error-holder v-else :error="errorMsg"></error-holder>
+                  </component>
 
-            </uploader>
-            <!-- Toolbar Start -->
-            <operation-toolbar v-model="isToolbarShow" @close="handleClose" @copy="handleCopy" @download="handleDownload"
-              @move="handleMove" @remove="handleRemove"></operation-toolbar>
-            <!-- Toolbar End -->
-          </div>
+                </div>
+                <!-- List View End -->
+
+                <!-- Upload List Start-->
+                <div v-show="showUploadList" class="upload-list">
+                  <b-collapse ref="uploadList" animation="slide1" aria-id="contentIdForA11y3" class="card">
+                    <template #trigger="props">
+                      <div :aria-expanded="props.open" aria-controls="contentIdForA11y3" class="card-header"
+                        role="button">
+                        <p class="card-header-title">
+                          <b-icon :icon="props.open ? 'chevron-down' : 'chevron-up'" class="mr-2"></b-icon>
+                          {{ $t(uploaderListHeaderText) }}
+                        </p>
+                        <a class="card-header-icon" @click.prevent="closeUploaderList">
+                          <b-icon icon="close"></b-icon>
+                        </a>
+                      </div>
+                    </template>
+
+                    <div class="card-content scrollbars-light">
+                      <div class="content">
+                        <uploader-list></uploader-list>
+                      </div>
+                    </div>
+
+                  </b-collapse>
+                </div>
+                <!-- Upload List End-->
+
+              </uploader>
+              <!-- Toolbar Start -->
+              <operation-toolbar v-model="isToolbarShow" @close="handleClose" @copy="handleCopy"
+                @download="handleDownload" @move="handleMove" @remove="handleRemove"></operation-toolbar>
+              <!-- Toolbar End -->
+            </div>
+          </template>
+
           <!-- Share Page Start -->
-          <share-list-page v-else-if="pageType == `share`" ref="shareList" @close="$emit('close')"></share-list-page>
+          <template v-else-if="pageType == `share`">
+            <share-list-page ref="shareList" @close="$emit('close')"></share-list-page>
+          </template>
           <!-- Share Page End -->
 
           <!-- Drop Page Start -->
-          <drop-page v-else-if="pageType == `drop`" ref="dropPage" @close="$emit('close')"> </drop-page>
+          <template v-else-if="pageType == `drop`">
+            <drop-page ref="dropPage" @close="$emit('close')"> </drop-page>
+          </template>
           <!-- Drop Page End -->
         </template>
         <!-- Main Content End -->
@@ -245,7 +255,7 @@ import MountActionButton from './components/MountActionButton.vue';
 import MergeStorages from "@/components/Storage/MergeStorages.vue";
 
 // Drop
-import DropPage from './drop/DropPage.vue';
+
 import DropEntryButton from './drop/DropEntryButton.vue';
 
 export default {
@@ -280,7 +290,7 @@ export default {
     MountList,
     MountActionButton,
     // Drop
-    DropPage,
+    DropPage: () => import("./drop/DropPage.vue"),
     DropEntryButton
   },
   data() {
@@ -450,12 +460,25 @@ export default {
     },
 
     destroyedAction() {
-      this.uploaderInstance.off('dragover')
-      this.uploaderInstance.off('uploadStart')
+      if(this.pageType == "file") {
+        this.uploaderInstance.off('fileSuccess')
+        this.uploaderInstance.off('fileError')
+        this.uploaderInstance.off('fileProgress')
+        this.uploaderInstance.off('dragleave')
+        this.uploaderInstance.off('dragover')
+        this.uploaderInstance.off('uploadStart')
+        
+        this.$store.commit('SET_OPERATE_OBJECT', null)
+        document.onpaste = null;
+        document.onkeyup = null;
+      }
       document.removeEventListener('contextmenu', this.hideContextMenu)
-      this.$store.commit('SET_OPERATE_OBJECT', null)
-      document.onpaste = null;
-      document.onkeyup = null;
+      // this.uploaderInstance.off('dragover')
+      // this.uploaderInstance.off('uploadStart')
+      // document.removeEventListener('contextmenu', this.hideContextMenu)
+      // this.$store.commit('SET_OPERATE_OBJECT', null)
+      // document.onpaste = null;
+      // document.onkeyup = null;
     },
 
     showSharedList() {
