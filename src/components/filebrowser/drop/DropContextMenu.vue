@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2023-02-28 17:07:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-07 22:44:09
- * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\drop\DropContextMenu.vue
+ * @LastEditTime: 2023-03-08 17:29:13
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/drop/DropContextMenu.vue
  * @Description: 
  * 
  * Copyright (c) 2023 by IceWhale, All Rights Reserved. 
@@ -16,8 +16,9 @@
                 <!-- Blank Start -->
                 <template>
                     <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center has-text-danger"
-                        key="drop-context2" v-if="showCancel">
-                        <b-icon pack="casa" icon="close" class="mr-1 is-16x16" custom-size="casa-16px" /> {{ $t(cancelText) }}
+                        key="drop-context2" @click="cancel" v-if="showCancel">
+                        <b-icon pack="casa" icon="close" class="mr-1 is-16x16" custom-size="casa-16px" /> {{ $t(cancelText)
+                        }}
                     </b-dropdown-item>
                     <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center" key="drop-context1" v-else>
                         <b-upload v-model="files" multiple
@@ -64,10 +65,9 @@ export default {
     },
     beforeDestroy() {
         this.$EventBus.$off(events.SHOW_DROP_CONTEXT_MENU);
-        Events.on("peer-left", this.handlePeerleft);
+        Events.off("peer-left", this.handlePeerleft);
     },
     mounted() {
-        console.log("init");
         this.$EventBus.$on(events.SHOW_DROP_CONTEXT_MENU, this.open);
         Events.on("peer-left", this.handlePeerleft);
     },
@@ -84,6 +84,14 @@ export default {
                 this.horizontalPos = rightOffset > 0 ? "right" : "left"
                 this.$refs.dropDown.isActive = true;
             })
+        },
+        cancel() {
+            this.$refs.dropDown.isActive = false;
+            console.log("cancel");
+            Events.fire('send-text', {
+                to: this.deviceId,
+                text: 'cancel'
+            });
         },
         activeDropUpload() {
             const event = {
@@ -109,4 +117,10 @@ export default {
     z-index: 800;
 
 
-}</style>
+
+
+
+
+
+}
+</style>

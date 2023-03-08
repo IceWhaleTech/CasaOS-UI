@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2023-03-03 15:03:34
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-06 14:38:29
+ * @LastEditTime: 2023-03-08 17:38:04
  * @FilePath: /CasaOS-UI/src/components/filebrowser/drop/DropAddButton.vue
  * @Description: 
  * 
@@ -64,9 +64,14 @@ export default {
             default: true
         },
     },
+    data() {
+        return {
+            posIndex: 2
+        }
+    },
     computed: {
         tipPosition() {
-            if (this.index < 10) {
+            if (this.index < this.posIndex) {
                 if (this.index % 5 == 4) {
                     return "is-bottom-right";
                 } else if (this.index % 5 == 0) {
@@ -79,7 +84,7 @@ export default {
             }
         },
         positionStyle() {
-            if (this.index < 10) {
+            if (this.index < this.posIndex) {
                 const ratio = 1.86;
                 const angel = this.index < 5 ? 30 * (this.index + 1) : 45 * (this.index % 5);
                 const realRadius = this.index < 5 ? this.radius : this.radius / ratio;
@@ -98,13 +103,18 @@ export default {
             }
         },
         iconSize() {
-            return this.index < 10 ? "is-36x36" : "is-24x24";
+            return this.index < this.posIndex ? "is-36x36" : "is-24x24";
         },
         cssVariables() {
             return {
-                "--item-size": this.index < 10 ? "80px" : "48px",
+                "--item-size": this.index < this.posIndex ? "80px" : "48px",
             }
         },
+    },
+    watch: {
+        index(newValue) {
+            console.log(newValue);
+        }
     },
 
     created() {
@@ -130,6 +140,7 @@ export default {
     border-radius: 50%;
     box-shadow: 0px 16px 32px -8px rgba(28, 31, 34, 0.12);
     background-color: #FFFFFF;
+
     &.is-floating {
         .circle-area {
             border: 1px solid transparent;

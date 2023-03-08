@@ -1,5 +1,6 @@
 <template>
-    <div class="drop-item contextmenu-canvas" :class="[{ 'is-floating': isFloat, 'disabled': isDisabled }, customClass]"
+    <div class="drop-item contextmenu-canvas"
+        :class="[{ 'is-floating': isFloat, 'disabled': isDisabled, 'can-upload': !uploadDisabled }, customClass]"
         :style="positionStyle" @dragenter="onDrag" @dragover="onDrag" @dragleave="onDrop" @dragend="onDrop" @drop="onDrop">
 
         <b-upload v-model="dropFiles" multiple drag-drop :disabled="isSelf || device.offline || uploadDisabled"
@@ -19,7 +20,7 @@
                 </div>
             </b-tooltip>
             <div ref="deviceName" class="device-name has-text-full-03">
-                {{ device.name.displayName }}
+                {{ device.name.displayName + index }}
             </div>
         </b-upload>
 
@@ -178,7 +179,15 @@ export default {
             console.log("text-received", message.text);
         });
 
+        Events.on("close-connection", (e) => {
+            console.log(e);
+            this.progress = 0;
+            this.uploadDisabled = false;
+        });
+
         this.$EventBus.$on(events.ACTIVE_DROP_UPLOAD, this.handleUpload);
+
+        console.log(this.index);
 
     },
     methods: {
@@ -248,6 +257,14 @@ export default {
     transform-origin: center;
 }
 
+.can-upload {
+    &:hover {
+        .up-layer {
+            transform: scale(1.1);
+        }
+    }
+}
+
 .drop-item {
     width: 5rem;
     height: 5rem;
@@ -256,13 +273,6 @@ export default {
     &.disabled {
         pointer-events: none;
     }
-
-    &:hover {
-        .up-layer {
-            transform: scale(1.1);
-        }
-    }
-
 
     // transition: all 0.3s ease-in-out;
     .upload {

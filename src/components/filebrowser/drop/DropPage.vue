@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2023-02-24 17:28:31
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-07 21:22:09
- * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\drop\DropPage.vue
+ * @LastEditTime: 2023-03-08 19:11:15
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/drop/DropPage.vue
  * @Description: 
  * 
  * Copyright (c) 2023 by IceWhale, All Rights Reserved. 
@@ -27,13 +27,14 @@
         <!-- Contents Start -->
         <div class="action-area is-flex-grow-1 is-relative" :class="areaClass" :style="cssVariables">
             <div class="contents">
-                <transition-group name="list-complete" tag="div">
+                <transition-group name="list-complete" tag="div" class="contents">
                     <drop-item v-for="(item, index) in peersArray" :key="item.id" :index="initIndexArray[index]"
                         :center="centerPos" :showIndex="initIndexArray[index]" :radius="bigRadius" :isFloat="isDesktop"
                         :isSelf="item.id === selfId" :customClass="areaClass" :device="item" @showed="isFirstIn = false"
                         class="list-complete-item" />
                 </transition-group>
-                <drop-add-button :index="peersArray.length" :radius="bigRadius" :center="centerPos" :isFloat="isDesktop" />
+                <drop-add-button :index="peersArray.length" :radius="bigRadius" :center="centerPos" :isFloat="isDesktop"
+                    v-if="showAddButton" />
                 <!-- Cricle BG Start -->
                 <drop-bg v-if="isDesktop" />
                 <!-- Circle Bg End -->
@@ -76,11 +77,12 @@ export default {
             },
             progress: 0,
             deviceType: "desktop",
-            initIndexArray: [7, 4, 2, 3, 8, 9, 1, 5, 0, 8],
+            initIndexArray: [8, 6, 2, 3, 1, 7, 4, 0, 9, 5],
             peersArray: [],
             selfId: "",
             filesQueue: [],
             busy: false,
+            showAddButton: false
         }
     },
     computed: {
@@ -109,7 +111,7 @@ export default {
     },
     created() {
         this.selfId = localStorage.getItem("peerid");
-        console.log("created", this.selfId);
+
     },
     beforeDestroy() {
         console.log("beforeDestroy");
@@ -118,14 +120,22 @@ export default {
         document.ondragover = null; // 拖拽进入
     },
     mounted() {
+
         window.addEventListener('resize', this.resize);
         this.resize();
         document.ondragover = function (e) { e.preventDefault(); }; // 拖拽进入
+
+        if (this.deviceType != "desktop") {
+            this.initIndexArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        }
 
         this.$nextTick(() => {
             setTimeout(() => {
                 this.initServer();
             }, 1000);
+            setTimeout(() => {
+                this.showAddButton = true
+            }, 1500)
         })
 
     },
@@ -237,7 +247,7 @@ export default {
             }
             const even = (element) => element.id === uuid;
             const isInlist = this.peersArray.some(even);
-            if(!isInlist) {
+            if (!isInlist) {
                 this.peersArray.push(this.selfPeer);
             }
         },
@@ -315,6 +325,10 @@ export default {
 .action-area {
     overflow: hidden;
 
+    .is-full-width {
+        width: 100%;
+    }
+
     &.desktop {
         .contents {
             position: absolute;
@@ -336,6 +350,7 @@ export default {
             display: flex;
             flex-wrap: wrap;
             flex-direction: row;
+            width: 100%;
         }
     }
 

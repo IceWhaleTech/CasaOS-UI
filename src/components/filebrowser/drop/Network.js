@@ -271,7 +271,8 @@ class RTCPeer extends Peer {
         this._conn.oniceconnectionstatechange = e => this._onIceConnectionStateChange(e);
     }
 
-    _closeConnection() {
+    _closeConnection(e) {
+        console.log(e);
         if (!this._conn) return;
         this._conn.close();
         this._conn = null;
@@ -430,6 +431,7 @@ export class PeersManager {
     }
 
     _onSendText(message) {
+        console.log("send text", message);
         this.peers[message.to].sendText(message.text);
     }
 
