@@ -19,7 +19,7 @@
 		<!-- Modal-Card Body Start -->
 		<section class="modal-card-body">
 			<b-tabs v-model="activeTab" :animated="false">
-				<b-tab-item label="Docker CLI">
+				<b-tab-item v-if="false" label="Docker CLI">
 					<b-field :message="errors" :type="{ 'is-danger': parseError}">
 						<b-input v-model="dockerCliCommands" class="import-area" type="textarea"></b-input>
 					</b-field>
@@ -32,7 +32,7 @@
 						         type="textarea"></b-input>
 					</b-field>
 				</b-tab-item>
-				<b-tab-item :label="$t('AppFile')">
+				<b-tab-item v-if="false" :label="$t('AppFile')">
 					<b-field :message="errors" :type="{ 'is-danger': parseError}">
 						<b-upload ref="importUpload" v-model="dropFiles" accept="application/json" drag-drop expanded
 						          @input="onSelect">

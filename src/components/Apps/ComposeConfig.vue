@@ -255,20 +255,12 @@ export default {
 				name: 'default_name',
 				services: {
 					"main_app": {
-						"image": "gitea/gitea:1",
+						"image": "",
 						"mem_reservation": "268435456",
 						"network_mode": "bridge",
 						"restart": "unless-stopped",
-						"volumes": [
-							{
-								"type": "bind",
-								"host": "/DATA/AppData/$AppID/data",
-								"container": "/data"
-							}
-						],
-						"depends_on": [
-							"db"
-						],
+						"volumes": [],
+						"depends_on": [],
 						ports: [],
 						environment: [],
 						devices: [],
@@ -284,7 +276,7 @@ export default {
 							}
 						},
 						"x-casaos": {
-							"author": "CasaOS Team",
+							"author": "",
 							"category": "Developer",
 							"container": {
 								hostname: '',
@@ -294,101 +286,54 @@ export default {
 								name: '',
 								container_name: '',
 								appstore_id: '',
-								"envs": [
-									{
-										"configurable": "advanced",
-										"container": "USER_UID",
-										"description": {
-											"en_US": "The UID (Unix user ID) of the user that runs Gitea"
-										}
-									},
-									{
-										"configurable": "advanced",
-										"container": "USER_GID",
-										"description": {
-											"en_US": "The GID (Unix group ID) of the user that runs Gitea"
-										}
-									}
-								],
-								"ports": [
-									{
-										"configurable": "advanced",
-										"container": "3000",
-										"description": {
-											"en_US": "WebUI Port"
-										},
-										"protocol": "tcp"
-									},
-									{
-										"configurable": "advanced",
-										"container": "22",
-										"description": {
-											"en_US": "SSH Port"
-										},
-										"protocol": "tcp"
-									}
-								],
+								"envs": [],
+								"ports": [],
 								"shell": "sh",
-								"volumes": [
-									{
-										"configurable": "advanced",
-										"container": "/data",
-										"description": {
-											"en_US": "Gitea data directory."
-										}
-									}
-								]
+								"volumes": []
 							},
 							"description": {
-								"en_US": "Gitea is a community managed lightweight code hosting solution written in Go."
+								"en_US": ""
 							},
-							"developer": "Gitea",
-							"icon": "https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/Gitea/icon.png",
-							"screenshot_link": [
-								"https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/Gitea/screenshot-1.jpg",
-								"https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/Gitea/screenshot-2.jpg",
-								"https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/Gitea/screenshot-3.jpg",
-								"https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/Gitea/screenshot-4.jpg",
-								"https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/Gitea/screenshot-5.jpg",
-								"https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/Gitea/screenshot-6.jpg"
-							],
+							"developer": "",
+							"icon": "",
+							"screenshot_link": [],
 							"tagline": {
-								"en_US": "Git with a cup of tea"
+								"en_US": ""
 							},
-							"thumbnail": "https://cdn.jsdelivr.net/gh/IceWhaleTech/CasaOS-AppStore@main/Apps/Gitea/thumbnail.png",
+							"thumbnail": "",
 							"tips": {
 								"before_install": [
 									{
 										"content": null,
-										"en_US": "When the App is installed, the first account registered will become the administrator account."
+										"en_US": ""
 									}
 								]
 							},
 							"title": {
-								"en_US": "Gitea"
+								"en_US": ""
 							}
 						}
 					},
 				},
 				"x-casaos": {
-					main_app: ''
+					main_app: 'main_app',
 				},
 			},
 			// main_app: ajc.compile(main_app_schema)(this.configData['x-casaos']),
-			main_app: {
-				// ...this.configData['x-casaos'],
-				container: {
-					hostname: '',
-					scheme: 'https',
-					index: '',
-					port_map: '',
-					// name: '',
-					container_name: '',
-					appstore_id: '',
-				},
-				icon: '',
-			},
-			xCasaOS: {},
+			// main_app: {
+			// 	// ...this.configData['x-casaos'],
+			// 	container: {
+			// 		hostname: '',
+			// 		scheme: 'https',
+			// 		index: '',
+			// 		port_map: '',
+			// 		// name: '',
+			// 		container_name: '',
+			// 		appstore_id: '',
+			// 	},
+			// 	icon: '',
+			// },
+			// xCasaOS: {},
 		}
 	},
 	props: {
