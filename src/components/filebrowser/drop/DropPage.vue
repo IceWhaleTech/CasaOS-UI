@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2023-02-24 17:28:31
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-08 19:11:15
+ * @LastEditTime: 2023-03-08 19:21:35
  * @FilePath: /CasaOS-UI/src/components/filebrowser/drop/DropPage.vue
  * @Description: 
  * 
@@ -27,6 +27,9 @@
         <!-- Contents Start -->
         <div class="action-area is-flex-grow-1 is-relative" :class="areaClass" :style="cssVariables">
             <div class="contents">
+                <!-- Cricle BG Start -->
+                <drop-bg v-if="isDesktop" />
+                <!-- Circle Bg End -->
                 <transition-group name="list-complete" tag="div" class="contents">
                     <drop-item v-for="(item, index) in peersArray" :key="item.id" :index="initIndexArray[index]"
                         :center="centerPos" :showIndex="initIndexArray[index]" :radius="bigRadius" :isFloat="isDesktop"
@@ -35,9 +38,7 @@
                 </transition-group>
                 <drop-add-button :index="peersArray.length" :radius="bigRadius" :center="centerPos" :isFloat="isDesktop"
                     v-if="showAddButton" />
-                <!-- Cricle BG Start -->
-                <drop-bg v-if="isDesktop" />
-                <!-- Circle Bg End -->
+                
             </div>
             <!-- Bottom Center Icons Start -->
             <drop-center-icon v-if="isNotMobile" />

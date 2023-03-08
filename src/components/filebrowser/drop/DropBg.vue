@@ -1,3 +1,13 @@
+<!--
+ * @Author: Jerryk jerry@icewhale.org
+ * @Date: 2023-03-03 10:14:27
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-03-08 19:22:21
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/drop/DropBg.vue
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by IceWhale, All Rights Reserved. 
+-->
 <template>
     <div class="container is-absolute">
         <div class="circle" ref="circle1"></div>
@@ -41,6 +51,8 @@ export default {
     height: 100%;
     left: 0;
     top: 0;
+    pointer-events: none;
+    z-index: 0;
 
     .circle {
         border-radius: 50%;
