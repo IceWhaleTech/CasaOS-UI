@@ -100,9 +100,9 @@
 						
 						<b-field :label="$t('CPU Shares')">
 							<b-select v-model="service.cpu_shares" :placeholder="$t('Select')" expanded>
-								<option value="10">{{ $t('Low') }}</option>
-								<option value="50">{{ $t('Medium') }}</option>
-								<option value="90">{{ $t('High') }}</option>
+								<option :value="10">{{ $t('Low') }}</option>
+								<option :value="50">{{ $t('Medium') }}</option>
+								<option :value="90">{{ $t('High') }}</option>
 							</b-select>
 						</b-field>
 						
@@ -201,6 +201,36 @@ const main_app_schema = {
 const ajv = new Ajv({allErrors: true, useDefaults: true});
 let main_name_x = "333";
 // let xCasaOS;
+
+const data = [
+	"AUDIT_CONTROL",
+	"AUDIT_READ",
+	"BLOCK_SUSPEND",
+	"BPF",
+	"CHECKPOINT_RESTORE",
+	"DAC_READ_SEARCH",
+	"IPC_LOCK",
+	"IPC_OWNER",
+	"LEASE",
+	"LINUX_IMMUTABLE",
+	"MAC_ADMIN",
+	"MAC_OVERRIDE",
+	"NET_ADMIN",
+	"NET_BROADCAST",
+	"PERFMON",
+	"SYS_ADMIN",
+	"SYS_BOOT",
+	"SYS_MODULE",
+	"SYS_NICE",
+	"SYS_PACCT",
+	"SYS_PTRACE",
+	"SYS_RAWIO",
+	"SYS_RESOURCE",
+	"SYS_TIME",
+	"SYS_TTY_CONFIG",
+	"SYSLOG",
+	"WAKE_ALARM"
+]
 
 export default {
 	// xCasaOS: {},
@@ -397,7 +427,8 @@ export default {
 		},
 		// Watch if configData changes
 		configData: {
-			handler(val) {
+			handler(val, newVal) {
+				console.log("watch::configData", val, newVal)
 				// this.$emit('update-configData', val)
 				if (this.state == 'install') {
 					localStorage.setItem("app_data", JSON.stringify(val))
@@ -559,7 +590,7 @@ export default {
 		 * @return {*}
 		 */
 		getFilteredTags(text) {
-			this.capArray = data.filter((option) => {
+			return data.filter((option) => {
 				return option
 					.toString()
 					.indexOf(text.toUpperCase()) >= 0
@@ -779,6 +810,28 @@ export default {
 				configData.restart = parsedInput.restart
 			}
 			
+			// command
+			if (parsedInput.command != undefined) {
+				configData.command = parsedInput.command;
+			} else {
+				configData.command = [];
+			}
+			
+			if (parsedInput.cpu_shares === 0 || parsedInput.cpu_shares > 99 || isNil(parsedInput.cpu_shares)) {
+				this.$set(configData, "cpu_shares", 90)
+			} else {
+				this.$set(configData, "cpu_shares", parsedInput.cpu_shares)
+			}
+			
+			// 赋 默认值
+			configData.deploy = {
+				resources: {
+					reservations: {
+						memory: this.totalMemory
+					},
+				}
+			}
+			
 			// process Item x-casaos
 			configData['x-casaos'] = Object.assign({
 				// ...this.configData['x-casaos'],
@@ -867,29 +920,38 @@ export default {
 		 * @param {ConfigObject} data
 		 * @return {ConfigObject} data
 		 */
+		// TODO 合并到 yaml
 		preProcessConfigDataItem(app) {
 			// let app = this.configData.services[app]
+			isNil(app.environment) && this.$set(app, "environment", [])
 			// app.ports = isNil(app.ports) ? [] : app.ports
 			isNil(app.ports) && this.$set(app, "ports", [])
 			isNil(app.volumes) && this.$set(app, "volumes", [])
-			isNil(app.environment) && this.$set(app, "environment", [])
 			isNil(app.devices) && this.$set(app, "devices", [])
+			// network
+			app.network_mode = app.network_mode === "default" ? "bridge" : app.network_mode
+			// privileged
 			isNil(app.cap_add) && this.$set(app, "cap_add", [])
-			isNil(app.command) && this.$set(app, "command", [])
-			app.cpu_shares = (app.cpu_shares === 0 || app.cpu_shares > 99 || isNil(app.cpu_shares)) ? 90 : app.cpu_shares
+			// cap_add
+			// restart
+			app.restart = app.restart === "no" ? "unless-stopped" : app.restart
+			// isNil(app.command) && this.$set(app, "command", [])
+			// if (app.cpu_shares === 0 || app.cpu_shares > 99 || isNil(app.cpu_shares)) {
+			// 	this.$set(app, "cpu_shares", 90)
+			// } else {
+			// 	this.$set(app, "cpu_shares", app.cpu_shares)
+			// }
 			// app.memory = app.memory === 0 ? this.totalMemory : (app.memory / 1048576).toFixed(0)
 			// isNil(app.memory) && this.$set(app, "memory", this.totalMemory)
 			// 赋 默认值
-			app.deploy = {
-				resources: {
-					reservations: {
-						memory: this.totalMemory
-					},
-				}
-			}
+			// app.deploy = {
+			// 	resources: {
+			// 		reservations: {
+			// 			memory: this.totalMemory
+			// 		},
+			// 	}
+			// }
 			
-			app.restart = app.restart === "no" ? "unless-stopped" : app.restart
-			app.network_mode = app.network_mode === "default" ? "bridge" : app.network_mode
 			
 			return app
 		},
@@ -916,7 +978,8 @@ export default {
 				let service = val.services[servicesKey]
 				// 输出结果
 				let outputService = ConfigData.services[servicesKey]
-				outputService.memory = service.memory + 'm';
+				// outputService.memory = service.memory + 'm';
+				outputService.deploy.resources.reservations.memory = service.deploy.resources.reservations.memory + 'm';
 				outputService.devices = service.devices.map(device => {
 					return `${device.host}:${device.container}`
 				})
