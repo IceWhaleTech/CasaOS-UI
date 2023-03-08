@@ -194,7 +194,7 @@
 					
 					<b-tooltip v-if="showExportButton" :label="$t('Export AppFile')" position="is-bottom"
 					           type="is-dark">
-						<button class="icon-button mdi mdi-export-variant" type="button" @click="exportJSON"/>
+						<button class="icon-button mdi mdi-export-variant" type="button" @click="exportYAML"/>
 					</b-tooltip>
 					<div v-if="currentSlide < 2"
 					     class="is-flex is-align-items-center modal-close-container modal-close-container-line ">
@@ -442,7 +442,8 @@
 					               :docker-compose-commands="configDataString"
 					               :is-casa="isCasa" :networks="networks" :state="state"
 					               :total-memory="totalMemory"
-					               @updateDockerComposeCommands="updateDockerComposeCommands"></ComposeConfig>
+					               @updateDockerComposeCommands="updateDockerComposeCommands"
+					               @updateMainName="name=> mainName = name"></ComposeConfig>
 				</section>
 				<!-- App Install Form End -->
 				
@@ -728,6 +729,7 @@ export default {
 			dockerProgress: null,
 			totalPercentage: 0,
 			dockerComposeCommands: '',
+			mainName: '',
 		}
 	},
 	
@@ -795,13 +797,13 @@ export default {
 				return this.$t("App Store");
 			} else if (this.currentSlide == 1) {
 				if (!this.isCasa) {
-					return this.$t("Import") + " " + this.initConfigData.label
+					return this.$t("Import") + " " + this.mainName
 				} else {
-					return (this.settingData != undefined) ? this.initConfigData.label + " " + this.$t("Setting") : this.$t("Install a new App manually")
+					return (this.settingData != undefined) ? this.mainName + " " + this.$t("Setting") : this.$t("Install a new App manually")
 				}
 				
 			} else {
-				return this.$t("Installing") + " " + this.initConfigData.image
+				return this.$t("Installing") + " " + this.mainName
 			}
 		},
 		showDetailSwiper() {
@@ -1138,10 +1140,10 @@ export default {
 			this.$refs.compose.checkStep().then((valid) => {
 				if (valid) {
 					// this.installAppData(this.id);
-					console.log(this.dockerComposeCommands)
+					// console.log(this.dockerComposeCommands)
+					console.log("docker-compose-command", this.dockerComposeCommands.length)
 					this.isLoading = true;
 					this.$openAPI.appManagement.compose.installComposeApp(this.dockerComposeCommands).then((res) => {
-						console.log(res, 'res')
 						if (res.data.success == 200) {
 							this.currentInstallAppName = res.data.data
 							this.currentSlide = 2;
@@ -1187,7 +1189,6 @@ export default {
 					// });
 				}
 			})
-			console.log('执行命令。', this.dockerComposeCommands);
 		},
 		
 		installAppData() {
@@ -1222,7 +1223,6 @@ export default {
 		 * @return {*} void
 		 */
 		updateApp() {
-			console.log('执行命令。', this.dockerComposeCommands);
 			this.$openAPI.appManagement.compose.updateComposeAppSettings('syncthing-1', this.dockerComposeCommands).then((res) => {
 				console.log('updateComposeAppSettings :: ', res);
 				if (res.data.success == 200) {
@@ -1316,15 +1316,16 @@ export default {
 		 * @param {*} function
 		 * @return {*} void
 		 */
-		exportJSON() {
-			let exportData = cloneDeep(this.initConfigData);
-			exportData.network_model = this.getNetworkName(this.initConfigData.network_model);
-			exportData.version = "1.0"
-			exportData = this.uuid2var(exportData)
-			delete exportData.memory
-			const data = JSON.stringify(exportData);
-			const blob = new Blob([data], {type: ''});
-			FileSaver.saveAs(blob, `${exportData.label}.json`);
+		exportYAML() {
+			// let exportData = cloneDeep(this.initConfigData);
+			// exportData.network_model = this.getNetworkName(this.initConfigData.network_model);
+			// exportData.version = "1.0"
+			// exportData = this.uuid2var(exportData)
+			// delete exportData.memory
+			// const data = JSON.stringify(exportData);
+			const blob = new Blob([this.dockerComposeCommands], {type: ''});
+			// FileSaver.saveAs(blob, `${exportData.label}.json`);
+			FileSaver.saveAs(blob, `${this.mainName}.yaml`);
 		},
 		
 		/**
@@ -1507,7 +1508,7 @@ export default {
 		},
 		
 		updateDockerComposeCommands(val) {
-			console.log(val, 'updateConfig');
+			console.log('updateConfig', val.length);
 			this.dockerComposeCommands = val
 		},
 	},

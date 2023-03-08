@@ -462,6 +462,7 @@ export default {
 			if (name === '') {
 				name = 'main_app'
 			}
+			this.$emit('updateMainName', name)
 			return name;
 		},
 		// main_name_value() {
