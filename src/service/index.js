@@ -10,7 +10,8 @@
 
 import axios from 'axios';
 // app_management
-import {Configuration, ComposeMethodsApiFactory, InternalMethodsApiFactory} from "@/codegen/app_management/index.ts";
+// import {Configuration, ComposeMethodsApiFactory, InternalMethodsApiFactory} from "@/codegen/app_management/index.ts";
+import {Configuration, ComposeMethodsApiFactory, InternalMethodsApiFactory} from "casaos-appmanagement-openapi";
 
 import store from "@/store";
 import router from "@/router";
