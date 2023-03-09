@@ -347,7 +347,7 @@
 								
 								</div>
 								<div class="mt-1 ml-7 is-flex is-align-items-center">
-									<div class="is-flex-grow-1 is-size-7 has-text-grey-light	">{{
+									<div class="is-flex-grow-1 is-size-7 has-text-grey-light">{{
 											item.category
 										}}
 									</div>
@@ -924,20 +924,66 @@ export default {
 		 */
 		getStoreList() {
 			this.isLoading = true
-			this.$api.apps.getAppList(this.storeQueryData).then(res => {
-				this.isLoading = false
-				this.isLoadError = false
-				if (res.data.success == 200) {
-					// this.listTotal = res.data.data.count
-					this.pageList = res.data.data.list
-					this.communityList = res.data.data.community
-					this.recommendList = res.data.data.recommend
-				}
-			}).catch(() => {
-				this.loadErrorStep = 2
+			
+			this.$openAPI.appManagement.appStore.composeAppStoreInfoList().then(res => {
+				// if (res.data.success == 200) {
+				// this.listTotal = res.data.data.count
+				// this.pageList = res.data.data.list
+				// this.communityList = res.data.data.community
+				this.recommendList = res.data.data.recommend
+				let list = res.data.data.list
+				let listRes = Object.keys(list).map(id => {
+					let main_app_info = list[id].apps[id]
+					return {
+						id,
+						category: main_app_info.category,
+						icon: main_app_info.icon,
+						tagline: main_app_info.tagline.en_US,
+						thumbnail: main_app_info.thumbnail,
+						title: main_app_info.title.en_US,
+						state: 0,
+						
+					}
+				})
+				this.pageList = listRes;
+				let communityList = res.data.data.community || {}
+				this.communityList = Object.keys(communityList).map(id => {
+					let main_app_info = communityList[id].apps[id]
+					return {
+						id,
+						category: main_app_info.category,
+						icon: main_app_info.icon,
+						tagline: main_app_info.tagline.en_US,
+						thumbnail: main_app_info.thumbnail,
+						title: main_app_info.title.en_US,
+						state: 0,
+						
+					}
+				})
+				let recommendList = res.data.data.recommend
+				this.recommendList = listRes.filter(item => {
+					return recommendList.includes(item.id)
+				})
+				console.log(this.recommendList, 'recommendList')
+				// }
+			}).catch().finally(() => {
 				this.isLoading = false;
-				this.isLoadError = true;
 			})
+			
+			// this.$api.apps.getAppList(this.storeQueryData).then(res => {
+			// 	this.isLoading = false
+			// 	this.isLoadError = false
+			// 	if (res.data.success == 200) {
+			// 		// this.listTotal = res.data.data.count
+			// 		this.pageList = res.data.data.list
+			// 		this.communityList = res.data.data.community
+			// 		this.recommendList = res.data.data.recommend
+			// 	}
+			// }).catch(() => {
+			// 	this.loadErrorStep = 2
+			// 	this.isLoading = false;
+			// 	this.isLoadError = true;
+			// })
 		},
 		
 		/**
@@ -978,6 +1024,29 @@ export default {
 		 * @return {*} void
 		 */
 		qucikInstall(id) {
+			this.$openAPI.appManagement.compose.myComposeApp(id).then(res => {
+				debugger
+				if (res.data.success == 200) {
+					this.$openAPI.appManagement.compose.installComposeApp(res.data.data.compose).then(res => {
+					
+					}).catch(() => {
+						this.$buefy.toast.open({
+							message: this.$t(`There was an error installing the application, please try again!`),
+							type: 'is-danger'
+						})
+					})
+				} else {
+					this.$buefy.toast.open({
+						message: this.$t(`There was an error installing the application, please try again!`),
+						type: 'is-danger'
+					})
+				}
+			}).catch(() => {
+				this.$buefy.toast.open({
+					message: this.$t(`There was an error installing the application, please try again!`),
+					type: 'is-danger'
+				})
+			})
 			this.currentInstallId = id
 			this.$api.apps.getAppInfo(id).then(resp => {
 				if (resp.data.success == 200) {
@@ -1105,12 +1174,12 @@ export default {
 		 * @param {*}
 		 * @return {*} void
 		 */
-		processData() {
-			
-			this.initConfigData.cpu_shares = Number(this.initConfigData.cpu_shares)
-			let model = this.initConfigData.network_model.split("-");
-			this.initConfigData.network_model = model[0]
-		},
+		// processData() {
+		//
+		// 	this.initConfigData.cpu_shares = Number(this.initConfigData.cpu_shares)
+		// 	let model = this.initConfigData.network_model.split("-");
+		// 	this.initConfigData.network_model = model[0]
+		// },
 		
 		/**
 		 * @description: Back to prev Step
@@ -1223,7 +1292,7 @@ export default {
 		 * @return {*} void
 		 */
 		updateApp() {
-			this.$openAPI.appManagement.compose.updateComposeAppSettings('syncthing-1', this.dockerComposeCommands).then((res) => {
+			this.$openAPI.appManagement.compose.updateComposeAppSettings(this.id, this.dockerComposeCommands).then((res) => {
 				console.log('updateComposeAppSettings :: ', res);
 				if (res.data.success == 200) {
 					this.$emit('updateState')
@@ -1303,7 +1372,7 @@ export default {
 					}
 				},
 				props: {
-					initData: this.initConfigData,
+					// initData: this.initConfigData,
 					netWorks: this.networks,
 					oriNetWorks: this.tempNetworks,
 					deviceMemory: this.totalMemory
@@ -1376,7 +1445,8 @@ export default {
 				animation: "zoom-in",
 				props: {
 					appid: this.id,
-					appName: this.initConfigData.label
+					// appName: this.initConfigData.label
+					appName: this.mainName
 				}
 			})
 		},
