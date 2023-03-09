@@ -94,8 +94,9 @@
 						</b-field>
 						
 						<b-field :label="$t('Memory Limit')">
-							<vue-slider v-model="service.deploy.resources.reservations.memory" :max="totalMemory"
-							            :min="256"></vue-slider>
+							<vue-slider :max="totalMemory"
+							            :min="256" :value="service.deploy.resources.reservations.memory | duplexDisplay"
+							            @change="v=>service.deploy.resources.reservations.memory = v"></vue-slider>
 						</b-field>
 						
 						<b-field :label="$t('CPU Shares')">
@@ -143,7 +144,7 @@
 						</ValidationProvider>
 						
 						<b-field :label="$t('App Description')">
-							<b-input v-model="service.description"></b-input>
+							<b-input v-model="service['x-casaos'].description.en_US"></b-input>
 						</b-field>
 					</template>
 				
@@ -174,9 +175,10 @@ import lowerFirst from "lodash/lowerFirst";
 import isNil from "lodash/isNil";
 import find from "lodash/find";
 import uniq from "lodash/uniq";
-import {isString} from "lodash/lang";
+import {isNumber, isString} from "lodash/lang";
 import ports from "@/components/forms/Ports.vue";
 import cloneDeep from "lodash/cloneDeep";
+import merge from "lodash/merge";
 
 const main_app_schema = {
 	type: "object",
@@ -694,13 +696,15 @@ export default {
 					let ii = item.split(":");
 					if (ii.length > 1) {
 						return {
+							type: 'bind',
 							target: ii[1],
 							source: this.volumeAutoCheck(ii[1], ii[0], lowerFirst(configData.label))
 						}
 					} else {
 						return {
+							type: 'bind',
 							target: ii[0],
-							source: this.volumeAutoCheck(ii[0], "", lowerFirst(configData.label))
+							source: this.volumeAutoCheck(ii[0], "", lowerFirst(configData.label)),
 						}
 					}
 				} else if (item) {
@@ -739,7 +743,11 @@ export default {
 				})
 				if (seletNetworks.length > 0) {
 					configData.network_mode = seletNetworks[0].networks[0].name;
+				} else {
+					configData.network_mode = parsedInput.network_mode;
 				}
+			} else {
+				configData.network_mode = 'bridge';
 			}
 			
 			//hostname
@@ -779,7 +787,22 @@ export default {
 			}
 			
 			// process Item x-casaos
-			configData['x-casaos'] = Object.assign({
+			// 判断是否存在 x-casaos
+			parsedInput['x-casaos'] = parsedInput['x-casaos'] || {container: {}};
+			// configData['x-casaos'] = Object.assign({
+			// 	// ...this.configData['x-casaos'],
+			// 	container: {
+			// 		hostname: '',
+			// 		scheme: 'http',
+			// 		index: '',
+			// 		port_map: '',
+			// 		host_name: '',
+			// 		container_name: '',
+			// 		appstore_id: '',
+			// 	},
+			// 	icon: '',
+			// }, parsedInput['x-casaos'] || {});
+			configData['x-casaos'] = merge({
 				// ...this.configData['x-casaos'],
 				container: {
 					hostname: '',
@@ -791,6 +814,7 @@ export default {
 					appstore_id: '',
 				},
 				icon: '',
+				description: '',
 			}, parsedInput['x-casaos'] || {});
 			
 			return configData
@@ -978,6 +1002,11 @@ export default {
 			return this.bridgePorts(service).filter(port => {
 				return port.host.indexOf(service.port_map) >= 0
 			})
+		},
+	},
+	filters: {
+		duplexDisplay(val) {
+			return isNumber(val) && val || val.replace(/[Mm]/, '')
 		},
 	}
 }

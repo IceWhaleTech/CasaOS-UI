@@ -10,7 +10,12 @@
 
 import axios from 'axios';
 // app_management
-import {Configuration, ComposeMethodsApiFactory, InternalMethodsApiFactory} from "@/codegen/app_management/index.ts";
+import {
+    Configuration,
+    ComposeMethodsApiFactory,
+    InternalMethodsApiFactory,
+    AppStoreMethodsApiFactory, AppStoreMethodsApiFp, AppStoreMethodsApi
+} from "@/codegen/app_management/index.ts";
 
 import store from "@/store";
 import router from "@/router";
@@ -117,6 +122,8 @@ instance.interceptors.response.use(
 
 const appManagement = {}
 appManagement.compose = new ComposeMethodsApiFactory(config, '/v2/app_management', instance);
+// appManagement.appStore = new AppStoreMethodsApiFactory(config, '/v2/app_management', instance);
+appManagement.appStore = new AppStoreMethodsApi(config, '/v2/app_management', instance);
 const appGrid = new InternalMethodsApiFactory(config, '/v2/app_management', instance);
 
 // apiClient.axios = instance;

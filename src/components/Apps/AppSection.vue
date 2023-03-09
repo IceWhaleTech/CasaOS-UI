@@ -222,10 +222,11 @@ export default {
 				// type 属于系统类型、还是属于链接类型
 				// image
 				// slogan \latest \created \protocol \volumes 无用
+				console.log('open setting model', orgAppList)
 				orgAppList.forEach((item) => {
 					item.status = 'running';
 					item.name = item.title && item.title.en_US;
-					item.id = 'syncthing-1';
+					item.id = item.store_app_id;
 					item.protocol = 'http';
 				})
 				let listLinkApp = await this.$api.users.getLinkAppDetail().then(v => v.data.data);
@@ -374,7 +375,7 @@ export default {
 				return
 			}
 			let state = item.state
-			let id = item.name
+			let id = item.id // || 'syncthing'
 			const networks = await this.$api.container.getNetworks();
 			const memory = this.$store.state.hardwareInfo.mem;
 			const configData = {
@@ -385,7 +386,7 @@ export default {
 			// 入参 需要为 container id
 			// const ret = await this.$api.container.getInfoV2(id);
 			// const ret = await this.$openAPI.appManagement.compose.myComposeApp(item.name);
-			const ret = await this.$openAPI.appManagement.compose.myComposeApp('syncthing-1');
+			const ret = await this.$openAPI.appManagement.compose.myComposeApp(id);
 			this.$buefy.modal.open({
 				parent: this,
 				component: AppPanel,
