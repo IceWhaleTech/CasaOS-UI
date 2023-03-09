@@ -221,36 +221,35 @@
 							<!-- Featured Slider Start -->
 							<div class="is-relative featured-app b-line">
 								<swiper ref="featureSwiper" :options="featureSwiperOptions" class="swiper ">
-									<swiper-slide v-for="(item,index) in recommendList "
-									              :key="index+item.apps[index].title+index"
+									<swiper-slide v-for="(item,index) in recommendList " :key="index+item.title+item.id"
 									              class="pb-5">
-										<div class="gap" @click="showAppDetial(index)">
+										<div class="gap" @click="showAppDetial(item.id)">
 											<b-image :placeholder="require('@/assets/img/app/swiper_placeholder.png')"
-											         :src="item.apps[index].thumbnail"
+											         :src="item.thumbnail"
 											         :src-fallback="require('@/assets/img/app/swiper_placeholder.png')"
 											         class="border-8 is-clickable"
 											         ratio="16by9"></b-image>
 										</div>
 										<div class="is-flex pt-5 is-align-items-center">
-											<div class=" mr-3" @click="showAppDetial(index)">
+											<div class=" mr-3" @click="showAppDetial(item.id)">
 												<b-image :placeholder="require('@/assets/img/app/default.svg')"
-												         :src="item.apps[index].icon"
+												         :src="item.icon"
 												         :src-fallback="require('@/assets/img/app/default.svg')"
 												         class="is-64x64 is-clickable icon-shadow"></b-image>
 											</div>
 											<div class="is-flex-grow-1 mr-4 is-clickable"
-											     @click="showAppDetial(index);$messageBus('appstore_detail', item.apps[index].title.en_US)">
-												<h6 class="title is-6 mb-2 ">{{ item.apps[index].title.en_US }}</h6>
-												<p class="is-size-7 two-line">{{ item.apps[index].tagline }}</p>
+											     @click="showAppDetial(item.id);$messageBus('appstore_detail', item.title)">
+												<h6 class="title is-6 mb-2 ">{{ item.title }}</h6>
+												<p class="is-size-7 two-line">{{ item.tagline }}</p>
 											</div>
 											<div>
-												<b-button v-if="item.state===0" :loading="index == currentInstallId"
+												<b-button v-if="item.state===0" :loading="item.id == currentInstallId"
 												          rounded size="is-small"
 												          type="is-primary is-light"
-												          @click="qucikInstall(index);$messageBus('appstore_install', item.apps[index].title.en_US)">
+												          @click="qucikInstall(item.id);$messageBus('appstore_install', item.title)">
 													{{ $t('Install') }}
 												</b-button>
-												<b-button v-if="item.state===1" :loading="index == currentInstallId"
+												<b-button v-if="item.state===1" :loading="item.id == currentInstallId"
 												          rounded size="is-small"
 												          type="is-primary is-light"
 												          @click="openThirdContainerByAppInfo(item)">{{ $t('Open') }}
@@ -332,33 +331,33 @@
 						<!-- List condition End -->
 						<!-- App list Start-->
 						<div class="columns f-list is-multiline is-mobile pb-3 mb-5">
-							<div v-for="(item,index) in pageList" :key="index+ item.apps[index].title.en_US +index"
+							<div v-for="(item,index) in pageList" :key="index+item.title+item.id"
 							     class="column app-item is-one-quarter">
 								<div class="is-flex  is-align-items-center">
-									<div class="list-icon mr-4 is-clickable" @click="showAppDetial(index)">
-										<b-image :src="item.apps[index].icon"
+									<div class="list-icon mr-4 is-clickable" @click="showAppDetial(item.id)">
+										<b-image :src="item.icon"
 										         :src-fallback="require('@/assets/img/app/default.svg')"
 										         class="is-64x64 icon-shadow" webp-fallback=".jpg"></b-image>
 									</div>
 									<div class="is-flex-grow-1 mr-4 is-clickable"
-									     @click="showAppDetial(index);$messageBus('appstore_detail', item.apps[index].title.en_US)">
-										<h6 class="title is-6 mb-2">{{ item.apps[index].title.en_US }}</h6>
-										<p class="is-size-7 two-line">{{ item.apps[index].tagline.en_US }}</p>
+									     @click="showAppDetial(item.id);$messageBus('appstore_detail', item.title)">
+										<h6 class="title is-6 mb-2">{{ item.title }}</h6>
+										<p class="is-size-7 two-line">{{ item.tagline }}</p>
 									</div>
 								
 								</div>
 								<div class="mt-1 ml-7 is-flex is-align-items-center">
 									<div class="is-flex-grow-1 is-size-7 has-text-grey-light">{{
-											item.apps[index].category
+											item.category
 										}}
 									</div>
-									<b-button v-if="item.state===0" :loading="index == currentInstallId" rounded
+									<b-button v-if="item.state===0" :loading="item.id == currentInstallId" rounded
 									          size="is-small"
 									          type="is-primary is-light"
-									          @click="qucikInstall(index);$messageBus('appstore_install', item.apps[index].title.en_US)">
+									          @click="qucikInstall(item.id);$messageBus('appstore_install', item.title)">
 										{{ $t('Install') }}
 									</b-button>
-									<b-button v-if="item.state===1" :loading="index == currentInstallId" rounded
+									<b-button v-if="item.state===1" :loading="item.id == currentInstallId" rounded
 									          size="is-small"
 									          type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">
 										{{ $t('Open') }}
@@ -379,35 +378,34 @@
 							</h3>
 							
 							<div class="columns f-list is-multiline is-mobile  pb-3 mb-5">
-								<div v-for="(item,index) in communityList "
-								     :key="index + item.apps[index].title.en_US + index"
+								<div v-for="(item,index) in communityList " :key="index+item.title+item.id"
 								     class="column is-one-quarter">
 									<div class="is-flex  is-align-items-center">
-										<div class="list-icon mr-4 is-clickable" @click="showAppDetial(index)">
-											<b-image :src="item.apps[index].icon"
+										<div class="list-icon mr-4 is-clickable" @click="showAppDetial(item.id)">
+											<b-image :src="item.icon"
 											         :src-fallback="require('@/assets/img/app/default.svg')"
 											         class="is-64x64 icon-shadow" webp-fallback=".jpg"></b-image>
 										</div>
 										<div class="is-flex-grow-1 mr-4 is-clickable"
-										     @click="showAppDetial(index);$messageBus('appstorecommunity_detail', item.apps[index].title.en_US)">
-											<h6 class="title is-6 mb-2">{{ item.apps[index].title.en_US }}</h6>
-											<p class="is-size-7 two-line">{{ item.apps[index].tagline.en_US }}</p>
+										     @click="showAppDetial(item.id);$messageBus('appstorecommunity_detail', item.title)">
+											<h6 class="title is-6 mb-2">{{ item.title }}</h6>
+											<p class="is-size-7 two-line">{{ item.tagline }}</p>
 										</div>
 									
 									</div>
 									<div class="mt-1 ml-7 is-flex is-align-items-center">
 										<div class="is-flex-grow-1 is-size-7 has-text-grey-light	">
-											{{ item.apps[index].category }}
+											{{ item.category }}
 										</div>
-										<b-button v-if="item.state===0" :loading="index == currentInstallId" rounded
+										<b-button v-if="item.state===0" :loading="item.id == currentInstallId" rounded
 										          size="is-small"
 										          type="is-primary is-light"
-										          @click="qucikInstall(index);$messageBus('appstorecommunity_install', item.apps[index].title.en_US)">
+										          @click="qucikInstall(item.id);$messageBus('appstorecommunity_install', item.title)">
 											{{
 												$t('Install')
 											}}
 										</b-button>
-										<b-button v-if="item.state===1" :loading="index == currentInstallId" rounded
+										<b-button v-if="item.state===1" :loading="item.id == currentInstallId" rounded
 										          size="is-small"
 										          type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">
 											{{ $t('Open') }}
@@ -928,13 +926,46 @@ export default {
 			this.isLoading = true
 			
 			this.$openAPI.appManagement.appStore.composeAppStoreInfoList().then(res => {
-				debugger
-				if (res.data.success == 200) {
-					// this.listTotal = res.data.data.count
-					this.pageList = res.data.data.list
-					this.communityList = res.data.data.community
-					this.recommendList = res.data.data.recommend
-				}
+				// if (res.data.success == 200) {
+				// this.listTotal = res.data.data.count
+				// this.pageList = res.data.data.list
+				// this.communityList = res.data.data.community
+				this.recommendList = res.data.data.recommend
+				let list = res.data.data.list
+				let listRes = Object.keys(list).map(id => {
+					let main_app_info = list[id].apps[id]
+					return {
+						id,
+						category: main_app_info.category,
+						icon: main_app_info.icon,
+						tagline: main_app_info.tagline.en_US,
+						thumbnail: main_app_info.thumbnail,
+						title: main_app_info.title.en_US,
+						state: 0,
+						
+					}
+				})
+				this.pageList = listRes;
+				let communityList = res.data.data.community || {}
+				this.communityList = Object.keys(communityList).map(id => {
+					let main_app_info = communityList[id].apps[id]
+					return {
+						id,
+						category: main_app_info.category,
+						icon: main_app_info.icon,
+						tagline: main_app_info.tagline.en_US,
+						thumbnail: main_app_info.thumbnail,
+						title: main_app_info.title.en_US,
+						state: 0,
+						
+					}
+				})
+				let recommendList = res.data.data.recommend
+				this.recommendList = listRes.filter(item => {
+					return recommendList.includes(item.id)
+				})
+				console.log(this.recommendList, 'recommendList')
+				// }
 			}).catch().finally(() => {
 				this.isLoading = false;
 			})
