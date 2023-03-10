@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2023-02-28 17:07:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-08 17:29:13
- * @FilePath: /CasaOS-UI/src/components/filebrowser/drop/DropContextMenu.vue
+ * @LastEditTime: 2023-03-09 19:53:09
+ * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\drop\DropContextMenu.vue
  * @Description: 
  * 
  * Copyright (c) 2023 by IceWhale, All Rights Reserved. 
@@ -23,7 +23,8 @@
                     <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center" key="drop-context1" v-else>
                         <b-upload v-model="files" multiple
                             class="is-clickable has-text-full-03 is-flex is-align-items-center" @input="activeDropUpload">
-                            <b-icon pack="casa" icon="view" class="mr-1 is-16x16" custom-size="casa-16px" /> {{ $t('Sending files') }}
+                            <b-icon pack="casa" icon="view" class="mr-1 is-16x16" custom-size="casa-16px" /> {{ $t('Sending
+                                                        files') }}
                         </b-upload>
                     </b-dropdown-item>
 
@@ -60,7 +61,7 @@ export default {
             return this.item == undefined
         },
         cancelText() {
-            return this.deviceId == this.sender ? 'Cancel Send' : 'Ignore'
+            return this.deviceId == this.sender ? 'Cancel sending' : 'Ignore'
         },
     },
     beforeDestroy() {
@@ -77,6 +78,7 @@ export default {
             this.deviceId = event.deviceId
             this.sender = event.sender
             this.$refs.dropDown.isActive = false
+            console.log("我", this.deviceId, this.sender);
             this.$nextTick(() => {
                 this.x = event.clientX
                 this.y = event.clientY
@@ -87,11 +89,12 @@ export default {
         },
         cancel() {
             this.$refs.dropDown.isActive = false;
-            console.log("cancel");
-            Events.fire('send-text', {
-                to: this.deviceId,
-                text: 'cancel'
-            });
+            // console.log("cancel");
+            // Events.fire('send-text', {
+            //     to: this.deviceId,
+            //     text: 'cancel'
+            // });
+            console.log("我是发送者", this.deviceId == this.sender);
         },
         activeDropUpload() {
             const event = {

@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2023-03-03 15:03:34
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-08 17:38:04
- * @FilePath: /CasaOS-UI/src/components/filebrowser/drop/DropAddButton.vue
+ * @LastEditTime: 2023-03-09 19:42:53
+ * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\drop\DropAddButton.vue
  * @Description: 
  * 
  * Copyright (c) 2023 by IceWhale, All Rights Reserved. 
@@ -48,6 +48,10 @@ export default {
             type: Number,
             default: 0
         },
+        showIndex: {
+            type: Number,
+            default: 0
+        },
         radius: {
             type: Number,
             default: 0
@@ -86,16 +90,16 @@ export default {
         positionStyle() {
             if (this.index < this.posIndex) {
                 const ratio = 1.86;
-                const angel = this.index < 5 ? 30 * (this.index + 1) : 45 * (this.index % 5);
-                const realRadius = this.index < 5 ? this.radius : this.radius / ratio;
+                const angel = this.showIndex < 5 ? 30 * (this.showIndex + 1) : 45 * (this.showIndex % 5);
+                const realRadius = this.showIndex < 5 ? this.radius : this.radius / ratio;
                 return {
                     left: this.center.x + realRadius / 2 * Math.cos(angel * Math.PI / 180) + 'px',
                     top: this.center.y - realRadius / 2 * Math.sin(angel * Math.PI / 180) + 'px'
                 }
             } else {
                 return {
-                    right: this.isFloat ? '-28px' : '32px',
-                    bottom: '48px',
+                    right: this.isFloat ? '8px' : '32px',
+                    bottom: '24px',
                     width: '48px',
                     height: '48px',
                     position: 'fixed',
@@ -111,14 +115,8 @@ export default {
             }
         },
     },
-    watch: {
-        index(newValue) {
-            console.log(newValue);
-        }
-    },
 
     created() {
-        console.log(this.index);
 
     },
     mounted() {
@@ -126,7 +124,6 @@ export default {
     },
     methods: {
         closeDrop() {
-            console.log("close");
             this.$refs.drop.isActive = false;
         }
     },

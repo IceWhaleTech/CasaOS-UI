@@ -1,6 +1,6 @@
 <!--
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-07 16:33:11
+ * @LastEditTime: 2023-03-09 19:31:59
  * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\FilePanel.vue
   * @Description:
   *
@@ -65,7 +65,7 @@
 
             <!-- Bottom Action Start -->
             <div class="bottom-area">
-              <drop-entry-button :active="pageType == `drop`" :title="$t('FilesDrop')"
+              <drop-entry-button :active="pageType == `drop`" :title="$t('FileDrop')"
                 @open="showDropPage"></drop-entry-button>
               <share-entry-button :active="pageType == `share`" @open="showSharedList"></share-entry-button>
             </div>
@@ -317,7 +317,7 @@ export default {
       uploaderInstance: {},
       selectState: "none",
       isSelectAll: false,
-      selectLabel: "",
+      selectLabel: {},
       isToolbarShow: false,
       isEmpty: true,
       errorMsg: "",

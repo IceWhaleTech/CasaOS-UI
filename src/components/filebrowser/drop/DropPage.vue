@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2023-02-24 17:28:31
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-08 19:21:35
- * @FilePath: /CasaOS-UI/src/components/filebrowser/drop/DropPage.vue
+ * @LastEditTime: 2023-03-10 08:48:16
+ * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\drop\DropPage.vue
  * @Description: 
  * 
  * Copyright (c) 2023 by IceWhale, All Rights Reserved. 
@@ -33,16 +33,20 @@
                 <transition-group name="list-complete" tag="div" class="contents">
                     <drop-item v-for="(item, index) in peersArray" :key="item.id" :index="initIndexArray[index]"
                         :center="centerPos" :showIndex="initIndexArray[index]" :radius="bigRadius" :isFloat="isDesktop"
-                        :isSelf="item.id === selfId" :customClass="areaClass" :device="item" @showed="isFirstIn = false"
-                        class="list-complete-item" />
+                        :isSelf="item.id === selfId" :customClass="areaClass" :device="item"
+                        @showed="isFirstIn = false; showAddButton = true" class="list-complete-item" />
                 </transition-group>
-                <drop-add-button :index="peersArray.length" :radius="bigRadius" :center="centerPos" :isFloat="isDesktop"
-                    v-if="showAddButton" />
-                
+                <drop-add-button :index="peersArray.length" :showIndex="initIndexArray[peersArray.length]"
+                    :radius="bigRadius" :center="centerPos" :isFloat="isDesktop"
+                    v-if="showAddButton && peersArray.length == 1" />
+
             </div>
             <!-- Bottom Center Icons Start -->
             <drop-center-icon v-if="isNotMobile" />
             <!-- Bottom Center Icons End -->
+
+            <drop-add-button :index="peersArray.length" :showIndex="initIndexArray[peersArray.length]" :radius="bigRadius"
+                :center="centerPos" :isFloat="isDesktop" v-if="showAddButton && peersArray.length > 1" />
         </div>
         <!-- Contents End -->
         <drop-context-menu />
@@ -78,7 +82,7 @@ export default {
             },
             progress: 0,
             deviceType: "desktop",
-            initIndexArray: [8, 6, 2, 3, 1, 7, 4, 0, 9, 5],
+            initIndexArray: [],
             peersArray: [],
             selfId: "",
             filesQueue: [],
@@ -115,7 +119,6 @@ export default {
 
     },
     beforeDestroy() {
-        console.log("beforeDestroy");
         Events.fire("pagehide");
         window.removeEventListener('resize', this.resize);
         document.ondragover = null; // 拖拽进入
@@ -126,17 +129,12 @@ export default {
         this.resize();
         document.ondragover = function (e) { e.preventDefault(); }; // 拖拽进入
 
-        if (this.deviceType != "desktop") {
-            this.initIndexArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-        }
+        this.initIndexArray = this.isDesktop ? [8, 6, 2, 3, 1, 7, 4, 0, 9, 5] : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
         this.$nextTick(() => {
             setTimeout(() => {
                 this.initServer();
             }, 1000);
-            setTimeout(() => {
-                this.showAddButton = true
-            }, 1500)
         })
 
     },
@@ -145,7 +143,7 @@ export default {
         initServer() {
             // const access_token = localStorage.getItem("access_token");
             // const url = `${this.$wsProtocol}//${this.$baseURL}/v1/file/ws?token=${access_token}&peer=${this.selfId}`;
-            const url = "";
+            const url = `ws://localhost:3000/server/webrtc?peer=${this.selfId}`;
             const server = new ServerConnection(url);
             // const peers = new PeersManager(server);
             new PeersManager(server);
@@ -167,7 +165,6 @@ export default {
 
         // Handle file received (from other peer)
         handleFileReceived(e) {
-            console.log("file-received", e.detail);
             this.nextFile(e.detail);
         },
 
@@ -193,8 +190,8 @@ export default {
         displayFile(file) {
             this.$buefy.snackbar.open({
                 indefinite: true,
-                message: file.name + " is received.",
-                type: 'is-white',
+                message: this.$t("{name} {size} is received.", { name: file.name, size: this.renderSize(file.size) }),
+                type: 'is-file',
                 cancelText: this.$t('Ignore'),
                 actionText: this.$t('Save'),
                 position: 'is-bottom',
@@ -216,15 +213,14 @@ export default {
         handleNotifyUser(e) {
             this.$buefy.toast.open({
                 duration: 2000,
-                message: e.detail,
-                type: 'is-white',
+                message: this.$t(e.detail),
+                type: 'is-success',
                 container: "#drop-page"
             })
         },
 
         // handelPeers
         handlePeers(peers) {
-            console.log("peers", peers);
             this.peersArray = peers.detail;
             // Only listen to peer join event once
             Events.off("peers", this.handlePeers);
@@ -234,7 +230,6 @@ export default {
         handleSelfJoined(e) {
             const message = e.detail.message;
             const uuid = localStorage.getItem("peerid") || uuidv4();
-            console.log(uuid);
             localStorage.setItem("peerid", uuid);
             this.selfPeer = {
                 "id": uuid,
@@ -256,7 +251,6 @@ export default {
         // Handle peer joined
         handlePeerJoined(e) {
             const peer = e.detail;
-            console.log("peer-joined", peer);
             const even = (element) => element.id === peer.id;
             const isInlist = this.peersArray.some(even);
             if (!isInlist) {
@@ -276,13 +270,6 @@ export default {
             this.peersArray = this.peersArray.filter((peer) => {
                 return peer.id !== e.detail;
             });
-            console.log(this.peersArray);
-            // this.$forceUpdate();
-            // this.peersArray.forEach(element => {
-            //     if (element.id == e.detail) {
-            //         element.offline = true;
-            //     }
-            // });
         },
         // handleResize
         resize() {
@@ -318,7 +305,15 @@ export default {
                 y: this.contentsHeight - this.bottomGap
             }
         },
-    }
+        renderSize(bytes) {
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+            if (bytes === 0) return '0 Bytes'
+            const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10)
+            if (i === 0) return `${bytes} ${sizes[i]}`
+            return `${parseFloat((bytes / (1024 ** i)).toFixed(2))} ${sizes[i]}`
+        },
+    },
+
 }
 </script>
 
