@@ -40,7 +40,8 @@
 					</b-button>
 					
 					
-					<b-button v-if="item.appstore_id != undefined" class="mb-1 has-text-red" expanded type="is-text"
+					<b-button v-if="item.type === 'official' || item.type === 'community'" class="mb-1 has-text-red"
+					          expanded type="is-text"
 					          @click="uninstallConfirm">
 						{{ $t('Uninstall') }}
 						<b-loading v-model="isUninstalling" :is-full-page="false">
@@ -248,8 +249,9 @@ export default {
 				window.open(item.host, '_blank');
 				this.removeIdFromSessionStorage(item.id);
 			} else {
+				// type is one of 'official' or 'community'.
 				this.$refs.dro.isActive = false
-				if (item.state === 'running') {
+				if (item.status === 'running') {
 					this.openAppToNewWindow(item)
 				}
 			}
@@ -284,20 +286,33 @@ export default {
 		restartApp() {
 			this.$messageBus('apps_restart', this.item.name);
 			this.isRestarting = true
-			this.$api.container.updateState(this.item.id, "restart").then((res) => {
-				if (res.data.success === 200) {
-					this.updateState()
-				}
-				this.isRestarting = false;
+			
+			this.$openAPI.appManagement.compose.setComposeAppStatus(this.item.id, "restart").then((res) => {
+				this.updateState()
 			}).catch((err) => {
-				this.isRestarting = false;
 				this.$buefy.toast.open({
 					message: err.response.data.data || err.response.data.message,
 					type: 'is-danger',
 					position: 'is-top',
 					duration: 5000
 				})
+			}).finally(() => {
+				this.isRestarting = false;
 			})
+			// this.$api.container.updateState(this.item.id, "restart").then((res) => {
+			// 	if (res.data.success === 200) {
+			// 		this.updateState()
+			// 	}
+			// 	this.isRestarting = false;
+			// }).catch((err) => {
+			// 	this.isRestarting = false;
+			// 	this.$buefy.toast.open({
+			// 		message: err.response.data.data || err.response.data.message,
+			// 		type: 'is-danger',
+			// 		position: 'is-top',
+			// 		duration: 5000
+			// 	})
+			// })
 		},
 		
 		/**
@@ -341,8 +356,20 @@ export default {
 					// this.isUninstalling = false;
 				})
 			} else {
-				this.$api.container.uninstall(this.item.id, {'delete_config_folder': checkDelConfig}).then((res) => {
-					if (res.data.success === 200) {
+				// this.$api.container.uninstall(this.item.id, {'delete_config_folder': checkDelConfig}).then((res) => {
+				// 	if (res.data.success === 200) {
+				// 		this.$EventBus.$emit(events.UPDATE_SYNC_STATUS);
+				// 	}
+				// }).catch((err) => {
+				// 	this.$buefy.toast.open({
+				// 		message: err.response.data.data,
+				// 		type: 'is-danger',
+				// 		position: 'is-top',
+				// 		duration: 5000
+				// 	})
+				// })
+				this.$openAPI.appManagement.compose.uninstallComposeApp(this.item.id, checkDelConfig).then((res) => {
+					if (res.status === 200) {
 						this.$EventBus.$emit(events.UPDATE_SYNC_STATUS);
 					}
 				}).catch((err) => {
@@ -383,35 +410,51 @@ export default {
 		 * @return {*} void
 		 */
 		toggle(item) {
+			debugger
 			this.$messageBus('apps_stop', item.name);
 			this.isStarting = true;
-			const state = item.state === "running" ? "stop" : "start"
+			const status = item.status === "running" ? "stop" : "start"
 			
-			this.$api.container.updateState(item.id, state).then((res) => {
-				this.isStarting = false
-				if (res.data.success === 200) {
-					item.state = res.data.data
-					this.updateState()
-				} else {
-					this.$refs.dro.isActive = false
-					this.$buefy.dialog.alert({
-						title: 'Error',
-						message: res.data.data || res.data.message,
-						type: 'is-danger',
-						ariaRole: 'alertdialog',
-						ariaModal: true
-					})
-				}
+			this.$openAPI.appManagement.compose.setComposeAppStatus(item.id, status).then((res) => {
+				this.updateState()
+				item.status = status
 			}).catch((err) => {
-				this.isStarting = false
-				this.$refs.dro.isActive = false
-				this.$buefy.toast.open({
+				this.$buefy.dialog.alert({
+					title: 'Error',
 					message: err.response.data.data || err.response.data.message,
 					type: 'is-danger',
-					position: 'is-top',
-					duration: 3000
+					ariaRole: 'alertdialog',
+					ariaModal: true
 				})
+			}).finally(() => {
+				this.$refs.dro.isActive = false
+				this.isStarting = false
 			})
+			// this.$api.container.updateState(item.id, state).then((res) => {
+			// 	this.isStarting = false
+			// 	if (res.data.success === 200) {
+			// 		item.state = res.data.data
+			// 		this.updateState()
+			// 	} else {
+			// 		this.$refs.dro.isActive = false
+			// 		this.$buefy.dialog.alert({
+			// 			title: 'Error',
+			// 			message: res.data.data || res.data.message,
+			// 			type: 'is-danger',
+			// 			ariaRole: 'alertdialog',
+			// 			ariaModal: true
+			// 		})
+			// 	}
+			// }).catch((err) => {
+			// 	this.isStarting = false
+			// 	this.$refs.dro.isActive = false
+			// 	this.$buefy.toast.open({
+			// 		message: err.response.data.data || err.response.data.message,
+			// 		type: 'is-danger',
+			// 		position: 'is-top',
+			// 		duration: 3000
+			// 	})
+			// })
 		},
 		
 		appClone(id) {

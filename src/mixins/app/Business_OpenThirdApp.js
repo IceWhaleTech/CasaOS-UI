@@ -16,11 +16,11 @@ export default {
         },
         openThirdApp(appInfo, isNewWindows) {
             this.$messageBus('apps_open', appInfo.name);
-            if (appInfo.host !== "" || appInfo.port !== "" || appInfo.index !== "") {
-                const hostIp = appInfo.host || this.$baseIp
-                const protocol = appInfo.protocol || 'http'
+            if (appInfo.hostname !== "" || appInfo.port !== "" || appInfo.index !== "") {
+                const hostIp = appInfo.hostname || this.$baseIp
+                const seheme = appInfo.seheme || 'http'
                 const port = appInfo.port ? `:${appInfo.port}` : ''
-                const url = `${protocol}://${hostIp}${port}${appInfo.index}`
+                const url = `${seheme}://${hostIp}${port}${appInfo.index}`
                 // let href = window.location.href.split("#")[0]
                 // if (url === href) {
                 //     this.$buefy.toast.open({

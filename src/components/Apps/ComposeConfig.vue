@@ -17,14 +17,14 @@
 		<template v-for="(service, key) in configData.services">
 			<b-tab-item :key="key" :label="key">
 				<ValidationObserver :ref="key+'valida'">
-					<ValidationProvider v-if="key === main_name" v-slot="{ errors, valid }" name="appName"
-					                    rules="required">
-						<b-field :label="$t('App name')+' *'" :message="$t(errors)"
-						         :type="{ 'is-danger': errors[0], 'is-success': valid }">
-							<b-input v-model="configData.name" :placeholder="$t('Your custom App Name')"
-							         maxlength="40"></b-input>
-						</b-field>
-					</ValidationProvider>
+					<!--					<ValidationProvider v-if="key === main_name" v-slot="{ errors, valid }" name="appName"-->
+					<!--					                    rules="required">-->
+					<!--						<b-field :label="$t('App name')+' *'" :message="$t(errors)"-->
+					<!--						         :type="{ 'is-danger': errors[0], 'is-success': valid }">-->
+					<!--							<b-input v-model="configData.name" :placeholder="$t('Your custom App Name')"-->
+					<!--							         maxlength="40"></b-input>-->
+					<!--						</b-field>-->
+					<!--					</ValidationProvider>-->
 					<ValidationProvider v-slot="{ errors, valid }" name="Image" rules="required">
 						<b-field :label="$t('Docker Image')+' *'" :message="$t(errors)"
 						         :type="{ 'is-danger': errors[0], 'is-success': valid }">
@@ -143,9 +143,9 @@
 							</b-field>
 						</ValidationProvider>
 						
-						<b-field :label="$t('App Description')">
-							<b-input v-model="service['x-casaos'].description.en_US"></b-input>
-						</b-field>
+						<!--						<b-field :label="$t('App Description')">-->
+						<!--							<b-input v-model="service['x-casaos'].description.en_US"></b-input>-->
+						<!--						</b-field>-->
 					</template>
 				
 				</ValidationObserver>
@@ -625,6 +625,9 @@ export default {
 				
 				// 补全必要数据。
 				this.preProcessConfigData(this.configData)
+				
+				// set top level x-casaos data
+				this.configData['x-casaos'] = merge(this.configData['x-casaos'], yaml['x-casaos'] || {})
 				
 				// return true
 			} catch (error) {

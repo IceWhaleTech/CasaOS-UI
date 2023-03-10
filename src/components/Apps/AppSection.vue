@@ -223,12 +223,18 @@ export default {
 				// image
 				// slogan \latest \created \protocol \volumes 无用
 				console.log('open setting model', orgAppList)
+				// TODO fake data
 				orgAppList.forEach((item) => {
 					item.status = 'running';
+					item.state = 'running';
+					item.hostname = this.$baseIp;
 					item.name = item.title && item.title.en_US;
 					item.id = item.store_app_id;
-					item.protocol = 'http';
+					// item.protocol = 'http';
+					item.seheme = 'http';
+					// item.type = 'system';
 				})
+				console.log('composeApp Data:', orgAppList)
 				let listLinkApp = await this.$api.users.getLinkAppDetail().then(v => v.data.data);
 				if (listLinkApp === "") {
 					listLinkApp = []
@@ -374,7 +380,8 @@ export default {
 				await this.showExternalLinkPanel(item)
 				return
 			}
-			let state = item.state
+			// TODO fake data.
+			let state = 'running' || item.state
 			let id = item.id // || 'syncthing'
 			const networks = await this.$api.container.getNetworks();
 			const memory = this.$store.state.hardwareInfo.mem;
@@ -405,6 +412,7 @@ export default {
 					id: id,
 					state: "update",
 					isCasa: isCasa,
+					// 区分 terminal
 					runningStatus: state,
 					configData: configData,
 					// TODO transfer yaml string.

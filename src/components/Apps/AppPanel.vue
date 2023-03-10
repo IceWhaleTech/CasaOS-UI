@@ -993,20 +993,36 @@ export default {
 		 */
 		showAppDetial(id) {
 			this.isLoading = true;
-			this.$api.apps.getAppInfo(id).then(resp => {
+			this.$openAPI.appManagement.appStore.composeAppStoreInfo(id).then(res => {
+				debugger
 				this.isLoading = false;
 				this.sidebarOpen = true;
-				this.appDetailData = resp.data.data
-				this.architectures = resp.data.data.architectures || [];
-				// messageBus :: appstore_detail
-				// this.$messageBus('appstore_detail', resp.data.data.title.toString())
-			}).catch(() => {
-				this.isLoading = false;
+				this.appDetailData = res.data.data
+				this.architectures = res.data.data.architectures || [];
+			}).catch((e) => {
+				debugger
 				this.$buefy.toast.open({
-					message: this.$t(`There was an error loading the data, please try again!`),
+					message: e.response.data.message,
+					// message: this.$t(`There was an error loading the data, please try again!`),
 					type: 'is-danger'
 				})
+			}).finally(() => {
+				this.isLoading = false;
 			})
+			// this.$api.apps.getAppInfo(id).then(resp => {
+			// 	this.isLoading = false;
+			// 	this.sidebarOpen = true;
+			// 	this.appDetailData = resp.data.data
+			// 	this.architectures = resp.data.data.architectures || [];
+			// 	// messageBus :: appstore_detail
+			// 	// this.$messageBus('appstore_detail', resp.data.data.title.toString())
+			// }).catch(() => {
+			// 	this.isLoading = false;
+			// 	this.$buefy.toast.open({
+			// 		message: this.$t(`There was an error loading the data, please try again!`),
+			// 		type: 'is-danger'
+			// 	})
+			// })
 		},
 		
 		retry() {
@@ -1019,15 +1035,15 @@ export default {
 		
 		
 		/**
-		 * @description: Quick Install App from app store
+		 * @description: Qucik Install App from app store
 		 * @param {*}
 		 * @return {*} void
 		 */
 		qucikInstall(id) {
-			this.$openAPI.appManagement.compose.myComposeApp(id).then(res => {
+			this.$openAPI.appManagement.appStore.composeApp(id).then(res => {
 				debugger
 				if (res.data.success == 200) {
-					this.$openAPI.appManagement.compose.installComposeApp(res.data.data.compose).then(res => {
+					this.$openAPI.appManagement.appStore.installComposeApp(res.data.data.compose).then(res => {
 					
 					}).catch(() => {
 						this.$buefy.toast.open({
@@ -1041,78 +1057,80 @@ export default {
 						type: 'is-danger'
 					})
 				}
-			}).catch(() => {
+			}).catch((e) => {
+				// console.log(e.response.data)
+				debugger
 				this.$buefy.toast.open({
-					message: this.$t(`There was an error installing the application, please try again!`),
+					message: e.response.data.message,
 					type: 'is-danger'
 				})
 			})
 			this.currentInstallId = id
-			this.$api.apps.getAppInfo(id).then(resp => {
-				if (resp.data.success == 200) {
-					// messageBus :: installApp
-					// this.$messageBus('appstore_install', respData.title.toString())
-					resp.data.data.appstore_id = id
-					this.configDataString = YAML.stringify(resp.data.data)
-					
-					// let respData = resp.data.data
-					// this.initConfigData.protocol = respData.protocol
-					// this.initConfigData.host = respData.host
-					// this.initConfigData.port_map = respData.port_map
-					// this.initConfigData.cpu_shares = 50
-					// this.initConfigData.memory = respData.max_memory
-					// this.initConfigData.restart = "always"
-					// this.initConfigData.label = respData.title
-					// this.initConfigData.position = true
-					// this.initConfigData.index = respData.index
-					// this.initConfigData.icon = respData.icon
-					// this.initConfigData.network_model = respData.network_model
-					// this.initConfigData.image = respData.image
-					// this.initConfigData.description = respData.description
-					// this.initConfigData.origin = respData.origin
-					// this.initConfigData.ports = isNull(respData.ports) ? [] : respData.ports
-					// this.initConfigData.volumes = isNull(respData.volumes) ? [] : respData.volumes
-					// this.initConfigData.envs = isNull(respData.envs) ? [] : respData.envs
-					// this.initConfigData.devices = isNull(respData.devices) ? [] : respData.devices
-					// this.initConfigData.cap_add = isNull(respData.cap_add) ? [] : respData.cap_add
-					// this.initConfigData.cmd = isNull(respData.cmd) ? [] : respData.cmd
-					// this.initConfigData.privileged = respData.privileged
-					// this.initConfigData.host_name = respData.host_name
-					// this.initConfigData.appstore_id = id
-					
-					// currentInstallId is used to identify the app that is being installed
-					this.currentInstallId = 0
-					
-					this.architectures = respData.architectures
-					if (this.unuseable) {
-						// this.showAppDetial(id);
-						this.sidebarOpen = true;
-						this.appDetailData = respData
-						return
-					}
-					
-					if (respData.tip !== "null" && respData.tip !== "[]" && respData.tip !== "") {
-						this.$buefy.dialog.confirm({
-							title: this.$t('Attention'),
-							message: this.formatTips(respData.tip),
-							type: 'is-dark',
-							onConfirm: () => {
-								this.sidebarOpen = false;
-								this.installAppData()
-							}
-						})
-					} else {
-						this.sidebarOpen = false;
-						this.installAppData()
-					}
-				}
-			}).catch(() => {
-				this.currentInstallId = 0
-				this.$buefy.toast.open({
-					message: this.$t(`There was an error loading the data, please try again!`),
-					type: 'is-danger'
-				})
-			})
+			// this.$api.apps.getAppInfo(id).then(resp => {
+			// 	if (resp.data.success == 200) {
+			// 		// messageBus :: installApp
+			// 		// this.$messageBus('appstore_install', respData.title.toString())
+			// 		resp.data.data.appstore_id = id
+			// 		this.configDataString = YAML.stringify(resp.data.data)
+			//
+			// 		// let respData = resp.data.data
+			// 		// this.initConfigData.protocol = respData.protocol
+			// 		// this.initConfigData.host = respData.host
+			// 		// this.initConfigData.port_map = respData.port_map
+			// 		// this.initConfigData.cpu_shares = 50
+			// 		// this.initConfigData.memory = respData.max_memory
+			// 		// this.initConfigData.restart = "always"
+			// 		// this.initConfigData.label = respData.title
+			// 		// this.initConfigData.position = true
+			// 		// this.initConfigData.index = respData.index
+			// 		// this.initConfigData.icon = respData.icon
+			// 		// this.initConfigData.network_model = respData.network_model
+			// 		// this.initConfigData.image = respData.image
+			// 		// this.initConfigData.description = respData.description
+			// 		// this.initConfigData.origin = respData.origin
+			// 		// this.initConfigData.ports = isNull(respData.ports) ? [] : respData.ports
+			// 		// this.initConfigData.volumes = isNull(respData.volumes) ? [] : respData.volumes
+			// 		// this.initConfigData.envs = isNull(respData.envs) ? [] : respData.envs
+			// 		// this.initConfigData.devices = isNull(respData.devices) ? [] : respData.devices
+			// 		// this.initConfigData.cap_add = isNull(respData.cap_add) ? [] : respData.cap_add
+			// 		// this.initConfigData.cmd = isNull(respData.cmd) ? [] : respData.cmd
+			// 		// this.initConfigData.privileged = respData.privileged
+			// 		// this.initConfigData.host_name = respData.host_name
+			// 		// this.initConfigData.appstore_id = id
+			//
+			// 		// currentInstallId is used to identify the app that is being installed
+			// 		this.currentInstallId = 0
+			//
+			// 		this.architectures = respData.architectures
+			// 		if (this.unuseable) {
+			// 			// this.showAppDetial(id);
+			// 			this.sidebarOpen = true;
+			// 			this.appDetailData = respData
+			// 			return
+			// 		}
+			//
+			// 		if (respData.tip !== "null" && respData.tip !== "[]" && respData.tip !== "") {
+			// 			this.$buefy.dialog.confirm({
+			// 				title: this.$t('Attention'),
+			// 				message: this.formatTips(respData.tip),
+			// 				type: 'is-dark',
+			// 				onConfirm: () => {
+			// 					this.sidebarOpen = false;
+			// 					this.installAppData()
+			// 				}
+			// 			})
+			// 		} else {
+			// 			this.sidebarOpen = false;
+			// 			this.installAppData()
+			// 		}
+			// 	}
+			// }).catch(() => {
+			// 	this.currentInstallId = 0
+			// 	this.$buefy.toast.open({
+			// 		message: this.$t(`There was an error loading the data, please try again!`),
+			// 		type: 'is-danger'
+			// 	})
+			// })
 		},
 		/**
 		 * @description: Format AppStore tip datas
@@ -1434,20 +1452,28 @@ export default {
 		 * @return {*} void
 		 */
 		showTerminalPanel() {
-			this.$buefy.modal.open({
-				parent: this,
-				component: AppTerminalPanel,
-				hasModalCard: true,
-				customClass: 'terminal-modal',
-				trapFocus: true,
-				canCancel: [],
-				scroll: "keep",
-				animation: "zoom-in",
-				props: {
-					appid: this.id,
-					// appName: this.initConfigData.label
-					appName: this.mainName
+			this.$openAPI.appManagement.compose.composeAppContainers(this.id).then((res) => {
+				if (res.status == 200) {
+					const containers = res.data.data.containers;
+					const containerId = containers[this.id].ID;
+					this.$buefy.modal.open({
+						parent: this,
+						component: AppTerminalPanel,
+						hasModalCard: true,
+						customClass: 'terminal-modal',
+						trapFocus: true,
+						canCancel: [],
+						scroll: "keep",
+						animation: "zoom-in",
+						props: {
+							appid: containerId,
+							// appName: this.initConfigData.label
+							appName: this.mainName
+						}
+					})
 				}
+			}).catch((err) => {
+				console.log('$openAPI.appManagement.compose.composeAppContainers', err.response)
 			})
 		},
 		

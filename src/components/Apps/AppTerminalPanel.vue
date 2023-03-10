@@ -74,12 +74,17 @@ export default {
 	},
 	methods: {
 		getLogs() {
-			this.$api.container.getLogsV2(this.appid).then((res) => {
-				if (res.data.success == 200) {
-					let data = res.data.data
-					let replaceData = data.replace(/\n(.{8})/gu, '\n');
-					this.logData = replaceData.substring(8, replaceData.length - 1);
+			// OLD:: this.$api.container.getLogsV2(this.appid)
+			this.$openAPI.appManagement.compose.composeAppLogs(this.appName).then((res) => {
+				if (res.status == 200) {
+					// let data = res.data.data
+					// console.log(data)
+					// let replaceData = data.replace(/\n(.{8})/gu, '\n');
+					// this.logData = replaceData.substring(8, replaceData.length - 1);
+					this.logData = res.data.data
 				}
+			}).catch((err) => {
+				console.log('$openAPI.appManagement.compose.composeAppLogs', err)
 			})
 		},
 		onInput(e) {
