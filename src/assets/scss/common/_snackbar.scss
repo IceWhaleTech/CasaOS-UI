@@ -33,9 +33,22 @@
             color: rgba(41, 52, 61, 1);
 
             &::before {
-                content: url(../img/common-icons/files.svg);
+
+                content: "\e946";
+                font-family: 'casaos' !important;
+                speak: never;
+                font-style: normal;
+                font-weight: normal;
+                font-variant: normal;
+                text-transform: none;
+                line-height: 1;
+
+                /* Better Font Rendering =========== */
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
                 margin-right: 0.5rem;
                 height: 24px;
+                font-size: 24px;
             }
         }
 
@@ -84,7 +97,7 @@
                 }
             }
 
-            
+
 
         }
     }

@@ -29,15 +29,12 @@ export class ServerConnection {
         console.log('WS:', msg);
         switch (msg.type) {
             case 'peers':
-                console.log('WS:', msg);
-                Events.fire('peers', this.deleteSelf(msg.peers));
+                Events.fire('peers', msg.peers);
                 break;
             case 'peer-joined':
-                console.log('WS:', msg);
                 Events.fire('peer-joined', msg.peer);
                 break;
             case 'peer-left':
-                console.log('WS:', msg);
                 Events.fire('peer-left', msg.peerId);
                 break;
             case 'signal':
@@ -72,7 +69,7 @@ export class ServerConnection {
         // hack to detect if deployment or development environment
         const protocol = location.protocol.startsWith('https') ? 'wss' : 'ws';
         const webrtc = window.isRtcSupported ? '/webrtc' : '/fallback';
-        const url = protocol + '://localhost:3000'  + location.pathname + 'server' + webrtc;
+        const url = protocol + '://localhost:3000' + location.pathname + 'server' + webrtc;
         return url;
     }
 
@@ -290,7 +287,6 @@ class RTCPeer extends Peer {
 
     _onDescription(description) {
         // description.sdp = description.sdp.replace('b=AS:30', 'b=AS:1638400');
-        console.log('RTC: Description', description);
         this._conn.setLocalDescription(description)
             .then(() => this._sendSignal({ sdp: description }))
             .catch(e => this._onError(e));
@@ -303,7 +299,6 @@ class RTCPeer extends Peer {
 
     onServerMessage(message) {
         if (!this._conn) this._connect(message.sender, false);
-
         if (message.sdp) {
             this._conn.setRemoteDescription(new RTCSessionDescription(message.sdp))
                 .then(() => {
@@ -407,7 +402,6 @@ export class PeersManager {
     _onPeers(peers) {
         peers.forEach(peer => {
             if (this.peers[peer.id]) {
-                console.log("wwww", this.peers[peer.id]);
                 this.peers[peer.id].refresh();
                 return;
             }

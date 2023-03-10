@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2023-02-28 17:07:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-09 19:53:09
- * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\drop\DropContextMenu.vue
+ * @LastEditTime: 2023-03-10 14:56:08
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/drop/DropContextMenu.vue
  * @Description: 
  * 
  * Copyright (c) 2023 by IceWhale, All Rights Reserved. 
@@ -23,8 +23,7 @@
                     <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center" key="drop-context1" v-else>
                         <b-upload v-model="files" multiple
                             class="is-clickable has-text-full-03 is-flex is-align-items-center" @input="activeDropUpload">
-                            <b-icon pack="casa" icon="view" class="mr-1 is-16x16" custom-size="casa-16px" /> {{ $t('Sending
-                                                        files') }}
+                            <b-icon pack="casa" icon="sending-files" class="mr-1 is-16x16" custom-size="casa-16px" /> {{ $t('Sending files') }}
                         </b-upload>
                     </b-dropdown-item>
 

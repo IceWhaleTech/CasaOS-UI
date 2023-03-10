@@ -354,8 +354,8 @@
   "CheckThenUpdate": "Check then update",
   "Not compatible with {arch} devices.": "Not compatible with {arch} devices.",
   "Connect Dropbox": "Connect Dropbox",
-  "Connect GoogleDrive": "Connect GoogleDrive",
-  "FileDrop": "FileDrop",
+  "Connect GoogleDrive": "Connect Google Drive",
+  "FilesDrop": "FilesDrop",
   "You are using the device":"You are using the device",
   "Click to send the file to the device.":"Click to send the file to the device.",
   "{num} files being sent":"Sending {num} files",
@@ -367,5 +367,6 @@
   "Cancel sending":"Cancel sending",
   "Ignore":"Ignore",
   "File transfer completed.":"File transfer completed.",
-  "{name} {size} is received.":"{name} {size} is received."
+  "{name} {size} is received.":"{name} {size} is received.",
+  "Connection lost. Retry in 5 seconds...":"Connection lost. Retry in 5 seconds..."
 }

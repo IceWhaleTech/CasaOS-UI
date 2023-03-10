@@ -2,7 +2,7 @@
  * @Author: JerryK
  * @Date: 2022-03-03 21:48:17
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-23 18:46:30
+ * @LastEditTime: 2023-03-10 17:21:18
  * @Description: 
  * @FilePath: /CasaOS-UI/src/components/filebrowser/viewers/CodeEditor.vue
 -->
@@ -24,8 +24,8 @@
         <!-- Download File Button End -->
 
         <!-- Close Button Start -->
-        <div class="is-flex is-align-items-center modal-close-container close-btn modal-close-container-line">
-          <button type="button" class="delete" @click="close" />
+        <div class="close-button" @click="close">
+          <b-icon pack="casa" icon="close"></b-icon>
         </div>
         <!-- Close File Button End -->
 

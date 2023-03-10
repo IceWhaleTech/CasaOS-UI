@@ -2,102 +2,117 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2023-02-23 18:44:03
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-23 19:09:00
+ * @LastEditTime: 2023-03-10 17:21:34
  * @FilePath: /CasaOS-UI/src/components/filebrowser/viewers/MarkdownEditor.vue
  * @Description: 
  * 
  * Copyright (c) 2023 by IceWhale, All Rights Reserved. 
 -->
 <template>
-    <div class="overlay">
-        <header class="modal-card-head">
-            <div class="is-flex-grow-1 is-flex ">
-                <!-- Title Start -->
-                <h3 class="title is-5">{{ $t('Richtext Editor') }}</h3>
-                <!-- Title End -->
-            </div>
-            <div class="is-flex is-align-items-center">
-                <!-- Save File Button Start -->
-                <b-button icon-left="content-save" type="is-dark" size="is-small" :label="$t('Save')" class="mr-3" rounded
-                    @click="saveFile(false)" />
-                <!-- Save File Button Start -->
+  <div class="overlay">
+    <header class="modal-card-head">
+      <div class="is-flex-grow-1 is-flex">
+        <!-- Title Start -->
+        <h3 class="title is-5">{{ $t("Richtext Editor") }}</h3>
+        <!-- Title End -->
+      </div>
+      <div class="is-flex is-align-items-center">
+        <!-- Save File Button Start -->
+        <b-button
+          icon-left="content-save"
+          type="is-dark"
+          size="is-small"
+          :label="$t('Save')"
+          class="mr-3"
+          rounded
+          @click="saveFile(false)"
+        />
+        <!-- Save File Button Start -->
 
-                <!-- Download File Button Start -->
-                <b-button icon-left="download" type="is-primary" size="is-small" :label="$t('Download')" class="mr-2"
-                    rounded @click="download" />
-                <!-- Download File Button End -->
+        <!-- Download File Button Start -->
+        <b-button
+          icon-left="download"
+          type="is-primary"
+          size="is-small"
+          :label="$t('Download')"
+          class="mr-2"
+          rounded
+          @click="download"
+        />
+        <!-- Download File Button End -->
 
-                <!-- Close Button Start -->
-                <div class="is-flex is-align-items-center modal-close-container close-btn modal-close-container-line">
-                    <button type="button" class="delete" @click="close" />
-                </div>
-                <!-- Close File Button End -->
-
-            </div>
-        </header>
-
-        <!-- Editor Breadcrumb Start -->
-        <div class="file-path-bread">
-            <b-breadcrumb size="is-small">
-                <b-breadcrumb-item active v-for="(item, index) in pathArray" :key="'f-' + index">{{ item
-                }}</b-breadcrumb-item>
-            </b-breadcrumb>
+        <!-- Close Button Start -->
+        <div class="close-button" @click="close">
+          <b-icon pack="casa" icon="close"></b-icon>
         </div>
-        <!-- Editor Breadcrumb End -->
+        <!-- Close File Button End -->
+      </div>
+    </header>
 
-        <!-- Editor Start -->
-        <div class="is-flex is-justify-content-center is-align-items-center is-flex-grow-1 v-container code">
-            <editor-content :editor="editor" class="mark-container" />
-            <!-- <codemirror v-model="code" ref="cmEditor" :options="cmOptions" @input="onCmCodeChange" @ready="onCmReady" /> -->
-        </div>
-        <!-- Editor End -->
+    <!-- Editor Breadcrumb Start -->
+    <div class="file-path-bread">
+      <b-breadcrumb size="is-small">
+        <b-breadcrumb-item
+          active
+          v-for="(item, index) in pathArray"
+          :key="'f-' + index"
+          >{{ item }}</b-breadcrumb-item
+        >
+      </b-breadcrumb>
     </div>
+    <!-- Editor Breadcrumb End -->
+
+    <!-- Editor Start -->
+    <div
+      class="is-flex is-justify-content-center is-align-items-center is-flex-grow-1 v-container code"
+    >
+      <editor-content :editor="editor" class="mark-container" />
+      <!-- <codemirror v-model="code" ref="cmEditor" :options="cmOptions" @input="onCmCodeChange" @ready="onCmReady" /> -->
+    </div>
+    <!-- Editor End -->
+  </div>
 </template>
 
 <script>
-import { mixin } from '@/mixins/mixin';
+import { mixin } from "@/mixins/mixin";
 
 // import mime from 'mime'
-import { Editor, EditorContent } from '@tiptap/vue-2';
-import StarterKit from '@tiptap/starter-kit';
-import Highlight from '@tiptap/extension-highlight'
-import Typography from '@tiptap/extension-typography'
+import { Editor, EditorContent } from "@tiptap/vue-2";
+import StarterKit from "@tiptap/starter-kit";
+import Highlight from "@tiptap/extension-highlight";
+import Typography from "@tiptap/extension-typography";
 export default {
-    mixins: [mixin],
-    components: {
-        EditorContent,
-    },
-    props: {
-        item: {
-            type: Object,
-            default: () => {
-                return {
-                    path: '',
-                    name: ''
-                }
-            }
-        },
-    },
-    data() {
+  mixins: [mixin],
+  components: {
+    EditorContent,
+  },
+  props: {
+    item: {
+      type: Object,
+      default: () => {
         return {
-            editor: null,
-            code: ""
-        }
+          path: "",
+          name: "",
+        };
+      },
     },
-    computed: {
-        pathArray() {
-            return this.item.path.substr(1).split("/");
-        }
+  },
+  data() {
+    return {
+      editor: null,
+      code: "",
+    };
+  },
+  computed: {
+    pathArray() {
+      return this.item.path.substr(1).split("/");
     },
-    mounted() {
-        this.readFile();
-        this.editor = new Editor({
-            extensions: [
-                StarterKit,
-                Highlight,
-                Typography,
-            ],
-            content: `
+  },
+  mounted() {
+    this.readFile();
+    this.editor = new Editor({
+      extensions: [StarterKit, Highlight, Typography],
+      content: `
         <p>
           Markdown shortcuts make it easy to format the text while typing.
         </p>
@@ -114,107 +129,107 @@ export default {
           For example, we added the <code>Typography</code> extension here. Try typing <code>(c)</code> to see how it’s converted to a proper © character. You can also try <code>-></code>, <code>>></code>, <code>1/2</code>, <code>!=</code>, or <code>--</code>.
         </p>
       `,
-        })
+    });
+  },
+  methods: {
+    readFile() {
+      this.$api.file.download(this.item.path).then((res) => {
+        this.code = String(res.data);
+        this.$nextTick(() => {
+          this.isChange = false;
+        });
+      });
     },
-    methods: {
-        readFile() {
-            this.$api.file.download(this.item.path).then(res => {
-                this.code = String(res.data)
-                this.$nextTick(() => {
-                    this.isChange = false
-                })
-            })
-        },
-        download() {
-            this.downloadFile(this.item);
-        },
-        close() {
-            if (this.isChange) {
-                this.$buefy.dialog.confirm({
-                    title: this.$t('Want to save?'),
-                    message: this.$t('Your changes will be lost if you don’t save them.'),
+    download() {
+      this.downloadFile(this.item);
+    },
+    close() {
+      if (this.isChange) {
+        this.$buefy.dialog.confirm({
+          title: this.$t("Want to save?"),
+          message: this.$t("Your changes will be lost if you don’t save them."),
 
-                    hasIcon: true,
-                    canCancel: ['button'],
-                    confirmText: this.$t('Save'),
-                    cancelText: this.$t('Don’t Save'),
-                    onConfirm: () => {
-                        this.saveFile(true);
-                    },
-                    onCancel: () => {
-                        this.$emit("close");
-                    }
-                })
-            } else {
-                this.$emit("close");
-            }
-        }
-    }
-}
+          hasIcon: true,
+          canCancel: ["button"],
+          confirmText: this.$t("Save"),
+          cancelText: this.$t("Don’t Save"),
+          onConfirm: () => {
+            this.saveFile(true);
+          },
+          onCancel: () => {
+            this.$emit("close");
+          },
+        });
+      } else {
+        this.$emit("close");
+      }
+    },
+  },
+};
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 /* Basic editor styles */
 .mark-container {
-    padding: 0 1.5rem;
-    width: 100%;
-    height: 100%;
-    position: relative;
+  padding: 0 1.5rem;
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
 .ProseMirror {
-    width: 100%;
-    height: 100%;
-    >*+* {
-        margin-top: 0.75em;
-    }
+  width: 100%;
+  height: 100%;
+  > * + * {
+    margin-top: 0.75em;
+  }
 
-    ul,
-    ol {
-        padding: 0 1rem;
-    }
+  ul,
+  ol {
+    padding: 0 1rem;
+  }
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        line-height: 1.1;
-    }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    line-height: 1.1;
+  }
+
+  code {
+    background-color: rgba(#616161, 0.1);
+    color: #616161;
+  }
+
+  pre {
+    background: #0d0d0d;
+    color: #fff;
+    font-family: "JetBrainsMono", monospace;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
 
     code {
-        background-color: rgba(#616161, 0.1);
-        color: #616161;
+      color: inherit;
+      padding: 0;
+      background: none;
+      font-size: 0.8rem;
     }
+  }
 
-    pre {
-        background: #0D0D0D;
-        color: #FFF;
-        font-family: 'JetBrainsMono', monospace;
-        padding: 0.75rem 1rem;
-        border-radius: 0.5rem;
+  img {
+    max-width: 100%;
+    height: auto;
+  }
 
-        code {
-            color: inherit;
-            padding: 0;
-            background: none;
-            font-size: 0.8rem;
-        }
-    }
+  hr {
+    margin: 1rem 0;
+  }
 
-    img {
-        max-width: 100%;
-        height: auto;
-    }
-
-    hr {
-        margin: 1rem 0;
-    }
-
-    blockquote {
-        padding-left: 1rem;
-        border-left: 2px solid rgba(#0D0D0D, 0.1);
-    }
+  blockquote {
+    padding-left: 1rem;
+    border-left: 2px solid rgba(#0d0d0d, 0.1);
+  }
 }
 </style>

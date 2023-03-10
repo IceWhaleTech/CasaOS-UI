@@ -1,7 +1,7 @@
 <!--
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-09 19:31:59
- * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\FilePanel.vue
+ * @LastEditTime: 2023-03-10 17:06:54
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/FilePanel.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -10,64 +10,97 @@
 <template>
   <div :class="containerClass">
     <div class="modal-card">
-
       <!-- Modal-Card Body Start -->
       <section class="modal-card-body is-flex">
-
         <!-- Viewer Start -->
         <transition name="c-zoom-in">
-          <component :is="panelType" v-if="isShowDetial" ref="previewPanel" :item="currentItem" :list="listData"
-            @close="isShowDetial = false; isModalOpen = false"></component>
+          <component
+            :is="panelType"
+            v-if="isShowDetial"
+            ref="previewPanel"
+            :item="currentItem"
+            :list="listData"
+            @close="
+              isShowDetial = false;
+              isModalOpen = false;
+            "
+          ></component>
         </transition>
         <!-- Viewer End -->
 
         <template>
           <!-- NavBar Start -->
           <div class="nav-bar is-flex is-flex-direction-column">
-            <div class="is-flex-grow-1 is-flex-shrink-1 nav-bar-top  scrollbars-light">
+            <div
+              class="is-flex-grow-1 is-flex-shrink-1 nav-bar-top scrollbars-light"
+            >
               <!-- Files Start -->
-              <div class="files-section ">
+              <div class="files-section">
                 <!--  storage settings requirement document -->
                 <div class="is-flex is-align-items-center pt-3">
-                  <div class=" is-flex-grow-1">
-                    <h3 class="title is-3 mb-0 pb-3 pt-3 has-text-left">{{ $t('Files') }}</h3>
+                  <div class="is-flex-grow-1">
+                    <h3 class="title is-3 mb-0 pb-3 pt-3 has-text-left">
+                      {{ $t("Files") }}
+                    </h3>
                   </div>
-                  <div v-show="hasMergerFunction" class="is-flex-shrink-0  mr-5" @click="showStorageSettingsModal">
+                  <div
+                    v-show="hasMergerFunction"
+                    class="is-flex-shrink-0 mr-5"
+                    @click="showStorageSettingsModal"
+                  >
                     <b-icon custom-size="mdi-18px" icon="cog-outline"></b-icon>
                   </div>
                 </div>
-                <div class="list-container scrollbars-light pt-0 is-flex-grow-1">
-                  <tree-list ref="navBar" :autoLoad="true" :isActive="pageType == `file`" :path="rootPath"></tree-list>
+                <div
+                  class="list-container scrollbars-light pt-0 is-flex-grow-1"
+                >
+                  <tree-list
+                    ref="navBar"
+                    :autoLoad="true"
+                    :isActive="pageType == `file`"
+                    :path="rootPath"
+                  ></tree-list>
                 </div>
               </div>
               <!-- Files End -->
 
-
               <!-- Mounted Start -->
               <div class="mounted-section">
                 <div class="is-flex is-align-items-center">
-                  <div class=" is-flex-grow-1">
-                    <h3 class="title is-3 mb-0 pb-3 pt-3 has-text-left">{{ $t('Location') }}</h3>
+                  <div class="is-flex-grow-1">
+                    <h3 class="title is-3 mb-0 pb-3 pt-3 has-text-left">
+                      {{ $t("Location") }}
+                    </h3>
                   </div>
-                  <div class=" is-flex-shrink-0 mr-5">
+                  <div class="is-flex-shrink-0 mr-5">
                     <mount-action-button></mount-action-button>
                   </div>
                 </div>
 
                 <div class="list-container pt-0 is-flex-grow-1">
-                  <mount-list ref="mountedList" :autoLoad="true" :hasMergerFunction="hasMergerFunction"
-                    :isActive="pageType == `file`" :path="rootPath"></mount-list>
+                  <mount-list
+                    ref="mountedList"
+                    :autoLoad="true"
+                    :hasMergerFunction="hasMergerFunction"
+                    :isActive="pageType == `file`"
+                    :path="rootPath"
+                  ></mount-list>
                 </div>
-
               </div>
               <!-- Mounted End -->
             </div>
 
             <!-- Bottom Action Start -->
             <div class="bottom-area">
-              <drop-entry-button :active="pageType == `drop`" :title="$t('FileDrop')"
-                @open="showDropPage"></drop-entry-button>
-              <share-entry-button :active="pageType == `share`" @open="showSharedList"></share-entry-button>
+              <drop-entry-button
+                :active="pageType == `drop`"
+                :title="$t('FilesDrop')"
+                @open="showDropPage"
+              ></drop-entry-button>
+              <share-entry-button
+                :active="pageType == `share`"
+                @open="showSharedList"
+              ></share-entry-button>
             </div>
             <!-- Bottom Action End -->
           </div>
@@ -76,19 +109,34 @@
           <!-- Main Content Start -->
           <template v-if="pageType == `file`">
             <div class="content is-flex-grow-1">
-              <uploader ref="uploader" :options="options" class="uploader-example">
+              <uploader
+                ref="uploader"
+                :options="options"
+                class="uploader-example"
+              >
                 <uploader-unsupport></uploader-unsupport>
                 <!-- Header Start -->
                 <header class="modal-card-head">
-                  <div id="bread-container" class="is-flex-grow-1 is-flex breadcrumb-container">
+                  <div
+                    id="bread-container"
+                    class="is-flex-grow-1 is-flex breadcrumb-container"
+                  >
                     <file-breadcrumb></file-breadcrumb>
                     <!-- <b-input placeholder="Search in folder..." size="is-small" rounded></b-input> -->
                   </div>
                   <div class="is-flex is-align-items-center">
-
                     <!-- Paste Button Start -->
-                    <b-button v-if="hasPasteData" :label="$t('Paste')" :loading="isPasting" class="mr-3"
-                      icon-left="content-paste" rounded size="is-small" type="is-success" @click="paste('overwrite')" />
+                    <b-button
+                      v-if="hasPasteData"
+                      :label="$t('Paste')"
+                      :loading="isPasting"
+                      class="mr-3"
+                      icon-left="content-paste"
+                      rounded
+                      size="is-small"
+                      type="is-success"
+                      @click="paste('overwrite')"
+                    />
                     <!-- Paste Button End -->
 
                     <!-- Operation Status Start-->
@@ -96,35 +144,56 @@
                     <!-- Operation Status End-->
 
                     <!-- Upload Button Start -->
-                    <global-action-button @showNewFileModal="showNewFileModal"
-                      @showNewFolderModal="showNewFolderModal"></global-action-button>
+                    <global-action-button
+                      @showNewFileModal="showNewFileModal"
+                      @showNewFolderModal="showNewFolderModal"
+                    ></global-action-button>
                     <!-- Upload Button End -->
 
                     <!--  Close Button Start -->
-                    <div class="is-flex is-align-items-center modal-close-container modal-close-container-line ">
-                      <button class="delete" type="button" @click="$emit('close')" />
+                    <div
+                      class="is-flex is-align-items-center modal-close-container modal-close-container-line"
+                    >
+                      <div class="close-button" @click="$emit('close')">
+                        <b-icon pack="casa" icon="close"></b-icon>
+                      </div>
                     </div>
                     <!--  Close Button End -->
-
                   </div>
                 </header>
                 <!-- Header End -->
 
                 <!-- Tool Bar Start -->
                 <div v-if="isEmpty" class="tool-bar is-flex mb-2">
-                  <div class=" is-flex-grow-1 has-text-left is-flex  is-align-items-center">
+                  <div
+                    class="is-flex-grow-1 has-text-left is-flex is-align-items-center"
+                  >
                     <b-field class="ml-3 is-flex is-size-14px mb-0">
-                      <b-checkbox v-model="isSelectAll" :class="selectState" size="is-small" @input="handleSelect">
+                      <b-checkbox
+                        v-model="isSelectAll"
+                        :class="selectState"
+                        size="is-small"
+                        @input="handleSelect"
+                      >
                         {{
-                          selectState != "none" ? $t("select-items", selectLabel) : $t("total-items",
-                            selectLabel)
+                          selectState != "none"
+                            ? $t("select-items", selectLabel)
+                            : $t("total-items", selectLabel)
                         }}
                       </b-checkbox>
                     </b-field>
                   </div>
                   <div class="view-btns is-flex-shrink-0">
-                    <b-tooltip :label="$t('Change View')" position="is-left" type="is-dark">
-                      <p class="is-clickable none-line-height" role="button" @click="changeView">
+                    <b-tooltip
+                      :label="$t('Change View')"
+                      position="is-left"
+                      type="is-dark"
+                    >
+                      <p
+                        class="is-clickable none-line-height"
+                        role="button"
+                        @click="changeView"
+                      >
                         <b-icon :icon="viewIcon"></b-icon>
                       </p>
                     </b-tooltip>
@@ -134,42 +203,72 @@
 
                 <!-- List View Start -->
                 <div id="dropTarget">
-
                   <!-- Drag and Drop Mask Start -->
-                  <div v-if="isDragIn" class="drag-mask is-flex is-align-items-flex-end is-flex-direction-row">
+                  <div
+                    v-if="isDragIn"
+                    class="drag-mask is-flex is-align-items-flex-end is-flex-direction-row"
+                  >
                     <div class="mb-6">
                       <div class="upload-icon">
-                        <b-icon icon="arrow-up" size="is-medium" type="is-white"></b-icon>
+                        <b-icon
+                          icon="arrow-up"
+                          size="is-medium"
+                          type="is-white"
+                        ></b-icon>
                       </div>
                       <p class="has-text-primary">
-                        {{ $t('Upload to') }} {{ currentPathName }}
+                        {{ $t("Upload to") }} {{ currentPathName }}
                       </p>
                     </div>
                   </div>
                   <!-- Drag and Drop Mask End -->
 
-                  <component :is="listView" ref="listview" v-model="listData" :isLoading="isLoading"
-                    @change="handelListChange" @gotoFolder="getFileList" @reload="reload"
-                    @showDetailModal="showDetailModal">
-                    <empty-holder v-if="isEmpty" @newFile="showNewFileModal"
-                      @newFolder="showNewFolderModal"></empty-holder>
+                  <component
+                    :is="listView"
+                    ref="listview"
+                    v-model="listData"
+                    :isLoading="isLoading"
+                    @change="handelListChange"
+                    @gotoFolder="getFileList"
+                    @reload="reload"
+                    @showDetailModal="showDetailModal"
+                  >
+                    <empty-holder
+                      v-if="isEmpty"
+                      @newFile="showNewFileModal"
+                      @newFolder="showNewFolderModal"
+                    ></empty-holder>
                     <error-holder v-else :error="errorMsg"></error-holder>
                   </component>
-
                 </div>
                 <!-- List View End -->
 
                 <!-- Upload List Start-->
                 <div v-show="showUploadList" class="upload-list">
-                  <b-collapse ref="uploadList" animation="slide1" aria-id="contentIdForA11y3" class="card">
+                  <b-collapse
+                    ref="uploadList"
+                    animation="slide1"
+                    aria-id="contentIdForA11y3"
+                    class="card"
+                  >
                     <template #trigger="props">
-                      <div :aria-expanded="props.open" aria-controls="contentIdForA11y3" class="card-header"
-                        role="button">
+                      <div
+                        :aria-expanded="props.open"
+                        aria-controls="contentIdForA11y3"
+                        class="card-header"
+                        role="button"
+                      >
                         <p class="card-header-title">
-                          <b-icon :icon="props.open ? 'chevron-down' : 'chevron-up'" class="mr-2"></b-icon>
+                          <b-icon
+                            :icon="props.open ? 'chevron-down' : 'chevron-up'"
+                            class="mr-2"
+                          ></b-icon>
                           {{ $t(uploaderListHeaderText) }}
                         </p>
-                        <a class="card-header-icon" @click.prevent="closeUploaderList">
+                        <a
+                          class="card-header-icon"
+                          @click.prevent="closeUploaderList"
+                        >
                           <b-icon icon="close"></b-icon>
                         </a>
                       </div>
@@ -180,22 +279,29 @@
                         <uploader-list></uploader-list>
                       </div>
                     </div>
-
                   </b-collapse>
                 </div>
                 <!-- Upload List End-->
-
               </uploader>
               <!-- Toolbar Start -->
-              <operation-toolbar v-model="isToolbarShow" @close="handleClose" @copy="handleCopy"
-                @download="handleDownload" @move="handleMove" @remove="handleRemove"></operation-toolbar>
+              <operation-toolbar
+                v-model="isToolbarShow"
+                @close="handleClose"
+                @copy="handleCopy"
+                @download="handleDownload"
+                @move="handleMove"
+                @remove="handleRemove"
+              ></operation-toolbar>
               <!-- Toolbar End -->
             </div>
           </template>
 
           <!-- Share Page Start -->
           <template v-else-if="pageType == `share`">
-            <share-list-page ref="shareList" @close="$emit('close')"></share-list-page>
+            <share-list-page
+              ref="shareList"
+              @close="$emit('close')"
+            ></share-list-page>
           </template>
           <!-- Share Page End -->
 
@@ -206,65 +312,67 @@
           <!-- Drop Page End -->
         </template>
         <!-- Main Content End -->
-
       </section>
       <!-- Modal-Card Body End -->
       <b-loading v-model="isLoading" :is-full-page="false">
-        <b-image :src="require('@/assets/img/loading/waiting.svg')" alt="pending" class="is-100x100 mt-6" />
+        <b-image
+          :src="require('@/assets/img/loading/waiting.svg')"
+          alt="pending"
+          class="is-100x100 mt-6"
+        />
       </b-loading>
     </div>
   </div>
 </template>
 
 <script>
+import orderBy from "lodash/orderBy";
+import dropRight from "lodash/dropRight";
+import isEqual from "lodash/isEqual";
 
-import orderBy from 'lodash/orderBy'
-import dropRight from 'lodash/dropRight'
-import isEqual from 'lodash/isEqual'
+import { mixin } from "@/mixins/mixin";
+import events from "@/events/events";
 
-import { mixin } from '@/mixins/mixin';
-import events from '@/events/events';
+import TreeList from "./sidebar/TreeList.vue";
+import MountList from "./sidebar/MountList.vue";
+import ShareEntryButton from "./shared/ShareEntryButton.vue";
+import ShareListPage from "./shared/ShareListPage.vue";
 
-import TreeList from './sidebar/TreeList.vue';
-import MountList from './sidebar/MountList.vue';
-import ShareEntryButton from './shared/ShareEntryButton.vue';
-import ShareListPage from './shared/ShareListPage.vue';
+import SelectShareModal from "./shared/SelectShareModal.vue";
+import ShareDetial from "./shared/ShareDetial.vue";
 
-import SelectShareModal from './shared/SelectShareModal.vue'
-import ShareDetial from './shared/ShareDetial.vue'
+import GirdView from "./components/GirdView.vue";
+import ListView from "./components/ListView.vue";
+import FileBreadcrumb from "./components/FileBreadcrumb.vue";
+import EmptyHolder from "./components/EmptyHolder.vue";
+import ErrorHolder from "./components/ErrorHolder.vue";
 
-import GirdView from './components/GirdView.vue';
-import ListView from './components/ListView.vue';
-import FileBreadcrumb from './components/FileBreadcrumb.vue';
-import EmptyHolder from './components/EmptyHolder.vue';
-import ErrorHolder from './components/ErrorHolder.vue';
+import DetailModal from "./modals/DetailModal.vue";
+import NewFolderModal from "./modals/NewFolderModal.vue";
+import NewFileModal from "./modals/NewFileModal.vue";
+import RenameModal from "./modals/RenameModal.vue";
 
-import DetailModal from './modals/DetailModal.vue'
-import NewFolderModal from './modals/NewFolderModal.vue'
-import NewFileModal from './modals/NewFileModal.vue'
-import RenameModal from './modals/RenameModal.vue';
-
-import Uploader from './uploader/components/uploader.vue'
-import UploaderUnsupport from './uploader/components/unsupport.vue'
-import UploaderList from './uploader/components/list.vue'
-import OperationToolbar from './components/OperationToolbar.vue';
-import OperationStatusBar from './components/OperationStatusBar.vue';
-import GlobalActionButton from './components/GlobalActionButton.vue';
-import MountActionButton from './components/MountActionButton.vue';
+import Uploader from "./uploader/components/uploader.vue";
+import UploaderUnsupport from "./uploader/components/unsupport.vue";
+import UploaderList from "./uploader/components/list.vue";
+import OperationToolbar from "./components/OperationToolbar.vue";
+import OperationStatusBar from "./components/OperationStatusBar.vue";
+import GlobalActionButton from "./components/GlobalActionButton.vue";
+import MountActionButton from "./components/MountActionButton.vue";
 // storage settings requirement document
 import MergeStorages from "@/components/Storage/MergeStorages.vue";
 
 // Drop
 
-import DropEntryButton from './drop/DropEntryButton.vue';
+import DropEntryButton from "./drop/DropEntryButton.vue";
 
 export default {
   name: "file-panel",
   mixins: [mixin],
   provide() {
     return {
-      filePanel: this
-    }
+      filePanel: this,
+    };
   },
   components: {
     ListView,
@@ -291,7 +399,7 @@ export default {
     MountActionButton,
     // Drop
     DropPage: () => import("./drop/DropPage.vue"),
-    DropEntryButton
+    DropEntryButton,
   },
   data() {
     return {
@@ -323,14 +431,14 @@ export default {
       errorMsg: "",
 
       attrs: {
-        accept: '*'
+        accept: "*",
       },
       // Uploader List
       showUploadList: false,
       uploaderListHeaderText: "Uploading",
       usbDisks: [],
       hasMergerFunction: false,
-    }
+    };
   },
   async created() {
     this.options = {
@@ -340,63 +448,66 @@ export default {
       successStatuses: [200, 201, 202, 2002],
       allowDuplicateUploads: true,
       headers: {
-        "Authorization": this.$store.state.access_token
+        Authorization: this.$store.state.access_token,
       },
       query: (file) => {
         return {
-          path: file.targetPath
-        }
-      }
+          path: file.targetPath,
+        };
+      },
       // generateUniqueIdentifier: nanoid(),
       // chunkSize: 1024 * 1024 * 1024 * 1024
-    }
+    };
     // get merge info
     try {
-      let hasMergeState = await this.$api.local_storage.getMergerfsInfo().then(res => res.status);
-      this.hasMergerFunction = hasMergeState == 200
+      let hasMergeState = await this.$api.local_storage
+        .getMergerfsInfo()
+        .then((res) => res.status);
+      this.hasMergerFunction = hasMergeState == 200;
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
   },
 
   computed: {
     viewIcon() {
-      return this.$store.state.isViewGird ? "view-grid-outline" : "format-list-bulleted"
+      return this.$store.state.isViewGird
+        ? "view-grid-outline"
+        : "format-list-bulleted";
     },
     listView() {
-      return this.$store.state.isViewGird ? "gird-view" : "list-view"
+      return this.$store.state.isViewGird ? "gird-view" : "list-view";
     },
     containerClass() {
-      return this.$route.path == "/files" ? "file-panel full-screen " : ""
+      return this.$route.path == "/files" ? "file-panel full-screen " : "";
     },
   },
   watch: {
-    '$store.state.operateObject': {
+    "$store.state.operateObject": {
       handler(val) {
-        this.hasPasteData = (val != null)
+        this.hasPasteData = val != null;
       },
-      deep: true
+      deep: true,
     },
     usbDisks(newval, oldval) {
       if (!isEqual(newval, oldval) && newval == "/DATA") {
-        this.getFileList(this.currentPath)
+        this.getFileList(this.currentPath);
       }
-
     },
     pageType(val) {
       switch (val) {
         case "file":
           if (document.onpaste === null) {
             this.$nextTick(() => {
-              this.beforeInit()
-            })
+              this.beforeInit();
+            });
           }
           break;
         case "share":
-          this.destroyedAction()
+          this.destroyedAction();
           break;
         case "drop":
-          this.destroyedAction()
+          this.destroyedAction();
           break;
         default:
           break;
@@ -408,23 +519,23 @@ export default {
     this.init();
     if (this.$route.path == "/files") {
       // this.init()
-      this.isLoading = false
+      this.isLoading = false;
     }
 
     if (this.pageType == "file") {
-      this.beforeInit()
+      this.beforeInit();
     }
 
-    document.addEventListener('contextmenu', this.hideContextMenu);
+    document.addEventListener("contextmenu", this.hideContextMenu);
     this.$EventBus.$on(events.GOTO, (event) => {
-      this.getFileList(event.path)
+      this.getFileList(event.path);
     });
 
     this.$EventBus.$on(events.SELECT_SHARE, this.handleSelectShare);
     this.$EventBus.$on(events.UN_SHARE, this.handleUnShare);
   },
   destroyed() {
-    this.destroyedAction()
+    this.destroyedAction();
   },
 
   methods: {
@@ -433,46 +544,45 @@ export default {
      **************************************************/
 
     beforeInit() {
-
       this.setUploaderOpts();
       // Listen to ESC button to exit preview
       document.onkeyup = (e) => {
         switch (e.code) {
-          case 'Escape':
+          case "Escape":
             if (this.isShowDetial) {
               this.$refs.previewPanel.close();
             }
             break;
-          case 'Backspace':
-            this.backLevel()
+          case "Backspace":
+            this.backLevel();
             break;
 
           default:
             break;
         }
-      }
+      };
       // paste
       document.onpaste = () => {
         if (!this.isShowDetial && !this.isModalOpen) {
-          this.paste('overwrite')
+          this.paste("overwrite");
         }
-      }
+      };
     },
 
     destroyedAction() {
-      if(this.pageType == "file") {
-        this.uploaderInstance.off('fileSuccess')
-        this.uploaderInstance.off('fileError')
-        this.uploaderInstance.off('fileProgress')
-        this.uploaderInstance.off('dragleave')
-        this.uploaderInstance.off('dragover')
-        this.uploaderInstance.off('uploadStart')
-        
-        this.$store.commit('SET_OPERATE_OBJECT', null)
+      if (this.pageType == "file") {
+        this.uploaderInstance.off("fileSuccess");
+        this.uploaderInstance.off("fileError");
+        this.uploaderInstance.off("fileProgress");
+        this.uploaderInstance.off("dragleave");
+        this.uploaderInstance.off("dragover");
+        this.uploaderInstance.off("uploadStart");
+
+        this.$store.commit("SET_OPERATE_OBJECT", null);
         document.onpaste = null;
         document.onkeyup = null;
       }
-      document.removeEventListener('contextmenu', this.hideContextMenu)
+      document.removeEventListener("contextmenu", this.hideContextMenu);
       // this.uploaderInstance.off('dragover')
       // this.uploaderInstance.off('uploadStart')
       // document.removeEventListener('contextmenu', this.hideContextMenu)
@@ -482,11 +592,11 @@ export default {
     },
 
     showSharedList() {
-      this.pageType = "share"
+      this.pageType = "share";
     },
 
     showDropPage() {
-      this.pageType = "drop"
+      this.pageType = "drop";
     },
 
     /**
@@ -499,9 +609,8 @@ export default {
         this.getFileList(initPath);
         // this.$refs.mountedList.getStorageList();
       } else {
-        this.isCreated = true
+        this.isCreated = true;
       }
-
     },
 
     /**
@@ -512,39 +621,41 @@ export default {
     getFileList(path) {
       this.isLoading = true;
       // path = path.replace("//", "/")
-      this.pageType = "file"
-      this.currentPath = path
-      this.$store.commit('SET_CURRENT_PATH', path)
-      this.$api.folder.getList(path).then(res => {
-        if (res.data.success == 200) {
-
+      this.pageType = "file";
+      this.currentPath = path;
+      this.$store.commit("SET_CURRENT_PATH", path);
+      this.$api.folder
+        .getList(path)
+        .then((res) => {
+          if (res.data.success == 200) {
+            this.isLoading = false;
+            this.currentPathName = path.split("/").pop();
+            const fileList = res.data.data.content;
+            const newFileList = fileList.map((item) => {
+              return {
+                date: item.date,
+                isSelected: false,
+                is_dir: item.is_dir,
+                name: item.name,
+                path: item.path,
+                size: item.size,
+                write: item.write,
+                extensions: item.extensions,
+              };
+            });
+            this.listData = orderBy(newFileList, ["is_dir"], ["desc"]);
+            this.handelListChange(this.listData);
+            this.errorMsg = "";
+            this.isEmpty = true;
+          }
+        })
+        .catch((error) => {
           this.isLoading = false;
-          this.currentPathName = path.split("/").pop()
-          const fileList = res.data.data.content
-          const newFileList = fileList.map(item => {
-            return {
-              date: item.date,
-              isSelected: false,
-              is_dir: item.is_dir,
-              name: item.name,
-              path: item.path,
-              size: item.size,
-              write: item.write,
-              extensions: item.extensions
-            }
-          })
-          this.listData = orderBy(newFileList, ['is_dir'], ['desc'])
-          this.handelListChange(this.listData)
-          this.errorMsg = ""
-          this.isEmpty = true
-        }
-      }).catch((error) => {
-        this.isLoading = false;
-        this.isEmpty = false
-        this.listData = [];
-        this.errorMsg = error.response.data.data
-        this.handelListChange(this.listData)
-      })
+          this.isEmpty = false;
+          this.listData = [];
+          this.errorMsg = error.response.data.data;
+          this.handelListChange(this.listData);
+        });
     },
 
     /**
@@ -561,8 +672,8 @@ export default {
      * @return {*}
      */
     changeView() {
-      this.isViewGird = !this.$store.state.isViewGird
-      this.$store.commit('SET_IS_VIEW_GRID', this.isViewGird)
+      this.isViewGird = !this.$store.state.isViewGird;
+      this.$store.commit("SET_IS_VIEW_GRID", this.isViewGird);
     },
 
     /**
@@ -573,18 +684,17 @@ export default {
     handleSelect(bool) {
       if (bool) {
         this.listData.forEach((item, index) => {
-          item.isSelected = true
-          this.$refs.listview.selectList.push(index)
-        })
+          item.isSelected = true;
+          this.$refs.listview.selectList.push(index);
+        });
       } else {
-        this.listData.forEach(item => {
-          item.isSelected = false
-        })
-        this.$refs.listview.selectList = []
+        this.listData.forEach((item) => {
+          item.isSelected = false;
+        });
+        this.$refs.listview.selectList = [];
       }
-      this.handelListChange(this.listData)
+      this.handelListChange(this.listData);
     },
-
 
     /**
      * @description: Handle List data change (Selected State)
@@ -592,24 +702,27 @@ export default {
      * @return {*}
      */
     handelListChange(list) {
-      this.selectedArray = list.filter(item => {
-        return item.isSelected
-      })
+      this.selectedArray = list.filter((item) => {
+        return item.isSelected;
+      });
       if (this.selectedArray.length == list.length && list.length > 0) {
-        this.selectState = "all"
-        this.isSelectAll = true
-        this.selectLabel = { num: list.length }
-        this.isToolbarShow = true
-      } else if (this.selectedArray.length < list.length && this.selectedArray.length > 0) {
-        this.selectState = "part"
-        this.isSelectAll = false
-        this.selectLabel = { num: this.selectedArray.length }
-        this.isToolbarShow = true
+        this.selectState = "all";
+        this.isSelectAll = true;
+        this.selectLabel = { num: list.length };
+        this.isToolbarShow = true;
+      } else if (
+        this.selectedArray.length < list.length &&
+        this.selectedArray.length > 0
+      ) {
+        this.selectState = "part";
+        this.isSelectAll = false;
+        this.selectLabel = { num: this.selectedArray.length };
+        this.isToolbarShow = true;
       } else {
-        this.selectState = "none"
-        this.isSelectAll = false
-        this.selectLabel = { num: list.length }
-        this.isToolbarShow = false
+        this.selectState = "none";
+        this.isSelectAll = false;
+        this.selectLabel = { num: list.length };
+        this.isToolbarShow = false;
       }
     },
 
@@ -618,13 +731,13 @@ export default {
      * @return {*}
      */
     backLevel() {
-      if (this.isModalOpen) return false
-      let pathArr = this.$store.state.currentPath.substr(1).split("/")
+      if (this.isModalOpen) return false;
+      let pathArr = this.$store.state.currentPath.substr(1).split("/");
       if (pathArr.length == 1) {
-        return false
+        return false;
       }
-      let newPath = "/" + dropRight(pathArr).join("/")
-      this.getFileList(newPath)
+      let newPath = "/" + dropRight(pathArr).join("/");
+      this.getFileList(newPath);
     },
 
     /**
@@ -632,23 +745,23 @@ export default {
      * @return {*}
      */
     paste(style = "overwrite") {
-      if (this.$store.state.operateObject == null) return false
-      this.isPasting = true
-      let operateObject = this.$store.state.operateObject
-      operateObject.to = this.$store.state.currentPath
-      operateObject.style = style
+      if (this.$store.state.operateObject == null) return false;
+      this.isPasting = true;
+      let operateObject = this.$store.state.operateObject;
+      operateObject.to = this.$store.state.currentPath;
+      operateObject.style = style;
 
-      this.$api.batch.task(operateObject).then(res => {
-        this.isPasting = false
+      this.$api.batch.task(operateObject).then((res) => {
+        this.isPasting = false;
         if (res.data.success == 200) {
-          this.$store.commit('SET_OPERATE_OBJECT', null)
+          this.$store.commit("SET_OPERATE_OBJECT", null);
         } else {
           this.$buefy.toast.open({
             message: res.data.message,
-            type: 'is-danger'
-          })
+            type: "is-danger",
+          });
         }
-      })
+      });
     },
 
     /**
@@ -657,7 +770,7 @@ export default {
      */
     hideContextMenu() {
       if (this.$refs.moreBtn) {
-        this.$refs.moreBtn.isActive = false
+        this.$refs.moreBtn.isActive = false;
       }
     },
 
@@ -670,7 +783,7 @@ export default {
      * @return {*}
      */
     getTargetUrl() {
-      return `${this.$protocol}//${this.$baseURL}/v1/file/upload`
+      return `${this.$protocol}//${this.$baseURL}/v1/file/upload`;
     },
 
     /**
@@ -678,15 +791,15 @@ export default {
      * @return {*}
      */
     setUploaderOpts() {
-      this.uploaderInstance = this.$refs.uploader.uploader
+      this.uploaderInstance = this.$refs.uploader.uploader;
       this.assignUploadButtons();
 
-      this.uploaderInstance.on('fileAdded', (file) => {
+      this.uploaderInstance.on("fileAdded", (file) => {
         file.targetPath = this.currentPath;
-      })
+      });
 
       // Drag Over
-      this.uploaderInstance.on('dragover', (event) => {
+      this.uploaderInstance.on("dragover", (event) => {
         this.isDragIn = true;
         this.showUploadList = false;
         if (this.timeout !== null) {
@@ -698,18 +811,18 @@ export default {
         }, 120);
         event.stopPropagation();
         event.preventDefault();
-      })
+      });
 
-      this.uploaderInstance.on('uploadStart', () => {
+      this.uploaderInstance.on("uploadStart", () => {
         this.isDragIn = false;
         this.showUploadList = true;
-        this.uploaderListHeaderText = "Uploading"
-      })
+        this.uploaderListHeaderText = "Uploading";
+      });
 
-      this.uploaderInstance.on('complete', () => {
-        this.getFileList(this.currentPath)
-        this.uploaderListHeaderText = "Completed"
-      })
+      this.uploaderInstance.on("complete", () => {
+        this.getFileList(this.currentPath);
+        this.uploaderListHeaderText = "Completed";
+      });
     },
 
     /**
@@ -717,18 +830,16 @@ export default {
      * @return {*}
      */
     closeUploaderList() {
-      this.showUploadList = false
-      this.uploaderInstance.cancel()
+      this.showUploadList = false;
+      this.uploaderInstance.cancel();
     },
-
 
     /**
      * @description: Assig nUpload Buttons
      * @return {*}
      */
     assignUploadButtons() {
-      this.uploaderInstance.assignDrop(document.getElementById('dropTarget'));
-
+      this.uploaderInstance.assignDrop(document.getElementById("dropTarget"));
     },
 
     /*************************************************
@@ -741,30 +852,30 @@ export default {
      * @return {*}
      */
     showDetailModal(item) {
-      this.isModalOpen = true
-      this.panelType = this.getPanelType(item)
+      this.isModalOpen = true;
+      this.panelType = this.getPanelType(item);
       if (this.panelType !== null) {
-        this.currentItem = item
-        this.isShowDetial = true
+        this.currentItem = item;
+        this.isShowDetial = true;
       } else {
         this.$buefy.modal.open({
           parent: this,
           component: DetailModal,
           hasModalCard: true,
-          customClass: 'detail-panel file-modal',
+          customClass: "detail-panel file-modal",
           trapFocus: true,
-          canCancel: ['escape'],
+          canCancel: ["escape"],
           scroll: "keep",
           animation: "zoom-in",
           props: {
             item: item,
           },
           events: {
-            'close': () => {
-              this.isModalOpen = false
-            }
-          }
-        })
+            close: () => {
+              this.isModalOpen = false;
+            },
+          },
+        });
       }
     },
 
@@ -773,28 +884,28 @@ export default {
      * @return {*}
      */
     showNewFolderModal() {
-      this.isModalOpen = true
+      this.isModalOpen = true;
       this.$buefy.modal.open({
         parent: this,
         component: NewFolderModal,
         hasModalCard: true,
-        customClass: 'new-folder-panel file-modal',
+        customClass: "new-folder-panel file-modal",
         trapFocus: true,
-        canCancel: [''],
+        canCancel: [""],
         scroll: "keep",
         animation: "zoom-in",
         props: {
-          currentPath: this.currentPath
+          currentPath: this.currentPath,
         },
         events: {
-          'reload': () => {
+          reload: () => {
             this.reload();
           },
-          'close': () => {
-            this.isModalOpen = false
-          }
-        }
-      })
+          close: () => {
+            this.isModalOpen = false;
+          },
+        },
+      });
     },
 
     /**
@@ -802,28 +913,28 @@ export default {
      * @return {*}
      */
     showNewFileModal() {
-      this.isModalOpen = true
+      this.isModalOpen = true;
       this.$buefy.modal.open({
         parent: this,
         component: NewFileModal,
         hasModalCard: true,
-        customClass: 'new-folder-panel file-modal',
+        customClass: "new-folder-panel file-modal",
         trapFocus: true,
-        canCancel: [''],
+        canCancel: [""],
         scroll: "keep",
         animation: "zoom-in",
         props: {
-          currentPath: this.currentPath
+          currentPath: this.currentPath,
         },
         events: {
-          'reload': () => {
-            this.reload()
+          reload: () => {
+            this.reload();
           },
-          'close': () => {
-            this.isModalOpen = false
-          }
-        }
-      })
+          close: () => {
+            this.isModalOpen = false;
+          },
+        },
+      });
     },
 
     /**
@@ -832,28 +943,28 @@ export default {
      * @return {*}
      */
     showRenameModal(item) {
-      this.isModalOpen = true
+      this.isModalOpen = true;
       this.$buefy.modal.open({
         parent: this,
         component: RenameModal,
         hasModalCard: true,
-        customClass: 'rename-panel file-modal',
+        customClass: "rename-panel file-modal",
         trapFocus: true,
-        canCancel: [''],
+        canCancel: [""],
         scroll: "keep",
         animation: "zoom-in",
         events: {
-          'reload': () => {
-            this.reload()
+          reload: () => {
+            this.reload();
           },
-          'close': () => {
-            this.isModalOpen = false
-          }
+          close: () => {
+            this.isModalOpen = false;
+          },
         },
         props: {
-          item: item
-        }
-      })
+          item: item,
+        },
+      });
     },
 
     /*************************************************
@@ -865,8 +976,8 @@ export default {
      * @return {*}
      */
     handleClose() {
-      this.isSelectAll = false
-      this.handleSelect(this.isSelectAll)
+      this.isSelectAll = false;
+      this.handleSelect(this.isSelectAll);
     },
 
     /**
@@ -875,16 +986,18 @@ export default {
      */
     handleRemove() {
       this.$buefy.dialog.confirm({
-        title: this.$t('Deleting files'),
-        message: this.$t('Are you sure you want to <b>delete</b> these files? This action cannot be undone.'),
-        confirmText: this.$t('Delete'),
-        type: 'is-danger',
+        title: this.$t("Deleting files"),
+        message: this.$t(
+          "Are you sure you want to <b>delete</b> these files? This action cannot be undone."
+        ),
+        confirmText: this.$t("Delete"),
+        type: "is-danger",
         hasIcon: true,
         onConfirm: () => {
-          this.deleteItem(this.selectedArray)
-          this.handleClose()
-        }
-      })
+          this.deleteItem(this.selectedArray);
+          this.handleClose();
+        },
+      });
     },
 
     /**
@@ -892,8 +1005,8 @@ export default {
      * @return {*}
      */
     handleMove() {
-      this.operate('move', this.selectedArray)
-      this.handleClose()
+      this.operate("move", this.selectedArray);
+      this.handleClose();
     },
 
     /**
@@ -901,8 +1014,8 @@ export default {
      * @return {*}
      */
     handleCopy() {
-      this.operate('copy', this.selectedArray)
-      this.handleClose()
+      this.operate("copy", this.selectedArray);
+      this.handleClose();
     },
 
     /**
@@ -910,9 +1023,12 @@ export default {
      * @return {*}
      */
     handleDownload() {
-      const downItem = (this.selectedArray.length == 1) ? this.selectedArray[0] : this.selectedArray
-      this.downloadFile(downItem)
-      this.handleClose()
+      const downItem =
+        this.selectedArray.length == 1
+          ? this.selectedArray[0]
+          : this.selectedArray;
+      this.downloadFile(downItem);
+      this.handleClose();
     },
 
     /*************************************************
@@ -921,44 +1037,46 @@ export default {
 
     handleUnShare(item) {
       this.$buefy.dialog.confirm({
-        title: this.$t('Unsharing Folder'),
-        message: this.$t('Are you sure you want to unshare this Folder?'),
-        confirmText: this.$t('UnShare'),
-        cancelText: this.$t('Cancel'),
-        iconPack: 'casa',
-        icon: 'danger',
-        type: 'is-danger',
+        title: this.$t("Unsharing Folder"),
+        message: this.$t("Are you sure you want to unshare this Folder?"),
+        confirmText: this.$t("UnShare"),
+        cancelText: this.$t("Cancel"),
+        iconPack: "casa",
+        icon: "danger",
+        type: "is-danger",
         hasIcon: true,
         onConfirm: () => {
-          this.$api.samba.deleteShare(item.id).then(() => {
-            this.reloadShare()
-            this.$buefy.toast.open({
-              message: this.$t('Folder unshared.'),
-              type: 'is-success'
+          this.$api.samba
+            .deleteShare(item.id)
+            .then(() => {
+              this.reloadShare();
+              this.$buefy.toast.open({
+                message: this.$t("Folder unshared."),
+                type: "is-success",
+              });
             })
-          }).catch(() => {
-            this.$buefy.toast.open({
-              message: this.$t('Unshared failed.'),
-              type: 'is-danger'
-            })
-          })
-        }
-      })
+            .catch(() => {
+              this.$buefy.toast.open({
+                message: this.$t("Unshared failed."),
+                type: "is-danger",
+              });
+            });
+        },
+      });
     },
 
     reloadShare() {
       switch (this.pageType) {
         case "share":
-          this.$refs.shareList.getSharedList()
+          this.$refs.shareList.getSharedList();
           this.$EventBus.$emit(events.RELOAD_FILE_LIST);
           break;
         case "file":
-          this.reload()
+          this.reload();
           break;
         default:
           break;
       }
-
     },
 
     handleSelectShare() {
@@ -966,35 +1084,35 @@ export default {
         parent: this,
         component: SelectShareModal,
         hasModalCard: true,
-        customClass: 'share-detial-panel file-modal',
+        customClass: "share-detial-panel file-modal",
         trapFocus: true,
-        canCancel: [''],
+        canCancel: [""],
         scroll: "keep",
         animation: "zoom-in",
         events: {
-          'close': () => {
+          close: () => {
             // this.isModalOpen = false
           },
-          'reload': () => {
-            this.reloadShare()
-          }
-        }
-      })
+          reload: () => {
+            this.reloadShare();
+          },
+        },
+      });
     },
     getShareLink(item) {
       this.$buefy.modal.open({
         parent: this,
         component: ShareDetial,
         hasModalCard: true,
-        customClass: 'share-detial-panel file-modal',
+        customClass: "share-detial-panel file-modal",
         trapFocus: true,
-        canCancel: [''],
+        canCancel: [""],
         scroll: "keep",
         animation: "zoom-in",
         props: {
-          item: item
-        }
-      })
+          item: item,
+        },
+      });
     },
 
     /*************************************************
@@ -1002,19 +1120,21 @@ export default {
      **************************************************/
 
     /*
-    * storage settings modal
-    * */
+     * storage settings modal
+     * */
     // show storage settings modal
     async showStorageSettingsModal() {
       // TODO: the part is repetition
       //  with APPs Installation Location requirement document
       // 获取merge信息
-      let mergeStorageList
+      let mergeStorageList;
       try {
-        mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => res.data.data[0]['source_volume_uuids'])
+        mergeStorageList = await this.$api.local_storage
+          .getMergerfsInfo()
+          .then((res) => res.data.data[0]["source_volume_uuids"]);
       } catch (e) {
-        mergeStorageList = []
-        console.log(e)
+        mergeStorageList = [];
+        console.log(e);
       }
       this.$buefy.modal.open({
         parent: this,
@@ -1023,42 +1143,39 @@ export default {
         canCancel: false,
         animation: "zoom-in",
         props: {
-          mergeStorageList
+          mergeStorageList,
         },
-        events: {}
-      })
+        events: {},
+      });
     },
-
   },
   sockets: {
-
     "casaos:file:operate"(res) {
-      const file_operate = JSON.parse(res.Properties.file_operate)
-      const taskList = file_operate.data
-      taskList.forEach(task => {
+      const file_operate = JSON.parse(res.Properties.file_operate);
+      const taskList = file_operate.data;
+      taskList.forEach((task) => {
         if (task.finished && task.to === this.currentPath) {
-          this.reload()
+          this.reload();
         }
-      })
+      });
     },
     "casaos:system:utilization"() {
       // USB
       // this.usbDisks = data.body.sys_usb
-
     },
     storage_status() {
       // Storage
-      this.reload()
+      this.reload();
     },
     "local-storage:disk:added"() {
       setTimeout(() => {
         if (this.currentPath == "/DATA") {
-          this.reload()
+          this.reload();
         }
-      }, 500)
-    }
-  }
-}
+      }, 500);
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
