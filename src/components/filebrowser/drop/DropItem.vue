@@ -6,7 +6,7 @@
         <b-upload v-model="dropFiles" multiple drag-drop :disabled="isSelf || device.offline || uploadDisabled"
             @input="fileDroped">
             <b-tooltip :label="tipText" type="is-grey" :position="tipPosition" :always="tipActive" multilined
-                size="is-small">
+                size="is-small" :append-to-body="isFloat">
                 <div ref="circleArea" class="circle-area" :class="{ 'drag-over': dragOver }"
                     @contextmenu.stop.prevent="showContextMenu">
 
@@ -85,6 +85,7 @@ export default {
             tipActive: false,
             isDisabled: true,
             progress: 0,
+            progressText: '',
             totalfiles: 0,
             receivedfiles: 0,
             uploadDisabled: false,
@@ -101,12 +102,16 @@ export default {
             }
         },
         tipPosition() {
-            if (this.index % 5 == 4) {
-                return "is-right";
-            } else if (this.index % 5 == 0) {
-                return "is-left";
+            if (!this.isFloat) {
+                return 'is-top';
             } else {
-                return "is-right";
+                if (this.index % 5 == 4) {
+                    return "is-right";
+                } else if (this.index % 5 == 0) {
+                    return "is-left";
+                } else {
+                    return "is-right";
+                }
             }
         },
         tipText() {
@@ -116,7 +121,11 @@ export default {
                 if (this.device.offline) {
                     return this.$t('The device is offline');
                 } else {
-                    return this.$t('Click to send the file to the device.');
+                    if (this.progress > 0) {
+                        return this.progressText;
+                    } else {
+                        return this.$t('Click to send the file to the device.');
+                    }
                 }
             }
         },
@@ -141,14 +150,12 @@ export default {
         }
     },
     beforeDestroy() {
-        console.log(this.device.id, "leave");
         Events.off("file-progress", this.handleFileProgress);
         this.$EventBus.$off(events.ACTIVE_DROP_UPLOAD);
     },
     watch: {
         device: {
-            handler: function (val, oldVal) {
-                console.log(val.id === oldVal.id);
+            handler: function (val) {
                 this.isDisabled = val.offline;
             },
             deep: true
@@ -176,7 +183,7 @@ export default {
             const message = e.detail;
             const peerId = message.sender || message.recipient;
             if (this.device.id !== peerId) return;
-            console.log("text-received", message.text);
+            this.receivedfiles = message.text
         });
 
         Events.on("close-connection", (e) => {
@@ -186,9 +193,6 @@ export default {
         });
 
         this.$EventBus.$on(events.ACTIVE_DROP_UPLOAD, this.handleUpload);
-
-        console.log(this.index);
-
     },
     methods: {
         handleUpload(e) {
@@ -202,9 +206,15 @@ export default {
             const peerId = progress.sender || progress.recipient;
             if (this.device.id !== peerId) return;
             this.totalfiles = progress.files.length;
-            this.receivedfiles = progress.filesQueue;
+            // this.receivedfiles = progress.filesQueue;
             this.progress = progress.progress * 100;
             this.uploadDisabled = true;
+            if (this.totalfiles > 0) {
+                this.receivedfiles = progress.filesQueue;
+                this.progressText = this.$t("{num} files being sent", { num: this.receivedfiles });
+            } else {
+                this.progressText = this.$t("{num} files in transit", { num: this.receivedfiles });
+            }
             if (progress.progress === 1) {
                 this.progress = 0;
                 this.uploadDisabled = false;
@@ -214,7 +224,7 @@ export default {
             if (this.device.offline || this.isSelf) return;
             e.isSending = this.uploadDisabled;
             e.deviceId = this.device.id;
-            e.sender = localStorage.getItem('peerId');
+            e.sender = localStorage.getItem('peerid');
             this.$EventBus.$emit(events.SHOW_DROP_CONTEXT_MENU, e);
         },
         onDrop(e) {
@@ -232,8 +242,6 @@ export default {
             this.dragOver = true;
         },
         fileDroped(files) {
-            console.log(files);
-            console.log(this.device.id);
             Events.fire('files-selected', {
                 files: files,
                 to: this.device.id

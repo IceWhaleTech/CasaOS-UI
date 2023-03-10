@@ -189,6 +189,11 @@ button.dropdown-item.is-active {
     color: #fff;
 }
 
+// Tooltip
+.b-tooltip.is-multiline .tooltip-content {
+    text-align: left;
+}
+
 // Tours
 .v-step {
     border-radius: 10px !important;

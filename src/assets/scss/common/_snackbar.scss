@@ -14,9 +14,35 @@
             padding: 0;
         }
 
+        &.is-file {
+            .button {
+                background: $primary;
+                //styleName: Text 400Regular/Text03;
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 20px;
+                letter-spacing: 0em;
+                color: $white;
+
+                &:hover {
+                    background: $primary-dark;
+                }
+            }
+
+            background: $white !important;
+            color: rgba(41, 52, 61, 1);
+
+            &::before {
+                content: url(../img/common-icons/files.svg);
+                margin-right: 0.5rem;
+                height: 24px;
+            }
+        }
+
         .action {
             padding: 0 0.5rem;
             margin-left: 0.5rem;
+
             &:last-child {
                 margin-right: 0;
                 padding-right: 0;
@@ -35,13 +61,14 @@
                     line-height: 20px;
                     letter-spacing: 0em;
                     color: $gray-800;
+
                     &:hover {
                         background: $grey-200;
                     }
                 }
             }
 
-            &.is-white{
+            &.is-white {
                 .button {
                     background: $primary;
                     //styleName: Text 400Regular/Text03;
@@ -50,11 +77,15 @@
                     line-height: 20px;
                     letter-spacing: 0em;
                     color: $white;
+
                     &:hover {
                         background: $primary-dark;
                     }
                 }
             }
+
+            
+
         }
     }
 }
