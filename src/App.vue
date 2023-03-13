@@ -13,19 +13,22 @@
 			<!-- Background Layer Start -->
 			<casa-wallpaper :animate="isWelcome?initAni:noneAni"></casa-wallpaper>
 			<!-- Background Layer End -->
-
-			<!-- BrandBar Start -->
-			<brand-bar v-if="!$store.state.isMobile" v-animate-css="brandAni"></brand-bar>
-			<!-- BrandBar End -->
-			<!-- ContactBar Start -->
-			<contact-bar v-if="!$store.state.isMobile" v-animate-css="contactAni"></contact-bar>
-			<!-- ContactBar End -->
+			
+			<div class="base-bar is-flex">
+				<!-- BrandBar Start -->
+				<brand-bar v-if="!$store.state.isMobile" v-animate-css="brandAni"></brand-bar>
+				<!-- BrandBar End -->
+				<!-- ContactBar Start -->
+				<contact-bar v-if="!$store.state.isMobile" v-animate-css="contactAni"></contact-bar>
+				<!-- ContactBar End -->
+			</div>
+		
 		</template>
-
+		
 		<!-- Router View Start -->
 		<router-view/>
 		<!-- Router View End -->
-
+		
 		<!-- <v-tour name="myTour" :steps="steps"></v-tour> -->
 	</div>
 </template>
@@ -96,8 +99,8 @@ export default {
 			},
 		}
 	},
-
-
+	
+	
 	computed: {
 		isLoading() {
 			return this.$store.state.siteLoading
@@ -106,7 +109,7 @@ export default {
 			return this.$store.state.needInitialization
 		}
 	},
-
+	
 	created() {
 		console.log(`%c
 _____             _____ _____
@@ -115,7 +118,7 @@ _____             _____ _____
 |_____|__,|___|__,|_____|_____|
 -- Made by IceWhale with YOU --
 `, `font-family: monospace`);
-
+		
 		this.$buefy.config.setOptions(customIconConfig)
 	},
 	mounted() {
@@ -146,7 +149,7 @@ _____             _____ _____
 		connect() {
 			console.log('socket connected');
 		},
-
+		
 	},
 }
 </script>
@@ -161,9 +164,15 @@ _____             _____ _____
 	-moz-osx-font-smoothing: grayscale;
 	color: #2c3e50;
 	overflow-y: hidden;
-
+	
 	&.is-dark-bg {
 		background-color: #000;
+	}
+	
+	& .base-bar {
+		position: fixed;
+		bottom: 0;
+		z-index: 10;
 	}
 }
 </style>
