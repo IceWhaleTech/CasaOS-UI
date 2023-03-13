@@ -170,12 +170,11 @@ export default {
   methods: {
     // Init Ws Server
     initServer() {
-        
       const access_token = localStorage.getItem("access_token");
-      // const url = `${this.$wsProtocol}//${this.$baseURL}/v1/file/ws?token=${access_token}&peer=${this.selfId}`;
-      const url = `${this.$wsProtocol}//192.168.2.243/v1/file/ws?token=${access_token}&peer=${this.selfId}`;
-    //   const url = `ws://localhost:3000/server/webrtc?peer=${this.selfId}`;
-    console.log(url);
+      const url = `${this.$wsProtocol}//${this.$baseURL}/v1/file/ws?token=${access_token}&peer=${this.selfId}`;
+      //   const url = `${this.$wsProtocol}//192.168.2.243/v1/file/ws?token=${access_token}&peer=${this.selfId}`;
+      //   const url = `ws://localhost:3000/server/webrtc?peer=${this.selfId}`;
+      console.log(url);
       const server = new ServerConnection(url);
       // const peers = new PeersManager(server);
       new PeersManager(server);
@@ -220,12 +219,23 @@ export default {
       }, 300);
     },
 
+    getDeviceNameFromPeerList(deviceId) {
+      let deviceName = "";
+      this.peersArray.forEach((peer) => {
+        if (peer.id === deviceId) {
+          deviceName = peer.name.displayName;
+        }
+      });
+      return deviceName;
+    },
+
     displayFile(file) {
       this.$buefy.snackbar.open({
         indefinite: true,
-        message: this.$t("{name} {size} is received.", {
-          name: file.name,
-          size: this.renderSize(file.size),
+        message: this.$t("Save {name} {size} from {device}.", {
+          name: file.file.name,
+          size: this.renderSize(file.file.size),
+          device: this.getDeviceNameFromPeerList(file.from),
         }),
         type: "is-file",
         cancelText: this.$t("Ignore"),
@@ -233,7 +243,7 @@ export default {
         position: "is-bottom",
         container: "#drop-page",
         onAction: () => {
-          saveAs(file.blob, file.name);
+          saveAs(file.file.blob, file.file.name);
           this.dequeueFile();
         },
       });

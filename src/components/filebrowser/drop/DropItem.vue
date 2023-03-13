@@ -306,6 +306,7 @@ export default {
       Events.fire("files-selected", {
         files: files,
         to: this.device.id,
+        from: localStorage.getItem("peerid"),
       });
 
       this.dropFiles = [];
