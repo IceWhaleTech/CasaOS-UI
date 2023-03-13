@@ -136,7 +136,8 @@ export class Peer {
             type: 'header',
             name: file.name,
             mime: file.type,
-            size: file.size
+            size: file.size,
+            from: file.from
         });
         this._chunker = new FileChunker(file,
             chunk => this._send(chunk),
@@ -195,8 +196,8 @@ export class Peer {
         this._digester = new FileDigester({
             name: header.name,
             mime: header.mime,
-            size: header.size
-        }, file => this._onFileReceived(file));
+            size: header.size,
+        }, file => this._onFileReceived(file, header.from));
     }
 
     _onChunkReceived(chunk) {
@@ -216,8 +217,12 @@ export class Peer {
         Events.fire('file-progress', { sender: this._peerId, progress: progress, filesQueue: this._filesQueue.length + 1, files: this._files });
     }
 
-    _onFileReceived(proxyFile) {
-        Events.fire('file-received', proxyFile);
+    _onFileReceived(proxyFile, from) {
+        const file = {
+            file: proxyFile,
+            from: from
+        }
+        Events.fire('file-received', file);
         this.sendJSON({ type: 'transfer-complete' });
     }
 
@@ -419,7 +424,9 @@ export class PeersManager {
     }
 
     _onFilesSelected(message) {
-
+        message.files.forEach(file => {
+            file.from = message.from;
+        });
         this.peers[message.to].sendText(message.files.length);
         this.peers[message.to].sendFiles(message.files);
     }
