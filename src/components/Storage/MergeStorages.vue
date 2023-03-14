@@ -377,7 +377,7 @@ export default {
       this.isConnecting = true
       // submit
       this.$messageBus('storagemanager_mergestorage');
-      this.notEmpty = await this.$api.folder.getFolderSize('/DATA').then(res => {
+      this.notEmpty = await this.$api.folder.getFolderCount('/DATA').then(res => {
         return res.data.data
       }).catch(e => {
         this.$buefy.toast.open({

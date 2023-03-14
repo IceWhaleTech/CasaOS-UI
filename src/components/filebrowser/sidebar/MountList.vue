@@ -122,7 +122,7 @@ export default {
 	methods: {
 		getStorageList() {
 			this.getLocalStorage()
-			this.getUsbStorage()
+			// this.getUsbStorage()
 			this.getNetworkStorage()
 			this.getCloudStorage()
 			
@@ -140,13 +140,18 @@ export default {
 			// Local Storage
 			try {
 				const storageRes = await this.$api.storage.list()
-				const storageArray = []
+				const storageArray = [];
+                const usbStorageArray = [];
 				storageRes.data.data.forEach(item => {
 					item.children.forEach(part => {
 						if (!mergeRes.find(mp => mp === part.uuid))
-							storageArray.push(part)
+                            if(item.type === 'usb'){
+                                usbStorageArray.push(part);
+                            }else{
+                                storageArray.push(part);
+                            }
 					})
-				})
+				});
 				this.localStorageList = storageArray.map((storage) => {
 					return {
 						name: storage.label,
@@ -157,8 +162,20 @@ export default {
 						selected: true,
 						extensions: null
 					}
-				})
+				});
+                this.usbStorageList = usbStorageArray.map((storage) => {
+                    return {
+                        name: storage.label,
+                        icon: 'storage-USB',
+                        pack: 'casa',
+                        path: storage.mount_point,
+                        visible: true,
+                        selected: true,
+                        extensions: null
+                    }
+                });
 			} catch (error) {
+                debugger
 				this.isLoading = false;
 				console.log(error.reponse.message)
 			}
@@ -371,12 +388,14 @@ export default {
 		
 		"local-storage:disk:added"() {
 			setTimeout(() => {
-				this.getUsbStorage()
+				// this.getUsbStorage()
+                this.getLocalStorage();
 			}, 500)
 		},
 		"local-storage:disk:removed"() {
 			setTimeout(() => {
-				this.getUsbStorage()
+                // this.getUsbStorage()
+                this.getLocalStorage();
 			}, 500)
 		},
 		storage_status() {

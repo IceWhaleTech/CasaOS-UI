@@ -9,7 +9,7 @@
 
 <template>
 	<div class="contact-bar is-flex is-align-items-center has-text-white">
-
+		
 		<popper :options="{
       placement: 'top',
       modifiers: { offset: { offset: '0,4px' } }
@@ -21,7 +21,7 @@
 				<b-icon icon="feedback" pack="casa"></b-icon>
 			</a>
 		</popper>
-
+		
 		<popper :options="{
       placement: 'top',
       modifiers: { offset: { offset: '0,4px' } }
@@ -29,11 +29,12 @@
 			<div class="popper  tooltip-content">
 				{{ $t('Join Discord') }}
 			</div>
-			<a slot="reference" href="https://discord.gg/knqAbbBbeX" target="_blank" @click="$messageBus('connect_discord')">
+			<a slot="reference" href="https://discord.gg/knqAbbBbeX" target="_blank"
+			   @click="$messageBus('connect_discord')">
 				<b-icon icon="discord" pack="casa"></b-icon>
 			</a>
 		</popper>
-
+		
 		<popper :options="{
       placement: 'top',
       modifiers: { offset: { offset: '0,4px' } }
@@ -46,7 +47,7 @@
 				<b-icon icon="github" pack="casa"></b-icon>
 			</a>
 		</popper>
-
+		
 		<popper :options="{
       placement: 'top',
       modifiers: { offset: { offset: '0,4px' } }
@@ -58,7 +59,7 @@
 				<b-icon icon="social-share" pack="casa"></b-icon>
 			</a>
 		</popper>
-
+	
 	</div>
 </template>
 
@@ -88,7 +89,7 @@ export default {
 				animation: "zoom-in",
 			})
 		},
-
+		
 		showShareModal() {
 			// messageBus :: share
 			this.$messageBus('connect_sharecasaos');
@@ -110,16 +111,16 @@ export default {
 <style lang="scss" scoped>
 .contact-bar {
 	position: fixed;
-	right: 0.875rem;
-	bottom: 0.35rem;
-	z-index: 10;
-
+	right: 1.375rem;
+	bottom: 0;
+	//z-index: 10;
+	
 	a {
 		color: #fff;
 		margin: 0.625rem;
 		display: flex;
 		align-items: center;
-
+		
 		&:hover {
 			color: #fff;
 		}

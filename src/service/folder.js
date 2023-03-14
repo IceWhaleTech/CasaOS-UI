@@ -40,6 +40,13 @@ const folder = {
             path: path
         });
     },
+
+    // count folder
+    getFolderCount(path) {
+        return api.get(`${PREFIX}/count`, {
+            path: path
+        });
+    },
 }
 
 export default folder;
