@@ -1,7 +1,7 @@
 <!--
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-10 17:06:54
- * @FilePath: /CasaOS-UI/src/components/filebrowser/FilePanel.vue
+ * @LastEditTime: 2023-03-14 18:57:40
+ * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\FilePanel.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -30,80 +30,91 @@
 
         <template>
           <!-- NavBar Start -->
-          <div class="nav-bar is-flex is-flex-direction-column">
-            <div
-              class="is-flex-grow-1 is-flex-shrink-1 nav-bar-top scrollbars-light"
-            >
-              <!-- Files Start -->
-              <div class="files-section">
-                <!--  storage settings requirement document -->
-                <div class="is-flex is-align-items-center pt-3">
-                  <div class="is-flex-grow-1">
-                    <h3 class="title is-3 mb-0 pb-3 pt-3 has-text-left">
-                      {{ $t("Files") }}
-                    </h3>
+          <b-sidebar
+            ref="sidebar"
+            :position="sideBarPosition"
+            fullheight
+            :overlay="isMobile"
+            :open.sync="isSideBarOpen"
+          >
+            <div class="nav-bar is-flex is-flex-direction-column">
+              <div
+                class="is-flex-grow-1 is-flex-shrink-1 nav-bar-top scrollbars-light"
+              >
+                <!-- Files Start -->
+                <div class="files-section">
+                  <!--  storage settings requirement document -->
+                  <div class="is-flex is-align-items-center pt-3">
+                    <div class="is-flex-grow-1">
+                      <h3 class="title is-3 mb-0 pb-3 pt-3 has-text-left">
+                        {{ $t("Files") }}
+                      </h3>
+                    </div>
+                    <div
+                      v-show="hasMergerFunction"
+                      class="is-flex-shrink-0 mr-5"
+                      @click="showStorageSettingsModal"
+                    >
+                      <b-icon
+                        custom-size="mdi-18px"
+                        icon="cog-outline"
+                      ></b-icon>
+                    </div>
                   </div>
                   <div
-                    v-show="hasMergerFunction"
-                    class="is-flex-shrink-0 mr-5"
-                    @click="showStorageSettingsModal"
+                    class="list-container scrollbars-light pt-0 is-flex-grow-1"
                   >
-                    <b-icon custom-size="mdi-18px" icon="cog-outline"></b-icon>
+                    <tree-list
+                      ref="navBar"
+                      :autoLoad="true"
+                      :isActive="pageType == `file`"
+                      :path="rootPath"
+                    ></tree-list>
                   </div>
                 </div>
-                <div
-                  class="list-container scrollbars-light pt-0 is-flex-grow-1"
-                >
-                  <tree-list
-                    ref="navBar"
-                    :autoLoad="true"
-                    :isActive="pageType == `file`"
-                    :path="rootPath"
-                  ></tree-list>
+                <!-- Files End -->
+
+                <!-- Mounted Start -->
+                <div class="mounted-section">
+                  <div class="is-flex is-align-items-center">
+                    <div class="is-flex-grow-1">
+                      <h3 class="title is-3 mb-0 pb-3 pt-3 has-text-left">
+                        {{ $t("Location") }}
+                      </h3>
+                    </div>
+                    <div class="is-flex-shrink-0 mr-5">
+                      <mount-action-button></mount-action-button>
+                    </div>
+                  </div>
+
+                  <div class="list-container pt-0 is-flex-grow-1">
+                    <mount-list
+                      ref="mountedList"
+                      :autoLoad="true"
+                      :hasMergerFunction="hasMergerFunction"
+                      :isActive="pageType == `file`"
+                      :path="rootPath"
+                    ></mount-list>
+                  </div>
                 </div>
+                <!-- Mounted End -->
               </div>
-              <!-- Files End -->
 
-              <!-- Mounted Start -->
-              <div class="mounted-section">
-                <div class="is-flex is-align-items-center">
-                  <div class="is-flex-grow-1">
-                    <h3 class="title is-3 mb-0 pb-3 pt-3 has-text-left">
-                      {{ $t("Location") }}
-                    </h3>
-                  </div>
-                  <div class="is-flex-shrink-0 mr-5">
-                    <mount-action-button></mount-action-button>
-                  </div>
-                </div>
-
-                <div class="list-container pt-0 is-flex-grow-1">
-                  <mount-list
-                    ref="mountedList"
-                    :autoLoad="true"
-                    :hasMergerFunction="hasMergerFunction"
-                    :isActive="pageType == `file`"
-                    :path="rootPath"
-                  ></mount-list>
-                </div>
+              <!-- Bottom Action Start -->
+              <div class="bottom-area">
+                <drop-entry-button
+                  :active="pageType == `drop`"
+                  :title="$t('FilesDrop')"
+                  @open="showDropPage"
+                ></drop-entry-button>
+                <share-entry-button
+                  :active="pageType == `share`"
+                  @open="showSharedList"
+                ></share-entry-button>
               </div>
-              <!-- Mounted End -->
+              <!-- Bottom Action End -->
             </div>
-
-            <!-- Bottom Action Start -->
-            <div class="bottom-area">
-              <drop-entry-button
-                :active="pageType == `drop`"
-                :title="$t('FilesDrop')"
-                @open="showDropPage"
-              ></drop-entry-button>
-              <share-entry-button
-                :active="pageType == `share`"
-                @open="showSharedList"
-              ></share-entry-button>
-            </div>
-            <!-- Bottom Action End -->
-          </div>
+          </b-sidebar>
           <!-- NavBar Start -->
 
           <!-- Main Content Start -->
@@ -116,12 +127,18 @@
               >
                 <uploader-unsupport></uploader-unsupport>
                 <!-- Header Start -->
-                <header class="modal-card-head">
+                <header
+                  class="modal-card-head"
+                  :class="{ 'is-flex-wrap-wrap': isMobile }"
+                >
                   <div
                     id="bread-container"
                     class="is-flex-grow-1 is-flex breadcrumb-container"
                   >
-                    <file-breadcrumb></file-breadcrumb>
+                    <!-- SideBar Button Start -->
+                    <sidebar-menu-button></sidebar-menu-button>
+                    <!-- SideBar Button End -->
+                    <file-breadcrumb v-if="!isMobile"></file-breadcrumb>
                     <!-- <b-input placeholder="Search in folder..." size="is-small" rounded></b-input> -->
                   </div>
                   <div class="is-flex is-align-items-center">
@@ -160,7 +177,11 @@
                     </div>
                     <!--  Close Button End -->
                   </div>
+                  <div v-if="isMobile" class="pt-2" style="width: 100%">
+                    <file-breadcrumb></file-breadcrumb>
+                  </div>
                 </header>
+
                 <!-- Header End -->
 
                 <!-- Tool Bar Start -->
@@ -331,6 +352,7 @@ import dropRight from "lodash/dropRight";
 import isEqual from "lodash/isEqual";
 
 import { mixin } from "@/mixins/mixin";
+import VueBreakpointMixin from "vue-breakpoint-mixin";
 import events from "@/events/events";
 
 import TreeList from "./sidebar/TreeList.vue";
@@ -346,6 +368,7 @@ import ListView from "./components/ListView.vue";
 import FileBreadcrumb from "./components/FileBreadcrumb.vue";
 import EmptyHolder from "./components/EmptyHolder.vue";
 import ErrorHolder from "./components/ErrorHolder.vue";
+import SidebarMenuButton from "./components/SidebarMenuButton.vue";
 
 import DetailModal from "./modals/DetailModal.vue";
 import NewFolderModal from "./modals/NewFolderModal.vue";
@@ -368,7 +391,7 @@ import DropEntryButton from "./drop/DropEntryButton.vue";
 
 export default {
   name: "file-panel",
-  mixins: [mixin],
+  mixins: [mixin, VueBreakpointMixin],
   provide() {
     return {
       filePanel: this,
@@ -400,6 +423,7 @@ export default {
     // Drop
     DropPage: () => import("./drop/DropPage.vue"),
     DropEntryButton,
+    SidebarMenuButton,
   },
   data() {
     return {
@@ -409,7 +433,8 @@ export default {
       isDragIn: false,
       isPasting: false,
       isShowDetial: false,
-      pageType: "drop",
+      isSideBarOpen: false,
+      pageType: "file",
       panelType: null,
       currentItem: null,
       rootPath: "/DATA",
@@ -481,6 +506,9 @@ export default {
     containerClass() {
       return this.$route.path == "/files" ? "file-panel full-screen " : "";
     },
+    sideBarPosition() {
+      return this.isMobile ? "fixed" : "static";
+    },
   },
   watch: {
     "$store.state.operateObject": {
@@ -513,18 +541,27 @@ export default {
           break;
       }
     },
+    isMobile(val) {
+      if (val) {
+        this.isSideBarOpen = false;
+      } else {
+        this.isSideBarOpen = true;
+      }
+    },
   },
 
   mounted() {
     this.init();
     if (this.$route.path == "/files") {
-      // this.init()
-      this.isLoading = false;
+      this.init();
+      // this.isLoading = false;
     }
 
     if (this.pageType == "file") {
       this.beforeInit();
     }
+
+    this.isSideBarOpen = !this.isMobile;
 
     document.addEventListener("contextmenu", this.hideContextMenu);
     this.$EventBus.$on(events.GOTO, (event) => {
@@ -533,8 +570,12 @@ export default {
 
     this.$EventBus.$on(events.SELECT_SHARE, this.handleSelectShare);
     this.$EventBus.$on(events.UN_SHARE, this.handleUnShare);
+    this.$EventBus.$on(events.SHOW_FILES_SIDEBAR, this.handleShowSideBar);
+    this.$EventBus.$on(events.HIDE_FILES_SIDEBAR, this.handleHideSideBar);
   },
   destroyed() {
+    this.$EventBus.$off(events.SHOW_FILES_SIDEBAR, this.handleShowSideBar);
+    this.$EventBus.$off(events.HIDE_FILES_SIDEBAR, this.handleHideSideBar);
     this.destroyedAction();
   },
 
@@ -593,10 +634,12 @@ export default {
 
     showSharedList() {
       this.pageType = "share";
+      this.hideMobileSidebar();
     },
 
     showDropPage() {
       this.pageType = "drop";
+      this.hideMobileSidebar();
     },
 
     /**
@@ -656,6 +699,8 @@ export default {
           this.errorMsg = error.response.data.data;
           this.handelListChange(this.listData);
         });
+
+      this.hideMobileSidebar();
     },
 
     /**
@@ -1147,6 +1192,19 @@ export default {
         },
         events: {},
       });
+    },
+
+    handleShowSideBar() {
+      this.isSideBarOpen = true;
+    },
+    handleHideSideBar() {
+      this.isSideBarOpen = false;
+    },
+
+    hideMobileSidebar() {
+      if (this.isMobile) {
+        this.$refs.sidebar.close();
+      }
     },
   },
   sockets: {

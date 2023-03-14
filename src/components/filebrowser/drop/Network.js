@@ -13,9 +13,10 @@ export class ServerConnection {
     }
 
     _connect(url) {
+        if (!url) return;
         clearTimeout(this._reconnectTimer);
         if (this._isConnected() || this._isConnecting()) return;
-        const ws = new WebSocket(url || this._endpoint());
+        const ws = new WebSocket(url);
         ws.binaryType = 'arraybuffer';
         ws.onopen = () => console.log('WS: server connected');
         ws.onmessage = e => this._onMessage(e.data);
@@ -63,6 +64,13 @@ export class ServerConnection {
     send(message) {
         if (!this._isConnected()) return;
         this._socket.send(JSON.stringify(message));
+    }
+
+    destroy() {
+        this.send({ type: 'disconnect' });
+        this._socket.onclose = null;
+        this._socket.close();
+        Events.fire('close-connection', 'Disconnected');
     }
 
     _endpoint() {
@@ -123,6 +131,8 @@ export class Peer {
         if (this._busy) return;
         this._dequeueFile();
     }
+
+
 
     _dequeueFile() {
         if (!this._filesQueue.length) return;
@@ -274,7 +284,6 @@ class RTCPeer extends Peer {
     }
 
     _closeConnection(e) {
-        console.log(e);
         if (!this._conn) return;
         this._conn.close();
         this._conn = null;

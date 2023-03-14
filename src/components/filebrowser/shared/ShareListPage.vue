@@ -12,6 +12,9 @@
   <div class="content is-flex-grow-1">
     <!-- Header Start -->
     <header class="modal-card-head">
+      <!-- SideBar Button Start -->
+      <sidebar-menu-button></sidebar-menu-button>
+      <!-- SideBar Button End -->
       <div
         class="is-flex-grow-1 is-flex breadcrumb-container"
         id="bread-container"
@@ -65,6 +68,7 @@ export default {
 
   components: {
     ShareListView,
+    SidebarMenuButton: () => import("../components/SidebarMenuButton.vue"),
   },
 
   mounted() {

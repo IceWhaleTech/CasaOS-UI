@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2023-03-03 10:14:27
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-10 17:04:09
- * @FilePath: /CasaOS-UI/src/components/filebrowser/drop/DropBg.vue
+ * @LastEditTime: 2023-03-14 09:31:29
+ * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\drop\DropBg.vue
  * @Description: 
  * 
  * Copyright (c) 2023 by IceWhale, All Rights Reserved. 
@@ -36,7 +36,7 @@ export default {
         .to(circle1, {
           duration: duration,
           autoAlpha: 0,
-          ease: "power1.out",
+          ease: "none",
           scale: endScale,
           repeat: repeats,
           repeatDelay: repeatDelay,
@@ -54,7 +54,7 @@ export default {
         .to(circle2, {
           duration: duration,
           autoAlpha: 0,
-          ease: "power1.out",
+          ease: "none",
           scale: endScale,
           repeat: repeats,
           repeatDelay: repeatDelay,

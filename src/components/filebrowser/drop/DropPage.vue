@@ -5,6 +5,9 @@
   >
     <!-- Header Start -->
     <header class="modal-card-head is-flex-shrink-0">
+      <!-- SideBar Button Start -->
+      <sidebar-menu-button></sidebar-menu-button>
+      <!-- SideBar Button End -->
       <div
         class="is-flex-grow-1 is-flex breadcrumb-container"
         id="bread-container"
@@ -58,7 +61,7 @@
         />
       </div>
       <!-- Bottom Center Icons Start -->
-      <drop-center-icon v-if="isNotMobile" />
+      <drop-center-icon v-if="!isMobile" />
       <!-- Bottom Center Icons End -->
 
       <drop-add-button
@@ -78,16 +81,19 @@
 <script>
 import { ServerConnection, PeersManager, Events } from "./Network.js";
 import { saveAs } from "file-saver";
+import VueBreakpointMixin from "vue-breakpoint-mixin";
 // import { v4 as uuidv4 } from 'uuid';
 
 export default {
   name: "drop-page",
+  mixins: [VueBreakpointMixin],
   components: {
     DropItem: () => import("./DropItem.vue"),
     DropContextMenu: () => import("./DropContextMenu.vue"),
     DropCenterIcon: () => import("./DropCenterIcon.vue"),
     DropBg: () => import("./DropBg.vue"),
     DropAddButton: () => import("./DropAddButton.vue"),
+    SidebarMenuButton: () => import("../components/SidebarMenuButton.vue"),
   },
   data() {
     return {
@@ -102,12 +108,13 @@ export default {
         y: 0,
       },
       progress: 0,
-      deviceType: "desktop",
       peersArray: [],
       selfId: "",
       filesQueue: [],
       busy: false,
       showAddButton: false,
+      webscoketServer: null,
+      peersManager: null,
     };
   },
   computed: {
@@ -118,16 +125,11 @@ export default {
         "--contents-height": this.contentsHeight + "px",
       };
     },
-    isDesktop() {
-      return this.deviceType === "desktop";
-    },
-    isNotMobile() {
-      return this.deviceType !== "mobile";
-    },
+
     areaClass() {
-      if (this.deviceType === "desktop") {
+      if (this.isDesktop) {
         return "desktop";
-      } else if (this.deviceType === "tablet") {
+      } else if (this.isTablet) {
         return "tablet";
       } else {
         return "mobile";
@@ -161,10 +163,12 @@ export default {
       e.preventDefault();
     }; // 拖拽进入
 
+    const delay = this.isMobile ? 0 : 1000;
+
     this.$nextTick(() => {
       setTimeout(() => {
         this.initServer();
-      }, 1000);
+      }, delay);
     });
   },
   methods: {
@@ -175,9 +179,9 @@ export default {
       //   const url = `${this.$wsProtocol}//192.168.2.243/v1/file/ws?token=${access_token}&peer=${this.selfId}`;
       //   const url = `ws://localhost:3000/server/webrtc?peer=${this.selfId}`;
       console.log(url);
-      const server = new ServerConnection(url);
+      this.webscoketServer = new ServerConnection(url);
       // const peers = new PeersManager(server);
-      new PeersManager(server);
+      this.peersManager = new PeersManager(this.webscoketServer);
       // 初始化列表
       Events.on("peers", this.handlePeers);
       // 获取我是我
@@ -337,15 +341,6 @@ export default {
       }
 
       this.bigRadius = this.contentsWidth;
-
-      const windowWidth = window.innerWidth;
-      if (windowWidth < 768) {
-        this.deviceType = "mobile";
-      } else if (windowWidth < 1024 && windowWidth >= 768) {
-        this.deviceType = "tablet";
-      } else {
-        this.deviceType = "desktop";
-      }
 
       this.getCenterPos();
     },

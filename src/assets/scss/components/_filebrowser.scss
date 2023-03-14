@@ -8,6 +8,13 @@
  */
 
 .file-panel {
+  .b-sidebar {
+    .sidebar-content {
+      width: 15rem;
+      background-color: none;
+      box-shadow: none;
+    }
+  }
 
   .modal-card {
     width: 100%;
@@ -94,7 +101,8 @@
 
       .nav-bar {
         width: 15rem;
-        min-height: 10rem;
+        height: 100%;
+
         //   padding: 0.75rem;
         background: #f8f8f8;
         flex-grow: 0;
@@ -219,7 +227,6 @@
       }
 
       .content {
-        max-width: calc(100% - 15rem);
         overflow: hidden;
       }
 
@@ -640,6 +647,14 @@
     height: calc(100vh - 7.125rem);
     overflow-y: auto;
     overflow-x: hidden;
+
+    &.mobile-height{
+      height: calc(100vh - 8.75rem);
+    }
+
+    &.mobile-list-height{
+      height: calc(100vh - 11.3125rem);
+    }
   }
 
   // Re-style Checkbox
@@ -666,7 +681,6 @@
 
   .node-list {
     .scroll-container {
-      height: calc(100vh - 9.75rem);
 
       .cover {
         .file-cover {
@@ -1513,11 +1527,8 @@
 
     .modal-card {
       margin: 0;
+
       .modal-card-body {
-        .nav-bar {
-          width: 0;
-          overflow: hidden;
-        }
 
         .content {
           max-width: 100%;

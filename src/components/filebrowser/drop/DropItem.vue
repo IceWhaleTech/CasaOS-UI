@@ -6,6 +6,7 @@
         'is-floating': isFloat,
         disabled: isDisabled,
         'can-upload': !uploadDisabled,
+        hover: isHover,
       },
       customClass,
     ]"
@@ -15,6 +16,8 @@
     @dragleave="onDrop"
     @dragend="onDrop"
     @drop="onDrop"
+    @mouseover="isHover = true"
+    @mouseout="isHover = false"
   >
     <b-upload
       v-model="dropFiles"
@@ -30,7 +33,6 @@
         :always="tipActive"
         multilined
         size="is-small"
-        :append-to-body="isFloat"
       >
         <div
           ref="circleArea"
@@ -126,6 +128,7 @@ export default {
       totalfiles: 0,
       receivedfiles: 0,
       uploadDisabled: false,
+      isHover: false,
     };
   },
   computed: {
@@ -149,9 +152,7 @@ export default {
       if (!this.isFloat) {
         return "is-top";
       } else {
-        if (this.index % 5 == 4) {
-          return "is-right";
-        } else if (this.index % 5 == 0) {
+        if (this.index % 5 == 0) {
           return "is-left";
         } else {
           return "is-right";
@@ -244,7 +245,6 @@ export default {
     });
 
     Events.on("close-connection", (e) => {
-      console.log(e);
       this.progress = 0;
       this.uploadDisabled = false;
     });
@@ -325,6 +325,10 @@ export default {
   transform: translateX(-50%) translateY(-50%);
   z-index: 10;
   transform-origin: center;
+
+  &.hover{
+    z-index: 11;
+  }
 }
 
 .can-upload {
@@ -409,8 +413,8 @@ export default {
           border-radius: 50%;
           background-color: rgba(255, 255, 255, 0);
           z-index: 1;
-          right: -4px;
-          top: -4px;
+          right: -3px;
+          top: -3px;
           pointer-events: none;
         }
       }
