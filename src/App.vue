@@ -14,7 +14,7 @@
 			<casa-wallpaper :animate="isWelcome?initAni:noneAni"></casa-wallpaper>
 			<!-- Background Layer End -->
 			
-			<div class="base-bar is-flex">
+			<div class="base-bar is-flex" style="background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%);">
 				<!-- BrandBar Start -->
 				<brand-bar v-if="!$store.state.isMobile" v-animate-css="brandAni"></brand-bar>
 				<!-- BrandBar End -->

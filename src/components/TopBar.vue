@@ -296,12 +296,9 @@
 			<!-- Settings Dropmenu End -->
 			
 			<!-- Terminal  Start -->
-			<div class="is-flex is-align-items-center ml-3 _fixed-height">
-				<b-tooltip :active="!$store.state.isMobile" :label="$t('Terminal & Logs')" position="is-right"
-				           type="is-dark">
-					<p role="button" @click="showTerminalPanel">
+			<div class="is-flex is-align-items-center ml-3 _fixed-height"  @click="showTerminalPanel">
+				<b-tooltip :active="!$store.state.isMobile" :label="$t('Terminal & Logs')" position="is-right" type="is-dark" style="height: 1.25rem;">
 						<b-icon class="picon" icon="terminal" pack="casa" size="is-20"></b-icon>
-					</p>
 				</b-tooltip>
 			</div>
 			<!-- Terminal  End -->

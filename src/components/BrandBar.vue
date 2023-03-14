@@ -8,7 +8,7 @@
   -->
 <template>
 	<div class="brand-bar is-flex is-align-items-flex-end has-text-white">
-		<figure class="image _is-136x26 mb-1">
+		<figure class="image _is-136x26 mb-3">
 			<!--			<img alt="logo" :srcset="`${require('@/assets/img/logo/logo.svg')} 2x, ${require('@/assets/img/logo/logo.png')} 1x`">-->
 			<img alt="logo" srcset="../assets/img/logo/logo.svg 2x, ../assets/img/logo/logo.png 1x">
 		</figure>
@@ -78,17 +78,20 @@ export default {
 .brand-bar {
 	position: fixed;
 	left: 2rem;
-	bottom: 0.75rem;
+	bottom: 0;
 	//z-index: 10;
 	
-	.logo-text {
-		font-size: 1.125rem;
+	span {
+		//font-size: 1.125rem;
+        margin-bottom: 7px;
 	}
 	
 	.intro-text {
-		font-size: 0.75rem;
+        font-weight: 400;
+		font-size: 0.875rem;
+        line-height: 1.25rem;
 		color: rgba(255, 255, 255, 0.6);
-		
+
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
@@ -135,13 +138,13 @@ export default {
 }
 
 .window {
-	height: 1rem;
+	height: 1.25rem;
 	overflow: hidden;
 }
 
 .scroll {
 	width: 100%;
-	line-height: 1rem;
+	line-height: 1.25rem;
 	text-align: center;
 	animation-name: scroll;
 	animation-duration: var(--time);

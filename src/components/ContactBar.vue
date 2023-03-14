@@ -111,8 +111,8 @@ export default {
 <style lang="scss" scoped>
 .contact-bar {
 	position: fixed;
-	right: 0.875rem;
-	bottom: 0.35rem;
+	right: 1.375rem;
+	bottom: 0;
 	//z-index: 10;
 	
 	a {
