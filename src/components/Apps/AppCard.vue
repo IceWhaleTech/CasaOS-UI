@@ -85,7 +85,7 @@
 			           animation="fade1" class="in-card" type="is-white">
 				
 				<div
-					class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-5 pb-3px img-c">
+				class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-5 pb-3px img-c">
 					<div class="is-flex is-justify-content-center">
 						<div class="is-relative">
 							<b-image :class="dotClass(item.status, isLoading)" :src="item.icon"
@@ -194,8 +194,8 @@ export default {
 					switch (this.item.state) {
 						case 'running':
 							return ['hover']
-						// case 'stopped':
-						// 	return ['hover']
+					// case 'stopped':
+					// 	return ['hover']
 						default:
 							return []
 					}
@@ -410,7 +410,6 @@ export default {
 		 * @return {*} void
 		 */
 		toggle(item) {
-			debugger
 			this.$messageBus('apps_stop', item.name);
 			this.isStarting = true;
 			const status = item.status === "running" ? "stop" : "start"

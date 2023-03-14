@@ -191,7 +191,6 @@ export default {
 		 * @return {Boolean}
 		 */
 		parseCli() {
-			debugger
 			// const formattedInput = this.dockerCliCommands.replace(/<[^>]*>/g, 'Custom_data').replace(/[\r\n]/g, "").replace(/\\/g, "\\ ").replace("-d", "").replace(/[\\]/g, '').trim();
 			// const parsedInput = parser(formattedInput)
 			// const {_: command} = parsedInput;

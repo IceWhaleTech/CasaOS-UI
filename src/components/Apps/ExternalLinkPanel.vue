@@ -171,7 +171,6 @@ export default {
 		connect() {
 			this.isLoading = true
 			this.checkStep(this.$refs.ob1).then(valid => {
-				debugger
 				if (valid) {
 					let listLinkApp = JSON.parse(localStorage.getItem("listLinkApp"))
 					if (!listLinkApp.find((item) => {

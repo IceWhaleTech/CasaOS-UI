@@ -18,9 +18,9 @@ export default {
             this.$messageBus('apps_open', appInfo.name);
             if (appInfo.hostname !== "" || appInfo.port !== "" || appInfo.index !== "") {
                 const hostIp = appInfo.hostname || this.$baseIp
-                const seheme = appInfo.seheme || 'http'
+                const scheme = appInfo.scheme || 'http'
                 const port = appInfo.port ? `:${appInfo.port}` : ''
-                const url = `${seheme}://${hostIp}${port}${appInfo.index}`
+                const url = `${scheme}://${hostIp}${port}${appInfo.index}`
                 // let href = window.location.href.split("#")[0]
                 // if (url === href) {
                 //     this.$buefy.toast.open({
@@ -55,13 +55,26 @@ export default {
             }
         },
         async openThirdContainerByAppInfo(appInfo) {
-            const data = {
-                "name": appInfo.title,
-                "image": appInfo.image,
+            try {
+                let allinfo = await this.$openAPI.appManagement.compose.myComposeApp(appInfo.id).then(res => {
+                    return res.data.data
+                })
+                let containerInfoV2 = allinfo.store_info.apps[appInfo.id].container
+                console.log(containerInfoV2, 'containerInfoV2');
+                let app = {
+                    "id": appInfo.id,
+                    "name": appInfo.id,
+                    scheme: containerInfoV2.scheme,
+                    hostname: containerInfoV2.hostname,
+                    port: containerInfoV2.port_map,
+                    index: containerInfoV2.index,
+                    image: allinfo.compose.services[appInfo.id].image,
+                }
+                this.openAppToNewWindow(app)
+            } catch (e) {
+                console.error(e);
             }
-            // TODO migrate to V2 api !!
-            let containerInfo = await container.getMyAppList(data).then(res => res.data.data.casaos_apps)
-            this.openAppToNewWindow(containerInfo[0])
+
         },
         firstOpenThirdApp(appInfo) {
             this.removeIdFromSessionStorage(appInfo.id);

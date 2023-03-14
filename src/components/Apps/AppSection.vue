@@ -393,7 +393,12 @@ export default {
 			// 入参 需要为 container id
 			// const ret = await this.$api.container.getInfoV2(id);
 			// const ret = await this.$openAPI.appManagement.compose.myComposeApp(item.name);
-			const ret = await this.$openAPI.appManagement.compose.myComposeApp(id);
+			const ret = await this.$openAPI.appManagement.compose.myComposeApp(id, {
+				headers: {
+					'content-type': 'application/yaml',
+					'accept': 'application/yaml'
+				}
+			});
 			this.$buefy.modal.open({
 				parent: this,
 				component: AppPanel,
@@ -415,8 +420,6 @@ export default {
 					// 区分 terminal
 					runningStatus: state,
 					configData: configData,
-					// TODO transfer yaml string.
-					// settingData: ret.data.data
 					settingData: ret.data,
 					// dockerComposeCommands: YAML.stringify(ret.data)
 				}

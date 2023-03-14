@@ -68,8 +68,6 @@ export default {
 		// Get container running state
 		async getContainerState() {
 			try {
-				console.log(this.appDetailData)
-				debugger
 				let res = await this.$api.container.getState(this.appDetailData.id)
 				return res.data.data
 			} catch (error) {

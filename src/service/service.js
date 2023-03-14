@@ -163,4 +163,4 @@ const api = {
         return instance.patch(url, data)
     },
 }
-export {api}
+export {api, instance}

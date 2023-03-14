@@ -11,8 +11,8 @@
 -->
 <template>
 	<div
-		:class="{'narrow': currentSlide > 0 ,'card-width': isFirstInstall}"
-		class="app-card modal-card">
+	:class="{'narrow': currentSlide > 0 ,'card-width': isFirstInstall}"
+	class="app-card modal-card">
 		<!--    first setting！！ apps installation location-->
 		<template v-if="isFirstInstall">
 			<header class="modal-card-head b-line">
@@ -65,20 +65,22 @@
 								</div>
 								<div class="is-flex-grow-1 is-flex is-align-items-center">
 									<div>
-										<h4 class="title store-title is-4 ">{{ appDetailData.title }}</h4>
-										<p class="subtitle is-size-14px two-line mb-3">{{ appDetailData.tagline }}</p>
+										<h4 class="title store-title is-4 ">{{ appDetailData.title.en_US }}</h4>
+										<p class="subtitle is-size-14px two-line mb-3">{{
+												appDetailData.tagline.en_US
+											}}</p>
 										<p class="description mb-2">
-											<b-button v-if="appDetailData.state===0" :disabled="unuseable"
-											          :loading="appDetailData.id == currentInstallId"
-											          rounded size="is-normal" type="is-primary"
-											          @click="qucikInstall(appDetailData.id);$messageBus('appstore_install', appDetailData.title)">
-												{{ $t('Install') }}
-											</b-button>
-											<b-button v-if="appDetailData.state===1"
+											<b-button v-if="installedList.includes(appDetailData.id)"
 											          :loading="appDetailData.id == currentInstallId" rounded
 											          size="is-normal" type="is-primary"
 											          @click="openThirdContainerByAppInfo(appDetailData)">
 												{{ $t('Open') }}
+											</b-button>
+											<b-button v-else :disabled="unuseable"
+											          :loading="appDetailData.id == currentInstallId"
+											          rounded size="is-normal" type="is-primary"
+											          @click="qucikInstall(appDetailData.id);$messageBus('appstore_install', appDetailData.title.en_US)">
+												{{ $t('Install') }}
 											</b-button>
 										</p>
 										
@@ -160,8 +162,8 @@
 							
 							<!-- App Info  Start -->
 							<div class="app-desc mt-4 mb-6">
-								<p class="is-size-14px mb-2 un-break-word">{{ appDetailData.tagline }}</p>
-								<p class="is-size-14px un-break-word">{{ appDetailData.description }}</p>
+								<p class="is-size-14px mb-2 un-break-word">{{ appDetailData.tagline.en_US }}</p>
+								<p class="is-size-14px un-break-word">{{ appDetailData.description.en_US }}</p>
 								<!-- <p class="is-size-14px " v-html="appDetailData.tip"></p> -->
 							</div>
 							<!-- App Info  End -->
@@ -243,16 +245,17 @@
 												<p class="is-size-7 two-line">{{ item.tagline }}</p>
 											</div>
 											<div>
-												<b-button v-if="item.state===0" :loading="item.id == currentInstallId"
+												<b-button v-if="installedList.includes(item.id)"
+												          :loading="item.id == currentInstallId"
+												          rounded size="is-small"
+												          type="is-primary is-light"
+												          @click="openThirdContainerByAppInfo(item)">{{ $t('Open') }}
+												</b-button>
+												<b-button v-else :loading="item.id == currentInstallId"
 												          rounded size="is-small"
 												          type="is-primary is-light"
 												          @click="qucikInstall(item.id);$messageBus('appstore_install', item.title)">
 													{{ $t('Install') }}
-												</b-button>
-												<b-button v-if="item.state===1" :loading="item.id == currentInstallId"
-												          rounded size="is-small"
-												          type="is-primary is-light"
-												          @click="openThirdContainerByAppInfo(item)">{{ $t('Open') }}
 												</b-button>
 											</div>
 										</div>
@@ -351,17 +354,19 @@
 											item.category
 										}}
 									</div>
-									<b-button v-if="item.state===0" :loading="item.id == currentInstallId" rounded
+									<b-button v-if="installedList.includes(item.id)"
+									          :loading="item.id == currentInstallId" rounded
+									          size="is-small"
+									          type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">
+										{{ $t('Open') }}
+									</b-button>
+									<b-button v-else :loading="item.id == currentInstallId" rounded
 									          size="is-small"
 									          type="is-primary is-light"
 									          @click="qucikInstall(item.id);$messageBus('appstore_install', item.title)">
 										{{ $t('Install') }}
 									</b-button>
-									<b-button v-if="item.state===1" :loading="item.id == currentInstallId" rounded
-									          size="is-small"
-									          type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">
-										{{ $t('Open') }}
-									</b-button>
+								
 								</div>
 							</div>
 						</div>
@@ -397,18 +402,19 @@
 										<div class="is-flex-grow-1 is-size-7 has-text-grey-light	">
 											{{ item.category }}
 										</div>
-										<b-button v-if="item.state===0" :loading="item.id == currentInstallId" rounded
+										<b-button v-if="installedList.includes(item.id)"
+										          :loading="item.id == currentInstallId" rounded
+										          size="is-small"
+										          type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">
+											{{ $t('Open') }}
+										</b-button>
+										<b-button v-else :loading="item.id == currentInstallId" rounded
 										          size="is-small"
 										          type="is-primary is-light"
 										          @click="qucikInstall(item.id);$messageBus('appstorecommunity_install', item.title)">
 											{{
 												$t('Install')
 											}}
-										</b-button>
-										<b-button v-if="item.state===1" :loading="item.id == currentInstallId" rounded
-										          size="is-small"
-										          type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">
-											{{ $t('Open') }}
 										</b-button>
 									</div>
 								</div>
@@ -456,9 +462,9 @@
 							                  class="install-animation mt-5 mb-2"></lottie-animation>
 						</div>
 						<b-progress
-							:value="totalPercentage"
-							format="percent"
-							show-value type="is-primary"></b-progress>
+						:value="totalPercentage"
+						format="percent"
+						show-value type="is-primary"></b-progress>
 						<h3 :class="currentInstallAppTextClass" class="title is-6 has-text-centered"
 						    style="height: 20px"
 						    v-html="currentInstallAppText"></h3>
@@ -730,6 +736,7 @@ export default {
 			totalPercentage: 0,
 			dockerComposeCommands: '',
 			mainName: '',
+			installedList: [],
 		}
 	},
 	
@@ -930,7 +937,6 @@ export default {
 				// this.listTotal = res.data.data.count
 				// this.pageList = res.data.data.list
 				// this.communityList = res.data.data.community
-				this.recommendList = res.data.data.recommend
 				let list = res.data.data.list
 				let listRes = Object.keys(list).map(id => {
 					let main_app_info = list[id].apps[id]
@@ -965,6 +971,7 @@ export default {
 					return recommendList.includes(item.id)
 				})
 				console.log(this.recommendList, 'recommendList')
+				this.installedList = res.data.data.installed
 				// }
 			}).catch().finally(() => {
 				this.isLoading = false;
@@ -994,13 +1001,12 @@ export default {
 		showAppDetial(id) {
 			this.isLoading = true;
 			this.$openAPI.appManagement.appStore.composeAppStoreInfo(id).then(res => {
-				debugger
 				this.isLoading = false;
 				this.sidebarOpen = true;
-				this.appDetailData = res.data.data
+				this.appDetailData = res.data.data.apps[id]
+				this.appDetailData.id = id
 				this.architectures = res.data.data.architectures || [];
 			}).catch((e) => {
-				debugger
 				this.$buefy.toast.open({
 					message: e.response.data.message,
 					// message: this.$t(`There was an error loading the data, please try again!`),
@@ -1040,11 +1046,42 @@ export default {
 		 * @return {*} void
 		 */
 		qucikInstall(id) {
-			this.$openAPI.appManagement.appStore.composeApp(id).then(res => {
+			this.currentInstallId = id
+			this.$openAPI.appManagement.appStore.composeApp(id, {
+				headers: {
+					'content-type': 'application/yaml',
+					'accept': 'application/yaml'
+				}
+			}).then(res => {
 				if (res.status == 200) {
-                    debugger
+					// if (respData.tip !== "null" && respData.tip !== "[]" && respData.tip !== "") {
+					// 	this.$buefy.dialog.confirm({
+					// 		title: this.$t('Attention'),
+					// 		message: this.formatTips(respData.tip),
+					// 		type: 'is-dark',
+					// 		onConfirm: () => {
+					// 			this.sidebarOpen = false;
+					// 			this.installAppData()
+					// 		}
+					// 	})
+					// } else {
+					// 	this.sidebarOpen = false;
+					// 	this.installAppData()
+					// }
+					//data.compose
 					this.$openAPI.appManagement.compose.installComposeApp(res.data).then(res => {
-					
+						console.log(res, 'installComposeApp');
+						// 		this.currentInstallAppName = res.data.data
+						// 		this.currentSlide = 2;
+						// 		this.currentInstallAppText = "Start Installation..."
+						// 		this.cancelButtonText = 'Continue in background'
+						// 		this.dockerProgress = new DockerProgress();
+						if (res.status === 200) {
+							this.$buefy.toast.open({
+								message: res.data.message,
+								type: 'is-danger'
+							})
+						}
 					}).catch(() => {
 						this.$buefy.toast.open({
 							message: this.$t(`There was an error installing the application, please try again!`),
@@ -1059,13 +1096,12 @@ export default {
 				}
 			}).catch((e) => {
 				// console.log(e.response.data)
-				debugger
 				this.$buefy.toast.open({
 					message: e.response.data.message,
 					type: 'is-danger'
 				})
 			})
-			this.currentInstallId = id
+			
 			// this.$api.apps.getAppInfo(id).then(resp => {
 			// 	if (resp.data.success == 200) {
 			// 		// messageBus :: installApp
@@ -1226,13 +1262,12 @@ export default {
 		installApp() {
 			this.$refs.compose.checkStep().then((valid) => {
 				if (valid) {
-					// this.installAppData(this.id);
-					// console.log(this.dockerComposeCommands)
 					console.log("docker-compose-command", this.dockerComposeCommands.length)
 					this.isLoading = true;
 					this.$openAPI.appManagement.compose.installComposeApp(this.dockerComposeCommands).then((res) => {
-						if (res.data.success == 200) {
-							this.currentInstallAppName = res.data.data
+						debugger
+						if (res.status === 200) {
+							this.currentInstallAppName = ''//res.data.data
 							this.currentSlide = 2;
 							this.currentInstallAppText = "Start Installation..."
 							this.cancelButtonText = 'Continue in background'
@@ -1240,7 +1275,7 @@ export default {
 						} else {
 							this.$buefy.toast.open({
 								message: res.data.message,
-								type: 'is-warning'
+								type: 'is-success'
 							})
 						}
 					}).catch((e) => {
@@ -1376,15 +1411,15 @@ export default {
 						this.$buefy.dialog.alert({
 							title: '⚠️ ' + this.$t('Attention'),
 							message: '<div class="nobrk"><h4 class="title is-5">' + this.$t('AutoFill only helps you to complete most of the configuration.') + '</h4>' +
-								'<p class="mb-3">' + this.$t('Some configuration information such as:') + '</p>' +
-								'<ul>' +
-								'<li>1. ' + this.$t('the port and path of the Web UI') + '</li>' +
-								'<li>2. ' + this.$t('the mount location of the volume or file') + '</li>' +
-								'<li>3. ' + this.$t('the port mapping of the Host') + '</li>' +
-								'<li>4. ' + this.$t('optional configuration items') + '</li>' +
-								'</ul>' +
-								'<p class="mt-3">' + this.$t('These include but are not limited to these cases and <b>still need to be confirmed or modified by you.</b>') + '</p>' +
-								'<p class="mt-3">' + this.$t('Feel free to suggest improvements to this feature in Discord Server!') + '</p></div>',
+							'<p class="mb-3">' + this.$t('Some configuration information such as:') + '</p>' +
+							'<ul>' +
+							'<li>1. ' + this.$t('the port and path of the Web UI') + '</li>' +
+							'<li>2. ' + this.$t('the mount location of the volume or file') + '</li>' +
+							'<li>3. ' + this.$t('the port mapping of the Host') + '</li>' +
+							'<li>4. ' + this.$t('optional configuration items') + '</li>' +
+							'</ul>' +
+							'<p class="mt-3">' + this.$t('These include but are not limited to these cases and <b>still need to be confirmed or modified by you.</b>') + '</p>' +
+							'<p class="mt-3">' + this.$t('Feel free to suggest improvements to this feature in Discord Server!') + '</p></div>',
 							type: 'is-dark'
 						})
 					}
