@@ -1041,9 +1041,9 @@ export default {
 		 */
 		qucikInstall(id) {
 			this.$openAPI.appManagement.appStore.composeApp(id).then(res => {
-				debugger
-				if (res.data.success == 200) {
-					this.$openAPI.appManagement.appStore.installComposeApp(res.data.data.compose).then(res => {
+				if (res.status == 200) {
+                    debugger
+					this.$openAPI.appManagement.compose.installComposeApp(res.data).then(res => {
 					
 					}).catch(() => {
 						this.$buefy.toast.open({
