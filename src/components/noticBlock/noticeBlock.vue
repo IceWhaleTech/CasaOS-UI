@@ -23,22 +23,23 @@
 				<div class="header-title pl-2 is-flex-grow-1">
 					{{ $t(noticeData.prelude.title) }}
 				</div>
-				<div class="is-flex-shrink-0 _close-polymorphic" @click="close">
+				<div class="is-flex-shrink-0 _close-polymorphic" style="height: 1.5rem" @click="close">
 					<b-icon custom-size="casa-24px" icon="close-xs" pack="casa"></b-icon>
 				</div>
 			</div>
 			<!-- end of section head-->
-
+			
 			<!-- start of section body-->
 			<!--			list-->
 			<div
-					v-if="noticeData.contentType === 'list'"
-					class="info is-flex is-flex-direction-column is-justify-content-space-around is-flex-grow-1">
+				v-if="noticeData.contentType === 'list'"
+				class="info is-flex is-flex-direction-column is-justify-content-space-around is-flex-grow-1">
 				<div class="_widget-body is-flex mr-0">
 					<div class="image is-24x24 is-flex-shrink-0">
 						<img v-if="!noticeData.content[Object.keys(noticeData.content)[0]].icon"
 						     :src="require(`@/assets/img/logo/casa-white.svg`)" alt=""/>
-						<img v-else :src="require(`@/assets/img${noticeData.content[Object.keys(noticeData.content)[0]].icon}`)"
+						<img v-else
+						     :src="require(`@/assets/img${noticeData.content[Object.keys(noticeData.content)[0]].icon}`)"
 						     alt=""/>
 					</div>
 					<div class="body-title is-flex-grow-1 _nowrap ml-2">
@@ -53,7 +54,8 @@
 					<div class="image is-24x24 is-flex-shrink-0">
 						<img v-if="!noticeData.content[Object.keys(noticeData.content)[1]].icon"
 						     :src="require(`@/assets/img/logo/casa-white.svg`)" alt=""/>
-						<img v-else :src="require(`@/assets/img${noticeData.content[Object.keys(noticeData.content)[1]].icon}`)"
+						<img v-else
+						     :src="require(`@/assets/img${noticeData.content[Object.keys(noticeData.content)[1]].icon}`)"
 						     alt=""/>
 					</div>
 					<div class="body-title is-flex-grow-1 _nowrap ml-2">
@@ -72,15 +74,18 @@
 				<b-progress :value="noticeData.content.value" size="c-is-small" type="is-primary"></b-progress>
 			</div>
 			<!-- end of section body-->
-
+			
 			<!-- start of section footer-->
-			<div :style="{height: '24px'}" class="is-flex is-flex-direction-row-reverse is-flex-shrink-0 is-align-items-end">
+			<div :style="{height: '24px'}"
+			     class="is-flex is-flex-direction-row-reverse is-flex-shrink-0 is-align-items-end">
 				<template v-if="noticeData.contentType !== 'progress'">
-					<b-button v-if="!noticeData.operate" :disabled="false" class="width" rounded size="is-small" type="is-primary"
+					<b-button v-if="!noticeData.operate" :disabled="false" class="width" rounded size="is-small"
+					          type="is-primary"
 					          @click="close">
 						{{ $t('Cancel') }}
 					</b-button>
-					<b-button v-else-if="noticeData.operate.type === 'casaUI:eventBus'" :disabled="false" class="width" rounded
+					<b-button v-else-if="noticeData.operate.type === 'casaUI:eventBus'" :disabled="false" class="width"
+					          rounded
 					          size="is-small"
 					          type="is-primary"
 					          @click="eventBus">
@@ -152,16 +157,16 @@ export default {
 	},
 	inject: ['homeShowFiles'],
 	created() {
-
+	
 	},
 	beforeDestroy() {
 	},
 	computed: {},
-
+	
 	methods: {
 		close() {
 			this.$messageBus('youshouldknow_cardclose');
-
+			
 			if (this.noticeData.contentType === 'progress') {
 				this.$emit('deleteNotice', this.noticeData, this.noticeType);
 				return
@@ -184,8 +189,8 @@ export default {
 
 <style lang="scss" scoped>
 ._card {
-	height: 11.5rem;
-
+	height: 10rem;
+	
 	.widget-header {
 		.header-title {
 			font-family: 'Roboto';
@@ -196,11 +201,11 @@ export default {
 			color: hsla(208, 16%, 96%, 1);
 		}
 	}
-
+	
 	._widget-body {
 		align-items: center;
 		position: relative;
-
+		
 		.body-title {
 			font-family: 'Roboto';
 			font-style: normal;
@@ -210,7 +215,7 @@ export default {
 			color: hsla(208, 16%, 96%, 1);
 		}
 	}
-
+	
 	.footer-hint {
 		height: 16px;
 		font-family: 'Roboto';
@@ -223,17 +228,18 @@ export default {
 
 .content {
 	z-index: 10;
-	padding: 1rem;
+	padding-top: 1.125rem;
+	padding-bottom: 1rem;
 	padding-left: 1.25rem;
 	padding-right: 1.25rem;
-
+	
 	.info {
 		margin: 1.5rem 2rem;
-
+		
 		._ml-2rem {
 			margin-left: 2rem;
 		}
-
+		
 		.line {
 			width: auto;
 			border-top: 1px solid rgba(255, 255, 255, 0.1);
