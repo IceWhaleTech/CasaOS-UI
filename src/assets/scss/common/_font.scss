@@ -58,6 +58,19 @@
   font-feature-settings: 'pnum' on, 'lnum' on;
 }
 
+.has-text-title-06 {
+  /* Title 600SemiBold/H6 */
+
+  font-family: $family-sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  /* identical to box height, or 120% */
+
+  font-feature-settings: 'pnum' on, 'lnum' on;
+}
+
 .has-text-sub-01 {
   /* Sub-title 500Medium/H1 */
 

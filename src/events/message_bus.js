@@ -1,7 +1,7 @@
 /*
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-12 18:32:12
- * @FilePath: \CasaOS-UI-0.4.2\src\events\message_bus.js
+ * @LastEditTime: 2023-03-15 14:13:55
+ * @FilePath: /CasaOS-UI/src/events/message_bus.js
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -231,5 +231,25 @@ module.exports = {
     appstore_close: async () => {
         return await intermediateProcessor("casaos-ui:appstore:appstore_close")
     },
-
+    // files
+    // dropbox
+    files_addlocation_dropbox: async () => {
+        return await intermediateProcessor("casaos-ui:files:files_addlocation_dropbox")
+    },
+    files_addlocation_googledrive: async () => {
+        return await intermediateProcessor("casaos-ui:files:files_addlocation_googledrive")
+    },
+    files_addlocation_dropbox_succeed: async () => {
+        return await intermediateProcessor("casaos-ui:files:files_addlocation_dropbox_succeed")
+    },
+    files_addlocation_googledrive_succeed: async () => {
+        return await intermediateProcessor("casaos-ui:files:files_addlocation_googledrive_succeed")
+    },
+    // files drop
+    files_filesdrop_tab: async (tab) => {
+        return await intermediateProcessor("casaos-ui:files:files_filesdrop_tab", {value: tab})
+    },
+    files_filesdrop_start: async () => {
+        return await intermediateProcessor("casaos-ui:files:files_filesdrop_start")
+    },
 }

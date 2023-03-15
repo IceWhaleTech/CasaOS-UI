@@ -2,9 +2,9 @@
  * @Author: JerryK
  * @Date: 2022-03-08 11:09:50
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 11:29:23
+ * @LastEditTime: 2023-03-10 17:21:41
  * @Description: 
- * @FilePath: \CasaOS-UI\src\components\filebrowser\viewers\PdfViewer.vue
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/viewers/PdfViewer.vue
 -->
 <template>
   <div class="overlay">
@@ -22,8 +22,8 @@
         <!-- Download File Button End -->
 
         <!-- Close Button Start -->
-        <div class="is-flex is-align-items-center modal-close-container close-btn modal-close-container-line">
-          <button type="button" class="delete" @click="close" />
+        <div class="close-button" @click="close">
+          <b-icon pack="casa" icon="close"></b-icon>
         </div>
         <!-- Close File Button End -->
       </div>

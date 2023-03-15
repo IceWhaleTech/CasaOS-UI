@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-08-03 14:10:43
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-12 17:50:33
- * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\components\MountActionButton.vue
+ * @LastEditTime: 2023-03-15 14:09:13
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/components/MountActionButton.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -87,14 +87,20 @@ export default {
       const newWindowDrivers = ['Dropbox', 'GoogleDrive']
       if (newWindowDrivers.includes(driver.name)) {
         this.openAuthWindow(driver)
+        if(driver.name === 'Dropbox'){
+          this.$messageBus('files_addlocation_dropbox')
+        }else if(driver.name === 'GoogleDrive'){
+          this.$messageBus('files_addlocation_googledrive')
+        }
+        this.$messageBus('files_filesdrop_tab')
       } else {
         console.log("open config modal");
       }
     },
 
     openAuthWindow(driver) {
-      const customWidth = 1000;
-      const customHeight = 600;
+      const customWidth = 1280;
+      const customHeight = 700;
       const iTop = (window.screen.height - 30 - customHeight) / 2;
       const iLeft = (window.screen.width - 10 - customWidth) / 2;
       const authUrl = driver.find(({ name }) => name === 'auth_url').default.replace("${HOST}", encodeURI(this.$protocol + "//" + this.$baseURL)).replace("redirect_uri=http%", "redirect_uri=https%")
