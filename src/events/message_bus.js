@@ -231,5 +231,22 @@ module.exports = {
     appstore_close: async () => {
         return await intermediateProcessor("casaos-ui:appstore:appstore_close")
     },
-
+    // files
+    // dropbox
+    files_addlocation_dropbox: async () => {
+        return await intermediateProcessor("casaos-ui:files:files_addlocation_dropbox")
+    },
+    files_addlocation_googledrive: async () => {
+        return await intermediateProcessor("casaos-ui:files:files_addlocation_googledrive")
+    },
+    files_addlocation_dropbox_succeed: async () => {
+        return await intermediateProcessor("casaos-ui:files:files_addlocation_dropbox_succeed")
+    },
+    // files drop
+    files_filesdrop_tab: async (tab) => {
+        return await intermediateProcessor("casaos-ui:files:files_filesdrop_tab", {value: tab})
+    },
+    files_filesdrop_start: async () => {
+        return await intermediateProcessor("casaos-ui:files:files_filesdrop_start")
+    },
 }
