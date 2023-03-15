@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2023-03-03 15:03:34
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-14 09:53:58
- * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\drop\DropAddButton.vue
+ * @LastEditTime: 2023-03-15 10:38:05
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/drop/DropAddButton.vue
  * @Description: 
  * 
  * Copyright (c) 2023 by IceWhale, All Rights Reserved. 
@@ -36,12 +36,12 @@
       <b-dropdown-item aria-role="menu-item" custom paddingless>
         <div class="p-3">
           <div class="close-button is-absolute" @click="closeDrop">
-            <b-icon pack="casa" icon="close" class="is-16x16" custom-class="casa-16px"></b-icon>
+            <b-icon pack="casa" icon="close" class="is-16x16" custom-class="is-size-6"></b-icon>
           </div>
-          <h6 class="has-text-title-06 mr-5 mb-3">
+          <span class="has-text-title-06 mr-5 mb-3">
             {{ $t("Access the following address with another device") }}
-          </h6>
-          <div class="drop-grey-bg">
+          </span>
+          <div class="drop-grey-bg mt-3">
             <p class="has-text-full-03">
               {{ $t("Local Area Network Access") }}<br />
               <span class="has-text-primary has-text-emphasis-03">{{

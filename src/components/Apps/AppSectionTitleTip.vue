@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-06-28 13:24:25
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-12 17:45:45
- * @FilePath: \CasaOS-UI-0.4.2\src\components\Apps\AppSectionTitleTip.vue
+ * @LastEditTime: 2023-03-15 10:28:25
+ * @FilePath: /CasaOS-UI/src/components/Apps/AppSectionTitleTip.vue
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -60,9 +60,11 @@ export default {
     display: flex;
     align-items: center;
     padding-right: 0.25rem;
+    line-height: 1.5rem;
   }
   .is-clickable {
     line-height: 1rem;
+    height: 1.5rem;
   }
 }
 </style>

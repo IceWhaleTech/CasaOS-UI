@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2023-02-28 17:07:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-10 14:56:08
+ * @LastEditTime: 2023-03-15 10:22:20
  * @FilePath: /CasaOS-UI/src/components/filebrowser/drop/DropContextMenu.vue
  * @Description: 
  * 
@@ -15,12 +15,12 @@
                 :position="'is-' + verticalPos + '-' + horizontalPos" :animation="ani" :mobile-modal="false">
                 <!-- Blank Start -->
                 <template>
-                    <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center has-text-danger"
+                    <!-- <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center has-text-danger"
                         key="drop-context2" @click="cancel" v-if="showCancel">
                         <b-icon pack="casa" icon="close" class="mr-1 is-16x16" custom-size="casa-16px" /> {{ $t(cancelText)
                         }}
-                    </b-dropdown-item>
-                    <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center" key="drop-context1" v-else>
+                    </b-dropdown-item> -->
+                    <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center" key="drop-context1">
                         <b-upload v-model="files" multiple
                             class="is-clickable has-text-full-03 is-flex is-align-items-center" @input="activeDropUpload">
                             <b-icon pack="casa" icon="sending-files" class="mr-1 is-16x16" custom-size="casa-16px" /> {{ $t('Sending files') }}

@@ -57,7 +57,7 @@
           :radius="bigRadius"
           :center="centerPos"
           :isFloat="isDesktop"
-          v-if="showAddButton && peersArray.length == 1"
+          v-if="showAddButton && peersArray.length == 1 && isDesktop"
         />
       </div>
       <!-- Bottom Center Icons Start -->
@@ -65,12 +65,12 @@
       <!-- Bottom Center Icons End -->
 
       <drop-add-button
-        :index="peersArray.length"
+        :index="isDesktop ? peersArray.length : peersArray.length + 1"
         :showIndex="initIndexArray[peersArray.length]"
         :radius="bigRadius"
         :center="centerPos"
-        :isFloat="isDesktop"
-        v-if="showAddButton && peersArray.length > 1"
+        :isFloat="false"
+        v-if="isDesktop ? showAddButton && peersArray.length > 1 : true"
       />
     </div>
     <!-- Contents End -->
@@ -178,7 +178,6 @@ export default {
       const url = `${this.$wsProtocol}//${this.$baseURL}/v1/file/ws?token=${access_token}&peer=${this.selfId}`;
       //   const url = `${this.$wsProtocol}//192.168.2.243/v1/file/ws?token=${access_token}&peer=${this.selfId}`;
       //   const url = `ws://localhost:3000/server/webrtc?peer=${this.selfId}`;
-      console.log(url);
       this.webscoketServer = new ServerConnection(url);
       // const peers = new PeersManager(server);
       this.peersManager = new PeersManager(this.webscoketServer);

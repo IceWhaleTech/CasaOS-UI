@@ -303,6 +303,7 @@ export default {
       this.dragOver = true;
     },
     fileDroped(files) {
+      this.$messageBus("files_filesdrop_start");
       Events.fire("files-selected", {
         files: files,
         to: this.device.id,
@@ -326,7 +327,7 @@ export default {
   z-index: 10;
   transform-origin: center;
 
-  &.hover{
+  &.hover {
     z-index: 11;
   }
 }

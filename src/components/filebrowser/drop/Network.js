@@ -27,7 +27,7 @@ export class ServerConnection {
 
     _onMessage(msg) {
         msg = JSON.parse(msg);
-        console.log('WS:', msg);
+        // console.log('WS:', msg);
         switch (msg.type) {
             case 'peers':
                 Events.fire('peers', msg.peers);
@@ -89,7 +89,7 @@ export class ServerConnection {
     }
 
     _onDisconnect() {
-        console.log('WS: server disconnected');
+        // console.log('WS: server disconnected');
         Events.fire('notify-user', 'Connection lost. Retry in 5 seconds...');
         clearTimeout(this._reconnectTimer);
         this._reconnectTimer = setTimeout(() => this._connect(), 5000);
@@ -178,7 +178,7 @@ export class Peer {
             return;
         }
         message = JSON.parse(message);
-        console.log('RTC:', message);
+        // console.log('RTC:', message);
         switch (message.type) {
             case 'header':
                 this._onFileHeader(message);
@@ -328,7 +328,7 @@ class RTCPeer extends Peer {
     }
 
     _onChannelOpened(event) {
-        console.log('RTC: channel opened with', this._peerId);
+        // console.log('RTC: channel opened with', this._peerId);
         const channel = event.channel || event.target;
         channel.onmessage = e => this._onMessage(e.data);
         channel.onclose = () => this._onChannelClosed();
@@ -336,13 +336,13 @@ class RTCPeer extends Peer {
     }
 
     _onChannelClosed() {
-        console.log('RTC: channel closed', this._peerId);
+        // console.log('RTC: channel closed', this._peerId);
         if (!this.isCaller) return;
         this._connect(this._peerId, true); // reopen the channel
     }
 
     _onConnectionStateChange() {
-        console.log('RTC: state changed:', this._conn.connectionState);
+        // console.log('RTC: state changed:', this._conn.connectionState);
         switch (this._conn.connectionState) {
             case 'disconnected':
                 this._onChannelClosed();
@@ -441,7 +441,7 @@ export class PeersManager {
     }
 
     _onSendText(message) {
-        console.log("send text", message);
+        // console.log("send text", message);
         this.peers[message.to].sendText(message.text);
     }
 

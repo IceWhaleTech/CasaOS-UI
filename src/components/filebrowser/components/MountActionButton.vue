@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-08-03 14:10:43
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-10 13:52:02
+ * @LastEditTime: 2023-03-15 14:09:13
  * @FilePath: /CasaOS-UI/src/components/filebrowser/components/MountActionButton.vue
  * @Description: 
  * 
@@ -87,6 +87,12 @@ export default {
       const newWindowDrivers = ['Dropbox', 'GoogleDrive']
       if (newWindowDrivers.includes(driver.name)) {
         this.openAuthWindow(driver)
+        if(driver.name === 'Dropbox'){
+          this.$messageBus('files_addlocation_dropbox')
+        }else if(driver.name === 'GoogleDrive'){
+          this.$messageBus('files_addlocation_googledrive')
+        }
+        this.$messageBus('files_filesdrop_tab')
       } else {
         console.log("open config modal");
       }

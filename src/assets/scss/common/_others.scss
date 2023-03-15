@@ -190,8 +190,15 @@ button.dropdown-item.is-active {
 }
 
 // Tooltip
-.b-tooltip.is-multiline .tooltip-content {
-    text-align: left;
+.b-tooltip{
+    &.is-multiline{
+        .tooltip-content{
+            text-align: left;
+        }
+    }
+    .tooltip-content{
+        box-shadow:none;
+    }
 }
 
 // Tours

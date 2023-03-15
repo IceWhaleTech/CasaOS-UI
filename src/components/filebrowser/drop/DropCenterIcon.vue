@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2023-03-03 00:10:13
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-10 17:04:17
+ * @LastEditTime: 2023-03-15 14:50:48
  * @FilePath: /CasaOS-UI/src/components/filebrowser/drop/DropCenterIcon.vue
  * @Description: 
  * 
@@ -19,7 +19,7 @@
         {{ $t("FilesDrop") }}
       </p>
       <p class="has-text-full-04 has-text-grey-600">
-        {{ $t("Drop files to another device anytime,anywhere") }}
+        {{ $t("Drop files to another device anytime, anywhere") }}
       </p>
     </div>
   </div>

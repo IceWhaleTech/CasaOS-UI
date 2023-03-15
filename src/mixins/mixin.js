@@ -1,6 +1,6 @@
 /*
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-06 16:29:55
+ * @LastEditTime: 2023-03-15 10:42:50
  * @FilePath: /CasaOS-UI/src/mixins/mixin.js
  * @Description:
  *
@@ -51,7 +51,7 @@ const filePanelMap = {
     'code-editor': union(typeMap['text-x-generic'], typeMap['text-css'], typeMap['text-html'], typeMap['text-x-cmake'], typeMap['text-dockerfile']),
     "video-player": union(typeMap['video-x-generic'], typeMap['audio-x-generic']),
     "image-viewer": typeMap['image-x-generic'],
-    "mark-down-editor":typeMap['text-markdown'],
+    // "mark-down-editor":typeMap['text-markdown'],
     // "pdf-viewer": typeMap['application-pdf'],
 }
 export const wallpaperType = ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'svg']

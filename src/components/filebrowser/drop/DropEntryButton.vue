@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-07-28 15:29:40
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-10 17:04:25
+ * @LastEditTime: 2023-03-15 14:45:53
  * @FilePath: /CasaOS-UI/src/components/filebrowser/drop/DropEntryButton.vue
  * @Description:
  *
@@ -13,11 +13,10 @@
     <div
       class="is-flex list-item new-list-item"
       :class="{ active: active }"
-      @click.prevent="$emit('open')"
+      @click.prevent="$emit('open');$messageBus('files_filesdrop_tab')"
     >
       <div
         class="cover mr-2 is-flex-shrink-0 is-flex is-align-items-center none-click"
-        s
         slot="reference"
       >
         <b-icon icon="drop" pack="casa" custom-size="casa-24px"></b-icon>
