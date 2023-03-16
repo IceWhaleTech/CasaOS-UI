@@ -512,12 +512,9 @@ import ImportPanel from '../forms/ImportPanel.vue'
 import AppTerminalPanel from './AppTerminalPanel.vue'
 import LottieAnimation from "lottie-web-vue";
 import "@/plugins/vee-validate";
-import debounce from 'lodash/debounce'
-import find from 'lodash/find';
 import uniq from 'lodash/uniq';
 import isNull from 'lodash/isNull'
 import orderBy from 'lodash/orderBy';
-import cloneDeep from 'lodash/cloneDeep';
 import FileSaver from 'file-saver';
 import {Swiper, SwiperSlide} from 'vue-awesome-swiper'
 // import AppsInstallationLocation from "@/components/Apps/AppsInstallationLocation";
@@ -528,7 +525,6 @@ import business_OpenThirdApp from "@/mixins/app/Business_OpenThirdApp";
 import DockerProgress from "@/components/Apps/progress.js";
 
 import ComposeConfig from "@/components/Apps/ComposeConfig.vue";
-import YAML from "yaml";
 
 const data = [
 	"AUDIT_CONTROL",
@@ -1064,7 +1060,7 @@ export default {
 
 							this.$buefy.toast.open({
 								message: res.data.message,
-								type: 'is-danger'
+								type: 'is-success'
 							})
 						}
 					}).catch(() => {
@@ -1076,7 +1072,7 @@ export default {
 				} else {
 					this.$buefy.toast.open({
 						message: this.$t(`There was an error installing the application, please try again!`),
-						type: 'is-danger'
+						type: 'is-warning'
 					})
 				}
 			}).catch((e) => {
