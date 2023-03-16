@@ -207,21 +207,9 @@ export default {
 			
 			try {
 				// TODO migrate to v2!!
-				// 缺少store、等信息，缺少之前安装的应用，缺少链接应用
-				// const listRes = await this.$api.container.getMyAppList();
-				// const listRes = await this.$api.container.getMyAppListV2();
 				const listRes = await this.$openAPI.appGrid.getAppGrid();
 				// const orgAppList = listRes.data.data.casaos_apps
 				const orgAppList = listRes.data.data
-				// const listRes = await this.$api.container.getMyAppListV2();
-				// 缺少的字段
-				// appstore_id
-				// 容器 id
-				// state
-				// 排序 custom_id
-				// type 属于系统类型、还是属于链接类型
-				// image
-				// slogan \latest \created \protocol \volumes 无用
 				console.log('open setting model', orgAppList)
 				// TODO fake data
 				orgAppList.forEach((item) => {

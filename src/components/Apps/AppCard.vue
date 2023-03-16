@@ -30,7 +30,7 @@
 						}}
 					</b-button>
 					
-					<b-button expanded type="is-text" @click="checkAppVersion">{{
+					<b-button expanded type="is-text" @click="checkAppVersion(item.id)">{{
 							$t('Check then update')
 						}}
 						<b-loading :active="isCheckThenUpdate || isUpdating" :is-full-page="false">
@@ -298,6 +298,7 @@ export default {
 				})
 			}).finally(() => {
 				this.isRestarting = false;
+				
 			})
 			// this.$api.container.updateState(this.item.id, "restart").then((res) => {
 			// 	if (res.data.success === 200) {
@@ -507,12 +508,10 @@ export default {
 			})
 		},
 		
-		checkAppVersion() {
+		checkAppVersion(id) {
 			this.isCheckThenUpdate = true;
-			// patch(`/v2/app_management/container/${this.item.id}`).then(resp => {
 			const params = `${this.item.id}?name=${this.item.name}&pull=true&cid=${this.item.id}`
-			
-			this.$api.apps.checkAppVersion(params).then(resp => {
+			this.$openAPI.appManagement.compose.updateComposeApp(id).then(resp => {
 				if (resp.status === 200) {
 					// messageBus :: apps_checkThenUpdate
 					this.$messageBus('apps_checkupdate', this.item.name.toString());

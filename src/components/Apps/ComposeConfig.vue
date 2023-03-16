@@ -168,7 +168,6 @@ import InputGroup from '../forms/InputGroup.vue';
 import VolumesInputGroup from "@/components/forms/VolumesInputGroup.vue";
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
-// import YAML from "yaml";//
 import YAML from "yaml";
 import upperFirst from "lodash/upperFirst";
 import lowerFirst from "lodash/lowerFirst";
@@ -667,16 +666,40 @@ export default {
 			//Ports
 			// 建议 - 仅处理数组格式！！！
 			// 已支持对象格式。
+            /*
+            - "3000"
+            - "3000-3005"
+            - "8000:8000"
+            - "9090-9091:8080-8081"
+            - "49100:22"
+            - "127.0.0.1:8001:8001"
+            - "127.0.0.1:5000-5010:5000-5010"
+            - "6060:6060/udp"
+            */
+            // ["3000-3005", "8000:8000", "9090-9091:8080-8081", "49100:22", "127.0.0.1:8001:8001", "127.0.0.1:5000-5010:5000-5010","6060:6060/udp"]
 			configData.ports = this.makeArray(parsedInput.ports).map(item => {
 				if (isString(item)) {
-					let pArray = item.split(":")
-					let endArray = pArray[1].split("/")
-					let protocol = (endArray[1]) ? endArray[1] : 'tcp';
-					return {
-						target: endArray[0],
-						published: pArray[0],
-						protocol: protocol
-					}
+					// let pArray = item.split(":")
+					// let endArray = pArray[1].split("/")
+					// let protocol = (endArray[1]) ? endArray[1] : 'tcp';
+					// return {
+					// 	target: endArray[0],
+					// 	published: pArray[0],
+					// 	protocol: protocol
+					// }
+
+                    const parts = item.split(':');
+                    const pArray = parts[0].split('-');
+                    const endArray = parts.length > 2 ? parts.slice(1, 3) : [pArray[0]];
+                    const protocol = parts.length > 2 ? parts[2].split('/')[1] : 'tcp';
+
+                    const published = parts.length > 1 ? parts.slice(0, 2).join(':') : pArray[0];
+
+                    return {
+                        target: endArray[0],
+                        published: published,
+                        protocol: protocol || 'tcp'
+                    };
 				} else {
 					return item
 				}

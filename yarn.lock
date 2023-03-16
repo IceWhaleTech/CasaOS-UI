@@ -3140,10 +3140,10 @@ caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001332, can
   resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001451.tgz"
   integrity sha512-XY7UbUpGRatZzoRft//5xOa69/1iGJRBlrieH6QYrkKLIFn3m7OVEJ81dSrKoy2BnKsdbX5cLrOispZNYo9v2w==
 
-casaos-appmanagement-openapi@1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/casaos-appmanagement-openapi/-/casaos-appmanagement-openapi-1.0.5.tgz#3f878de052fb1acb62640017172648be82de177e"
-  integrity sha512-9bJhQJM4GekyyUXVJnQh/NJoFG8Ny0W5rO0eZ+M2VPLIH1xda5HYUZyWKqoaw5gDI7aFtlpdVf4LFKrTNkWtvQ==
+casaos-appmanagement-openapi@^0.4.3-test1:
+  version "0.4.3-test1"
+  resolved "https://registry.yarnpkg.com/casaos-appmanagement-openapi/-/casaos-appmanagement-openapi-0.4.3-test1.tgz#06d7b23a0f88473316ba2f8f3ce2569cb9c8164d"
+  integrity sha512-s43IbOoA5tFU8156Jc9p9K4ifybsJW3/IMUNyLjLGVZj8Fa8iXz8Lz2x/6rp7nChgwHhThtuArBk2g8EHJUyfg==
   dependencies:
     axios "^1.1.0"
 

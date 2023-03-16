@@ -1054,29 +1054,14 @@ export default {
 				}
 			}).then(res => {
 				if (res.status == 200) {
-					// if (respData.tip !== "null" && respData.tip !== "[]" && respData.tip !== "") {
-					// 	this.$buefy.dialog.confirm({
-					// 		title: this.$t('Attention'),
-					// 		message: this.formatTips(respData.tip),
-					// 		type: 'is-dark',
-					// 		onConfirm: () => {
-					// 			this.sidebarOpen = false;
-					// 			this.installAppData()
-					// 		}
-					// 	})
-					// } else {
-					// 	this.sidebarOpen = false;
-					// 	this.installAppData()
-					// }
-					//data.compose
 					this.$openAPI.appManagement.compose.installComposeApp(res.data).then(res => {
-						console.log(res, 'installComposeApp');
-						// 		this.currentInstallAppName = res.data.data
-						// 		this.currentSlide = 2;
-						// 		this.currentInstallAppText = "Start Installation..."
-						// 		this.cancelButtonText = 'Continue in background'
-						// 		this.dockerProgress = new DockerProgress();
 						if (res.status === 200) {
+                            this.currentInstallAppName =id
+                            this.currentSlide = 2;
+                            this.currentInstallAppText = "Start Installation..."
+                            this.cancelButtonText = 'Continue in background'
+                            this.dockerProgress = new DockerProgress();
+
 							this.$buefy.toast.open({
 								message: res.data.message,
 								type: 'is-danger'
@@ -1101,72 +1086,6 @@ export default {
 					type: 'is-danger'
 				})
 			})
-			
-			// this.$api.apps.getAppInfo(id).then(resp => {
-			// 	if (resp.data.success == 200) {
-			// 		// messageBus :: installApp
-			// 		// this.$messageBus('appstore_install', respData.title.toString())
-			// 		resp.data.data.appstore_id = id
-			// 		this.configDataString = YAML.stringify(resp.data.data)
-			//
-			// 		// let respData = resp.data.data
-			// 		// this.initConfigData.protocol = respData.protocol
-			// 		// this.initConfigData.host = respData.host
-			// 		// this.initConfigData.port_map = respData.port_map
-			// 		// this.initConfigData.cpu_shares = 50
-			// 		// this.initConfigData.memory = respData.max_memory
-			// 		// this.initConfigData.restart = "always"
-			// 		// this.initConfigData.label = respData.title
-			// 		// this.initConfigData.position = true
-			// 		// this.initConfigData.index = respData.index
-			// 		// this.initConfigData.icon = respData.icon
-			// 		// this.initConfigData.network_model = respData.network_model
-			// 		// this.initConfigData.image = respData.image
-			// 		// this.initConfigData.description = respData.description
-			// 		// this.initConfigData.origin = respData.origin
-			// 		// this.initConfigData.ports = isNull(respData.ports) ? [] : respData.ports
-			// 		// this.initConfigData.volumes = isNull(respData.volumes) ? [] : respData.volumes
-			// 		// this.initConfigData.envs = isNull(respData.envs) ? [] : respData.envs
-			// 		// this.initConfigData.devices = isNull(respData.devices) ? [] : respData.devices
-			// 		// this.initConfigData.cap_add = isNull(respData.cap_add) ? [] : respData.cap_add
-			// 		// this.initConfigData.cmd = isNull(respData.cmd) ? [] : respData.cmd
-			// 		// this.initConfigData.privileged = respData.privileged
-			// 		// this.initConfigData.host_name = respData.host_name
-			// 		// this.initConfigData.appstore_id = id
-			//
-			// 		// currentInstallId is used to identify the app that is being installed
-			// 		this.currentInstallId = 0
-			//
-			// 		this.architectures = respData.architectures
-			// 		if (this.unuseable) {
-			// 			// this.showAppDetial(id);
-			// 			this.sidebarOpen = true;
-			// 			this.appDetailData = respData
-			// 			return
-			// 		}
-			//
-			// 		if (respData.tip !== "null" && respData.tip !== "[]" && respData.tip !== "") {
-			// 			this.$buefy.dialog.confirm({
-			// 				title: this.$t('Attention'),
-			// 				message: this.formatTips(respData.tip),
-			// 				type: 'is-dark',
-			// 				onConfirm: () => {
-			// 					this.sidebarOpen = false;
-			// 					this.installAppData()
-			// 				}
-			// 			})
-			// 		} else {
-			// 			this.sidebarOpen = false;
-			// 			this.installAppData()
-			// 		}
-			// 	}
-			// }).catch(() => {
-			// 	this.currentInstallId = 0
-			// 	this.$buefy.toast.open({
-			// 		message: this.$t(`There was an error loading the data, please try again!`),
-			// 		type: 'is-danger'
-			// 	})
-			// })
 		},
 		/**
 		 * @description: Format AppStore tip datas
@@ -1222,19 +1141,6 @@ export default {
 				return `https://icon.casaos.io/main/all/${appIcon}.png`;
 			}
 		},
-		
-		/**
-		 * @description: Process the datas before submit
-		 * @param {*}
-		 * @return {*} void
-		 */
-		// processData() {
-		//
-		// 	this.initConfigData.cpu_shares = Number(this.initConfigData.cpu_shares)
-		// 	let model = this.initConfigData.network_model.split("-");
-		// 	this.initConfigData.network_model = model[0]
-		// },
-		
 		/**
 		 * @description: Back to prev Step
 		 * @param {*}
@@ -1287,56 +1193,12 @@ export default {
 					}).finally(() => {
 						this.isLoading = false;
 					})
-					// this.$api.container.installV2(this.dockerComposeCommands,).then((res) => {
-					// 	// this.$openAPI.installComposeApp(this.dockerComposeCommands).then((res) => {
-					// 	if (res.data.success == 200) {
-					// 		this.currentInstallAppName = res.data.data
-					// 		this.currentSlide = 2;
-					// 		this.currentInstallAppText = "Start Installation..."
-					// 		this.cancelButtonText = 'Continue in background'
-					// 		this.dockerProgress = new DockerProgress();
-					// 	} else {
-					// 		this.$buefy.toast.open({
-					// 			message: res.data.message,
-					// 			type: 'is-warning'
-					// 		})
-					// 	}
-					// }).catch(() => {
-					// 	this.$buefy.toast.open({
-					// 		message: this.$t(`There was an error loading the data, please try again!`),
-					// 		type: 'is-danger'
-					// 	})
-					// }).finally(() => {
-					// 	this.isLoading = false;
-					// });
 				}
 			})
 		},
 		
 		installAppData() {
-			// this.processData();
-			// this.isLoading = true;
-			// this.$api.container.install(this.initConfigData).then((res) => {
-			// 	this.isLoading = false;
-			// 	if (res.data.success == 200) {
-			// 		this.currentInstallAppName = res.data.data
-			// 		this.currentSlide = 2;
-			// 		this.currentInstallAppText = "Start Installation..."
-			// 		this.cancelButtonText = 'Continue in background'
-			// 		this.dockerProgress = new DockerProgress();
-			// 	} else {
-			// 		this.$buefy.toast.open({
-			// 			message: res.data.message,
-			// 			type: 'is-warning'
-			// 		})
-			// 	}
-			// }).catch((err) => {
-			// 	this.isLoading = false;
-			// 	this.$buefy.toast.open({
-			// 		message: err.response.data.message,
-			// 		type: 'is-warning'
-			// 	})
-			// })
+
 		},
 		
 		
@@ -1362,27 +1224,6 @@ export default {
 					type: 'is-warning'
 				})
 			})
-			// this.processData();
-			// this.isLoading = true;
-			// let updateData = this.uuid2var(cloneDeep(this.initConfigData));
-			// this.$api.container.update(this.id, updateData).then((res) => {
-			// 	if (res.data.success == 200) {
-			// 		this.isLoading = false;
-			// 		this.$emit('updateState')
-			// 	} else {
-			// 		this.$buefy.toast.open({
-			// 			message: res.data.message.data,
-			// 			type: 'is-warning'
-			// 		})
-			// 	}
-			// 	this.$emit('close')
-			// }).catch((err) => {
-			// 	this.isLoading = false;
-			// 	this.$buefy.toast.open({
-			// 		message: err.response.data.message,
-			// 		type: 'is-warning'
-			// 	})
-			// })
 		},
 		
 		/**
@@ -1439,12 +1280,6 @@ export default {
 		 * @return {*} void
 		 */
 		exportYAML() {
-			// let exportData = cloneDeep(this.initConfigData);
-			// exportData.network_model = this.getNetworkName(this.initConfigData.network_model);
-			// exportData.version = "1.0"
-			// exportData = this.uuid2var(exportData)
-			// delete exportData.memory
-			// const data = JSON.stringify(exportData);
 			const blob = new Blob([this.dockerComposeCommands], {type: ''});
 			// FileSaver.saveAs(blob, `${exportData.label}.json`);
 			FileSaver.saveAs(blob, `${this.mainName}.yaml`);
