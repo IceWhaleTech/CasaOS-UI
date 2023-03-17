@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-08-03 14:10:43
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-15 14:09:13
+ * @LastEditTime: 2023-03-17 16:47:56
  * @FilePath: /CasaOS-UI/src/components/filebrowser/components/MountActionButton.vue
  * @Description: 
  * 
@@ -92,7 +92,6 @@ export default {
         }else if(driver.name === 'GoogleDrive'){
           this.$messageBus('files_addlocation_googledrive')
         }
-        this.$messageBus('files_filesdrop_tab')
       } else {
         console.log("open config modal");
       }

@@ -354,5 +354,19 @@
   "CheckThenUpdate": "检查并更新",
   "Not compatible with {arch} devices.": "不兼容 {arch} 设备。",
   "Connect Dropbox": "绑定 Dropbox",
-  "Connect GoogleDrive": "绑定 Google云端硬盘"
+  "Connect GoogleDrive": "绑定 Google 云端硬盘",
+  "FilesDrop": "文件丢送",
+  "You are using the device": "您正在使用该设备",
+  "Click to send the file to the device.": "点击向设备发送文件",
+  "{num} files being sent": "正在发送 {num} 个文件",
+  "Receiving {num} files": "正在接收 {num} 个文件",
+  "Local Area Network Access": "局域网访问",
+  "Access the following address with another device": "使用另一个设备访问以下地址",
+  "Drop files to another device anytime, anywhere": "随时随地向另一个设备丢送文件",
+  "Sending files": "发送文件",
+  "Cancel sending": "取消发送",
+  "Ignore": "忽略",
+  "File transfer completed.": "文件传输完成。",
+  "Save {name} {size} from {device}.": "保存来自于 {device} 的 {name} {size} 。",
+  "Connection lost. Retry in 5 seconds...": "连接丢失。5秒后重试..."
 }

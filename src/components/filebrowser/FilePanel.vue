@@ -1,7 +1,7 @@
 <!--
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-14 18:57:40
- * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\FilePanel.vue
+ * @LastEditTime: 2023-03-15 17:05:46
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/FilePanel.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -171,7 +171,7 @@
                     <div
                       class="is-flex is-align-items-center modal-close-container modal-close-container-line"
                     >
-                      <div class="close-button" @click="$emit('close')">
+                      <div class="close-button" @click="$emit('close');">
                         <b-icon pack="casa" icon="close"></b-icon>
                       </div>
                     </div>
@@ -388,6 +388,7 @@ import MergeStorages from "@/components/Storage/MergeStorages.vue";
 // Drop
 
 import DropEntryButton from "./drop/DropEntryButton.vue";
+
 
 export default {
   name: "file-panel",

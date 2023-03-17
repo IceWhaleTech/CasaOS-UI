@@ -73,7 +73,6 @@ import { VueEllipseProgress } from "vue-ellipse-progress";
 import events from "@/events/events";
 import { gsap } from "gsap";
 import CustomEase from "gsap/CustomEase";
-import { Events } from "./Network.js";
 
 export default {
   name: "drop-item",
@@ -199,7 +198,7 @@ export default {
     },
   },
   beforeDestroy() {
-    Events.off("file-progress", this.handleFileProgress);
+    this.$EventBus.$off("file-progress", this.handleFileProgress);
     this.$EventBus.$off(events.ACTIVE_DROP_UPLOAD);
   },
   watch: {
@@ -235,16 +234,16 @@ export default {
       delay: (this.showIndex + 1) * 0.16,
     });
 
-    Events.on("file-progress", this.handleFileProgress);
+    this.$EventBus.$on("file-progress", this.handleFileProgress);
 
-    Events.on("text-received", (e) => {
-      const message = e.detail;
+    this.$EventBus.$on("text-received", (e) => {
+      const message = e;
       const peerId = message.sender || message.recipient;
       if (this.device.id !== peerId) return;
       this.receivedfiles = message.text;
     });
 
-    Events.on("close-connection", (e) => {
+    this.$EventBus.$on("close-connection", (e) => {
       this.progress = 0;
       this.uploadDisabled = false;
     });
@@ -259,7 +258,7 @@ export default {
       }
     },
     handleFileProgress(e) {
-      const progress = e.detail;
+      const progress = e;
       const peerId = progress.sender || progress.recipient;
       if (this.device.id !== peerId) return;
       this.totalfiles = progress.files.length;
@@ -272,7 +271,7 @@ export default {
           num: this.receivedfiles,
         });
       } else {
-        this.progressText = this.$t("{num} files in transit", {
+        this.progressText = this.$t("Receiving {num} files", {
           num: this.receivedfiles,
         });
       }
@@ -304,7 +303,8 @@ export default {
     },
     fileDroped(files) {
       this.$messageBus("files_filesdrop_start");
-      Events.fire("files-selected", {
+
+      this.$EventBus.$emit("files-selected", {
         files: files,
         to: this.device.id,
         from: localStorage.getItem("peerid"),

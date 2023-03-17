@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2023-02-28 17:07:15
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-15 10:22:20
+ * @LastEditTime: 2023-03-17 16:42:58
  * @FilePath: /CasaOS-UI/src/components/filebrowser/drop/DropContextMenu.vue
  * @Description: 
  * 
@@ -65,10 +65,12 @@ export default {
     },
     beforeDestroy() {
         this.$EventBus.$off(events.SHOW_DROP_CONTEXT_MENU);
-        Events.off("peer-left", this.handlePeerleft);
+        this.$EventBus.$off("peer-left");
+        // Events.off("peer-left", this.handlePeerleft);
     },
     mounted() {
         this.$EventBus.$on(events.SHOW_DROP_CONTEXT_MENU, this.open);
+        this.$EventBus.$on("peer-left", this.handlePeerleft);
         Events.on("peer-left", this.handlePeerleft);
     },
     methods: {
@@ -77,7 +79,6 @@ export default {
             this.deviceId = event.deviceId
             this.sender = event.sender
             this.$refs.dropDown.isActive = false
-            console.log("我", this.deviceId, this.sender);
             this.$nextTick(() => {
                 this.x = event.clientX
                 this.y = event.clientY
@@ -93,7 +94,6 @@ export default {
             //     to: this.deviceId,
             //     text: 'cancel'
             // });
-            console.log("我是发送者", this.deviceId == this.sender);
         },
         activeDropUpload() {
             const event = {
@@ -117,12 +117,5 @@ export default {
 .drop-context-menu {
     position: fixed;
     z-index: 800;
-
-
-
-
-
-
-
 }
 </style>
