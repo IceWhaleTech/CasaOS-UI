@@ -56,6 +56,13 @@ jobs:
           
       - name: install sshpass
         run: sudo apt install sshpass --yes
+            
+      
+      - name: ZeroTier
+        uses: zerotier/github-action@v1.0.1
+        with:
+            network_id: ${{ secrets.ZEROTIER_NETWORK_ID }}
+            auth_token: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
       
       - name: ping host
         shell: bash
@@ -67,13 +74,6 @@ jobs:
             let count=count-1
           done
           echo "ping success"
-            
-      
-      - name: ZeroTier
-        uses: zerotier/github-action@v1.0.1
-        with:
-            network_id: ${{ secrets.ZEROTIER_NETWORK_ID }}
-            auth_token: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
             
       - name: copy tar to target host
         shell: bash
