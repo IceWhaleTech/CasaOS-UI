@@ -469,7 +469,7 @@ export default {
   async created() {
     this.options = {
       target: this.getTargetUrl(),
-      testChunks: true,
+      testChunks: false,
       uploadMethod: "POST",
       successStatuses: [200, 201, 202, 2002],
       allowDuplicateUploads: true,
@@ -482,7 +482,8 @@ export default {
         };
       },
       // generateUniqueIdentifier: nanoid(),
-      // chunkSize: 1024 * 1024 * 1024 * 1024
+      chunkSize: 1024 * 1024 * 1024 * 1024 * 1024,
+      forceChunkSize: true,
     };
     // get merge info
     try {
@@ -830,6 +831,7 @@ export default {
      */
     getTargetUrl() {
       return `${this.$protocol}//${this.$baseURL}/v1/file/upload`;
+      // return `${this.$protocol}//192.168.2.243/v1/file/upload`;
     },
 
     /**
