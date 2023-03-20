@@ -24,7 +24,7 @@
 				<b-dropdown-item :focusable="false" aria-role="menu-item" custom>
 					<b-button expanded tag="a" type="is-text" @click="openApp(item)">{{ $t('Open') }}</b-button>
 					<b-button expanded type="is-text" @click="configApp">{{ $t('Setting') }}</b-button>
-					<b-tooltip multilined position="is-right"><b-button expanded type="is-text"
+					<!-- <b-tooltip multilined position="is-right"><b-button expanded type="is-text"
 							@click="configApp">Tips</b-button>
 						<template v-slot:content>
 							<div v-html="formatTips(tipData)"></div>
@@ -41,7 +41,7 @@
 							<b-button expanded type="is-text" >{{ $t('Open') }}</b-button>
 							<b-button expanded type="is-text" >{{ $t('Open') }}</b-button>
 						</b-dropdown-item>
-					</c-dropdown>
+					</c-dropdown> -->
 					
 
 					<b-button v-if="item.appstore_id != 0 && item.appstore_id != undefined" :loading="isCloning" expanded
