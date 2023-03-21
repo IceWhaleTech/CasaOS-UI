@@ -23,9 +23,9 @@
 				
 				<b-dropdown-item :focusable="false" aria-role="menu-item" custom>
 					<b-button expanded tag="a" type="is-text" @click="openApp(item)">{{ $t('Open') }}</b-button>
-					<b-button class="is-flex is-align-items-center" expanded type="is-text" @click="openTips">
+					<b-button expanded icon-pack="casa" icon-right="question" size="is-16" type="is-text"
+					          @click="openTips">
 						{{ $t('Tips') }}
-						<b-icon icon="question" pack="casa" size="is-16"></b-icon>
 					</b-button>
 					<b-button expanded type="is-text" @click="configApp">{{ $t('Setting') }}</b-button>
 					<b-button v-if="item.appstore_id != 0 && item.appstore_id != undefined" :loading="isCloning"
