@@ -130,6 +130,7 @@ export default {
 			retryCount: 0,
 			appListErrorMessage: "",
 			skCount: 0,
+			ListRefreshTimer: null,
 		}
 	},
 	components: {
@@ -170,10 +171,16 @@ export default {
 		this.$EventBus.$on(events.RELOAD_APP_LIST, () => {
 			this.getList();
 		});
+		
+		this.ListRefreshTimer = setInterval(() => {
+			this.getList();
+		}, 5000)
 	},
 	beforeDestroy() {
 		this.$EventBus.$off(events.OPEN_APP_STORE_AND_GOTO_SYNCTHING);
 		window.removeEventListener('resize', this.getSkCount);
+		
+		clearInterval(this.ListRefreshTimer);
 	},
 	mounted() {
 		window.addEventListener('resize', this.getSkCount);
@@ -213,12 +220,10 @@ export default {
 				console.log('open setting model', orgAppList)
 				// TODO fake data
 				orgAppList.forEach((item) => {
-					item.status = 'running';
 					item.state = 'running';
 					item.hostname = this.$baseIp;
 					item.name = item.title && item.title.en_US;
 					item.id = item.store_app_id;
-					// item.protocol = 'http';
 					item.seheme = 'http';
 					// item.type = 'system';
 				})

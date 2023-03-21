@@ -1,10 +1,20 @@
+/*!
+ *  @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ *  @LastEditTime: 2023/3/20 下午1:43
+ *  @FilePath: /CasaOS-UI/src/assets/scss/common/_iconfont.scss
+ *  @Description:
+ *
+ *  Copyright (c) 2023 by IceWhale, All Rights Reserved.
+ *
+ */
+
 @font-face {
   font-family: 'casaos';
-  src: url('../fonts/casaos.eot?8njuzh');
-  src: url('../fonts/casaos.eot?8njuzh#iefix') format('embedded-opentype'),
-  url('../fonts/casaos.ttf?8njuzh') format('truetype'),
-  url('../fonts/casaos.woff?8njuzh') format('woff'),
-  url('../fonts/casaos.svg?8njuzh#casaos') format('svg');
+  src: url('../fonts/casaos.eot?5hkf4z');
+  src: url('../fonts/casaos.eot?5hkf4z#iefix') format('embedded-opentype'),
+  url('../fonts/casaos.ttf?5hkf4z') format('truetype'),
+  url('../fonts/casaos.woff?5hkf4z') format('woff'),
+  url('../fonts/casaos.svg?5hkf4z#casaos') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,8 +35,46 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.casa-docker:before {
+.casa-casa .path1:before {
+  content: "\e94c";
+  color: rgb(54, 54, 54);
+}
+
+.casa-casa .path2:before {
+  content: "\e94d";
+  margin-left: -1em;
+  color: rgb(101, 101, 101);
+  opacity: 0.95;
+}
+
+.casa-casa .path3:before {
+  content: "\e94e";
+  margin-left: -1em;
+  color: rgb(51, 51, 51);
+  opacity: 0.95;
+}
+
+.casa-casa .path4:before {
+  content: "\e94f";
+  margin-left: -1em;
+  color: rgb(101, 101, 101);
+  opacity: 0.95;
+}
+
+.casa-sending-files:before {
   content: "\e944";
+}
+
+.casa-paste:before {
+  content: "\e945";
+}
+
+.casa-files:before {
+  content: "\e946";
+}
+
+.casa-drop:before {
+  content: "\e947";
 }
 
 .casa-bug:before {
@@ -67,6 +115,10 @@
 
 .casa-close:before {
   content: "\e906";
+}
+
+.casa-close-xs:before {
+  content: "\e910";
 }
 
 .casa-plus:before {
@@ -113,6 +165,10 @@
   content: "\e916";
 }
 
+.casa-question:before {
+  content: "\e948";
+}
+
 .casa-setting:before {
   content: "\e91d";
 }
@@ -129,6 +185,10 @@
   content: "\e92d";
 }
 
+.casa-sync:before {
+  content: "\e90a";
+}
+
 .casa-shutdown:before {
   content: "\e933";
 }
@@ -137,8 +197,20 @@
   content: "\e934";
 }
 
+.casa-history-records:before {
+  content: "\e922";
+}
+
 .casa-language:before {
   content: "\e935";
+}
+
+.casa-danger-outline:before {
+  content: "\e92e";
+}
+
+.casa-danger:before {
+  content: "\e921";
 }
 
 .casa-magnifier:before {
@@ -155,6 +227,10 @@
 
 .casa-picture:before {
   content: "\e939";
+}
+
+.casa-picture-upload:before {
+  content: "\e90d";
 }
 
 .casa-system:before {
@@ -189,20 +265,20 @@
   content: "\e941";
 }
 
+.casa-author:before {
+  content: "\e949";
+}
+
 .casa-account:before {
   content: "\e942";
 }
 
+.casa-account-edit:before {
+  content: "\e912";
+}
+
 .casa-usb:before {
   content: "\e943";
-}
-
-.casa-danger:before {
-  content: "\e921";
-}
-
-.casa-danger-outline:before {
-  content: "\e92e";
 }
 
 .casa-exit-app:before {
@@ -211,6 +287,10 @@
 
 .casa-view:before {
   content: "\e920";
+}
+
+.casa-category:before {
+  content: "\e94a";
 }
 
 .casa-copy:before {
@@ -227,10 +307,6 @@
 
 .casa-expand:before {
   content: "\e900";
-}
-
-.casa-history-records:before {
-  content: "\e922";
 }
 
 .casa-storage-network:before {
@@ -281,24 +357,12 @@
   content: "\e91e";
 }
 
-.casa-account-edit:before {
-  content: "\e912";
-}
-
 .casa-thumb-up:before {
   content: "\e90e";
 }
 
-.casa-sync:before {
-  content: "\e90a";
-}
-
-.casa-close-xs:before {
-  content: "\e910";
-}
-
-.casa-picture-upload:before {
-  content: "\e90d";
+.casa-edit:before {
+  content: "\e94b";
 }
 
 

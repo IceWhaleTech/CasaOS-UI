@@ -22,7 +22,7 @@
 						}}</h3>
 				</div>
 				<!--				<button class="delete" type="button" @click="$emit('close')"/>-->
-				<b-icon class="_polymorphic" icon="close" pack="casa"
+				<b-icon class="_polymorphic close" icon="close" pack="casa"
 				        @click.native="$emit('close'); $messageBus('appstore_close')"/>
 			</header>
 			<p class="modal-card-body">
@@ -43,134 +43,11 @@
 			<!-- Sidebar Start -->
 			<app-side-bar v-model="sidebarOpen" :overlay="true" :right="true" position="absolute">
 				<template slot-scope="{close}">
-					<div class="modal-card app-detial">
-						<!-- Header Start -->
-						<header class="modal-card-head" style="background:#ff000">
-							<div class="is-flex-grow-1">
-								<div class="button is-ghost auto-height pl-0 pt-0 pb-0" @click="close">
-									<b-icon class="mr-1" icon="chevron-left" size="is-medium"></b-icon>
-									{{ $t('Back') }}
-								</div>
-							</div>
-						</header>
-						<!-- Header End -->
-						<section id="ss-content" class="modal-card-body">
-							<!-- App Info Header Start -->
-							<div class="app-header is-flex pb-4 b-line">
-								<div class="header-icon mr-5">
-									<b-image :key="appDetailData.icon" :src="appDetailData.icon"
-									         :src-fallback="require('@/assets/img/app/default.svg')"
-									         class="is-128x128 icon-shadow"
-									         webp-fallback=".jpg"></b-image>
-								</div>
-								<div class="is-flex-grow-1 is-flex is-align-items-center">
-									<div>
-										<h4 class="title store-title is-4 ">{{ appDetailData.title.en_US }}</h4>
-										<p class="subtitle is-size-14px two-line mb-3">{{
-												appDetailData.tagline.en_US
-											}}</p>
-										<p class="description mb-2">
-											<b-button v-if="installedList.includes(appDetailData.id)"
-											          :loading="appDetailData.id == currentInstallId" rounded
-											          size="is-normal" type="is-primary"
-											          @click="openThirdContainerByAppInfo(appDetailData)">
-												{{ $t('Open') }}
-											</b-button>
-											<b-button v-else :disabled="unuseable"
-											          :loading="appDetailData.id == currentInstallId"
-											          rounded size="is-normal" type="is-primary"
-											          @click="qucikInstall(appDetailData.id);$messageBus('appstore_install', appDetailData.title.en_US)">
-												{{ $t('Install') }}
-											</b-button>
-										</p>
-										
-										<p v-if="unuseable"
-										   class="has-background-red-tertiary has-text-red has-text-full-04 _is-normal is-flex is-align-items-center font pr-2"
-										   style="width: fit-content;height: 1.5rem;border-radius: 0.25rem">
-											<label class="is-flex ml-2 mr-1">
-												<b-icon class="is-16x16" custom-size="casa-19px" icon="close"
-												        pack="casa"></b-icon>
-											</label>
-											{{ $t('Not compatible with {arch} devices.', {arch}) }}
-										</p>
-									
-									</div>
-								</div>
-							</div>
-							<!-- App Info Header End -->
-							<!-- App Info Table Start -->
-							<nav class="level is-mobile mt-4">
-								<div class="level-item has-text-centered">
-									<div>
-										<p class="heading">{{ $t('CATEGORY') }}</p>
-										<p class="title">
-											<b-icon :icon="appDetailData.category_font" custom-size="mdi-36px"></b-icon>
-										</p>
-										<p class="footing is-size-14px">{{ appDetailData.category }}</p>
-									</div>
-								</div>
-								<div class="level-item has-text-centered">
-									<div>
-										<p class="heading">{{ $t('DEVELOPER') }}</p>
-										<p class="title">
-											<b-icon custom-size="mdi-36px" icon="account-circle-outline"></b-icon>
-										</p>
-										<p class="footing is-size-14px">{{ appDetailData.developer }}</p>
-									</div>
-								</div>
-								<div class="level-item has-text-centered">
-									<div>
-										<p class="heading "><span class="is-hidden-mobile">{{
-												$t('REQUIRE')
-											}} </span>{{ $t('MEMORY') }}</p>
-										<p class="title has-text-weight-normal">{{ appDetailData.min_memory }}</p>
-										<p class="footing is-size-14px">MB</p>
-									</div>
-								</div>
-								<div class="level-item has-text-centered">
-									<div>
-										<p class="heading"><span class="is-hidden-mobile">{{
-												$t('REQUIRE')
-											}} </span>{{ $t('DISK') }}</p>
-										<p class="title has-text-weight-normal">{{ appDetailData.min_disk }}</p>
-										<p class="footing is-size-14px">MB</p>
-									</div>
-								</div>
-							</nav>
-							<!-- App Info Table End -->
-							
-							<!-- App Info Slider Start -->
-							<div v-if="showDetailSwiper" class="is-relative">
-								<swiper ref="infoSwiper" :options="swiperOptions"
-								        class="swiper swiper-responsive-breakpoints">
-									<swiper-slide v-for="item in appDetailData.screenshot_link" :key="'sc'+item">
-										<div class="gap">
-											<b-image :src="item"
-											         :src-fallback="require('@/assets/img/app/swiper_placeholder.png')"
-											         class="border-8" placeholder ratio="16by9"></b-image>
-										</div>
-									</swiper-slide>
-								
-								</swiper>
-								<div :class="{'swiper-button-disabled':disPrev}" class="swiper-button-prev"
-								     @click="$refs.infoSwiper.$swiper.slidePrev()"></div>
-								<div :class="{'swiper-button-disabled':disNext}" class="swiper-button-next"
-								     @click="$refs.infoSwiper.$swiper.slideNext()"></div>
-							</div>
-							
-							<!-- App Info Slider End -->
-							
-							<!-- App Info  Start -->
-							<div class="app-desc mt-4 mb-6">
-								<p class="is-size-14px mb-2 un-break-word">{{ appDetailData.tagline.en_US }}</p>
-								<p class="is-size-14px un-break-word">{{ appDetailData.description.en_US }}</p>
-								<!-- <p class="is-size-14px " v-html="appDetailData.tip"></p> -->
-							</div>
-							<!-- App Info  End -->
-						
-						</section>
-					</div>
-				
+					<AppDetailInfo :appDetailData="appDetailData" :arch="arch"
+					               :cateMenu="cateMenu" :close="close"
+					               :currentInstallId="currentInstallId"
+					               :installedList="installedList" :showDetailSwiper="showDetailSwiper"
+					               :unuseable="unuseable"></AppDetailInfo>
 				</template>
 			</app-side-bar>
 			<!-- Sidebar End -->
@@ -201,10 +78,10 @@
 					<div v-if="currentSlide < 2"
 					     class="is-flex is-align-items-center modal-close-container modal-close-container-line ">
 						<!--						<button class="delete" type="button" @click="$emit('close')"/>-->
-						<b-icon class="_polymorphic" icon="close" pack="casa" @click.native="$emit('close')"/>
+						<b-icon class="_polymorphic close" icon="close" pack="casa" @click.native="$emit('close')"/>
 					</div>
 					<div v-else-if="currentSlide === 2" class="is-flex is-align-items-center">
-						<b-icon class="_polymorphic" icon="close" pack="casa" @click.native="$emit('close')"/>
+						<b-icon class="_polymorphic close" icon="close" pack="casa" @click.native="$emit('close')"/>
 					</div>
 				
 				</div>
@@ -273,25 +150,29 @@
 						<!-- List condition Start -->
 						<div class="is-flex mt-5 mb-5">
 							<!-- Cate Start -->
-							<div class="is-flex-grow-1">
-								<b-dropdown v-model="currentCate" :mobile-modal="false" animation="fade1"
-								            aria-role="list" class="app-select file-dropdown" position="is-bottom-right"
-								            scrollable>
+							<div class="mr-2 _polymorphic is-flex is-align-items-center _dropdown">
+								<b-dropdown v-model="currentCate" :max-height="240" :mobile-modal="false"
+								            animation="fade1" aria-role="list" class="app-select file-dropdown"
+								            position="is-bottom-right" scrollable>
 									<template #trigger="{ active }">
-										<div class="button is-text auto-height pl-0 pt-0 pb-0 ">
-											<b-icon :icon="currentCate.font" class="mr-1 ml-0" size="is-small"></b-icon>
-											{{ currentCate.name }}
-											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'" class="ml-1"
-											        size="is-normal"></b-icon>
+										<div
+										class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
+											<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
+											        icon="category"
+											        pack="casa"></b-icon>
+											<span class="has-text-full-03">{{ $t('All Types') }}</span>
+											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'"
+											        class="ml-2 _dropdown__stateIcon"
+											        custom-size="casa-16px"></b-icon>
 										</div>
 									</template>
 									<b-dropdown-item v-for="menu in cateMenu" :key="menu.id"
 									                 :class="menu.id == currentCate.id?'is-active':''"
 									                 :data-title="menu.count"
-									                 :value="menu" aria-role="listitem">
-										<div class="media is-align-items-center is-flex"
+									                 :value="menu" aria-role="listitem"
+									                 class="_dropdown__item">
+										<div class="media is-align-items-center is-flex has-text-full-03"
 										     @click="$messageBus('appstore_type', menu.name)">
-											<b-icon :icon="menu.font" class="mr-1" size="is-small"></b-icon>
 											<div class="media-content">
 												<h3>{{ menu.name }}</h3>
 											</div>
@@ -302,32 +183,66 @@
 							</div>
 							<!-- Cate End -->
 							
-							<!-- Sort Start -->
-							<div>
-								{{ $t('Sort by') }}:
-								<b-dropdown v-model="currentSort" :mobile-modal="false" animation="fade1"
-								            aria-role="list" class="app-select file-dropdown"
-								            position="is-bottom-right">
+							<!-- Author Start -->
+							<div class="_polymorphic is-flex is-align-items-center _dropdown">
+								<b-dropdown v-model="currentAuthor" :max-height="240" :mobile-modal="false"
+								            animation="fade1" aria-role="list" class="app-select file-dropdown"
+								            position="is-bottom-right" scrollable>
 									<template #trigger="{ active }">
-										<div class="button is-text auto-height pl-0 pt-0 pb-0 is-size-14px">
-											{{ currentSort.name }}
-											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'" class="ml-1"
-											        size="is-normal"></b-icon>
+										<div
+										class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
+											<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
+											        icon="author"
+											        pack="casa"></b-icon>
+											<span class="has-text-full-03">{{ $t('Posted by') }}</span>
+											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'"
+											        class="ml-2 _dropdown__stateIcon"
+											        custom-size="casa-16px"></b-icon>
 										</div>
-									
 									</template>
-									<b-dropdown-item v-for="(menu,index) in sortMenu" :key="'sort_'+index"
-									                 :class="menu.slash == currentSort.slash?'is-active':''"
-									                 :value="menu" aria-role="listitem">
-										<div class="media align-items-center is-flex"
-										     @click="$messageBus('appstore_sort', menu.name)">
+									<b-dropdown-item v-for="menu in cateMenu" :key="menu.id"
+									                 :class="menu.id == currentAuthor.id?'is-active':''"
+									                 :data-title="menu.count"
+									                 :value="menu" aria-role="listitem"
+									                 class="_dropdown__item">
+										<div class="media is-align-items-center is-flex has-text-full-03"
+										     @click="$messageBus('appstore_author', menu.name)">
 											<div class="media-content">
 												<h3>{{ menu.name }}</h3>
 											</div>
 										</div>
 									</b-dropdown-item>
 								</b-dropdown>
+							
 							</div>
+							<!-- Author End -->
+							
+							<!-- Sort Start -->
+							<!-- <div>
+							{{ $t('Sort by') }}:
+								<b-dropdown v-model="currentSort" :mobile-modal="false" animation="fade1"
+											aria-role="list" class="app-select file-dropdown"
+											position="is-bottom-right">
+									<template #trigger="{ active }">
+										<div class="button is-text auto-height pl-0 pt-0 pb-0 is-size-14px">
+											{{ currentSort.name }}
+											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'" class="ml-1"
+													size="is-normal"></b-icon>
+										</div>
+									
+									</template>
+									<b-dropdown-item v-for="(menu,index) in sortMenu" :key="'sort_'+index"
+													 :class="menu.slash == currentSort.slash?'is-active':''"
+													 :value="menu" aria-role="listitem">
+										<div class="media align-items-center is-flex"
+											 @click="$messageBus('appstore_sort', menu.name)">
+											<div class="media-content">
+												<h3>{{ menu.name }}</h3>
+											</div>
+										</div>
+									</b-dropdown-item>
+								</b-dropdown>
+							</div>-->
 							<!-- Sort End -->
 						</div>
 						
@@ -525,6 +440,7 @@ import business_OpenThirdApp from "@/mixins/app/Business_OpenThirdApp";
 import DockerProgress from "@/components/Apps/progress.js";
 
 import ComposeConfig from "@/components/Apps/ComposeConfig.vue";
+import AppDetailInfo from '@/components/Apps/AppDetailInfo.vue'
 
 const data = [
 	"AUDIT_CONTROL",
@@ -558,6 +474,7 @@ const data = [
 
 export default {
 	components: {
+		AppDetailInfo,
 		AppSideBar,
 		LottieAnimation,
 		Swiper,
@@ -642,30 +559,8 @@ export default {
 			communityList: {},
 			recommendList: {},
 			currentSlide: 0,
-			currentInstallId: 0,
+			currentInstallId: '',
 			
-			//Image List Swiper
-			disPrev: false,
-			disNext: false,
-			swiperOptions: {
-				loop: false,
-				autoplay: true,
-				spaceBetween: 24,
-				breakpoints: {
-					640: {
-						slidesPerView: 1
-					},
-					768: {
-						slidesPerView: 2
-					},
-					1366: {
-						slidesPerView: 3
-					}
-				},
-				// on: {
-				// 	slideChangeTransitionStart: this.handleInfoSlide
-				// },
-			},
 			// Featured Swiper
 			disFeaturedPrev: false,
 			disFeaturedNext: false,
@@ -690,6 +585,7 @@ export default {
 			},
 			searchKey: "",
 			currentCate: {},
+			currentAuthor: {},
 			currentSort: {},
 			cateMenu: [],
 			sortMenu: [
@@ -700,11 +596,16 @@ export default {
 			storeQueryData: {
 				index: 1,
 				category_id: "",
+				author_id: "",
 				type: "rank",
 				key: this.searchKey
 			},
 			//  App Detail info
-			appDetailData: {},
+			appDetailData: {
+				title: {en_US: "",},
+				tagline: {en_US: "",},
+				description: {en_US: "",},
+			},
 			arch: "",
 			// unusable: false, // computer unusable
 			architectures: [],
@@ -775,8 +676,10 @@ export default {
 			this.showAppDetial(this.storeId);
 		}
 		
+		// 这是 选择应用安装位置。 这块功能不被使用，暂且保留。
+		// close the function - APPs Installation Location
 		// prepare data - APPs Installation Location requirement document
-		this.getDiskList();
+		// this.getDiskList();
 		// close the function - APPs Installation Location
 		// this.askInstallationLocation();
 		
@@ -830,21 +733,6 @@ export default {
 				this.isLoading = false;
 			}
 		},
-		// Watch if initConfigData changes
-		// initConfigData: {
-		// 	handler(val) {
-		// 		if (this.state == 'install') {
-		// 			localStorage.setItem("app_data", JSON.stringify(val))
-		// 		}
-		// 	},
-		// 	deep: true
-		// },
-		// initConfigData: {
-		// 	handler(val) {
-		// 		this.configDataString = YAML.stringify(val)
-		// 	},
-		// 	deep: true
-		// },
 		// Watch if the query data of app store changes
 		storeQueryData: {
 			handler() {
@@ -861,6 +749,14 @@ export default {
 			},
 			deep: true
 		},
+		currentAuthor: {
+			handler(val) {
+				if (!this.isFirst) {
+					this.storeQueryData.author_id = val.id
+				}
+			},
+			deep: true
+		},
 		// Watch if app sort changes
 		currentSort: {
 			handler(val) {
@@ -869,22 +765,20 @@ export default {
 				}
 			},
 			deep: true
-		}
+		},
 	},
 	methods: {
+		// this.cateMenu : {name: 'appstore', title: 'App Store', icon: 'mdi-apps', component: 'AppStore'}
+		// param : this.cateMenu.name
+		getCateIcon(name) {
+			let tempO = this.cateMenu.find(item => item.name == name) || {font: 'mdi-apps'}
+			return tempO.font;
+		},
+		
 		// updateLabel: debounce(function (string) {
 		// 	this.initConfigData.label = string
 		// }, 50),
 		
-		/**
-		 * @description:
-		 * @param {*} swiper
-		 * @return {*}
-		 */
-		/*handleInfoSlide(swiper) {
-		  this.disPrev = (swiper.activeIndex == 0) ? true : false;
-		  this.disNext = swiper.isEnd;
-		},*/
 		/**
 		 * @description:
 		 * @param {*} swiper
@@ -908,6 +802,7 @@ export default {
 					return item.count > 0
 				})
 				this.currentCate = this.cateMenu[0]
+				this.currentAuthor = this.cateMenu[0]
 				this.currentSort = this.sortMenu[0]
 				if (this.isFirst) {
 					this.isFirst = false
@@ -994,13 +889,25 @@ export default {
 		 * @param {id} String
 		 * @return {*} void
 		 */
-		showAppDetial(id) {
+		async showAppDetial(id) {
 			this.isLoading = true;
+			let min_memory = await this.$openAPI.appManagement.appStore.composeApp(id).then(res => {
+				return res.data.data.compose.services[id].deploy.resources.reservations.memory
+			})
+			
+			if (min_memory.includes('GB')) {
+				min_memory = min_memory.replace('GB', '') * 1024
+			} else if (min_memory.includes('MB')) {
+				min_memory = min_memory.replace('MB', '')
+			} else {
+				min_memory = min_memory / 1024 / 1024
+			}
 			this.$openAPI.appManagement.appStore.composeAppStoreInfo(id).then(res => {
 				this.isLoading = false;
 				this.sidebarOpen = true;
 				this.appDetailData = res.data.data.apps[id]
 				this.appDetailData.id = id
+				this.appDetailData.min_memory = min_memory
 				this.architectures = res.data.data.architectures || [];
 			}).catch((e) => {
 				this.$buefy.toast.open({
@@ -1052,12 +959,12 @@ export default {
 				if (res.status == 200) {
 					this.$openAPI.appManagement.compose.installComposeApp(res.data).then(res => {
 						if (res.status === 200) {
-                            this.currentInstallAppName =id
-                            this.currentSlide = 2;
-                            this.currentInstallAppText = "Start Installation..."
-                            this.cancelButtonText = 'Continue in background'
-                            this.dockerProgress = new DockerProgress();
-
+							this.currentInstallAppName = id
+							this.currentSlide = 2;
+							this.currentInstallAppText = "Start Installation..."
+							this.cancelButtonText = 'Continue in background'
+							this.dockerProgress = new DockerProgress();
+							
 							this.$buefy.toast.open({
 								message: res.data.message,
 								type: 'is-success'
@@ -1167,7 +1074,6 @@ export default {
 					console.log("docker-compose-command", this.dockerComposeCommands.length)
 					this.isLoading = true;
 					this.$openAPI.appManagement.compose.installComposeApp(this.dockerComposeCommands).then((res) => {
-						debugger
 						if (res.status === 200) {
 							this.currentInstallAppName = ''//res.data.data
 							this.currentSlide = 2;
@@ -1194,7 +1100,7 @@ export default {
 		},
 		
 		installAppData() {
-
+		
 		},
 		
 		
@@ -1752,7 +1658,7 @@ export default {
 }
 </style>
 <style lang="scss" scoped>
-._polymorphic {
+.close {
 	height: 2rem;
 	width: 2rem;
 	border-radius: 0.375rem;
@@ -1762,13 +1668,6 @@ export default {
 	opactiy: 0.3;
 }
 
-._polymorphic:hover {
-	background: hsla(208, 16%, 96%, 1);
-}
-
-//._polymorphic:active {
-//	background: blue;
-//}
 ._title {
 	/* Text 500Medium/Text02 */
 	
@@ -1800,6 +1699,48 @@ export default {
 	
 	&::-webkit-progress-value {
 		opacity: 1;
+	}
+}
+
+// 0.4.4
+._polymorphic:hover {
+	cursor: pointer;
+	background: hsla(208, 16%, 96%, 1);
+}
+
+._polymorphic:active {
+	background: hsla(208, 16%, 94%, 1);
+}
+
+._polymorphic-attention:hover {
+	cursor: pointer;
+	background: hsla(18, 98%, 94%, 1);
+}
+
+._polymorphic-attention:active {
+	background: hsla(18, 100%, 80%, 1);
+}
+
+._dropdown {
+	height: 2rem;
+	border-radius: 0.25rem;
+	
+	._dropdown__typeIcon {
+		margin-left: 0.625rem;
+		width: 18px;
+		height: 18px;
+	}
+	
+	._dropdown__stateIcon {
+		margin-right: 0.625rem;
+		width: 16px;
+		height: 16px;
+	}
+	
+	._dropdown__item {
+		max-width: 112px;
+		margin-right: 6px;
+		margin-bottom: 2px;
 	}
 }
 </style>
