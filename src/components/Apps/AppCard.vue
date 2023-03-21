@@ -23,6 +23,10 @@
 				
 				<b-dropdown-item :focusable="false" aria-role="menu-item" custom>
 					<b-button expanded tag="a" type="is-text" @click="openApp(item)">{{ $t('Open') }}</b-button>
+					<b-button class="is-flex is-align-items-center" expanded type="is-text" @click="openTips">
+						{{ $t('Tips') }}
+						<b-icon icon="question" pack="casa" size="is-16"></b-icon>
+					</b-button>
 					<b-button expanded type="is-text" @click="configApp">{{ $t('Setting') }}</b-button>
 					<b-button v-if="item.appstore_id != 0 && item.appstore_id != undefined" :loading="isCloning"
 					          expanded type="is-text" @click="appClone(item.appstore_id)">{{
@@ -38,6 +42,25 @@
 							     class="ml-4 is-24x24"/>
 						</b-loading>
 					</b-button>
+					
+					<b-dropdown v-if="false" :triggers="['click']" aria-role="list" class="is-right" expanded>
+						<template #trigger>
+							<b-button :label="$t('Advanced')" expanded type="is-text"/>
+						</template>
+						<b-dropdown-item :focusable="false" aria-role="menu-item" custom>
+							<b-button expanded type="is-text">{{ $t('Open') }}</b-button>
+							<b-button expanded type="is-text">{{ $t('Open') }}</b-button>
+							<b-dropdown id="box" aria-role="list" class="is-right" expanded>
+								<template #trigger>
+									<b-button :label="$t('Advanced')" expanded type="is-text"/>
+								</template>
+								<b-dropdown-item id="item" :focusable="false" aria-role="menu-item" custom>
+									<b-button expanded type="is-text">{{ $t('Open') }}</b-button>
+									<b-button expanded type="is-text">{{ $t('Open') }}</b-button>
+								</b-dropdown-item>
+							</b-dropdown>
+						</b-dropdown-item>
+					</b-dropdown>
 					
 					
 					<b-button v-if="item.type === 'official' || item.type === 'community'" class="mb-1 has-text-red"
@@ -161,6 +184,7 @@ export default {
 			type: Boolean
 		}
 	},
+	
 	computed: {
 		tooltipLabel() {
 			if (!this.isCasa) {
@@ -208,6 +232,7 @@ export default {
 		},
 		
 	},
+	
 	watch: {
 		hover(val) {
 			if (!val && this.dropState)
@@ -230,6 +255,7 @@ export default {
 			}
 		},
 	},
+	
 	methods: {
 		/**
 		 * @description: Open app in new windows
@@ -393,6 +419,10 @@ export default {
 			this.$refs.dro.isActive = false
 			this.$emit("updateState")
 			this.$EventBus.$emit(events.UPDATE_SYNC_STATUS);
+		},
+		
+		openTips() {
+		
 		},
 		
 		/**
@@ -763,6 +793,18 @@ export default {
 	top: -0.75rem !important;
 	left: 3rem !important;
 	z-index: 30;
+}
+
+// 0.4.4
+.dropdown.is-right .dropdown-menu {
+	top: 0;
+	left: calc(100% + 6px);
+}
+
+.dropdown.is-left .dropdown-menu {
+	top: 0;
+	//right: calc(100% + 6px);
+	left: calc(-100% - 14px);
 }
 </style>
 <style lang="scss">
