@@ -217,7 +217,6 @@ export default {
 				const listRes = await this.$openAPI.appGrid.getAppGrid();
 				// const orgAppList = listRes.data.data.casaos_apps
 				const orgAppList = listRes.data.data
-				console.log('open setting model', orgAppList)
 				// TODO fake data
 				orgAppList.forEach((item) => {
 					item.state = 'running';
@@ -227,7 +226,7 @@ export default {
 					item.seheme = 'http';
 					// item.type = 'system';
 				})
-				console.log('composeApp Data:', orgAppList)
+				// console.log('composeApp Data:', orgAppList)
 				let listLinkApp = await this.$api.users.getLinkAppDetail().then(v => v.data.data);
 				if (listLinkApp === "") {
 					listLinkApp = []
@@ -248,7 +247,7 @@ export default {
 						return sortList.indexOf(a.name) - sortList.indexOf(b.name);
 					});
 				}
-				console.log("casaAppList", casaAppList)
+				// console.log("casaAppList", casaAppList)
 				this.appList = casaAppList;
 				// save sort info AFTER sort!
 				if (xor(lateSortList, newestSortList).length > 0) {

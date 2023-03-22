@@ -23,8 +23,8 @@
 				
 				<b-dropdown-item :focusable="false" aria-role="menu-item" custom>
 					<b-button expanded tag="a" type="is-text" @click="openApp(item)">{{ $t('Open') }}</b-button>
-					<b-button expanded icon-pack="casa" icon-right="question" size="is-16" type="is-text"
-					          @click="openTips">
+					<b-button expanded icon-pack="casa" icon-right="question" size="is-16"
+					          type="is-text" @click="openTips(item.id)">
 						{{ $t('Tips') }}
 					</b-button>
 					<b-button expanded type="is-text" @click="configApp">{{ $t('Setting') }}</b-button>
@@ -152,12 +152,15 @@ import cTooltip from '@/components/basicComponents/tooltip/tooltip.vue';
 import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
 import business_OpenThirdApp from "@/mixins/app/Business_OpenThirdApp";
 import isNull from "lodash/isNull";
+import UpdateCompleteModal from "@/components/settings/UpdateCompleteModal.vue";
+import tipEdiorModal from "@/components/Apps/TipEdiorModal.vue";
 // import {patch} from "@/service/service.js";
 
 export default {
 	name: "app-card",
 	components: {
-		cTooltip
+		cTooltip,
+		tipEdiorModal,
 	},
 	mixins: [business_ShowNewAppTag, business_OpenThirdApp],
 	inject: ["homeShowFiles", "openAppStore"],
@@ -421,8 +424,33 @@ export default {
 			this.$EventBus.$emit(events.UPDATE_SYNC_STATUS);
 		},
 		
-		openTips() {
-		
+		async openTips(id) {
+			try {
+				const ret = await this.$openAPI.appManagement.compose.myComposeApp(id, {
+					headers: {
+						// 'content-type': 'application/yaml',
+						// 'accept': 'application/yaml'
+					}
+				}).then(res => res.data.data.compose)
+				console.log('openTips -- show composeApp setting', ret)
+				this.$refs.dro.isActive = false
+				this.$buefy.modal.open({
+					parent: this,
+					component: tipEdiorModal,
+					hasModalCard: true,
+					customClass: 'network-storage-modal',
+					trapFocus: true,
+					canCancel: [],
+					// scroll: "keep",
+					animation: "zoom-in",
+					props: {
+						composeData: ret,
+						id
+					}
+				})
+			} catch (e) {
+				console.log('openTips Error:', e)
+			}
 		},
 		
 		/**
@@ -665,6 +693,10 @@ export default {
 				padding-left: 1rem;
 				padding-right: 1rem;
 				border-radius: 5px;
+				
+				span + span i {
+					color: hsla(208, 16%, 42%, 1);
+				}
 				
 				&.is-text {
 					text-decoration: none;

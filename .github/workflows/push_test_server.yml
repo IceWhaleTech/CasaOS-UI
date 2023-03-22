@@ -1,8 +1,7 @@
 name: push_test_server
 
 on:
-  push:
-  
+
 jobs:
   release:
 
@@ -25,16 +24,16 @@ jobs:
         with:
           path: node_modules
           key: ${{runner.OS}}-${{hashFiles('**/yarn.lock')}}
-          
+
       - name: install git
         run: sudo apt install --yes git
 
       - name: git global
         run: sudo git config --global --add safe.directory '*'
-        
+
       - name: Fetch all tags
         run: sudo git fetch --force --tags
-        
+
       - name: Get version
         id: get_version
         # run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
@@ -44,24 +43,24 @@ jobs:
       - name: show version
         id: show_version
         run: echo ${{ env.VERSION }}
-        # run: echo ${{ steps.get_version.outputs.VERSION }}
-          
+          # run: echo ${{ steps.get_version.outputs.VERSION }}
+
       - run: yarn install
       - run: yarn build
       - run: |
           cp ./build/sysroot/var/lib/casaos/www/img/wallpaper0*.jpg ./build/sysroot/var/lib/casaos/www/ui/img/
           tar -zcvf linux-all-casaos-${{ env.VERSION }}.tar.gz build
           ls
-          
+
       - name: install sshpass
         run: sudo apt install sshpass --yes
 
       - name: ZeroTier
         uses: zerotier/github-action@v1.0.1
         with:
-            network_id: ${{ secrets.ZEROTIER_NETWORK_ID }}
-            auth_token: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
-            
+          network_id: ${{ secrets.ZEROTIER_NETWORK_ID }}
+          auth_token: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
+
       - name: copy tar to target host
         shell: bash
         run: |

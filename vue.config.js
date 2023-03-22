@@ -70,7 +70,7 @@ module.exports = {
 
             config.optimization
                 .minimizer('css')
-                .use(require.resolve('optimize-css-assets-webpack-plugin'), [{ cssProcessorOptions: { safe: true } }])
+                .use(require.resolve('optimize-css-assets-webpack-plugin'), [{cssProcessorOptions: {safe: true}}])
         } else {
             // Development only
             config.plugin('webpack-bundle-analyzer')
@@ -87,6 +87,7 @@ module.exports = {
         contentBase: path.join(__dirname, 'src'),
         open: true,
         port: 8080,
+        inline: false,
         before: require('./mock/meta_data.js')
     }
 }
