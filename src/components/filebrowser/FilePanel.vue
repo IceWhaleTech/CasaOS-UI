@@ -469,7 +469,7 @@ export default {
   async created() {
     this.options = {
       target: this.getTargetUrl(),
-      testChunks: false,
+      testChunks: true,
       uploadMethod: "POST",
       successStatuses: [200, 201, 202, 2002],
       allowDuplicateUploads: true,
@@ -482,8 +482,8 @@ export default {
         };
       },
       // generateUniqueIdentifier: nanoid(),
-      chunkSize: 1024 * 1024 * 1024 * 1024 * 1024,
-      forceChunkSize: true,
+      // chunkSize: 1024 * 1024 * 1024 * 1024 * 1024,
+      // forceChunkSize: true,
     };
     // get merge info
     try {
