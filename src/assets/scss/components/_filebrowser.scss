@@ -1018,6 +1018,7 @@
           height: 64px;
           background: $primary-light;
           min-width: 4px;
+          transition: width 0.3s ease;
 
           &::after {
             content: "";

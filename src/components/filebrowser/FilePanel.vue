@@ -271,17 +271,18 @@
                     animation="slide1"
                     aria-id="contentIdForA11y3"
                     class="card"
+                    v-model="openUploadList"
                   >
-                    <template #trigger="props">
+                    <template #trigger>
                       <div
-                        :aria-expanded="props.open"
+                        :aria-expanded="openUploadList"
                         aria-controls="contentIdForA11y3"
                         class="card-header"
                         role="button"
                       >
                         <p class="card-header-title">
                           <b-icon
-                            :icon="props.open ? 'chevron-down' : 'chevron-up'"
+                            :icon="openUploadList ? 'chevron-down' : 'chevron-up'"
                             class="mr-2"
                           ></b-icon>
                           {{ $t(uploaderListHeaderText) }}
@@ -461,6 +462,7 @@ export default {
       },
       // Uploader List
       showUploadList: false,
+      openUploadList: true,
       uploaderListHeaderText: "Uploading",
       usbDisks: [],
       hasMergerFunction: false,
@@ -849,7 +851,7 @@ export default {
       // Drag Over
       this.uploaderInstance.on("dragover", (event) => {
         this.isDragIn = true;
-        this.showUploadList = false;
+        this.openUploadList = false;
         if (this.timeout !== null) {
           clearTimeout(this.timeout);
         }
@@ -864,6 +866,7 @@ export default {
       this.uploaderInstance.on("uploadStart", () => {
         this.isDragIn = false;
         this.showUploadList = true;
+        this.openUploadList = true;
         this.uploaderListHeaderText = "Uploading";
       });
 
