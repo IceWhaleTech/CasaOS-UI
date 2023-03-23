@@ -976,6 +976,12 @@ export default {
 				return false
 			}
 			return this.architectures.indexOf(this.arch) < 0
+		},
+		archTitle() {
+			if (this.arch === 'arm') {
+				return 'armv7'
+			}
+			return this.arch
 		}
 		
 	},
