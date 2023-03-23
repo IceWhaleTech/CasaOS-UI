@@ -89,7 +89,7 @@
 												<b-icon class="is-16x16" custom-size="casa-19px" icon="close"
 												        pack="casa"></b-icon>
 											</label>
-											{{ $t('Not compatible with {arch} devices.', {archTitle}) }}
+											{{ $t('Not compatible with {arch} devices.', {arch: archTitle}) }}
 										</p>
 									
 									</div>
@@ -976,12 +976,6 @@ export default {
 				return false
 			}
 			return this.architectures.indexOf(this.arch) < 0
-		},
-		archTitle() {
-			if (this.arch === 'arm') {
-				return 'armv7'
-			}
-			return this.arch
 		}
 		
 	},
