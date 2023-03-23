@@ -171,7 +171,7 @@
                     <div
                       class="is-flex is-align-items-center modal-close-container modal-close-container-line"
                     >
-                      <div class="close-button" @click="$emit('close');">
+                      <div class="close-button" @click="$emit('close')">
                         <b-icon pack="casa" icon="close"></b-icon>
                       </div>
                     </div>
@@ -282,7 +282,9 @@
                       >
                         <p class="card-header-title">
                           <b-icon
-                            :icon="openUploadList ? 'chevron-down' : 'chevron-up'"
+                            :icon="
+                              openUploadList ? 'chevron-down' : 'chevron-up'
+                            "
                             class="mr-2"
                           ></b-icon>
                           {{ $t(uploaderListHeaderText) }}
@@ -389,7 +391,6 @@ import MergeStorages from "@/components/Storage/MergeStorages.vue";
 // Drop
 
 import DropEntryButton from "./drop/DropEntryButton.vue";
-
 
 export default {
   name: "file-panel",
@@ -529,11 +530,10 @@ export default {
     pageType(val) {
       switch (val) {
         case "file":
-          if (document.onpaste === null) {
-            this.$nextTick(() => {
-              this.beforeInit();
-            });
-          }
+          this.$nextTick(() => {
+            this.beforeInit();
+          });
+
           break;
         case "share":
           this.destroyedAction();
