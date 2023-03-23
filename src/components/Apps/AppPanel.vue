@@ -11,8 +11,8 @@
 -->
 <template>
 	<div
-		:class="{'narrow': currentSlide > 0 ,'card-width': isFirstInstall}"
-		class="app-card modal-card">
+	:class="{'narrow': currentSlide > 0 ,'card-width': isFirstInstall}"
+	class="app-card modal-card">
 		<!--    first setting！！ apps installation location-->
 		<template v-if="isFirstInstall">
 			<header class="modal-card-head b-line">
@@ -89,7 +89,7 @@
 												<b-icon class="is-16x16" custom-size="casa-19px" icon="close"
 												        pack="casa"></b-icon>
 											</label>
-											{{ $t('Not compatible with {arch} devices.', {arch}) }}
+											{{ $t('Not compatible with {arch} devices.', {archTitle}) }}
 										</p>
 									
 									</div>
@@ -575,9 +575,9 @@
 							                  class="install-animation mt-5 mb-2"></lottie-animation>
 						</div>
 						<b-progress
-							:value="totalPercentage"
-							format="percent"
-							show-value type="is-primary"></b-progress>
+						:value="totalPercentage"
+						format="percent"
+						show-value type="is-primary"></b-progress>
 						<h3 :class="currentInstallAppTextClass" class="title is-6 has-text-centered"
 						    style="height: 20px"
 						    v-html="currentInstallAppText"></h3>
@@ -976,6 +976,12 @@ export default {
 				return false
 			}
 			return this.architectures.indexOf(this.arch) < 0
+		},
+		archTitle() {
+			if (this.arch === 'arm') {
+				return 'armv7'
+			}
+			return this.arch
 		}
 		
 	},
@@ -1048,8 +1054,8 @@ export default {
 		getFilteredTags(text) {
 			this.capArray = data.filter((option) => {
 				return option
-					.toString()
-					.indexOf(text.toUpperCase()) >= 0
+				.toString()
+				.indexOf(text.toUpperCase()) >= 0
 			})
 		},
 		
@@ -1387,15 +1393,15 @@ export default {
 						this.$buefy.dialog.alert({
 							title: '⚠️ ' + this.$t('Attention'),
 							message: '<div class="nobrk"><h4 class="title is-5">' + this.$t('AutoFill only helps you to complete most of the configuration.') + '</h4>' +
-								'<p class="mb-3">' + this.$t('Some configuration information such as:') + '</p>' +
-								'<ul>' +
-								'<li>1. ' + this.$t('the port and path of the Web UI') + '</li>' +
-								'<li>2. ' + this.$t('the mount location of the volume or file') + '</li>' +
-								'<li>3. ' + this.$t('the port mapping of the Host') + '</li>' +
-								'<li>4. ' + this.$t('optional configuration items') + '</li>' +
-								'</ul>' +
-								'<p class="mt-3">' + this.$t('These include but are not limited to these cases and <b>still need to be confirmed or modified by you.</b>') + '</p>' +
-								'<p class="mt-3">' + this.$t('Feel free to suggest improvements to this feature in Discord Server!') + '</p></div>',
+							'<p class="mb-3">' + this.$t('Some configuration information such as:') + '</p>' +
+							'<ul>' +
+							'<li>1. ' + this.$t('the port and path of the Web UI') + '</li>' +
+							'<li>2. ' + this.$t('the mount location of the volume or file') + '</li>' +
+							'<li>3. ' + this.$t('the port mapping of the Host') + '</li>' +
+							'<li>4. ' + this.$t('optional configuration items') + '</li>' +
+							'</ul>' +
+							'<p class="mt-3">' + this.$t('These include but are not limited to these cases and <b>still need to be confirmed or modified by you.</b>') + '</p>' +
+							'<p class="mt-3">' + this.$t('Feel free to suggest improvements to this feature in Discord Server!') + '</p></div>',
 							type: 'is-dark'
 						})
 					}
@@ -1421,17 +1427,17 @@ export default {
 			}
 			this.isFetching = true
 			axios.get(`https://hub.docker.com/api/content/v1/products/search?source=community&q=${name}&page=1&page_size=4`)
-				.then(({data}) => {
-					this.data = []
-					data.summaries.forEach((item) => this.data.push(item.name))
-				})
-				.catch((error) => {
-					this.data = []
-					throw error
-				})
-				.finally(() => {
-					this.isFetching = false
-				})
+			.then(({data}) => {
+				this.data = []
+				data.summaries.forEach((item) => this.data.push(item.name))
+			})
+			.catch((error) => {
+				this.data = []
+				throw error
+			})
+			.finally(() => {
+				this.isFetching = false
+			})
 		}, 500),
 		/**
 		 * @description: Export AppData to json file
