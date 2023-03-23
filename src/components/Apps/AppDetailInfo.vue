@@ -56,7 +56,7 @@
 								<b-icon class="is-16x16" custom-size="casa-19px" icon="close"
 								        pack="casa"></b-icon>
 							</label>
-							{{ $t('Not compatible with {arch} devices.', {arch}) }}
+							{{ $t('Not compatible with {arch} devices.', {archTitle}) }}
 						</p>
 					
 					</div>
@@ -183,6 +183,15 @@ export default {
 			type: Function,
 			default: () => {
 			}
+		}
+	},
+	computed: {
+		archTitle() {
+			// 如果是 arm 默认显示 armv7
+			if (this.arch === 'arm') {
+				return 'armv7'
+			}
+			return this.arch
 		}
 	},
 	data() {
