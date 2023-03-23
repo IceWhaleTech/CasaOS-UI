@@ -28,7 +28,10 @@
 			v-model="tips" :readonly="!isEditing" type="textarea">
 			</b-input>
 			<div class="is-flex is-flex-direction-row-reverse mt-2">
-				<b-icon :class="isDifferentiation" :icon="icon" pack="casa" @click.native="toggle"></b-icon>
+				<b-icon
+				:class="{'has-text-grey-800': !isEditing, 'has-text-green-default': isDifferentiation, 'has-text-grey-400': !isDifferentiation && isEditing}"
+				:icon="icon" pack="casa"
+				@click.native="toggle"></b-icon>
 			</div>
 		</section>
 		<!-- Modal-Card Body End -->
@@ -37,49 +40,57 @@
 
 <script>
 import YAML from "yaml";
+import merge from "lodash/merge";
+
+let tempTips = '';
 
 export default {
 	name: "TipEditorModal",
-	tempTips: '',
 	data() {
 		return {
 			isEditing: false,
+			tips: '',
+			// tipObj: {},
 		}
 	},
 	props: {
 		composeData: {
 			type: Object,
-			default: () => {
-			}
+			required: true
 		},
 		id: {
 			type: String,
-			default: ''
+			required: true
 		}
 	},
 	computed: {
-		tips: {
-			get() {
-				return this.composeData['services'][this.id]['tips']
-			},
-			set(val) {
-				this.$emit("update:composeData", {
-					...this.composeData,
-					tips: val
-				})
-			}
-		},
 		icon() {
 			return this.isEditing ? 'matching' : 'edit'
 		},
 		isDifferentiation() {
-			debugger
-			return this.tempTips !== this.tips
+			return tempTips !== this.tips
 		},
 	},
-	beforeMount() {
-		this.tempTips = this.tips
-		console.log('tempTips', this.tempTips);
+	watch: {
+		composeData(val) {
+			console.log('watch tips', val)
+			
+			let getValueByPath = this.composeData['services'][this.id]
+			if (getValueByPath['x-casaos'] && getValueByPath['x-casaos']['tips'] && getValueByPath['x-casaos']['tips']['before_install']) {
+				let multiLine = getValueByPath['x-casaos']['tips']['before_install'].forEach(item => {
+					let value = item.content['default'] && item.content['en_US']
+					return `${item.value}:${value}\n`
+				})
+				console.log('multiLine', multiLine)
+				// return multiLine
+				this.tips = multiLine;
+			} else {
+				this.tips = '';
+				// return ''
+			}
+			// init tempTips
+			tempTips = this.tips;
+		}
 	},
 	methods: {
 		/*
@@ -88,17 +99,54 @@ export default {
 		* */
 		toggle() {
 			this.isEditing = !this.isEditing
-			console.log('isDifferentiation', this.isDifferentiation)
-			
+			console.log('isDifferentiaation', this.isDifferentiation)
 			if (this.isDifferentiation) {
-				this.$openAPI.appManagement.compose.updateComposeApp(this.id, YAML.stringify(this.composeData)).then(res => {
+				let realComposeData = this.getCompleteComposeData()
+				this.$openAPI.appManagement.compose.applyComposeAppSettings(this.id, YAML.stringify(realComposeData)).then(res => {
 					if (res.status === 200) {
-						this.$buefy.toast.open()
+						this.$buefy.toast.open({
+							message: res.data.message,
+							type: 'is-success',
+							position: 'is-top',
+							duration: 5000
+						})
 					}
 				}).catch(e => {
 					console.log('Error in saving tips:', e)
+					this.$buefy.toast.open({
+						message: e.response.data.data,
+						type: 'is-danger',
+						position: 'is-top',
+						duration: 5000
+					})
+				}).finally(() => {
+					this.$emit('close')
 				})
 			}
+		},
+		
+		getCompleteComposeData() {
+			let lines = this.tips.split('\n');
+			let body = [];
+			
+			lines.forEach(line => {
+				let splitArray = line.split(':');
+				let value = splitArray.length > 1 ? splitArray[0] : 'user input';
+				let content = splitArray.length > 1 ? splitArray[1] : splitArray[0];
+				body.push({value, content: {default: content}});
+			});
+			let result = merge(this.composeData, {
+				services: {
+					[this.id]: {
+						'x-casaos': {
+							tips: {
+								before_install: body
+							}
+						}
+					}
+				}
+			})
+			return result
 		}
 	},
 }
@@ -107,15 +155,26 @@ export default {
 <style lang="scss" scoped>
 .modal-card {
 	/* v0.4.3 */
+	width: 26.5rem;
 	
 	.modal-card-head {
 		padding-top: 1.25rem;
 		border-bottom: 1px solid hsla(208, 16%, 94%, 1) !important;
 		
+		.close {
+			height: 2rem;
+			width: 2rem;
+			border-radius: 0.375rem;
+		}
 	}
 	
 	.modal-card-body {
 		padding: 1.5rem;
+		
+		textarea {
+			resize: none;
+			height: 5.25rem;
+		}
 	}
 }
 

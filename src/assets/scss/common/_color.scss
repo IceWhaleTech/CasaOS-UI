@@ -8,38 +8,48 @@
  */
 
 .op80 {
-  opacity: 0.8;
+		opacity: 0.8;
 }
 
 .has-text-grey-100 {
-  color: $grey-100;
+		color: $grey-100;
 }
 
 .has-text-grey-200 {
-  color: $grey-200;
+		color: $grey-200;
 }
 
 .has-text-grey-400 {
-  color: $grey-400;
+		color: $grey-400;
 }
 
 .has-text-grey-600 {
-  color: $grey-600;
+		color: $grey-600;
 }
 
 .has-text-grey-100 {
-  color: $grey-100;
+		color: $grey-100;
+}
+
+.has-text-gray-800 {
+		color: $gray-800;
+}
+
+//$green-default: hsla(118, 70%, 45%, 1);
+
+.has-text-green-default {
+		color: hsla(118, 70%, 45%, 1);
 }
 
 .has-text-red {
-  color: hsla(18, 98%, 55%, 1) !important;
+		color: hsla(18, 98%, 55%, 1) !important;
 }
 
 .has-background-red-tertiary {
-  /* Red/Tertiary */
-  background-color: hsla(18, 98%, 94%, 1);
+		/* Red/Tertiary */
+		background-color: hsla(18, 98%, 94%, 1);
 }
 
 .has-background-gray-800 {
-  background-color: $gray-800;
+		background-color: $gray-800;
 }

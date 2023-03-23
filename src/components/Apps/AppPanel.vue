@@ -1109,7 +1109,7 @@ export default {
 		 * @return {*} void
 		 */
 		updateApp() {
-			this.$openAPI.appManagement.compose.updateComposeAppSettings(this.id, this.dockerComposeCommands).then((res) => {
+			this.$openAPI.appManagement.compose.applyComposeAppSettings(this.id, this.dockerComposeCommands).then((res) => {
 				console.log('updateComposeAppSettings :: ', res);
 				if (res.data.success == 200) {
 					this.$emit('updateState')

@@ -13,7 +13,7 @@
 	当用户 文件导入、CLI导入、yaml 导入、安装应用商店时，按照应有数据展示.
 -->
 <template>
-	<b-tabs>
+	<b-tabs class="has-text-full-03">
 		<template v-for="(service, key) in configData.services">
 			<b-tab-item :key="key" :label="key">
 				<ValidationObserver :ref="key+'valida'">
@@ -169,11 +169,9 @@ import VolumesInputGroup from "@/components/forms/VolumesInputGroup.vue";
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
 import YAML from "yaml";
-import upperFirst from "lodash/upperFirst";
 import lowerFirst from "lodash/lowerFirst";
 import isNil from "lodash/isNil";
 import find from "lodash/find";
-import uniq from "lodash/uniq";
 import {isNumber, isString} from "lodash/lang";
 import ports from "@/components/forms/Ports.vue";
 import cloneDeep from "lodash/cloneDeep";
@@ -486,17 +484,17 @@ export default {
 			}
 			this.isFetching = true
 			axios.get(`https://hub.docker.com/api/content/v1/products/search?source=community&q=${name}&page=1&page_size=4`)
-				.then(({data}) => {
-					this.data = []
-					data.summaries.forEach((item) => this.data.push(item.name))
-				})
-				.catch((error) => {
-					this.data = []
-					throw error
-				})
-				.finally(() => {
-					this.isFetching = false
-				})
+			.then(({data}) => {
+				this.data = []
+				data.summaries.forEach((item) => this.data.push(item.name))
+			})
+			.catch((error) => {
+				this.data = []
+				throw error
+			})
+			.finally(() => {
+				this.isFetching = false
+			})
 		}, 500),
 		
 		/**
@@ -539,8 +537,8 @@ export default {
 		getFilteredTags(text) {
 			return data.filter((option) => {
 				return option
-					.toString()
-					.indexOf(text.toUpperCase()) >= 0
+				.toString()
+				.indexOf(text.toUpperCase()) >= 0
 			})
 		},
 		
@@ -666,17 +664,17 @@ export default {
 			//Ports
 			// 建议 - 仅处理数组格式！！！
 			// 已支持对象格式。
-            /*
-            - "3000"
-            - "3000-3005"
-            - "8000:8000"
-            - "9090-9091:8080-8081"
-            - "49100:22"
-            - "127.0.0.1:8001:8001"
-            - "127.0.0.1:5000-5010:5000-5010"
-            - "6060:6060/udp"
-            */
-            // ["3000-3005", "8000:8000", "9090-9091:8080-8081", "49100:22", "127.0.0.1:8001:8001", "127.0.0.1:5000-5010:5000-5010","6060:6060/udp"]
+			/*
+			- "3000"
+			- "3000-3005"
+			- "8000:8000"
+			- "9090-9091:8080-8081"
+			- "49100:22"
+			- "127.0.0.1:8001:8001"
+			- "127.0.0.1:5000-5010:5000-5010"
+			- "6060:6060/udp"
+			*/
+			// ["3000-3005", "8000:8000", "9090-9091:8080-8081", "49100:22", "127.0.0.1:8001:8001", "127.0.0.1:5000-5010:5000-5010","6060:6060/udp"]
 			configData.ports = this.makeArray(parsedInput.ports).map(item => {
 				if (isString(item)) {
 					// let pArray = item.split(":")
@@ -687,19 +685,19 @@ export default {
 					// 	published: pArray[0],
 					// 	protocol: protocol
 					// }
-
-                    const parts = item.split(':');
-                    const pArray = parts[0].split('-');
-                    const endArray = parts.length > 2 ? parts.slice(1, 3) : [pArray[0]];
-                    const protocol = parts.length > 2 ? parts[2].split('/')[1] : 'tcp';
-
-                    const published = parts.length > 1 ? parts.slice(0, 2).join(':') : pArray[0];
-
-                    return {
-                        target: endArray[0],
-                        published: published,
-                        protocol: protocol || 'tcp'
-                    };
+					
+					const parts = item.split(':');
+					const pArray = parts[0].split('-');
+					const endArray = parts.length > 2 ? parts.slice(1, 3) : [pArray[0]];
+					const protocol = parts.length > 2 ? parts[2].split('/')[1] : 'tcp';
+					
+					const published = parts.length > 1 ? parts.slice(0, 2).join(':') : pArray[0];
+					
+					return {
+						target: endArray[0],
+						published: published,
+						protocol: protocol || 'tcp'
+					};
 				} else {
 					return item
 				}
@@ -714,7 +712,7 @@ export default {
 					// 1\ replace variable in string for example: ${VOLUME_PATH}:/data
 					// this.volumes 可能为空。
 					Object.keys(
-						(this.volumes || {})
+					(this.volumes || {})
 					).map((key) => {
 						item = item.replace(key, this.volumes[key]);
 					})
@@ -736,7 +734,7 @@ export default {
 				} else if (item) {
 					// 1\ replace value in object for example: {type: 'bind', source: '${VOLUME_PATH}', target: '/data'}
 					Object.keys(
-						(this.volumes || {})
+					(this.volumes || {})
 					).map((key) => {
 						item.source = item.source && item.source.replace(key, (this.volumes[key] || ""));
 						item.target = item.target && item.target.replace(key, (this.volumes[key] || ""));
