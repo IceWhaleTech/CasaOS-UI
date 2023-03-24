@@ -160,7 +160,7 @@
 											<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
 											        icon="category"
 											        pack="casa"></b-icon>
-											<span class="has-text-full-03">{{ $t('All Types') }}</span>
+											<span class="has-text-full-03">{{ currentCate.name }}</span>
 											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'"
 											        class="ml-2 _dropdown__stateIcon"
 											        custom-size="casa-16px"></b-icon>
@@ -194,13 +194,13 @@
 											<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
 											        icon="author"
 											        pack="casa"></b-icon>
-											<span class="has-text-full-03">{{ $t('Posted by') }}</span>
+											<span class="has-text-full-03">{{ currentAuthor.name }}</span>
 											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'"
 											        class="ml-2 _dropdown__stateIcon"
 											        custom-size="casa-16px"></b-icon>
 										</div>
 									</template>
-									<b-dropdown-item v-for="menu in cateMenu" :key="menu.id"
+									<b-dropdown-item v-for="menu in authorMenu" :key="menu.id"
 									                 :class="menu.id == currentAuthor.id?'is-active':''"
 									                 :data-title="menu.count"
 									                 :value="menu" aria-role="listitem"
@@ -585,9 +585,14 @@ export default {
 			},
 			searchKey: "",
 			currentCate: {},
-			currentAuthor: {},
+			currentAuthor: {count: 0, font: "author", id: 1, name: "official"},
 			currentSort: {},
 			cateMenu: [],
+			authorMenu: [
+				{count: 0, font: "author", id: 1, name: "official"},
+				{count: 0, font: "author", id: 2, name: "by_casaos"},
+				{count: 0, font: "author", id: 3, name: "community"}
+			],
 			sortMenu: [
 				{icon: "", slash: "rank", name: "Popular"},
 				{icon: "", slash: "new", name: "New"},
@@ -802,7 +807,7 @@ export default {
 					return item.count > 0
 				})
 				this.currentCate = this.cateMenu[0]
-				this.currentAuthor = this.cateMenu[0]
+				// this.currentAuthor = this.cateMenu[0]
 				this.currentSort = this.sortMenu[0]
 				if (this.isFirst) {
 					this.isFirst = false
@@ -1738,7 +1743,7 @@ export default {
 	}
 	
 	._dropdown__item {
-		max-width: 112px;
+		width: 112px;
 		margin-right: 6px;
 		margin-bottom: 2px;
 	}
