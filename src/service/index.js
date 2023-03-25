@@ -16,7 +16,7 @@ import {
     ComposeMethodsApiFactory,
     InternalMethodsApiFactory,
     AppStoreMethodsApiFactory, AppStoreMethodsApiFp, AppStoreMethodsApi
-} from "casaos-appmanagement-openapi";
+} from "@icewhale/casaos-appmanagement-openapi";
 
 import store from "@/store";
 import router from "@/router";
