@@ -585,10 +585,12 @@ export default {
 			},
 			searchKey: "",
 			currentCate: {},
-			currentAuthor: {count: 0, font: "author", id: 1, name: "official"},
+			// currentAuthor: {},
+			currentAuthor: {count: 0, font: "author", id: 0, name: "All"},
 			currentSort: {},
 			cateMenu: [],
 			authorMenu: [
+				{count: 0, font: "author", id: 0, name: "All"},
 				{count: 0, font: "author", id: 1, name: "official"},
 				{count: 0, font: "author", id: 2, name: "by_casaos"},
 				{count: 0, font: "author", id: 3, name: "community"}
@@ -600,10 +602,11 @@ export default {
 			],
 			storeQueryData: {
 				index: 1,
-				category_id: "",
-				author_id: "",
+				category: "All",
+				authorType: "All",
 				type: "rank",
-				key: this.searchKey
+				key: this.searchKey,
+				pageSize: 5,
 			},
 			//  App Detail info
 			appDetailData: {
@@ -639,10 +642,16 @@ export default {
 			dockerComposeCommands: '',
 			mainName: '',
 			installedList: [],
+			counterPatchGetStoreList: 0
 		}
 	},
 	
 	created() {
+		//Get recommend
+		this.getStoreRecommend();
+		//Get list
+		// this.getStoreList();
+		
 		//Get Max memory info form device
 		this.totalMemory = Math.floor(this.configData.memory.total / 1048576);
 		// this.initConfigData.memory = this.totalMemory
@@ -728,7 +737,16 @@ export default {
 				return false
 			}
 			return this.architectures.indexOf(this.arch) < 0
-		}
+		},
+		// patchGetStoreList() {
+		// 	console.log("AAAAAAAAAAAAAAA")
+		// 	this.getStoreList()
+		// 	return this.currentCate.toString() + this.currentAuthor.toString() + this.currentSort.toString()
+		// }
+		// patchGetStoreList() {
+		// 	this.getStoreList();
+		// 	return this.counterPatchGetStoreList
+		// }
 		
 	},
 	watch: {
@@ -739,25 +757,30 @@ export default {
 			}
 		},
 		// Watch if the query data of app store changes
-		storeQueryData: {
-			handler() {
-				this.getStoreList();
-			},
-			deep: true
-		},
+		// storeQueryData: {
+		// 	handler() {
+		// 		this.getStoreList();
+		// 	},
+		// 	deep: true
+		// },
 		// Watch if app cates changes
 		currentCate: {
 			handler(val) {
 				if (!this.isFirst) {
-					this.storeQueryData.category_id = val.id
+					// this.storeQueryData.category = val.name
+					// this.getStoreList();
+					this.counterPatchGetStoreList++
 				}
+				
 			},
 			deep: true
 		},
 		currentAuthor: {
 			handler(val) {
 				if (!this.isFirst) {
-					this.storeQueryData.author_id = val.id
+					// this.storeQueryData.authorType = val.name
+					// this.getStoreList();
+					this.counterPatchGetStoreList++
 				}
 			},
 			deep: true
@@ -766,11 +789,17 @@ export default {
 		currentSort: {
 			handler(val) {
 				if (!this.isFirst) {
-					this.storeQueryData.type = val.slash
+					// this.storeQueryData.sort = val.name
+					// this.getStoreList();
+					this.counterPatchGetStoreList++
 				}
 			},
 			deep: true
 		},
+		counterPatchGetStoreList() {
+			this.getStoreList();
+			return 0
+		}
 	},
 	methods: {
 		// this.cateMenu : {name: 'appstore', title: 'App Store', icon: 'mdi-apps', component: 'AppStore'}
@@ -807,8 +836,8 @@ export default {
 					return item.count > 0
 				})
 				this.currentCate = this.cateMenu[0]
-				// this.currentAuthor = this.cateMenu[0]
 				this.currentSort = this.sortMenu[0]
+				console.log('sort :: ', this.sortMenu)
 				if (this.isFirst) {
 					this.isFirst = false
 				}
@@ -820,19 +849,77 @@ export default {
 			
 		},
 		
+		async getStoreRecommend() {
+			try {
+				// this.isLoading = true;
+				
+				let res = await this.$openAPI.appManagement.appStore.composeAppStoreInfoList(undefined, undefined, true).then(res => res.data.data.list);
+				
+				this.recommendList = Object.keys(res).map(id => {
+					let main_app_info = res[id].apps[id]
+					return {
+						id,
+						category: main_app_info.category,
+						icon: main_app_info.icon,
+						tagline: main_app_info.tagline.en_US,
+						thumbnail: main_app_info.thumbnail,
+						title: main_app_info.title.en_US,
+						state: 0,
+						
+					}
+				})
+			} catch (error) {
+				console.log('load recommend error', error);
+				// this.loadErrorStep = 2
+				// this.isLoading = false;
+				// this.isLoadError = true;
+			}
+		},
+		
 		/**
 		 * @description: Get App store list
 		 * @param {*}
 		 * @return {*} void
 		 */
-		getStoreList() {
+		async getStoreList() {
 			this.isLoading = true
 			
-			this.$openAPI.appManagement.appStore.composeAppStoreInfoList().then(res => {
-				// if (res.data.success == 200) {
-				// this.listTotal = res.data.data.count
-				// this.pageList = res.data.data.list
-				// this.communityList = res.data.data.community
+			try {
+				// let {category, authorType} = this.storeQueryData
+				let category = this.currentCate.name
+				let authorType = this.currentAuthor.name
+				let res;
+				if (authorType !== 'All' && category !== 'All') {
+					res = await this.$openAPI.appManagement.appStore.composeAppStoreInfoList(category, authorType).then(res => res.data.data)
+				} else if (authorType !== 'All') {
+					res = await this.$openAPI.appManagement.appStore.composeAppStoreInfoList(undefined, authorType).then(res => res.data.data)
+				} else if (category !== 'All') {
+					res = await this.$openAPI.appManagement.appStore.composeAppStoreInfoList(category, undefined, false).then(res => res.data.data)
+				} else {
+					res = await this.$openAPI.appManagement.appStore.composeAppStoreInfoList().then(res => res.data.data)
+				}
+				
+				let list = res.list
+				let listRes = Object.keys(list).map(id => {
+					let main_app_info = list[id].apps[id]
+					return {
+						id,
+						category: main_app_info.category,
+						icon: main_app_info.icon,
+						tagline: main_app_info.tagline.en_US,
+						thumbnail: main_app_info.thumbnail,
+						title: main_app_info.title.en_US,
+						state: 0,
+					}
+				})
+				this.pageList = listRes;
+				this.installedList = res.installed
+			} catch (e) {
+				console.log('load store list error', e)
+			}
+			this.isLoading = false
+			
+			/*this.$openAPI.appManagement.appStore.composeAppStoreInfoList(category, authorType, false).then(res => {
 				let list = res.data.data.list
 				let listRes = Object.keys(list).map(id => {
 					let main_app_info = list[id].apps[id]
@@ -844,7 +931,6 @@ export default {
 						thumbnail: main_app_info.thumbnail,
 						title: main_app_info.title.en_US,
 						state: 0,
-						
 					}
 				})
 				this.pageList = listRes;
@@ -859,34 +945,13 @@ export default {
 						thumbnail: main_app_info.thumbnail,
 						title: main_app_info.title.en_US,
 						state: 0,
-						
+
 					}
 				})
-				let recommendList = res.data.data.recommend
-				this.recommendList = listRes.filter(item => {
-					return recommendList.includes(item.id)
-				})
-				console.log(this.recommendList, 'recommendList')
 				this.installedList = res.data.data.installed
-				// }
 			}).catch().finally(() => {
 				this.isLoading = false;
-			})
-			
-			// this.$api.apps.getAppList(this.storeQueryData).then(res => {
-			// 	this.isLoading = false
-			// 	this.isLoadError = false
-			// 	if (res.data.success == 200) {
-			// 		// this.listTotal = res.data.data.count
-			// 		this.pageList = res.data.data.list
-			// 		this.communityList = res.data.data.community
-			// 		this.recommendList = res.data.data.recommend
-			// 	}
-			// }).catch(() => {
-			// 	this.loadErrorStep = 2
-			// 	this.isLoading = false;
-			// 	this.isLoadError = true;
-			// })
+			})*/
 		},
 		
 		/**
@@ -923,20 +988,21 @@ export default {
 			}).finally(() => {
 				this.isLoading = false;
 			})
-			// this.$api.apps.getAppInfo(id).then(resp => {
-			// 	this.isLoading = false;
-			// 	this.sidebarOpen = true;
-			// 	this.appDetailData = resp.data.data
-			// 	this.architectures = resp.data.data.architectures || [];
-			// 	// messageBus :: appstore_detail
-			// 	// this.$messageBus('appstore_detail', resp.data.data.title.toString())
-			// }).catch(() => {
-			// 	this.isLoading = false;
-			// 	this.$buefy.toast.open({
-			// 		message: this.$t(`There was an error loading the data, please try again!`),
-			// 		type: 'is-danger'
-			// 	})
-			// })
+			
+			/*this.$api.apps.getAppInfo(id).then(resp => {
+				this.isLoading = false;
+				this.sidebarOpen = true;
+				this.appDetailData = resp.data.data
+				this.architectures = resp.data.data.architectures || [];
+				// messageBus :: appstore_detail
+				// this.$messageBus('appstore_detail', resp.data.data.title.toString())
+			}).catch(() => {
+				this.isLoading = false;
+				this.$buefy.toast.open({
+					message: this.$t(`There was an error loading the data, please try again!`),
+					type: 'is-danger'
+				})
+			})*/
 		},
 		
 		retry() {
@@ -1019,7 +1085,7 @@ export default {
 		 * @param {ConfigObject} data
 		 * @return {ConfigObject} data
 		 */
-		preProcessData(data) {
+		/*preProcessData(data) {
 			data.ports = isNull(data.ports) ? [] : data.ports
 			data.volumes = isNull(data.volumes) ? [] : data.volumes
 			data.envs = isNull(data.envs) ? [] : data.envs
@@ -1034,7 +1100,7 @@ export default {
 			data.icon = data.icon === "" ? this.getIconFromImage(data.image) : data.icon
 			
 			return data
-		},
+		},*/
 		
 		/**
 		 * @description: Get App icon form image

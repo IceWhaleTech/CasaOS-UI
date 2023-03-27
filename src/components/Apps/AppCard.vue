@@ -152,7 +152,6 @@ import cTooltip from '@/components/basicComponents/tooltip/tooltip.vue';
 import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
 import business_OpenThirdApp from "@/mixins/app/Business_OpenThirdApp";
 import isNull from "lodash/isNull";
-import UpdateCompleteModal from "@/components/settings/UpdateCompleteModal.vue";
 import tipEdiorModal from "@/components/Apps/TipEdiorModal.vue";
 // import {patch} from "@/service/service.js";
 
@@ -329,20 +328,21 @@ export default {
 				this.isRestarting = false;
 				
 			})
-			// this.$api.container.updateState(this.item.id, "restart").then((res) => {
-			// 	if (res.data.success === 200) {
-			// 		this.updateState()
-			// 	}
-			// 	this.isRestarting = false;
-			// }).catch((err) => {
-			// 	this.isRestarting = false;
-			// 	this.$buefy.toast.open({
-			// 		message: err.response.data.data || err.response.data.message,
-			// 		type: 'is-danger',
-			// 		position: 'is-top',
-			// 		duration: 5000
-			// 	})
-			// })
+			
+			/*this.$api.container.updateState(this.item.id, "restart").then((res) => {
+				if (res.data.success === 200) {
+					this.updateState()
+				}
+				this.isRestarting = false;
+			}).catch((err) => {
+				this.isRestarting = false;
+				this.$buefy.toast.open({
+					message: err.response.data.data || err.response.data.message,
+					type: 'is-danger',
+					position: 'is-top',
+					duration: 5000
+				})
+			})*/
 		},
 		
 		/**

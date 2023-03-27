@@ -24,9 +24,10 @@
 		
 		<!-- Modal-Card Body Start -->
 		<section class="modal-card-body">
-			<b-input
-			v-model="tips" :readonly="!isEditing" type="textarea">
-			</b-input>
+			<EditorContent
+			:editor="editor">
+			</EditorContent>
+			<!--			<div v-html="preview"></div>-->
 			<div class="is-flex is-flex-direction-row-reverse mt-2">
 				<b-icon
 				:class="{'has-text-grey-800': !isEditing, 'has-text-green-default': isDifferentiation, 'has-text-grey-400': !isDifferentiation && isEditing}"
@@ -41,13 +42,19 @@
 <script>
 import YAML from "yaml";
 import merge from "lodash/merge";
+import {Editor, EditorContent} from '@tiptap/vue-2'
+import {StarterKit} from "@tiptap/starter-kit";
 
 let tempTips = '';
 
 export default {
 	name: "TipEditorModal",
+	components: {
+		EditorContent,
+	},
 	data() {
 		return {
+			editor: null,
 			isEditing: false,
 			tips: '',
 			// tipObj: {},
@@ -67,15 +74,23 @@ export default {
 		icon() {
 			return this.isEditing ? 'matching' : 'edit'
 		},
+		'editor.isEditable'() {
+			return this.isEditing
+		},
 		isDifferentiation() {
 			return tempTips !== this.tips
 		},
+		// preview() {
+		// 	return this.editor.getHTML();
+		// },
 	},
 	watch: {
-		composeData(val) {
-			console.log('watch tips', val)
-			
-			let getValueByPath = this.composeData['services'][this.id]
+		composeData: {
+			handler(val) {
+				//Get tips in compose.
+				console.log('watch tips', val)
+				
+				/*let getValueByPath = this.composeData['services'][this.id]
 			if (getValueByPath['x-casaos'] && getValueByPath['x-casaos']['tips'] && getValueByPath['x-casaos']['tips']['before_install']) {
 				let multiLine = getValueByPath['x-casaos']['tips']['before_install'].forEach(item => {
 					let value = item.content['default'] && item.content['en_US']
@@ -87,10 +102,29 @@ export default {
 			} else {
 				this.tips = '';
 				// return ''
-			}
-			// init tempTips
-			tempTips = this.tips;
+			}*/
+				
+				let getValueByPath = this.composeData['services'][this.id]
+				if (getValueByPath['x-casaos'] && getValueByPath['x-casaos']['tips'] && getValueByPath['x-casaos']['tips']['before_install']) {
+					this.tips = item.content['default'] && item.content['en_US']
+				} else {
+					this.tips = '#123\n##haha';
+				}
+				
+				// init tempTips
+				tempTips = this.tips;
+			},
+			immediate: true
 		}
+	},
+	mounted() {
+		this.editor = new Editor({
+			extensions: [
+				StarterKit,
+				markdown,
+			],
+			content: this.tips,
+		})
 	},
 	methods: {
 		/*
@@ -126,7 +160,7 @@ export default {
 		},
 		
 		getCompleteComposeData() {
-			let lines = this.tips.split('\n');
+			/*let lines = this.tips.split('\n');
 			let body = [];
 			
 			lines.forEach(line => {
@@ -134,7 +168,9 @@ export default {
 				let value = splitArray.length > 1 ? splitArray[0] : 'user input';
 				let content = splitArray.length > 1 ? splitArray[1] : splitArray[0];
 				body.push({value, content: {default: content}});
-			});
+			});*/
+			let body = this.tips;
+			
 			let result = merge(this.composeData, {
 				services: {
 					[this.id]: {
