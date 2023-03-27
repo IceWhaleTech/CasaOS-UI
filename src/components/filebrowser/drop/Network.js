@@ -3,14 +3,12 @@ window.isRtcSupported = !!(window.RTCPeerConnection || window.mozRTCPeerConnecti
 
 export class ServerConnection {
 
-    constructor(url,bus) {
+    constructor(url, bus) {
         this._connect(url);
         this.selfId = "";
         this.bus = bus;
         this.bus.$on("beforeunload", () => this._disconnect());
         this.bus.$on("pagehide", () => this._disconnect());
-        // Events.on('beforeunload', () => this._disconnect());
-        // Events.on('pagehide', () => this._disconnect());
         document.addEventListener('visibilitychange', () => this._onVisibilityChange());
     }
 
@@ -33,19 +31,15 @@ export class ServerConnection {
         switch (msg.type) {
             case 'peers':
                 this.bus.$emit(msg.type, msg.peers);
-                // Events.fire('peers', msg.peers);
                 break;
             case 'peer-joined':
                 this.bus.$emit(msg.type, msg.peer);
-                // Events.fire('peer-joined', msg.peer);
                 break;
             case 'peer-left':
                 this.bus.$emit(msg.type, msg.peerId);
-                // Events.fire('peer-left', msg.peerId);
                 break;
             case 'signal':
                 this.bus.$emit(msg.type, msg);
-                // Events.fire('signal', msg);
                 break;
             case 'ping':
                 this.send({ type: 'pong' });
@@ -53,7 +47,6 @@ export class ServerConnection {
             case 'display-name':
                 this.selfId = msg.message.id;
                 this.bus.$emit(msg.type, msg);
-                // Events.fire('display-name', msg);
                 break;
             default:
                 console.error('WS: unkown message type', msg);
@@ -78,7 +71,6 @@ export class ServerConnection {
         this._socket.onclose = null;
         this._socket.close();
         this.bus.$emit('close-connection', 'Disconnected');
-        // Events.fire('close-connection', 'Disconnected');
     }
 
     _endpoint() {
@@ -94,13 +86,11 @@ export class ServerConnection {
         this._socket.onclose = null;
         this._socket.close();
         this.bus.$emit('close-connection', 'Disconnected');
-        // Events.fire('close-connection', 'Disconnected');
     }
 
     _onDisconnect() {
         // console.log('WS: server disconnected');
         this.bus.$emit('notify-user', 'Connection lost. Retry in 5 seconds...');
-        // Events.fire('notify-user', 'Connection lost. Retry in 5 seconds...');
         clearTimeout(this._reconnectTimer);
         this._reconnectTimer = setTimeout(() => this._connect(), 5000);
     }
@@ -121,7 +111,7 @@ export class ServerConnection {
 
 export class Peer {
 
-    constructor(serverConnection, peerId,bus) {
+    constructor(serverConnection, peerId, bus) {
         this._server = serverConnection;
         this._peerId = peerId;
         this._filesQueue = [];
@@ -225,6 +215,7 @@ export class Peer {
         if (!chunk.byteLength) return;
 
         this._digester.unchunk(chunk);
+        // console.log(this._digester);
         const progress = this._digester.progress;
         this._onDownloadProgress(progress);
 
@@ -236,7 +227,6 @@ export class Peer {
 
     _onDownloadProgress(progress) {
         this.bus.$emit('file-progress', { sender: this._peerId, progress: progress, filesQueue: this._filesQueue.length + 1, files: this._files });
-        // Events.fire('file-progress', { sender: this._peerId, progress: progress, filesQueue: this._filesQueue.length + 1, files: this._files });
     }
 
     _onFileReceived(proxyFile, from) {
@@ -245,7 +235,6 @@ export class Peer {
             from: from
         }
         this.bus.$emit('file-received', file);
-        // Events.fire('file-received', file);
         this.sendJSON({ type: 'transfer-complete' });
     }
 
@@ -255,11 +244,9 @@ export class Peer {
         this._busy = false;
         this._dequeueFile();
         this.bus.$emit('notify-user', 'File transfer completed.');
-        // Events.fire('notify-user', 'File transfer completed.');
     }
 
     sendText(text) {
-        console.log('RTC: sending text');
         const unescaped = btoa(unescape(encodeURIComponent(text)));
         this.sendJSON({ type: 'text', text: unescaped });
     }
@@ -267,18 +254,16 @@ export class Peer {
     _onTextReceived(message) {
         const escaped = decodeURIComponent(escape(atob(message.text)));
         this.bus.$emit('text-received', { text: escaped, sender: this._peerId });
-        // Events.fire('text-received', { text: escaped, sender: this._peerId });
     }
 }
 
 class RTCPeer extends Peer {
 
     constructor(serverConnection, peerId, bus) {
-        super(serverConnection, peerId,bus);
+        super(serverConnection, peerId, bus);
         if (!peerId) return; // we will listen for a caller
         this._connect(peerId, true);
         this.bus.$on('close-connection', () => this._closeConnection());
-        // Events.on('close-connection', () => this._closeConnection());
     }
 
     _connect(peerId, isCaller) {
@@ -311,7 +296,7 @@ class RTCPeer extends Peer {
             ordered: true,
             reliable: true // Obsolete. See https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel/reliable
         });
-        
+
         channel.onopen = e => this._onChannelOpened(e);
         this._conn.createOffer().then(d => this._onDescription(d)).catch(e => this._onError(e));
     }
@@ -414,10 +399,10 @@ class RTCPeer extends Peer {
 
 export class PeersManager {
 
-    constructor(serverConnection,bus) {
+    constructor(serverConnection, bus) {
         this.peers = {};
         this._server = serverConnection;
-        
+
         this.bus = bus;
         this.destory();
 
@@ -426,30 +411,20 @@ export class PeersManager {
         this.bus.$on('files-selected', e => this._onFilesSelected(e));
         this.bus.$on('send-text', e => this._onSendText(e));
         this.bus.$on('peer-left', e => this._onPeerLeft(e));
-        // Events.on('signal', e => this._onMessage(e.detail));
-        // Events.on('peers', e => this._onPeers(e.detail));
-        // Events.on('files-selected', e => this._onFilesSelected(e.detail));
-        // Events.on('send-text', e => this._onSendText(e.detail));
-        // Events.on('peer-left', e => this._onPeerLeft(e.detail));
     }
 
-    destory(){
+    destory() {
         console.log('destroying peers manager');
         this.bus.$off('signal');
         this.bus.$off('peers');
         this.bus.$off('files-selected');
         this.bus.$off('send-text');
         this.bus.$off('peer-left');
-        // Events.off('signal', e => this._onMessage(e.detail));
-        // Events.off('peers', e => this._onPeers(e.detail));
-        // Events.off('files-selected', e => this._onFilesSelected(e.detail));
-        // Events.off('send-text', e => this._onSendText(e.detail));
-        // Events.off('peer-left', e => this._onPeerLeft(e.detail));
     }
 
     _onMessage(message) {
         if (!this.peers[message.sender]) {
-            this.peers[message.sender] = new RTCPeer(this._server,null,this.bus);
+            this.peers[message.sender] = new RTCPeer(this._server, null, this.bus);
         }
         this.peers[message.sender].onServerMessage(message);
     }
@@ -461,7 +436,7 @@ export class PeersManager {
                 return;
             }
             if (window.isRtcSupported && peer.rtcSupported) {
-                this.peers[peer.id] = new RTCPeer(this._server, peer.id,this.bus);
+                this.peers[peer.id] = new RTCPeer(this._server, peer.id, this.bus);
             } else {
 
                 this.peers[peer.id] = new WSPeer(this._server, peer.id);
@@ -477,7 +452,6 @@ export class PeersManager {
         message.files.forEach(file => {
             file.from = message.from;
         });
-        console.log("send text", message);
         this.peers[message.to].sendText(message.files.length);
         this.peers[message.to].sendFiles(message.files);
     }
@@ -587,19 +561,7 @@ class FileDigester {
 
 }
 
-export class Events {
-    static fire(type, detail) {
-        window.dispatchEvent(new CustomEvent(type, { detail: detail }));
-    }
 
-    static on(type, callback) {
-        return window.addEventListener(type, callback, false);
-    }
-
-    static off(type, callback) {
-        return window.removeEventListener(type, callback, false);
-    }
-}
 
 
 RTCPeer.config = {

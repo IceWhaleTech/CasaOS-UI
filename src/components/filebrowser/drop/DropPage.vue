@@ -282,7 +282,7 @@ export default {
       this.peersArray = peers;
       // Only listen to peer join event once
       this.$EventBus.$off("peers");
-      // Events.off("peers", this.handlePeers);
+
     },
 
     // Handle Self Joined

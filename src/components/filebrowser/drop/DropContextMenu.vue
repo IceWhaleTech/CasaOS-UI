@@ -37,7 +37,6 @@
 <script>
 import { mixin } from '@/mixins/mixin';
 import events from '@/events/events';
-import { Events } from "./Network.js"
 export default {
     name: "drop-context-menu",
     mixins: [mixin],
@@ -66,12 +65,10 @@ export default {
     beforeDestroy() {
         this.$EventBus.$off(events.SHOW_DROP_CONTEXT_MENU);
         this.$EventBus.$off("peer-left");
-        // Events.off("peer-left", this.handlePeerleft);
     },
     mounted() {
         this.$EventBus.$on(events.SHOW_DROP_CONTEXT_MENU, this.open);
         this.$EventBus.$on("peer-left", this.handlePeerleft);
-        Events.on("peer-left", this.handlePeerleft);
     },
     methods: {
         open(event) {
@@ -89,11 +86,6 @@ export default {
         },
         cancel() {
             this.$refs.dropDown.isActive = false;
-            // console.log("cancel");
-            // Events.fire('send-text', {
-            //     to: this.deviceId,
-            //     text: 'cancel'
-            // });
         },
         activeDropUpload() {
             const event = {

@@ -73,6 +73,7 @@ import { VueEllipseProgress } from "vue-ellipse-progress";
 import events from "@/events/events";
 import { gsap } from "gsap";
 import CustomEase from "gsap/CustomEase";
+import delay from "lodash/delay";
 
 export default {
   name: "drop-item",
@@ -123,6 +124,7 @@ export default {
       tipActive: false,
       isDisabled: true,
       progress: 0,
+      startprogress: 0,
       progressText: "",
       totalfiles: 0,
       receivedfiles: 0,
@@ -199,6 +201,8 @@ export default {
   },
   beforeDestroy() {
     this.$EventBus.$off("file-progress", this.handleFileProgress);
+    this.$EventBus.$off("text-received");
+    this.$EventBus.$off("close-connection");
     this.$EventBus.$off(events.ACTIVE_DROP_UPLOAD);
   },
   watch: {
@@ -240,9 +244,9 @@ export default {
       const message = e;
       const peerId = message.sender || message.recipient;
       if (this.device.id !== peerId) return;
+
       this.receivedfiles = message.text;
     });
-
     this.$EventBus.$on("close-connection", (e) => {
       this.progress = 0;
       this.uploadDisabled = false;
@@ -253,6 +257,7 @@ export default {
   methods: {
     handleUpload(e) {
       if (e.files.length == 0) return;
+
       if (e.deviceId == this.device.id) {
         this.fileDroped(e.files);
       }
@@ -261,9 +266,12 @@ export default {
       const progress = e;
       const peerId = progress.sender || progress.recipient;
       if (this.device.id !== peerId) return;
+      if (this.progress == 0) {
+        this.activeTipOneSecond();
+      }
       this.totalfiles = progress.files.length;
-      // this.receivedfiles = progress.filesQueue;
       this.progress = progress.progress * 100;
+      this.startprogress++;
       this.uploadDisabled = true;
       if (this.totalfiles > 0) {
         this.receivedfiles = progress.filesQueue;
@@ -275,9 +283,17 @@ export default {
           num: this.receivedfiles,
         });
       }
+      if (this.startprogress === 1 && progress.progress > 0) {
+        this.activeTipOneSecond();
+      }
       if (progress.progress === 1) {
         this.progress = 0;
+        this.startprogress = 0;
+        this.tipActive = false;
         this.uploadDisabled = false;
+        if (this.totalfiles == 0) {
+          this.receivedfiles -= 1;
+        }
       }
     },
     showContextMenu(e) {
@@ -303,14 +319,23 @@ export default {
     },
     fileDroped(files) {
       this.$messageBus("files_filesdrop_start");
-
       this.$EventBus.$emit("files-selected", {
         files: files,
         to: this.device.id,
         from: localStorage.getItem("peerid"),
       });
-
       this.dropFiles = [];
+    },
+
+    activeTipOneSecond() {
+      this.tipActive = true;
+      delay(
+        (bool) => {
+          this.tipActive = bool;
+        },
+        1000,
+        false
+      );
     },
   },
 };
