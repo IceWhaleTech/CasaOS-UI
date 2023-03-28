@@ -176,7 +176,7 @@
 			<!-- Modal-Card Header Start -->
 			<header class="modal-card-head _b-line">
 				<div class="is-flex-grow-1">
-					<h3 class="_title is-5">{{ panelTitle }}</h3>
+					<h3 class="_title is-5" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ panelTitle }}</h3>
 				</div>
 				<div class="is-flex is-align-items-center">
 					<b-button v-if="currentSlide == 0" :label="$t('Custom Install')" class="mr-2"
