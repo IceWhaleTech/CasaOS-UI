@@ -153,6 +153,7 @@ import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
 import business_OpenThirdApp from "@/mixins/app/Business_OpenThirdApp";
 import isNull from "lodash/isNull";
 import tipEdiorModal from "@/components/Apps/TipEdiorModal.vue";
+import YAML from "yaml";
 // import {patch} from "@/service/service.js";
 
 export default {
@@ -428,10 +429,10 @@ export default {
 			try {
 				const ret = await this.$openAPI.appManagement.compose.myComposeApp(id, {
 					headers: {
-						// 'content-type': 'application/yaml',
-						// 'accept': 'application/yaml'
+						'content-type': 'application/yaml',
+						'accept': 'application/yaml'
 					}
-				}).then(res => res.data.data.compose)
+				}).then(res => res.data)
 				console.log('openTips -- show composeApp setting', ret)
 				this.$refs.dro.isActive = false
 				this.$buefy.modal.open({
@@ -444,7 +445,7 @@ export default {
 					// scroll: "keep",
 					animation: "zoom-in",
 					props: {
-						composeData: ret,
+						composeData: YAML.parse(ret),
 						id
 					}
 				})

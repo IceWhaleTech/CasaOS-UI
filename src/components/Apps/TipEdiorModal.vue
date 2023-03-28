@@ -24,10 +24,9 @@
 		
 		<!-- Modal-Card Body Start -->
 		<section class="modal-card-body">
-			<EditorContent
-			:editor="editor">
-			</EditorContent>
-			<!--			<div v-html="preview"></div>-->
+            <VMdEditor
+                v-model="tips" :mode="controlEditorState" height="400px" left-toolbar right-toolbar>
+            </VMdEditor>
 			<div class="is-flex is-flex-direction-row-reverse mt-2">
 				<b-icon
 				:class="{'has-text-grey-800': !isEditing, 'has-text-green-default': isDifferentiation, 'has-text-grey-400': !isDifferentiation && isEditing}"
@@ -42,22 +41,30 @@
 <script>
 import YAML from "yaml";
 import merge from "lodash/merge";
-import {Editor, EditorContent} from '@tiptap/vue-2'
-import {StarterKit} from "@tiptap/starter-kit";
+import VMdEditor from '@kangc/v-md-editor';
+import '@kangc/v-md-editor/lib/style/base-editor.css';
+import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
+import '@kangc/v-md-editor/lib/theme/style/github.css';
+import hljs from 'highlight.js';
+
+VMdEditor.use(githubTheme, {
+    Hljs: hljs,
+    // extend(md) {},
+});
 
 let tempTips = '';
 
 export default {
 	name: "TipEditorModal",
 	components: {
-		EditorContent,
+        VMdEditor
 	},
 	data() {
 		return {
-			editor: null,
 			isEditing: false,
 			tips: '',
-			// tipObj: {},
+            controlEditorState: 'preview',
+            icon: 'edit'
 		}
 	},
 	props: {
@@ -71,20 +78,24 @@ export default {
 		}
 	},
 	computed: {
-		icon() {
-			return this.isEditing ? 'matching' : 'edit'
-		},
-		'editor.isEditable'() {
-			return this.isEditing
-		},
 		isDifferentiation() {
 			return tempTips !== this.tips
 		},
-		// preview() {
-		// 	return this.editor.getHTML();
-		// },
 	},
 	watch: {
+        isEditing(val, a) {
+            console.log('isEditing', val, a)
+            if(val){
+                // editor is editable
+                this.controlEditorState = 'edit'
+                this.icon = 'matching'
+            }else {
+                // editor is not editable
+                this.controlEditorState = 'preview'
+                this.icon = 'edit'
+            }
+            return this.isEditing
+        },
 		composeData: {
 			handler(val) {
 				//Get tips in compose.
@@ -103,29 +114,20 @@ export default {
 				this.tips = '';
 				// return ''
 			}*/
-				
+
 				let getValueByPath = this.composeData['services'][this.id]
-				if (getValueByPath['x-casaos'] && getValueByPath['x-casaos']['tips'] && getValueByPath['x-casaos']['tips']['before_install']) {
-					this.tips = item.content['default'] && item.content['en_US']
+				if (getValueByPath['x-casaos'] && getValueByPath['x-casaos']['tips'] && getValueByPath['x-casaos']['tips']['custom'] || getValueByPath['x-casaos']['tips']['before_install']) {
+					this.tips = getValueByPath['x-casaos']['tips']['custom'] || getValueByPath['x-casaos']['tips']['before_install']['en_US']
 				} else {
-					this.tips = '#123\n##haha';
+					this.tips = '# 123\n##haha';
 				}
-				
 				// init tempTips
 				tempTips = this.tips;
 			},
 			immediate: true
 		}
 	},
-	mounted() {
-		this.editor = new Editor({
-			extensions: [
-				StarterKit,
-				markdown,
-			],
-			content: this.tips,
-		})
-	},
+    mounted() {},
 	methods: {
 		/*
 		* 1、进入编辑状态
@@ -135,30 +137,34 @@ export default {
 			this.isEditing = !this.isEditing
 			console.log('isDifferentiaation', this.isDifferentiation)
 			if (this.isDifferentiation) {
-				let realComposeData = this.getCompleteComposeData()
-				this.$openAPI.appManagement.compose.applyComposeAppSettings(this.id, YAML.stringify(realComposeData)).then(res => {
-					if (res.status === 200) {
-						this.$buefy.toast.open({
-							message: res.data.message,
-							type: 'is-success',
-							position: 'is-top',
-							duration: 5000
-						})
-					}
-				}).catch(e => {
-					console.log('Error in saving tips:', e)
-					this.$buefy.toast.open({
-						message: e.response.data.data,
-						type: 'is-danger',
-						position: 'is-top',
-						duration: 5000
-					})
-				}).finally(() => {
-					this.$emit('close')
-				})
+                this.save();
 			}
 		},
-		
+
+        save(){
+            // 更新
+            // TODO 因为异步，不清楚是否保存成功
+            tempTips = this.tips
+            let realComposeData = this.getCompleteComposeData()
+            this.$openAPI.appManagement.compose.applyComposeAppSettings(this.id, YAML.stringify(realComposeData)).then(res => {
+                if (res.status === 200) {
+                    this.$buefy.toast.open({
+                        message: res.data.message,
+                        type: 'is-success',
+                        position: 'is-top',
+                        duration: 5000
+                    })
+                }
+            }).catch(e => {
+                console.log('Error in saving tips:', e)
+                this.$buefy.toast.open({
+                    message: e.response.data.data,
+                    type: 'is-danger',
+                    position: 'is-top',
+                    duration: 5000
+                })
+            })
+        },
 		getCompleteComposeData() {
 			/*let lines = this.tips.split('\n');
 			let body = [];
@@ -169,14 +175,13 @@ export default {
 				let content = splitArray.length > 1 ? splitArray[1] : splitArray[0];
 				body.push({value, content: {default: content}});
 			});*/
-			let body = this.tips;
 			
 			let result = merge(this.composeData, {
 				services: {
 					[this.id]: {
 						'x-casaos': {
 							tips: {
-								before_install: body
+                                custom: this.tips
 							}
 						}
 					}
@@ -206,6 +211,29 @@ export default {
 	
 	.modal-card-body {
 		padding: 1.5rem;
+        ::v-deep .v-md-editor {
+            box-shadow: none;
+            height: 5.25rem;
+            border: 1px solid hsla(208, 16%, 94%, 1);
+            border-radius: 0.375rem;
+
+            &.v-md-editor--edit {
+                /* 覆盖上层 */
+                border: 0;
+                .scrollbar__wrap{
+                    border: 1px solid hsla(208, 100%, 53%, 1);
+                    border-radius: 0.625rem;
+                }
+            }
+
+            .v-md-editor__right-area {
+                .v-md-editor__toolbar {
+                    display: none;
+                    padding: 0;
+                    border: 0;
+                }
+            }
+        }
 		
 		textarea {
 			resize: none;
