@@ -52,8 +52,6 @@ VMdEditor.use(githubTheme, {
     // extend(md) {},
 });
 
-let tempTips = '';
-
 export default {
 	name: "TipEditorModal",
 	components: {
@@ -63,6 +61,7 @@ export default {
 		return {
 			isEditing: false,
 			tips: '',
+            tempTips:'',
             controlEditorState: 'preview',
             icon: 'edit'
 		}
@@ -79,7 +78,7 @@ export default {
 	},
 	computed: {
 		isDifferentiation() {
-			return tempTips !== this.tips
+			return this.tempTips !== this.tips
 		},
 	},
 	watch: {
@@ -122,7 +121,7 @@ export default {
 					this.tips = '# 123\n##haha';
 				}
 				// init tempTips
-				tempTips = this.tips;
+				this.tempTips = this.tips;
 			},
 			immediate: true
 		}
@@ -144,7 +143,7 @@ export default {
         save(){
             // 更新
             // TODO 因为异步，不清楚是否保存成功
-            tempTips = this.tips
+            this.tempTips = this.tips
             let realComposeData = this.getCompleteComposeData()
             this.$openAPI.appManagement.compose.applyComposeAppSettings(this.id, YAML.stringify(realComposeData)).then(res => {
                 if (res.status === 200) {
@@ -234,7 +233,7 @@ export default {
                 }
             }
         }
-		
+
 		textarea {
 			resize: none;
 			height: 5.25rem;
