@@ -1,6 +1,5 @@
 <template>
   <div
-    class="drop-item contextmenu-canvas"
     :class="[
       {
         'is-floating': isFloat,
@@ -11,53 +10,54 @@
       customClass,
     ]"
     :style="positionStyle"
-    @dragenter="onDrag"
-    @dragover="onDrag"
-    @dragleave="onDrop"
+    class="drop-item contextmenu-canvas"
     @dragend="onDrop"
+    @dragenter="onDrag"
+    @dragleave="onDrop"
+    @dragover="onDrag"
     @drop="onDrop"
-    @mouseover="isHover = true"
     @mouseout="isHover = false"
+    @mouseover="isHover = true"
   >
     <b-upload
       v-model="dropFiles"
-      multiple
-      drag-drop
       :disabled="isSelf || device.offline || uploadDisabled"
+      drag-drop
+      multiple
       @input="fileDroped"
     >
       <b-tooltip
-        :label="tipText"
-        type="is-grey"
-        :position="tipPosition"
         :always="tipActive"
+        :label="tipText"
+        :position="tipPosition"
         multilined
         size="is-small"
+        type="is-grey"
       >
         <div
           ref="circleArea"
-          class="circle-area"
           :class="{ 'drag-over': dragOver }"
+          class="circle-area"
           @contextmenu.stop.prevent="showContextMenu"
         >
-          <div class="up-layer" :class="{ 'is-online': !device.offline }">
+          <div :class="{ 'is-online': !device.offline }" class="up-layer">
             <b-image
-              :src="require(`@/assets/img/drop/${deviceIcon}.svg`)"
               :alt="device.name.displayName"
-              class="is-48x48 mr-0 ml-0 no-click"
               :class="stateClass"
+              :src="require(`@/assets/img/drop/${deviceIcon}.svg`)"
+              class="is-48x48 mr-0 ml-0 no-click"
             ></b-image>
           </div>
           <vue-ellipse-progress
+            v-show="progress > 0"
+            :emptyThickness="2"
+            :legend="false"
             :progress="progress"
             :size="80"
             :thickness="2"
-            :emptyThickness="2"
-            :legend="false"
+            animation="default 0 0"
             emptyColor="#ffffff"
             lineMode="in-over"
-            v-show="progress > 0"
-            animation="default 0 0"
           ></vue-ellipse-progress>
         </div>
       </b-tooltip>
@@ -69,9 +69,9 @@
 </template>
 
 <script>
-import { VueEllipseProgress } from "vue-ellipse-progress";
+import {VueEllipseProgress} from "vue-ellipse-progress";
 import events from "@/events/events";
-import { gsap } from "gsap";
+import {gsap} from "gsap";
 import CustomEase from "gsap/CustomEase";
 import delay from "lodash/delay";
 

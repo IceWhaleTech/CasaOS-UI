@@ -16,15 +16,15 @@
       <sidebar-menu-button></sidebar-menu-button>
       <!-- SideBar Button End -->
       <div
-        class="is-flex-grow-1 is-flex breadcrumb-container"
         id="bread-container"
+        class="is-flex-grow-1 is-flex breadcrumb-container"
       >
         <h3 class="title is-3 mb-0">{{ $t("Shared Folders") }}</h3>
       </div>
       <div class="is-flex is-align-items-center">
         <!--  Close Button Start -->
         <div class="close-button" @click="$emit('close')">
-          <b-icon pack="casa" icon="close"></b-icon>
+          <b-icon icon="close" pack="casa"></b-icon>
         </div>
         <!--  Close Button End -->
       </div>
@@ -45,7 +45,7 @@
           )
         }}
         <div class="buttons is-justify-content-center pt-3">
-          <b-button type="is-primary" rounded @click="selectShare">{{
+          <b-button rounded type="is-primary" @click="selectShare">{{
             $t("Start")
           }}</b-button>
         </div>
@@ -58,6 +58,7 @@
 <script>
 import ShareListView from "./ShareListView.vue";
 import events from "@/events/events";
+
 export default {
   data() {
     return {

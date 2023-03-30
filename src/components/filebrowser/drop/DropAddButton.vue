@@ -10,24 +10,24 @@
 -->
 <template>
   <div
-    class="drop-button"
-    :style="positionStyle"
     :class="{ 'is-floating': isFloat }"
+    :style="positionStyle"
+    class="drop-button"
   >
     <b-dropdown
-      :position="tipPosition"
-      class="drop-tips"
-      :style="cssVariables"
       ref="drop"
       :mobile-modal="false"
+      :position="tipPosition"
+      :style="cssVariables"
+      class="drop-tips"
     >
       <template #trigger>
         <div ref="circleArea" class="circle-area is-clickable">
           <div class="up-layer">
             <b-image
+              :class="iconSize"
               :src="require(`@/assets/img/drop/add_btn.svg`)"
               class="mr-0 ml-0 no-click is-unselectable"
-              :class="iconSize"
             ></b-image>
           </div>
         </div>
@@ -36,7 +36,7 @@
       <b-dropdown-item aria-role="menu-item" custom paddingless>
         <div class="p-3">
           <div class="close-button is-absolute" @click="closeDrop">
-            <b-icon pack="casa" icon="close" class="is-16x16" custom-class="is-size-6"></b-icon>
+            <b-icon class="is-16x16" custom-class="is-size-6" icon="close" pack="casa"></b-icon>
           </div>
           <span class="has-text-title-06 mr-5 mb-3">
             {{ $t("Access the following address with another device") }}

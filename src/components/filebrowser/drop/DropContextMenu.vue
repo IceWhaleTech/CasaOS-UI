@@ -10,9 +10,9 @@
 -->
 <template>
     <div>
-        <div class="drop-context-menu" :style="{ top: y + 'px', left: x + 'px' }">
-            <b-dropdown aria-role="list" close-on-click ref="dropDown" id="dr1" class="file-dropdown"
-                :position="'is-' + verticalPos + '-' + horizontalPos" :animation="ani" :mobile-modal="false">
+        <div :style="{ top: y + 'px', left: x + 'px' }" class="drop-context-menu">
+            <b-dropdown id="dr1" ref="dropDown" :animation="ani" :mobile-modal="false" :position="'is-' + verticalPos + '-' + horizontalPos"
+                aria-role="list" class="file-dropdown" close-on-click>
                 <!-- Blank Start -->
                 <template>
                     <!-- <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center has-text-danger"
@@ -20,10 +20,10 @@
                         <b-icon pack="casa" icon="close" class="mr-1 is-16x16" custom-size="casa-16px" /> {{ $t(cancelText)
                         }}
                     </b-dropdown-item> -->
-                    <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center" key="drop-context1">
-                        <b-upload v-model="files" multiple
-                            class="is-clickable has-text-full-03 is-flex is-align-items-center" @input="activeDropUpload">
-                            <b-icon pack="casa" icon="sending-files" class="mr-1 is-16x16" custom-size="casa-16px" /> {{ $t('Sending files') }}
+                    <b-dropdown-item key="drop-context1" aria-role="menuitem" class="is-flex is-align-items-center">
+                        <b-upload v-model="files" class="is-clickable has-text-full-03 is-flex is-align-items-center"
+                            multiple @input="activeDropUpload">
+                            <b-icon class="mr-1 is-16x16" custom-size="casa-16px" icon="sending-files" pack="casa" /> {{ $t('Sending files') }}
                         </b-upload>
                     </b-dropdown-item>
 
@@ -35,8 +35,9 @@
 </template>
   
 <script>
-import { mixin } from '@/mixins/mixin';
+import {mixin} from '@/mixins/mixin';
 import events from '@/events/events';
+
 export default {
     name: "drop-context-menu",
     mixins: [mixin],

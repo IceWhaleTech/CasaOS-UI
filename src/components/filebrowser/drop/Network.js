@@ -491,6 +491,10 @@ class FileChunker {
         this._reader.addEventListener('load', e => this._onChunkRead(e.target.result));
     }
 
+    get progress() {
+        return this._offset / this._file.size;
+    }
+
     nextPartition() {
         this._partitionSize = 0;
         this._readChunk();
@@ -523,10 +527,6 @@ class FileChunker {
 
     isFileEnd() {
         return this._offset >= this._file.size;
-    }
-
-    get progress() {
-        return this._offset / this._file.size;
     }
 }
 

@@ -7,7 +7,7 @@
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
  */
 
-import { api } from "@/service/service.js";
+import {api} from "@/service/service.js";
 import message_bus from "@/events/message_bus.js";
 
 export default function messageBus(name, params) {

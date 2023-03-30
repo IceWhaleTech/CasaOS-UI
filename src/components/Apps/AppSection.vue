@@ -89,6 +89,7 @@ import concat from 'lodash/concat'
 import events from '@/events/events';
 import last from 'lodash/last';
 import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
+import YAML from "yaml";
 
 const SYNCTHING_STORE_ID = 74
 
@@ -98,16 +99,14 @@ const builtInApplications = [
 		id: "1",
 		name: "App Store",
 		icon: require(`@/assets/img/app/appstore.svg`),
-		state: "0",
-		custom_id: "1",
+		status: "running",
 		type: "system"
 	},
 	{
 		id: "2",
 		name: "Files",
 		icon: require(`@/assets/img/app/files.svg`),
-		state: "0",
-		custom_id: "2",
+		status: "running",
 		type: "system"
 	},
 ]
@@ -131,6 +130,7 @@ export default {
 			retryCount: 0,
 			appListErrorMessage: "",
 			skCount: 0,
+			ListRefreshTimer: null,
 		}
 	},
 	components: {
@@ -171,10 +171,16 @@ export default {
 		this.$EventBus.$on(events.RELOAD_APP_LIST, () => {
 			this.getList();
 		});
+		
+		this.ListRefreshTimer = setInterval(() => {
+			this.getList();
+		}, 5000)
 	},
 	beforeDestroy() {
 		this.$EventBus.$off(events.OPEN_APP_STORE_AND_GOTO_SYNCTHING);
 		window.removeEventListener('resize', this.getSkCount);
+		
+		clearInterval(this.ListRefreshTimer);
 	},
 	mounted() {
 		window.addEventListener('resize', this.getSkCount);
@@ -207,37 +213,56 @@ export default {
 		async getList() {
 			
 			try {
-				const listRes = await this.$api.container.getMyAppList();
+				// TODO migrate to v2!!
+				const listRes = await this.$openAPI.appGrid.getAppGrid();
+				// const orgAppList = listRes.data.data.casaos_apps
+				const orgAppList = listRes.data.data
+				// TODO fake data
+				orgAppList.forEach((item) => {
+					item.state = 'running';
+					item.hostname = this.$baseIp;
+					item.name = item.title && item.title.en_US;
+					item.id = item.store_app_id;
+					item.seheme = 'http';
+					// item.type = 'system';
+				})
+				// console.log('composeApp Data:', orgAppList)
 				let listLinkApp = await this.$api.users.getLinkAppDetail().then(v => v.data.data);
 				if (listLinkApp === "") {
 					listLinkApp = []
 				}
 				localStorage.setItem("listLinkApp", JSON.stringify(listLinkApp))
-				const orgAppList = listRes.data.data.casaos_apps
+				// all app list
 				let casaAppList = concat(builtInApplications, orgAppList, listLinkApp)
-				casaAppList.reverse()
+				// get app sort info.
 				let sortRes = await this.$api.users.getCustomStorage(orderConfig)
-				let sortList = sortRes.data.data.data
-				let newList = casaAppList.map((item) => {
-					return item.custom_id
+				let lateSortList = sortRes.data.data.data
+				let newestSortList = casaAppList.map((item) => {
+					return item.name
 				})
-				if (sortList != "") {
+				if (lateSortList != "") {
 					// Resort list
-					sortList = this.getNewSortList(sortList, newList)
+					const sortList = this.getNewSortList(lateSortList, newestSortList)
 					casaAppList.sort((a, b) => {
-						return sortList.indexOf(a.custom_id) - sortList.indexOf(b.custom_id);
+						return sortList.indexOf(a.name) - sortList.indexOf(b.name);
 					});
 				}
+				// console.log("casaAppList", casaAppList)
 				this.appList = casaAppList;
-				if (xor(sortList, newList).length > 0) {
+				// save sort info AFTER sort!
+				if (xor(lateSortList, newestSortList).length > 0) {
 					this.saveSortData()
 				}
-				this.notImportedList = listRes.data.data.local_apps
+				// business :: top-bar:: switch :: ShowOtherApp
+				// TODO $compose will not have this function!
+				this.notImportedList = [] //listRes.data.data
 				this.$store.commit('SET_NOTIMPORT_LIST', this.notImportedList);
+				
 				this.isLoading = false;
 				this.retryCount = 0;
 				this.appListErrorMessage = ""
 			} catch (error) {
+				console.error(error);
 				this.isLoading = true;
 				if (this.retryCount < 5) {
 					setTimeout(() => {
@@ -274,7 +299,8 @@ export default {
 		 */
 		saveSortData() {
 			let newList = this.appList.map((item) => {
-				return item.custom_id
+				// compose milestone :: name is unique, global index.
+				return item.name
 			})
 			let data = {
 				data: newList
@@ -327,7 +353,8 @@ export default {
 					state: "install",
 					configData: configData,
 					storeId: storeId,
-					settingData: mode !== 'custom' ? undefined : {}
+					// TODO transfer to yaml string.
+					settingData: mode !== 'custom' ? undefined : "",
 				}
 			})
 		},
@@ -338,21 +365,32 @@ export default {
 		 * @param {Boolean} isCasa
 		 * @return {*}
 		 */
+		// TODO migrate to v2!!
 		async showConfigPanel(item, isCasa) {
 			this.$messageBus('appsexsiting_open', item.name);
 			if (item.type === 'LinkApp') {
 				await this.showExternalLinkPanel(item)
 				return
 			}
-			let state = item.state
-			let id = item.id
+			// TODO fake data.
+			let state = 'running' || item.state
+			let id = item.id // || 'syncthing'
 			const networks = await this.$api.container.getNetworks();
 			const memory = this.$store.state.hardwareInfo.mem;
 			const configData = {
 				networks: networks.data.data,
 				memory: memory
 			}
-			const ret = await this.$api.container.getInfo(id);
+			// TODO migrate to v2!!
+			// 入参 需要为 container id
+			// const ret = await this.$api.container.getInfoV2(id);
+			// const ret = await this.$openAPI.appManagement.compose.myComposeApp(item.name);
+			const ret = await this.$openAPI.appManagement.compose.myComposeApp(id, {
+				headers: {
+					'content-type': 'application/yaml',
+					'accept': 'application/yaml'
+				}
+			});
 			this.$buefy.modal.open({
 				parent: this,
 				component: AppPanel,
@@ -371,9 +409,11 @@ export default {
 					id: id,
 					state: "update",
 					isCasa: isCasa,
+					// 区分 terminal
 					runningStatus: state,
 					configData: configData,
-					settingData: ret.data.data
+					settingData: ret.data,
+					// dockerComposeCommands: YAML.stringify(ret.data)
 				}
 			})
 		},

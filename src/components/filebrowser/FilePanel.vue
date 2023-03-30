@@ -32,10 +32,10 @@
           <!-- NavBar Start -->
           <b-sidebar
             ref="sidebar"
+            :open.sync="isSideBarOpen"
+            :overlay="isMobile"
             :position="sideBarPosition"
             fullheight
-            :overlay="isMobile"
-            :open.sync="isSideBarOpen"
           >
             <div class="nav-bar is-flex is-flex-direction-column">
               <div
@@ -128,8 +128,8 @@
                 <uploader-unsupport></uploader-unsupport>
                 <!-- Header Start -->
                 <header
-                  class="modal-card-head"
                   :class="{ 'is-flex-wrap-wrap': isMobile }"
+                  class="modal-card-head"
                 >
                   <div
                     id="bread-container"
@@ -172,7 +172,7 @@
                       class="is-flex is-align-items-center modal-close-container modal-close-container-line"
                     >
                       <div class="close-button" @click="$emit('close')">
-                        <b-icon pack="casa" icon="close"></b-icon>
+                        <b-icon icon="close" pack="casa"></b-icon>
                       </div>
                     </div>
                     <!--  Close Button End -->
@@ -268,10 +268,10 @@
                 <div v-show="showUploadList" class="upload-list">
                   <b-collapse
                     ref="uploadList"
+                    v-model="openUploadList"
                     animation="slide1"
                     aria-id="contentIdForA11y3"
                     class="card"
-                    v-model="openUploadList"
                   >
                     <template #trigger>
                       <div
@@ -354,7 +354,7 @@ import orderBy from "lodash/orderBy";
 import dropRight from "lodash/dropRight";
 import isEqual from "lodash/isEqual";
 
-import { mixin } from "@/mixins/mixin";
+import {mixin} from "@/mixins/mixin";
 import VueBreakpointMixin from "vue-breakpoint-mixin";
 import events from "@/events/events";
 
@@ -389,7 +389,6 @@ import MountActionButton from "./components/MountActionButton.vue";
 import MergeStorages from "@/components/Storage/MergeStorages.vue";
 
 // Drop
-
 import DropEntryButton from "./drop/DropEntryButton.vue";
 
 export default {

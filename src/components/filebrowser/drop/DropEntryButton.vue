@@ -11,15 +11,15 @@
 <template>
   <div>
     <div
-      class="is-flex list-item new-list-item"
       :class="{ active: active }"
+      class="is-flex list-item new-list-item"
       @click.prevent="$emit('open');$messageBus('files_filesdrop_tab')"
     >
       <div
-        class="cover mr-2 is-flex-shrink-0 is-flex is-align-items-center none-click"
         slot="reference"
+        class="cover mr-2 is-flex-shrink-0 is-flex is-align-items-center none-click"
       >
-        <b-icon icon="drop" pack="casa" custom-size="casa-24px"></b-icon>
+        <b-icon custom-size="casa-24px" icon="drop" pack="casa"></b-icon>
       </div>
       <div>
         <span>{{ title }}</span>

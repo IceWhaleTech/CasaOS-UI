@@ -1,18 +1,18 @@
 <template>
-    <div class="dropdown dropdown-menu-animation" ref="dropdown" :class="rootClasses" @mouseleave="isHoverable = false">
-        <div v-if="!inline" :tabindex="disabled ? false : triggerTabindex" ref="trigger" class="dropdown-trigger"
-            @click="onClick" @contextmenu.prevent="onContextMenu" @mouseenter="onHover" @focus.capture="onFocus"
-            aria-haspopup="true">
-            <slot name="trigger" :active="isActive" />
+    <div ref="dropdown" :class="rootClasses" class="dropdown dropdown-menu-animation" @mouseleave="isHoverable = false">
+        <div v-if="!inline" ref="trigger" :tabindex="disabled ? false : triggerTabindex" aria-haspopup="true"
+            class="dropdown-trigger" @click="onClick" @mouseenter="onHover" @contextmenu.prevent="onContextMenu"
+            @focus.capture="onFocus">
+            <slot :active="isActive" name="trigger" />
         </div>
 
         <transition :name="animation">
-            <div v-if="isMobileModal" v-show="isActive" class="background" :aria-hidden="!isActive" />
+            <div v-if="isMobileModal" v-show="isActive" :aria-hidden="!isActive" class="background" />
         </transition>
         <transition :name="animation">
-            <div v-show="(!disabled && (isActive || isHoverable)) || inline" ref="dropdownMenu" class="dropdown-menu"
-                :style="style" :aria-hidden="!isActive" v-trap-focus="trapFocus">
-                <div class="dropdown-content" :role="ariaRole" :aria-modal="!inline" :style="contentStyle">
+            <div v-show="(!disabled && (isActive || isHoverable)) || inline" ref="dropdownMenu" v-trap-focus="trapFocus"
+                :aria-hidden="!isActive" :style="style" class="dropdown-menu">
+                <div :aria-modal="!inline" :role="ariaRole" :style="contentStyle" class="dropdown-content">
                     <slot />
                 </div>
             </div>
@@ -23,7 +23,7 @@
 <script>
 import trapFocus from 'buefy/src/directives/trapFocus'
 import config from 'buefy/src/utils/config'
-import { removeElement, createAbsoluteElement, isCustomElement, toCssWidth } from 'buefy/src/utils/helpers'
+import {createAbsoluteElement, isCustomElement, removeElement, toCssWidth} from 'buefy/src/utils/helpers'
 import ProviderParentMixin from 'buefy/src//utils/ProviderParentMixin'
 
 const DEFAULT_CLOSE_OPTIONS = ['escape', 'outside']

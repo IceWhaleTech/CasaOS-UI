@@ -22,14 +22,14 @@
 						}}</h3>
 				</div>
 				<!--				<button class="delete" type="button" @click="$emit('close')"/>-->
-				<b-icon class="_polymorphic" icon="close" pack="casa"
+				<b-icon class="_polymorphic close" icon="close" pack="casa"
 				        @click.native="$emit('close'); $messageBus('appstore_close')"/>
 			</header>
 			<p class="modal-card-body">
 				{{ $t('Please choose a location with enough storage space and stable connection.') }}
 				<span class="has-text-danger">
-          {{ $t('(Cannot be changed)') }}
-        </span>
+		            {{ $t('(Cannot be changed)') }}
+		        </span>
 			</p>
 			
 			<section class="modal-card-body is-overlay">
@@ -43,132 +43,11 @@
 			<!-- Sidebar Start -->
 			<app-side-bar v-model="sidebarOpen" :overlay="true" :right="true" position="absolute">
 				<template slot-scope="{close}">
-					<div class="modal-card app-detial">
-						<!-- Header Start -->
-						<header class="modal-card-head" style="background:#ff000">
-							<div class="is-flex-grow-1">
-								<div class="button is-ghost auto-height pl-0 pt-0 pb-0" @click="close">
-									<b-icon class="mr-1" icon="chevron-left" size="is-medium"></b-icon>
-									{{ $t('Back') }}
-								</div>
-							</div>
-						</header>
-						<!-- Header End -->
-						<section id="ss-content" class="modal-card-body">
-							<!-- App Info Header Start -->
-							<div class="app-header is-flex pb-4 b-line">
-								<div class="header-icon mr-5">
-									<b-image :key="appDetailData.icon" :src="appDetailData.icon"
-									         :src-fallback="require('@/assets/img/app/default.svg')"
-									         class="is-128x128 icon-shadow"
-									         webp-fallback=".jpg"></b-image>
-								</div>
-								<div class="is-flex-grow-1 is-flex is-align-items-center">
-									<div>
-										<h4 class="title store-title is-4 ">{{ appDetailData.title }}</h4>
-										<p class="subtitle is-size-14px two-line mb-3">{{ appDetailData.tagline }}</p>
-										<p class="description mb-2">
-											<b-button v-if="appDetailData.state===0" :disabled="unuseable"
-											          :loading="appDetailData.id == currentInstallId"
-											          rounded size="is-normal" type="is-primary"
-											          @click="qucikInstall(appDetailData.id);$messageBus('appstore_install', appDetailData.title)">
-												{{ $t('Install') }}
-											</b-button>
-											<b-button v-if="appDetailData.state===1"
-											          :loading="appDetailData.id == currentInstallId" rounded
-											          size="is-normal" type="is-primary"
-											          @click="openThirdContainerByAppInfo(appDetailData)">
-												{{ $t('Open') }}
-											</b-button>
-										</p>
-										
-										<p v-if="unuseable"
-										   class="has-background-red-tertiary has-text-red has-text-full-04 _is-normal is-flex is-align-items-center font pr-2"
-										   style="width: fit-content;height: 1.5rem;border-radius: 0.25rem">
-											<label class="is-flex ml-2 mr-1">
-												<b-icon class="is-16x16" custom-size="casa-19px" icon="close"
-												        pack="casa"></b-icon>
-											</label>
-											{{ $t('Not compatible with {arch} devices.', {arch: archTitle}) }}
-										</p>
-									
-									</div>
-								</div>
-							</div>
-							<!-- App Info Header End -->
-							<!-- App Info Table Start -->
-							<nav class="level is-mobile mt-4">
-								<div class="level-item has-text-centered">
-									<div>
-										<p class="heading">{{ $t('CATEGORY') }}</p>
-										<p class="title">
-											<b-icon :icon="appDetailData.category_font" custom-size="mdi-36px"></b-icon>
-										</p>
-										<p class="footing is-size-14px">{{ appDetailData.category }}</p>
-									</div>
-								</div>
-								<div class="level-item has-text-centered">
-									<div>
-										<p class="heading">{{ $t('DEVELOPER') }}</p>
-										<p class="title">
-											<b-icon custom-size="mdi-36px" icon="account-circle-outline"></b-icon>
-										</p>
-										<p class="footing is-size-14px">{{ appDetailData.developer }}</p>
-									</div>
-								</div>
-								<div class="level-item has-text-centered">
-									<div>
-										<p class="heading "><span class="is-hidden-mobile">{{
-												$t('REQUIRE')
-											}} </span>{{ $t('MEMORY') }}</p>
-										<p class="title has-text-weight-normal">{{ appDetailData.min_memory }}</p>
-										<p class="footing is-size-14px">MB</p>
-									</div>
-								</div>
-								<div class="level-item has-text-centered">
-									<div>
-										<p class="heading"><span class="is-hidden-mobile">{{
-												$t('REQUIRE')
-											}} </span>{{ $t('DISK') }}</p>
-										<p class="title has-text-weight-normal">{{ appDetailData.min_disk }}</p>
-										<p class="footing is-size-14px">MB</p>
-									</div>
-								</div>
-							</nav>
-							<!-- App Info Table End -->
-							
-							<!-- App Info Slider Start -->
-							<div v-if="showDetailSwiper" class="is-relative">
-								<swiper ref="infoSwiper" :options="swiperOptions"
-								        class="swiper swiper-responsive-breakpoints">
-									<swiper-slide v-for="item in appDetailData.screenshot_link" :key="'sc'+item">
-										<div class="gap">
-											<b-image :src="item"
-											         :src-fallback="require('@/assets/img/app/swiper_placeholder.png')"
-											         class="border-8" placeholder ratio="16by9"></b-image>
-										</div>
-									</swiper-slide>
-								
-								</swiper>
-								<div :class="{'swiper-button-disabled':disPrev}" class="swiper-button-prev"
-								     @click="$refs.infoSwiper.$swiper.slidePrev()"></div>
-								<div :class="{'swiper-button-disabled':disNext}" class="swiper-button-next"
-								     @click="$refs.infoSwiper.$swiper.slideNext()"></div>
-							</div>
-							
-							<!-- App Info Slider End -->
-							
-							<!-- App Info  Start -->
-							<div class="app-desc mt-4 mb-6">
-								<p class="is-size-14px mb-2 un-break-word">{{ appDetailData.tagline }}</p>
-								<p class="is-size-14px un-break-word">{{ appDetailData.description }}</p>
-								<!-- <p class="is-size-14px " v-html="appDetailData.tip"></p> -->
-							</div>
-							<!-- App Info  End -->
-						
-						</section>
-					</div>
-				
+					<AppDetailInfo :appDetailData="appDetailData" :arch="arch"
+					               :cateMenu="cateMenu" :close="close"
+					               :currentInstallId="currentInstallId"
+					               :installedList="installedList" :showDetailSwiper="showDetailSwiper"
+					               :unuseable="unuseable"></AppDetailInfo>
 				</template>
 			</app-side-bar>
 			<!-- Sidebar End -->
@@ -176,7 +55,7 @@
 			<!-- Modal-Card Header Start -->
 			<header class="modal-card-head _b-line">
 				<div class="is-flex-grow-1">
-					<h3 class="_title is-5" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ panelTitle }}</h3>
+					<h3 class="_title is-5">{{ panelTitle }}</h3>
 				</div>
 				<div class="is-flex is-align-items-center">
 					<b-button v-if="currentSlide == 0" :label="$t('Custom Install')" class="mr-2"
@@ -194,15 +73,15 @@
 					
 					<b-tooltip v-if="showExportButton" :label="$t('Export AppFile')" position="is-bottom"
 					           type="is-dark">
-						<button class="icon-button mdi mdi-export-variant" type="button" @click="exportJSON"/>
+						<button class="icon-button mdi mdi-export-variant" type="button" @click="exportYAML"/>
 					</b-tooltip>
 					<div v-if="currentSlide < 2"
 					     class="is-flex is-align-items-center modal-close-container modal-close-container-line ">
 						<!--						<button class="delete" type="button" @click="$emit('close')"/>-->
-						<b-icon class="_polymorphic" icon="close" pack="casa" @click.native="$emit('close')"/>
+						<b-icon class="_polymorphic close" icon="close" pack="casa" @click.native="$emit('close')"/>
 					</div>
 					<div v-else-if="currentSlide === 2" class="is-flex is-align-items-center">
-						<b-icon class="_polymorphic" icon="close" pack="casa" @click.native="$emit('close')"/>
+						<b-icon class="_polymorphic close" icon="close" pack="casa" @click.native="$emit('close')"/>
 					</div>
 				
 				</div>
@@ -243,16 +122,17 @@
 												<p class="is-size-7 two-line">{{ item.tagline }}</p>
 											</div>
 											<div>
-												<b-button v-if="item.state===0" :loading="item.id == currentInstallId"
+												<b-button v-if="installedList.includes(item.id)"
+												          :loading="item.id == currentInstallId"
+												          rounded size="is-small"
+												          type="is-primary is-light"
+												          @click="openThirdContainerByAppInfo(item)">{{ $t('Open') }}
+												</b-button>
+												<b-button v-else :loading="item.id == currentInstallId"
 												          rounded size="is-small"
 												          type="is-primary is-light"
 												          @click="qucikInstall(item.id);$messageBus('appstore_install', item.title)">
 													{{ $t('Install') }}
-												</b-button>
-												<b-button v-if="item.state===1" :loading="item.id == currentInstallId"
-												          rounded size="is-small"
-												          type="is-primary is-light"
-												          @click="openThirdContainerByAppInfo(item)">{{ $t('Open') }}
 												</b-button>
 											</div>
 										</div>
@@ -270,25 +150,29 @@
 						<!-- List condition Start -->
 						<div class="is-flex mt-5 mb-5">
 							<!-- Cate Start -->
-							<div class="is-flex-grow-1">
-								<b-dropdown v-model="currentCate" :mobile-modal="false" animation="fade1"
-								            aria-role="list" class="app-select file-dropdown" position="is-bottom-right"
-								            scrollable>
+							<div class="mr-2 _polymorphic is-flex is-align-items-center _dropdown">
+								<b-dropdown v-model="currentCate" :max-height="240" :mobile-modal="false"
+								            animation="fade1" aria-role="list" class="app-select file-dropdown"
+								            position="is-bottom-right" scrollable>
 									<template #trigger="{ active }">
-										<div class="button is-text auto-height pl-0 pt-0 pb-0 ">
-											<b-icon :icon="currentCate.font" class="mr-1 ml-0" size="is-small"></b-icon>
-											{{ currentCate.name }}
-											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'" class="ml-1"
-											        size="is-normal"></b-icon>
+										<div
+										class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
+											<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
+											        icon="category"
+											        pack="casa"></b-icon>
+											<span class="has-text-full-03">{{ currentCate.name }}</span>
+											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'"
+											        class="ml-2 _dropdown__stateIcon"
+											        custom-size="casa-16px"></b-icon>
 										</div>
 									</template>
 									<b-dropdown-item v-for="menu in cateMenu" :key="menu.id"
 									                 :class="menu.id == currentCate.id?'is-active':''"
 									                 :data-title="menu.count"
-									                 :value="menu" aria-role="listitem">
-										<div class="media is-align-items-center is-flex"
+									                 :value="menu" aria-role="listitem"
+									                 class="_dropdown__item">
+										<div class="media is-align-items-center is-flex has-text-full-03"
 										     @click="$messageBus('appstore_type', menu.name)">
-											<b-icon :icon="menu.font" class="mr-1" size="is-small"></b-icon>
 											<div class="media-content">
 												<h3>{{ menu.name }}</h3>
 											</div>
@@ -299,32 +183,66 @@
 							</div>
 							<!-- Cate End -->
 							
-							<!-- Sort Start -->
-							<div>
-								{{ $t('Sort by') }}:
-								<b-dropdown v-model="currentSort" :mobile-modal="false" animation="fade1"
-								            aria-role="list" class="app-select file-dropdown"
-								            position="is-bottom-right">
+							<!-- Author Start -->
+							<div class="_polymorphic is-flex is-align-items-center _dropdown">
+								<b-dropdown v-model="currentAuthor" :max-height="240" :mobile-modal="false"
+								            animation="fade1" aria-role="list" class="app-select file-dropdown"
+								            position="is-bottom-right" scrollable>
 									<template #trigger="{ active }">
-										<div class="button is-text auto-height pl-0 pt-0 pb-0 is-size-14px">
-											{{ currentSort.name }}
-											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'" class="ml-1"
-											        size="is-normal"></b-icon>
+										<div
+										class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
+											<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
+											        icon="author"
+											        pack="casa"></b-icon>
+											<span class="has-text-full-03">{{ currentAuthor.name }}</span>
+											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'"
+											        class="ml-2 _dropdown__stateIcon"
+											        custom-size="casa-16px"></b-icon>
 										</div>
-									
 									</template>
-									<b-dropdown-item v-for="(menu,index) in sortMenu" :key="'sort_'+index"
-									                 :class="menu.slash == currentSort.slash?'is-active':''"
-									                 :value="menu" aria-role="listitem">
-										<div class="media align-items-center is-flex"
-										     @click="$messageBus('appstore_sort', menu.name)">
+									<b-dropdown-item v-for="menu in authorMenu" :key="menu.id"
+									                 :class="menu.id == currentAuthor.id?'is-active':''"
+									                 :data-title="menu.count"
+									                 :value="menu" aria-role="listitem"
+									                 class="_dropdown__item">
+										<div class="media is-align-items-center is-flex has-text-full-03"
+										     @click="$messageBus('appstore_author', menu.name)">
 											<div class="media-content">
 												<h3>{{ menu.name }}</h3>
 											</div>
 										</div>
 									</b-dropdown-item>
 								</b-dropdown>
+
 							</div>
+							<!-- Author End -->
+
+							<!-- Sort Start -->
+							<!-- <div>
+							{{ $t('Sort by') }}:
+								<b-dropdown v-model="currentSort" :mobile-modal="false" animation="fade1"
+											aria-role="list" class="app-select file-dropdown"
+											position="is-bottom-right">
+									<template #trigger="{ active }">
+										<div class="button is-text auto-height pl-0 pt-0 pb-0 is-size-14px">
+											{{ currentSort.name }}
+											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'" class="ml-1"
+													size="is-normal"></b-icon>
+										</div>
+									
+									</template>
+									<b-dropdown-item v-for="(menu,index) in sortMenu" :key="'sort_'+index"
+													 :class="menu.slash == currentSort.slash?'is-active':''"
+													 :value="menu" aria-role="listitem">
+										<div class="media align-items-center is-flex"
+											 @click="$messageBus('appstore_sort', menu.name)">
+											<div class="media-content">
+												<h3>{{ menu.name }}</h3>
+											</div>
+										</div>
+									</b-dropdown-item>
+								</b-dropdown>
+							</div>-->
 							<!-- Sort End -->
 						</div>
 						
@@ -347,21 +265,23 @@
 								
 								</div>
 								<div class="mt-1 ml-7 is-flex is-align-items-center">
-									<div class="is-flex-grow-1 is-size-7 has-text-grey-light	">{{
+									<div class="is-flex-grow-1 is-size-7 has-text-grey-light">{{
 											item.category
 										}}
 									</div>
-									<b-button v-if="item.state===0" :loading="item.id == currentInstallId" rounded
+									<b-button v-if="installedList.includes(item.id)"
+									          :loading="item.id == currentInstallId" rounded
+									          size="is-small"
+									          type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">
+										{{ $t('Open') }}
+									</b-button>
+									<b-button v-else :loading="item.id == currentInstallId" rounded
 									          size="is-small"
 									          type="is-primary is-light"
 									          @click="qucikInstall(item.id);$messageBus('appstore_install', item.title)">
 										{{ $t('Install') }}
 									</b-button>
-									<b-button v-if="item.state===1" :loading="item.id == currentInstallId" rounded
-									          size="is-small"
-									          type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">
-										{{ $t('Open') }}
-									</b-button>
+
 								</div>
 							</div>
 						</div>
@@ -374,7 +294,8 @@
 							<h3 class="subtitle is-7 has-text-grey-light">
 								{{
 									$t('From community contributors, not optimized for CasaOS, but provides a basic App experience.')
-								}}</h3>
+								}}
+							</h3>
 							
 							<div class="columns f-list is-multiline is-mobile  pb-3 mb-5">
 								<div v-for="(item,index) in communityList " :key="index+item.title+item.id"
@@ -393,22 +314,22 @@
 									
 									</div>
 									<div class="mt-1 ml-7 is-flex is-align-items-center">
-										<div class="is-flex-grow-1 is-size-7 has-text-grey-light	">{{
-												item.category
-											}}
+										<div class="is-flex-grow-1 is-size-7 has-text-grey-light	">
+											{{ item.category }}
 										</div>
-										<b-button v-if="item.state===0" :loading="item.id == currentInstallId" rounded
+										<b-button v-if="installedList.includes(item.id)"
+										          :loading="item.id == currentInstallId" rounded
+										          size="is-small"
+										          type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">
+											{{ $t('Open') }}
+										</b-button>
+										<b-button v-else :loading="item.id == currentInstallId" rounded
 										          size="is-small"
 										          type="is-primary is-light"
 										          @click="qucikInstall(item.id);$messageBus('appstorecommunity_install', item.title)">
 											{{
 												$t('Install')
 											}}
-										</b-button>
-										<b-button v-if="item.state===1" :loading="item.id == currentInstallId" rounded
-										          size="is-small"
-										          type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">
-											{{ $t('Open') }}
 										</b-button>
 									</div>
 								</div>
@@ -437,132 +358,13 @@
 				
 				<!-- App Install Form Start -->
 				<section v-if="currentSlide == 1">
-					<ValidationObserver ref="ob1">
-						
-						<ValidationProvider v-slot="{ errors, valid }" name="Image" rules="required">
-							<b-field :label="$t('Docker Image')+' *'" :message="$t(errors)"
-							         :type="{ 'is-danger': errors[0], 'is-success': valid }">
-								<b-input v-model="initData.image" :placeholder="$t('e.g.,hello-world:latest')"
-								         :readonly="state == 'update'" @input="changeIcon"></b-input>
-								<!-- <b-autocomplete :data="data" placeholder="e.g. hello-world:latest" field="image" :loading="isFetching" @typing="getAsyncData" @select="option => portSelected = option" v-model="initData.image" :readonly="state == 'update'"></b-autocomplete> -->
-							</b-field>
-						</ValidationProvider>
-						<ValidationProvider v-slot="{ errors, valid }" name="Name" rules="required">
-							<b-field :label="$t('App name')+' *'" :message="errors"
-							         :type="{ 'is-danger': errors[0], 'is-success': valid }">
-								<b-input v-model="initData.label" :placeholder="$t('Your custom App Name')"
-								         maxlength="40"></b-input>
-							</b-field>
-						</ValidationProvider>
-						<b-field :label="$t('Icon URL')">
-							<p class="control">
-              <span class="button is-static container-icon">
-                <b-image :key="appIcon" :src="appIcon" :src-fallback="require('@/assets/img/app/default.svg')"
-                         class="is-32x32" ratio="1by1"></b-image>
-              </span>
-							</p>
-							<b-input v-model="initData.icon" :placeholder="$t('Your custom icon URL')"
-							         expanded></b-input>
-						</b-field>
-						
-						<b-field label="Web UI">
-							<!-- <p class="control">
-							  <span class="button is-static">{{baseUrl}}</span>
-							</p> -->
-							<b-select v-model="initData.protocol">
-								<option value="http">http://</option>
-								<option value="https">https://</option>
-							</b-select>
-							<b-input v-model="initData.host" :placeholder="baseUrl" expanded></b-input>
-							<b-autocomplete v-model="initData.port_map" :data="bridgePorts" :open-on-focus="true"
-							                :placeholder="$t('Port')" class="has-colon" field="host"
-							                @select="option => (portSelected = option)"></b-autocomplete>
-							<b-input v-model="initData.index" :placeholder="'/index.html '+ $t('[Optional]')"
-							         expanded></b-input>
-						</b-field>
-						<template v-if="isCasa">
-							
-							<b-field :label="$t('Network')">
-								<b-select v-model="initData.network_model" expanded placeholder="Select">
-									<optgroup v-for="net in networks" :key="net.driver" :label="net.driver">
-										<option v-for="(option,index) in net.networks" :key="option.name+index"
-										        :value="option.name">
-											{{ option.name }}
-										</option>
-									</optgroup>
-								</b-select>
-							</b-field>
-							
-							<ports v-if="showPorts" v-model="initData.ports" :showHostPost="showHostPort"></ports>
-							<input-group v-model="initData.volumes" :label="$t('Volumes')"
-							             :message="$t('No volumes now, click “+” to add one.')"
-							             type="volume"></input-group>
-							<env-input-group v-model="initData.envs" :label="$t('Environment Variables')"
-							                 :message="$t('No environment variables now, click “+” to add one.')"></env-input-group>
-							<input-group v-model="initData.devices" :label="$t('Devices')"
-							             :message="$t('No devices now, click “+” to add one.')"
-							             type="device"></input-group>
-							<commands-input v-model="initData.cmd" :label="$t('Container Command')"
-							                :message="$t('No commands now, click “+” to add one.')"></commands-input>
-							
-							<b-field :label="$t('Privileged')">
-								<b-switch v-model="initData.privileged"></b-switch>
-							</b-field>
-							
-							<b-field :label="$t('Memory Limit')">
-								<vue-slider v-model="initData.memory" :max="totalMemory" :min="256"></vue-slider>
-							</b-field>
-							
-							<b-field :label="$t('CPU Shares')">
-								<b-select v-model="initData.cpu_shares" :placeholder="$t('Select')" expanded>
-									<option value="10">{{ $t('Low') }}</option>
-									<option value="50">{{ $t('Medium') }}</option>
-									<option value="90">{{ $t('High') }}</option>
-								</b-select>
-							</b-field>
-							
-							<b-field :label="$t('Restart Policy')">
-								<b-select v-model="initData.restart" :placeholder="$t('Select')" expanded>
-									<option value="on-failure">on-failure</option>
-									<option value="always">always</option>
-									<option value="unless-stopped">unless-stopped</option>
-								</b-select>
-							</b-field>
-							
-							<b-field :label="$t('Container Capabilities (cap-add)')">
-								<b-taginput ref="taginput" v-model="initData.cap_add" :allow-new="false"
-								            :data="capArray"
-								            :open-on-focus="false"
-								            autocomplete @typing="getFilteredTags">
-									<template slot-scope="props">
-										{{ props.option }}
-									</template>
-									<template #empty>
-										There are no items
-									</template>
-									<template #portSelected="props">
-										<b-tag v-for="(tag, index) in props.tags" :key="index" :tabstop="false" closable
-										       @close="$refs.taginput.removeTag(index, $event)">
-											{{ tag }}
-										</b-tag>
-									</template>
-								</b-taginput>
-							</b-field>
-							
-							<ValidationProvider v-slot="{ errors, valid }" name="Name" rules="rfc1123">
-								<b-field :label="$t('Container Hostname')" :message="$t(errors)"
-								         :type="{ 'is-danger': errors[0], 'is-success': valid }">
-									<b-input v-model="initData.host_name" :placeholder="$t('Hostname of app container')"
-									         value=""></b-input>
-								</b-field>
-							</ValidationProvider>
-							
-							<b-field :label="$t('App Description')">
-								<b-input v-model="initData.description"></b-input>
-							</b-field>
-						</template>
-					
-					</ValidationObserver>
+					<!--:config-data="initConfigData"-->
+					<ComposeConfig ref="compose" :cap-array="capArray"
+					               :docker-compose-commands="configDataString"
+					               :is-casa="isCasa" :networks="networks" :state="state"
+					               :total-memory="totalMemory"
+					               @updateDockerComposeCommands="updateDockerComposeCommands"
+					               @updateMainName="name=> mainName = name"></ComposeConfig>
 				</section>
 				<!-- App Install Form End -->
 				
@@ -620,25 +422,14 @@
 </template>
 
 <script>
-import axios from 'axios'
-import InputGroup from '../forms/InputGroup.vue';
-import EnvInputGroup from '../forms/EnvInputGroup.vue';
-import CommandsInput from '../forms/CommandsInput.vue';
-import Ports from '../forms/Ports.vue'
 import AppSideBar from './AppSideBar.vue'
 import ImportPanel from '../forms/ImportPanel.vue'
 import AppTerminalPanel from './AppTerminalPanel.vue'
 import LottieAnimation from "lottie-web-vue";
-import VueSlider from 'vue-slider-component'
-import 'vue-slider-component/theme/default.css'
-import {ValidationObserver, ValidationProvider} from "vee-validate";
 import "@/plugins/vee-validate";
-import debounce from 'lodash/debounce'
-import find from 'lodash/find';
 import uniq from 'lodash/uniq';
 import isNull from 'lodash/isNull'
 import orderBy from 'lodash/orderBy';
-import cloneDeep from 'lodash/cloneDeep';
 import FileSaver from 'file-saver';
 import {Swiper, SwiperSlide} from 'vue-awesome-swiper'
 // import AppsInstallationLocation from "@/components/Apps/AppsInstallationLocation";
@@ -648,6 +439,8 @@ import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
 import business_OpenThirdApp from "@/mixins/app/Business_OpenThirdApp";
 import DockerProgress from "@/components/Apps/progress.js";
 
+import ComposeConfig from "@/components/Apps/ComposeConfig.vue";
+import AppDetailInfo from '@/components/Apps/AppDetailInfo.vue'
 
 const data = [
 	"AUDIT_CONTROL",
@@ -681,18 +474,13 @@ const data = [
 
 export default {
 	components: {
-		Ports,
-		InputGroup,
-		EnvInputGroup,
-		CommandsInput,
-		ValidationObserver,
-		ValidationProvider,
+		AppDetailInfo,
 		AppSideBar,
 		LottieAnimation,
-		VueSlider,
 		Swiper,
 		SwiperSlide,
 		AppsInstallationLocation,
+		ComposeConfig,
 	},
 	mixins: [business_ShowNewAppTag, business_OpenThirdApp],
 	props: {
@@ -709,7 +497,7 @@ export default {
 		runningStatus: String,
 		configData: Object,
 		settingData: {
-			type: Object
+			type: String,
 		}
 	},
 	
@@ -729,16 +517,14 @@ export default {
 			currentInstallAppText: "",
 			currentInstallAppProgress: {},
 			currentInstallAppProgressTotals: {},
-			
-			appIcon: "",
+
 			sidebarOpen: false,
 			cancelButtonText: "Cancel",
-			baseUrl: "",
 			totalMemory: 0,
 			networks: [],
 			tempNetworks: [],
 			networkModes: [],
-			initData: {
+			initConfigData: {
 				host: "",
 				protocol: "http",
 				port_map: null,
@@ -764,7 +550,7 @@ export default {
 				container_name: "",
 				appstore_id: 0,
 			},
-			portSelected: null,
+			configDataString: '',
 			capArray: data,
 			pageIndex: 1,
 			pageSize: 5,
@@ -773,30 +559,8 @@ export default {
 			communityList: {},
 			recommendList: {},
 			currentSlide: 0,
-			currentInstallId: 0,
-			
-			//Image List Swiper
-			disPrev: false,
-			disNext: false,
-			swiperOptions: {
-				loop: false,
-				autoplay: true,
-				spaceBetween: 24,
-				breakpoints: {
-					640: {
-						slidesPerView: 1
-					},
-					768: {
-						slidesPerView: 2
-					},
-					1366: {
-						slidesPerView: 3
-					}
-				},
-				// on: {
-				// 	slideChangeTransitionStart: this.handleInfoSlide
-				// },
-			},
+			currentInstallId: '',
+
 			// Featured Swiper
 			disFeaturedPrev: false,
 			disFeaturedNext: false,
@@ -821,8 +585,16 @@ export default {
 			},
 			searchKey: "",
 			currentCate: {},
+			// currentAuthor: {},
+			currentAuthor: {count: 0, font: "author", id: 0, name: "All"},
 			currentSort: {},
 			cateMenu: [],
+			authorMenu: [
+				{count: 0, font: "author", id: 0, name: "All"},
+				{count: 0, font: "author", id: 1, name: "official"},
+				{count: 0, font: "author", id: 2, name: "by_casaos"},
+				{count: 0, font: "author", id: 3, name: "community"}
+			],
 			sortMenu: [
 				{icon: "", slash: "rank", name: "Popular"},
 				{icon: "", slash: "new", name: "New"},
@@ -830,12 +602,18 @@ export default {
 			],
 			storeQueryData: {
 				index: 1,
-				category_id: "",
+				category: "All",
+				authorType: "All",
 				type: "rank",
-				key: this.searchKey
+				key: this.searchKey,
+				pageSize: 5,
 			},
 			//  App Detail info
-			appDetailData: {},
+			appDetailData: {
+				title: {en_US: "",},
+				tagline: {en_US: "",},
+				description: {en_US: "",},
+			},
 			arch: "",
 			// unusable: false, // computer unusable
 			architectures: [],
@@ -861,16 +639,22 @@ export default {
 			installationLocation: '',
 			dockerProgress: null,
 			totalPercentage: 0,
+			dockerComposeCommands: '',
+			mainName: '',
+			installedList: [],
+			counterPatchGetStoreList: 0
 		}
 	},
 	
 	created() {
-		
-		// Set Front-end base url
-		this.baseUrl = `${document.domain}`;
+		//Get recommend
+		this.getStoreRecommend();
+		//Get list
+		// this.getStoreList();
+
 		//Get Max memory info form device
 		this.totalMemory = Math.floor(this.configData.memory.total / 1048576);
-		this.initData.memory = this.totalMemory
+		// this.initConfigData.memory = this.totalMemory
 		
 		//Handling network types
 		this.tempNetworks = this.configData.networks;
@@ -889,14 +673,15 @@ export default {
 		//If it is edit, Init data
 		if (this.settingData != undefined) {
 			this.isLoading = false
-			this.initData = this.preProcessData(Object.assign(this.initData, this.settingData))
+			// this.initConfigData = this.preProcessData(Object.assign(this.initConfigData, this.settingData))
+			this.configDataString = this.settingData
 			this.currentSlide = 1
 			
 		} else {
-			let gg = find(this.tempNetworks, (o) => {
-				return o.driver == "bridge"
-			}) || []
-			this.initData.network_model = gg.length > 0 ? gg[0].name : "bridge";
+			// let gg = find(this.tempNetworks, (o) => {
+			// 	return o.driver == "bridge"
+			// }) || []
+			// this.initConfigData.network_model = gg.length > 0 ? gg[0].name : "bridge";
 			this.getCategoryList();
 		}
 		
@@ -905,8 +690,10 @@ export default {
 			this.showAppDetial(this.storeId);
 		}
 		
+		// 这是 选择应用安装位置。 这块功能不被使用，暂且保留。
+		// close the function - APPs Installation Location
 		// prepare data - APPs Installation Location requirement document
-		this.getDiskList();
+		// this.getDiskList();
 		// close the function - APPs Installation Location
 		// this.askInstallationLocation();
 		
@@ -915,32 +702,6 @@ export default {
 	},
 	
 	computed: {
-		
-		showPorts() {
-			if (this.initData.network_model.toLowerCase().indexOf("macvlan") > -1 || this.initData.network_model.indexOf("host") > -1) {
-				return false
-			} else {
-				return true
-			}
-		},
-		showHostPort() {
-			if (this.initData.network_model.indexOf("host") > -1) {
-				return false
-			} else {
-				return true
-			}
-		},
-		bridgePorts() {
-			return this.initData.ports.filter(function (item) {
-				return item.host != ""
-			})
-		},
-		filteredBeidgePort() {
-			return this.bridgePorts.filter(port => {
-				return port.host.indexOf(this.initData.port_map) >= 0
-			})
-			
-		},
 		showImportButton() {
 			return this.currentSlide == 1 && this.state == 'install'
 		},
@@ -956,13 +717,13 @@ export default {
 				return this.$t("App Store");
 			} else if (this.currentSlide == 1) {
 				if (!this.isCasa) {
-					return this.$t("Import") + " " + this.initData.label
+					return this.$t("Import") + " " + this.mainName
 				} else {
-					return (this.settingData != undefined) ? this.initData.label + " " + this.$t("Setting") : this.$t("Install a new App manually")
+					return (this.settingData != undefined) ? this.mainName + " " + this.$t("Setting") : this.$t("Install a new App manually")
 				}
 				
 			} else {
-				return this.$t("Installing") + " " + this.initData.image
+				return this.$t("Installing") + " " + this.mainName
 			}
 		},
 		showDetailSwiper() {
@@ -977,46 +738,55 @@ export default {
 			}
 			return this.architectures.indexOf(this.arch) < 0
 		},
+		// patchGetStoreList() {
+		// 	console.log("AAAAAAAAAAAAAAA")
+		// 	this.getStoreList()
+		// 	return this.currentCate.toString() + this.currentAuthor.toString() + this.currentSort.toString()
+		// }
+		// patchGetStoreList() {
+		// 	this.getStoreList();
+		// 	return this.counterPatchGetStoreList
+		// }
 		archTitle() {
 			if (this.arch === 'arm') {
 				return 'armv7'
 			}
 			return this.arch
 		}
-		
+
 	},
 	watch: {
-		// Watch if Icon url has changed
-		'initData.icon'(val) {
-			this.updateIconUrl(val)
-		},
 		// Watch if Section index changes
 		currentSlide(val) {
 			if (val == 1) {
 				this.isLoading = false;
 			}
 		},
-		// Watch if initData changes
-		initData: {
-			handler(val) {
-				if (this.state == 'install') {
-					localStorage.setItem("app_data", JSON.stringify(val))
-				}
-			},
-			deep: true
-		},
 		// Watch if the query data of app store changes
-		storeQueryData: {
-			handler() {
-				this.getStoreList();
-			},
-			deep: true
-		},
+		// storeQueryData: {
+		// 	handler() {
+		// 		this.getStoreList();
+		// 	},
+		// 	deep: true
+		// },
 		// Watch if app cates changes
 		currentCate: {
 			handler(val) {
 				if (!this.isFirst) {
-					this.storeQueryData.category_id = val.id
+					// this.storeQueryData.category = val.name
+					// this.getStoreList();
+					this.counterPatchGetStoreList++
+				}
+
+			},
+			deep: true
+		},
+		currentAuthor: {
+			handler(val) {
+				if (!this.isFirst) {
+					// this.storeQueryData.authorType = val.name
+					// this.getStoreList();
+					this.counterPatchGetStoreList++
 				}
 			},
 			deep: true
@@ -1025,49 +795,30 @@ export default {
 		currentSort: {
 			handler(val) {
 				if (!this.isFirst) {
-					this.storeQueryData.type = val.slash
+					// this.storeQueryData.sort = val.name
+					// this.getStoreList();
+					this.counterPatchGetStoreList++
 				}
 			},
 			deep: true
+		},
+		counterPatchGetStoreList() {
+			this.getStoreList();
+			return 0
 		}
 	},
 	methods: {
-		
-		/**
-		 * @description:
-		 * @param {*} function
-		 * @return {*}
-		 */
-		updateIconUrl: debounce(function (string) {
-			this.appIcon = string
-		}, 300),
-		
-		updateLabel: debounce(function (string) {
-			this.initData.label = string
-		}, 50),
-		
-		/**
-		 * @description:
-		 * @param {*} text
-		 * @return {*}
-		 */
-		getFilteredTags(text) {
-			this.capArray = data.filter((option) => {
-				return option
-				.toString()
-				.indexOf(text.toUpperCase()) >= 0
-			})
+		// this.cateMenu : {name: 'appstore', title: 'App Store', icon: 'mdi-apps', component: 'AppStore'}
+		// param : this.cateMenu.name
+		getCateIcon(name) {
+			let tempO = this.cateMenu.find(item => item.name == name) || {font: 'mdi-apps'}
+			return tempO.font;
 		},
-		
-		/**
-		 * @description:
-		 * @param {*} swiper
-		 * @return {*}
-		 */
-		/*handleInfoSlide(swiper) {
-		  this.disPrev = (swiper.activeIndex == 0) ? true : false;
-		  this.disNext = swiper.isEnd;
-		},*/
+
+		// updateLabel: debounce(function (string) {
+		// 	this.initConfigData.label = string
+		// }, 50),
+
 		/**
 		 * @description:
 		 * @param {*} swiper
@@ -1092,6 +843,7 @@ export default {
 				})
 				this.currentCate = this.cateMenu[0]
 				this.currentSort = this.sortMenu[0]
+				console.log('sort :: ', this.sortMenu)
 				if (this.isFirst) {
 					this.isFirst = false
 				}
@@ -1103,27 +855,109 @@ export default {
 			
 		},
 		
+		async getStoreRecommend() {
+			try {
+				// this.isLoading = true;
+
+				let res = await this.$openAPI.appManagement.appStore.composeAppStoreInfoList(undefined, undefined, true).then(res => res.data.data.list);
+
+				this.recommendList = Object.keys(res).map(id => {
+					let main_app_info = res[id].apps[id]
+					return {
+						id,
+						category: main_app_info.category,
+						icon: main_app_info.icon,
+						tagline: main_app_info.tagline.en_US,
+						thumbnail: main_app_info.thumbnail,
+						title: main_app_info.title.en_US,
+						state: 0,
+
+					}
+				})
+			} catch (error) {
+				console.log('load recommend error', error);
+				// this.loadErrorStep = 2
+				// this.isLoading = false;
+				// this.isLoadError = true;
+			}
+		},
+
 		/**
 		 * @description: Get App store list
 		 * @param {*}
 		 * @return {*} void
 		 */
-		getStoreList() {
+		async getStoreList() {
 			this.isLoading = true
-			this.$api.apps.getAppList(this.storeQueryData).then(res => {
-				this.isLoading = false
-				this.isLoadError = false
-				if (res.data.success == 200) {
-					// this.listTotal = res.data.data.count
-					this.pageList = res.data.data.list
-					this.communityList = res.data.data.community
-					this.recommendList = res.data.data.recommend
+
+			try {
+				// let {category, authorType} = this.storeQueryData
+				let category = this.currentCate.name
+				let authorType = this.currentAuthor.name
+				let res;
+				if (authorType !== 'All' && category !== 'All') {
+					res = await this.$openAPI.appManagement.appStore.composeAppStoreInfoList(category, authorType).then(res => res.data.data)
+				} else if (authorType !== 'All') {
+					res = await this.$openAPI.appManagement.appStore.composeAppStoreInfoList(undefined, authorType).then(res => res.data.data)
+				} else if (category !== 'All') {
+					res = await this.$openAPI.appManagement.appStore.composeAppStoreInfoList(category, undefined, false).then(res => res.data.data)
+				} else {
+					res = await this.$openAPI.appManagement.appStore.composeAppStoreInfoList().then(res => res.data.data)
 				}
-			}).catch(() => {
-				this.loadErrorStep = 2
+
+				let list = res.list
+				let listRes = Object.keys(list).map(id => {
+					let main_app_info = list[id].apps[id]
+					return {
+						id,
+						category: main_app_info.category,
+						icon: main_app_info.icon,
+						tagline: main_app_info.tagline.en_US,
+						thumbnail: main_app_info.thumbnail,
+						title: main_app_info.title.en_US,
+						state: 0,
+					}
+				})
+				this.pageList = listRes;
+				this.installedList = res.installed
+			} catch (e) {
+				console.log('load store list error', e)
+			}
+			this.isLoading = false
+
+			/*this.$openAPI.appManagement.appStore.composeAppStoreInfoList(category, authorType, false).then(res => {
+				let list = res.data.data.list
+				let listRes = Object.keys(list).map(id => {
+					let main_app_info = list[id].apps[id]
+					return {
+						id,
+						category: main_app_info.category,
+						icon: main_app_info.icon,
+						tagline: main_app_info.tagline.en_US,
+						thumbnail: main_app_info.thumbnail,
+						title: main_app_info.title.en_US,
+						state: 0,
+					}
+				})
+				this.pageList = listRes;
+				let communityList = res.data.data.community || {}
+				this.communityList = Object.keys(communityList).map(id => {
+					let main_app_info = communityList[id].apps[id]
+					return {
+						id,
+						category: main_app_info.category,
+						icon: main_app_info.icon,
+						tagline: main_app_info.tagline.en_US,
+						thumbnail: main_app_info.thumbnail,
+						title: main_app_info.title.en_US,
+						state: 0,
+
+					}
+				})
+				this.installedList = res.data.data.installed
+			}).catch().finally(() => {
 				this.isLoading = false;
-				this.isLoadError = true;
-			})
+			})*/
 		},
 		
 		/**
@@ -1131,9 +965,37 @@ export default {
 		 * @param {id} String
 		 * @return {*} void
 		 */
-		showAppDetial(id) {
+		async showAppDetial(id) {
 			this.isLoading = true;
-			this.$api.apps.getAppInfo(id).then(resp => {
+			let min_memory = await this.$openAPI.appManagement.appStore.composeApp(id).then(res => {
+				return res.data.data.compose.services[id].deploy.resources.reservations.memory
+			})
+
+			if (min_memory.includes('GB')) {
+				min_memory = min_memory.replace('GB', '') * 1024
+			} else if (min_memory.includes('MB')) {
+				min_memory = min_memory.replace('MB', '')
+			} else {
+				min_memory = min_memory / 1024 / 1024
+			}
+			this.$openAPI.appManagement.appStore.composeAppStoreInfo(id).then(res => {
+				this.isLoading = false;
+				this.sidebarOpen = true;
+				this.appDetailData = res.data.data.apps[id]
+				this.appDetailData.id = id
+				this.appDetailData.min_memory = min_memory
+				this.architectures = res.data.data.architectures || [];
+			}).catch((e) => {
+				this.$buefy.toast.open({
+					message: e.response.data.message,
+					// message: this.$t(`There was an error loading the data, please try again!`),
+					type: 'is-danger'
+				})
+			}).finally(() => {
+				this.isLoading = false;
+			})
+
+			/*this.$api.apps.getAppInfo(id).then(resp => {
 				this.isLoading = false;
 				this.sidebarOpen = true;
 				this.appDetailData = resp.data.data
@@ -1146,7 +1008,7 @@ export default {
 					message: this.$t(`There was an error loading the data, please try again!`),
 					type: 'is-danger'
 				})
-			})
+			})*/
 		},
 		
 		retry() {
@@ -1159,71 +1021,48 @@ export default {
 		
 		
 		/**
-		 * @description: Quick Install App from app store
+		 * @description: Qucik Install App from app store
 		 * @param {*}
 		 * @return {*} void
 		 */
 		qucikInstall(id) {
 			this.currentInstallId = id
-			this.$api.apps.getAppInfo(id).then(resp => {
-				if (resp.data.success == 200) {
-					// messageBus :: installApp
-					// this.$messageBus('appstore_install', respData.title.toString())
-					
-					let respData = resp.data.data
-					this.initData.protocol = respData.protocol
-					this.initData.host = respData.host
-					this.initData.port_map = respData.port_map
-					this.initData.cpu_shares = 50
-					this.initData.memory = respData.max_memory
-					this.initData.restart = "always"
-					this.initData.label = respData.title
-					this.initData.position = true
-					this.initData.index = respData.index
-					this.initData.icon = respData.icon
-					this.initData.network_model = respData.network_model
-					this.initData.image = respData.image
-					this.initData.description = respData.description
-					this.initData.origin = respData.origin
-					this.initData.ports = isNull(respData.ports) ? [] : respData.ports
-					this.initData.volumes = isNull(respData.volumes) ? [] : respData.volumes
-					this.initData.envs = isNull(respData.envs) ? [] : respData.envs
-					this.initData.devices = isNull(respData.devices) ? [] : respData.devices
-					this.initData.cap_add = isNull(respData.cap_add) ? [] : respData.cap_add
-					this.initData.cmd = isNull(respData.cmd) ? [] : respData.cmd
-					this.initData.privileged = respData.privileged
-					this.initData.host_name = respData.host_name
-					this.initData.appstore_id = id
-					
-					this.currentInstallId = 0
-					
-					this.architectures = respData.architectures
-					if (this.unuseable) {
-						// this.showAppDetial(id);
-						this.sidebarOpen = true;
-						this.appDetailData = respData
-						return
-					}
-					
-					if (respData.tip !== "null" && respData.tip !== "[]" && respData.tip !== "") {
-						this.$buefy.dialog.confirm({
-							title: this.$t('Attention'),
-							message: this.formatTips(respData.tip),
-							type: 'is-dark',
-							onConfirm: () => {
-								this.sidebarOpen = false;
-								this.installAppData()
-							}
-						})
-					} else {
-						this.sidebarOpen = false;
-						this.installAppData()
-					}
+			this.$openAPI.appManagement.appStore.composeApp(id, {
+				headers: {
+					'content-type': 'application/yaml',
+					'accept': 'application/yaml'
 				}
-			}).catch(() => {
-				this.currentInstallId = 0
+			}).then(res => {
+				if (res.status == 200) {
+					this.$openAPI.appManagement.compose.installComposeApp(res.data).then(res => {
+						if (res.status === 200) {
+							this.currentInstallAppName = id
+							this.currentSlide = 2;
+							this.currentInstallAppText = "Start Installation..."
+							this.cancelButtonText = 'Continue in background'
+							this.dockerProgress = new DockerProgress();
+
+							this.$buefy.toast.open({
+								message: res.data.message,
+								type: 'is-success'
+							})
+						}
+					}).catch(() => {
+						this.$buefy.toast.open({
+							message: this.$t(`There was an error installing the application, please try again!`),
+							type: 'is-danger'
+						})
+					})
+				} else {
+					this.$buefy.toast.open({
+						message: this.$t(`There was an error installing the application, please try again!`),
+						type: 'is-warning'
+					})
+				}
+			}).catch((e) => {
+				// console.log(e.response.data)
 				this.$buefy.toast.open({
-					message: this.$t(`There was an error loading the data, please try again!`),
+					message: e.response.data.message,
 					type: 'is-danger'
 				})
 			})
@@ -1252,7 +1091,7 @@ export default {
 		 * @param {ConfigObject} data
 		 * @return {ConfigObject} data
 		 */
-		preProcessData(data) {
+		/*preProcessData(data) {
 			data.ports = isNull(data.ports) ? [] : data.ports
 			data.volumes = isNull(data.volumes) ? [] : data.volumes
 			data.envs = isNull(data.envs) ? [] : data.envs
@@ -1267,21 +1106,21 @@ export default {
 			data.icon = data.icon === "" ? this.getIconFromImage(data.image) : data.icon
 			
 			return data
-		},
-		
+		},*/
 		
 		/**
-		 * @description: Process the datas before submit
-		 * @param {*}
-		 * @return {*} void
+		 * @description: Get App icon form image
+		 * @param {*} image
+		 * @return {*}
 		 */
-		processData() {
-			
-			this.initData.cpu_shares = Number(this.initData.cpu_shares)
-			let model = this.initData.network_model.split("-");
-			this.initData.network_model = model[0]
+		getIconFromImage(image) {
+			if (image == "") {
+				return ""
+			} else {
+				let appIcon = image.split(":")[0].split("/").pop();
+				return `https://icon.casaos.io/main/all/${appIcon}.png`;
+			}
 		},
-		
 		/**
 		 * @description: Back to prev Step
 		 * @param {*}
@@ -1307,61 +1146,58 @@ export default {
 		 * @return {*} void
 		 */
 		installApp() {
-			this.checkStep(this.$refs.ob1).then(val => {
-				if (val) {
-					this.installAppData(this.id);
-				}
-			})
-		},
-		
-		installAppData() {
-			this.processData();
-			this.isLoading = true;
-			this.$api.container.install(this.initData).then((res) => {
-				this.isLoading = false;
-				if (res.data.success == 200) {
-					this.currentInstallAppName = res.data.data
-					this.currentSlide = 2;
-					this.currentInstallAppText = "Start Installation..."
-					this.cancelButtonText = 'Continue in background'
-					this.dockerProgress = new DockerProgress();
-				} else {
-					this.$buefy.toast.open({
-						message: res.data.message,
-						type: 'is-warning'
+			this.$refs.compose.checkStep().then((valid) => {
+				if (valid) {
+					console.log("docker-compose-command", this.dockerComposeCommands.length)
+					this.isLoading = true;
+					this.$openAPI.appManagement.compose.installComposeApp(this.dockerComposeCommands).then((res) => {
+						if (res.status === 200) {
+							this.currentInstallAppName = ''//res.data.data
+							this.currentSlide = 2;
+							this.currentInstallAppText = "Start Installation..."
+							this.cancelButtonText = 'Continue in background'
+							this.dockerProgress = new DockerProgress();
+						} else {
+							this.$buefy.toast.open({
+								message: res.data.message,
+								type: 'is-success'
+							})
+						}
+					}).catch((e) => {
+						this.$buefy.toast.open({
+							message: e.response.data.message,
+							// message: this.$t(`There was an error loading the data, please try again!`),
+							type: 'is-danger'
+						})
+					}).finally(() => {
+						this.isLoading = false;
 					})
 				}
-			}).catch((err) => {
-				this.isLoading = false;
-				this.$buefy.toast.open({
-					message: err.response.data.message,
-					type: 'is-warning'
-				})
 			})
 		},
-		
+
+		installAppData() {
+
+		},
+
 		
 		/**
 		 * @description: Save edit update
 		 * @return {*} void
 		 */
 		updateApp() {
-			this.processData();
-			this.isLoading = true;
-			let updateData = this.uuid2var(cloneDeep(this.initData));
-			this.$api.container.update(this.id, updateData).then((res) => {
+			this.$openAPI.appManagement.compose.applyComposeAppSettings(this.id, this.dockerComposeCommands).then((res) => {
+				console.log('updateComposeAppSettings :: ', res);
 				if (res.data.success == 200) {
-					this.isLoading = false;
 					this.$emit('updateState')
 				} else {
 					this.$buefy.toast.open({
-						message: res.data.message.data,
+						message: res.data.message,
 						type: 'is-warning'
 					})
 				}
 				this.$emit('close')
 			}).catch((err) => {
-				this.isLoading = false;
 				this.$buefy.toast.open({
 					message: err.response.data.message,
 					type: 'is-warning'
@@ -1386,10 +1222,12 @@ export default {
 				events: {
 					'update': (e) => {
 						//localStorage.removeItem("app_data")
-						this.initData = this.preProcessData(e)
-						if (this.initData.icon == "") {
-							this.changeIcon(this.initData.image)
-						}
+						// this.initConfigData = this.preProcessData(e)
+						// if (this.initConfigData.icon == "") {
+						// 	this.changeIcon(this.initConfigData.image)
+						// }
+						this.configDataString = e;
+						// this.settingData = e;
 						this.$buefy.dialog.alert({
 							title: '⚠️ ' + this.$t('Attention'),
 							message: '<div class="nobrk"><h4 class="title is-5">' + this.$t('AutoFill only helps you to complete most of the configuration.') + '</h4>' +
@@ -1407,52 +1245,23 @@ export default {
 					}
 				},
 				props: {
-					initData: this.initData,
+					// initData: this.initConfigData,
 					netWorks: this.networks,
 					oriNetWorks: this.tempNetworks,
 					deviceMemory: this.totalMemory
 				}
 			})
 		},
-		
-		/**
-		 * @description: Get remote synchronization information
-		 * @param {*} function
-		 * @return {*} void
-		 */
-		getAsyncData: debounce(function (name) {
-			if (!name.length) {
-				this.data = []
-				return
-			}
-			this.isFetching = true
-			axios.get(`https://hub.docker.com/api/content/v1/products/search?source=community&q=${name}&page=1&page_size=4`)
-			.then(({data}) => {
-				this.data = []
-				data.summaries.forEach((item) => this.data.push(item.name))
-			})
-			.catch((error) => {
-				this.data = []
-				throw error
-			})
-			.finally(() => {
-				this.isFetching = false
-			})
-		}, 500),
+
 		/**
 		 * @description: Export AppData to json file
 		 * @param {*} function
 		 * @return {*} void
 		 */
-		exportJSON() {
-			let exportData = cloneDeep(this.initData);
-			exportData.network_model = this.getNetworkName(this.initData.network_model);
-			exportData.version = "1.0"
-			exportData = this.uuid2var(exportData)
-			delete exportData.memory
-			const data = JSON.stringify(exportData);
-			const blob = new Blob([data], {type: ''});
-			FileSaver.saveAs(blob, `${exportData.label}.json`);
+		exportYAML() {
+			const blob = new Blob([this.dockerComposeCommands], {type: ''});
+			// FileSaver.saveAs(blob, `${exportData.label}.json`);
+			FileSaver.saveAs(blob, `${this.mainName}.yaml`);
 		},
 		
 		/**
@@ -1486,49 +1295,34 @@ export default {
 				return network[0].name
 			}
 		},
-		
-		/**
-		 * @description: Get App icon form image
-		 * @param {*} image
-		 * @return {*}
-		 */
-		getIconFromImage(image) {
-			if (image == "") {
-				return ""
-			} else {
-				let appIcon = image.split(":")[0].split("/").pop();
-				return `https://icon.casaos.io/main/all/${appIcon}.png`;
-			}
-		},
-		
-		/**
-		 * @description: Change App icon when image changed
-		 * @param {String} image
-		 * @return {*} void
-		 */
-		changeIcon(image) {
-			this.initData.icon = this.getIconFromImage(image)
-		},
-		
+
 		/**
 		 * @description: Show Terminal & Logs panel
 		 * @return {*} void
 		 */
-		
 		showTerminalPanel() {
-			this.$buefy.modal.open({
-				parent: this,
-				component: AppTerminalPanel,
-				hasModalCard: true,
-				customClass: 'terminal-modal',
-				trapFocus: true,
-				canCancel: [],
-				scroll: "keep",
-				animation: "zoom-in",
-				props: {
-					appid: this.id,
-					appName: this.initData.label
+			this.$openAPI.appManagement.compose.composeAppContainers(this.id).then((res) => {
+				if (res.status == 200) {
+					const containers = res.data.data.containers;
+					const containerId = containers[this.id].ID;
+					this.$buefy.modal.open({
+						parent: this,
+						component: AppTerminalPanel,
+						hasModalCard: true,
+						customClass: 'terminal-modal',
+						trapFocus: true,
+						canCancel: [],
+						scroll: "keep",
+						animation: "zoom-in",
+						props: {
+							appid: containerId,
+							// appName: this.initConfigData.label
+							appName: this.mainName
+						}
+					})
 				}
+			}).catch((err) => {
+				console.log('$openAPI.appManagement.compose.composeAppContainers', err.response)
 			})
 		},
 		
@@ -1656,6 +1450,11 @@ export default {
 					this.$emit('close')
 				}, 500)
 			}
+		},
+
+		updateDockerComposeCommands(val) {
+			console.log('updateConfig', val.length);
+			this.dockerComposeCommands = val
 		},
 	},
 	
@@ -1936,7 +1735,7 @@ export default {
 }
 </style>
 <style lang="scss" scoped>
-._polymorphic {
+.close {
 	height: 2rem;
 	width: 2rem;
 	border-radius: 0.375rem;
@@ -1946,13 +1745,6 @@ export default {
 	opactiy: 0.3;
 }
 
-._polymorphic:hover {
-	background: hsla(208, 16%, 96%, 1);
-}
-
-//._polymorphic:active {
-//	background: blue;
-//}
 ._title {
 	/* Text 500Medium/Text02 */
 	
@@ -1984,6 +1776,48 @@ export default {
 	
 	&::-webkit-progress-value {
 		opacity: 1;
+	}
+}
+
+// 0.4.4
+._polymorphic:hover {
+	cursor: pointer;
+	background: hsla(208, 16%, 96%, 1);
+}
+
+._polymorphic:active {
+	background: hsla(208, 16%, 94%, 1);
+}
+
+._polymorphic-attention:hover {
+	cursor: pointer;
+	background: hsla(18, 98%, 94%, 1);
+}
+
+._polymorphic-attention:active {
+	background: hsla(18, 100%, 80%, 1);
+}
+
+._dropdown {
+	height: 2rem;
+	border-radius: 0.25rem;
+
+	._dropdown__typeIcon {
+		margin-left: 0.625rem;
+		width: 18px;
+		height: 18px;
+	}
+
+	._dropdown__stateIcon {
+		margin-right: 0.625rem;
+		width: 16px;
+		height: 16px;
+	}
+
+	._dropdown__item {
+		width: 112px;
+		margin-right: 6px;
+		margin-bottom: 2px;
 	}
 }
 </style>

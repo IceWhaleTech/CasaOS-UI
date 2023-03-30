@@ -10,18 +10,19 @@
 -->
 <template>
   <div
+    v-if="isMobile"
     id="sidebar-btn"
     class="is-flex is-align-items-center mr-3"
-    v-if="isMobile"
     @click="handleShowSideBar"
   >
-    <b-icon icon="menu" class="picon"></b-icon>
+    <b-icon class="picon" icon="menu"></b-icon>
   </div>
 </template>
 
 <script>
 import VueBreakpointMixin from "vue-breakpoint-mixin";
 import events from "@/events/events";
+
 export default {
   name: "sidebar-button",
   mixins: [VueBreakpointMixin],

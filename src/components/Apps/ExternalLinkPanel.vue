@@ -66,10 +66,11 @@
 						
 						<b-field :label="$t('Icon URL')">
 							<p class="control">
-                <span class="button is-static container-icon">
-                  <b-image :key="icon" :src="icon" :src-fallback="require('@/assets/img/app/default.svg')"
-                           class="is-32x32" ratio="1by1"></b-image>
-                </span>
+				                <span class="button is-static container-icon">
+				                    <b-image :key="icon" :src="icon"
+				                             :src-fallback="require('@/assets/img/app/default.svg')"
+				                             class="is-32x32" ratio="1by1"></b-image>
+				                </span>
 							</p>
 							<b-input v-model="icon" :placeholder="$t('Your custom icon URL')" expanded></b-input>
 						</b-field>
@@ -163,6 +164,7 @@ export default {
 		 */
 		async checkStep(ref) {
 			let isValid = await ref.validate()
+			console.log(ref)
 			return isValid
 		},
 		

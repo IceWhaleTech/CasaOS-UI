@@ -10,13 +10,14 @@
 -->
 <template>
   <div class="container is-absolute">
-    <div class="circle" ref="circle1"></div>
-    <div class="circle" ref="circle2"></div>
+    <div ref="circle1" class="circle"></div>
+    <div ref="circle2" class="circle"></div>
   </div>
 </template>
 
 <script>
-import { gsap } from "gsap";
+import {gsap} from "gsap";
+
 export default {
   name: "drop-bg",
   mounted() {

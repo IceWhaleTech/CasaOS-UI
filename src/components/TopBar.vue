@@ -297,7 +297,7 @@
 			
 			<!-- Terminal  Start -->
 			<div class="is-flex is-align-items-center ml-3 _fixed-height"  @click="showTerminalPanel">
-				<b-tooltip :active="!$store.state.isMobile" :label="$t('Terminal & Logs')" position="is-right" type="is-dark" style="height: 1.25rem;">
+				<b-tooltip :active="!$store.state.isMobile" :label="$t('Terminal & Logs')" position="is-right" style="height: 1.25rem;" type="is-dark">
 						<b-icon class="picon" icon="terminal" pack="casa" size="is-20"></b-icon>
 				</b-tooltip>
 			</div>

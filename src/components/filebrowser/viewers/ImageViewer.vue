@@ -24,7 +24,7 @@
 
         <!-- Close Button Start -->
         <div class="close-button" @click="close">
-          <b-icon pack="casa" icon="close"></b-icon>
+          <b-icon icon="close" pack="casa"></b-icon>
         </div>
         <!-- Close File Button End -->
       </div>
@@ -94,9 +94,10 @@
 </template>
 
 <script>
-import { mixin } from '@/mixins/mixin';
+import {mixin} from '@/mixins/mixin';
 import 'viewerjs/dist/viewer.css'
-import { component as Viewer } from "v-viewer"
+import {component as Viewer} from "v-viewer"
+
 const XIMAGES = ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'svg', 'tiff']
 export default {
   mixins: [mixin],

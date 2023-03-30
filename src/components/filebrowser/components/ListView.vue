@@ -28,8 +28,8 @@
     <div class="tbody">
       <div
         id="select-container"
-        class="scroll-container scrollbars-light is-relative"
         :class="containerHeight"
+        class="scroll-container scrollbars-light is-relative"
         @contextmenu.prevent="openContextMenu"
         @mousedown.stop="onDragSelectionStart"
       >
@@ -125,7 +125,7 @@
 </template>
 
 <script>
-import { mixin } from "@/mixins/mixin";
+import {mixin} from "@/mixins/mixin";
 import ListViewMixin from "@/mixins/ListViewMixin";
 import VueBreakpointMixin from "vue-breakpoint-mixin";
 import ActionButton from "./ActionButton.vue";

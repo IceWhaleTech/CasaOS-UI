@@ -9,8 +9,8 @@
 <template>
   <div
     id="select-container"
-    class="scroll-container scrollbars-light is-relative"
     :class="containerHeight"
+    class="scroll-container scrollbars-light is-relative"
     @contextmenu.prevent="openContextMenu"
     @mousedown.left.prevent="onDragSelectionStart"
   >
@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import { mixin } from "@/mixins/mixin";
+import {mixin} from "@/mixins/mixin";
 import ListViewMixin from "@/mixins/ListViewMixin";
 import ActionButton from "./ActionButton.vue";
 import ContextMenu from "./ContextMenu.vue";

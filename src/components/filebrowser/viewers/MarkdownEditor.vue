@@ -19,31 +19,31 @@
       <div class="is-flex is-align-items-center">
         <!-- Save File Button Start -->
         <b-button
-          icon-left="content-save"
-          type="is-dark"
-          size="is-small"
           :label="$t('Save')"
           class="mr-3"
+          icon-left="content-save"
           rounded
+          size="is-small"
+          type="is-dark"
           @click="saveFile(false)"
         />
         <!-- Save File Button Start -->
 
         <!-- Download File Button Start -->
         <b-button
-          icon-left="download"
-          type="is-primary"
-          size="is-small"
           :label="$t('Download')"
           class="mr-2"
+          icon-left="download"
           rounded
+          size="is-small"
+          type="is-primary"
           @click="download"
         />
         <!-- Download File Button End -->
 
         <!-- Close Button Start -->
         <div class="close-button" @click="close">
-          <b-icon pack="casa" icon="close"></b-icon>
+          <b-icon icon="close" pack="casa"></b-icon>
         </div>
         <!-- Close File Button End -->
       </div>
@@ -53,9 +53,9 @@
     <div class="file-path-bread">
       <b-breadcrumb size="is-small">
         <b-breadcrumb-item
-          active
           v-for="(item, index) in pathArray"
           :key="'f-' + index"
+          active
           >{{ item }}</b-breadcrumb-item
         >
       </b-breadcrumb>
@@ -74,13 +74,14 @@
 </template>
 
 <script>
-import { mixin } from "@/mixins/mixin";
+import {mixin} from "@/mixins/mixin";
 
 // import mime from 'mime'
-import { Editor, EditorContent } from "@tiptap/vue-2";
+import {Editor, EditorContent} from "@tiptap/vue-2";
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
 import Typography from "@tiptap/extension-typography";
+
 export default {
   mixins: [mixin],
   components: {

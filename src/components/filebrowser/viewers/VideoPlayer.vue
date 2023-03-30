@@ -17,19 +17,19 @@
       <div class="is-flex is-align-items-center">
         <!-- Download File Button Start -->
         <b-button
-          icon-left="download"
-          type="is-primary"
-          size="is-small"
           :label="$t('Download')"
           class="mr-2"
+          icon-left="download"
           rounded
+          size="is-small"
+          type="is-primary"
           @click="download"
         />
         <!-- Download File Button End -->
 
         <!-- Close Button Start -->
         <div class="close-button" @click="close">
-          <b-icon pack="casa" icon="close"></b-icon>
+          <b-icon icon="close" pack="casa"></b-icon>
         </div>
         <!-- Close File Button End -->
       </div>
@@ -40,12 +40,12 @@
       class="is-flex is-justify-content-center is-align-items-center is-flex-grow-1 v-container video"
     >
       <div
-        class="video-container"
         :class="{ 'is-align-items-center': isAudio }"
+        class="video-container"
       >
         <vue-plyr
-          key="video-player"
           v-if="isVideo"
+          key="video-player"
           ref="plyr"
           :options="options"
         >
@@ -54,8 +54,8 @@
           </video>
         </vue-plyr>
         <vue-plyr
-          key="audio-player"
           v-if="isAudio"
+          key="audio-player"
           ref="plyr"
           class="plyr-audio"
         >
@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import { mixin } from "@/mixins/mixin";
+import {mixin} from "@/mixins/mixin";
 // import VuePlyr from 'vue-plyr'
 import "vue-plyr/dist/vue-plyr.css";
 

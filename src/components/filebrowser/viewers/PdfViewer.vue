@@ -23,7 +23,7 @@
 
         <!-- Close Button Start -->
         <div class="close-button" @click="close">
-          <b-icon pack="casa" icon="close"></b-icon>
+          <b-icon icon="close" pack="casa"></b-icon>
         </div>
         <!-- Close File Button End -->
       </div>
@@ -46,8 +46,9 @@
 </template>
 
 <script>
-import { mixin } from '@/mixins/mixin';
+import {mixin} from '@/mixins/mixin';
 import pdf from 'vue-pdf'
+
 export default {
   mixins: [mixin],
   props: {

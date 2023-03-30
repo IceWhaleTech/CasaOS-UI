@@ -25,7 +25,7 @@
 
         <!-- Close Button Start -->
         <div class="close-button" @click="close">
-          <b-icon pack="casa" icon="close"></b-icon>
+          <b-icon icon="close" pack="casa"></b-icon>
         </div>
         <!-- Close File Button End -->
 
@@ -50,16 +50,15 @@
 
 <script>
 
-import { mixin } from '@/mixins/mixin';
+import {mixin} from '@/mixins/mixin';
 
 import mime from 'mime'
 // Core
-import { codemirror } from 'vue-codemirror'
+import {codemirror} from 'vue-codemirror'
 import 'codemirror/lib/codemirror.css'
 // theme css
 import 'codemirror/theme/monokai.css'
 // import 'codemirror/theme/elegant.css'
-
 // require active-line.js
 import 'codemirror/addon/selection/active-line.js'
 
@@ -71,14 +70,12 @@ import 'codemirror/addon/search/searchcursor.js'
 import 'codemirror/addon/hint/show-hint.js'
 import 'codemirror/addon/hint/show-hint.css'
 import 'codemirror/addon/hint/javascript-hint.js'
-import 'codemirror/addon/selection/active-line.js'
 
 // highlightSelectionMatches
 import 'codemirror/addon/scroll/annotatescrollbar.js'
 import 'codemirror/addon/scroll/simplescrollbars'
 import 'codemirror/addon/scroll/simplescrollbars.css'
 import 'codemirror/addon/search/matchesonscrollbar.js'
-import 'codemirror/addon/search/searchcursor.js'
 import 'codemirror/addon/search/match-highlighter.js'
 
 // keyMap
@@ -87,7 +84,6 @@ import 'codemirror/addon/edit/matchbrackets.js'
 import 'codemirror/addon/comment/comment.js'
 import 'codemirror/addon/dialog/dialog.js'
 import 'codemirror/addon/dialog/dialog.css'
-import 'codemirror/addon/search/searchcursor.js'
 import 'codemirror/addon/search/search.js'
 import 'codemirror/keymap/sublime.js'
 
@@ -110,7 +106,6 @@ import 'codemirror/mode/htmlembedded/htmlembedded'
 import 'codemirror/mode/http/http'
 import 'codemirror/mode/php/php'
 import 'codemirror/mode/python/python'
-import 'codemirror/mode/http/http'
 import 'codemirror/mode/sql/sql'
 import 'codemirror/mode/vue/vue'
 import 'codemirror/mode/xml/xml'

@@ -112,7 +112,7 @@
 </template>
 
 <script>
-import { mixin } from "@/mixins/mixin";
+import {mixin} from "@/mixins/mixin";
 import events from "@/events/events";
 import TreeListItem from "./TreeListItem.vue";
 

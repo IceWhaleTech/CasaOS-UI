@@ -14,6 +14,7 @@ import router from '@/router'
 import store from '@/store'
 import i18n from '@/plugins/i18n'
 import api from '@/service/api.js'
+import openAPI from '@/service/index.js'
 import Buefy from 'buefy'
 import VueFullscreen from 'vue-fullscreen'
 import Vue2TouchEvents from 'vue2-touch-events'
@@ -55,6 +56,7 @@ Vue.use(VueSocialSharing);
 
 Vue.config.productionTip = false
 Vue.prototype.$api = api;
+Vue.prototype.$openAPI = openAPI;
 Vue.prototype.$baseIp = baseIp;
 Vue.prototype.$baseURL = baseURL;
 Vue.prototype.$protocol = protocol;

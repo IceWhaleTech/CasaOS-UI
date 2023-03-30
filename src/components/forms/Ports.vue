@@ -24,10 +24,11 @@
 			<template v-if="index < 1">
 				<b-field grouped>
 					<b-field v-if="showHostPost" :label="$t('Host')" expanded>
-						<b-input v-model="item.host" :placeholder="$t('Host')" expanded type="number"></b-input>
+						<b-input v-model.number="item.published" :placeholder="$t('Host')" expanded
+						         type="number"></b-input>
 					</b-field>
 					<b-field :label="$t('Container')" expanded>
-						<b-input v-model="item.container" :placeholder="$t('Container')" expanded
+						<b-input v-model.number="item.target" :placeholder="$t('Container')" expanded
 						         type="number"></b-input>
 					</b-field>
 					
@@ -42,9 +43,10 @@
 			</template>
 			<template v-else>
 				<b-field grouped>
-					<b-input v-if="showHostPost" v-model="item.host" :placeholder="$t('Host')" expanded
+					<b-input v-if="showHostPost" v-model.number="item.published" :placeholder="$t('Host')" expanded
 					         type="number"></b-input>
-					<b-input v-model="item.container" :placeholder="$t('Container')" expanded type="number"></b-input>
+					<b-input v-model.number="item.target" :placeholder="$t('Container')" expanded
+					         type="number"></b-input>
 					
 					<b-select v-model="item.protocol" :placeholder="$t('Protocol')" expanded>
 						<option value="tcp">TCP</option>
@@ -90,8 +92,8 @@ export default {
 	methods: {
 		addItem() {
 			let itemObj = {
-				container: "",
-				host: "",
+				target: "",
+				published: "",
 				protocol: "tcp"
 			}
 			this.items.push(itemObj)

@@ -49,6 +49,7 @@
 <script>
 import StorageManagerPanel from '@/components/Storage/StorageManagerPanel.vue'
 import NewNetworkStorage from '@/components/filebrowser/modals/NewNetworkStorage.vue'
+
 export default {
   data() {
     return {

@@ -12,6 +12,7 @@ import {api} from "./service.js";
 
 const PREFIX = "/container"
 const PREFIX2 = "/v2/app_management/container"
+const PREFIX2COMPOSE = "/v2/app_management/compose"
 
 const container = {
     // get container networks
@@ -24,9 +25,19 @@ const container = {
         return api.get(`${PREFIX}/${id}/logs`);
     },
 
+    //v2:: get container logs
+    getLogsV2(id) {
+        return api.get(`${PREFIX2}/${id}/logs`);
+    },
+
     // get my app list
     getMyAppList(data) {
         return api.get(`${PREFIX}`, data);
+    },
+
+    //v2:: get my app list
+    getMyAppListV2(data) {
+        return api.get(`${PREFIX2COMPOSE}`, data);
     },
 
     // get container info
@@ -34,9 +45,19 @@ const container = {
         return api.get(`${PREFIX}/${id}`);
     },
 
+    //v2:: get container info
+    getInfoV2(id) {
+        return api.get(`${PREFIX2COMPOSE}/${id}`);
+    },
+
     // get container state
     getState(id) {
         return api.get(`${PREFIX}/${id}/state`);
+    },
+
+    //v2:: get container state
+    getStateV2(id) {
+        return api.get(`${PREFIX2COMPOSE}/${id}/status`);
     },
 
     // get my app hardware usage info
@@ -49,14 +70,29 @@ const container = {
         return api.get(`${PREFIX}/${id}/terminal`);
     },
 
+    //v2:: open docker terminal
+    openTerminalV2(id) {
+        return api.get(`${PREFIX2COMPOSE}/${id}/containers`);
+    },
+
     // install container
     install(data) {
         return api.post(`${PREFIX}`, data);
     },
 
+    //v2:: install container
+    installV2(data, config) {
+        return api.post(`${PREFIX2COMPOSE}`, data, config);
+    },
+
     // update contianer
     update(id, data) {
         return api.put(`${PREFIX}/${id}`, data);
+    },
+
+    //v2:: update contianer
+    updateV2(id, data) {
+        return api.put(`${PREFIX2COMPOSE}/${id}`, data);
     },
 
     // update container state
@@ -66,9 +102,21 @@ const container = {
         });
     },
 
+    //v2:: update container state
+    updateStateV2(id, state) {
+        return api.put(`${PREFIX2COMPOSE}/${id}/status`, {
+            status: state
+        });
+    },
+
     // uninstall  container
     uninstall(id, data) {
         return api.delete(`${PREFIX}/${id}`, data);
+    },
+
+    //v2:: uninstall  container
+    uninstallV2(id, data) {
+        return api.delete(`${PREFIX2COMPOSE}/${id}`, data);
     },
 
     // AppsInstallationLocation require doctument
@@ -86,7 +134,12 @@ const container = {
     // check container launch status
     containerLauncherCheck(id) {
         return api.get(`${PREFIX2}/${id}/healthcheck`);
-    }
+    },
+
+    //v2:: check container launch status INGINGINGINGINGINGINGING
+    containerLauncherCheckV2(id) {
+        return api.get(`${PREFIX2COMPOSE}/${id}/containers`);
+    },
 
 }
 

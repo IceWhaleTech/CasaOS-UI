@@ -10,13 +10,15 @@
 <template>
 	<div id="login-page" class="is-flex is-justify-content-center is-align-items-center">
 		<div v-if="!isLoading" v-animate-css="initAni" :class="'step' + step" class="login-panel is-shadow">
-
+			
 			<div v-if="step == 1" class="has-text-centered">
 				<div v-animate-css="s1Ani" class=" is-flex is-justify-content-center">
 					<b-image :src="require('@/assets/img/logo/casa-dark.svg')" class="is-128x128 mb-4"></b-image>
 				</div>
-
-				<h2 v-animate-css="s2Ani" class="title is-2 mb-5 has-text-centered __color">{{ $t('Welcome to CasaOS') }}</h2>
+				
+				<h2 v-animate-css="s2Ani" class="title is-2 mb-5 has-text-centered __color">{{
+						$t('Welcome to CasaOS')
+					}}</h2>
 				<h2 v-animate-css="s3Ani" class="subtitle  has-text-centered __color __op60">{{
 						$t(`Let's create your initial account`)
 					}}</h2>
@@ -25,22 +27,25 @@
 					}}
 				</b-button>
 			</div>
-
+			
 			<div v-if="step == 2">
 				<h2 class="title is-3  has-text-centered">{{ $t('Create Account') }}</h2>
 				<div class="is-flex is-justify-content-center ">
 					<div class="has-text-centered">
-						<b-image :src="require('@/assets/img/account/default-avatar.svg')" class="is-128x128" rounded></b-image>
+						<b-image :src="require('@/assets/img/account/default-avatar.svg')" class="is-128x128"
+						         rounded></b-image>
 					</div>
 				</div>
 				<ValidationObserver ref="observer" v-slot="{ handleSubmit }">
 					<ValidationProvider v-slot="{ errors, valid }" name="User" rules="required">
 						<b-field :label="$t('Username')" :message="$t(errors)"
 						         :type="{ 'is-danger': errors[0], 'is-success': valid }">
-							<b-input v-model="username" type="text" v-on:keyup.enter.native="handleSubmit(register)"></b-input>
+							<b-input v-model="username" type="text"
+							         v-on:keyup.enter.native="handleSubmit(register)"></b-input>
 						</b-field>
 					</ValidationProvider>
-					<ValidationProvider v-slot="{ errors, valid }" name="Password" rules="required|min:5" vid="password">
+					<ValidationProvider v-slot="{ errors, valid }" name="Password" rules="required|min:5"
+					                    vid="password">
 						<b-field :label="$t('Password')" :message="$t(errors)"
 						         :type="{ 'is-danger': errors[0], 'is-success': valid }"
 						         class="mt-4">
@@ -56,11 +61,12 @@
 							         v-on:keyup.enter.native="handleSubmit(register)"></b-input>
 						</b-field>
 					</ValidationProvider>
-					<b-button class="mt-5" expanded rounded type="is-primary" @click="handleSubmit(register)">{{ $t('Create') }}
+					<b-button class="mt-5" expanded rounded type="is-primary" @click="handleSubmit(register)">
+						{{ $t('Create') }}
 					</b-button>
 				</ValidationObserver>
 			</div>
-
+			
 			<div v-if="step == 3" class="has-text-centered ">
 				<h2 class="title is-3  has-text-centered">{{ $t('All things done!') }}</h2>
 				<div class="is-flex is-align-items-center is-justify-content-center">
@@ -79,7 +85,7 @@ import LottieAnimation from "lottie-web-vue";
 import smoothReflow from 'vue-smooth-reflow'
 
 export default {
-
+	
 	name: "welcome-page",
 	mixins: [smoothReflow],
 	data() {
@@ -124,16 +130,16 @@ export default {
 		ValidationProvider,
 		LottieAnimation
 	},
-
+	
 	mounted() {
 		this.$smoothReflow({
 			el: '.login-panel',
 			property: ['height', 'width'],
 		})
 		this.isLoading = false;
-
+		
 	},
-
+	
 	methods: {
 		/**
 		 * @description: register
@@ -144,6 +150,8 @@ export default {
 			this.$api.users.register(this.username, this.password, initKey).then(res => {
 				if (res.data.success == 200) {
 					this.login()
+					// First login set default app order.
+					this.$api.users.setCustomStorage("app_order", {data: ["App Store", "Files"]})
 					this.goToStep(3);
 				}
 			}).catch(err => {
@@ -156,7 +164,7 @@ export default {
 				})
 			})
 		},
-
+		
 		/**
 		 * @description: login
 		 * @return {*}
@@ -168,20 +176,20 @@ export default {
 				localStorage.setItem("refresh_token", userRes.data.data.token.refresh_token);
 				localStorage.setItem("expires_at", userRes.data.data.token.expires_at);
 				localStorage.setItem("user", JSON.stringify(userRes.data.data.user));
-
+				
 				this.$store.commit("SET_NEED_INITIALIZATION", false);
 				this.$store.commit("SET_INIT_KEY", "");
 				this.$store.commit("SET_USER", userRes.data.data.user);
 				this.$store.commit("SET_ACCESS_TOKEN", userRes.data.data.token.access_token);
 				this.$store.commit("SET_REFRESH_TOKEN", userRes.data.data.token.refresh_token);
-
+				
 				const versionRes = await this.$api.sys.getVersion();
 				if (versionRes.data.success == 200) {
 					localStorage.setItem("version", versionRes.data.data.current_version);
 				}
 				sessionStorage.setItem("fromWelcome", true);
 				this.isLogin = true
-
+				
 			} else {
 				this.isLogin = false
 				this.message = this.$t("Username or Password error!")
@@ -212,36 +220,36 @@ export default {
 	height: calc(100% - 5.5rem);
 	position: relative;
 	z-index: 500;
-
+	
 	.login-panel {
 		text-align: left;
 		background: rgba(255, 255, 255, 0.46);
 		backdrop-filter: blur(1rem);
 		border-radius: 8px;
 		padding: 2.5rem 4rem;
-
+		
 		.label {
 			color: #dfdfdf;
 		}
-
+		
 		.input {
 			background: rgba(255, 255, 255, 0.32);
 			border-color: transparent;
 		}
-
+		
 		&.step1 {
 			padding: 4rem 6rem;
 		}
-
+		
 		&.step2 {
 			padding: 2.5rem 4rem;
 			width: 32rem;
 		}
-
+		
 		&.step3 {
 			padding: 4rem 8rem;
 		}
-
+		
 		&.step4 {
 			width: 28rem;
 		}
@@ -256,35 +264,35 @@ export default {
 		border-radius: 8px;
 		margin: 0 2rem;
 		padding: 2rem !important;
-
+		
 		.label {
 			color: #dfdfdf;
 		}
-
+		
 		.input {
 			background: rgba(255, 255, 255, 0.32);
 			border-color: transparent;
 		}
-
+		
 		.is-128x128 {
 			height: 96px;
 			width: 96px;
 		}
-
+		
 		.is-3 {
 			font-size: 1.5rem;
 		}
-
+		
 		&.step1 {
 			.is-2 {
 				font-size: 1.5rem;
 			}
-
+			
 			.subtitle {
 				font-size: 1rem;
 			}
 		}
-
+		
 		&.step3 {
 			padding: 4rem !important;
 		}

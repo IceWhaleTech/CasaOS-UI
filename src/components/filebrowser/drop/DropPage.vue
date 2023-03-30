@@ -1,7 +1,7 @@
 <template>
   <div
-    class="content is-flex is-flex-direction-column is-flex-grow-1"
     id="drop-page"
+    class="content is-flex is-flex-direction-column is-flex-grow-1"
   >
     <!-- Header Start -->
     <header class="modal-card-head is-flex-shrink-0">
@@ -9,15 +9,15 @@
       <sidebar-menu-button></sidebar-menu-button>
       <!-- SideBar Button End -->
       <div
-        class="is-flex-grow-1 is-flex breadcrumb-container"
         id="bread-container"
+        class="is-flex-grow-1 is-flex breadcrumb-container"
       >
         <h3 class="title is-3 mb-0">{{ $t("FilesDrop") }}</h3>
       </div>
       <div class="is-flex is-align-items-center">
         <!--  Close Button Start -->
         <div class="close-button" @click="$emit('close')">
-          <b-icon pack="casa" icon="close"></b-icon>
+          <b-icon icon="close" pack="casa"></b-icon>
         </div>
         <!--  Close Button End -->
       </div>
@@ -25,39 +25,39 @@
     <!-- Header End -->
     <!-- Contents Start -->
     <div
-      class="action-area is-flex-grow-1 is-relative"
       :class="areaClass"
       :style="cssVariables"
+      class="action-area is-flex-grow-1 is-relative"
     >
       <div class="contents">
         <!-- Cricle BG Start -->
         <drop-bg v-if="isDesktop" />
         <!-- Circle Bg End -->
-        <transition-group name="list-complete" tag="div" class="contents">
+        <transition-group class="contents" name="list-complete" tag="div">
           <drop-item
             v-for="(item, index) in peersArray"
             :key="item.id"
-            :index="initIndexArray[index]"
             :center="centerPos"
-            :showIndex="initIndexArray[index]"
-            :radius="bigRadius"
-            :isFloat="isDesktop"
             :customClass="areaClass"
             :device="item"
+            :index="initIndexArray[index]"
+            :isFloat="isDesktop"
+            :radius="bigRadius"
+            :showIndex="initIndexArray[index]"
+            class="list-complete-item"
             @showed="
               isFirstIn = false;
               showAddButton = true;
             "
-            class="list-complete-item"
           />
         </transition-group>
         <drop-add-button
-          :index="peersArray.length"
-          :showIndex="initIndexArray[peersArray.length]"
-          :radius="bigRadius"
-          :center="centerPos"
-          :isFloat="isDesktop"
           v-if="showAddButton && peersArray.length == 1 && isDesktop"
+          :center="centerPos"
+          :index="peersArray.length"
+          :isFloat="isDesktop"
+          :radius="bigRadius"
+          :showIndex="initIndexArray[peersArray.length]"
         />
       </div>
       <!-- Bottom Center Icons Start -->
@@ -65,12 +65,12 @@
       <!-- Bottom Center Icons End -->
 
       <drop-add-button
-        :index="isDesktop ? peersArray.length : peersArray.length + 1"
-        :showIndex="initIndexArray[peersArray.length]"
-        :radius="bigRadius"
-        :center="centerPos"
-        :isFloat="false"
         v-if="isDesktop ? showAddButton && peersArray.length > 1 : true"
+        :center="centerPos"
+        :index="isDesktop ? peersArray.length : peersArray.length + 1"
+        :isFloat="false"
+        :radius="bigRadius"
+        :showIndex="initIndexArray[peersArray.length]"
       />
     </div>
     <!-- Contents End -->
@@ -79,8 +79,8 @@
 </template>
 
 <script>
-import { ServerConnection, PeersManager } from "./Network.js";
-import { saveAs } from "file-saver";
+import {PeersManager, ServerConnection} from "./Network.js";
+import {saveAs} from "file-saver";
 import VueBreakpointMixin from "vue-breakpoint-mixin";
 // import { v4 as uuidv4 } from "uuid";
 
