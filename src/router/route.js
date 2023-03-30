@@ -1,6 +1,6 @@
 /*
- * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
- * @LastEditTime: 2022/12/7 上午10:09
+ * @LastEditors: Jerryk jerry@icewhale.org
+ * @LastEditTime: 2023-02-24 17:51:33
  * @FilePath: /CasaOS-UI/src/router/route.js
  * @Description:
  *
@@ -33,6 +33,16 @@ export default [
         name: 'Home',
         hidden: true,
         component: () => import('@/views/Home.vue'),
+        meta: {
+            requireAuth: true,
+            showBackground: true
+        }
+    },
+    {
+        path: '/files',
+        name: 'Files',
+        hidden: true,
+        component: () => import('@/components/filebrowser/FilePanel.vue'),
         meta: {
             requireAuth: true,
             showBackground: true

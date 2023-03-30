@@ -1,7 +1,7 @@
 <!--
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-12 22:01:58
- * @FilePath: \CasaOS-UI-0.4.2\src\components\Apps\AppCard.vue
+ * @LastEditTime: 2023-03-01 10:54:46
+ * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -61,8 +61,8 @@
 							</b-dropdown>
 						</b-dropdown-item>
 					</b-dropdown>
-					
-					
+
+
 					<b-button v-if="item.type === 'official' || item.type === 'community'" class="mb-1 has-text-red"
 					          expanded type="is-text"
 					          @click="uninstallConfirm">
@@ -187,7 +187,7 @@ export default {
 			type: Boolean
 		}
 	},
-	
+
 	computed: {
 		tooltipLabel() {
 			if (!this.isCasa) {
@@ -235,7 +235,7 @@ export default {
 		},
 		
 	},
-	
+
 	watch: {
 		hover(val) {
 			if (!val && this.dropState)
@@ -258,7 +258,7 @@ export default {
 			}
 		},
 	},
-	
+
 	methods: {
 		/**
 		 * @description: Open app in new windows
@@ -315,7 +315,7 @@ export default {
 		restartApp() {
 			this.$messageBus('apps_restart', this.item.name);
 			this.isRestarting = true
-			
+
 			this.$openAPI.appManagement.compose.setComposeAppStatus(this.item.id, "restart").then((res) => {
 				this.updateState()
 			}).catch((err) => {
@@ -327,9 +327,9 @@ export default {
 				})
 			}).finally(() => {
 				this.isRestarting = false;
-				
+
 			})
-			
+
 			/*this.$api.container.updateState(this.item.id, "restart").then((res) => {
 				if (res.data.success === 200) {
 					this.updateState()
@@ -424,7 +424,7 @@ export default {
 			this.$emit("updateState")
 			this.$EventBus.$emit(events.UPDATE_SYNC_STATUS);
 		},
-		
+
 		async openTips(id) {
 			try {
 				const ret = await this.$openAPI.appManagement.compose.myComposeApp(id, {
@@ -453,7 +453,7 @@ export default {
 				console.log('openTips Error:', e)
 			}
 		},
-		
+
 		/**
 		 * @description: Emit the event that the app has been updated with custom_id
 		 * @return {*} void
@@ -473,7 +473,7 @@ export default {
 			this.$messageBus('apps_stop', item.name);
 			this.isStarting = true;
 			const status = item.status === "running" ? "stop" : "start"
-			
+
 			this.$openAPI.appManagement.compose.setComposeAppStatus(item.id, status).then((res) => {
 				this.updateState()
 				item.status = status
@@ -524,7 +524,7 @@ export default {
 					// messageBus :: apps_clone
 					this.$messageBus('apps_clone', this.item.name.toString());
 					
-					let initConfigData = {}
+					let initData = {}
 					initData.protocol = respData.protocol
 					initData.host = respData.host
 					initData.port_map = respData.port_map
@@ -694,11 +694,11 @@ export default {
 				padding-left: 1rem;
 				padding-right: 1rem;
 				border-radius: 5px;
-				
+
 				span + span i {
 					color: hsla(208, 16%, 42%, 1);
 				}
-				
+
 				&.is-text {
 					text-decoration: none;
 					justify-content: flex-start;
@@ -748,47 +748,47 @@ export default {
 				margin-left: -4px;
 				margin-right: -4px;
 			}
-			
+
 			._b-bor {
 				border-top: hsla(208, 16%, 94%, 1) 1px solid;
-				
+
 				.is-text {
 					text-decoration: none;
 					justify-content: center !important;
 				}
-				
+
 				.column {
 					margin-bottom: -4px;
-					
+
 					.button {
 						margin: 4px;
 						height: 2rem;
 					}
 				}
-				
+
 				.column:first-child {
 					border-right: hsla(208, 16%, 94%, 1) 1px solid;
 				}
 			}
-			
+
 			/*common*/
 			.loading-overlay {
 				&.is-active {
 					background: hsla(208, 16%, 96%, 1) !important;
 					justify-content: flex-start;
 				}
-				
+
 				.loading-background {
 					background: none;
 				}
 			}
-			
-			
+
+
 			.is-24x24 {
 				width: 1.5rem;
 				height: 1.5rem;
 			}
-			
+
 		}
 	}
 }
@@ -798,27 +798,27 @@ export default {
 		bottom: auto;
 		top: -15%;
 	}
-	
+
 	.tooltip-content {
 		box-shadow: none;
 		padding: 0.375rem 0.75rem;
 		border-radius: 0.5rem;
-		
+
 		/* Text 400Regular/Text03 */
-		
+
 		font-family: 'Roboto';
 		font-style: normal;
 		line-height: 1.25rem;
 		/* identical to box height, or 143% */
-		
+
 		font-feature-settings: 'pnum' on, 'lnum' on;
-		
+
 		/* Gary/800 */
-		
+
 		color: hsla(208, 20%, 20%, 1);
-		
+
 	}
-	
+
 }
 
 .__position {
@@ -850,24 +850,24 @@ export default {
 		padding-bottom: 0.75rem;
 		border: 1px solid hsla(208, 16%, 94%, 1);
 	}
-	
+
 	.modal-card-body {
 		padding: 1rem 1.5rem 1.5rem;
-		
+
 		#checkDelConfig {
 			margin-right: 0.5rem;
 			height: 1.25rem;
 			width: 1.25rem;
 		}
-		
+
 		border: 1px solid hsla(208, 16%, 94%, 1);
 	}
-	
+
 	.modal-card-foot {
 		padding-top: 0.75rem;
 		padding-bottom: 1.5rem;
 		padding-right: 1.5rem;
-		
+
 		//styleName: Text 400Regular/Text03;
 		font-family: Roboto;
 		font-size: 14px;
@@ -875,11 +875,11 @@ export default {
 		line-height: 20px;
 		letter-spacing: 0;
 		text-align: left;
-		
+
 		.button {
 			margin-right: 0;
 		}
-		
+
 		.is-dark {
 			margin-left: 1rem;
 			background: hsla(208, 100%, 45%, 1);

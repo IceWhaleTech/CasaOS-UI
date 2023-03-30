@@ -180,6 +180,12 @@ $size-large: $size-4 !default;
 
 
 // CasaOS Variables
+$grey-100: hsla(208, 16%, 96%, 1) !default;
+$grey-200: hsla(208, 16%, 94%, 1);
+$grey-300: hsla(208, 16%, 91%, 1);
+$grey-600: hsla(208, 14%, 58%, 1);
+$grey-400: hsla(208, 16%, 85%, 1) !default;
+$gray-800: hsla(208, 20%, 20%, 1);
 
 // Colors
 $casablue: hsl(216, 90%, 54%) !default;
@@ -199,7 +205,7 @@ $reddit: #FF4500;
 
 
 // Lists and maps
-$custom-colors: null !default;
+$custom-colors: ("grey": ($grey-600, $white)) !default;
 $custom-shades: null !default;
 
 // Setup $colors to use as bulma classes (e.g. 'is-twitter')
@@ -278,6 +284,17 @@ $modal-background-background-color: rgba(0, 0, 0, 0.5);
 // SideBar
 $sidebar-width: 22.5rem;
 
+// Toast
+$toast-border-radius: 6px;
+$toast-opacity:1;
+$toast-box-shadow:0px 16px 32px -8px rgba(28, 31, 34, 0.12);
+
+// Snackbar
+$snackbar-background-color: $white;
+$snackbar-color: $gray-800;
+$snackbar-border-radius: 6px;
+$snackbar-button-text-transform: none;
+$snackbar-box-shadow: 0px 16px 32px rgba(28, 31, 34, 0.12);
 // _colors.scss
 $grey-100: hsla(208, 16%, 96%, 1) !default;
 $grey-200: hsla(208, 16%, 94%, 1);

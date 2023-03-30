@@ -1,6 +1,8 @@
 name: push_test_server
 
 on:
+  push:
+  workflow_dispatch:
 
 jobs:
   release:
@@ -55,11 +57,23 @@ jobs:
       - name: install sshpass
         run: sudo apt install sshpass --yes
 
+
       - name: ZeroTier
         uses: zerotier/github-action@v1.0.1
         with:
-          network_id: ${{ secrets.ZEROTIER_NETWORK_ID }}
-          auth_token: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
+            network_id: ${{ secrets.ZEROTIER_NETWORK_ID }}
+            auth_token: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
+
+      - name: ping host
+        shell: bash
+        run: |
+          count=10
+          while ! ping -c 1 10.147.18.11 ; do
+            echo "waiting..." ;
+            sleep 1 ;
+            let count=count-1
+          done
+          echo "ping success"
 
       - name: copy tar to target host
         shell: bash

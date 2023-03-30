@@ -213,10 +213,10 @@
 										</div>
 									</b-dropdown-item>
 								</b-dropdown>
-							
+
 							</div>
 							<!-- Author End -->
-							
+
 							<!-- Sort Start -->
 							<!-- <div>
 							{{ $t('Sort by') }}:
@@ -281,7 +281,7 @@
 									          @click="qucikInstall(item.id);$messageBus('appstore_install', item.title)">
 										{{ $t('Install') }}
 									</b-button>
-								
+
 								</div>
 							</div>
 						</div>
@@ -517,7 +517,7 @@ export default {
 			currentInstallAppText: "",
 			currentInstallAppProgress: {},
 			currentInstallAppProgressTotals: {},
-			
+
 			sidebarOpen: false,
 			cancelButtonText: "Cancel",
 			totalMemory: 0,
@@ -560,7 +560,7 @@ export default {
 			recommendList: {},
 			currentSlide: 0,
 			currentInstallId: '',
-			
+
 			// Featured Swiper
 			disFeaturedPrev: false,
 			disFeaturedNext: false,
@@ -651,7 +651,7 @@ export default {
 		this.getStoreRecommend();
 		//Get list
 		// this.getStoreList();
-		
+
 		//Get Max memory info form device
 		this.totalMemory = Math.floor(this.configData.memory.total / 1048576);
 		// this.initConfigData.memory = this.totalMemory
@@ -747,7 +747,13 @@ export default {
 		// 	this.getStoreList();
 		// 	return this.counterPatchGetStoreList
 		// }
-		
+		archTitle() {
+			if (this.arch === 'arm') {
+				return 'armv7'
+			}
+			return this.arch
+		}
+
 	},
 	watch: {
 		// Watch if Section index changes
@@ -771,7 +777,7 @@ export default {
 					// this.getStoreList();
 					this.counterPatchGetStoreList++
 				}
-				
+
 			},
 			deep: true
 		},
@@ -808,11 +814,11 @@ export default {
 			let tempO = this.cateMenu.find(item => item.name == name) || {font: 'mdi-apps'}
 			return tempO.font;
 		},
-		
+
 		// updateLabel: debounce(function (string) {
 		// 	this.initConfigData.label = string
 		// }, 50),
-		
+
 		/**
 		 * @description:
 		 * @param {*} swiper
@@ -852,9 +858,9 @@ export default {
 		async getStoreRecommend() {
 			try {
 				// this.isLoading = true;
-				
+
 				let res = await this.$openAPI.appManagement.appStore.composeAppStoreInfoList(undefined, undefined, true).then(res => res.data.data.list);
-				
+
 				this.recommendList = Object.keys(res).map(id => {
 					let main_app_info = res[id].apps[id]
 					return {
@@ -865,7 +871,7 @@ export default {
 						thumbnail: main_app_info.thumbnail,
 						title: main_app_info.title.en_US,
 						state: 0,
-						
+
 					}
 				})
 			} catch (error) {
@@ -875,7 +881,7 @@ export default {
 				// this.isLoadError = true;
 			}
 		},
-		
+
 		/**
 		 * @description: Get App store list
 		 * @param {*}
@@ -883,7 +889,7 @@ export default {
 		 */
 		async getStoreList() {
 			this.isLoading = true
-			
+
 			try {
 				// let {category, authorType} = this.storeQueryData
 				let category = this.currentCate.name
@@ -898,7 +904,7 @@ export default {
 				} else {
 					res = await this.$openAPI.appManagement.appStore.composeAppStoreInfoList().then(res => res.data.data)
 				}
-				
+
 				let list = res.list
 				let listRes = Object.keys(list).map(id => {
 					let main_app_info = list[id].apps[id]
@@ -918,7 +924,7 @@ export default {
 				console.log('load store list error', e)
 			}
 			this.isLoading = false
-			
+
 			/*this.$openAPI.appManagement.appStore.composeAppStoreInfoList(category, authorType, false).then(res => {
 				let list = res.data.data.list
 				let listRes = Object.keys(list).map(id => {
@@ -964,7 +970,7 @@ export default {
 			let min_memory = await this.$openAPI.appManagement.appStore.composeApp(id).then(res => {
 				return res.data.data.compose.services[id].deploy.resources.reservations.memory
 			})
-			
+
 			if (min_memory.includes('GB')) {
 				min_memory = min_memory.replace('GB', '') * 1024
 			} else if (min_memory.includes('MB')) {
@@ -988,7 +994,7 @@ export default {
 			}).finally(() => {
 				this.isLoading = false;
 			})
-			
+
 			/*this.$api.apps.getAppInfo(id).then(resp => {
 				this.isLoading = false;
 				this.sidebarOpen = true;
@@ -1035,7 +1041,7 @@ export default {
 							this.currentInstallAppText = "Start Installation..."
 							this.cancelButtonText = 'Continue in background'
 							this.dockerProgress = new DockerProgress();
-							
+
 							this.$buefy.toast.open({
 								message: res.data.message,
 								type: 'is-success'
@@ -1169,11 +1175,11 @@ export default {
 				}
 			})
 		},
-		
+
 		installAppData() {
-		
+
 		},
-		
+
 		
 		/**
 		 * @description: Save edit update
@@ -1246,7 +1252,7 @@ export default {
 				}
 			})
 		},
-		
+
 		/**
 		 * @description: Export AppData to json file
 		 * @param {*} function
@@ -1289,7 +1295,7 @@ export default {
 				return network[0].name
 			}
 		},
-		
+
 		/**
 		 * @description: Show Terminal & Logs panel
 		 * @return {*} void
@@ -1445,7 +1451,7 @@ export default {
 				}, 500)
 			}
 		},
-		
+
 		updateDockerComposeCommands(val) {
 			console.log('updateConfig', val.length);
 			this.dockerComposeCommands = val
@@ -1795,19 +1801,19 @@ export default {
 ._dropdown {
 	height: 2rem;
 	border-radius: 0.25rem;
-	
+
 	._dropdown__typeIcon {
 		margin-left: 0.625rem;
 		width: 18px;
 		height: 18px;
 	}
-	
+
 	._dropdown__stateIcon {
 		margin-right: 0.625rem;
 		width: 16px;
 		height: 16px;
 	}
-	
+
 	._dropdown__item {
 		width: 112px;
 		margin-right: 6px;

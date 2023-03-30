@@ -2,8 +2,8 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-03-07 13:47:45
  * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-05-26 22:33:41
- * @FilePath: \CasaOS-UI\src\components\filebrowser\viewers\ImageViewer.vue
+ * @LastEditTime: 2023-03-10 17:21:23
+ * @FilePath: /CasaOS-UI/src/components/filebrowser/viewers/ImageViewer.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
@@ -23,8 +23,8 @@
         <!-- Download File Button End -->
 
         <!-- Close Button Start -->
-        <div class="is-flex is-align-items-center modal-close-container close-btn modal-close-container-line">
-          <button type="button" class="delete" @click="close" />
+        <div class="close-button" @click="close">
+          <b-icon icon="close" pack="casa"></b-icon>
         </div>
         <!-- Close File Button End -->
       </div>
@@ -94,9 +94,10 @@
 </template>
 
 <script>
-import { mixin } from '@/mixins/mixin';
+import {mixin} from '@/mixins/mixin';
 import 'viewerjs/dist/viewer.css'
-import { component as Viewer } from "v-viewer"
+import {component as Viewer} from "v-viewer"
+
 const XIMAGES = ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'svg', 'tiff']
 export default {
   mixins: [mixin],

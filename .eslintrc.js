@@ -1,3 +1,4 @@
+
 module.exports = {
   root: true,
   env: {
@@ -5,6 +6,7 @@ module.exports = {
   },
   'extends': [
     'plugin:vue/essential',
+    "plugin:prettier/recommended",
     'eslint:recommended'
   ],
   parserOptions: {

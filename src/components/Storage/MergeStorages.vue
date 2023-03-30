@@ -23,13 +23,13 @@
 			<button class="delete" type="button" @click="cancel"/>
 		</header>
 		<!--remind-->
-		
+
 		<section v-if="currentStep === 0"
 		         class="notification is-overlay mr-5 ml-5 mb-0 pr-0 pl-0 pt-5 pb-3 non-backgroud">
 			<div v-if="currentStep === 0" class="_is-normal _has-text-gray-600 mb-4">
 				{{ $t('All the checked Storage will be merged into CasaOS HD.') }}
 			</div>
-			
+
 			<div v-for="(item, index) in storageData" :key="item.path + index" class="is-flex mb-1 radius _height-40">
 				<div class="ml-2 mr-1 is-flex is-align-items-center _has-text-gray-600">
 					<b-icon icon="storage-other" pack="casa" size="is-20"></b-icon>
@@ -48,7 +48,7 @@
 				<b-checkbox v-model="checkBoxGroup" :disabled="item.persistedIn !== 'casaos' || item.isSystem"
 				            :native-value="item.uuid" class="mr-2"></b-checkbox>
 			</div>
-			
+
 			<div v-for="(item, index) in storageMissData" :key="item.path + index"
 			     class="is-flex mb-1 radius _height-40">
 				<div class="ml-2 mr-1 is-flex is-align-items-center _has-text-gray-600">
@@ -68,7 +68,7 @@
 				<b-checkbox v-model="checkBoxMissGroup" :native-value="item.path" class="mr-2"></b-checkbox>
 			</div>
 		</section>
-		
+
 		<div v-if="currentStep === 0 && storageData.length < 2"
 		     class="_has-background-yellow-default _has-text-white _is-normal is-flex is-align-items-center font ml-5 mr-5 mb-4 pt-2 pb-2 _radius-line">
 			<div class="is-flex left ml-3 mr-2 is-align-items-center">
@@ -100,7 +100,7 @@
             installed APPs, so it is recommended to use it only during the startup.`)
 			}}
 		</div>
-		
+
 		<section v-if="currentStep > 0"
 		         class="notification is-overlay mr-5 ml-5 mb-0 pr-0 pl-0 pt-5 pb-4 non-backgroud">
 			<div v-if="currentStep === 1" class="is-flex is-align-items-center _is-normal">
@@ -128,7 +128,7 @@
 				{{ runName + $t(' is running, restart ') + runName + $t(' to continue.') }}
 			</div>
 		</section>
-		
+
 		<footer :class="{ 't-line': currentStep <= 2 }" class="modal-card-foot is-flex is-align-items-center ">
 			<div class="is-flex-grow-1"></div>
 			<div class="mr-4">
@@ -207,7 +207,7 @@ export default {
 				default:
 					break;
 			}
-			
+
 		}
 	},
 	computed: {
@@ -275,7 +275,7 @@ export default {
 					"diskName": ""
 				})
 			})
-			
+
 			this.storageData = storageArray.map((storage) => {
 				return {
 					uuid: storage.uuid,
@@ -292,7 +292,7 @@ export default {
 					persistedIn: storage.persisted_in,
 				}
 			})
-			
+
 			this.storageMissData = storageMissArray.map((storage) => {
 				return {
 					uuid: storage.uuid,
@@ -310,7 +310,7 @@ export default {
 				}
 			})
 		},
-		
+
 		/**
 		 * @description: update merge info
 		 * sync function
@@ -364,7 +364,7 @@ export default {
 			})
 		}
 		,
-		
+
 		// get the storage list be mounted of mergerfs
 		async getMerageStorage() {
 			try {
@@ -432,7 +432,7 @@ export default {
 			}
 			this.currentStep = 2
 		},
-		
+
 		async restart() {
 			this.isConnecting = true
 			try {
@@ -478,9 +478,9 @@ export default {
 			} catch (e) {
 				console.log(e)
 			}
-			
+
 		},
-		
+
 		verifyPassword(password) {
 			// get token from the local storage
 			const token = localStorage.getItem('access_token')
@@ -496,7 +496,7 @@ export default {
 				type: 'is-danger'
 			})
 		}
-		
+
 	}
 	,
 }
@@ -519,14 +519,14 @@ export default {
 .pri-mrl-2rem {
 	margin-left: 2rem;
 	margin-right: 2rem;
-	
+
 	.pri-mtr-3px {
 		margin-top: 0.1875rem;
 		margin-bottom: 0.1875rem;
 		min-height: 2.75rem;
 		border-radius: 0.25rem;
 	}
-	
+
 	div:hover {
 		background: hsla(215, 89%, 93%, 1);
 	}
@@ -534,47 +534,47 @@ export default {
 
 ._is-normal {
 	/* Text 400Regular/Text03 */
-	
+
 	font-family: 'Roboto';
 	font-style: normal;
 	font-weight: 400;
 	font-size: 14px;
 	line-height: 20px;
 	/* identical to box height, or 143% */
-	
+
 	font-feature-settings: 'pnum' on, 'lnum' on;
 }
 
 ._is-text-emphasis-03 {
 	/* Text 500Medium/Text03 */
-	
+
 	font-family: 'Roboto';
 	font-style: normal;
 	font-weight: 500;
 	font-size: 14px;
 	line-height: 20px;
 	/* identical to box height, or 143% */
-	
+
 	font-feature-settings: 'pnum' on, 'lnum' on;
 }
 
 ._is-text-full-03 {
 	/* Text 400Regular/Text03 */
-	
+
 	font-family: 'Roboto';
 	font-style: normal;
 	font-weight: 400;
 	font-size: 14px;
 	line-height: 20px;
 	/* identical to box height, or 143% */
-	
+
 	text-align: right;
 	font-feature-settings: 'pnum' on, 'lnum' on;
 }
 
 ._has-text-gray-800 {
 	/* Gary/800 */
-	
+
 	color: hsla(208, 20%, 20%, 1);
 }
 

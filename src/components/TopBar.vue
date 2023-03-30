@@ -9,27 +9,27 @@
 
 <template>
 	
-	<div class="navbar top-bar is-flex is-align-items-center">
-		<div class="navbar-brand ml-4">
+	<div class="navbar top-bar is-flex is-align-items-center _fixed-height">
+		<div class="navbar-brand ml-4 _fixed-height">
 			
 			<!-- SideBar Button Start -->
 			<div id="sidebar-btn" class="is-flex is-align-items-center mr-3 ml-3">
 				<b-tooltip :active="!$store.state.isMobile" :label="sidebarIconLabel" position="is-right"
 				           type="is-dark">
 					<div role="button" @click="showSideBar">
-						<b-icon :icon="sidebarIcon" class="picon"></b-icon>
+						<b-icon :icon="sidebarIcon" class="picon" size="is-20"></b-icon>
 					</div>
 				</b-tooltip>
 			</div>
 			<!-- SideBar Button Start -->
 			
 			<!-- Account Dropmenu Start -->
-			<b-dropdown animation="fade1" aria-role="list" class="navbar-item " @active-change="getUserInfo">
+			<b-dropdown animation="fade1" aria-role="list" class="navbar-item" @active-change="getUserInfo">
 				<template #trigger>
-					<b-tooltip :active="!$store.state.isMobile" :label="$t('Account')" position="is-right"
-					           type="is-dark" @click.native="$messageBus('account_setting')">
+					<b-tooltip :active="!$store.state.isMobile" :label="$t('Account')"
+					           position="is-right" type="is-dark" @click.native="$messageBus('account_setting')">
 						<p role="button">
-							<b-icon class="picon" icon="account" pack="casa"></b-icon>
+							<b-icon class="picon" icon="account" pack="casa" size="is-20"></b-icon>
 						</p>
 					</b-tooltip>
 				</template>
@@ -73,7 +73,7 @@
 					           type="is-dark" @click.native="$messageBus('dashboardsetting')">
 						<p role="button">
 							<b-icon :class="{ 'update-icon-dot': updateInfo.need_update }" class="picon" icon="tune"
-							        pack="casa"></b-icon>
+							        pack="casa" size="is-20"></b-icon>
 						</p>
 					</b-tooltip>
 				</template>
@@ -296,12 +296,9 @@
 			<!-- Settings Dropmenu End -->
 			
 			<!-- Terminal  Start -->
-			<div class="is-flex is-align-items-center ml-3">
-				<b-tooltip :active="!$store.state.isMobile" :label="$t('Terminal & Logs')" position="is-right"
-				           type="is-dark">
-					<p role="button" @click="showTerminalPanel">
-						<b-icon class="picon" icon="terminal" pack="casa"></b-icon>
-					</p>
+			<div class="is-flex is-align-items-center ml-3 _fixed-height"  @click="showTerminalPanel">
+				<b-tooltip :active="!$store.state.isMobile" :label="$t('Terminal & Logs')" position="is-right" style="height: 1.25rem;" type="is-dark">
+						<b-icon class="picon" icon="terminal" pack="casa" size="is-20"></b-icon>
 				</b-tooltip>
 			</div>
 			<!-- Terminal  End -->
@@ -898,14 +895,18 @@ export default {
 	
 }
 
+._fixed-height {
+	height: 2.75rem;
+	min-height: 2.75rem;
+}
+
 .top-bar {
 	position: relative;
 	z-index: 20;
-	height: 3.5rem;
+	height: 2.75rem;
 	background: rgba(255, 255, 255, 1);
 	
 	.navbar-brand {
-		height: 3.5rem;
 		margin-left: 1.25rem;
 		
 		.picon {
@@ -913,6 +914,9 @@ export default {
 		}
 		
 		.navbar-item {
+			height: 2.75rem;
+			padding: 0.75rem 0.75rem 0.5rem;
+			
 			.icon {
 				&:only-child {
 					margin-left: 0;

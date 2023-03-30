@@ -25,7 +25,7 @@
 			<ValidationObserver ref="observer" v-slot="{ handleSubmit }">
 				<ValidationProvider v-slot="{ errors, valid }" name="User" rules="required">
 					<b-field :message="errors" :type="{ 'is-danger': errors[0], 'is-success': valid }" class="mt-5"
-					         label="Username">
+					         :label="$t('Username')">
 						<b-input v-model="username" type="text" v-on:keyup.enter.native="handleSubmit(login)"></b-input>
 					</b-field>
 				</ValidationProvider>
