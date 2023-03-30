@@ -25,11 +25,11 @@
 				<b-field grouped>
 					<b-field v-if="showHostPost" :label="$t('Host')" expanded>
 						<b-input v-model.number="item.published" :placeholder="$t('Host')" expanded
-						         type="number"></b-input>
+						         pattern="^((\d{1,3}\.){0,3}\d{1,3})(:(\d{1,5})(-(\d{1,5}))?)?$"></b-input>
 					</b-field>
 					<b-field :label="$t('Container')" expanded>
 						<b-input v-model.number="item.target" :placeholder="$t('Container')" expanded
-						         type="number"></b-input>
+						         pattern="^((\d{1,3}\.){0,3}\d{1,3})(:(\d{1,5})(-(\d{1,5}))?)?$"></b-input>
 					</b-field>
 					
 					<b-field :label="$t('Protocol')" expanded>
@@ -44,9 +44,9 @@
 			<template v-else>
 				<b-field grouped>
 					<b-input v-if="showHostPost" v-model.number="item.published" :placeholder="$t('Host')" expanded
-					         type="number"></b-input>
+					         pattern="^((\d{1,3}\.){0,3}\d{1,3})(:(\d{1,5})(-(\d{1,5}))?)?$"></b-input>
 					<b-input v-model.number="item.target" :placeholder="$t('Container')" expanded
-					         type="number"></b-input>
+					         pattern="^((\d{1,3}\.){0,3}\d{1,3})(:(\d{1,5})(-(\d{1,5}))?)?$"></b-input>
 					
 					<b-select v-model="item.protocol" :placeholder="$t('Protocol')" expanded>
 						<option value="tcp">TCP</option>
@@ -98,9 +98,13 @@ export default {
 			}
 			this.items.push(itemObj)
 		},
-		
+
 		removeItem(index) {
 			this.items.splice(index, 1)
+		},
+
+		test: function () {
+			let a = /(^((\d{1,3}\.){0,3}\d{1,3})(:\d{1,5}(-\d{1,5})?)?)|(^\d{1,5}(-\d{1,5})?)|(^\d{1,5})/
 		},
 	},
 }

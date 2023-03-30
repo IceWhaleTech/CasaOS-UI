@@ -75,9 +75,12 @@
 								</optgroup>
 							</b-select>
 						</b-field>
-						
-						<ports v-if='showPorts(service)' v-model="service.ports"
-						       :showHostPost='showHostPort(service)'></ports>
+
+						<validation-provider name="port" rules="">
+							<ports v-if='showPorts(service)' v-model="service.ports"
+								   :showHostPost='showHostPort(service)'></ports>
+						</validation-provider>
+
 						<volumes-input-group v-model="service.volumes" :label="$t('Volumes')"
 						                     :message="$t('No volumes now, click “+” to add one.')"
 						                     type="volume"></volumes-input-group>
@@ -173,7 +176,6 @@ import lowerFirst from "lodash/lowerFirst";
 import isNil from "lodash/isNil";
 import find from "lodash/find";
 import {isNumber, isString} from "lodash/lang";
-import ports from "@/components/forms/Ports.vue";
 import cloneDeep from "lodash/cloneDeep";
 import merge from "lodash/merge";
 
