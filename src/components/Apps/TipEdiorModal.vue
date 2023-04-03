@@ -8,34 +8,35 @@
   
   -->
 <template>
-	<div class="modal-card">
-		<!-- Modal-Card Header Start -->
-		<header class="modal-card-head">
-			<div class="is-flex-grow-1">
-				<h3 class="title is-3">{{ $t('Tips') }}</h3>
-			</div>
-			<div>
-				<div class="is-flex is-align-items-center">
-					<b-icon class="_polymorphic close" icon="close" pack="casa" @click.native="$emit('close')"/>
-				</div>
-			</div>
-		</header>
-		<!-- Modal-Card Header End -->
-		
-		<!-- Modal-Card Body Start -->
-		<section class="modal-card-body">
+    <div class="modal-card">
+        <!-- Modal-Card Header Start -->
+        <header class="modal-card-head">
+            <div class="is-flex-grow-1">
+                <h3 class="title is-3">{{ $t('Tips') }}</h3>
+            </div>
+            <div>
+                <div class="is-flex is-align-items-center">
+                    <b-icon class="_polymorphic close" icon="close" pack="casa" @click.native="$emit('close')"/>
+                </div>
+            </div>
+        </header>
+        <!-- Modal-Card Header End -->
+
+        <!-- Modal-Card Body Start -->
+        <section class="modal-card-body">
             <VMdEditor
-                v-model="tips" :mode="controlEditorState" height="400px" left-toolbar right-toolbar>
+            v-model="tips" :mode="controlEditorState" :placeholder="$t('Something to remember eg. password')"
+            left-toolbar right-toolbar>
             </VMdEditor>
-			<div class="is-flex is-flex-direction-row-reverse mt-2">
-				<b-icon
-				:class="{'has-text-grey-800': !isEditing, 'has-text-green-default': isDifferentiation, 'has-text-grey-400': !isDifferentiation && isEditing}"
-				:icon="icon" pack="casa"
-				@click.native="toggle"></b-icon>
-			</div>
-		</section>
-		<!-- Modal-Card Body End -->
-	</div>
+            <div class="is-flex is-flex-direction-row-reverse mt-2">
+                <b-icon
+                :class="{'has-text-grey-800': !isEditing, 'has-text-green-default': isDifferentiation, 'has-text-grey-400': !isDifferentiation && isEditing}"
+                :icon="icon" pack="casa"
+                @click.native="toggle"></b-icon>
+            </div>
+        </section>
+        <!-- Modal-Card Body End -->
+    </div>
 </template>
 
 <script>
@@ -53,94 +54,95 @@ VMdEditor.use(githubTheme, {
 });
 
 export default {
-	name: "TipEditorModal",
-	components: {
+    name: "TipEditorModal",
+    components: {
         VMdEditor
-	},
-	data() {
-		return {
-			isEditing: false,
-			tips: '',
-            tempTips:'',
+    },
+    data() {
+        return {
+            isEditing: false,
+            tips: '',
+            tempTips: '',
             controlEditorState: 'preview',
             icon: 'edit'
-		}
-	},
-	props: {
-		composeData: {
-			type: Object,
-			required: true
-		},
-		id: {
-			type: String,
-			required: true
-		}
-	},
-	computed: {
-		isDifferentiation() {
-			return this.tempTips !== this.tips
-		},
-	},
-	watch: {
+        }
+    },
+    props: {
+        composeData: {
+            type: Object,
+            required: true
+        },
+        id: {
+            type: String,
+            required: true
+        }
+    },
+    computed: {
+        isDifferentiation() {
+            return this.tempTips !== this.tips
+        },
+    },
+    watch: {
         isEditing(val, a) {
             console.log('isEditing', val, a)
-            if(val){
+            if (val) {
                 // editor is editable
                 this.controlEditorState = 'edit'
                 this.icon = 'matching'
-            }else {
+            } else {
                 // editor is not editable
                 this.controlEditorState = 'preview'
                 this.icon = 'edit'
             }
             return this.isEditing
         },
-		composeData: {
-			handler(val) {
-				//Get tips in compose.
-				console.log('watch tips', val)
-				
-				/*let getValueByPath = this.composeData['services'][this.id]
-			if (getValueByPath['x-casaos'] && getValueByPath['x-casaos']['tips'] && getValueByPath['x-casaos']['tips']['before_install']) {
-				let multiLine = getValueByPath['x-casaos']['tips']['before_install'].forEach(item => {
-					let value = item.content['default'] && item.content['en_US']
-					return `${item.value}:${value}\n`
-				})
-				console.log('multiLine', multiLine)
-				// return multiLine
-				this.tips = multiLine;
-			} else {
-				this.tips = '';
-				// return ''
-			}*/
+        composeData: {
+            handler(val) {
+                //Get tips in compose.
+                console.log('watch tips', val)
 
-				let getValueByPath = this.composeData['services'][this.id]
-				if (getValueByPath['x-casaos'] && getValueByPath['x-casaos']['tips'] && getValueByPath['x-casaos']['tips']['custom'] || getValueByPath['x-casaos']['tips']['before_install']) {
-					this.tips = getValueByPath['x-casaos']['tips']['custom'] || getValueByPath['x-casaos']['tips']['before_install']['en_US']
+                /*let getValueByPath = this.composeData['services'][this.id]
+				if (getValueByPath['x-casaos'] && getValueByPath['x-casaos']['tips'] && getValueByPath['x-casaos']['tips']['before_install']) {
+					let multiLine = getValueByPath['x-casaos']['tips']['before_install'].forEach(item => {
+						let value = item.content['default'] && item.content['en_US']
+						return `${item.value}:${value}\n`
+					})
+					console.log('multiLine', multiLine)
+					// return multiLine
+					this.tips = multiLine;
 				} else {
-					this.tips = '# 123\n##haha';
-				}
-				// init tempTips
-				this.tempTips = this.tips;
-			},
-			immediate: true
-		}
-	},
-    mounted() {},
-	methods: {
-		/*
+					this.tips = '';
+					// return ''
+				}*/
+
+                let getValueByPath = this.composeData['services'][this.id]
+                if (getValueByPath['x-casaos'] && getValueByPath['x-casaos']['tips'] && getValueByPath['x-casaos']['tips']['custom'] || getValueByPath['x-casaos']['tips']['before_install']) {
+                    this.tips = getValueByPath['x-casaos']['tips']['custom'] || getValueByPath['x-casaos']['tips']['before_install']['en_US']
+                } else {
+                    this.tips = '';
+                }
+                // init tempTips
+                this.tempTips = this.tips;
+            },
+            immediate: true
+        }
+    },
+    mounted() {
+    },
+    methods: {
+        /*
 		* 1、进入编辑状态
 		* 2、保存
 		* */
-		toggle() {
-			this.isEditing = !this.isEditing
-			console.log('isDifferentiaation', this.isDifferentiation)
-			if (this.isDifferentiation) {
+        toggle() {
+            this.isEditing = !this.isEditing
+            console.log('isDifferentiaation', this.isDifferentiation)
+            if (this.isDifferentiation) {
                 this.save();
-			}
-		},
+            }
+        },
 
-        save(){
+        save() {
             // 更新
             // TODO 因为异步，不清楚是否保存成功
             this.tempTips = this.tips
@@ -164,8 +166,8 @@ export default {
                 })
             })
         },
-		getCompleteComposeData() {
-			/*let lines = this.tips.split('\n');
+        getCompleteComposeData() {
+            /*let lines = this.tips.split('\n');
 			let body = [];
 			
 			lines.forEach(line => {
@@ -174,52 +176,58 @@ export default {
 				let content = splitArray.length > 1 ? splitArray[1] : splitArray[0];
 				body.push({value, content: {default: content}});
 			});*/
-			
-			let result = merge(this.composeData, {
-				services: {
-					[this.id]: {
-						'x-casaos': {
-							tips: {
+
+            let result = merge(this.composeData, {
+                services: {
+                    [this.id]: {
+                        'x-casaos': {
+                            tips: {
                                 custom: this.tips
-							}
-						}
-					}
-				}
-			})
-			return result
-		}
-	},
+                            }
+                        }
+                    }
+                }
+            })
+            return result
+        }
+    },
 }
 </script>
 
 <style lang="scss" scoped>
 .modal-card {
-	/* v0.4.3 */
-	width: 26.5rem;
-	
-	.modal-card-head {
-		padding-top: 1.25rem;
-		border-bottom: 1px solid hsla(208, 16%, 94%, 1) !important;
-		
-		.close {
-			height: 2rem;
-			width: 2rem;
-			border-radius: 0.375rem;
-		}
-	}
-	
-	.modal-card-body {
-		padding: 1.5rem;
+    /* v0.4.3 */
+    width: 26.5rem;
+
+    .modal-card-head {
+        padding-top: 1.25rem;
+        border-bottom: 1px solid hsla(208, 16%, 94%, 1) !important;
+
+        .close {
+            height: 2rem;
+            width: 2rem;
+            border-radius: 0.375rem;
+        }
+    }
+
+    .modal-card-body {
+        padding: 1.5rem;
+
         ::v-deep .v-md-editor {
             box-shadow: none;
-            height: 5.25rem;
             border: 1px solid hsla(208, 16%, 94%, 1);
             border-radius: 0.375rem;
+
+            overflow: hidden;
+            resize: vertical;
+            max-height: 20.25rem;
+            min-height: 5.25rem;
 
             &.v-md-editor--edit {
                 /* 覆盖上层 */
                 border: 0;
-                .scrollbar__wrap{
+
+                .scrollbar__wrap {
                     border: 1px solid hsla(208, 100%, 53%, 1);
                     border-radius: 0.625rem;
                 }
@@ -231,22 +239,39 @@ export default {
                     padding: 0;
                     border: 0;
                 }
+
+                .v-md-editor__main {
+                    .v-md-textarea-editor textarea {
+                        padding: 0.75rem 1rem;
+                        /* Text 400Regular/Text03 */
+
+                        font-family: 'Roboto';
+                        font-style: normal;
+                        font-weight: 400;
+                        font-size: 14px;
+                        line-height: 20px;
+                        /* identical to box height, or 143% */
+
+                        font-feature-settings: 'pnum' on, 'lnum' on;
+
+                    }
+                }
             }
         }
 
-		textarea {
-			resize: none;
-			height: 5.25rem;
-		}
-	}
+        /*textarea {
+                resize: none;
+                height: 5.25rem;
+        }*/
+    }
 }
 
 ._polymorphic:hover {
-	cursor: pointer;
-	background: hsla(208, 16%, 96%, 1);
+    cursor: pointer;
+    background: hsla(208, 16%, 96%, 1);
 }
 
 ._polymorphic:active {
-	background: hsla(208, 16%, 94%, 1);
+    background: hsla(208, 16%, 94%, 1);
 }
 </style>
