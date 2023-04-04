@@ -861,6 +861,7 @@ export default {
 
                 let res = await this.$openAPI.appManagement.appStore.composeAppStoreInfoList(undefined, undefined, true).then(res => res.data.data.list);
 
+                debugger
                 this.recommendList = Object.keys(res).map(id => {
                     let main_app_info = res[id].apps[id]
                     return {

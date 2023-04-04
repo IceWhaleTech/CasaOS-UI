@@ -41,24 +41,24 @@
                                              class="is-32x32" ratio="1by1"></b-image>
 								</span>
                         </p>
-                        <b-input v-model="service['x-casaos'].icon" :placeholder="$t('Your custom icon URL')"
+                        <b-input v-model="configData['x-casaos'].icon" :placeholder="$t('Your custom icon URL')"
                                  expanded></b-input>
                     </b-field>
 
                     <b-field v-if="key === main_name" label="Web UI">
-                        <b-select v-model="service['x-casaos'].container.scheme">
+                        <b-select v-model="service['x-casaos'].scheme">
                             <option value="http">http://</option>
                             <option value="https">https://</option>
                         </b-select>
-                        <b-input v-model="service['x-casaos'].container.hostname" :placeholder="baseUrl"
+                        <b-input v-model="service['x-casaos'].hostname" :placeholder="baseUrl"
                                  expanded></b-input>
                         <b-autocomplete
-                        v-model="service['x-casaos'].container.port_map"
+                        v-model="service['x-casaos'].port_map"
                         :data="bridgePorts(service)"
                         :open-on-focus="true"
                         :placeholder="$t('Port')" class="has-colon" field="host"
                         @select="option => (portSelected = option)"></b-autocomplete>
-                        <b-input v-model="service['x-casaos'].container.index"
+                        <b-input v-model="service['x-casaos'].index"
                                  :placeholder="'/index.html '+ $t('[Optional]')"
                                  expanded></b-input>
                     </b-field>
@@ -284,47 +284,45 @@ export default {
                             }
                         },
                         "x-casaos": {
-                            "author": "",
-                            "category": "Developer",
-                            "container": {
-                                hostname: '',
-                                scheme: 'https',
-                                "index": "/",
-                                "port_map": "3000",
-                                name: '',
-                                container_name: '',
-                                appstore_id: '',
-                                "envs": [],
-                                "ports": [],
-                                "shell": "sh",
-                                "volumes": []
-                            },
-                            "description": {
-                                "en_US": ""
-                            },
-                            "developer": "",
-                            "icon": "",
-                            "screenshot_link": [],
-                            "tagline": {
-                                "en_US": ""
-                            },
-                            "thumbnail": "",
-                            "tips": {
-                                "before_install": [
-                                    {
-                                        "content": null,
-                                        "en_US": ""
-                                    }
-                                ]
-                            },
-                            "title": {
-                                "en_US": ""
-                            }
+                            hostname: '',
+                            scheme: 'https',
+                            "index": "/",
+                            "port_map": "3000",
+                            name: '',
+                            container_name: '',
+                            appstore_id: '',
+                            "envs": [],
+                            "ports": [],
+                            "shell": "sh",
+                            "volumes": []
                         }
                     },
                 },
                 "x-casaos": {
                     main_app: 'main_app',
+                    "author": "",
+                    "category": "Developer",
+                    "description": {
+                        "en_US": ""
+                    },
+                    "developer": "",
+                    "icon": "",
+                    "screenshot_link": [],
+                    "tagline": {
+                        "en_US": ""
+                    },
+                    "thumbnail": "",
+                    "tips": {
+                        "before_install": [
+                            {
+                                "content": null,
+                                "en_US": ""
+                            }
+                        ]
+                    },
+                    "title": {
+                        "en_US": ""
+                    },
                 },
             },
             // main_app: ajc.compile(main_app_schema)(this.configData['x-casaos']),
@@ -411,7 +409,7 @@ export default {
         // },
         main_name() {
             // 逐渐固定 x-casaos 数据格式。
-            let name = this.configData["x-casaos"] && this.configData['x-casaos']['main_app'] || Object.keys(this.configData.services)[0]
+            let name = this.configData["x-casaos"] && this.configData['x-casaos']['main'] || Object.keys(this.configData.services)[0]
             if (name === '') {
                 name = 'main_app'
             }
@@ -585,7 +583,7 @@ export default {
                 const yaml = YAML.parse(val)
                 console.log('检测传入的 yarml 文件', yaml);
                 console.log('检测传入的 yarml 文件的 services', yaml.services);
-                console.log('检测传入的 yarml 文件的 main_app name', yaml['x-casaos'].main_app);
+                console.log('检测传入的 yarml 文件的 main_app name', yaml['x-casaos']['main']);
 
                 // if (yaml.version === undefined) {
                 // 	return false
@@ -598,8 +596,8 @@ export default {
                 // yaml['x-casaos'] 数据类型是 object
                 // 确定： yaml ：： service[0 ] 此为最原始数据源
                 // update configData :: x-casaos[main_app] ~ 解析 yaml 的 main_app
-                this.configData['x-casaos'].main_app = yaml['x-casaos'] && yaml['x-casaos'].main_app || Object.keys(yaml.services)[0];
-                console.log('检测 x-casaos :: main_app 是否正确', this.configData['x-casaos'].main_app);
+                this.configData['x-casaos']['main'] = yaml['x-casaos'] && yaml['x-casaos']['main'] || Object.keys(yaml.services)[0];
+                console.log('检测 x-casaos :: main_app 是否正确', this.configData['x-casaos']['main']);
                 console.log('检测 main_name 是否正确', this.main_name);
 
                 // ### start  ### everyone support x-casaos in all services.
@@ -642,11 +640,14 @@ export default {
             }
         },
 
-        parseCompseItem(parsedInput) {
+        /*
+        * formate for render
+        * */
+        parseCompseItem(composeServicesItemInput) {
             // const parsedInput = Object.values(yaml.services)[0]
-            let configData = {};
+            let composeServicesItem = {};
             // Image
-            configData.image = parsedInput.image
+            composeServicesItem.image = composeServicesItemInput.image
             // Label
             // if (parsedInput.container_name != undefined) {
             // 	configData.label = upperFirst(parsedInput.container_name)
@@ -656,9 +657,9 @@ export default {
             // 	configData.label = upperFirst(lastNode.split(":")[0])
             // }
             // Envs
-            if (parsedInput.environment) {
-                let envArray = Array.isArray(parsedInput.environment) ? parsedInput.environment : Object.entries(parsedInput.environment)
-                configData.environment = envArray.map(item => {
+            if (composeServicesItemInput.environment) {
+                let envArray = Array.isArray(composeServicesItemInput.environment) ? composeServicesItemInput.environment : Object.entries(composeServicesItemInput.environment)
+                composeServicesItem.environment = envArray.map(item => {
                     let ii = typeof item === "object" ? Array.from(item) : item.split("=");
                     return {
                         host: ii[1].replace(/"/g, ""),
@@ -666,7 +667,7 @@ export default {
                     }
                 })
             } else {
-                configData.environment = []
+                composeServicesItem.environment = []
             }
 
 
@@ -684,7 +685,7 @@ export default {
 			- "6060:6060/udp"
 			*/
             // ["3000-3005", "8000:8000", "9090-9091:8080-8081", "49100:22", "127.0.0.1:8001:8001", "127.0.0.1:5000-5010:5000-5010","6060:6060/udp"]
-            configData.ports = this.makeArray(parsedInput.ports).map(item => {
+            composeServicesItem.ports = this.makeArray(composeServicesItemInput.ports).map(item => {
                 if (isString(item)) {
                     // let pArray = item.split(":")
                     // let endArray = pArray[1].split("/")
@@ -716,7 +717,7 @@ export default {
             //Volume
             // - 仅支持bind 模式!!!
             // https://yeasy.gitbook.io/docker_practice/compose/compose_file#volumes
-            configData.volumes = this.makeArray(parsedInput.volumes).map(item => {
+            composeServicesItem.volumes = this.makeArray(composeServicesItemInput.volumes).map(item => {
                 if (isString(item)) {
                     // 1\ replace variable in string for example: ${VOLUME_PATH}:/data
                     // this.volumes 可能为空。
@@ -731,13 +732,13 @@ export default {
                         return {
                             type: 'bind',
                             target: ii[1],
-                            source: this.volumeAutoCheck(ii[1], ii[0], lowerFirst(configData.label))
+                            source: this.volumeAutoCheck(ii[1], ii[0], lowerFirst(composeServicesItem.label))
                         }
                     } else {
                         return {
                             type: 'bind',
                             target: ii[0],
-                            source: this.volumeAutoCheck(ii[0], "", lowerFirst(configData.label)),
+                            source: this.volumeAutoCheck(ii[0], "", lowerFirst(composeServicesItem.label)),
                         }
                     }
                 } else if (item) {
@@ -757,7 +758,7 @@ export default {
             })
 
             // Devices
-            configData.devices = this.makeArray(parsedInput.device).map(item => {
+            composeServicesItem.devices = this.makeArray(composeServicesItemInput.device).map(item => {
                 let ii = item.split(":");
                 return {
                     container: ii[1],
@@ -766,7 +767,7 @@ export default {
             })
 
             //Network
-            let pnetwork = (parsedInput.network_mode != undefined) ? parsedInput.network_mode : (parsedInput.network != undefined) ? parsedInput.network[0] : undefined
+            let pnetwork = (composeServicesItemInput.network_mode != undefined) ? composeServicesItemInput.network_mode : (composeServicesItemInput.network != undefined) ? composeServicesItemInput.network[0] : undefined
             if (pnetwork != undefined) {
                 let network = (pnetwork == 'physical') ? 'macvlan' : pnetwork;
                 let seletNetworks = this.networks.filter(item => {
@@ -775,43 +776,43 @@ export default {
                     }
                 })
                 if (seletNetworks.length > 0) {
-                    configData.network_mode = seletNetworks[0].networks[0].name;
+                    composeServicesItem.network_mode = seletNetworks[0].networks[0].name;
                 } else {
-                    configData.network_mode = parsedInput.network_mode;
+                    composeServicesItem.network_mode = composeServicesItemInput.network_mode;
                 }
             } else {
-                configData.network_mode = 'bridge';
+                composeServicesItem.network_mode = 'bridge';
             }
 
             //hostname
             // configData.host_name = parsedInput.hostname != undefined ? parsedInput.hostname : ""
             // privileged
-            configData.privileged = parsedInput.privileged != undefined
+            composeServicesItem.privileged = composeServicesItemInput.privileged != undefined
 
             //cap-add
-            if (parsedInput.cap_add != undefined) {
-                configData.cap_add = parsedInput.cap_add
+            if (composeServicesItemInput.cap_add != undefined) {
+                composeServicesItem.cap_add = composeServicesItemInput.cap_add
             }
             //Restart
-            if (parsedInput.restart != undefined) {
-                configData.restart = parsedInput.restart
+            if (composeServicesItemInput.restart != undefined) {
+                composeServicesItem.restart = composeServicesItemInput.restart
             }
 
             // command
-            if (parsedInput.command != undefined) {
-                configData.command = parsedInput.command;
+            if (composeServicesItemInput.command != undefined) {
+                composeServicesItem.command = composeServicesItemInput.command;
             } else {
-                configData.command = [];
+                composeServicesItem.command = [];
             }
 
-            if (parsedInput.cpu_shares === 0 || parsedInput.cpu_shares > 99 || isNil(parsedInput.cpu_shares)) {
-                this.$set(configData, "cpu_shares", 90)
+            if (composeServicesItemInput.cpu_shares === 0 || composeServicesItemInput.cpu_shares > 99 || isNil(composeServicesItemInput.cpu_shares)) {
+                this.$set(composeServicesItem, "cpu_shares", 90)
             } else {
-                this.$set(configData, "cpu_shares", parsedInput.cpu_shares)
+                this.$set(composeServicesItem, "cpu_shares", composeServicesItemInput.cpu_shares)
             }
 
             // 赋 默认值
-            configData.deploy = {
+            composeServicesItem.deploy = {
                 resources: {
                     reservations: {
                         memory: this.totalMemory
@@ -821,7 +822,7 @@ export default {
 
             // process Item x-casaos
             // 判断是否存在 x-casaos
-            parsedInput['x-casaos'] = parsedInput['x-casaos'] || {container: {}};
+            composeServicesItemInput['x-casaos'] = composeServicesItemInput['x-casaos'] || {};
             // configData['x-casaos'] = Object.assign({
             // 	// ...this.configData['x-casaos'],
             // 	container: {
@@ -835,22 +836,18 @@ export default {
             // 	},
             // 	icon: '',
             // }, parsedInput['x-casaos'] || {});
-            configData['x-casaos'] = merge({
+            composeServicesItem['x-casaos'] = merge({
                 // ...this.configData['x-casaos'],
-                container: {
-                    hostname: '',
-                    scheme: 'http',
-                    index: '',
-                    port_map: '',
-                    host_name: '',
-                    container_name: '',
-                    appstore_id: '',
-                },
-                icon: '',
-                description: '',
-            }, parsedInput['x-casaos'] || {});
+                hostname: '',
+                scheme: 'http',
+                index: '',
+                port_map: '',
+                host_name: '',
+                container_name: '',
+                appstore_id: '',
+            }, composeServicesItemInput['x-casaos'] || {});
 
-            return configData
+            return composeServicesItem
         },
 
         volumeAutoCheck(containerPath, hostPath, appName) {

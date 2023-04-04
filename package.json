@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@fontsource/roboto": "^4.5.7",
-    "@icewhale/casaos-appmanagement-openapi": "^0.4.4-dev2",
+    "@icewhale/casaos-appmanagement-openapi": "^0.4.4-dev6",
     "@kangc/v-md-editor": "^1.7.11",
     "@mdi/font": "^6.6.96",
     "@tiptap/extension-highlight": "^2.0.0-beta.218",

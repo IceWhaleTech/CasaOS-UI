@@ -1034,10 +1034,10 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
-"@icewhale/casaos-appmanagement-openapi@^0.4.4-dev2":
-  version "0.4.4-dev5"
-  resolved "https://registry.yarnpkg.com/@icewhale/casaos-appmanagement-openapi/-/casaos-appmanagement-openapi-0.4.4-dev5.tgz#80622e5c781e5118ad4ef3c32bed79456afdd201"
-  integrity sha512-CCpe3PaFrKVBSm+ek6SLzL52AhyZ8h2qyPpRfrRwi8i9AHLTaZSwWnpsZx076hGhz+ADlAGYz+RcFI0YVeUnqw==
+"@icewhale/casaos-appmanagement-openapi@^0.4.4-dev6":
+  version "0.4.4-dev6"
+  resolved "https://registry.yarnpkg.com/@icewhale/casaos-appmanagement-openapi/-/casaos-appmanagement-openapi-0.4.4-dev6.tgz#1b32fcf20abf543bdfc6dad33880b7db5617449e"
+  integrity sha512-7TlyoAu3wjBS/M0yoMevnlY2ZpRZMIYiJTuCGX1kwy8ADSGJ92Z3FfKICpY7PrAIP38FF+RN4hgWneQF8wG23Q==
   dependencies:
     axios "^1.1.0"
 

@@ -102,8 +102,8 @@ export default {
                 console.log('watch tips', val)
 
                 /*let getValueByPath = this.composeData['services'][this.id]
-				if (getValueByPath['x-casaos'] && getValueByPath['x-casaos']['tips'] && getValueByPath['x-casaos']['tips']['before_install']) {
-					let multiLine = getValueByPath['x-casaos']['tips']['before_install'].forEach(item => {
+				if (getValueByPath && getValueByPath['tips'] && getValueByPath['tips']['before_install']) {
+					let multiLine = getValueByPath['tips']['before_install'].forEach(item => {
 						let value = item.content['default'] && item.content['en_US']
 						return `${item.value}:${value}\n`
 					})
@@ -115,9 +115,9 @@ export default {
 					// return ''
 				}*/
 
-                let getValueByPath = this.composeData['services'][this.id]
-                if (getValueByPath['x-casaos'] && getValueByPath['x-casaos']['tips'] && getValueByPath['x-casaos']['tips']['custom'] || getValueByPath['x-casaos']['tips']['before_install']) {
-                    this.tips = getValueByPath['x-casaos']['tips']['custom'] || getValueByPath['x-casaos']['tips']['before_install']['en_US']
+                let getValueByPath = this.composeData['x-casaos']
+                if (getValueByPath && getValueByPath['tips'] && getValueByPath['tips']['custom'] || getValueByPath['tips']['before_install']) {
+                    this.tips = getValueByPath['tips']['custom'] || getValueByPath['tips']['before_install']['en_US']
                 } else {
                     this.tips = '';
                 }
@@ -178,13 +178,9 @@ export default {
 			});*/
 
             let result = merge(this.composeData, {
-                services: {
-                    [this.id]: {
-                        'x-casaos': {
-                            tips: {
-                                custom: this.tips
-                            }
-                        }
+                'x-casaos': {
+                    tips: {
+                        custom: this.tips
                     }
                 }
             })
