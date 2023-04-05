@@ -961,15 +961,18 @@ export default {
          * @param {*}
          * @return {*} void
          */
-        processData() {
+        /*processData() {
             this.initConfigData.cpu_shares = Number(this.initConfigData.cpu_shares)
             let model = this.initConfigData.network_mode.split("-");
             this.initConfigData.network_mode = model[0]
-        },
+        },*/
 
         // ****** migration !!! end !!!
 
-        // follow this.configData
+        /*
+        * follow this.configData
+        * var : this.configData
+        * */
         updateConfigDataCommands(val) {
             // configData tans to docker-compose.yml
             let ConfigData = cloneDeep(val)
@@ -990,9 +993,9 @@ export default {
                 // 	return `${volume.source}:${volume.target}`
                 // })
                 // TODO: port
-                outputService.ports = service.ports.map(port => {
+               /* outputService.ports = service.ports.map(port => {
                     return `${port.published}:${port.target}`
-                })
+                })*/
             }
             console.log("updateConfigDataCommands :: ConfigData", ConfigData)
             // ConfigData.services[this.main_name]['x-casaos'] = Object.assign(this.xCasaOS, this.main_app)

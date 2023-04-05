@@ -77,7 +77,6 @@
                     </b-tooltip>
                     <div v-if="currentSlide < 2"
                          class="is-flex is-align-items-center modal-close-container modal-close-container-line ">
-                        <!--						<button class="delete" type="button" @click="$emit('close')"/>-->
                         <b-icon class="_polymorphic close" icon="close" pack="casa" @click.native="$emit('close')"/>
                     </div>
                     <div v-else-if="currentSlide === 2" class="is-flex is-align-items-center">
@@ -432,13 +431,10 @@ import isNull from 'lodash/isNull'
 import orderBy from 'lodash/orderBy';
 import FileSaver from 'file-saver';
 import {Swiper, SwiperSlide} from 'vue-awesome-swiper'
-// import AppsInstallationLocation from "@/components/Apps/AppsInstallationLocation";
-// import storageItem from "@/components/Storage/StorageItem";
 import AppsInstallationLocation from "@/components/Apps/AppsInstallationLocation";
 import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
 import business_OpenThirdApp from "@/mixins/app/Business_OpenThirdApp";
 import DockerProgress from "@/components/Apps/progress.js";
-
 import ComposeConfig from "@/components/Apps/ComposeConfig.vue";
 import AppDetailInfo from '@/components/Apps/AppDetailInfo.vue'
 
@@ -649,12 +645,9 @@ export default {
     created() {
         //Get recommend
         this.getStoreRecommend();
-        //Get list
-        // this.getStoreList();
 
         //Get Max memory info form device
         this.totalMemory = Math.floor(this.configData.memory.total / 1048576);
-        // this.initConfigData.memory = this.totalMemory
 
         //Handling network types
         this.tempNetworks = this.configData.networks;
@@ -673,15 +666,10 @@ export default {
         //If it is edit, Init data
         if (this.settingData != undefined) {
             this.isLoading = false
-            // this.initConfigData = this.preProcessData(Object.assign(this.initConfigData, this.settingData))
             this.configDataString = this.settingData
             this.currentSlide = 1
 
         } else {
-            // let gg = find(this.tempNetworks, (o) => {
-            // 	return o.driver == "bridge"
-            // }) || []
-            // this.initConfigData.network_model = gg.length > 0 ? gg[0].name : "bridge";
             this.getCategoryList();
         }
 
@@ -738,15 +726,6 @@ export default {
             }
             return this.architectures.indexOf(this.arch) < 0
         },
-        // patchGetStoreList() {
-        // 	console.log("AAAAAAAAAAAAAAA")
-        // 	this.getStoreList()
-        // 	return this.currentCate.toString() + this.currentAuthor.toString() + this.currentSort.toString()
-        // }
-        // patchGetStoreList() {
-        // 	this.getStoreList();
-        // 	return this.counterPatchGetStoreList
-        // }
         archTitle() {
             if (this.arch === 'arm') {
                 return 'armv7'
@@ -762,19 +741,9 @@ export default {
                 this.isLoading = false;
             }
         },
-        // Watch if the query data of app store changes
-        // storeQueryData: {
-        // 	handler() {
-        // 		this.getStoreList();
-        // 	},
-        // 	deep: true
-        // },
-        // Watch if app cates changes
         currentCate: {
             handler(val) {
                 if (!this.isFirst) {
-                    // this.storeQueryData.category = val.name
-                    // this.getStoreList();
                     this.counterPatchGetStoreList++
                 }
 
@@ -784,8 +753,6 @@ export default {
         currentAuthor: {
             handler(val) {
                 if (!this.isFirst) {
-                    // this.storeQueryData.authorType = val.name
-                    // this.getStoreList();
                     this.counterPatchGetStoreList++
                 }
             },
@@ -795,8 +762,6 @@ export default {
         currentSort: {
             handler(val) {
                 if (!this.isFirst) {
-                    // this.storeQueryData.sort = val.name
-                    // this.getStoreList();
                     this.counterPatchGetStoreList++
                 }
             },
@@ -814,20 +779,6 @@ export default {
             let tempO = this.cateMenu.find(item => item.name == name) || {font: 'mdi-apps'}
             return tempO.font;
         },
-
-        // updateLabel: debounce(function (string) {
-        // 	this.initConfigData.label = string
-        // }, 50),
-
-        /**
-         * @description:
-         * @param {*} swiper
-         * @return {*}
-         */
-        /*handleFeaturedSlide(swiper) {
-		  this.disFeaturedPrev = (swiper.activeIndex == 0) ? true : false;
-		  this.disFeaturedNext = swiper.isEnd;
-		},*/
 
         /**
          * @description: Get category list
@@ -861,9 +812,8 @@ export default {
 
                 let res = await this.$openAPI.appManagement.appStore.composeAppStoreInfoList(undefined, undefined, true).then(res => res.data.data.list);
 
-                debugger
                 this.recommendList = Object.keys(res).map(id => {
-                    let main_app_info = res[id].apps[id]
+                    let main_app_info = res[id]
                     return {
                         id,
                         category: main_app_info.category,
@@ -872,14 +822,13 @@ export default {
                         thumbnail: main_app_info.thumbnail,
                         title: main_app_info.title.en_US,
                         state: 0,
-
+                        scheme: main_app_info.apps[id].scheme,
+                        port: main_app_info.apps[id].port_map,
+                        index: main_app_info.apps[id].index,
                     }
                 })
             } catch (error) {
                 console.log('load recommend error', error);
-                // this.loadErrorStep = 2
-                // this.isLoading = false;
-                // this.isLoadError = true;
             }
         },
 
@@ -908,7 +857,7 @@ export default {
 
                 let list = res.list
                 let listRes = Object.keys(list).map(id => {
-                    let main_app_info = list[id].apps[id]
+                    let main_app_info = list[id]
                     return {
                         id,
                         category: main_app_info.category,
@@ -917,6 +866,9 @@ export default {
                         thumbnail: main_app_info.thumbnail,
                         title: main_app_info.title.en_US,
                         state: 0,
+                        scheme: main_app_info.apps[id].scheme,
+                        port: main_app_info.apps[id].port_map,
+                        index: main_app_info.apps[id].index,
                     }
                 })
                 this.pageList = listRes;
@@ -925,40 +877,6 @@ export default {
                 console.log('load store list error', e)
             }
             this.isLoading = false
-
-            /*this.$openAPI.appManagement.appStore.composeAppStoreInfoList(category, authorType, false).then(res => {
-				let list = res.data.data.list
-				let listRes = Object.keys(list).map(id => {
-					let main_app_info = list[id].apps[id]
-					return {
-						id,
-						category: main_app_info.category,
-						icon: main_app_info.icon,
-						tagline: main_app_info.tagline.en_US,
-						thumbnail: main_app_info.thumbnail,
-						title: main_app_info.title.en_US,
-						state: 0,
-					}
-				})
-				this.pageList = listRes;
-				let communityList = res.data.data.community || {}
-				this.communityList = Object.keys(communityList).map(id => {
-					let main_app_info = communityList[id].apps[id]
-					return {
-						id,
-						category: main_app_info.category,
-						icon: main_app_info.icon,
-						tagline: main_app_info.tagline.en_US,
-						thumbnail: main_app_info.thumbnail,
-						title: main_app_info.title.en_US,
-						state: 0,
-
-					}
-				})
-				this.installedList = res.data.data.installed
-			}).catch().finally(() => {
-				this.isLoading = false;
-			})*/
         },
 
         /**
@@ -995,21 +913,6 @@ export default {
             }).finally(() => {
                 this.isLoading = false;
             })
-
-            /*this.$api.apps.getAppInfo(id).then(resp => {
-				this.isLoading = false;
-				this.sidebarOpen = true;
-				this.appDetailData = resp.data.data
-				this.architectures = resp.data.data.architectures || [];
-				// messageBus :: appstore_detail
-				// this.$messageBus('appstore_detail', resp.data.data.title.toString())
-			}).catch(() => {
-				this.isLoading = false;
-				this.$buefy.toast.open({
-					message: this.$t(`There was an error loading the data, please try again!`),
-					type: 'is-danger'
-				})
-			})*/
         },
 
         retry() {
@@ -1088,28 +991,6 @@ export default {
         },
 
         /**
-         * @description: Pre-processed data before setting
-         * @param {ConfigObject} data
-         * @return {ConfigObject} data
-         */
-        /*preProcessData(data) {
-			data.ports = isNull(data.ports) ? [] : data.ports
-			data.volumes = isNull(data.volumes) ? [] : data.volumes
-			data.envs = isNull(data.envs) ? [] : data.envs
-			data.devices = isNull(data.devices) ? [] : data.devices
-			data.cap_add = isNull(data.cap_add) ? [] : data.cap_add
-			data.cmd = isNull(data.cmd) ? [] : data.cmd
-			data.port_map = data.port_map === "" ? null : data.port_map
-			data.cpu_shares = (data.cpu_shares === 0 || data.cpu_shares > 99) ? 90 : data.cpu_shares
-			data.memory = data.memory === 0 ? this.totalMemory : data.memory
-			data.restart = data.restart === "no" ? "unless-stopped" : data.restart
-			data.network_model = data.network_model === "default" ? "bridge" : data.network_model
-			data.icon = data.icon === "" ? this.getIconFromImage(data.image) : data.icon
-			
-			return data
-		},*/
-
-        /**
          * @description: Get App icon form image
          * @param {*} image
          * @return {*}
@@ -1153,7 +1034,7 @@ export default {
                     this.isLoading = true;
                     this.$openAPI.appManagement.compose.installComposeApp(this.dockerComposeCommands).then((res) => {
                         if (res.status === 200) {
-                            this.currentInstallAppName = ''//res.data.data
+                            this.currentInstallAppName = ''
                             this.currentSlide = 2;
                             this.currentInstallAppText = "Start Installation..."
                             this.cancelButtonText = 'Continue in background'
@@ -1176,11 +1057,6 @@ export default {
                 }
             })
         },
-
-        installAppData() {
-
-        },
-
 
         /**
          * @description: Save edit update
@@ -1228,13 +1104,7 @@ export default {
                 animation: "zoom-in",
                 events: {
                     'update': (e) => {
-                        //localStorage.removeItem("app_data")
-                        // this.initConfigData = this.preProcessData(e)
-                        // if (this.initConfigData.icon == "") {
-                        // 	this.changeIcon(this.initConfigData.image)
-                        // }
                         this.configDataString = e;
-                        // this.settingData = e;
                         this.$buefy.dialog.alert({
                             title: '⚠️ ' + this.$t('Attention'),
                             message: '<div class="nobrk"><h4 class="title is-5">' + this.$t('AutoFill only helps you to complete most of the configuration.') + '</h4>' +
@@ -1252,7 +1122,6 @@ export default {
                     }
                 },
                 props: {
-                    // initData: this.initConfigData,
                     netWorks: this.networks,
                     oriNetWorks: this.tempNetworks,
                     deviceMemory: this.totalMemory
@@ -1267,7 +1136,6 @@ export default {
          */
         exportYAML() {
             const blob = new Blob([this.dockerComposeCommands], {type: ''});
-            // FileSaver.saveAs(blob, `${exportData.label}.json`);
             FileSaver.saveAs(blob, `${this.mainName}.yaml`);
         },
 
@@ -1323,7 +1191,6 @@ export default {
                         animation: "zoom-in",
                         props: {
                             appid: containerId,
-                            // appName: this.initConfigData.label
                             appName: this.mainName
                         }
                     })
@@ -1470,9 +1337,6 @@ export default {
     },
 
     sockets: {
-        // app_install(resData) {
-        //   this.installAppProgress(resData);
-        // },
         "app:install-end"(res) {
             this.installAppProgress({
                 finished: true,
