@@ -682,6 +682,7 @@ export default {
 			- "49100:22"
 			- "127.0.0.1:8001:8001"
 			- "127.0.0.1:5000-5010:5000-5010"
+			- "127.0.0.1:5000-5010:5000-5010/udp"
 			- "6060:6060/udp"
 			*/
             // ["3000-3005", "8000:8000", "9090-9091:8080-8081", "49100:22", "127.0.0.1:8001:8001", "127.0.0.1:5000-5010:5000-5010","6060:6060/udp"]
@@ -696,17 +697,26 @@ export default {
                     // 	protocol: protocol
                     // }
 
-                    const parts = item.split(':');
+                    /*const parts = item.split(':');
                     const pArray = parts[0].split('-');
                     const endArray = parts.length > 2 ? parts.slice(1, 3) : [pArray[0]];
                     const protocol = parts.length > 2 ? parts[2].split('/')[1] : 'tcp';
 
-                    const published = parts.length > 1 ? parts.slice(0, 2).join(':') : pArray[0];
+                    const published = parts.length > 1 ? parts.slice(0, 2).join(':') : pArray[0];*/
+
+                    // 修正：
+                    const regex = /(^([\d\.]+):)?(\d+(-\d+)?)(:(\d+(-\d+)?))?(\/(.*)$)?/;
+                    const match = item.match(regex);
+                    const host_ip = match[2];
+                    const target = match[3];
+                    const published = match[6];
+                    const protocol = match[9];
 
                     return {
-                        target: endArray[0],
-                        published: published,
-                        protocol: protocol || 'tcp'
+                        host_ip,
+                        target,
+                        published,
+                        protocol,
                     };
                 } else {
                     return item
@@ -993,9 +1003,9 @@ export default {
                 // 	return `${volume.source}:${volume.target}`
                 // })
                 // TODO: port
-               /* outputService.ports = service.ports.map(port => {
-                    return `${port.published}:${port.target}`
-                })*/
+                /* outputService.ports = service.ports.map(port => {
+                     return `${port.published}:${port.target}`
+                 })*/
             }
             console.log("updateConfigDataCommands :: ConfigData", ConfigData)
             // ConfigData.services[this.main_name]['x-casaos'] = Object.assign(this.xCasaOS, this.main_app)

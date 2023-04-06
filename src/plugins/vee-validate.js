@@ -58,7 +58,6 @@ extend('yaml_port', {
 	validate: value => {
 		let regExp = /^(\d{1,3}\.){3}\d{1,3}(:\d{1,5}(-\d{1,5})?)?|(^\d{1,5}(-\d{1,5})?)$/;
 
-		console.log('!@@@@@@!@!!!!!!!!!@@', regExp.test(value))
 		return regExp.test(value)
 	},
 	message: 'The field mast be a valid docker-compose port',

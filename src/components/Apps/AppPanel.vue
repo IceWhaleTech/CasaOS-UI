@@ -12,16 +12,16 @@
 <template>
     <div
     :class="{'narrow': currentSlide > 0 ,'card-width': isFirstInstall}"
-    class="app-card modal-card">
+    class="app-card modal-card _stepStoreList">
         <!--    first setting！！ apps installation location-->
         <template v-if="isFirstInstall">
             <header class="modal-card-head b-line">
                 <div class="is-flex-grow-1">
                     <h3 class="is-flex-grow-1 title is-3 pri-line-height has-text-black">{{
                             $t('Apps Installation Location')
-                        }}</h3>
+                        }}
+                    </h3>
                 </div>
-                <!--				<button class="delete" type="button" @click="$emit('close')"/>-->
                 <b-icon class="_polymorphic close" icon="close" pack="casa"
                         @click.native="$emit('close'); $messageBus('appstore_close')"/>
             </header>
@@ -35,7 +35,8 @@
             <section class="modal-card-body is-overlay">
                 <AppsInstallationLocation v-for="(item,index) in storageData" :key="'storage'+index" :item="item"
                                           :scence="storage_item_scence"
-                                          @selection="getSelection"></AppsInstallationLocation>
+                                          @selection="getSelection">
+                </AppsInstallationLocation>
             </section>
         </template>
         <!--    first setting have done!!-->
@@ -47,7 +48,8 @@
                                    :cateMenu="cateMenu" :close="close"
                                    :currentInstallId="currentInstallId"
                                    :installedList="installedList" :showDetailSwiper="showDetailSwiper"
-                                   :unuseable="unuseable"></AppDetailInfo>
+                                   :unuseable="unuseable">
+                    </AppDetailInfo>
                 </template>
             </app-side-bar>
             <!-- Sidebar End -->
@@ -1369,6 +1371,17 @@ export default {
 
 
 <style lang="scss">
+// appPanel global style
+.app-panel {
+    ._stepStoreList {
+        min-height: calc(100vh - 2.5rem);
+
+        .modal-card-body {
+            overflow: overlay;
+        }
+    }
+}
+
 .app-item {
     border-radius: 0.5rem;
     transition: background 0.3s ease;

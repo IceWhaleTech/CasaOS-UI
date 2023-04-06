@@ -27,8 +27,9 @@
                         <validation-provider v-if="showHostPost" v-slot="{errors,valid}" rules="yaml_port" slim>
                             <b-field :label="$t('Host')" :type="{ 'is-danger': errors[0], 'is-success': valid }"
                                      expanded>
-                                <b-input v-model="item.published" :placeholder="$t('Host')"
-                                         expanded
+                                <b-input :placeholder="$t('Host')"
+                                         :value="item.host_ip?`${item.host_ip}:`:'' + item.published" expanded
+                                         @blur="(event, val)=> assignPortsItem(event.target._value, item)"
                                 ></b-input>
                             </b-field>
                         </validation-provider>
@@ -57,7 +58,9 @@
                         <validation-provider v-slot="{errors,valid}" rules="yaml_port" slim>
                             <b-field :type="{ 'is-danger': errors[0], 'is-success': valid }"
                                      expanded>
-                                <b-input v-if="showHostPost" v-model="item.published" :placeholder="$t('Host')" expanded
+                                <b-input v-if="showHostPost" :placeholder="$t('Host')"
+                                         :value="item.host_ip?item.host_ip:'' + item.published" expanded
+                                         @blur="(val)=> assignPortsItem(val, item)"
                                 ></b-input>
                             </b-field>
                         </validation-provider>
@@ -114,16 +117,16 @@ export default {
                 return this.vData;
             },
             set(val) {
-                debugger
                 this.validateField(val);
             }
-        }
+        },
     },
     methods: {
         addItem() {
             let itemObj = {
                 target: "",
                 published: "",
+                host_ip: "",
                 protocol: "tcp"
             }
             this.items.push(itemObj)
@@ -134,14 +137,19 @@ export default {
         },
 
         validateField(val) {
-            console.log(123123)
             this.$refs.ob.checkStep().then(valid => {
-                debugger
                 if (valid) {
                     this.$emit('change', val);
                 }
             });
         },
+        assignPortsItem(val, item) {
+            const reg = /((^(\d{1,3}\.){3}\d{1,3}):)?(\d{1,5}$)/;
+            const partList = val.match(reg);
+            debugger
+            item.host_ip = partList[2] || '';
+            item.published = partList[4];
+        }
     },
 }
 </script>
