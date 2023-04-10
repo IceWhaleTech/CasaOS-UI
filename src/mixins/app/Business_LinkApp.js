@@ -8,6 +8,14 @@
 
  */
 
+/* LinkApp mateData:
+*  item.hostname
+*  item.icon
+*  item.name
+*  item.app_type
+*  item.status
+*  item.id
+* */
 export default {
 	methods: {
 		async getLinkAppList() {
@@ -44,16 +52,13 @@ export default {
 			return this.setLinkAppList(LinkAppList);
 		},
 
+		// for former version.
 		transferLinkAppList(LinkAppList) {
 			LinkAppList.forEach(item => {
 				if (item.type) {
 					item.app_type = item.type;
 					item.hostname = item.host;
 					item.status = item.state;
-					item.title = {
-						en_us: item.name,
-						en_US: item.name
-					}
 					item.name = item.id;
 					delete item.type;
 					delete item.host;

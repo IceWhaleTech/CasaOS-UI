@@ -128,7 +128,7 @@
 
 					<p class="mt-3 one-line">
 						<a class="one-line" style="cursor:default">
-							{{ item.title.en_US }}
+							{{ i18n(item.title) }}
 						</a>
 					</p>
 
@@ -148,17 +148,17 @@ import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
 import business_OpenThirdApp  from "@/mixins/app/Business_OpenThirdApp";
 import business_LinkApp       from "@/mixins/app/Business_LinkApp";
 import isNull                 from "lodash/isNull";
-import tipEdiorModal          from "@/components/Apps/TipEdiorModal.vue";
+import tipEditorModal         from "@/components/Apps/TipEditorModal.vue";
 import YAML                   from "yaml";
-// import {patch} from "@/service/service.js";
+import commonI18n             from "@/mixins/base/common-i18n";
 
 export default {
 	name: "app-card",
 	components: {
 		cTooltip,
-		tipEdiorModal,
+		tipEditorModal,
 	},
-	mixins: [business_ShowNewAppTag, business_OpenThirdApp, business_LinkApp],
+	mixins: [business_ShowNewAppTag, business_OpenThirdApp, business_LinkApp, commonI18n],
 	inject: ["homeShowFiles", "openAppStore"],
 	data() {
 		return {
@@ -235,6 +235,10 @@ export default {
 		},
 		isLinkApp() {
 			return this.item.app_type === "LinkApp"
+		},
+		title() {
+			let lang = localStorage.getItem('lang')
+			return this.item.title[lang] || this.item.title.en_US
 		},
 
 	},
@@ -446,7 +450,7 @@ export default {
 				this.$refs.dro.isActive = false
 				this.$buefy.modal.open({
 					parent: this,
-					component: tipEdiorModal,
+					component: tipEditorModal,
 					hasModalCard: true,
 					customClass: 'network-storage-modal',
 					trapFocus: true,

@@ -98,7 +98,6 @@
 import smoothReflow                             from 'vue-smooth-reflow'
 import {ValidationObserver, ValidationProvider} from 'vee-validate'
 import "@/plugins/vee-validate";
-import {nanoid}                                 from 'nanoid';
 import Business_ShowNewAppTag                   from "@/mixins/app/Business_ShowNewAppTag";
 
 
@@ -178,19 +177,16 @@ export default {
 					if (!listLinkApp.find((item) => {
 						if (item.name === this.name) {
 							item.hostname = this.hostname
-							item.title.en_US = this.title.en_US
 							item.icon = this.icon
 							return true
 						}
 					})) {
-						let id = nanoid()
 						listLinkApp = listLinkApp.concat({
 							host: this.hostname,
 							name: this.name,
 							icon: this.icon,
 							app_type: "LinkApp",
 							state: "running",
-							id
 						})
 						this.addIdToSessionStorage(id);
 					}

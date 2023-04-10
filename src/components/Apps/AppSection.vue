@@ -205,15 +205,17 @@ export default {
 
 			try {
 				const orgAppList = await this.$openAPI.appGrid.getAppGrid().then(res => res.data.data);
-				orgAppList.forEach((item) => {
-					item.hostname = item.hostname || this.$baseIp;
-					// Container app does not have icon.
-					item.icon = item.icon || require(`@/assets/img/app/default.svg`);
-				})
+
 				// console.log('composeApp Data:', orgAppList)
 				let listLinkApp = await this.getLinkAppList();
 				// all app list
 				let casaAppList = concat(builtInApplications, orgAppList, listLinkApp)
+				casaAppList.forEach((item) => {
+					item.hostname = item.hostname || this.$baseIp;
+					// Container app does not have icon.
+					item.icon = item.icon || require(`@/assets/img/app/default.svg`);
+					// linkApp does not have title.
+				})
 				// get app sort info.
 				let sortRes = await this.$api.users.getCustomStorage(orderConfig)
 				let lateSortList = sortRes.data.data.data

@@ -47,6 +47,7 @@ import '@kangc/v-md-editor/lib/style/base-editor.css';
 import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
 import '@kangc/v-md-editor/lib/theme/style/github.css';
 import hljs        from 'highlight.js';
+import commonI18n  from "@/mixins/base/common-i18n";
 
 VMdEditor.use(githubTheme, {
 	Hljs: hljs,
@@ -58,6 +59,7 @@ export default {
 	components: {
 		VMdEditor
 	},
+	mixins: [commonI18n],
 	data() {
 		return {
 			isEditing: false,
@@ -117,7 +119,7 @@ export default {
 
 				let getValueByPath = this.composeData['x-casaos']
 				if (getValueByPath && getValueByPath['tips'] && getValueByPath['tips']['custom'] || getValueByPath['tips']['before_install']) {
-					this.tips = getValueByPath['tips']['custom'] || getValueByPath['tips']['before_install']['en_US']
+					this.tips = getValueByPath['tips']['custom'] || i18n(getValueByPath['tips']['before_install'])
 				} else {
 					this.tips = '';
 				}
