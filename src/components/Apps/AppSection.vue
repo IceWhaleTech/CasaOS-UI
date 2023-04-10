@@ -110,7 +110,6 @@ export default {
 		return {
 			user_id: localStorage.getItem("user_id"),
 			appList: [],
-			notImportedList: [],
 			appConfig: {},
 			drag: false,
 			isLoading: false,
@@ -205,26 +204,30 @@ export default {
 
 			try {
 				const orgAppList = await this.$openAPI.appGrid.getAppGrid().then(res => res.data.data);
-
-				// console.log('composeApp Data:', orgAppList)
-				let listLinkApp = await this.getLinkAppList();
-				// all app list
-				let casaAppList = concat(builtInApplications, orgAppList, listLinkApp)
-				casaAppList.forEach((item) => {
+				orgAppList.forEach((item) => {
 					item.hostname = item.hostname || this.$baseIp;
 					// Container app does not have icon.
 					item.icon = item.icon || require(`@/assets/img/app/default.svg`);
-					// linkApp does not have title.
 				})
+				let listLinkApp = await this.getLinkAppList();
+				listLinkApp.forEach((item) => {
+					// linkApp does not have title.
+					item.title = {
+						en_us: item.name
+					}
+				})
+				// all app list
+				let casaAppList = concat(builtInApplications, orgAppList, listLinkApp)
 				// get app sort info.
-				let sortRes = await this.$api.users.getCustomStorage(orderConfig)
-				let lateSortList = sortRes.data.data.data
+				let lateSortList = await this.$api.users.getCustomStorage(orderConfig).then(res => res.data.data.data);
 				let newestSortList = casaAppList.map((item) => {
 					return item.name
 				})
+				// console.log("SortList", lateSortList)
 				if (lateSortList != "") {
 					// Resort list
 					const sortList = this.getNewSortList(lateSortList, newestSortList)
+					// console.log("getNewSortList sortList", sortList)
 					casaAppList.sort((a, b) => {
 						return sortList.indexOf(a.name) - sortList.indexOf(b.name);
 					});
@@ -235,10 +238,6 @@ export default {
 				if (xor(lateSortList, newestSortList).length > 0) {
 					this.saveSortData()
 				}
-				// business :: top-bar:: switch :: ShowOtherApp
-				// TODO $compose will not have this function!
-				this.notImportedList = [] //listRes.data.data
-				this.$store.commit('SET_NOTIMPORT_LIST', this.notImportedList);
 
 				this.isLoading = false;
 				this.retryCount = 0;
@@ -268,9 +267,12 @@ export default {
 		 * @param {Array} newList
 		 * @return {*}
 		 */
+		// Q：How to get the new sort list?
+		// A：xor(oriList, newList) + oriList
 		getNewSortList(oriList, newList) {
 			let xorList = xor(oriList, newList)
-			xorList.reverse()
+			console.log('====', xorList)
+			// xorList.reverse()
 			return concat(oriList, xorList)
 		},
 

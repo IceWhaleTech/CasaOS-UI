@@ -27,7 +27,10 @@
 							  type="is-text" @click="openTips(item.name)">
 						{{ $t('Tips') }}
 					</b-button>
-					<b-button v-if="isV2App" expanded type="is-text" @click="configApp()">{{ $t('Setting') }}</b-button>
+					<b-button v-if="isV2App || isLinkApp" expanded type="is-text" @click="configApp()">{{
+							$t('Setting')
+						}}
+					</b-button>
 					<b-button v-if="false" :loading="isCloning"
 							  expanded type="is-text" @click="appClone(item.appstore_id)">{{
 							$t('Clone')
@@ -235,10 +238,6 @@ export default {
 		},
 		isLinkApp() {
 			return this.item.app_type === "LinkApp"
-		},
-		title() {
-			let lang = localStorage.getItem('lang')
-			return this.item.title[lang] || this.item.title.en_US
 		},
 
 	},

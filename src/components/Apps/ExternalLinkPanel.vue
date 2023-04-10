@@ -57,10 +57,10 @@
 									{{ $t('App Name') }}
 									<label style="color:red">*</label>
 								</template>
-								<b-autocomplete ref="inputs" v-model="name" :placeholder="$t('Customize your APP name')"
-												append-to-body
-												field="hostname" max-height="120px">
-								</b-autocomplete>
+								<b-input v-model="name" :disabled="disableEditName"
+										 :placeholder="$t('Customize your APP name')"
+										 max-height="120px">
+								</b-input>
 							</b-field>
 						</ValidationProvider>
 
@@ -147,6 +147,9 @@ export default {
 				return this.$t("Set External Link/APP")
 			}
 		},
+		disableEditName() {
+			return !!this.linkId
+		},
 	},
 	watch: {},
 	created() {
@@ -154,8 +157,6 @@ export default {
 		this.hostname = this.linkHost || "http://"
 		this.title.en_US = this.linkName
 		this.icon = this.linkIcon
-	},
-	mounted() {
 	},
 	methods: {
 		/**
@@ -182,13 +183,13 @@ export default {
 						}
 					})) {
 						listLinkApp = listLinkApp.concat({
-							host: this.hostname,
+							hostname: this.hostname,
 							name: this.name,
 							icon: this.icon,
 							app_type: "LinkApp",
-							state: "running",
+							status: "running",
 						})
-						this.addIdToSessionStorage(id);
+						this.addIdToSessionStorage(this.name);
 					}
 					this.saveLinkApp(listLinkApp)
 				}
