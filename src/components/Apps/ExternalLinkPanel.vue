@@ -95,10 +95,10 @@
 </template>
 
 <script>
-import smoothReflow                             from 'vue-smooth-reflow'
+import smoothReflow from 'vue-smooth-reflow'
 import {ValidationObserver, ValidationProvider} from 'vee-validate'
 import "@/plugins/vee-validate";
-import Business_ShowNewAppTag                   from "@/mixins/app/Business_ShowNewAppTag";
+import Business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
 
 
 export default {
@@ -117,10 +117,10 @@ export default {
 			type: String,
 			default: "",
 		},
-		linkId: {
-			type: String,
-			default: "",
-		},
+		// linkId: {
+		// 	type: String,
+		// 	default: "",
+		// },
 	},
 	data() {
 		return {
@@ -148,14 +148,13 @@ export default {
 			}
 		},
 		disableEditName() {
-			return !!this.linkId
+			return !!this.linkName
 		},
 	},
 	watch: {},
 	created() {
-		this.name = this.linkId
 		this.hostname = this.linkHost || "http://"
-		this.title.en_US = this.linkName
+		this.name = this.linkName
 		this.icon = this.linkIcon
 	},
 	methods: {
