@@ -14,8 +14,8 @@
 		<!-- Title Bar Start -->
 		<div class="is-flex is-align-items-center mb-4">
 			<app-section-title-tip id="appTitle1" class="is-flex-grow-1 has-text-sub-04" label="Drag icons to sort."
-			                       title="Apps"></app-section-title-tip>
-			
+								   title="Apps"></app-section-title-tip>
+
 			<b-dropdown animation="fade1" aria-role="menu" class="file-dropdown" position="is-bottom-left">
 				<template #trigger>
 					<b-icon class="is-clickable" icon="plus" pack="casa" size="is-20" type="is-white"></b-icon>
@@ -29,24 +29,24 @@
 			</b-dropdown>
 		</div>
 		<!-- Title Bar End -->
-		
+
 		<!-- App List Start -->
 		<draggable v-model="appList" :draggable="draggable"
-		           class="columns is-variable is-2 is-multiline app-list contextmenu-canvas" tag="div"
-		           v-bind="dragOptions"
-		           @end="onSortEnd" @start="drag = true">
-			
+				   class="columns is-variable is-2 is-multiline app-list contextmenu-canvas" tag="div"
+				   v-bind="dragOptions"
+				   @end="onSortEnd" @start="drag = true">
+
 			<!-- App Icon Card Start -->
 			<template v-if="!isLoading">
-				<div v-for="(item) in appList" :id="'app-' + item.id" :key="'app-' + item.id"
-				     class="column is-narrow is-3 handle">
-					<app-card :isCasa="true" :item="item" @configApp="showConfigPanel"
-					          @updateState="getList"></app-card>
+				<div v-for="(item) in appList" :id="'app-' + item.name" :key="'app-' + item.name"
+					 class="column is-narrow is-3 handle">
+					<app-card :item="item" @configApp="showConfigPanel" @importApp="showContainerPanel"
+							  @updateState="getList"></app-card>
 				</div>
 			</template>
 			<template v-else>
 				<div v-for="(index) in skCount" :id="'app-' + index" :key="'app-' + index"
-				     class="column is-narrow is-3 handle">
+					 class="column is-narrow is-3 handle">
 					<app-card-skeleton :index="index"></app-card-skeleton>
 				</div>
 			</template>
@@ -54,42 +54,23 @@
 			<!-- <b-loading slot="footer" v-model="isLoading" :is-full-page="false"></b-loading> -->
 		</draggable>
 		<!-- App List End -->
-		<template v-if="notImportedList.length > 0 && exsitingAppsShow">
-			<!-- Title Bar Start -->
-			<div class="title-bar is-flex is-align-items-center mt-2rem  mb-4">
-				<app-section-title-tip id="appTitle2" label="Click icon to import." title="Existing Docker Apps">
-				</app-section-title-tip>
-			</div>
-			<!-- Title Bar End -->
-			
-			<!-- App List Start -->
-			<div class="columns is-variable is-2 is-multiline app-list contextmenu-canvas">
-				<!-- Application not imported Start -->
-				<div v-for="(item) in notImportedList" :key="'app-' + item.id" class="column is-narrow is-3">
-					<app-card :isCasa="false" :item="item" @configApp="showConfigPanel" @importApp="showConfigPanel"
-					          @updateState="getList"></app-card>
-				</div>
-				<!-- Application not imported End -->
-			</div>
-			<!-- App List End -->
-		</template>
-	
+
 	</div>
 </template>
 
 <script>
-import AppCard from './AppCard.vue'
-import AppCardSkeleton from './AppCardSkeleton.vue';
-import AppPanel from './AppPanel.vue'
-import ExternalLinkPanel from "@/components/Apps/ExternalLinkPanel";
-import AppSectionTitleTip from './AppSectionTitleTip.vue'
-import draggable from 'vuedraggable'
-import xor from 'lodash/xor'
-import concat from 'lodash/concat'
-import events from '@/events/events';
-import last from 'lodash/last';
+import AppCard                from './AppCard.vue'
+import AppCardSkeleton        from './AppCardSkeleton.vue';
+import AppPanel               from './AppPanel.vue'
+import ExternalLinkPanel      from "@/components/Apps/ExternalLinkPanel";
+import AppSectionTitleTip     from './AppSectionTitleTip.vue'
+import draggable              from 'vuedraggable'
+import xor                    from 'lodash/xor'
+import concat                 from 'lodash/concat'
+import events                 from '@/events/events';
+import last                   from 'lodash/last';
 import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
-import YAML from "yaml";
+import business_LinkApp       from "@/mixins/app/Business_LinkApp";
 
 const SYNCTHING_STORE_ID = 74
 
@@ -98,23 +79,33 @@ const builtInApplications = [
 	{
 		id: "1",
 		name: "App Store",
+		title: {
+			en_us: "App Store",
+			en_US: "App Store",
+			zh_cn: "应用商店"
+		},
 		icon: require(`@/assets/img/app/appstore.svg`),
 		status: "running",
-		type: "system"
+		app_type: "system"
 	},
 	{
 		id: "2",
 		name: "Files",
+		title: {
+			en_us: "Files",
+			en_US: "Files",
+			zh_cn: "文件管理器"
+		},
 		icon: require(`@/assets/img/app/files.svg`),
 		status: "running",
-		type: "system"
+		app_type: "system"
 	},
 ]
 
 const orderConfig = "app_order"
 
 export default {
-	mixins: [business_ShowNewAppTag],
+	mixins: [business_ShowNewAppTag, business_LinkApp],
 	data() {
 		return {
 			user_id: localStorage.getItem("user_id"),
@@ -151,7 +142,7 @@ export default {
 				group: "description",
 				disabled: false,
 				ghostClass: "ghost",
-				
+
 			};
 		},
 		showDragTip() {
@@ -167,11 +158,11 @@ export default {
 		this.$EventBus.$on(events.OPEN_APP_STORE_AND_GOTO_SYNCTHING, () => {
 			this.showInstall(SYNCTHING_STORE_ID)
 		});
-		
+
 		this.$EventBus.$on(events.RELOAD_APP_LIST, () => {
 			this.getList();
 		});
-		
+
 		this.ListRefreshTimer = setInterval(() => {
 			this.getList();
 		}, 5000)
@@ -179,7 +170,7 @@ export default {
 	beforeDestroy() {
 		this.$EventBus.$off(events.OPEN_APP_STORE_AND_GOTO_SYNCTHING);
 		window.removeEventListener('resize', this.getSkCount);
-		
+
 		clearInterval(this.ListRefreshTimer);
 	},
 	mounted() {
@@ -187,12 +178,12 @@ export default {
 		this.getSkCount()
 	},
 	methods: {
-		
+
 		isMobile() {
 			let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
 			return flag
 		},
-		
+
 		getSkCount() {
 			const windowWidth = window.innerWidth
 			if (windowWidth < 1024) {
@@ -205,33 +196,22 @@ export default {
 				this.skCount = 10
 			}
 		},
-		
+
 		/**
 		 * @description: Fetch the list of installed apps
 		 * @return {*} void
 		 */
 		async getList() {
-			
+
 			try {
-				// TODO migrate to v2!!
-				const listRes = await this.$openAPI.appGrid.getAppGrid();
-				// const orgAppList = listRes.data.data.casaos_apps
-				const orgAppList = listRes.data.data
-				// TODO fake data
+				const orgAppList = await this.$openAPI.appGrid.getAppGrid().then(res => res.data.data);
 				orgAppList.forEach((item) => {
-					item.state = 'running';
-					item.hostname = this.$baseIp;
-					item.name = item.title && item.title.en_US;
-					item.id = item.store_app_id;
-					item.seheme = 'http';
-					// item.type = 'system';
+					item.hostname = item.hostname || this.$baseIp;
+					// Container app does not have icon.
+					item.icon = item.icon || require(`@/assets/img/app/default.svg`);
 				})
 				// console.log('composeApp Data:', orgAppList)
-				let listLinkApp = await this.$api.users.getLinkAppDetail().then(v => v.data.data);
-				if (listLinkApp === "") {
-					listLinkApp = []
-				}
-				localStorage.setItem("listLinkApp", JSON.stringify(listLinkApp))
+				let listLinkApp = await this.getLinkAppList();
 				// all app list
 				let casaAppList = concat(builtInApplications, orgAppList, listLinkApp)
 				// get app sort info.
@@ -257,7 +237,7 @@ export default {
 				// TODO $compose will not have this function!
 				this.notImportedList = [] //listRes.data.data
 				this.$store.commit('SET_NOTIMPORT_LIST', this.notImportedList);
-				
+
 				this.isLoading = false;
 				this.retryCount = 0;
 				this.appListErrorMessage = ""
@@ -270,7 +250,7 @@ export default {
 						this.getList();
 					}, 2000)
 				} else {
-					
+
 					this.appListErrorMessage = "Failed to get app list."
 					this.$buefy.toast.open({
 						message: this.$t(`Failed to load apps, please refresh later.`),
@@ -279,7 +259,7 @@ export default {
 				}
 			}
 		},
-		
+
 		/**
 		 * @description:
 		 * @param {Array} oriList
@@ -291,7 +271,7 @@ export default {
 			xorList.reverse()
 			return concat(oriList, xorList)
 		},
-		
+
 		/**
 		 * @description: Save Sort Table
 		 * @param {*}
@@ -316,7 +296,7 @@ export default {
 			this.drag = false
 			this.saveSortData()
 		},
-		
+
 		/**
 		 * @description: Show Install Panel Programmatic
 		 * @return {*} void
@@ -326,7 +306,7 @@ export default {
 				this.$messageBus('apps_custominstall');
 			}
 			this.isShowing = true
-			
+
 			const networks = await this.$api.container.getNetworks();
 			const memory = this.$store.state.hardwareInfo.mem;
 			const configData = {
@@ -358,39 +338,73 @@ export default {
 				}
 			})
 		},
-		
+
 		/**
 		 * @description: Show Settings Panel Programmatic
 		 * @param {Object} {id:String,status:String }
 		 * @param {Boolean} isCasa
 		 * @return {*}
 		 */
-		// TODO migrate to v2!!
 		async showConfigPanel(item, isCasa) {
-			this.$messageBus('appsexsiting_open', item.name);
-			if (item.type === 'LinkApp') {
-				await this.showExternalLinkPanel(item)
-				return
+			let name = item.name;
+			this.$messageBus('appsexsiting_open', name);
+			try {
+				if (item.app_type === 'LinkApp') {
+					await this.showExternalLinkPanel(item)
+					return
+				}
+				const networks = await this.$api.container.getNetworks();
+				const memory = this.$store.state.hardwareInfo.mem;
+				const configData = {
+					networks: networks.data.data,
+					memory: memory
+				}
+				const ret = await this.$openAPI.appManagement.compose.myComposeApp(name, {
+					headers: {
+						'content-type': 'application/yaml',
+						'accept': 'application/yaml'
+					}
+				});
+				this.$buefy.modal.open({
+					parent: this,
+					component: AppPanel,
+					hasModalCard: true,
+					customClass: '',
+					trapFocus: true,
+					canCancel: [''],
+					scroll: "keep",
+					animation: "zoom-in",
+					events: {
+						'updateState': () => {
+							this.getList()
+						}
+					},
+					props: {
+						id: name,
+						state: "update",
+						isCasa: isCasa,
+						// 区分 terminal
+						runningStatus: item.status,
+						configData: configData,
+						// settingData: ret.data,
+						settingComposeData: ret.data,
+					}
+				})
+			} catch (e) {
+				console.error(e)
 			}
-			// TODO fake data.
-			let state = 'running' || item.state
-			let id = item.id // || 'syncthing'
+		},
+
+		async showContainerPanel(item) {
+			this.$messageBus('appsexsiting_open', item.name);
+			let id = item.name
 			const networks = await this.$api.container.getNetworks();
 			const memory = this.$store.state.hardwareInfo.mem;
 			const configData = {
 				networks: networks.data.data,
 				memory: memory
 			}
-			// TODO migrate to v2!!
-			// 入参 需要为 container id
-			// const ret = await this.$api.container.getInfoV2(id);
-			// const ret = await this.$openAPI.appManagement.compose.myComposeApp(item.name);
-			const ret = await this.$openAPI.appManagement.compose.myComposeApp(id, {
-				headers: {
-					'content-type': 'application/yaml',
-					'accept': 'application/yaml'
-				}
-			});
+			const ret = await this.$api.container.getInfo(id);
 			this.$buefy.modal.open({
 				parent: this,
 				component: AppPanel,
@@ -408,15 +422,14 @@ export default {
 				props: {
 					id: id,
 					state: "update",
-					isCasa: isCasa,
-					// 区分 terminal
-					runningStatus: state,
+					isCasa: false,
+					runningStatus: item.status,
 					configData: configData,
-					settingData: ret.data,
-					// dockerComposeCommands: YAML.stringify(ret.data)
+					settingData: ret.data.data
 				}
 			})
 		},
+
 		async showExternalLinkPanel(item = {}) {
 			this.$buefy.modal.open({
 				parent: this,
@@ -436,18 +449,18 @@ export default {
 					}
 				},
 				props: {
-					linkId: item.id,
-					linkName: item.name,
-					linkHost: item.host,
-					linkIcon: item.icon
+					linkId: item.name,
+					linkName: item.title.en_us || item.title.en_US,
+					linkHost: item.hostname,
+					linkIcon: item.icon,
 				}
 			})
 		},
-		
+
 		scrollToNewApp() {
 			// business :: scroll to last position
-			let id = last(this.newAppIds);
-			let showEl = document.getElementById("app-" + id)
+			let name = last(this.newAppIds);
+			let showEl = document.getElementById("app-" + name)
 			showEl && showEl.scrollIntoView({behavior: "smooth", block: 'end'});
 		}
 	},
@@ -474,7 +487,7 @@ export default {
 			if (data.Properties['docker:image:updated'] === "true") {
 				// business :: Tagging of new app / scrollIntoView
 				this.addIdToSessionStorage(data.Properties['cid'])
-				
+
 				this.$buefy.toast.open({
 					message: this.$t(`{name} has been updated to the latest version!`, {
 						name: data.Properties.name
@@ -495,7 +508,7 @@ export default {
 				})
 			}
 		},
-		
+
 	}
 }
 </script>
@@ -508,7 +521,7 @@ export default {
 @media screen and (max-width: 480px) {
 	.app-list {
 		display: flex;
-		
+
 		.column {
 			flex: none;
 			width: 50%;
@@ -519,7 +532,7 @@ export default {
 @media screen and (max-width: $tablet) {
 	.app-list {
 		display: flex;
-		
+
 		.column {
 			flex: none;
 			width: 50%;
