@@ -479,10 +479,47 @@ export default {
 		 * @return {*} void
 		 */
 		toggle(item) {
+			// only have 'apps_stop' event
 			this.$messageBus('apps_stop', item.name);
 			this.isStarting = true;
 			const status = item.status === "running" ? "stop" : "start"
 
+			if (this.isV2App) {
+				this.toggleAppV2(item, status);
+			} else if (this.isV1App) {
+				this.toggleAppV1(item, status);
+			}
+
+		},
+
+		toggleAppV1(item, state) {
+			this.$api.container.updateState(item.name, state).then((res) => {
+				if (res.data.success === 200) {
+					item.state = res.data.data
+					this.updateState()
+				} else {
+					this.$buefy.dialog.alert({
+						title: 'Error',
+						message: res.data.data || res.data.message,
+						type: 'is-danger',
+						ariaRole: 'alertdialog',
+						ariaModal: true
+					})
+				}
+			}).catch((err) => {
+				this.$buefy.toast.open({
+					message: err.response.data.data || err.response.data.message,
+					type: 'is-danger',
+					position: 'is-top',
+					duration: 3000
+				})
+			}).finally(() => {
+				this.isStarting = false
+				this.$refs.dro.isActive = false
+			})
+		},
+
+		toggleAppV2(item, status) {
 			this.$openAPI.appManagement.compose.setComposeAppStatus(item.name, status).then((res) => {
 				this.updateState()
 				item.status = status
