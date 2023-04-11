@@ -45,7 +45,7 @@ jobs:
       - name: show version
         id: show_version
         run: echo ${{ env.VERSION }}
-          # run: echo ${{ steps.get_version.outputs.VERSION }}
+        # run: echo ${{ steps.get_version.outputs.VERSION }}
 
       - run: yarn install
       - run: yarn build
@@ -61,10 +61,10 @@ jobs:
       - name: ZeroTier
         uses: zerotier/github-action@v1.0.1
         with:
-            network_id: ${{ secrets.ZEROTIER_NETWORK_ID }}
-            auth_token: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
+          network_id: ${{ secrets.ZEROTIER_NETWORK_ID }}
+          auth_token: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
 
-      - name: ping host
+      - name: ping hostname
         shell: bash
         run: |
           count=10
@@ -75,7 +75,7 @@ jobs:
           done
           echo "ping success"
 
-      - name: copy tar to target host
+      - name: copy tar to target hostname
         shell: bash
         run: |
           sshpass -p "${{ secrets.ssh_password }}" scp -r -o StrictHostKeyChecking=no -P 22 ./linux-all-casaos-v99.99.99.tar.gz root@10.147.18.11:/var/www/download

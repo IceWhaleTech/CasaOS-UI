@@ -22,9 +22,9 @@
 				<b-tab-item label="Docker Compose">
 					<b-field :message="errors" :type="{ 'is-danger': parseError}">
 						<b-input v-model="dockerComposeCommands"
-						         :placeholder="$t('Notice: If there are multiple services, only the first set can be analyzed correctly')"
-						         class="import-area"
-						         type="textarea"></b-input>
+								 :placeholder="$t('Notice: If there are multiple services, only the first set can be analyzed correctly')"
+								 class="import-area"
+								 type="textarea"></b-input>
 					</b-field>
 				</b-tab-item>
 				<b-tab-item v-if="false" label="Docker CLI">
@@ -32,11 +32,11 @@
 						<b-input v-model="dockerCliCommands" class="import-area" type="textarea"></b-input>
 					</b-field>
 				</b-tab-item>
-				
+
 				<b-tab-item v-if="false" :label="$t('AppFile')">
 					<b-field :message="errors" :type="{ 'is-danger': parseError}">
 						<b-upload ref="importUpload" v-model="dropFiles" accept="application/json" drag-drop expanded
-						          @input="onSelect">
+								  @input="onSelect">
 							<section class="section">
 								<div class="content has-text-centered">
 									<p>
@@ -48,9 +48,9 @@
 						</b-upload>
 					</b-field>
 				</b-tab-item>
-			
+
 			</b-tabs>
-		
+
 		</section>
 		<!-- Modal-Card Body End -->
 		<!-- Modal-Card Footer Start-->
@@ -66,12 +66,6 @@
 </template>
 
 <script>
-import upperFirst from 'lodash/upperFirst'
-import lowerFirst from 'lodash/lowerFirst'
-import parser from 'yargs-parser'
-import concat from 'lodash/concat'
-import has from 'lodash/has'
-import YAML from 'yaml'
 
 
 export default {
@@ -98,7 +92,7 @@ export default {
 	},
 	created() {
 		//console.log(this.oriNetWorks);
-		
+
 	},
 	methods: {
 		/**
@@ -117,7 +111,7 @@ export default {
 					this.parseError = true;
 				}
 			} else if (this.activeTab == 0) {
-				
+
 				// if (this.parseComposeYaml()) {
 				this.errors = ""
 				this.$emit('update', this.dockerComposeCommands)
@@ -137,7 +131,7 @@ export default {
 				}
 			}
 		},
-		
+
 		volumeAutoCheck(containerPath, hostPath, appName) {
 			let finalHostPath = hostPath
 			const rootDir = "/DATA"
@@ -170,22 +164,22 @@ export default {
 					keywords: ["media"],
 					value: `/Media`
 				}
-			
+
 			]
-			
+
 			checkArray.forEach(item => {
 				if (item.keywords.some(keywordsItem => {
 					return containerPath.includes(keywordsItem)
 				})) {
 					finalHostPath = rootDir + item.value
-					
+
 				}
 			})
-			
+
 			return finalHostPath
 		},
-		
-		
+
+
 		/**
 		 * @description: Parse Import Docker Cli Commands
 		 * @return {Boolean}
@@ -214,7 +208,7 @@ export default {
 			// 	this.updateData.envs = env.map(item => {
 			// 		let ii = item.split("=");
 			// 		return {
-			// 			host: ii[1].replace(/"/g, ""),
+			// 			hostname: ii[1].replace(/"/g, ""),
 			// 			container: ii[0]
 			// 		}
 			// 	})
@@ -226,7 +220,7 @@ export default {
 			// 		let protocol = (endArray[1]) ? endArray[1] : 'tcp';
 			// 		return {
 			// 			container: endArray[0],
-			// 			host: pArray[0],
+			// 			hostname: pArray[0],
 			// 			protocol: protocol
 			// 		}
 			// 	})
@@ -238,12 +232,12 @@ export default {
 			// 			// console.log(this.volumeAutoCheck(ii[1],ii[0], _.lowerFirst(this.updateData.label)));
 			// 			return {
 			// 				container: ii[1],
-			// 				host: this.volumeAutoCheck(ii[1], ii[0], lowerFirst(this.updateData.label))
+			// 				hostname: this.volumeAutoCheck(ii[1], ii[0], lowerFirst(this.updateData.label))
 			// 			}
 			// 		} else {
 			// 			return {
 			// 				container: ii[0],
-			// 				host: this.volumeAutoCheck(ii[0], "", lowerFirst(this.updateData.label))
+			// 				hostname: this.volumeAutoCheck(ii[0], "", lowerFirst(this.updateData.label))
 			// 			}
 			// 		}
 			//
@@ -253,7 +247,7 @@ export default {
 			// 		let ii = item.split(":");
 			// 		return {
 			// 			container: ii[1],
-			// 			host: ii[0]
+			// 			hostname: ii[0]
 			// 		}
 			// 	})
 			//
@@ -294,7 +288,7 @@ export default {
 			// 	return true
 			// }
 		},
-		
+
 		/**
 		 * @description: Make String to Array
 		 * @param {*}
@@ -304,7 +298,7 @@ export default {
 			const newArray = (typeof (foo) == "string") ? [foo] : foo
 			return (newArray == undefined) ? [] : newArray
 		},
-		
+
 		/**
 		 * @description: Parse Import Docker Compose Commands
 		 * @return {Boolean}
@@ -333,7 +327,7 @@ export default {
 			// 			this.updateData.envs = envArray.map(item => {
 			// 				let ii = typeof item === "object" ? Array.from(item) : item.split("=");
 			// 				return {
-			// 					host: ii[1].replace(/"/g, ""),
+			// 					hostname: ii[1].replace(/"/g, ""),
 			// 					container: ii[0]
 			// 				}
 			// 			})
@@ -349,7 +343,7 @@ export default {
 			// 			let protocol = (endArray[1]) ? endArray[1] : 'tcp';
 			// 			return {
 			// 				container: endArray[0],
-			// 				host: pArray[0],
+			// 				hostname: pArray[0],
 			// 				protocol: protocol
 			// 			}
 			// 		})
@@ -360,12 +354,12 @@ export default {
 			// 			if (ii.length > 1) {
 			// 				return {
 			// 					container: ii[1],
-			// 					host: this.volumeAutoCheck(ii[1], ii[0], lowerFirst(this.updateData.label))
+			// 					hostname: this.volumeAutoCheck(ii[1], ii[0], lowerFirst(this.updateData.label))
 			// 				}
 			// 			} else {
 			// 				return {
 			// 					container: ii[0],
-			// 					host: this.volumeAutoCheck(ii[0], "", lowerFirst(this.updateData.label))
+			// 					hostname: this.volumeAutoCheck(ii[0], "", lowerFirst(this.updateData.label))
 			// 				}
 			// 			}
 			// 		})
@@ -375,7 +369,7 @@ export default {
 			// 			let ii = item.split(":");
 			// 			return {
 			// 				container: ii[1],
-			// 				host: ii[0]
+			// 				hostname: ii[0]
 			// 			}
 			// 		})
 			//
@@ -462,13 +456,13 @@ export default {
 			})
 			this.appFileLoaded = false
 		},
-		
+
 		getNetworkModel(netName) {
 			const network = this.oriNetWorks.filter(net => {
 				return net.name == netName
 			})
 			return (network.length > 0) ? network[0].name : this.oriNetWorks[0].name
-			
+
 		},
 	},
 }
