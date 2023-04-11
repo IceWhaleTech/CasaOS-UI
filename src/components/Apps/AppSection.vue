@@ -59,18 +59,18 @@
 </template>
 
 <script>
-import AppCard from './AppCard.vue'
-import AppCardSkeleton from './AppCardSkeleton.vue';
-import AppPanel from './AppPanel.vue'
-import ExternalLinkPanel from "@/components/Apps/ExternalLinkPanel";
-import AppSectionTitleTip from './AppSectionTitleTip.vue'
-import draggable from 'vuedraggable'
-import xor from 'lodash/xor'
-import concat from 'lodash/concat'
-import events from '@/events/events';
-import last from 'lodash/last';
+import AppCard                from './AppCard.vue'
+import AppCardSkeleton        from './AppCardSkeleton.vue';
+import AppPanel               from './AppPanel.vue'
+import ExternalLinkPanel      from "@/components/Apps/ExternalLinkPanel";
+import AppSectionTitleTip     from './AppSectionTitleTip.vue'
+import draggable              from 'vuedraggable'
+import xor                    from 'lodash/xor'
+import concat                 from 'lodash/concat'
+import events                 from '@/events/events';
+import last                   from 'lodash/last';
 import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
-import business_LinkApp from "@/mixins/app/Business_LinkApp";
+import business_LinkApp       from "@/mixins/app/Business_LinkApp";
 
 const SYNCTHING_STORE_ID = 74
 
@@ -218,8 +218,10 @@ export default {
 				})
 				// all app list
 				let casaAppList = concat(builtInApplications, orgAppList, listLinkApp)
+				console.log("*******casaAppList", casaAppList)
 				// get app sort info.
 				let lateSortList = await this.$api.users.getCustomStorage(orderConfig).then(res => res.data.data.data);
+				console.log(lateSortList)
 				let newestSortList = casaAppList.map((item) => {
 					return item.name
 				})
@@ -267,10 +269,7 @@ export default {
 		 * @return {*}
 		 */
 		getNewSortList(oriList, newList) {
-            console.log('====1', oriList)
-            console.log('====2', newList)
 			let xorList = xor(oriList, newList)
-			console.log('====3', xorList)
 			// xorList.reverse()
 			return concat(oriList, xorList)
 		},
@@ -452,7 +451,7 @@ export default {
 					}
 				},
 				props: {
-                    linkName: item.name,
+					linkName: item.name,
 					linkHost: item.hostname,
 					linkIcon: item.icon,
 				}
