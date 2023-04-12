@@ -219,10 +219,10 @@ export default {
 				})
 				// all app list
 				let casaAppList = concat(builtInApplications, orgAppList, listLinkApp)
-				console.log("*******casaAppList", casaAppList)
+				// console.log("*******casaAppList", casaAppList)
 				// get app sort info.
 				let lateSortList = await this.$api.users.getCustomStorage(orderConfig).then(res => res.data.data.data);
-				console.log(lateSortList)
+				// console.log(lateSortList)
 				let newestSortList = casaAppList.map((item) => {
 					return item.name
 				})

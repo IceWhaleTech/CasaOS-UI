@@ -43,11 +43,12 @@ export default {
 
 			return this.$api.users.saveLinkAppDetail(stringifyLinkAppList).then(res => {
 				localStorage.setItem("listLinkApp", stringifyLinkAppList);
+				return res;
 			});
 		},
 
-		deleteLinkAppByName(name) {
-			let LinkAppList = this.getLinkAppList();
+		async deleteLinkAppByName(name) {
+			let LinkAppList = await this.getLinkAppList();
 			LinkAppList = LinkAppList.filter(item => item.name !== name);
 			return this.setLinkAppList(LinkAppList);
 		},
