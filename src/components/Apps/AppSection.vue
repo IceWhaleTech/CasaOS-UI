@@ -18,7 +18,8 @@
 
 			<b-dropdown animation="fade1" aria-role="menu" class="file-dropdown" position="is-bottom-left">
 				<template #trigger>
-					<b-icon class="is-clickable" icon="plus" pack="casa" size="is-20" type="is-white"></b-icon>
+					<b-icon class="polymorphic is-clickable has-text-grey-100" icon="plus" pack="casa"
+							size="is-24"></b-icon>
 				</template>
 				<b-dropdown-item aria-role="menuitem" @click="showInstall(0, 'custom')">
 					{{ $t('Custom Install APP') }}

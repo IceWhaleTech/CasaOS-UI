@@ -72,7 +72,7 @@
 								 class="ml-4 is-24x24"/>
 						</b-loading>
 					</b-button>
-					<b-button v-else class="mb-1 has-text-red"
+					<b-button v-else class="has-text-red"
 							  expanded type="is-text"
 							  @click="uninstallConfirm">
 						{{ $t('Uninstall') }}
@@ -86,13 +86,13 @@
 						<div class="columns is-gapless _b-bor is-flex">
 							<div class="column is-flex is-justify-content-center is-align-items-center">
 								<b-button :loading="isRestarting" expanded type="is-text" @click="restartApp">
-									<b-icon custom-size="mdi-18px" icon="sync"></b-icon>
+									<b-icon custom-size="is-size-20px" icon="sync" size="is-20x20"></b-icon>
 								</b-button>
 							</div>
 							<div class="column is-flex is-justify-content-center is-align-items-center">
 								<b-button :class="item.status" :loading="isStarting" class="has-text-red" expanded
 										  type="is-text" @click="toggle(item)">
-									<b-icon custom-size="mdi-18px" icon="power-standby"></b-icon>
+									<b-icon custom-size="is-size-20px" icon="power-standby" size="is-20"></b-icon>
 								</b-button>
 							</div>
 						</div>
@@ -712,6 +712,10 @@ export default {
 
 			.dropdown-item {
 				padding: 0;
+
+				& > * {
+					margin: 1px 0;
+				}
 			}
 
 			.button {
@@ -719,6 +723,11 @@ export default {
 				padding-left: 1rem;
 				padding-right: 1rem;
 				border-radius: 5px;
+
+				span {
+					line-height: 1.25rem !important;
+					height: 1.25rem !important;
+				}
 
 				span + span i {
 					color: hsla(208, 16%, 42%, 1);
