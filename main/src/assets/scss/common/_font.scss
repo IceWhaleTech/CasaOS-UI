@@ -1,0 +1,279 @@
+/*!
+ *  @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ *  @LastEditTime: 2022/12/30 下午10:34
+ *  @FilePath: /CasaOS-UI/src/assets/scss/common/font.scss
+ *  @Description:
+ *
+ *  Copyright (c) 2022 by IceWhale, All Rights Reserved.
+ */
+.has-text-title-01 {
+	/* Title 600SemiBold/H1 */
+	
+	font-family: $family-sans-serif;
+	font-style: normal;
+	font-weight: 600;
+	font-size: 2.5rem;
+	line-height: 2.75rem;
+	/* identical to box height, or 110% */
+	
+	font-feature-settings: 'pnum' on, 'lnum' on;
+}
+
+.has-text-title-02 {
+	/* Title 600SemiBold/H2 */
+	
+	font-family: $family-sans-serif;
+	font-style: normal;
+	font-weight: 600;
+	font-size: 2rem;
+	line-height: 2.25rem;
+	/* identical to box height, or 112% */
+	
+	font-feature-settings: 'pnum' on, 'lnum' on;
+}
+
+.has-text-title-03 {
+	/* Title 600SemiBold/H3 */
+	
+	font-family: $family-sans-serif;
+	font-style: normal;
+	font-weight: 600;
+	font-size: 1.5rem;
+	line-height: 2rem;
+	/* identical to box height, or 117% */
+	
+	font-feature-settings: 'pnum' on, 'lnum' on;
+}
+
+.has-text-title-04 {
+	/* Title 600SemiBold/H4 */
+	
+	font-family: $family-sans-serif;
+	font-style: normal;
+	font-weight: 600;
+	font-size: 1.25rem;
+	line-height: 1.75rem;
+	/* identical to box height, or 120% */
+	
+	font-feature-settings: 'pnum' on, 'lnum' on;
+}
+
+.has-text-title-06 {
+	/* Title 600SemiBold/H6 */
+	
+	font-family: $family-sans-serif;
+	font-style: normal;
+	font-weight: 600;
+	font-size: 1rem;
+	line-height: 1.5rem;
+	/* identical to box height, or 120% */
+	
+	font-feature-settings: 'pnum' on, 'lnum' on;
+}
+
+.has-text-sub-01 {
+	/* Sub-title 500Medium/H1 */
+	
+	font-family: $family-sans-serif;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 2.5rem;
+	line-height: 2.75rem;
+	/* identical to box height, or 110% */
+	
+	font-feature-settings: 'pnum' on, 'lnum' on;
+}
+
+.has-text-sub-02 {
+	/* Sub-title 500Medium/H2 */
+	
+	font-family: $family-sans-serif;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 2rem;
+	line-height: 2.25rem;
+	/* identical to box height, or 112% */
+	
+	font-feature-settings: 'pnum' on, 'lnum' on;
+}
+
+.has-text-sub-03 {
+	/* Sub-title 500Medium/H3 */
+	
+	font-family: $family-sans-serif;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 1.5rem;
+	line-height: 2rem;
+	/* identical to box height, or 133% */
+	
+	font-feature-settings: 'pnum' on, 'lnum' on;
+}
+
+.has-text-sub-04 {
+	/* Sub-title 500Medium/H4 */
+	
+	font-family: $family-sans-serif;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 1.25rem;
+	line-height: 1.75rem;
+	/* identical to box height, or 140% */
+	
+	font-feature-settings: 'pnum' on, 'lnum' on;
+}
+
+.has-text-emphasis-01 {
+	/* Text 500Medium/Text01 */
+	
+	font-family: $family-sans-serif;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 1.125rem;
+	line-height: 1.75rem;
+	/* identical to box height, or 156% */
+	
+	font-feature-settings: 'pnum' on, 'lnum' on;
+}
+
+.has-text-emphasis-02 {
+	/* Text 500Medium/Text02 */
+	
+	font-family: $family-sans-serif;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 1rem;
+	line-height: 1.5rem;
+	/* identical to box height, or 150% */
+	
+	font-feature-settings: 'pnum' on, 'lnum' on;
+}
+
+.has-text-emphasis-03 {
+	/* Text 500Medium/Text03 */
+	
+	font-family: $family-sans-serif;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+	/* identical to box height, or 143% */
+	
+	font-feature-settings: 'pnum' on, 'lnum' on;
+}
+
+.has-text-emphasis-04 {
+	/* Text 500Medium/Text04 */
+	
+	font-family: $family-sans-serif;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 0.75rem;
+	line-height: 1rem;
+	/* identical to box height, or 133% */
+	
+	font-feature-settings: 'pnum' on, 'lnum' on;
+}
+
+.has-text-full-01 {
+	/* Text 400Regular/Text01 */
+	
+	font-family: $family-sans-serif;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 1.125rem;
+	line-height: 1.75rem;
+	/* identical to box height, or 156% */
+	
+	font-feature-settings: 'pnum' on, 'lnum' on;
+}
+
+.has-text-full-02 { /* Text 400Regular/Text02 */
+	
+	font-family: $family-sans-serif;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 1rem;
+	line-height: 1.5rem;
+	/* identical to box height, or 150% */
+	
+	font-feature-settings: 'pnum' on, 'lnum' on;
+}
+
+.has-text-full-03 {
+	/* Text 400Regular/Text03 */
+	
+	font-family: $family-sans-serif !important;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+	/* identical to box height, or 143% */
+	
+	font-feature-settings: 'pnum' on, 'lnum' on;
+}
+
+.has-text-full-04 {
+	/* Text 400Regular/Text04 */
+	
+	font-family: $family-sans-serif;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 0.75rem;
+	line-height: 1rem;
+	/* identical to box height, or 133% */
+	
+	font-feature-settings: 'pnum' on, 'lnum' on;
+}
+
+.has-text-auxiliary-01 {
+	/* Text 300Light/Text01 */
+	
+	font-family: $family-sans-serif;
+	font-style: normal;
+	font-weight: 300;
+	font-size: 1.125rem;
+	line-height: 1.75rem;
+	/* identical to box height, or 156% */
+	
+	font-feature-settings: 'pnum' on, 'lnum' on;
+}
+
+.has-text-auxiliary-02 {
+	/* Text 300Light/Text02 */
+	
+	font-family: $family-sans-serif;
+	font-style: normal;
+	font-weight: 300;
+	font-size: 1rem;
+	line-height: 1.5rem;
+	/* identical to box height, or 150% */
+	
+	font-feature-settings: 'pnum' on, 'lnum' on;
+}
+
+.has-text-auxiliary-03 {
+	/* Text 300Light/Text03 */
+	
+	font-family: $family-sans-serif;
+	font-style: normal;
+	font-weight: 300;
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+	/* identical to box height, or 143% */
+	
+	font-feature-settings: 'pnum' on, 'lnum' on;
+}
+
+.has-text-auxiliary-04 {
+	/* Text 300Light/Text04 */
+	
+	font-family: $family-sans-serif;
+	font-style: normal;
+	font-weight: 300;
+	font-size: 0.75rem;
+	line-height: 1rem;
+	/* identical to box height, or 133% */
+	
+	font-feature-settings: 'pnum' on, 'lnum' on;
+}

@@ -1,0 +1,23 @@
+.title {
+	font-weight: 600;
+	
+	&.is-1 {
+		font-size: 2rem;
+	}
+	
+	&.is-2 {
+		font-size: 1.5rem;
+	}
+	
+	&.is-3 {
+		font-size: 1.25rem;
+	}
+	
+	&.is-4 {
+		font-size: 1.125rem;
+	}
+	
+	&.is-5 {
+		font-size: 1rem;
+	}
+}

@@ -1,0 +1,137 @@
+/************************************
+*
+* Scrollbars
+*
+*************************************/
+
+.xterm-viewport::-webkit-scrollbar {
+	width: 8px;
+}
+
+.xterm-viewport::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.xterm-viewport::-webkit-scrollbar-thumb {
+	background-color: rgba(255, 255, 255, 0.25);
+	border-radius: 10px;
+	outline: none;
+}
+
+@media screen and (min-width: 769px) {
+	.contents::-webkit-scrollbar {
+		width: 8px;
+	}
+	
+	.contents::-webkit-scrollbar-track {
+		background: transparent;
+	}
+	
+	.contents::-webkit-scrollbar-thumb {
+		background-color: rgba(255, 255, 255, 0.4);
+		border-radius: 10px;
+		outline: none;
+	}
+}
+
+.scrollbars::-webkit-scrollbar {
+	width: 8px;
+}
+
+.scrollbars::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.scrollbars::-webkit-scrollbar-thumb {
+	background-color: rgba(255, 255, 255, 0.4);
+	border-radius: 10px;
+	outline: none;
+}
+
+.scrollbars-light::-webkit-scrollbar {
+	width: 8px;
+}
+
+.scrollbars-light::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.scrollbars-light::-webkit-scrollbar-thumb {
+	background-color: rgba(0, 0, 0, 0.3);
+	border-radius: 10px;
+	outline: none;
+}
+
+.modal-card-body::-webkit-scrollbar {
+	width: 8px;
+}
+
+.modal-card-body::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.modal-card-body::-webkit-scrollbar-thumb {
+	background-color: rgba(0, 0, 0, 0.3);
+	border-radius: 10px;
+	outline: none;
+}
+
+.t-box::-webkit-scrollbar {
+	width: 8px;
+}
+
+.t-box::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.t-box::-webkit-scrollbar-thumb {
+	background-color: rgba(0, 0, 0, 0.3);
+	border-radius: 10px;
+	outline: none;
+}
+
+.CodeMirror-vscrollbar::-webkit-scrollbar-track-piece,
+.CodeMirror-hscrollbar::-webkit-scrollbar-track-piece {
+	width: 8px;
+	background-color: rgba(140, 130, 130, 0.3);
+}
+
+.CodeMirror-vscrollbar::-webkit-scrollbar,
+.CodeMirror-hscrollbar::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+.CodeMirror-vscrollbar::-webkit-scrollbar-track,
+.CodeMirror-hscrollbar::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
+.CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
+	background-color: rgba(255, 255, 255, 0.4);
+	border-radius: 10px;
+	outline: none;
+}
+
+.scrollbars-light-auto::-webkit-scrollbar {
+	width: 8px;
+}
+
+.scrollbars-light-auto::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.scrollbars-light-auto {
+	&::-webkit-scrollbar-thumb {
+		background: rgba(0, 0, 0, 0);
+		border-radius: 10px;
+		outline: none;
+	}
+	
+	&:hover {
+		&::-webkit-scrollbar-thumb {
+			background: rgba(0, 0, 0, 0.2);
+		}
+	}
+}
