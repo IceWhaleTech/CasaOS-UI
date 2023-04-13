@@ -3,12 +3,14 @@
   "version": "v0.4.2",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve --mode dev",
-    "build": "node message_bus.build.js && vue-cli-service build --dest ./build/sysroot/var/lib/casaos/www/ --mode production",
-    "lint": "vue-cli-service lint",
-    "build:messagebus": "node message_bus.build.js",
-    "openapi": "npx @openapitools/openapi-generator-cli generate -g typescript-axios -i https://raw.githubusercontent.com/IceWhaleTech/CasaOS-AppManagement/main/api/app_management/openapi.yaml -o ./src/codegen/app_management"
+    "dev": "turbo run serve",
+    "turbo:build": "turbo run build"
   },
+  "packageManager": "yarn@3.5.0",
+  "workspaces": [
+    "main",
+    "packages/*"
+  ],
   "dependencies": {
     "@fontsource/roboto": "^4.5.7",
     "@icewhale/casaos-appmanagement-openapi": "^0.4.4-dev6",
