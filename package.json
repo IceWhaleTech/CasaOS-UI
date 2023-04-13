@@ -3,6 +3,7 @@
   "version": "v0.4.2",
   "private": true,
   "scripts": {
+    "preinstall": "npx only-allow yarn",
     "dev": "turbo run serve",
     "turbo:build": "turbo run build"
   },

@@ -78,8 +78,6 @@ import SideBar             from '@/components/SideBar.vue'
 import TopBar              from '@/components/TopBar.vue'
 import CoreService         from '../components/CoreService.vue'
 import AppSection          from '../components/Apps/AppSection.vue'
-//import Shortcuts from '@/components/Shortcuts.vue'
-import FilePanel           from '@/components/filebrowser/FilePanel.vue'
 import UpdateCompleteModal from '@/components/settings/UpdateCompleteModal.vue'
 
 import {mixin}  from '../mixins/mixin';
@@ -98,8 +96,6 @@ export default {
 		AppSection,
 		TopBar,
 		CoreService,
-		//Shortcuts,
-		FilePanel,
 	},
 	data() {
 		return {
