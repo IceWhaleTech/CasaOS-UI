@@ -55,7 +55,7 @@
 						</div>
 						<div>
 							<b-button class="ml-2 " rounded size="is-small" type="is-dark" @click="logout">{{
-								$t('Logout')
+									$t('Logout')
 								}}
 							</b-button>
 						</div>
@@ -84,7 +84,7 @@
 					<hr class="mt-0 mb-4"/>
 					<!-- Search Engine Switch Start  -->
 					<div
-					class="is-flex is-align-items-center mb-1 _is-large _box polymorphic _is-radius pr-2 mr-4 ml-4">
+						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="search-manage" pack="casa" size="is-20"></b-icon>
 							{{ $t('Show Search Bar') }}
@@ -101,7 +101,7 @@
 
 					<!-- Search Engine Start -->
 					<div v-if="barData.search_switch"
-						 class="is-flex is-align-items-center mb-1 _is-large _box polymorphic _is-radius pr-2 mr-4 ml-4">
+						 class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="magnifier" pack="casa" size="is-20"></b-icon>
 							{{ $t('Search Engine') }}
@@ -111,7 +111,7 @@
 								<b-select v-model="barData.search_engine" class="set-select" size="is-small"
 										  @input="saveData">
 									<option v-for="item in searchEngines" :key="item.name" :value="item.url">{{
-										item.name
+											item.name
 										}}
 									</option>
 								</b-select>
@@ -122,7 +122,7 @@
 
 					<!-- Language Start -->
 					<div
-					class="is-flex is-align-items-center mb-1 _is-large _box polymorphic _is-radius pr-2 mr-4 ml-4">
+						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="language" pack="casa" size="is-20"></b-icon>
 							{{ $t('Language') }}
@@ -131,7 +131,7 @@
 							<b-field>
 								<b-select v-model="barData.lang" class="set-select" size="is-small" @input="saveData">
 									<option v-for="lang in languages" :key="lang.lang" :value="lang.lang">{{
-										lang.name
+											lang.name
 										}}
 									</option>
 								</b-select>
@@ -142,7 +142,7 @@
 
 					<!-- WebUI Port Start -->
 					<div
-					class="is-flex is-align-items-center mb-1 _is-large _box polymorphic _is-radius pr-2 mr-4 ml-4">
+						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="port" pack="casa" size="is-20"></b-icon>
 							{{ $t('WebUI Port') }}
@@ -152,7 +152,7 @@
 						</div>
 						<div class="ml-2">
 							<b-button rounded size="is-small" type="is-dark" @click="showPortPanel">{{
-								$t('Change')
+									$t('Change')
 								}}
 							</b-button>
 						</div>
@@ -161,14 +161,14 @@
 
 					<!-- Background Start -->
 					<div
-					class="is-flex is-align-items-center mb-1 _is-large _box polymorphic _is-radius pr-2 mr-4 ml-4">
+						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="picture" pack="casa" size="is-20"></b-icon>
 							{{ $t('Wallpaper') }}
 						</div>
 						<div class="ml-2">
 							<b-button rounded size="is-small" type="is-dark" @click="showChangeWallpaperModal">{{
-								$t('Change')
+									$t('Change')
 								}}
 							</b-button>
 						</div>
@@ -177,7 +177,7 @@
 
 					<!--  Show other Docker container app(s) Switch Start  -->
 					<div v-if="this.$store.state.notImportList.length > 0"
-						 class="is-flex is-align-items-center mb-1 _is-large _box polymorphic _is-radius pr-2 mr-4 ml-4">
+						 class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="docker" pack="casa" size="is-20"></b-icon>
 							{{ $t('Show other Docker container app(s)') }}
@@ -194,7 +194,7 @@
 
 					<!--  Show other Docker container app(s) Switch Start  -->
 					<div
-					class="is-flex is-align-items-center mb-1 _is-large _box polymorphic _is-radius pr-2 mr-4 ml-4">
+						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="news" pack="casa" size="is-20"></b-icon>
 							{{ $t('Show news feed from CasaOS Blog') }}
@@ -210,7 +210,7 @@
 					<!--  Show other Docker container app(s) Switch End  -->
 					<!--  Recommended modules Switch Start  -->
 					<div
-					class="is-flex is-align-items-center mb-1 _is-large _box polymorphic _is-radius pr-2 mr-4 ml-4">
+						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="app-switch" pack="casa" size="is-20"></b-icon>
 							{{ $t('Show Recommended Apps') }}
@@ -227,7 +227,7 @@
 
 					<!-- Automount USB Drive Start  -->
 					<div
-					class="is-flex is-align-items-center mb-1 _is-large _box polymorphic _is-radius pr-2 mr-4 ml-4">
+						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="usb" pack="casa" size="is-20"></b-icon>
 							{{ $t('Automount USB Drive') }}
@@ -247,7 +247,7 @@
 					<!-- Automount USB Drive End  -->
 
 					<!-- Update Start -->
-					<div class="_is-large polymorphic _is-radius pr-2 mr-4 ml-4">
+					<div class="_is-large _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center">
 							<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 								<b-icon class="mr-1 ml-2" icon="upgrade" pack="casa" size="is-20"></b-icon>
@@ -265,7 +265,7 @@
 						<div v-else class="is-flex is-align-items-center is-justify-content-end update-container pl-5 ">
 							<div class="is-flex-grow-1 is-size-7">{{ $t(updateText) }}</div>
 							<b-button class="ml-2" rounded size="is-small" type="is-dark" @click="showUpdateModal">{{
-								$t('Update')
+									$t('Update')
 								}}
 							</b-button>
 						</div>
@@ -276,14 +276,14 @@
 					<!-- Restart or Shutdown Start -->
 					<div class="is-flex is-align-content-center is-justify-content-center _box ml-2 mr-2">
 						<div
-						class="mr-1 column is-half is-flex is-align-items-center is-justify-content-center polymorphic _is-radius _is-normal"
-						@click="power('Restart')">
+							class="mr-1 column is-half is-flex is-align-items-center is-justify-content-center _polymorphic _is-radius _is-normal"
+							@click="power('Restart')">
 							<b-icon class="mr-1" icon="restart" pack="casa"></b-icon>
 							{{ $t(restart) }}
 						</div>
 						<div
-						class="ml-1 column is-half is-flex is-align-items-center is-justify-content-center polymorphic-attention _has-text-attention _is-radius"
-						@click="power('Shutdown')">
+							class="ml-1 column is-half is-flex is-align-items-center is-justify-content-center _polymorphic-attention _has-text-attention _is-radius"
+							@click="power('Shutdown')">
 							<b-icon class="mr-1" custom-class="_has-text-attention" icon="shutdown"
 									pack="casa"></b-icon>
 							{{ $t(shutdown) }}
@@ -326,7 +326,7 @@
 			<footer v-if="showPowerTitle !== 'Now shutting down'"
 					class="has-background-white is-flex is-flex-direction-row-reverse">
 				<button
-				class="ml-2 mr-5 mt-3 mb-3 pr-4 pl-4 _is-normal _has-background-blue is-flex is-align-items-center is-justify-content-center">
+					class="ml-2 mr-5 mt-3 mb-3 pr-4 pl-4 _is-normal _has-background-blue is-flex is-align-items-center is-justify-content-center">
 					{{ $t('Connecting') }}
 					<img :src="require('@/assets/img/power/waiting-white.svg')" alt="loading" class="ml-1"/>
 				</button>
@@ -869,21 +869,21 @@ export default {
 	border-radius: 0.375rem;
 }
 
-.polymorphic:hover {
+._polymorphic:hover {
 	cursor: pointer;
 	background: hsla(208, 16%, 96%, 1);
 }
 
-.polymorphic:active {
+._polymorphic:active {
 	background: hsla(208, 16%, 94%, 1);
 }
 
-.polymorphic-attention:hover {
+._polymorphic-attention:hover {
 	cursor: pointer;
 	background: hsla(18, 98%, 94%, 1);
 }
 
-.polymorphic-attention:active {
+._polymorphic-attention:active {
 	background: hsla(18, 100%, 80%, 1);
 }
 
