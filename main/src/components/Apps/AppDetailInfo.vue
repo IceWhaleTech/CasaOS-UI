@@ -30,9 +30,9 @@
 				</div>
 				<div class="is-flex-grow-1 is-flex is-align-items-center">
 					<div>
-						<h4 class="title store-title is-4 ">{{ appDetailData.title.en_US }}</h4>
+						<h4 class="title store-title is-4 ">{{ i18n(appDetailData.title) }}</h4>
 						<p class="subtitle is-size-14px two-line mb-3">{{
-								appDetailData.tagline.en_US
+								i18n(appDetailData.tagline)
 							}}</p>
 						<p class="description mb-2">
 							<b-button v-if="installedList.includes(appDetailData.id)"
@@ -41,15 +41,15 @@
 									  @click="openThirdContainerByAppInfo(appDetailData)">
 								{{ $t('Open') }}
 							</b-button>
-							<b-button v-else :disabled="unuseable"
+							<b-button v-else :disabled="unusable"
 									  :loading="appDetailData.id == currentInstallId"
 									  rounded size="is-normal" type="is-primary"
-									  @click="qucikInstall(appDetailData.id);$messageBus('appstore_install', appDetailData.title.en_US)">
+									  @click="qucikInstall(appDetailData.id);$messageBus('appstore_install', i18n(appDetailData.title) )">
 								{{ $t('Install') }}
 							</b-button>
 						</p>
 
-						<p v-if="unuseable"
+						<p v-if="unusable"
 						   class="has-background-red-tertiary has-text-red has-text-full-04 _is-normal is-flex is-align-items-center font pr-2"
 						   style="width: fit-content;height: 1.5rem;border-radius: 0.25rem">
 							<label class="is-flex ml-2 mr-1">
@@ -128,8 +128,8 @@
 
 			<!-- App Info  Start -->
 			<div class="app-desc mt-4 mb-6">
-				<p class="is-size-14px mb-2 un-break-word">{{ appDetailData.tagline.en_US }}</p>
-				<p class="is-size-14px un-break-word">{{ appDetailData.description.en_US }}</p>
+				<p class="is-size-14px mb-2 un-break-word">{{ i18n(appDetailData.tagline) }}</p>
+				<p class="is-size-14px un-break-word">{{ i18n(appDetailData.description) }}</p>
 				<!-- <p class="is-size-14px " v-html="appDetailData.tip"></p> -->
 			</div>
 			<!-- App Info  End -->
@@ -142,11 +142,12 @@
 
 import {Swiper, SwiperSlide} from 'vue-awesome-swiper'
 import business_OpenThirdApp from "@/mixins/app/Business_OpenThirdApp";
+import commonI18n            from "@/mixins/base/common-i18n";
 
 export default {
 	name: "AppDetailInfo.vue",
 	components: {Swiper, SwiperSlide},
-	mixins: [business_OpenThirdApp],
+	mixins: [business_OpenThirdApp, commonI18n],
 	props: {
 		appDetailData: {
 			type: Object,
@@ -162,10 +163,6 @@ export default {
 		currentInstallId: {
 			type: String,
 			default: ""
-		},
-		unuseable: {
-			type: Boolean,
-			default: false
 		},
 		arch: {
 			type: String,
@@ -192,7 +189,10 @@ export default {
 				return 'armv7'
 			}
 			return this.arch
-		}
+		},
+		unusable() {
+			return !this.appDetailData.architectures?.includes(this.arch);
+		},
 	},
 	data() {
 		return {

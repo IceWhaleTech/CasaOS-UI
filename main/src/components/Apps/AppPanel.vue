@@ -11,14 +11,14 @@
 -->
 <template>
 	<div
-	:class="{'narrow': currentSlide > 0 ,'card-width': isFirstInstall}"
-	class="app-card modal-card _stepStoreList">
+		:class="{'narrow': currentSlide > 0 ,'card-width': isFirstInstall}"
+		class="app-card modal-card _stepStoreList">
 		<!--    first setting！！ apps installation location-->
 		<template v-if="isFirstInstall">
 			<header class="modal-card-head b-line">
 				<div class="is-flex-grow-1">
 					<h3 class="is-flex-grow-1 title is-3 pri-line-height has-text-black">{{
-						$t('Apps Installation Location')
+							$t('Apps Installation Location')
 						}}
 					</h3>
 				</div>
@@ -47,8 +47,7 @@
 					<AppDetailInfo :appDetailData="appDetailData" :arch="arch"
 								   :cateMenu="cateMenu" :close="close"
 								   :currentInstallId="currentInstallId"
-								   :installedList="installedList" :showDetailSwiper="showDetailSwiper"
-								   :unuseable="unuseable">
+								   :installedList="installedList" :showDetailSwiper="showDetailSwiper">
 					</AppDetailInfo>
 				</template>
 			</app-side-bar>
@@ -157,7 +156,7 @@
 											position="is-bottom-right" scrollable>
 									<template #trigger="{ active }">
 										<div
-										class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
+											class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
 											<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
 													icon="category"
 													pack="casa"></b-icon>
@@ -191,7 +190,7 @@
 											position="is-bottom-right" scrollable>
 									<template #trigger="{ active }">
 										<div
-										class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
+											class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
 											<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
 													icon="author"
 													pack="casa"></b-icon>
@@ -267,7 +266,7 @@
 								</div>
 								<div class="mt-1 ml-7 is-flex is-align-items-center">
 									<div class="is-flex-grow-1 is-size-7 has-text-grey-light">{{
-										item.category
+											item.category
 										}}
 									</div>
 									<b-button v-if="installedList.includes(item.id)"
@@ -294,8 +293,8 @@
 							<h3 class="title is-5 has-text-weight-normal">{{ $t('Community Apps') }}</h3>
 							<h3 class="subtitle is-7 has-text-grey-light">
 								{{
-								$t('From community contributors, not optimized for CasaOS, but provides a basic App
-								experience.')
+									$t('From community contributors, not optimized for CasaOS, but provides a basic App
+										experience.')
 								}}
 							</h3>
 
@@ -330,7 +329,7 @@
 												  type="is-primary is-light"
 												  @click="qucikInstall(item.id);$messageBus('appstorecommunity_install', item.title)">
 											{{
-											$t('Install')
+												$t('Install')
 											}}
 										</b-button>
 									</div>
@@ -397,15 +396,15 @@
 							<b-input v-model="settingData.host" :placeholder="this.$baseIp"
 									 expanded></b-input>
 							<b-autocomplete
-							v-model="settingData.port_map"
-							:data="(()=>{
+								v-model="settingData.port_map"
+								:data="(()=>{
 								return (settingData.ports || []).map((item)=>{
 									return item.host
 								})
 							})()"
-							:open-on-focus="true"
-							:placeholder="$t('Port')" class="has-colon" field="hostname"
-							@select="option => (settingData.port_map = option)"></b-autocomplete>
+								:open-on-focus="true"
+								:placeholder="$t('Port')" class="has-colon" field="hostname"
+								@select="option => (settingData.port_map = option)"></b-autocomplete>
 							<b-input v-model="settingData.index"
 									 :placeholder="'/index.html '+ $t('[Optional]')"
 									 expanded></b-input>
@@ -423,9 +422,9 @@
 											  class="install-animation mt-5 mb-2"></lottie-animation>
 						</div>
 						<b-progress
-						:value="totalPercentage"
-						format="percent"
-						show-value type="is-primary"></b-progress>
+							:value="totalPercentage"
+							format="percent"
+							show-value type="is-primary"></b-progress>
 						<h3 :class="currentInstallAppTextClass" class="title is-6 has-text-centered"
 							style="height: 20px"
 							v-html="currentInstallAppText"></h3>
@@ -489,6 +488,7 @@ import DockerProgress                           from "@/components/Apps/progress
 import ComposeConfig                            from "@/components/Apps/ComposeConfig.vue";
 import AppDetailInfo                            from '@/components/Apps/AppDetailInfo.vue'
 import {ValidationObserver, ValidationProvider} from "vee-validate";
+import {ice_i18n}                               from "@/mixins/base/common-i18n";
 
 const data = [
 	"AUDIT_CONTROL",
@@ -665,9 +665,9 @@ export default {
 			},
 			//  App Detail info
 			appDetailData: {
-				title: {en_US: "",},
-				tagline: {en_US: "",},
-				description: {en_US: "",},
+				title: {en_us: "",},
+				tagline: {en_us: "",},
+				description: {en_us: "",},
 			},
 			arch: "",
 			// unusable: false, // computer unusable
@@ -882,9 +882,9 @@ export default {
 						id,
 						category: main_app_info.category,
 						icon: main_app_info.icon,
-						tagline: main_app_info.tagline.en_US,
+						tagline: ice_i18n(main_app_info.tagline),
 						thumbnail: main_app_info.thumbnail,
-						title: main_app_info.title.en_US,
+						title: ice_i18n(main_app_info.title),
 						state: 0,
 						scheme: main_app_info.apps[id].scheme,
 						port: main_app_info.apps[id].port_map,
@@ -926,9 +926,9 @@ export default {
 						id,
 						category: main_app_info.category,
 						icon: main_app_info.icon,
-						tagline: main_app_info.tagline.en_US,
+						tagline: ice_i18n(main_app_info.tagline),
 						thumbnail: main_app_info.thumbnail,
-						title: main_app_info.title.en_US,
+						title: ice_i18n(main_app_info.title),
 						state: 0,
 						scheme: main_app_info.apps[id].scheme,
 						port: main_app_info.apps[id].port_map,
@@ -964,7 +964,8 @@ export default {
 			this.$openAPI.appManagement.appStore.composeAppStoreInfo(id).then(res => {
 				this.isLoading = false;
 				this.sidebarOpen = true;
-				this.appDetailData = res.data.data.apps[id]
+				console.log('app detail data :: ', res.data.data)
+				this.appDetailData = res.data.data
 				this.appDetailData.id = id
 				this.appDetailData.min_memory = min_memory
 				this.architectures = res.data.data.architectures || [];
@@ -1196,15 +1197,15 @@ export default {
 						this.$buefy.dialog.alert({
 							title: '⚠️ ' + this.$t('Attention'),
 							message: '<div class="nobrk"><h4 class="title is-5">' + this.$t('AutoFill only helps you to complete most of the configuration.') + '</h4>' +
-							'<p class="mb-3">' + this.$t('Some configuration information such as:') + '</p>' +
-							'<ul>' +
-							'<li>1. ' + this.$t('the port and path of the Web UI') + '</li>' +
-							'<li>2. ' + this.$t('the mount location of the volume or file') + '</li>' +
-							'<li>3. ' + this.$t('the port mapping of the Host') + '</li>' +
-							'<li>4. ' + this.$t('optional configuration items') + '</li>' +
-							'</ul>' +
-							'<p class="mt-3">' + this.$t('These include but are not limited to these cases and <b>still need to be confirmed or modified by you.</b>') + '</p>' +
-							'<p class="mt-3">' + this.$t('Feel free to suggest improvements to this feature in Discord Server!') + '</p></div>',
+								'<p class="mb-3">' + this.$t('Some configuration information such as:') + '</p>' +
+								'<ul>' +
+								'<li>1. ' + this.$t('the port and path of the Web UI') + '</li>' +
+								'<li>2. ' + this.$t('the mount location of the volume or file') + '</li>' +
+								'<li>3. ' + this.$t('the port mapping of the Host') + '</li>' +
+								'<li>4. ' + this.$t('optional configuration items') + '</li>' +
+								'</ul>' +
+								'<p class="mt-3">' + this.$t('These include but are not limited to these cases and <b>still need to be confirmed or modified by you.</b>') + '</p>' +
+								'<p class="mt-3">' + this.$t('Feel free to suggest improvements to this feature in Discord Server!') + '</p></div>',
 							type: 'is-dark'
 						})
 					}
