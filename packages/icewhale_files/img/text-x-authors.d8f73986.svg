@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="64" height="64" version="1.1" viewBox="0 0 16.933 16.933" xmlns="http://www.w3.org/2000/svg"
-	 xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"
-	 xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<!--
+  - * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+  - * @LastEditTime: 2023/4/14 下午11:40
+  - * @FilePath: /CasaOS-UI/packages/icewhale_files/img/text-x-authors.d8f73986.svg
+  - * @Description:
+  - *
+  - * Copyright (c) 2023 by IceWhale, All Rights Reserved.
+  -
+  -->
+
+<svg xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"
+	 xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" width="64" height="64"
+	 version="1.1" viewBox="0 0 16.933 16.933"
+	 xmlns="http://www.w3.org/2000/svg">
 	<metadata>
 		<rdf:RDF>
 			<cc:Work rdf:about="">
