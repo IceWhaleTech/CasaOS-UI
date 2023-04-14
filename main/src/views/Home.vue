@@ -64,7 +64,7 @@
 		<b-modal v-model="isFileActive" :can-cancel="[]" :destroy-on-hide="false" animation="zoom-in" aria-modal
 				 custom-class="file-panel" full-screen has-modal-card @after-enter="afterFileEnter">
 			<template #default="props">
-				<file-panel ref="filePanel" @close="props.close"></file-panel>
+				<div id="container_file" ref="filePanel" @close="props.close"></div>
 			</template>
 		</b-modal>
 		<!-- File Panel End -->
@@ -202,8 +202,19 @@ export default {
 		 */
 		showFiles(path) {
 			this.isFileActive = true
-			this.$nextTick(() => {
-				this.$refs.filePanel.init(path)
+			// this.$refs.filePanel.init(path)
+			debugger
+			this.$microApp([{
+				name: 'vueApp',
+				entry: '//localhost:8080/modules/icewhale_files/index.html',
+				container: '#container_file',
+				activeRule: '/app-vue',
+			}])
+			this.$router.push({
+				path: '/app-vue',
+				query: {
+					path: path
+				}
 			})
 		},
 

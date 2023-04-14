@@ -10,6 +10,11 @@
  *
  */
 
+// 调用本地文件系统
+const fs = require('fs');
+const path = require('path');
+
+
 // 【not use】
 module.exports = function mock(app) {
 	app.get('/v2/local_storage/mount1', (req, res) => {
@@ -61,4 +66,12 @@ module.exports = function mock(app) {
 			}
 		})
 	});
+	app.get('/modules/:path', (req, res) => {
+		// 读取本地文件
+		const filePath = path.join(__dirname, `../../packages/${req.params.path}`);
+		fs.readFile(filePath, (file) => {
+			debugger
+			res.render(file)
+		})
+	})
 }

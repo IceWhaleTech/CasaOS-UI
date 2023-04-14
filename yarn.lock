@@ -1318,7 +1318,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.11.0, @babel/runtime@npm:^7.13.10, @babel/runtime@npm:^7.8.4":
+"@babel/runtime@npm:^7.10.5, @babel/runtime@npm:^7.11.0, @babel/runtime@npm:^7.13.10, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.8.4":
   version: 7.21.0
   resolution: "@babel/runtime@npm:7.21.0"
   dependencies:
@@ -4432,6 +4432,7 @@ __metadata:
     mime: ^3.0.0
     nanoid: ^4.0.0
     optimize-css-assets-webpack-plugin: ^6.0.1
+    qiankun: ^2.10.5
     qs: ^6.10.3
     rss-parser: ^3.12.0
     sass: ^1.51.0
@@ -8861,6 +8862,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"import-html-entry@npm:^1.14.5":
+  version: 1.14.6
+  resolution: "import-html-entry@npm:1.14.6"
+  dependencies:
+    "@babel/runtime": ^7.7.2
+  checksum: 092e6669532086bb3e6e93a6d8c8ad85c920c92d23fc3fe80e086a6de233272f4a3e1eb59582a5f84ee60f5186f3b22ce8c1c550e1397d2f99947521cc716014
+  languageName: node
+  linkType: hard
+
 "import-local@npm:^2.0.0":
   version: 2.0.0
   resolution: "import-local@npm:2.0.0"
@@ -12914,6 +12924,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"qiankun@npm:^2.10.5":
+  version: 2.10.5
+  resolution: "qiankun@npm:2.10.5"
+  dependencies:
+    "@babel/runtime": ^7.10.5
+    import-html-entry: ^1.14.5
+    lodash: ^4.17.11
+    single-spa: ^5.9.2
+  checksum: 345c15da63f3ce6d7eef89cb769f754654945e278a3cbc10f2bb4aeebaf4fb584157291cc4666df5c05adf70f2cd344469987730e33918d072f4e6fceaef3cbb
+  languageName: node
+  linkType: hard
+
 "qs@npm:6.11.0":
   version: 6.11.0
   resolution: "qs@npm:6.11.0"
@@ -13890,6 +13912,13 @@ __metadata:
   version: 0.6.0
   resolution: "simple-uploader.js@npm:0.6.0"
   checksum: da7205dc54fcf83498ff2ca5f8c62cc1f56535889cc56bb206c6adf4e5608d03143d2066a2cd654e53d042b02d6ee6e9d729554292b065730ad0ae74b669ad5a
+  languageName: node
+  linkType: hard
+
+"single-spa@npm:^5.9.2":
+  version: 5.9.4
+  resolution: "single-spa@npm:5.9.4"
+  checksum: 8547b5db3d1c6788f44833b1bf7a89697a72a4ca4b801c3f9ddbf4e2949a40bc1d9e9a24650460c7a16f5a668d4e332fc237acacb84f329031815c19578a5907
   languageName: node
   linkType: hard
 
