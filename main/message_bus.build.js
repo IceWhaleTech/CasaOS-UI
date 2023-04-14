@@ -13,7 +13,7 @@ const path = require('path');
 
 const outPath = './build/sysroot/var/lib/casaos/';
 const outName = 'ui-message-bus.json';
-const registerShellPath = './build/sysroot/etc/casaos/start.d/';
+const registerShellPath = '../build/sysroot/etc/casaos/start.d/';
 var array = [];
 
 // Parse the event to array
