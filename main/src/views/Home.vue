@@ -73,16 +73,15 @@
 
 <script>
 
-import SearchBar           from '@/components/SearchBar.vue'
-import SideBar             from '@/components/SideBar.vue'
-import TopBar              from '@/components/TopBar.vue'
-import CoreService         from '../components/CoreService.vue'
-import AppSection          from '../components/Apps/AppSection.vue'
-import UpdateCompleteModal from '@/components/settings/UpdateCompleteModal.vue'
-
-import {mixin}  from '../mixins/mixin';
-import events   from '@/events/events';
-import {nanoid} from 'nanoid';
+import SearchBar           from '@/components/SearchBar.vue';
+import SideBar             from '@/components/SideBar.vue';
+import TopBar              from '@/components/TopBar.vue';
+import CoreService         from '@/components/CoreService.vue';
+import AppSection          from '@/components/Apps/AppSection.vue';
+import UpdateCompleteModal from '@/components/settings/UpdateCompleteModal.vue';
+import {mixin}             from '@/mixins/mixin';
+import events              from '@/events/events';
+import {nanoid}            from 'nanoid';
 
 
 const wallpaperConfig = "wallpaper"

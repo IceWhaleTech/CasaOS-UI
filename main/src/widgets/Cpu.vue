@@ -77,7 +77,7 @@ import smoothReflow from 'vue-smooth-reflow'
 import orderBy      from 'lodash/orderBy';
 import has          from 'lodash/has';
 import slice        from 'lodash/slice';
-import {mixin}      from '../mixins/mixin';
+import {mixin}      from '@/mixins/mixin';
 import RadialBar    from '@/components/widgets/RadialBar.vue';
 
 export default {

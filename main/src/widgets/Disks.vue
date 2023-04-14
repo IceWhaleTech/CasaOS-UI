@@ -81,7 +81,7 @@
 
 <script>
 import StorageManagerPanel from '@/components/Storage/StorageManagerPanel.vue'
-import {mixin}             from '../mixins/mixin';
+import {mixin}             from '@/mixins/mixin';
 
 export default {
 	// eslint-disable-next-line vue/multi-word-component-names

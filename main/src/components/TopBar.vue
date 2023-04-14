@@ -341,7 +341,7 @@ import AccountPanel  from './account/AccountPanel.vue'
 import TerminalPanel from './logsAndTerminal/TerminalPanel.vue'
 import PortPanel     from './settings/PortPanel.vue'
 import UpdateModal   from './settings/UpdateModal.vue'
-import {mixin}       from '../mixins/mixin';
+import {mixin}       from '@/mixins/mixin';
 
 import events from '@/events/events';
 

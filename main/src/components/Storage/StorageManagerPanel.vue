@@ -89,7 +89,7 @@
 									<p class="is-size-14px">
 										{{ $t("The selected drive will be emptied.") }}<br>
 										{{
-										$t(`Please make sure again that there is no important data on the selected drive
+											$t(`Please make sure again that there is no important data on the selected drive
 										that needs to be
 										backed up.`)
 										}}
@@ -110,12 +110,12 @@
 									<p class="is-size-14px">
 										{{ $t("The drive you select can be used directly as storage.") }}<br>
 										{{
-										$t(`You can also choose to create it after formatting. If formatted, the
+											$t(`You can also choose to create it after formatting. If formatted, the
 										selected drive will be
 										emptied.`)
 										}}<br>
 										{{
-										$t(`Please make sure again that there is no important data on the selected drive
+											$t(`Please make sure again that there is no important data on the selected drive
 										that needs to be
 										backed up.`)
 										}}
@@ -179,7 +179,7 @@ import delay                                    from 'lodash/delay';
 import max                                      from 'lodash/max';
 import orderBy                                  from 'lodash/orderBy';
 import {ValidationObserver, ValidationProvider} from "vee-validate";
-import {mixin}                                  from '../../mixins/mixin';
+import {mixin}                                  from '@/mixins/mixin';
 import DriveItem                                from './DriveItem.vue'
 import StorageItem                              from './StorageItem.vue'
 import Popper                                   from 'vue-popperjs';
