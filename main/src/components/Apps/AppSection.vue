@@ -82,8 +82,6 @@ const builtInApplications = [
 		name: "App Store",
 		title: {
 			en_us: "App Store",
-			en_US: "App Store",
-			zh_cn: "应用商店"
 		},
 		icon: require(`@/assets/img/app/appstore.svg`),
 		status: "running",
@@ -94,8 +92,6 @@ const builtInApplications = [
 		name: "Files",
 		title: {
 			en_us: "Files",
-			en_US: "Files",
-			zh_cn: "文件管理器"
 		},
 		icon: require(`@/assets/img/app/files.svg`),
 		status: "running",
