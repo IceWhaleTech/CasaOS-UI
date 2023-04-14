@@ -12,82 +12,63 @@
 const webpack = require('webpack')
 const path = require("path")
 module.exports = {
-    publicPath: '/',
-    runtimeCompiler: true,
-    lintOnSave: false,
-    productionSourceMap: true,
-    pluginOptions: {},
-    css: {
-        extract: {
-            ignoreOrder: true
-        }
-    },
-    configureWebpack: {
-        module: {
-            rules: [
-                // architecture :: openAPI
-                {
-                    test: /\.tsx?$/,
-                    loader: 'ts-loader',
-                    exclude: /node_modules/,
-                    options: {
-                        appendTsSuffixTo: [/\.vue$/],
-                        happyPackMode: true,
-                    },
-                    resolve: {
-                        extensions: ['.ts', '.tsx', '.js', '.vue', '.json']
-                    },
-                },
-            ],
-        },
-    },
-    chainWebpack: config => {
-        // config.entry('app').clear().add('./src/main.js')
-        // config.module.rule('ts').test(/\.tsx?$/).use('ts-loader').loader('ts-loader').end().use('cache-loader').loader('cache-loader').end().use('babel-loader').loader('babel-loader').end()
-        const oneOfsMap = config.module.rule("scss").oneOfs.store;
-        oneOfsMap.forEach(item => {
-            item
-                .use("style-resources-loader")
-                .loader("style-resources-loader")
-                .options({
-                    patterns: [
-                        "./src/assets/scss/common/_variables.scss",
-                        "./src/assets/scss/common/_color.scss"
-                    ]
-                })
-                .end()
-        })
-        config.plugin('ignore')
-            .use(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
-        // Production only
-        if (process.env.NODE_ENV === "prod") {
-            config.output.filename('[name].[contenthash:8].js').end()
-            config.output.chunkFilename('[name].[contenthash:8].js').end()
-            config.optimization.minimize(true);
-            config.optimization.splitChunks({
-                chunks: 'all'
-            })
+	publicPath: '/',
+	runtimeCompiler: true,
+	lintOnSave: false,
+	productionSourceMap: true,
+	pluginOptions: {},
+	css: {
+		extract: {
+			ignoreOrder: true
+		}
+	},
+	chainWebpack: config => {
+		// config.entry('app').clear().add('./src/main.js')
+		// config.module.rule('ts').test(/\.tsx?$/).use('ts-loader').loader('ts-loader').end().use('cache-loader').loader('cache-loader').end().use('babel-loader').loader('babel-loader').end()
+		const oneOfsMap = config.module.rule("scss").oneOfs.store;
+		oneOfsMap.forEach(item => {
+			item
+				.use("style-resources-loader")
+				.loader("style-resources-loader")
+				.options({
+					patterns: [
+						"./src/assets/scss/common/_variables.scss",
+						"./src/assets/scss/common/_color.scss"
+					]
+				})
+				.end()
+		})
+		config.plugin('ignore')
+			.use(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
+		// Production only
+		if (process.env.NODE_ENV === "prod") {
+			config.output.filename('[name].[contenthash:8].js').end()
+			config.output.chunkFilename('[name].[contenthash:8].js').end()
+			config.optimization.minimize(true);
+			config.optimization.splitChunks({
+				chunks: 'all'
+			})
 
-            config.optimization
-                .minimizer('css')
-                .use(require.resolve('optimize-css-assets-webpack-plugin'), [{cssProcessorOptions: {safe: true}}])
-        } else {
-            // Development only
-            config.plugin('webpack-bundle-analyzer')
-                .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
-            config.devServer.proxy({
-                '/': {
-                    target: `http://${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}`,
-                    changeOrigin: true,
-                }
-            })
-        }
-    },
-    devServer: {
-        contentBase: path.join(__dirname, 'src'),
-        open: true,
-        port: 8080,
-        inline: false,
-        before: require('./mock/meta_data.js')
-    }
+			config.optimization
+				.minimizer('css')
+				.use(require.resolve('optimize-css-assets-webpack-plugin'), [{cssProcessorOptions: {safe: true}}])
+		} else {
+			// Development only
+			config.plugin('webpack-bundle-analyzer')
+				.use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
+			config.devServer.proxy({
+				'/': {
+					target: `http://${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}`,
+					changeOrigin: true,
+				}
+			})
+		}
+	},
+	devServer: {
+		contentBase: path.join(__dirname, 'src'),
+		open: true,
+		port: 8080,
+		inline: false,
+		before: require('./mock/meta_data.js')
+	}
 }
