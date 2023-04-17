@@ -67,10 +67,10 @@ module.exports = function mock(app) {
 		})
 	});
 	app.get('/modules/:path', (req, res) => {
+		console.log(req, res)
 		// 读取本地文件
-		const filePath = path.join(__dirname, `../../packages/${req.params.path}`);
-		fs.readFile(filePath, (file) => {
-			debugger
+		const filePath = path.join(__dirname, `../../packages/${req.params.path}/index.html`);
+		fs.readFile(filePath, (err, file) => {
 			res.render(file)
 		})
 	})

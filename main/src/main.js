@@ -8,24 +8,24 @@
  */
 
 import 'intersection-observer'
-import Vue                        from 'vue'
-import App                        from '@/App.vue'
-import router                     from '@/router'
-import store                      from '@/store'
-import i18n                       from '@/plugins/i18n'
-import api                        from '@/service/api.js'
-import openAPI                    from '@/service/index.js'
-import Buefy                      from 'buefy'
-import VueFullscreen              from 'vue-fullscreen'
-import Vue2TouchEvents            from 'vue2-touch-events'
-import VueSocialSharing           from 'vue-social-sharing'
-import VueSocketIOExt             from 'vue-socket.io-extended';
-import messageBus                 from '@/events/index.js'
-import {registerMicroApps, start} from "qiankun";
+import Vue              from 'vue'
+import App              from '@/App.vue'
+import router           from '@/router'
+import store            from '@/store'
+import i18n             from '@/plugins/i18n'
+import api              from '@/service/api.js'
+import openAPI          from '@/service/index.js'
+import Buefy            from 'buefy'
+import VueFullscreen    from 'vue-fullscreen'
+import Vue2TouchEvents  from 'vue2-touch-events'
+import VueSocialSharing from 'vue-social-sharing'
+import VueSocketIOExt   from 'vue-socket.io-extended';
+import messageBus       from '@/events/index.js'
+// import {registerMicroApps, start} from "qiankun";
 
 // Import Styles
 import '@/assets/scss/app.scss'
-import VAnimateCss                from 'v-animate-css';
+import VAnimateCss      from 'v-animate-css';
 
 const io = require("socket.io-client");
 
@@ -60,11 +60,11 @@ Vue.prototype.$baseURL = baseURL;
 Vue.prototype.$protocol = protocol;
 Vue.prototype.$wsProtocol = wsProtocol;
 
-Vue.prototype.$microApp = (microApp) => {
-	registerMicroApps(microApp);
-	console.log('microApp', microApp)
-	start();
-}
+// Vue.prototype.$microApp = (microApp) => {
+// 	registerMicroApps(microApp);
+// 	console.log('microApp', microApp)
+// 	start();
+// }
 
 // Create an EventBus
 Vue.prototype.$EventBus = new Vue();

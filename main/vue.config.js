@@ -11,6 +11,8 @@
 
 const webpack = require('webpack')
 const path = require("path")
+const publicPath = path.join(__dirname, '../packages')
+
 module.exports = {
 	publicPath: '/',
 	runtimeCompiler: true,
@@ -65,10 +67,10 @@ module.exports = {
 		}
 	},
 	devServer: {
-		contentBase: path.join(__dirname, 'src'),
 		open: true,
 		port: 8080,
 		inline: false,
-		before: require('./mock/meta_data.js')
+		// before: require('./mock/meta_data.js'),
+		// contentBase: publicPath,
 	}
 }

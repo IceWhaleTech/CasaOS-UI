@@ -82,6 +82,7 @@ import UpdateCompleteModal from '@/components/settings/UpdateCompleteModal.vue';
 import {mixin}             from '@/mixins/mixin';
 import events              from '@/events/events';
 import {nanoid}            from 'nanoid';
+import {loadMicroApp}      from "qiankun";
 
 
 const wallpaperConfig = "wallpaper"
@@ -111,7 +112,8 @@ export default {
 	},
 	provide() {
 		return {
-			homeShowFiles: this.showFiles,
+			// homeShowFiles: this.showFiles,
+			homeShowFiles: this.showMircoApp,
 		};
 	},
 
@@ -203,17 +205,56 @@ export default {
 		showFiles(path) {
 			this.isFileActive = true
 			// this.$refs.filePanel.init(path)
-			debugger
-			this.$microApp([{
-				name: 'vueApp',
-				entry: '//localhost:8080/modules/icewhale_files/index.html',
-				container: '#container_file',
-				activeRule: '/app-vue',
-			}])
-			this.$router.push({
-				path: '/app-vue',
-				query: {
-					path: path
+			// this.$microApp([{
+			// 	name: 'vueApp',
+			// 	entry: '/modules/icewhale_files/',
+			// container: '#container_file',
+			// activeRule: '/app-vue',
+			// }])
+			// this.$router.push({
+			// 	path: '/app-vue',
+			// 	query: {
+			// 		path: path
+			// 	}
+			// })
+			// loadMicroApp({
+			// 	name: 'vueApp',
+			// 	entry: '/modules/icewhale_files/',
+			// 	container: '#container_file',
+			// 	props: {
+			// 		slogan: 'hello'
+			// 	},
+			// 	sandbox: {
+			// 		experimentalStyleIsolation: true
+			// 	}
+			// })
+		},
+		showMircoApp() {
+			const vnode = this.$createElement('div', {
+				class: "mirco-app",
+				attrs: {
+					id: "microApp"
+				}
+			})
+			const microApp = loadMicroApp({
+				name: 'microApp',
+				entry: '/modules/icewhale_files/',
+				container: '#microApp',
+				props: {
+					slogan: 'hello'
+				},
+				sandbox: {
+					experimentalStyleIsolation: true
+				}
+			})
+			this.$buefy.modal.open({
+				content: [vnode],
+				fullScreen: true,
+				hasModalCard: true,
+				animation: "zoom-in",
+				canCancel: ["escape", "x"],
+				onCancel: () => {
+					microApp.unmount();
 				}
 			})
 		},
@@ -411,6 +452,17 @@ export default {
 @media screen and (max-width: $tablet) {
 	.columns {
 		display: flex;
+	}
+}
+</style>
+<style lang="scss">
+#microApp {
+	width: 100%;
+	height: 100%;
+
+	[data-name="microApp"] {
+		width: 100%;
+		height: 100%;
 	}
 }
 </style>
