@@ -71,6 +71,9 @@ module.exports = function mock(app) {
 		// 读取本地文件
 		const filePath = path.join(__dirname, `../../packages/${req.params.path}/index.html`);
 		fs.readFile(filePath, (err, file) => {
+			// res.headers["Access-Control-Allow-Origin"] = "*"
+			// 允许跨域
+			res.header("Access-Control-Allow-Origin", "*");
 			res.render(file)
 		})
 	})
