@@ -52,7 +52,7 @@ jobs:
                     echo github.sha ${{ github.sha }}
                     echo env.VERSION ${{ steps.get_version.outputs.VERSION }}
             -   run: yarn preinstall
-            -   run: yarn add -g turbo
+            -   run: yarn add global turbo
             -   run: yarn build
             -   run: |
                     cp ./build/sysroot/var/lib/casaos/www/img/wallpaper0*.jpg ./build/sysroot/var/lib/casaos/www/ui/img/
