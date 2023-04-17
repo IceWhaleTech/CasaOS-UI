@@ -460,7 +460,7 @@ export default {
 	width: 100%;
 	height: 100%;
 
-	[data-name="microApp"] {
+	[data-name^="microApp"] {
 		width: 100%;
 		height: 100%;
 	}
