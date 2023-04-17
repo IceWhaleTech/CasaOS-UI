@@ -1,0 +1,15 @@
+<svg id="waiting" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"
+	 shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
+	<style><![CDATA[
+#waiting-u-01_to {animation: waiting-u-01_to__to 1000ms linear infinite normal forwards}@keyframes waiting-u-01_to__to { 0% {transform: translate(4px,12px);animation-timing-function: cubic-bezier(0.42,-0.005,0.58,0.995)} 35% {transform: translate(4px,8px);animation-timing-function: cubic-bezier(0.42,-0.005,0.58,0.995)} 65% {transform: translate(4px,12px)} 100% {transform: translate(4px,12px)}} #waiting-u-02_to {animation: waiting-u-02_to__to 1000ms linear infinite normal forwards}@keyframes waiting-u-02_to__to { 0% {transform: translate(12px,12px)} 12% {transform: translate(12px,12px);animation-timing-function: cubic-bezier(0.42,0,0.58,1)} 47% {transform: translate(12px,8px);animation-timing-function: cubic-bezier(0.42,0,0.58,1)} 77% {transform: translate(12px,12px)} 100% {transform: translate(12px,12px)}} #waiting-u-03_to {animation: waiting-u-03_to__to 1000ms linear infinite normal forwards}@keyframes waiting-u-03_to__to { 0% {transform: translate(20px,12px)} 24% {transform: translate(20px,12px);animation-timing-function: cubic-bezier(0.42,0,0.58,1)} 59% {transform: translate(20px,8px);animation-timing-function: cubic-bezier(0.42,0,0.58,1)} 89% {transform: translate(20px,12px)} 100% {transform: translate(20px,12px)}}
+]]></style>
+	<g id="waiting-u-01_to" transform="translate(4,12)">
+		<circle id="waiting-u-01" r="2" transform="translate(0,0)" fill="#4ce7ff"/>
+	</g>
+	<g id="waiting-u-02_to" transform="translate(12,12)">
+		<circle id="waiting-u-02" r="2" transform="translate(0,0)" fill="#0067c2"/>
+	</g>
+	<g id="waiting-u-03_to" transform="translate(20,12)">
+		<circle id="waiting-u-03" r="2" transform="translate(0,0)" fill="#4ce7ff"/>
+	</g>
+</svg>

@@ -1,0 +1,433 @@
+/*!
+ *  @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ *  @LastEditTime: 2023/3/20 下午1:43
+ *  @FilePath: /CasaOS-UI/src/assets/scss/common/_iconfont.scss
+ *  @Description:
+ *
+ *  Copyright (c) 2023 by IceWhale, All Rights Reserved.
+ *
+ */
+
+@font-face {
+	font-family: 'casaos';
+	src: url('../fonts/casaos.eot?5hkf4z');
+	src: url('../fonts/casaos.eot?5hkf4z#iefix') format('embedded-opentype'),
+	url('../fonts/casaos.ttf?5hkf4z') format('truetype'),
+	url('../fonts/casaos.woff?5hkf4z') format('woff'),
+	url('../fonts/casaos.svg?5hkf4z#casaos') format('svg');
+	font-weight: normal;
+	font-style: normal;
+	font-display: block;
+}
+
+[class^="casa-"], [class*=" casa-"] {
+	/* use !important to prevent issues with browser extensions that change fonts */
+	font-family: 'casaos' !important;
+	speak: never;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.casa-casa .path1:before {
+	content: "\e94c";
+	color: rgb(54, 54, 54);
+}
+
+.casa-casa .path2:before {
+	content: "\e94d";
+	margin-left: -1em;
+	color: rgb(101, 101, 101);
+	opacity: 0.95;
+}
+
+.casa-casa .path3:before {
+	content: "\e94e";
+	margin-left: -1em;
+	color: rgb(51, 51, 51);
+	opacity: 0.95;
+}
+
+.casa-casa .path4:before {
+	content: "\e94f";
+	margin-left: -1em;
+	color: rgb(101, 101, 101);
+	opacity: 0.95;
+}
+
+.casa-sending-files:before {
+	content: "\e944";
+}
+
+.casa-paste:before {
+	content: "\e945";
+}
+
+.casa-files:before {
+	content: "\e946";
+}
+
+.casa-drop:before {
+	content: "\e947";
+}
+
+.casa-bug:before {
+	content: "\e901";
+}
+
+.casa-discord:before {
+	content: "\e902";
+}
+
+.casa-feedback:before {
+	content: "\e903";
+}
+
+.casa-github:before {
+	content: "\e904";
+}
+
+.casa-social-share:before {
+	content: "\e92c";
+}
+
+.casa-facebook:before {
+	content: "\e929";
+}
+
+.casa-reddit:before {
+	content: "\e92a";
+}
+
+.casa-twitter:before {
+	content: "\e92b";
+}
+
+.casa-matching:before {
+	content: "\e905";
+}
+
+.casa-close:before {
+	content: "\e906";
+}
+
+.casa-close-xs:before {
+	content: "\e910";
+}
+
+.casa-plus:before {
+	content: "\e907";
+}
+
+.casa-Indeterminate:before {
+	content: "\e908";
+}
+
+.casa-left:before {
+	content: "\e909";
+}
+
+.casa-right:before {
+	content: "\e90b";
+}
+
+.casa-up:before {
+	content: "\e90c";
+}
+
+.casa-down:before {
+	content: "\e90f";
+}
+
+.casa-arrow-up:before {
+	content: "\e911";
+}
+
+.casa-arrow-down:before {
+	content: "\e913";
+}
+
+.casa-more:before {
+	content: "\e914";
+}
+
+.casa-add:before {
+	content: "\e915";
+}
+
+.casa-minus:before {
+	content: "\e916";
+}
+
+.casa-question:before {
+	content: "\e948";
+}
+
+.casa-setting:before {
+	content: "\e91d";
+}
+
+.casa-tune:before {
+	content: "\e91f";
+}
+
+.casa-loading:before {
+	content: "\e927";
+}
+
+.casa-restart:before {
+	content: "\e92d";
+}
+
+.casa-sync:before {
+	content: "\e90a";
+}
+
+.casa-shutdown:before {
+	content: "\e933";
+}
+
+.casa-time:before {
+	content: "\e934";
+}
+
+.casa-history-records:before {
+	content: "\e922";
+}
+
+.casa-language:before {
+	content: "\e935";
+}
+
+.casa-danger-outline:before {
+	content: "\e92e";
+}
+
+.casa-danger:before {
+	content: "\e921";
+}
+
+.casa-magnifier:before {
+	content: "\e936";
+}
+
+.casa-search-show:before {
+	content: "\e937";
+}
+
+.casa-search-manage:before {
+	content: "\e938";
+}
+
+.casa-picture:before {
+	content: "\e939";
+}
+
+.casa-picture-upload:before {
+	content: "\e90d";
+}
+
+.casa-system:before {
+	content: "\e93a";
+}
+
+.casa-terminal:before {
+	content: "\e93b";
+}
+
+.casa-storage:before {
+	content: "\e93c";
+}
+
+.casa-upgrade:before {
+	content: "\e93d";
+}
+
+.casa-port:before {
+	content: "\e93e";
+}
+
+.casa-app-switch:before {
+	content: "\e93f";
+}
+
+.casa-network:before {
+	content: "\e940";
+}
+
+.casa-news:before {
+	content: "\e941";
+}
+
+.casa-author:before {
+	content: "\e949";
+}
+
+.casa-account:before {
+	content: "\e942";
+}
+
+.casa-account-edit:before {
+	content: "\e912";
+}
+
+.casa-usb:before {
+	content: "\e943";
+}
+
+.casa-exit-app:before {
+	content: "\e932";
+}
+
+.casa-view:before {
+	content: "\e920";
+}
+
+.casa-category:before {
+	content: "\e94a";
+}
+
+.casa-copy:before {
+	content: "\e917";
+}
+
+.casa-eject:before {
+	content: "\e923";
+}
+
+.casa-expand-down:before {
+	content: "\e930";
+}
+
+.casa-expand:before {
+	content: "\e900";
+}
+
+.casa-storage-network:before {
+	content: "\e924";
+}
+
+.casa-storage-other:before {
+	content: "\e925";
+}
+
+.casa-storage-merger:before {
+	content: "\e92f";
+}
+
+.casa-storage-USB:before {
+	content: "\e926";
+}
+
+.casa-share:before {
+	content: "\e928";
+}
+
+.casa-folder:before {
+	content: "\e931";
+}
+
+.casa-folder-data:before {
+	content: "\e918";
+}
+
+.casa-folder-documents:before {
+	content: "\e919";
+}
+
+.casa-folder-downloads:before {
+	content: "\e91a";
+}
+
+.casa-folder-gallery:before {
+	content: "\e91b";
+}
+
+.casa-folder-media:before {
+	content: "\e91c";
+}
+
+.casa-folder-root:before {
+	content: "\e91e";
+}
+
+.casa-thumb-up:before {
+	content: "\e90e";
+}
+
+.casa-edit:before {
+	content: "\e94b";
+}
+
+
+// Size
+.casa-28px {
+	font-size: 28px !important;
+}
+
+.casa-24px {
+	font-size: 24px !important;
+}
+
+.casa-22px {
+	font-size: 22px !important;
+}
+
+.casa-19px {
+	font-size: 19px !important;
+}
+
+.casa-16px {
+	font-size: 16px !important;
+}
+
+.casa-14px {
+	font-size: 12px !important;
+}
+
+.casa-10px {
+	font-size: 10px !important;
+}
+
+// Color
+.casa-color-blue {
+	color: #3388FF !important;
+}
+
+.casa-color-green {
+	color: #28CC87 !important;
+}
+
+.casa-color-gray {
+	color: #999999 !important;
+}
+
+
+// Shape
+
+.casa-shape-rounded {
+	background-color: #fff;
+	border-radius: 50%;
+}
+
+.casa-shape-12px {
+	width: 12px !important;
+	height: 12px !important;
+}
+
+
+.casa-shape-16px {
+	width: 16px !important;
+	height: 16px !important;
+}
+
+.casa-shape-32px {
+	width: 32px !important;
+	height: 32px !important;
+}

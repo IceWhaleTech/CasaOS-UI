@@ -1,0 +1,46 @@
+// Toast
+
+.toast {
+	border: 1px solid $grey-300 !important;
+	padding: 0.75rem 1.25rem;
+	
+	p,
+	div {
+		font-family: $family-sans-serif;
+		font-style: normal;
+		font-weight: 400;
+		font-size: 0.875rem;
+		line-height: 1.25rem;
+		color: rgba(41, 52, 61, 1);
+	}
+	
+	&.is-success,
+	&.is-danger,
+	&.is-warning {
+		background: $white !important;
+		color: rgba(41, 52, 61, 1);
+		
+		&::before {
+			margin-right: 0.5rem;
+			height: 20px;
+		}
+	}
+	
+	&.is-success {
+		&::before {
+			content: url(../img/common-icons/success.svg);
+		}
+	}
+	
+	&.is-danger {
+		&::before {
+			content: url(../img/common-icons/danger.svg);
+		}
+	}
+	
+	&.is-warning {
+		&::before {
+			content: url(../img/common-icons/warning.svg);
+		}
+	}
+}

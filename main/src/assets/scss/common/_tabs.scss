@@ -1,0 +1,39 @@
+// Tabs
+
+.tabs {
+	ul {
+		border-bottom: 1px solid transparent;
+		
+		li {
+			font-size: 1rem;
+			
+			&:first-child {
+				a {
+					margin-left: 0;
+				}
+			}
+			
+			a {
+				color: $primary;
+				border-bottom: transparent 2px solid !important;
+				padding: 0.5rem 0 0.1rem 0;
+				margin: 0 0.5rem;
+			}
+			
+			&.is-active {
+				a {
+					font-weight: 700;
+					border-bottom: $primary 2px solid !important;
+				}
+			}
+		}
+	}
+}
+
+.b-tabs .tab-content {
+	position: relative;
+	overflow: visible;
+	display: flex;
+	flex-direction: column;
+	padding: 1rem 0 0 0;
+}

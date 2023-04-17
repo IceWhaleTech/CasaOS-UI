@@ -1,0 +1,57 @@
+/*!
+ *  @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ *  @LastEditTime: 2023/2/1 上午10:44
+ *  @FilePath: /CasaOS-UI/src/assets/scss/app.scss
+ *  @Description:
+ *
+ *  Copyright (c) 2022 by IceWhale, All Rights Reserved.
+ */
+
+// Import Font
+@import '~@fontsource/roboto/300.css';
+@import '~@fontsource/roboto/400.css';
+@import '~@fontsource/roboto/500.css';
+@import '~@fontsource/roboto/700.css';
+
+// Import materialdesignicons
+@import "~@mdi/font/css/materialdesignicons.min.css";
+
+// Import Swiper Style
+//@import "~swiper/swiper-bundle.min.css";
+@import "~swiper/css/swiper.min.css";
+
+// Import CasaOS IconFont
+@import "common/iconfont";
+
+// Custom Variables
+@import "common/variables";
+
+// Import Bulma and Buefy styles
+@import "~bulma";
+@import "~buefy/src/scss/buefy";
+
+// Import CasaOS Styles
+// Commons
+@import "common/root";
+@import "common/font";
+@import "common/color";
+@import "common/spacing";
+@import "common/buttons";
+@import "common/title";
+@import "common/size";
+@import "common/images";
+@import "common/icon";
+@import "common/tabs";
+@import "common/card";
+@import "common/scrollbars";
+@import "common/animate";
+@import "common/avatar";
+@import "common/modal";
+@import "common/others";
+@import "common/widgets";
+@import "common/sections";
+@import "common/toast";
+@import "common/snackbar";
+
+// Pages and Components
+

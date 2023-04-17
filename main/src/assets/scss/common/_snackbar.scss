@@ -1,0 +1,103 @@
+// Snackbar
+.notices {
+	.snackbar {
+		border: 1px solid $grey-300 !important;
+		padding: 0.625rem 1.25rem;
+		
+		.text {
+			font-family: $family-sans-serif;
+			font-style: normal;
+			font-weight: 400;
+			font-size: 0.875rem;
+			line-height: 1.25rem;
+			color: rgba(41, 52, 61, 1);
+			padding: 0;
+		}
+		
+		&.is-file {
+			.button {
+				background: $primary;
+				//styleName: Text 400Regular/Text03;
+				font-size: 14px;
+				font-weight: 400;
+				line-height: 20px;
+				letter-spacing: 0em;
+				color: $white;
+				
+				&:hover {
+					background: $primary-dark;
+				}
+			}
+			
+			background: $white !important;
+			color: rgba(41, 52, 61, 1);
+			
+			&::before {
+				
+				content: "\e946";
+				font-family: 'casaos' !important;
+				speak: never;
+				font-style: normal;
+				font-weight: normal;
+				font-variant: normal;
+				text-transform: none;
+				line-height: 1;
+				
+				/* Better Font Rendering =========== */
+				-webkit-font-smoothing: antialiased;
+				-moz-osx-font-smoothing: grayscale;
+				margin-right: 0.5rem;
+				height: 24px;
+				font-size: 24px;
+			}
+		}
+		
+		.action {
+			padding: 0 0.5rem;
+			margin-left: 0.5rem;
+			
+			&:last-child {
+				margin-right: 0;
+				padding-right: 0;
+			}
+			
+			.button {
+				border-radius: 14px;
+			}
+			
+			&.is-cancel {
+				.button {
+					background: $grey-100;
+					//styleName: Text 400Regular/Text03;
+					font-size: 14px;
+					font-weight: 400;
+					line-height: 20px;
+					letter-spacing: 0em;
+					color: $gray-800;
+					
+					&:hover {
+						background: $grey-200;
+					}
+				}
+			}
+			
+			&.is-white {
+				.button {
+					background: $primary;
+					//styleName: Text 400Regular/Text03;
+					font-size: 14px;
+					font-weight: 400;
+					line-height: 20px;
+					letter-spacing: 0em;
+					color: $white;
+					
+					&:hover {
+						background: $primary-dark;
+					}
+				}
+			}
+			
+			
+		}
+	}
+}

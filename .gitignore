@@ -2,8 +2,6 @@
 node_modules
 /dist
 /build
-# openApi
-/src/codegen
 
 # local env files
 .env.local
@@ -27,5 +25,9 @@ pnpm-debug.log*
 # warnings
 unused-files.json
 
+# package manager
 .yarnrc.yml
 .yarn/
+
+# turbo
+.turbo

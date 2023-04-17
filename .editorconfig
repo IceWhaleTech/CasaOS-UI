@@ -1,0 +1,44 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 4
+indent_style = tab
+insert_final_newline = false
+max_line_length = 120
+tab_width = 4
+
+[*.feature]
+indent_size = 2
+
+[*.scss]
+indent_style = tab
+
+[*.vue]
+indent_style = tab
+
+[{*.ant,*.fxml,*.jhm,*.jnlp,*.jrxml,*.rng,*.tld,*.wsdl,*.xml,*.xsd,*.xsl,*.xslt,*.xul}]
+indent_style = tab
+
+[{*.bash,*.sh,*.zsh}]
+indent_size = 2
+tab_width = 2
+
+[{*.cjs,*.js}]
+indent_style = tab
+
+[{*.har,*.jsb2,*.jsb3,*.json,.babelrc,.eslintrc,.prettierrc,.stylelintrc,bowerrc,jest.config}]
+indent_size = 2
+indent_style = space
+
+[{*.htm,*.html,*.ng,*.sht,*.shtm,*.shtml}]
+indent_style = tab
+
+[{*.http,*.rest}]
+indent_size = 0
+
+[{*.yaml,*.yml}]
+indent_style = tab
+
+[*.md]

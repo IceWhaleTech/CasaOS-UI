@@ -1,0 +1,17 @@
+.plyr {
+	height: 100%;
+	width: 100%
+}
+
+.plyr--audio {
+	height: auto !important
+}
+
+.plyr__video-wrapper {
+	height: 100%
+}
+
+.plyr__video-wrapper iframe {
+	height: 100%;
+	width: 100%
+}
