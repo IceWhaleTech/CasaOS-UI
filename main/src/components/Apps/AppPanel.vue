@@ -11,8 +11,8 @@
 -->
 <template>
 	<div
-		:class="{'narrow': currentSlide > 0 ,'card-width': isFirstInstall}"
-		class="app-card modal-card _stepStoreList">
+		:class="{'narrow': currentSlide > 0 ,'card-width': isFirstInstall, '_stepStoreList' : currentSlide === 0}"
+		class="app-card modal-card">
 		<!--    first setting！！ apps installation location-->
 		<template v-if="isFirstInstall">
 			<header class="modal-card-head b-line">
