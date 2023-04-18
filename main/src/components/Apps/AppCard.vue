@@ -472,8 +472,8 @@ export default {
 		 */
 		configApp() {
 			this.$messageBus('apps_setting', this.item.name);
-			this.$refs.dro.isActive = false
-			this.$emit("configApp", this.item, true)
+			this.$refs.dro.isActive = false;
+			this.$emit("configApp", this.item, this.isV2App);
 		},
 
 		/**
