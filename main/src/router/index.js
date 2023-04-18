@@ -54,7 +54,9 @@ router.beforeEach(async (to, from, next) => {
 
 	const accessToken = localStorage.getItem("access_token");
 	const version = localStorage.getItem("version");
-	const requireAuth = to.matched.some(record => record.meta.requireAuth);
+	const requireAuth = to.matched.some(record => {
+		return record.meta.requireAuth
+	});
 
 	// 判断是否需要初始化
 	let needInitRes = await needInit();

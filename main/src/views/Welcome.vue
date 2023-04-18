@@ -17,13 +17,13 @@
 				</div>
 
 				<h2 v-animate-css="s2Ani" class="title is-2 mb-5 has-text-centered __color">{{
-					$t('Welcome to CasaOS')
+						$t('Welcome to CasaOS')
 					}}</h2>
 				<h2 v-animate-css="s3Ani" class="subtitle  has-text-centered __color __op60">{{
-					$t(`Let's create your initial account`)
+						$t(`Let's create your initial account`)
 					}}</h2>
 				<b-button v-animate-css="s4Ani" class="mt-2" rounded type="is-primary" @click="goToStep(2)">{{
-					$t(`Go →`)
+						$t(`Go →`)
 					}}
 				</b-button>
 			</div>
@@ -149,9 +149,10 @@ export default {
 			const initKey = this.$store.state.initKey;
 			this.$api.users.register(this.username, this.password, initKey).then(res => {
 				if (res.data.success == 200) {
-					this.login()
-					// First login set default app order.
-					this.$api.users.setCustomStorage("app_order", {data: ["App Store", "Files"]})
+					this.login().then(() => {
+						// First login set default app order
+						this.$api.users.setCustomStorage("app_order", {data: ["App Store", "Files"]})
+					});
 					this.goToStep(3);
 				}
 			}).catch(err => {
