@@ -284,7 +284,7 @@ export default {
 					},
 				},
 				"x-casaos": {
-					main_app: 'main_app',
+					main: 'main_app',
 					"author": "",
 					"category": "Developer",
 					"description": {
@@ -360,7 +360,7 @@ export default {
 					this.configData.network_mode = gg.length > 0 ? gg[0].name : "bridge";
 				}
 			},
-			deep: true
+			immediate: true,
 		},
 	},
 	computed: {
@@ -490,13 +490,13 @@ export default {
 		parseComposeYaml(val) {
 			try {
 				const yaml = YAML.parse(val)
-				console.log('检测传入的 yarml 文件', yaml);
-				console.log('检测传入的 yarml 文件的 services', yaml.services);
-				console.log('检测传入的 yarml 文件的 main_app name', yaml['x-casaos']['main']);
+				console.log('检测传入的 yaml 文件', yaml);
+				console.log('检测传入的 yaml 文件的 services', yaml.services);
+				console.log('检测传入的 yaml 文件的 main_app name', yaml['x-casaos']['main']);
 
-				if (yaml.version === undefined) {
-					return false
-				}
+				// if (yaml.version === undefined) {
+				// 	return false
+				// }
 
 				// 其他配置
 				this.volumes = yaml.volumes || {}
