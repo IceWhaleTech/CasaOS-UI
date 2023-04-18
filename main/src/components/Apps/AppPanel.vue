@@ -368,6 +368,8 @@
 								   :total-memory="totalMemory"
 								   @updateDockerComposeCommands="updateDockerComposeCommands"
 								   @updateMainName="name=> mainName = name"></ComposeConfig>
+
+					<!--	导入"已存在的容器"，进行初始化操作	-->
 					<ValidationObserver v-else ref="containerValida">
 						<ValidationProvider v-slot="{ errors, valid }" name="appName" rules="required">
 							<b-field :label="$t('App name')+' *'" :message="$t(errors)"
@@ -767,7 +769,7 @@ export default {
 				if (!this.isCasa) {
 					return this.$t("Import") + " " + this.mainName
 				} else {
-					return (this.settingData != undefined && this.settingComposeData != undefined) ? this.mainName + " " + this.$t("Setting") : this.$t("Install a new App manually")
+					return (this.settingData != undefined || this.settingComposeData != undefined) ? this.mainName + " " + this.$t("Setting") : this.$t("Install a new App manually")
 				}
 
 			} else {
