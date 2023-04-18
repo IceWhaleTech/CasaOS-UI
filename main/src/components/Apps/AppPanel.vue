@@ -33,9 +33,10 @@
 			</p>
 
 			<section class="modal-card-body is-overlay">
-				<AppsInstallationLocation v-for="(item,index) in storageData" :key="'storage'+index" :item="item"
-										  :scence="storage_item_scence"
-										  @selection="getSelection">
+				<AppsInstallationLocation
+					v-for="(item,index) in storageData" :key="'storage'+index" :item="item"
+					:scence="storage_item_scence"
+					@selection="getSelection">
 				</AppsInstallationLocation>
 			</section>
 		</template>

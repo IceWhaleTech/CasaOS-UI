@@ -17,14 +17,6 @@
 		<template v-for="(service, key) in configData.services">
 			<b-tab-item :key="key" :label="key">
 				<ValidationObserver :ref="key+'valida'">
-					<!--					<ValidationProvider v-if="key === main_name" v-slot="{ errors, valid }" name="appName"-->
-					<!--					                    rules="required">-->
-					<!--						<b-field :label="$t('App name')+' *'" :message="$t(errors)"-->
-					<!--						         :type="{ 'is-danger': errors[0], 'is-success': valid }">-->
-					<!--							<b-input v-model="configData.name" :placeholder="$t('Your custom App Name')"-->
-					<!--							         maxlength="40"></b-input>-->
-					<!--						</b-field>-->
-					<!--					</ValidationProvider>-->
 					<ValidationProvider v-slot="{ errors, valid }" name="Image" rules="required">
 						<b-field :label="$t('Docker Image')+' *'" :message="$t(errors)"
 								 :type="{ 'is-danger': errors[0], 'is-success': valid }">
@@ -53,11 +45,11 @@
 						<b-input v-model="service['x-casaos'].hostname" :placeholder="baseUrl"
 								 expanded></b-input>
 						<b-autocomplete
-						v-model="service['x-casaos'].port_map"
-						:data="bridgePorts(service)"
-						:open-on-focus="true"
-						:placeholder="$t('Port')" class="has-colon" field="hostname"
-						@select="option => (portSelected = option)"></b-autocomplete>
+							v-model="service['x-casaos'].port_map"
+							:data="bridgePorts(service)"
+							:open-on-focus="true"
+							:placeholder="$t('Port')" class="has-colon" field="hostname"
+							@select="option => (portSelected = option)"></b-autocomplete>
 						<b-input v-model="service['x-casaos'].index"
 								 :placeholder="'/index.html '+ $t('[Optional]')"
 								 expanded></b-input>
@@ -79,22 +71,22 @@
 						   :showHostPost='showHostPort(service)'></ports>
 
 					<volumes-input-group
-					v-model="service.volumes" :label="$t('Volumes')"
-					:message="$t('No volumes now, click “+” to add one.')" type="volume">
+						v-model="service.volumes" :label="$t('Volumes')"
+						:message="$t('No volumes now, click “+” to add one.')" type="volume">
 					</volumes-input-group>
 					<env-input-group
-					v-model="service.environment" :label="$t('Environment Variables')"
-					:message="$t('No environment variables now, click “+” to add one.')">
+						v-model="service.environment" :label="$t('Environment Variables')"
+						:message="$t('No environment variables now, click “+” to add one.')">
 
 					</env-input-group>
 					<input-group
-					v-model="service.devices" :label="$t('Devices')"
-					:message="$t('No devices now, click “+” to add one.')"
-					type="device">
+						v-model="service.devices" :label="$t('Devices')"
+						:message="$t('No devices now, click “+” to add one.')"
+						type="device">
 					</input-group>
 					<commands-input
-					v-model="service.command" :label="$t('Container Command')"
-					:message="$t('No commands now, click “+” to add one.')">
+						v-model="service.command" :label="$t('Container Command')"
+						:message="$t('No commands now, click “+” to add one.')">
 					</commands-input>
 
 					<b-field :label="$t('Privileged')">
@@ -150,10 +142,6 @@
 									 value=""></b-input>
 						</b-field>
 					</ValidationProvider>
-
-					<!--						<b-field :label="$t('App Description')">-->
-					<!--							<b-input v-model="service['x-casaos'].description.en_US"></b-input>-->
-					<!--						</b-field>-->
 
 				</ValidationObserver>
 			</b-tab-item>
@@ -322,29 +310,10 @@ export default {
 					},
 				},
 			},
-			// main_app: ajc.compile(main_app_schema)(this.configData['x-casaos']),
-			// main_app: {
-			// 	// ...this.configData['x-casaos'],
-			// 	container: {
-			// 		hostname: '',
-			// 		scheme: 'https',
-			// 		index: '',
-			// 		port_map: '',
-			// 		// name: '',
-			// 		container_name: '',
-			// 		appstore_id: '',
-			// 	},
-			// 	icon: '',
-			// },
-			// xCasaOS: {},
 		}
 	},
 	props: {
 		state: String,
-		// isCasa: {
-		// 	type: Boolean,
-		// 	required: true,
-		// },
 		totalMemory: {
 			type: Number,
 			required: true,
@@ -363,12 +332,6 @@ export default {
 		},
 	},
 	watch: {
-		// main_app: {
-		// 	handler(val) {
-		// 		this.configData["main_app"]
-		// 	},
-		// 	deep: true
-		// },
 		// Watch if Icon url has changed
 		"configData.icon": function (val) {
 			this.updateIconUrl(val)
@@ -401,9 +364,6 @@ export default {
 		},
 	},
 	computed: {
-		// tab_index() {
-		// 	return this.configData.services
-		// },
 		main_name() {
 			// 逐渐固定 x-casaos 数据格式。
 			let name = this.configData["x-casaos"] && this.configData['x-casaos']['main'] || Object.keys(this.configData.services)[0]
@@ -413,54 +373,6 @@ export default {
 			this.$emit('updateMainName', name)
 			return name;
 		},
-		// main_name_value() {
-		// 	return this[main_name];
-		// },
-		// main_app: {
-		// 	get() {
-		// 		if (this.configData['x-casaos']) {
-		// 			ajc.compile(main_app_schema)(this.configData['x-casaos'])
-		// 			return this.configData['x-casaos'];
-		// 		}
-		// 		return {}
-		// 	},
-		// 	set(val) {
-		// 		this.configData['x-casaos'] = val
-		// 	}
-		// },
-		// icon: {
-		// 	get() {
-		// 		return this.configData.services[this.main_app]['x-casaos']['icon'];
-		// 	},
-		// 	set(val) {
-		// 		this.configData.services[this.main_app]['x-casaos']['icon'] = val
-		// 	}
-		// },
-		// showPorts() {
-		// 	if (this.configData.network_mode.toLowerCase().indexOf("macvlan") > -1 || this.configData.network_mode.indexOf("hostname") > -1) {
-		// 		return false
-		// 	} else {
-		// 		return true
-		// 	}
-		// },
-		// showHostPort() {
-		// 	if (this.configData.network_mode.indexOf("hostname") > -1) {
-		// 		return false
-		// 	} else {
-		// 		return true
-		// 	}
-		// },
-		// bridgePorts() {
-		// 	return this.configData.ports.filter(function (item) {
-		// 		return item.hostname != ""
-		// 	})
-		// },
-		// filteredBeidgePort() {
-		// 	return this.bridgePorts.filter(port => {
-		// 		return port.hostname.indexOf(this.configData.port_map) >= 0
-		// 	})
-		//
-		// },
 	},
 	created() {
 		// Set Front-end base url
@@ -488,17 +400,17 @@ export default {
 			}
 			this.isFetching = true
 			axios.get(`https://hub.docker.com/api/content/v1/products/search?source=community&q=${name}&page=1&page_size=4`)
-			.then(({data}) => {
-				this.data = []
-				data.summaries.forEach((item) => this.data.push(item.name))
-			})
-			.catch((error) => {
-				this.data = []
-				throw error
-			})
-			.finally(() => {
-				this.isFetching = false
-			})
+				.then(({data}) => {
+					this.data = []
+					data.summaries.forEach((item) => this.data.push(item.name))
+				})
+				.catch((error) => {
+					this.data = []
+					throw error
+				})
+				.finally(() => {
+					this.isFetching = false
+				})
 		}, 500),
 
 		/**
@@ -541,8 +453,8 @@ export default {
 		getFilteredTags(text) {
 			return data.filter((option) => {
 				return option
-				.toString()
-				.indexOf(text.toUpperCase()) >= 0
+					.toString()
+					.indexOf(text.toUpperCase()) >= 0
 			})
 		},
 
@@ -582,9 +494,9 @@ export default {
 				console.log('检测传入的 yarml 文件的 services', yaml.services);
 				console.log('检测传入的 yarml 文件的 main_app name', yaml['x-casaos']['main']);
 
-				// if (yaml.version === undefined) {
-				// 	return false
-				// }
+				if (yaml.version === undefined) {
+					return false
+				}
 
 				// 其他配置
 				this.volumes = yaml.volumes || {}
@@ -729,7 +641,7 @@ export default {
 					// 1\ replace variable in string for example: ${VOLUME_PATH}:/data
 					// this.volumes 可能为空。
 					Object.keys(
-					(this.volumes || {})
+						(this.volumes || {})
 					).map((key) => {
 						item = item.replace(key, this.volumes[key]);
 					})
@@ -751,7 +663,7 @@ export default {
 				} else if (item) {
 					// 1\ replace value in object for example: {type: 'bind', source: '${VOLUME_PATH}', target: '/data'}
 					Object.keys(
-					(this.volumes || {})
+						(this.volumes || {})
 					).map((key) => {
 						item.source = item.source && item.source.replace(key, (this.volumes[key] || ""));
 						item.target = item.target && item.target.replace(key, (this.volumes[key] || ""));
@@ -1009,7 +921,6 @@ export default {
 			this.$emit('updateDockerComposeCommands', YAML.stringify(ConfigData));
 		},
 
-		//
 		showPorts(service) {
 			if (!service.network_mode) {
 				return false
