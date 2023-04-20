@@ -25,14 +25,14 @@
 		<!-- Modal-Card Body Start -->
 		<section class="modal-card-body">
 			<VMdEditor
-			v-model="tips" :mode="controlEditorState" :placeholder="$t('Something to remember eg. password')"
-			left-toolbar right-toolbar>
+				v-model="tips" :mode="controlEditorState" :placeholder="$t('Something to remember eg. password')"
+				left-toolbar right-toolbar>
 			</VMdEditor>
 			<div class="is-flex is-flex-direction-row-reverse mt-2">
 				<b-icon
-				:class="{'has-text-grey-800': !isEditing, 'has-text-green-default': isDifferentiation, 'has-text-grey-400': !isDifferentiation && isEditing}"
-				:icon="icon" pack="casa"
-				@click.native="toggle"></b-icon>
+					:class="{'has-text-grey-800': !isEditing, 'has-text-green-default': isDifferentiation, 'has-text-grey-400': !isDifferentiation && isEditing}"
+					:icon="icon" pack="casa"
+					@click.native="toggle"></b-icon>
 			</div>
 		</section>
 		<!-- Modal-Card Body End -->
@@ -47,7 +47,7 @@ import '@kangc/v-md-editor/lib/style/base-editor.css';
 import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
 import '@kangc/v-md-editor/lib/theme/style/github.css';
 import hljs        from 'highlight.js';
-import commonI18n  from "@/mixins/base/common-i18n";
+import {ice_i18n}  from "@/mixins/base/common-i18n";
 
 VMdEditor.use(githubTheme, {
 	Hljs: hljs,
@@ -59,7 +59,6 @@ export default {
 	components: {
 		VMdEditor
 	},
-	mixins: [commonI18n],
 	data() {
 		return {
 			isEditing: false,
@@ -119,7 +118,7 @@ export default {
 
 				let getValueByPath = this.composeData['x-casaos']
 				if (getValueByPath && getValueByPath['tips'] && getValueByPath['tips']['custom'] || getValueByPath['tips']['before_install']) {
-					this.tips = getValueByPath['tips']['custom'] || i18n(getValueByPath['tips']['before_install'])
+					this.tips = getValueByPath['tips']['custom'] || ice_i18n(getValueByPath['tips']['before_install'])
 				} else {
 					this.tips = '';
 				}
