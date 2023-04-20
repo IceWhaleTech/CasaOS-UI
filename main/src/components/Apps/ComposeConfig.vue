@@ -288,25 +288,25 @@ export default {
 					"author": "",
 					"category": "Developer",
 					"description": {
-						"en_US": ""
+						"en_us": ""
 					},
 					"developer": "",
 					"icon": "",
 					"screenshot_link": [],
 					"tagline": {
-						"en_US": ""
+						"en_us": ""
 					},
 					"thumbnail": "",
 					"tips": {
 						"before_install": [
 							{
 								"content": null,
-								"en_US": ""
+								"en_us": ""
 							}
 						]
 					},
 					"title": {
-						"en_US": ""
+						"en_us": ""
 					},
 				},
 			},

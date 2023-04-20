@@ -127,7 +127,7 @@ export default {
 			hostname: "",
 			name: "",
 			title: {
-				en_US: "",
+				en_us: "",
 			},
 			icon: "",
 			isLoading: false,
