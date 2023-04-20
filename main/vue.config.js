@@ -11,7 +11,6 @@
 
 const webpack = require('webpack')
 const path = require("path")
-const publicPath = path.join(__dirname, '../packages')
 
 module.exports = {
 	publicPath: '/',
@@ -25,8 +24,6 @@ module.exports = {
 		}
 	},
 	chainWebpack: config => {
-		// config.entry('app').clear().add('./src/main.js')
-		// config.module.rule('ts').test(/\.tsx?$/).use('ts-loader').loader('ts-loader').end().use('cache-loader').loader('cache-loader').end().use('babel-loader').loader('babel-loader').end()
 		const oneOfsMap = config.module.rule("scss").oneOfs.store;
 		oneOfsMap.forEach(item => {
 			item
