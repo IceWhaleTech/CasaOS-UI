@@ -16,10 +16,10 @@
 					<b-image :src="require('@/assets/img/logo/casa-dark.svg')" class="is-128x128 mb-4"></b-image>
 				</div>
 
-				<h2 v-animate-css="s2Ani" class="title is-2 mb-5 has-text-centered __color">{{
+				<h2 v-animate-css="s2Ani" class="title is-2 mb-5 has-text-centered __attached_title">{{
 						$t('Welcome to CasaOS')
 					}}</h2>
-				<h2 v-animate-css="s3Ani" class="subtitle  has-text-centered __color __op60">{{
+				<h2 v-animate-css="s3Ani" class="subtitle  has-text-centered __attached_sub_title">{{
 						$t(`Let's create your initial account`)
 					}}</h2>
 				<b-button v-animate-css="s4Ani" class="mt-2" rounded type="is-primary" @click="goToStep(2)">{{
@@ -302,8 +302,13 @@ export default {
 
 
 // Temporary
-.__color {
-	color: #0E3157;
+.__attached_title {
+	// former color.Not in existing architecture.
+	color: hsl(211, 72, 20, 100%);;
+}
+
+.__attached_sub_title {
+	color: hsl(211, 72, 20, 60%);
 }
 
 .__op60 {
