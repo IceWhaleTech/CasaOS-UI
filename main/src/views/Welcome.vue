@@ -304,11 +304,11 @@ export default {
 // Temporary
 .__attached_title {
 	// former color.Not in existing architecture.
-	color: hsl(211, 72, 20, 100%);;
+	color: hsl(211, 72%, 20%, 100%);;
 }
 
 .__attached_sub_title {
-	color: hsl(211, 72, 20, 60%);
+	color: hsl(211, 72%, 20%, 60%);
 }
 
 .__op60 {
