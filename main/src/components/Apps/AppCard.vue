@@ -105,7 +105,8 @@
 		<div class="blur-background"></div>
 		<div class="cards-content">
 			<!-- Card Content Start -->
-			<b-tooltip :always="isActiveTooltip" :animated="true" :label="tooltipLabel" :triggers="tooltipTriger"
+			<b-tooltip :always="isActiveTooltip" :animated="true" :label="tooltipLabel"
+					   :triggers="tooltipTriger"
 					   animation="fade1" class="in-card" type="is-white">
 
 				<div
@@ -198,13 +199,18 @@ export default {
 						return this.$t('Uninstalling')
 					} else if (this.isCloning) {
 						return this.$t('Cloning')
-					} else if (this.isCheckThenUpdate || this.isActiveTooltip) { // this.isCheckThenUpdate !!!
+					} else if (this.isRestarting) {
+						return this.$t('Restarting')
+					} else if (this.isStarting) {
+						return this.$t('updateState')
+					} else if (this.isCheckThenUpdate) { // this.isCheckThenUpdate !!!
 						return this.$t('CheckThenUpdate')
-					} else if (this.item.state === 'running') {
+					} else if (this.item.status === 'running') {
 						return this.$t('Open')
+					} else {
+						return ''
 					}
 				}
-				return ""
 			}
 		},
 		tooltipTriger() {
@@ -214,7 +220,7 @@ export default {
 				if (this.item.app_type === "system") {
 					return ['hover']
 				} else {
-					switch (this.item.state) {
+					switch (this.item.status) {
 						case 'running':
 							return ['hover']
 						default:
@@ -224,7 +230,7 @@ export default {
 			}
 		},
 		isLoading() {
-			let active = this.isUninstalling || this.isUpdating // || this.isRestarting || this.isStarting || this.isStoping || this.isSaving
+			let active = this.isUninstalling || this.isUpdating || this.isRestarting || this.isStarting // || this.isStoping || this.isSaving
 			return active
 		},
 		isV1App() {
@@ -248,16 +254,15 @@ export default {
 				this.$refs.dro.toggle();
 		},
 		isLoading(active) {
-			console.log('isLoading', active)
 			// design :: The first display is three seconds long
-			if ((active === true || this.isCheckThenUpdate) && this.activeTimer === undefined) {
+			if (this.isCheckThenUpdate && this.activeTimer === undefined) {
 				this.activeTimer = setTimeout(() => {
 					this.isActiveTooltip = false;
 					clearTimeout(this.activeTimer);
 					this.activeTimer = undefined;
 				}, 3000)
 				this.isActiveTooltip = true;
-			} else if (active === false && this.isCheckThenUpdate === false) {
+			} else if (active === false && this.isCheckThenUpdate === false && this.activeTimer) {
 				clearInterval(this.activeTimer);
 				this.activeTimer = undefined;
 				this.isActiveTooltip = false;
@@ -268,7 +273,7 @@ export default {
 	methods: {
 		/**
 		 * @description: Open app in new windows
-		 * @param {String} state App state
+		 * @param {String} status App status
 		 * @param {String} port App access port
 		 * @param {String} index App access index
 		 * @return {*} void
@@ -326,6 +331,7 @@ export default {
 			} else if (this.isV1App) {
 				this.restartAppV1();
 			}
+			this.$refs.dro.isActive = false;
 		},
 
 		restartAppV1() {
@@ -355,8 +361,6 @@ export default {
 					position: 'is-top',
 					duration: 5000
 				})
-			}).finally(() => {
-				this.isRestarting = false;
 			})
 		},
 
@@ -445,7 +449,6 @@ export default {
 						'accept': 'application/yaml'
 					}
 				}).then(res => res.data)
-				console.log('openTips -- show composeApp setting', ret)
 				this.$refs.dro.isActive = false
 				this.$buefy.modal.open({
 					parent: this,
@@ -486,19 +489,18 @@ export default {
 			this.$messageBus('apps_stop', item.name);
 			this.isStarting = true;
 			const status = item.status === "running" ? "stop" : "start"
-
 			if (this.isV2App) {
 				this.toggleAppV2(item, status);
 			} else if (this.isV1App) {
 				this.toggleAppV1(item, status);
 			}
-
+			this.$refs.dro.isActive = false
 		},
 
-		toggleAppV1(item, state) {
-			this.$api.container.updateState(item.name, state).then((res) => {
+		toggleAppV1(item, status) {
+			this.$api.container.updateState(item.name, status).then((res) => {
 				if (res.data.success === 200) {
-					item.state = res.data.data
+					item.status = res.data.data
 					this.updateState()
 				} else {
 					this.$buefy.dialog.alert({
@@ -518,7 +520,6 @@ export default {
 				})
 			}).finally(() => {
 				this.isStarting = false
-				this.$refs.dro.isActive = false
 			})
 		},
 
@@ -534,9 +535,6 @@ export default {
 					ariaRole: 'alertdialog',
 					ariaModal: true
 				})
-			}).finally(() => {
-				this.$refs.dro.isActive = false
-				this.isStarting = false
 			})
 		},
 
@@ -615,21 +613,21 @@ export default {
 		},
 		/**
 		 * @description: Format Dot Class
-		 * @param {String} state
+		 * @param {String} status
 		 * @return {String}
 		 */
-		dotClass(state, loadState) {
+		dotClass(status, loadState) {
 			// For updating
 			if (loadState) {
-				if (state === "0" || state === "running") {
+				if (status === "0" || status === "running") {
 					return 'disabled start'
 				}
 				return 'disabled stop'
 			}
-			if (state === "0") {
+			if (status === "0") {
 				return "start"
 			} else {
-				return state === 'running' ? 'start' : 'stop'
+				return status === 'running' ? 'start' : 'stop'
 			}
 
 		},
@@ -637,19 +635,71 @@ export default {
 	},
 
 	sockets: {
+		"app:start-begin"(res) {
+			if (res.Properties["app:name"] === this.item.name) {
+			}
+		},
+		"app:start-error"(res) {
+			// toast info.
+			this.$buefy.toast.open({
+				message: res.Properties["message"],
+				duration: 5000,
+				type: "is-danger",
+			})
+		},
+		"app:start-end"(res) {
+			if (res.Properties["app:name"] === this.item.name) {
+				this.isRestarting = false
+				this.isStarting = false
+			}
+		},
+		"app:stop-error"(res) {
+			// toast info.
+			this.$buefy.toast.open({
+				message: res.Properties["message"],
+				duration: 5000,
+				type: "is-danger",
+			})
+		},
+		"app:stop-end"(res) {
+			if (res.Properties["app:name"] === this.item.name) {
+				this.isRestarting = false
+				this.isStarting = false
+			}
+		},
+		"app:apply-changes-start"(res) {
+			if (res.Properties["app:name"] === this.item.name) {
+				this.isRestarting = false
+				this.isStarting = false
+			}
+		},
+		"app:apply-changes-error"(res) {
+			// toast info.
+			this.$buefy.toast.open({
+				message: res.Properties["message"],
+				duration: 5000,
+				type: "is-danger",
+			})
+		},
+		"app:apply-changes-end"(res) {
+			if (res.Properties["app:name"] === this.item.name) {
+				this.isRestarting = false
+				this.isStarting = false
+			}
+		},
 		/**
 		 * @description: Update App Status
 		 * @param {Object} data
 		 * @return {void}
 		 */
 		'app:update-begin'() {
-			// if (data.Properties.cid === this.item.id) {
+			// if (data.Properties["app:name"] === this.item.id) {
 			// 	this.loadState = true;
 			// }
 		},
 
 		'docker:image:pull-end'(data) {
-			if (data.Properties.cid === this.item.name) {
+			if (data.Properties["app:name"] === this.item.name) {
 				if (data.Properties['docker:image:updated'] === 'true') {
 					this.isUpdating = true;
 				}
@@ -658,7 +708,7 @@ export default {
 		},
 
 		'docker:image:pull-error'(data) {
-			if (data.Properties.cid === this.item.name) {
+			if (data.Properties["app:name"] === this.item.name) {
 				this.isCheckThenUpdate = false;
 			}
 		},
@@ -669,7 +719,7 @@ export default {
 		 * @return {void}
 		 */
 		'app:update-end'(data) {
-			if (data.Properties.cid !== this.item.name)
+			if (data.Properties["app:name"] !== this.item.name)
 				return
 			if (data.Properties['docker:image:updated'] === 'true') {
 				return

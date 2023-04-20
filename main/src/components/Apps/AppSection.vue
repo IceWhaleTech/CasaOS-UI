@@ -215,14 +215,11 @@ export default {
 				})
 				// all app list
 				let casaAppList = concat(builtInApplications, orgAppList, listLinkApp)
-				// console.log("*******casaAppList", casaAppList)
 				// get app sort info.
 				let lateSortList = await this.$api.users.getCustomStorage(orderConfig).then(res => res.data.data.data);
-				// console.log(lateSortList)
 				let newestSortList = casaAppList.map((item) => {
 					return item.name
 				})
-				// console.log("SortList", lateSortList)
 				if (lateSortList != "") {
 					// Resort list
 					const sortList = this.getNewSortList(lateSortList, newestSortList)
@@ -230,7 +227,6 @@ export default {
 						return sortList.indexOf(a.name) - sortList.indexOf(b.name);
 					});
 				}
-				// console.log("casaAppList", casaAppList)
 				this.appList = casaAppList;
 				// save sort info AFTER sort!
 				if (xor(lateSortList, newestSortList).length > 0) {
@@ -460,6 +456,15 @@ export default {
 			let name = last(this.newAppIds);
 			let showEl = document.getElementById("app-" + name)
 			showEl && showEl.scrollIntoView({behavior: "smooth", block: 'end'});
+		},
+
+		messageBusToast(message, type) {
+			let duration = 5000
+			this.$buefy.toast.open({
+				message: message,
+				duration,
+				type,
+			})
 		}
 	},
 	sockets: {
@@ -475,6 +480,14 @@ export default {
 			// res.Properties['app:name']
 			// res.Properties['id']
 			this.getList();
+		},
+		"app:apply-changes-error"(res) {
+			// toast info
+			this.messageBusToast(res.Properties.message, 'is-danger');
+		},
+		"app:apply-changes-end"(res) {
+			// toast info
+			this.messageBusToast(res.Properties['app:name'] + 'is OK', 'is-success');
 		},
 		/**
 		 * @description: Update App Version

@@ -463,14 +463,44 @@ export default {
 
 	},
 	sockets: {
+		"app:apply-changes-error"(res) {
+			this.$buefy.toast.open({
+				message: res.Properties.message,
+				duration: 5000,
+				type: "is-danger"
+			})
+			this.transformAppInstallationProgress({
+				finished: true,
+				// First name. Second app:name.The name from CheckThenUpdate.The app:name from install.
+				name: res.Properties["app:name"],
+				// id: res.Properties["docker:container:id"],
+				id: res.Properties["app:name"],
+				success: false,
+				message: res.Properties["message"],
+				icon: res.Properties["app:icon"]
+			});
+		},
 		"app:install-end"(res) {
 			this.transformAppInstallationProgress({
 				finished: true,
 				// First name. Second app:name.The name from CheckThenUpdate.The app:name from install.
-				name: res.Properties["name"] || res.Properties["app:name"],
-				id: res.Properties["docker:container:id"],
+				name: res.Properties["app:name"],
+				// id: res.Properties["docker:container:id"],
+				id: res.Properties["app:name"],
 				icon: res.Properties["app:icon"],
 				isNewTag: true
+			});
+		},
+		"app:install-error"(res) {
+			this.transformAppInstallationProgress({
+				finished: true,
+				// First name. Second app:name.The name from CheckThenUpdate.The app:name from install.
+				name: res.Properties["app:name"],
+				// id: res.Properties["docker:container:id"],
+				id: res.Properties["app:name"],
+				success: false,
+				message: res.Properties["message"],
+				icon: res.Properties["app:icon"]
 			});
 		},
 		"app:update-begin"(res) {
@@ -490,23 +520,13 @@ export default {
 				isNewTag: res.Properties["docker:image:updated"] === "true"
 			});
 		},
-		"app:install-error"(res) {
-			this.transformAppInstallationProgress({
-				finished: true,
-				// First name. Second app:name.The name from CheckThenUpdate.The app:name from install.
-				name: res.Properties["name"] || res.Properties["app:name"],
-				id: res.Properties["docker:container:id"],
-				success: false,
-				message: res.Properties["message"],
-				icon: res.Properties["app:icon"]
-			});
-		},
 		"docker:image:pull-progress"(res) {
 			this.transformAppInstallationProgress({
 				finished: false,
 				// First name. Second app:name.The name from CheckThenUpdate.The app:name from install.
-				name: res.Properties["name"] || res.Properties["app:name"],
-				id: res.Properties["docker:container:id"],
+				name: res.Properties["app:name"],
+				// id: res.Properties["docker:container:id"],
+				id: res.Properties["app:name"],
 				success: true,
 				type: "pull",
 				message: res.Properties["message"],

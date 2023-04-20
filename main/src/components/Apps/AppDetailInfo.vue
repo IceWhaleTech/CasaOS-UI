@@ -44,7 +44,7 @@
 							<b-button v-else :disabled="unusable"
 									  :loading="appDetailData.id == currentInstallId"
 									  rounded size="is-normal" type="is-primary"
-									  @click="qucikInstall(appDetailData.id);$messageBus('appstore_install', i18n(appDetailData.title) )">
+									  @click="$emit('install', appDetailData.id, appDetailData);$messageBus('appstore_install', i18n(appDetailData.title) )">
 								{{ $t('Install') }}
 							</b-button>
 						</p>
@@ -93,15 +93,6 @@
 						<p class="footing is-size-14px">MB</p>
 					</div>
 				</div>
-				<!--								<div class="level-item has-text-centered">-->
-				<!--									<div>-->
-				<!--										<p class="heading"><span class="is-hidden-mobile">{{-->
-				<!--												$t('REQUIRE')-->
-				<!--											}} </span>{{ $t('DISK') }}</p>-->
-				<!--										<p class="title has-text-weight-normal">{{ appDetailData.min_disk }}</p>-->
-				<!--										<p class="footing is-size-14px">MB</p>-->
-				<!--									</div>-->
-				<!--								</div>-->
 			</nav>
 			<!-- App Info Table End -->
 
@@ -143,6 +134,7 @@
 import {Swiper, SwiperSlide} from 'vue-awesome-swiper'
 import business_OpenThirdApp from "@/mixins/app/Business_OpenThirdApp";
 import commonI18n            from "@/mixins/base/common-i18n";
+import app                   from "../../App.vue";
 
 export default {
 	name: "AppDetailInfo.vue",
@@ -183,6 +175,9 @@ export default {
 		}
 	},
 	computed: {
+		app() {
+			return app
+		},
 		archTitle() {
 			// 如果是 arm 默认显示 armv7
 			if (this.arch === 'arm') {

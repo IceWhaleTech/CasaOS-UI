@@ -48,7 +48,8 @@
 					<AppDetailInfo :appDetailData="appDetailData" :arch="arch"
 								   :cateMenu="cateMenu" :close="close"
 								   :currentInstallId="currentInstallId"
-								   :installedList="installedList" :showDetailSwiper="showDetailSwiper">
+								   :installedList="installedList" :showDetailSwiper="showDetailSwiper"
+								   @install="qucikInstall">
 					</AppDetailInfo>
 				</template>
 			</app-side-bar>
@@ -998,6 +999,7 @@ export default {
 		 * @return {*} void
 		 */
 		qucikInstall(id) {
+			this.sidebarOpen = false;
 			this.currentInstallId = id
 			this.$openAPI.appManagement.appStore.composeApp(id, {
 				headers: {
@@ -1032,7 +1034,6 @@ export default {
 					})
 				}
 			}).catch((e) => {
-				// console.log(e.response.data)
 				this.$buefy.toast.open({
 					message: e.response.data.message,
 					type: 'is-danger'
@@ -1098,7 +1099,7 @@ export default {
 		installApp() {
 			this.$refs.compose.checkStep().then((valid) => {
 				if (valid) {
-					console.log("docker-compose-command", this.dockerComposeCommands.length)
+					console.log("install :: docker-compose-command", this.dockerComposeCommands.length)
 					this.isLoading = true;
 					this.$openAPI.appManagement.compose.installComposeApp(this.dockerComposeCommands).then((res) => {
 						if (res.status === 200) {
@@ -1419,7 +1420,6 @@ export default {
 		},
 
 		updateDockerComposeCommands(val) {
-			console.log('updateConfig', val.length);
 			this.dockerComposeCommands = val
 		},
 	},
