@@ -448,6 +448,10 @@ export default {
 				}
 				return
 			}
+			// When the end occurs more than once, it will be skipped.
+			if (res.finished) {
+				return;
+			}
 			// add new app_install notice
 			const data = {
 				title: 'Installing app',
@@ -463,6 +467,23 @@ export default {
 
 	},
 	sockets: {
+		"app:apply-changes-end"(res) {
+			this.$buefy.toast.open({
+				message: "The setting of " + res.Properties["app:name"] + " is complete",
+				duration: 5000,
+				type: "is-danger"
+			})
+			this.transformAppInstallationProgress({
+				finished: true,
+				// First name. Second app:name.The name from CheckThenUpdate.The app:name from install.
+				name: res.Properties["app:name"],
+				// id: res.Properties["docker:container:id"],
+				id: res.Properties["app:name"],
+				success: false,
+				message: res.Properties["message"],
+				icon: res.Properties["app:icon"]
+			});
+		},
 		"app:apply-changes-error"(res) {
 			this.$buefy.toast.open({
 				message: res.Properties.message,
@@ -481,6 +502,7 @@ export default {
 			});
 		},
 		"app:install-end"(res) {
+			console.log('xxxxxxxxxx', res);
 			this.transformAppInstallationProgress({
 				finished: true,
 				// First name. Second app:name.The name from CheckThenUpdate.The app:name from install.
