@@ -19,6 +19,7 @@ export default {
 				const scheme = appInfo.scheme || 'http'
 				const port = appInfo.port ? `:${appInfo.port}` : ''
 				const url = `${scheme}://${hostIp}${port}${appInfo.index}`
+				// TODO remove the deprecate code.
 				// let href = window.location.href.split("#")[0]
 				// if (url === href) {
 				//     this.$buefy.toast.open({

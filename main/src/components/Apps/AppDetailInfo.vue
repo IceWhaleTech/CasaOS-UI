@@ -217,7 +217,7 @@ export default {
 	},
 	methods: {
 		// migrate START ======
-
+		// TODO remove the deprecate code.
 		/**
 		 * @description:
 		 * @param {*} swiper
