@@ -488,6 +488,13 @@ export default {
 		"app:apply-changes-end"(res) {
 			// toast info
 			this.messageBusToast(res.Properties['app:name'] + 'is OK', 'is-success');
+
+			// business :: Tagging of new app / scrollIntoView
+			this.addIdToSessionStorage(res.Properties['app:name'])
+
+			this.getList().then(() => {
+				this.scrollToNewApp();
+			});
 		},
 		/**
 		 * @description: Update App Version
@@ -497,7 +504,7 @@ export default {
 		'app:update-end'(data) {
 			if (data.Properties['docker:image:updated'] === "true") {
 				// business :: Tagging of new app / scrollIntoView
-				this.addIdToSessionStorage(data.Properties['cid'])
+				this.addIdToSessionStorage(data.Properties['app:name'])
 
 				this.$buefy.toast.open({
 					message: this.$t(`{name} has been updated to the latest version!`, {

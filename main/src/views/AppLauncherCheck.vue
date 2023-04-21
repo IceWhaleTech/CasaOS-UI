@@ -68,7 +68,7 @@ export default {
 		// Get container running state
 		async getContainerState() {
 			try {
-				let res = await this.$api.container.getState(this.appDetailData.id)
+				let res = await this.$api.container.getState(this.appDetailData.name)
 				return res.data.data
 			} catch (error) {
 				return {
@@ -79,7 +79,7 @@ export default {
 		// Start container
 		async startContainer() {
 			try {
-				let res = await this.$api.container.updateState(this.appDetailData.id, "start")
+				let res = await this.$api.container.updateState(this.appDetailData.name, "start")
 				return res.data.data
 			} catch (error) {
 				return "error"
@@ -88,7 +88,7 @@ export default {
 		// Check container health
 		async healthCheck() {
 			try {
-				let res = await this.$api.container.containerLauncherCheck(this.appDetailData.id)
+				let res = await this.$api.container.containerLauncherCheck(this.appDetailData.name)
 				return res.status === 200
 			} catch (error) {
 				return false

@@ -58,13 +58,13 @@ export default {
 				let allinfo = await this.$openAPI.appManagement.compose.myComposeApp(appInfo.id).then(res => {
 					return res.data.data
 				})
-				let containerInfoV2 = allinfo.store_info.apps[appInfo.id].container
+				let containerInfoV2 = allinfo.store_info.apps[appInfo.id]
 				console.log(containerInfoV2, 'containerInfoV2');
 				let app = {
 					"id": appInfo.id,
 					"name": appInfo.id,
 					scheme: containerInfoV2.scheme,
-					hostname: containerInfoV2.hostname,
+					hostname: containerInfoV2.hostname || this.$baseIp,
 					port: containerInfoV2.port_map,
 					index: containerInfoV2.index,
 					image: allinfo.compose.services[appInfo.id].image,
@@ -76,7 +76,7 @@ export default {
 
 		},
 		firstOpenThirdApp(appInfo) {
-			this.removeIdFromSessionStorage(appInfo.id);
+			this.removeIdFromSessionStorage(appInfo.name);
 			let routeUrl = this.$router.resolve({
 				name: 'AppLauncherCheck',
 				path: '/launch',

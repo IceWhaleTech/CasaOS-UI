@@ -411,7 +411,7 @@ export default {
 					this.$EventBus.$emit(events.RELOAD_APP_LIST);
 					if (res.isNewTag) {
 						// business :: Tagging of new app / scrollIntoView
-						this.addIdToSessionStorage(res.id)
+						this.addIdToSessionStorage(res.name)
 					}
 				} else if (res.message !== "") {
 					const messageArray = res.message.split(/[(\r\n)\r\n]+/);

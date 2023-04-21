@@ -1408,9 +1408,8 @@ export default {
 				}
 			} else {
 				localStorage.removeItem("app_data")
-
 				// business :: Tagging of new app / scrollIntoView
-				this.addIdToSessionStorage(resData.id)
+				this.addIdToSessionStorage(resData.name)
 
 				setTimeout(() => {
 					this.$emit('updateState')
