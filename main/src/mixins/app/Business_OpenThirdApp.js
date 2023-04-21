@@ -7,12 +7,10 @@
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
  */
 
-import container from "@/service/container";
-
 export default {
 	methods: {
 		openAppToNewWindow(appInfo) {
-			this.hasNewTag(appInfo.id) ? this.firstOpenThirdApp(appInfo) : this.openThirdApp(appInfo, true);
+			this.hasNewTag(appInfo.name) ? this.firstOpenThirdApp(appInfo) : this.openThirdApp(appInfo, true);
 		},
 		openThirdApp(appInfo, isNewWindows) {
 			this.$messageBus('apps_open', appInfo.name);
