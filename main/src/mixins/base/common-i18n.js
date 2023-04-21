@@ -8,8 +8,8 @@
 
  */
 
-let lang = localStorage.getItem('lang')
 const i18n = function (data, fallback = 'en_us') {
+	let lang = localStorage.getItem('lang')
 	return data[lang] || data[fallback] || data['en_US']
 }
 

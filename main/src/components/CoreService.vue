@@ -502,7 +502,6 @@ export default {
 			});
 		},
 		"app:install-end"(res) {
-			console.log('xxxxxxxxxx', res);
 			this.transformAppInstallationProgress({
 				finished: true,
 				// First name. Second app:name.The name from CheckThenUpdate.The app:name from install.
