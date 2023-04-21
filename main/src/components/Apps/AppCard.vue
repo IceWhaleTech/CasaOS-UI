@@ -175,7 +175,8 @@ export default {
 			isRestarting: false,
 			isStarting: false,
 			// isStoping: false,
-			// isSaving: false,
+			// Public. Only changes the state of the card, not the state of the button.
+			isSaving: false,
 			isActiveTooltip: false,
 		}
 	},
@@ -230,7 +231,7 @@ export default {
 			}
 		},
 		isLoading() {
-			let active = this.isUninstalling || this.isUpdating || this.isRestarting || this.isStarting // || this.isStoping || this.isSaving
+			let active = this.isUninstalling || this.isUpdating || this.isRestarting || this.isStarting || this.isSaving // || this.isStoping || this.isSaving
 			return active
 		},
 		isV1App() {
@@ -474,6 +475,7 @@ export default {
 		 * @return {*} void
 		 */
 		configApp() {
+			this.isSaving = true
 			this.$messageBus('apps_setting', this.item.name);
 			this.$refs.dro.isActive = false;
 			this.$emit("configApp", this.item, this.isV2App);
@@ -593,9 +595,12 @@ export default {
 			this.isCheckThenUpdate = true;
 			const params = `${this.item.name}?name=${this.item.name}&pull=true&cid=${this.item.name}`
 			this.$openAPI.appManagement.compose.updateComposeApp(name).then(resp => {
+				// 200:
 				if (resp.status === 200) {
 					// messageBus :: apps_checkThenUpdate
 					this.$messageBus('apps_checkupdate', this.item.name.toString());
+					// TODO ??  need confirmation
+					this.isCheckThenUpdate = false;
 				} else {
 					this.$buefy.toast.open({
 						message: this.$t(`Unable to update at the moment!`),
@@ -669,8 +674,6 @@ export default {
 		},
 		"app:apply-changes-start"(res) {
 			if (res.Properties["app:name"] === this.item.name) {
-				this.isRestarting = false
-				this.isStarting = false
 			}
 		},
 		"app:apply-changes-error"(res) {
@@ -685,6 +688,7 @@ export default {
 			if (res.Properties["app:name"] === this.item.name) {
 				this.isRestarting = false
 				this.isStarting = false
+				this.isSaving = false
 			}
 		},
 		/**
