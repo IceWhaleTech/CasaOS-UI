@@ -475,7 +475,6 @@ export default {
 		 * @return {*} void
 		 */
 		configApp() {
-			this.isSaving = true
 			this.$messageBus('apps_setting', this.item.name);
 			this.$refs.dro.isActive = false;
 			this.$emit("configApp", this.item, this.isV2App);
@@ -672,8 +671,9 @@ export default {
 				this.isStarting = false
 			}
 		},
-		"app:apply-changes-start"(res) {
+		"app:apply-changes-begin"(res) {
 			if (res.Properties["app:name"] === this.item.name) {
+				this.isSaving = true
 			}
 		},
 		"app:apply-changes-error"(res) {
