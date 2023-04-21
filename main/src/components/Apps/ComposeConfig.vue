@@ -298,12 +298,9 @@ export default {
 					},
 					"thumbnail": "",
 					"tips": {
-						"before_install": [
-							{
-								"content": null,
-								"en_us": ""
-							}
-						]
+						"before_install": {
+							"en_us": ""
+						}
 					},
 					"title": {
 						"en_us": ""
