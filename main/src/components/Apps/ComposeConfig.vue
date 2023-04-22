@@ -489,7 +489,7 @@ export default {
 				const yaml = YAML.parse(val)
 				console.log('检测传入的 yaml 文件', yaml);
 				console.log('检测传入的 yaml 文件的 services', yaml.services);
-				console.log('检测传入的 yaml 文件的 main_app name', yaml['x-casaos']['main']);
+				console.log('检测传入的 yaml 文件的 main_app name', yaml['x-casaos']?.['main']);
 
 				// if (yaml.version === undefined) {
 				// 	return false

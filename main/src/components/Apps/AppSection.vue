@@ -329,7 +329,7 @@ export default {
 					configData: configData,
 					storeId: storeId,
 					// TODO transfer to yaml string.
-					settingData: mode !== 'custom' ? undefined : "",
+					settingData: mode !== 'custom' ? undefined : {},
 				}
 			})
 		},
