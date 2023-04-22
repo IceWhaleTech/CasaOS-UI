@@ -692,13 +692,8 @@ export default {
 	},
 
 	created() {
-		this.setVHCssVar = () => {
-			// We execute the same script as before
-			const vh = window.innerHeight * 0.01;
-			document.documentElement.style.setProperty('--vh', `${vh}px`);
-		};
-		window.addEventListener('resize', setVHCssVar);
-		this.setVHCssVar();
+		window.addEventListener('resize', this.setCSSVHVar);
+		this.setCSSVHVar();
 
 		//Get recommend
 		this.getStoreRecommend();
@@ -835,6 +830,11 @@ export default {
 		}
 	},
 	methods: {
+		setCSSVHVar() {
+			const vh = window.innerHeight * 0.01;
+			document.documentElement.style.setProperty('--vh', `${vh}px`);
+		},
+  
 		// this.cateMenu : {name: 'appstore', title: 'App Store', icon: 'mdi-apps', component: 'AppStore'}
 		// param : this.cateMenu.name
 		getCateIcon(name) {
@@ -1458,7 +1458,7 @@ export default {
 	},
 
 	destroyed() {
-		window.addEventListener('resize', this.setVHCssVar);
+		window.addEventListener('resize', this.setCSSVHVar);
 		clearInterval(this.timer)
 	},
 
@@ -1659,7 +1659,7 @@ export default {
 
 @media screen and (max-width: 768px) {
 	.modal-card {
-		max-height: 100vh !important;
+		max-height: calc(var(--vh, 1vh) * 100);
 		border-radius: 0;
 	}
 }
