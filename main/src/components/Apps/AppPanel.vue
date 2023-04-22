@@ -692,6 +692,14 @@ export default {
 	},
 
 	created() {
+		this.setVHCssVar = () => {
+			// We execute the same script as before
+			const vh = window.innerHeight * 0.01;
+			document.documentElement.style.setProperty('--vh', `${vh}px`);
+		};
+		window.addEventListener('resize', setVHCssVar);
+		this.setVHCssVar();
+
 		//Get recommend
 		this.getStoreRecommend();
 
@@ -1450,6 +1458,7 @@ export default {
 	},
 
 	destroyed() {
+		window.addEventListener('resize', this.setVHCssVar);
 		clearInterval(this.timer)
 	},
 
