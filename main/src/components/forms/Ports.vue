@@ -37,7 +37,7 @@
 						<validation-provider v-slot="{errors,valid}" rules="yaml_port" slim>
 							<b-field :label="$t('Container')" :type="{ 'is-danger': errors[0], 'is-success': valid }"
 									 expanded>
-								<b-input v-model="item.target" :placeholder="$t('Container')" expanded
+								<b-input v-model.number="item.target" :placeholder="$t('Container')" expanded
 								></b-input>
 							</b-field>
 						</validation-provider>
@@ -68,7 +68,7 @@
 						<validation-provider v-slot="{errors,valid}" rules="yaml_port" slim>
 							<b-field :type="{ 'is-danger': errors[0], 'is-success': valid }"
 									 expanded>
-								<b-input v-model="item.target" :placeholder="$t('Container')" expanded
+								<b-input v-model.number="item.target" :placeholder="$t('Container')" expanded
 								></b-input>
 							</b-field>
 						</validation-provider>
@@ -146,8 +146,8 @@ export default {
 		assignPortsItem(val, item) {
 			const reg = /((^(\d{1,3}\.){3}\d{1,3}):)?(\d{1,5}$)/;
 			const partList = val.match(reg);
-			item.host_ip = partList[2] || '';
-			item.published = partList[4];
+			item.host_ip = partList?.[2] || '';
+			item.published = partList?.[4] || val;
 		}
 	},
 }

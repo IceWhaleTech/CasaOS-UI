@@ -153,7 +153,7 @@
 import debounce from "lodash/debounce";
 import axios    from "axios";
 
-import Ajv                                      from "ajv";
+// import Ajv                                      from "ajv";
 import {ValidationObserver, ValidationProvider} from "vee-validate";
 import "@/plugins/vee-validate";
 import Ports                                    from '../forms/Ports.vue'
@@ -171,27 +171,27 @@ import {isNumber, isString}                     from "lodash/lang";
 import cloneDeep                                from "lodash/cloneDeep";
 import merge                                    from "lodash/merge";
 
-const main_app_schema = {
-	type: "object",
-	properties: {
-		"icon": {
-			type: "string",
-			default: "",
-		},
-		"container": {
-			"index": {
-				type: "string",
-				default: "",
-			},
-			"port_map": {
-				type: "string",
-				default: "",
-			},
-		}
-	}
-}
+// const main_app_schema = {
+// 	type: "object",
+// 	properties: {
+// 		"icon": {
+// 			type: "string",
+// 			default: "",
+// 		},
+// 		"container": {
+// 			"index": {
+// 				type: "string",
+// 				default: "",
+// 			},
+// 			"port_map": {
+// 				type: "string",
+// 				default: "",
+// 			},
+// 		}
+// 	}
+// }
 
-const ajv = new Ajv({allErrors: true, useDefaults: true});
+// const ajv = new Ajv({allErrors: true, useDefaults: true});
 let main_name_x = "333";
 // let xCasaOS;
 
@@ -362,11 +362,12 @@ export default {
 	},
 	computed: {
 		main_name() {
+			// TODO confirm 1.yaml.name 是否与 yaml.x-casaos.name 保持一致 2.yaml.services 中的服务需要与其中一个保持一致。
 			// 逐渐固定 x-casaos 数据格式。
-			let name = this.configData["x-casaos"] && this.configData['x-casaos']['main'] || Object.keys(this.configData.services)[0]
-			if (name === '') {
-				name = 'main_app'
-			}
+			// required top-leve-property name.
+			this.configData['x-casaos']['main'] = this.configData?.name
+			let name = this.configData['x-casaos']?.['main'] || this.configData.name || Object.keys(this.configData.services)[0] || "main_app"
+
 			this.$emit('updateMainName', name)
 			return name;
 		},
@@ -502,7 +503,7 @@ export default {
 				// yaml['x-casaos'] 数据类型是 object
 				// 确定： yaml ：： service[0 ] 此为最原始数据源
 				// update configData :: x-casaos[main_app] ~ 解析 yaml 的 main_app
-				this.configData['x-casaos']['main'] = yaml['x-casaos'] && yaml['x-casaos']['main'] || Object.keys(yaml.services)[0];
+				this.configData['x-casaos']['main'] = yaml['x-casaos']?.['main'] || Object.keys(yaml.services)[yaml.name];
 				console.log('检测 x-casaos :: main_app 是否正确', this.configData['x-casaos']['main']);
 				console.log('检测 main_name 是否正确', this.main_name);
 
@@ -614,9 +615,9 @@ export default {
 					const regex = /(^([\d\.]+):)?(\d+(-\d+)?)(:(\d+(-\d+)?))?(\/(.*)$)?/;
 					const match = item.match(regex);
 					const host_ip = match[2];
-					const target = match[3];
+					const target = Number(match[3]);
 					const published = match[6];
-					const protocol = match[9];
+					const protocol = match[9] || "tcp";
 
 					return {
 						host_ip,
