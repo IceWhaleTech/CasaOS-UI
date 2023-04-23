@@ -1098,8 +1098,7 @@ export default {
 		 */
 		installApp() {
 			this.$refs.compose.checkStep().then((valid) => {
-				if (valid) {
-					console.log("install :: docker-compose-command", this.dockerComposeCommands.length)
+				if (valid.every(v => v === true)) {
 					this.isLoading = true;
 					this.$openAPI.appManagement.compose.installComposeApp(this.dockerComposeCommands).then((res) => {
 						if (res.status === 200) {
@@ -1123,6 +1122,13 @@ export default {
 					}).finally(() => {
 						this.isLoading = false;
 					})
+				} else {
+					// toast info error.
+					this.$buefy.toast.open({
+						message: this.$t("Please confirm the input content."),
+						duration: 5000,
+						type: "is-danger"
+					})
 				}
 			})
 		},
@@ -1133,7 +1139,7 @@ export default {
 		 */
 		updateApp() {
 			this.$refs.compose.checkStep().then((valid) => {
-				if (valid) {
+				if (valid.every(v => v === true)) {
 
 					this.$openAPI.appManagement.compose.applyComposeAppSettings(this.id, this.dockerComposeCommands).then((res) => {
 						console.log('updateComposeAppSettings :: ', res);
@@ -1142,6 +1148,7 @@ export default {
 						} else {
 							this.$buefy.toast.open({
 								message: res.data.message,
+								duration: 10000,
 								type: 'is-warning'
 							})
 						}
@@ -1149,8 +1156,16 @@ export default {
 					}).catch((err) => {
 						this.$buefy.toast.open({
 							message: err.response.data.message,
+							duration: 5000,
 							type: 'is-warning'
 						})
+					})
+				} else {
+					// toast info error.
+					this.$buefy.toast.open({
+						message: this.$t("Please confirm the input content."),
+						duration: 5000,
+						type: "is-danger"
 					})
 				}
 			})
