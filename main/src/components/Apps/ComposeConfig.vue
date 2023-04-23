@@ -218,7 +218,7 @@ export default {
 			portSelected: null,
 
 			configData: {
-				name: 'default_name',
+				name: 'main_app',
 				services: {
 					"main_app": {
 						"image": "",
