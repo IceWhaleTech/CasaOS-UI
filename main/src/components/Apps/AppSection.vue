@@ -474,11 +474,8 @@ export default {
 			});
 		},
 		"app:install-error"() {
-			// res.Properties['message']
 		},
 		"app:uninstall-end"() {
-			// res.Properties['app:name']
-			// res.Properties['id']
 			this.getList();
 		},
 		"app:apply-changes-error"(res) {

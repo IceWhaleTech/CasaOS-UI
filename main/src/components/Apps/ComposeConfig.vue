@@ -150,10 +150,8 @@
 </template>
 
 <script>
-import debounce from "lodash/debounce";
-import axios    from "axios";
-
-// import Ajv                                      from "ajv";
+import debounce                                 from "lodash/debounce";
+import axios                                    from "axios";
 import {ValidationObserver, ValidationProvider} from "vee-validate";
 import "@/plugins/vee-validate";
 import Ports                                    from '../forms/Ports.vue'
@@ -170,30 +168,6 @@ import find                                     from "lodash/find";
 import {isNumber, isString}                     from "lodash/lang";
 import cloneDeep                                from "lodash/cloneDeep";
 import merge                                    from "lodash/merge";
-
-// const main_app_schema = {
-// 	type: "object",
-// 	properties: {
-// 		"icon": {
-// 			type: "string",
-// 			default: "",
-// 		},
-// 		"container": {
-// 			"index": {
-// 				type: "string",
-// 				default: "",
-// 			},
-// 			"port_map": {
-// 				type: "string",
-// 				default: "",
-// 			},
-// 		}
-// 	}
-// }
-
-// const ajv = new Ajv({allErrors: true, useDefaults: true});
-let main_name_x = "333";
-// let xCasaOS;
 
 const data = [
 	"AUDIT_CONTROL",
@@ -226,7 +200,6 @@ const data = [
 ]
 
 export default {
-	// xCasaOS: {},
 	name: "ComposeConfig.vue",
 	components: {
 		ValidationObserver,
@@ -325,7 +298,6 @@ export default {
 		},
 		dockerComposeCommands: {
 			type: String,
-			// required: true,
 		},
 	},
 	watch: {
@@ -375,9 +347,6 @@ export default {
 	created() {
 		// Set Front-end base url
 		this.baseUrl = `${document.domain}`;
-		// this.$set(this.configData.services, [this.main_name], this.configData.services['main_app'])
-		// this.$delete(this.configData.services, 'main_app')
-		// this.preProcessConfigData(this.configData);
 
 		if (this.dockerComposeCommands) {
 			this.parseComposeYaml(this.dockerComposeCommands.trim());
@@ -469,16 +438,10 @@ export default {
 		async checkStep() {
 			const promises = [];
 			for (const servicesKey in this.configData.services) {
-				// console.log('this', this);
-				// console.log('this.configData', this.configData);
-				// console.log('servicesKey', servicesKey);
-				// console.log('this.$refs[servicesKey]', this.$refs[servicesKey + 'valida']);
 
 				promises.push(this.$refs[servicesKey + 'valida'][0].validate());
 			}
 			return await Promise.all(promises);
-			// console.log('this.$refs.main_app', this.$refs.main_app);
-			// return await this.$refs.main_app.validate();
 		},
 
 		/**
@@ -492,10 +455,6 @@ export default {
 				console.log('检测传入的 yaml 文件的 services', yaml.services);
 				console.log('检测传入的 yaml 文件的 main_app name', yaml['x-casaos']?.['main']);
 
-				// if (yaml.version === undefined) {
-				// 	return false
-				// }
-
 				// 其他配置
 				this.volumes = yaml.volumes || {}
 
@@ -506,24 +465,6 @@ export default {
 				this.configData['x-casaos']['main'] = yaml['x-casaos']?.['main'] || Object.keys(yaml.services)[yaml.name];
 				console.log('检测 x-casaos :: main_app 是否正确', this.configData['x-casaos']['main']);
 				console.log('检测 main_name 是否正确', this.main_name);
-
-				// ### start  ### everyone support x-casaos in all services.
-				// 导入数据main-app 中不一定含有 x-casaos，
-				// let yaml_main_app = yaml.services[this.main_name]['x-casaos'] || {};
-				// this.main_app = Object.assign(this.main_app, main_app)
-				// this.main_app.icon = yaml_main_app.icon || '';
-				// let container = yaml_main_app.container || {};
-				// this.main_app.container.hostname = container.hostname || '';
-				// this.main_app.container.protocol = container.protocol || 'https';
-				// this.main_app.container.index = container.index || '';
-				// this.main_app.container.port_map = container.port_map || '';
-				// this.main_app.container.host_name = container.host_name || '';
-				// this.main_app.container.container_name = container.container_name || '';
-				// this.main_app.container.appstore_id = container.appstore_id || '';
-				// console.log('检测主应用中的 x-casaos 完成本地赋值', this.main_app);
-				// 将主应用的x-casaos 暂存到 xCasaOS中，等返回数据时，添加上。
-				// yaml.services[this.main_name]['x-casaos'] && (this.xCasaOS = yaml.services[this.main_name]['x-casaos']);
-				// ### end
 
 				// set main app name
 				this.configData.name = yaml.name
@@ -539,11 +480,8 @@ export default {
 
 				// set top level x-casaos data
 				this.configData['x-casaos'] = merge(this.configData['x-casaos'], yaml['x-casaos'] || {})
-
-				// return true
 			} catch (error) {
 				console.log(error);
-				// return false
 			}
 		},
 
@@ -551,18 +489,9 @@ export default {
 		* formate for render
 		* */
 		parseCompseItem(composeServicesItemInput) {
-			// const parsedInput = Object.values(yaml.services)[0]
 			let composeServicesItem = {};
 			// Image
 			composeServicesItem.image = composeServicesItemInput.image
-			// Label
-			// if (parsedInput.container_name != undefined) {
-			// 	configData.label = upperFirst(parsedInput.container_name)
-			// } else {
-			// 	const imageArray = parsedInput.image.split("/")
-			// 	const lastNode = [...imageArray].pop()
-			// 	configData.label = upperFirst(lastNode.split(":")[0])
-			// }
 			// Envs
 			if (composeServicesItemInput.environment) {
 				let envArray = Array.isArray(composeServicesItemInput.environment) ? composeServicesItemInput.environment : Object.entries(composeServicesItemInput.environment)
@@ -579,8 +508,6 @@ export default {
 
 
 			//Ports
-			// 建议 - 仅处理数组格式！！！
-			// 已支持对象格式。
 			/*
 			- "3000"
 			- "3000-3005"
@@ -591,27 +518,10 @@ export default {
 			- "127.0.0.1:5000-5010:5000-5010"
 			- "127.0.0.1:5000-5010:5000-5010/udp"
 			- "6060:6060/udp"
+			test_data : ["3000-3005", "8000:8000", "9090-9091:8080-8081", "49100:22", "127.0.0.1:8001:8001", "127.0.0.1:5000-5010:5000-5010","6060:6060/udp"]
 			*/
-			// ["3000-3005", "8000:8000", "9090-9091:8080-8081", "49100:22", "127.0.0.1:8001:8001", "127.0.0.1:5000-5010:5000-5010","6060:6060/udp"]
 			composeServicesItem.ports = this.makeArray(composeServicesItemInput.ports).map(item => {
 				if (isString(item)) {
-					// let pArray = item.split(":")
-					// let endArray = pArray[1].split("/")
-					// let protocol = (endArray[1]) ? endArray[1] : 'tcp';
-					// return {
-					// 	target: endArray[0],
-					// 	published: pArray[0],
-					// 	protocol: protocol
-					// }
-
-					/*const parts = item.split(':');
-					const pArray = parts[0].split('-');
-					const endArray = parts.length > 2 ? parts.slice(1, 3) : [pArray[0]];
-					const protocol = parts.length > 2 ? parts[2].split('/')[1] : 'tcp';
-
-					const published = parts.length > 1 ? parts.slice(0, 2).join(':') : pArray[0];*/
-
-					// 修正：
 					const regex = /(^([\d\.]+):)?(\d+(-\d+)?)(:(\d+(-\d+)?))?(\/(.*)$)?/;
 					const match = item.match(regex);
 					const host_ip = match[2];
@@ -667,8 +577,6 @@ export default {
 						item.target = item.target && item.target.replace(key, (this.volumes[key] || ""));
 					})
 
-					// q: what's source and target?
-					// a: https://docs.docker.com/compose/compose-file/compose-file-v3/#volumes
 					return item;
 				}
 
@@ -740,21 +648,7 @@ export default {
 			// process Item x-casaos
 			// 判断是否存在 x-casaos
 			composeServicesItemInput['x-casaos'] = composeServicesItemInput['x-casaos'] || {};
-			// configData['x-casaos'] = Object.assign({
-			// 	// ...this.configData['x-casaos'],
-			// 	container: {
-			// 		hostname: '',
-			// 		scheme: 'http',
-			// 		index: '',
-			// 		port_map: '',
-			// 		host_name: '',
-			// 		container_name: '',
-			// 		appstore_id: '',
-			// 	},
-			// 	icon: '',
-			// }, parsedInput['x-casaos'] || {});
 			composeServicesItem['x-casaos'] = merge({
-				// ...this.configData['x-casaos'],
 				hostname: '',
 				scheme: 'http',
 				index: '',
@@ -821,13 +715,8 @@ export default {
 
 		// 给 configData 添加默认值
 		preProcessConfigData(data) {
-			// let data = this.configData
-			// data.port_map = data.port_map === "" ? null : data.port_map
-			// data.icon = data.icon === "" ? this.getIconFromImage(data.image) : data.icon
 			isNil(data.volumes) ? this.volumes = data.volumes : data.volumes;
 			for (const appKey in data.services) {
-				// data.services[app] = this.preProcessConfigDataItem(data.services[app])
-				// this.$set(data.services, app, this.preProcessConfigDataItem(data.services[app]))
 				this.preProcessConfigDataItem(data.services[appKey])
 			}
 		},
@@ -839,9 +728,7 @@ export default {
 		 */
 		// TODO 合并到 yaml
 		preProcessConfigDataItem(app) {
-			// let app = this.configData.services[app]
 			isNil(app.environment) && this.$set(app, "environment", [])
-			// app.ports = isNil(app.ports) ? [] : app.ports
 			isNil(app.ports) && this.$set(app, "ports", [])
 			isNil(app.volumes) && this.$set(app, "volumes", [])
 			isNil(app.devices) && this.$set(app, "devices", [])
@@ -852,23 +739,6 @@ export default {
 			// cap_add
 			// restart
 			app.restart = app.restart === "no" ? "unless-stopped" : app.restart
-			// isNil(app.command) && this.$set(app, "command", [])
-			// if (app.cpu_shares === 0 || app.cpu_shares > 99 || isNil(app.cpu_shares)) {
-			// 	this.$set(app, "cpu_shares", 90)
-			// } else {
-			// 	this.$set(app, "cpu_shares", app.cpu_shares)
-			// }
-			// app.memory = app.memory === 0 ? this.totalMemory : (app.memory / 1048576).toFixed(0)
-			// isNil(app.memory) && this.$set(app, "memory", this.totalMemory)
-			// 赋 默认值
-			// app.deploy = {
-			// 	resources: {
-			// 		reservations: {
-			// 			memory: this.totalMemory
-			// 		},
-			// 	}
-			// }
-
 
 			return app
 		},
@@ -909,13 +779,8 @@ export default {
 				// outputService.volumes = service.volumes.map(volume => {
 				// 	return `${volume.source}:${volume.target}`
 				// })
-				// TODO: port
-				/* outputService.ports = service.ports.map(port => {
-					 return `${port.published}:${port.target}`
-				 })*/
 			}
 			console.log("updateConfigDataCommands :: ConfigData", ConfigData)
-			// ConfigData.services[this.main_name]['x-casaos'] = Object.assign(this.xCasaOS, this.main_app)
 			this.$emit('updateDockerComposeCommands', YAML.stringify(ConfigData));
 		},
 
@@ -942,11 +807,11 @@ export default {
 			}
 		},
 		bridgePorts(service) {
-			/* TODO 当services.ports输入数据为
-				 - "3000"
-				 - "3000-3005"
-				 - "127.0.0.1:8001"
-				 - "127.0.0.1:5000-5010"
+			/*
+			 - "3000"
+			 - "3000-3005"
+			 - "127.0.0.1:8001"
+			 - "127.0.0.1:5000-5010"
 			 */
 
 			let published, result = [];
