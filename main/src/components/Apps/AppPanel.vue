@@ -1010,7 +1010,7 @@ export default {
 				if (res.status == 200) {
 					this.$openAPI.appManagement.compose.installComposeApp(res.data).then(res => {
 						if (res.status === 200) {
-							this.currentInstallAppName = id
+							this.currentInstallAppName = this.mainName
 							this.currentSlide = 2;
 							this.currentInstallAppText = "Start Installation..."
 							this.cancelButtonText = 'Continue in background'
@@ -1102,7 +1102,7 @@ export default {
 					this.isLoading = true;
 					this.$openAPI.appManagement.compose.installComposeApp(this.dockerComposeCommands).then((res) => {
 						if (res.status === 200) {
-							this.currentInstallAppName = ''
+							this.currentInstallAppName = this.mainName;
 							this.currentSlide = 2;
 							this.currentInstallAppText = "Start Installation..."
 							this.cancelButtonText = 'Continue in background'
@@ -1392,6 +1392,7 @@ export default {
 		},
 
 		installAppProgress(resData) {
+			debugger
 			if (this.currentInstallAppName != resData.name) {
 				return false
 			}
