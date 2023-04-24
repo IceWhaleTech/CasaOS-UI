@@ -522,12 +522,12 @@ export default {
 			*/
 			composeServicesItem.ports = this.makeArray(composeServicesItemInput.ports).map(item => {
 				if (isString(item)) {
-					const regex = /(^([\d\.]+):)?(\d+(-\d+)?)(:(\d+(-\d+)?))?(\/(.*)$)?/;
-					const match = item.match(regex);
-					const host_ip = match[2];
-					const target = Number(match[3]);
-					const published = match[6];
-					const protocol = match[9] || "tcp";
+					const regex = /(^(?<host>(\d{1,3}\.){1,3}\d{1,3}):?)?(?<published>(\d{1,5})(-(\d{1,5}))?)(:(?<target>(\d{1,5})(-(\d{1,5}))?))?(\/(?<protocol>.*)$)?/;
+					const match = item.match(regex).groups;
+					const host_ip = match.host;
+					const target = Number(match.target?.split('-')?.[0])
+					const published = match.published;
+					const protocol = match.protocol || "tcp";
 
 					return {
 						host_ip,
@@ -817,7 +817,7 @@ export default {
 			let published, result = [];
 
 			service.ports.map(function (item) {
-				const TEMPORARY_PORT_INFORMATION = item.published.split(":");
+				const TEMPORARY_PORT_INFORMATION = item.published?.split(":");
 				if (TEMPORARY_PORT_INFORMATION.length > 1) {
 					published = TEMPORARY_PORT_INFORMATION[1];
 				} else {
