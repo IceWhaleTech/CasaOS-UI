@@ -60,7 +60,7 @@
 									 expanded>
 								<b-input v-if="showHostPost" :placeholder="$t('Host')"
 										 :value="item.host_ip?item.host_ip:'' + item.published" expanded
-										 @blur="(val)=> assignPortsItem(val, item)"
+										 @blur="(event)=> assignPortsItem(event.target._value, item)"
 								></b-input>
 							</b-field>
 						</validation-provider>
