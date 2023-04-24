@@ -553,8 +553,8 @@ export default {
 				composeServicesItem.environment = envArray.map((item) => {
 					let ii = typeof item === "object" ? Array.from(item) : item.split("=");
 					return {
-						host: ii[0],
-						container: ii[1].replace(/"/g, ""),
+						host: ii[1].replace(/"/g, ""),
+						container: ii[0],
 					};
 				});
 			} else {
@@ -835,7 +835,7 @@ export default {
 					return `${device.host}:${device.container}`;
 				});
 				outputService.environment = service.environment.map((env) => {
-					return `${env.host}=${env.container}`;
+					return `${env.container}=${env.host}`;
 				});
 				// outputService.volumes = service.volumes.map(volume => {
 				// 	return `${volume.source}:${volume.target}`
