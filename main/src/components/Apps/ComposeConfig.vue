@@ -531,8 +531,13 @@ export default {
 				// 补全必要数据。
 				this.preProcessConfigData(this.configData);
 
+				yaml["x-casaos"] = merge(yaml["x-casaos"], {
+					title: {
+						en_us: this.configData.name,
+					},
+				});
 				// set top level x-casaos data
-				this.configData["x-casaos"] = merge(this.configData["x-casaos"], yaml["x-casaos"] || {});
+				this.configData["x-casaos"] = merge(this.configData["x-casaos"], yaml["x-casaos"]);
 			} catch (error) {
 				console.log(error);
 			}
