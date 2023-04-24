@@ -21,14 +21,8 @@ export default {
 		async getLinkAppList() {
 			try {
 				// forecast null or String.
-				let LinkAppList = localStorage.getItem("listLinkApp");
-				if (LinkAppList) {
-					LinkAppList = JSON.parse(LinkAppList);
-				} else {
-					LinkAppList = await this.$api.users.getLinkAppDetail().then(v => v.data.data);
-					LinkAppList = this.transferLinkAppList(LinkAppList);
-				}
-				this.setLinkAppList(LinkAppList);
+				let LinkAppList = await this.$api.users.getLinkAppDetail().then(v => v.data.data);
+				LinkAppList = this.transferLinkAppList(LinkAppList);
 				return LinkAppList
 			} catch (e) {
 				console.error('getLinkAppList', e)
@@ -42,7 +36,6 @@ export default {
 			const stringifyLinkAppList = JSON.stringify(LinkAppList);
 
 			return this.$api.users.saveLinkAppDetail(stringifyLinkAppList).then(res => {
-				localStorage.setItem("listLinkApp", stringifyLinkAppList);
 				return res;
 			});
 		},
