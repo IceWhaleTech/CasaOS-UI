@@ -197,24 +197,24 @@
 </template>
 
 <script>
-import debounce from "lodash/debounce";
-import axios from "axios";
-import { ValidationObserver, ValidationProvider } from "vee-validate";
+import debounce                                 from "lodash/debounce";
+import axios                                    from "axios";
+import {ValidationObserver, ValidationProvider} from "vee-validate";
 import "@/plugins/vee-validate";
-import Ports from "../forms/Ports.vue";
-import EnvInputGroup from "../forms/EnvInputGroup.vue";
-import CommandsInput from "../forms/CommandsInput.vue";
-import InputGroup from "../forms/InputGroup.vue";
-import VolumesInputGroup from "@/components/forms/VolumesInputGroup.vue";
-import VueSlider from "vue-slider-component";
+import Ports                                    from "../forms/Ports.vue";
+import EnvInputGroup                            from "../forms/EnvInputGroup.vue";
+import CommandsInput                            from "../forms/CommandsInput.vue";
+import InputGroup                               from "../forms/InputGroup.vue";
+import VolumesInputGroup                        from "@/components/forms/VolumesInputGroup.vue";
+import VueSlider                                from "vue-slider-component";
 import "vue-slider-component/theme/default.css";
-import YAML from "yaml";
-import lowerFirst from "lodash/lowerFirst";
-import isNil from "lodash/isNil";
-import find from "lodash/find";
-import { isNumber, isString } from "lodash/lang";
-import cloneDeep from "lodash/cloneDeep";
-import merge from "lodash/merge";
+import YAML                                     from "yaml";
+import lowerFirst                               from "lodash/lowerFirst";
+import isNil                                    from "lodash/isNil";
+import find                                     from "lodash/find";
+import {isNumber, isString}                     from "lodash/lang";
+import cloneDeep                                from "lodash/cloneDeep";
+import merge                                    from "lodash/merge";
 
 const data = [
 	"AUDIT_CONTROL",
@@ -304,7 +304,6 @@ export default {
 					},
 				},
 				"x-casaos": {
-					main: "main_app",
 					author: "",
 					category: "Developer",
 					description: {
@@ -382,12 +381,10 @@ export default {
 	},
 	computed: {
 		main_name() {
-			// TODO confirm 1.yaml.name 是否与 yaml.x-casaos.name 保持一致 2.yaml.services 中的服务需要与其中一个保持一致。
+			// TODO yaml.name
 			// 逐渐固定 x-casaos 数据格式。
 			// required top-leve-property name.
-			this.configData["x-casaos"]["main"] = this.configData?.name;
 			let name =
-				this.configData["x-casaos"]?.["main"] ||
 				this.configData.name ||
 				Object.keys(this.configData.services)[0] ||
 				"main_app";
@@ -422,7 +419,7 @@ export default {
 				.get(
 					`https://hub.docker.com/api/content/v1/products/search?source=community&q=${name}&page=1&page_size=4`
 				)
-				.then(({ data }) => {
+				.then(({data}) => {
 					this.data = [];
 					data.summaries.forEach((item) => this.data.push(item.name));
 				})
@@ -505,19 +502,9 @@ export default {
 				const yaml = YAML.parse(val);
 				console.log("检测传入的 yaml 文件", yaml);
 				console.log("检测传入的 yaml 文件的 services", yaml.services);
-				console.log("检测传入的 yaml 文件的 main_app name", yaml["x-casaos"]?.["main"]);
 
 				// 其他配置
 				this.volumes = yaml.volumes || {};
-
-				// 导入数据不一定含有 x-casaos，但一定含有 services
-				// yaml['x-casaos'] 数据类型是 object
-				// 确定： yaml ：： service[0 ] 此为最原始数据源
-				// update configData :: x-casaos[main_app] ~ 解析 yaml 的 main_app
-				this.configData["x-casaos"]["main"] =
-					yaml["x-casaos"]?.["main"] || Object.keys(yaml.services)[yaml.name];
-				console.log("检测 x-casaos :: main_app 是否正确", this.configData["x-casaos"]["main"]);
-				console.log("检测 main_name 是否正确", this.main_name);
 
 				// set main app name
 				this.configData.name = yaml.name;
@@ -531,11 +518,7 @@ export default {
 				// 补全必要数据。
 				this.preProcessConfigData(this.configData);
 
-				yaml["x-casaos"] = merge(yaml["x-casaos"], {
-					title: {
-						en_us: this.configData.name,
-					},
-				});
+				this.configData["x-casaos"].title.en_us ??= this.configData.name;
 				// set top level x-casaos data
 				this.configData["x-casaos"] = merge(this.configData["x-casaos"], yaml["x-casaos"]);
 			} catch (error) {
@@ -650,8 +633,8 @@ export default {
 				composeServicesItemInput.network_mode != undefined
 					? composeServicesItemInput.network_mode
 					: composeServicesItemInput.network != undefined
-					? composeServicesItemInput.network[0]
-					: undefined;
+						? composeServicesItemInput.network[0]
+						: undefined;
 			if (pnetwork != undefined) {
 				let network = pnetwork == "physical" ? "macvlan" : pnetwork;
 				let seletNetworks = this.networks.filter((item) => {
@@ -710,7 +693,6 @@ export default {
 
 			// process Item x-casaos
 			// 判断是否存在 x-casaos
-			composeServicesItemInput["x-casaos"] = composeServicesItemInput["x-casaos"] || {};
 			composeServicesItem["x-casaos"] = merge(
 				{
 					hostname: "",
