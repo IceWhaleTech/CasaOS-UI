@@ -515,7 +515,11 @@ export default {
 				// 补全必要数据。
 				this.preProcessConfigData(this.configData);
 
-				this.configData["x-casaos"].title.en_us ??= this.configData.name;
+				this.configData["x-casaos"] = merge(this.configData["x-casaos"], {
+					title: {
+						en_us: this.configData.name,
+					},
+				});
 				// set top level x-casaos data
 				this.configData["x-casaos"] = merge(this.configData["x-casaos"], yaml["x-casaos"]);
 			} catch (error) {
