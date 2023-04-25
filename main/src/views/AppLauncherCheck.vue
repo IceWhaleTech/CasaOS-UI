@@ -50,15 +50,7 @@ export default {
 
 	async created() {
 		this.appDetailData = JSON.parse(this.$route.query.appDetailData)
-		const appState = await this.getContainerState()
-		if (appState.state == "exited") {
-			const startRes = await this.startContainer()
-			if (startRes != "running") {
-				this.isCheckFailed = true
-				this.status = "reject"
-				return
-			}
-		}
+		const startRes = await this.startContainer()
 		this.timer && clearInterval(this.timer)
 		this.timer = setInterval(this.check, 1000)
 		this.check()
@@ -79,8 +71,8 @@ export default {
 		// Start container
 		async startContainer() {
 			try {
-				let res = await this.$api.container.updateState(this.appDetailData.name, "start")
-				return res.data.data
+				let res = await this.$openAPI.appManagement.compose.setComposeAppStatus(this.appDetailData.name, "start")
+				return res.data
 			} catch (error) {
 				return "error"
 			}
