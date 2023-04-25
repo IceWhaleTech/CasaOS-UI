@@ -293,9 +293,9 @@ export default {
 							scheme: "https",
 							index: "/",
 							port_map: "3000",
-							name: "",
-							container_name: "",
-							appstore_id: "",
+							// name: "",
+							// container_name: "",
+							// appstore_id: "",
 							envs: [],
 							ports: [],
 							shell: "sh",
@@ -355,7 +355,6 @@ export default {
 		configData: {
 			handler(val, newVal) {
 				console.log("watch::configData", val, newVal);
-				// this.$emit('update-configData', val)
 				if (this.state == "install") {
 					localStorage.setItem("app_data", JSON.stringify(val));
 				}
@@ -381,8 +380,6 @@ export default {
 	},
 	computed: {
 		main_name() {
-			// TODO yaml.name
-			// 逐渐固定 x-casaos 数据格式。
 			// required top-leve-property name.
 			let name =
 				this.configData.name ||
@@ -584,7 +581,6 @@ export default {
 			});
 
 			//Volume
-			// - 仅支持bind 模式!!!
 			// https://yeasy.gitbook.io/docker_practice/compose/compose_file#volumes
 			composeServicesItem.volumes = this.makeArray(composeServicesItemInput.volumes).map((item) => {
 				if (isString(item)) {
@@ -700,8 +696,8 @@ export default {
 					index: "",
 					port_map: "",
 					host_name: "",
-					container_name: "",
-					appstore_id: "",
+					// container_name: "",
+					// appstore_id: "",
 				},
 				composeServicesItemInput["x-casaos"] || {}
 			);
@@ -869,6 +865,7 @@ export default {
 				result = [];
 
 			service.ports.map(function (item) {
+				// TODO 需要健壮一下
 				const TEMPORARY_PORT_INFORMATION = item.published?.split(":");
 				if (TEMPORARY_PORT_INFORMATION.length > 1) {
 					published = TEMPORARY_PORT_INFORMATION[1];
