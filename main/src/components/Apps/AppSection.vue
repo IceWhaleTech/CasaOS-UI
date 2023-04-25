@@ -72,6 +72,7 @@ import events                 from '@/events/events';
 import last                   from 'lodash/last';
 import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
 import business_LinkApp       from "@/mixins/app/Business_LinkApp";
+import isEqual                from "lodash/isEqual";
 
 const SYNCTHING_STORE_ID = 74
 
@@ -217,19 +218,21 @@ export default {
 				let casaAppList = concat(builtInApplications, orgAppList, listLinkApp)
 				// get app sort info.
 				let lateSortList = await this.$api.users.getCustomStorage(orderConfig).then(res => res.data.data.data);
-				let newestSortList = casaAppList.map((item) => {
-					return item.name
-				})
-				if (lateSortList != "") {
-					// Resort list
-					const sortList = this.getNewSortList(lateSortList, newestSortList)
-					casaAppList.sort((a, b) => {
-						return sortList.indexOf(a.name) - sortList.indexOf(b.name);
-					});
-				}
-				this.appList = casaAppList;
-				// save sort info AFTER sort!
-				if (xor(lateSortList, newestSortList).length > 0) {
+
+				// filter anything not in casaAppList.
+				const propList = casaAppList.map((obj) => obj.name);
+				const existingList = lateSortList.filter((item) => propList.includes(item));
+				const futureList = propList.filter((item) => !lateSortList.includes(item));
+				const newSortList = existingList.concat(futureList);
+
+				// then sort.
+				const sortedAppList = casaAppList.sort((obj1, obj2) => {
+					return newSortList.indexOf(obj1.name) - newSortList.indexOf(obj2.name);
+				});
+
+				const sortedList = sortedAppList.map((obj) => obj.name);
+				this.appList = sortedAppList;
+				if (!isEqual(lateSortList, sortedList)) {
 					this.saveSortData()
 				}
 
