@@ -20,7 +20,7 @@
 		<section class="modal-card-body">
 			<b-tabs v-model="activeTab" :animated="false">
 				<b-tab-item label="Docker Compose">
-					<b-field :message="errors" :type="{ 'is-danger': parseError}">
+					<b-field :message="errors" :type="{ 'is-danger': !!errors}">
 						<b-input v-model="dockerComposeCommands"
 								 :placeholder="$t('Notice: If there are multiple services, only the first set can be analyzed correctly')"
 								 class="import-area"
@@ -28,13 +28,13 @@
 					</b-field>
 				</b-tab-item>
 				<b-tab-item v-if="false" label="Docker CLI">
-					<b-field :message="errors" :type="{ 'is-danger': parseError}">
+					<b-field :message="errors" :type="{ 'is-danger': !!errors}">
 						<b-input v-model="dockerCliCommands" class="import-area" type="textarea"></b-input>
 					</b-field>
 				</b-tab-item>
 
 				<b-tab-item v-if="false" :label="$t('AppFile')">
-					<b-field :message="errors" :type="{ 'is-danger': parseError}">
+					<b-field :message="errors" :type="{ 'is-danger': !!errors}">
 						<b-upload ref="importUpload" v-model="dropFiles" accept="application/json" drag-drop expanded
 								  @input="onSelect">
 							<section class="section">
@@ -67,6 +67,7 @@
 
 <script>
 
+import YAML from "yaml"
 
 export default {
 	data() {
@@ -76,7 +77,7 @@ export default {
 			dropFiles: {},
 			dockerCliCommands: "",
 			dockerComposeCommands: "",
-			parseError: false,
+			// parseError: false,
 			appFileLoaded: false,
 			errors: "",
 			dropText: this.$t('Drop your app file here or click to upload'),
@@ -112,14 +113,14 @@ export default {
 				}
 			} else if (this.activeTab == 0) {
 
-				// if (this.parseComposeYaml()) {
-				this.errors = ""
-				this.$emit('update', this.dockerComposeCommands)
-				this.$emit('close')
-				// } else {
-				// 	this.errors = this.$t('Please fill correct compose YAML')
-				// 	this.parseError = true;
-				// }
+				if (this.checkYAML()) {
+					this.errors = ""
+					this.$emit('update', this.dockerComposeCommands)
+					this.$emit('close')
+				} else {
+					// 	this.errors = this.$t('Please fill correct compose YAML')
+					// 	this.parseError = true;
+				}
 			} else if (this.activeTab == 2) {
 				if (this.appFileLoaded) {
 					this.errors = ""
@@ -299,6 +300,14 @@ export default {
 			return (newArray == undefined) ? [] : newArray
 		},
 
+		checkYAML() {
+			let yaml = YAML.parse(this.dockerComposeCommands);
+			if (!(yaml?.name in yaml.services)) {
+				this.errors = this.$t("Please select a service name in the \"services\" and add it as the value of the top-level attribute \"name\" to serve as the main application.");
+				return false
+			}
+			return true
+		},
 		/**
 		 * @description: Parse Import Docker Compose Commands
 		 * @return {Boolean}

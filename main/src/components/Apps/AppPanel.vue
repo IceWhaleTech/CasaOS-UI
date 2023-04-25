@@ -1392,7 +1392,6 @@ export default {
 		},
 
 		installAppProgress(resData) {
-			debugger
 			if (this.currentInstallAppName != resData.name) {
 				return false
 			}
