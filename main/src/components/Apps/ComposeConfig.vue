@@ -32,7 +32,7 @@
 						</b-field>
 					</ValidationProvider>
 
-					<b-field v-if="key === main_name" :label="$t('Icon URL')">
+					<b-field v-if="key === firstAppName" :label="$t('Icon URL')">
 						<p class="control">
 							<span class="button is-static container-icon">
 								<b-image
@@ -51,15 +51,15 @@
 						></b-input>
 					</b-field>
 
-					<b-field v-if="key === main_name" label="Web UI">
-						<b-select v-model="service['x-casaos'].scheme">
+					<b-field v-if="key === firstAppName" label="Web UI">
+						<b-select v-model="configData['x-casaos'].scheme">
 							<option value="http">http://</option>
 							<option value="https">https://</option>
 						</b-select>
-						<b-input v-model="service['x-casaos'].hostname" :placeholder="baseUrl" expanded></b-input>
+						<b-input v-model="configData['x-casaos'].hostname" :placeholder="baseUrl" expanded></b-input>
 						<b-autocomplete
-							v-model="service['x-casaos'].port_map"
-							:data="bridgePorts(service)"
+							v-model="configData['x-casaos'].port_map"
+							:data="bridgePorts(configData.services)"
 							:open-on-focus="true"
 							:placeholder="$t('Port')"
 							class="has-colon"
@@ -67,7 +67,7 @@
 							@select="(option) => (portSelected = option)"
 						></b-autocomplete>
 						<b-input
-							v-model="service['x-casaos'].index"
+							v-model="configData['x-casaos'].index"
 							:placeholder="'/index.html ' + $t('[Optional]')"
 							expanded
 						></b-input>
@@ -288,22 +288,21 @@ export default {
 								},
 							},
 						},
-						"x-casaos": {
-							hostname: "",
-							scheme: "https",
-							index: "/",
-							port_map: "3000",
-							// name: "",
-							// container_name: "",
-							// appstore_id: "",
-							envs: [],
-							ports: [],
-							shell: "sh",
-							volumes: [],
-						},
 					},
 				},
 				"x-casaos": {
+					hostname: "",
+					scheme: "https",
+					index: "/",
+					port_map: "3000",
+					// name: "",
+					// container_name: "",
+					// appstore_id: "",
+					envs: [],
+					ports: [],
+					shell: "sh",
+					volumes: [],
+
 					author: "",
 					category: "Developer",
 					description: {
@@ -389,6 +388,9 @@ export default {
 			this.$emit("updateMainName", name);
 			return name;
 		},
+		firstAppName() {
+			return Object.keys(this.configData.services)[0]
+		}
 	},
 	created() {
 		// Set Front-end base url
@@ -857,7 +859,7 @@ export default {
 				return true;
 			}
 		},
-		bridgePorts(service) {
+		bridgePorts(services) {
 			/*
 			 - "3000"
 			 - "3000-3005"
@@ -867,27 +869,29 @@ export default {
 
 			let published,
 				result = [];
-
-			service.ports.map(function (item) {
-				// TODO 需要健壮一下
-				const TEMPORARY_PORT_INFORMATION = item.published?.split(":");
-				if (TEMPORARY_PORT_INFORMATION.length > 1) {
-					published = TEMPORARY_PORT_INFORMATION[1];
-				} else {
-					published = TEMPORARY_PORT_INFORMATION[0];
-				}
-				published = published.split("-");
-
-				if (published.length > 1) {
-					let start = published[0];
-					let end = published[1];
-					for (let i = start; i <= end; i++) {
-						result.push(i);
+			for (let key in services) {
+				let service = services[key]
+				service.ports.map(function (item) {
+					// TODO 需要健壮一下
+					const TEMPORARY_PORT_INFORMATION = item.published?.split(":");
+					if (TEMPORARY_PORT_INFORMATION.length > 1) {
+						published = TEMPORARY_PORT_INFORMATION[1];
+					} else {
+						published = TEMPORARY_PORT_INFORMATION[0];
 					}
-				} else {
-					result.push(published[0]);
-				}
-			});
+					published = published.split("-");
+
+					if (published.length > 1) {
+						let start = published[0];
+						let end = published[1];
+						for (let i = start; i <= end; i++) {
+							result.push(i);
+						}
+					} else {
+						result.push(published[0]);
+					}
+				});
+			}
 			return result;
 		},
 		// unused
