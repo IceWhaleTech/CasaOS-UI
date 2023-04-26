@@ -61,7 +61,6 @@ export default {
 					delete item.custom_id;
 				}
 			})
-			console.log('transfer LinkAppList', LinkAppList);
 			return LinkAppList;
 		}
 	}

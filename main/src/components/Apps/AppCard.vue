@@ -598,12 +598,15 @@ export default {
 				if (resp.status === 200) {
 					// messageBus :: apps_checkThenUpdate
 					this.$messageBus('apps_checkupdate', this.item.name.toString());
-					// TODO ??  need confirmation
-					this.isCheckThenUpdate = false;
+					this.$buefy.toast.open({
+						message: this.$t(`In the process of asynchronous updating.`),
+						type: 'is-success'
+					})
+
 				} else {
 					this.$buefy.toast.open({
-						message: this.$t(`Unable to update at the moment!`),
-						type: 'is-warning'
+						message: this.$t(`No updates are currently available for the application.`),
+						type: 'is-success'
 					})
 				}
 			}).catch(() => {
@@ -613,6 +616,7 @@ export default {
 				})
 			}).finally(() => {
 				this.$refs.dro.isActive = false
+				this.isCheckThenUpdate = false;
 			})
 		},
 		/**

@@ -183,7 +183,6 @@ import {mixin}                                  from '@/mixins/mixin';
 import DriveItem                                from './DriveItem.vue'
 import StorageItem                              from './StorageItem.vue'
 import Popper                                   from 'vue-popperjs';
-// import MergeStorages from '@/components/Storage/MergeStorages.vue';
 import StorageCombination                       from "./StorageCombination.vue";
 import cToolTip                                 from '@/components/basicComponents/tooltip/tooltip.vue';
 import events                                   from '@/events/events';

@@ -49,7 +49,7 @@
 								   :cateMenu="cateMenu" :close="close"
 								   :currentInstallId="currentInstallId"
 								   :installedList="installedList" :showDetailSwiper="showDetailSwiper"
-								   @install="qucikInstall">
+								   @install="quickInstall">
 					</AppDetailInfo>
 				</template>
 			</app-side-bar>
@@ -133,7 +133,7 @@
 												<b-button v-else :loading="item.id == currentInstallId"
 														  rounded size="is-small"
 														  type="is-primary is-light"
-														  @click="qucikInstall(item.id);$messageBus('appstore_install', item.title)">
+														  @click="quickInstall(item.id);$messageBus('appstore_install', item.title)">
 													{{ $t('Install') }}
 												</b-button>
 											</div>
@@ -280,7 +280,7 @@
 									<b-button v-else :loading="item.id == currentInstallId" rounded
 											  size="is-small"
 											  type="is-primary is-light"
-											  @click="qucikInstall(item.id);$messageBus('appstore_install', item.title)">
+											  @click="quickInstall(item.id);$messageBus('appstore_install', item.title)">
 										{{ $t('Install') }}
 									</b-button>
 
@@ -295,8 +295,7 @@
 							<h3 class="title is-5 has-text-weight-normal">{{ $t('Community Apps') }}</h3>
 							<h3 class="subtitle is-7 has-text-grey-light">
 								{{
-									$t('From community contributors, not optimized for CasaOS, but provides a basic App
-										experience.')
+									$t('From community contributors, not optimized for CasaOS, but provides a basic App experience.')
 								}}
 							</h3>
 
@@ -329,7 +328,7 @@
 										<b-button v-else :loading="item.id == currentInstallId" rounded
 												  size="is-small"
 												  type="is-primary is-light"
-												  @click="qucikInstall(item.id);$messageBus('appstorecommunity_install', item.title)">
+												  @click="quickInstall(item.id);$messageBus('appstorecommunity_install', item.title)">
 											{{
 												$t('Install')
 											}}
@@ -368,7 +367,7 @@
 								   :state="state"
 								   :total-memory="totalMemory"
 								   @updateDockerComposeCommands="updateDockerComposeCommands"
-								   @updateMainName="name=> mainName = name"></ComposeConfig>
+								   @updateMainName="name=> currentInstallId = name"></ComposeConfig>
 
 					<!--	导入"已存在的容器"，进行初始化操作	-->
 					<ValidationObserver v-else ref="containerValida">
@@ -493,6 +492,7 @@ import ComposeConfig                            from "@/components/Apps/ComposeC
 import AppDetailInfo                            from '@/components/Apps/AppDetailInfo.vue'
 import {ValidationObserver, ValidationProvider} from "vee-validate";
 import {ice_i18n}                               from "@/mixins/base/common-i18n";
+import {parse}                                  from "yaml";
 
 const data = [
 	"AUDIT_CONTROL",
@@ -699,7 +699,6 @@ export default {
 			dockerProgress: null,
 			totalPercentage: 0,
 			dockerComposeCommands: '',
-			mainName: '',
 			installedList: [],
 			counterPatchGetStoreList: 0
 		}
@@ -768,13 +767,13 @@ export default {
 				return this.$t("App Store");
 			} else if (this.currentSlide == 1) {
 				if (!this.isCasa) {
-					return this.$t("Import") + " " + this.mainName
+					return this.$t("Import") + " " + this.currentInstallId
 				} else {
-					return (this.settingData != undefined || this.settingComposeData != undefined) ? this.mainName + " " + this.$t("Setting") : this.$t("Install a new App manually")
+					return (this.settingData != undefined || this.settingComposeData != undefined) ? this.currentInstallId + " " + this.$t("Setting") : this.$t("Install a new App manually")
 				}
 
 			} else {
-				return this.$t("Installing") + " " + this.mainName
+				return this.$t("Installing") + " " + this.currentInstallId
 			}
 		},
 		showDetailSwiper() {
@@ -862,7 +861,6 @@ export default {
 				})
 				this.currentCate = this.cateMenu[0]
 				this.currentSort = this.sortMenu[0]
-				console.log('sort :: ', this.sortMenu)
 				if (this.isFirst) {
 					this.isFirst = false
 				}
@@ -968,7 +966,6 @@ export default {
 			this.$openAPI.appManagement.appStore.composeAppStoreInfo(id).then(res => {
 				this.isLoading = false;
 				this.sidebarOpen = true;
-				console.log('app detail data :: ', res.data.data)
 				this.appDetailData = res.data.data
 				this.appDetailData.id = id
 				this.appDetailData.min_memory = min_memory
@@ -998,9 +995,8 @@ export default {
 		 * @param {*}
 		 * @return {*} void
 		 */
-		qucikInstall(id) {
+		quickInstall(id) {
 			this.sidebarOpen = false;
-			this.currentInstallId = id
 			this.$openAPI.appManagement.appStore.composeApp(id, {
 				headers: {
 					'content-type': 'application/yaml',
@@ -1008,25 +1004,31 @@ export default {
 				}
 			}).then(res => {
 				if (res.status == 200) {
-					this.$openAPI.appManagement.compose.installComposeApp(res.data).then(res => {
-						if (res.status === 200) {
-							this.currentInstallAppName = this.mainName
-							this.currentSlide = 2;
-							this.currentInstallAppText = "Start Installation..."
-							this.cancelButtonText = 'Continue in background'
-							this.dockerProgress = new DockerProgress();
-
-							this.$buefy.toast.open({
-								message: res.data.message,
-								type: 'is-success'
-							})
-						}
-					}).catch(() => {
-						this.$buefy.toast.open({
-							message: this.$t(`There was an error installing the application, please try again!`),
-							type: 'is-danger'
+					let composeJSON = parse(res.data)
+					if (composeJSON["x-casaos"]?.tips?.before_install?.en_us) {
+						this.$buefy.modal.open({
+							parent: this,
+							component: () => import("@/components/Apps/TipEditorModal.vue"),
+							hasModalCard: true,
+							customClass: '',
+							trapFocus: true,
+							canCancel: [''],
+							scroll: "keep",
+							animation: "zoom-in",
+							events: {
+								submit: () => {
+									this.currentInstallId = id
+									this.installComposeApp(res.data, id)
+								},
+							},
+							props: {
+								composeData: composeJSON
+							}
 						})
-					})
+					} else {
+						this.installComposeApp(res.data, id)
+					}
+
 				} else {
 					this.$buefy.toast.open({
 						message: this.$t(`There was an error installing the application, please try again!`),
@@ -1100,26 +1102,7 @@ export default {
 			this.$refs.compose.checkStep().then((valid) => {
 				if (valid.every(v => v === true)) {
 					this.isLoading = true;
-					this.$openAPI.appManagement.compose.installComposeApp(this.dockerComposeCommands).then((res) => {
-						if (res.status === 200) {
-							this.currentInstallAppName = this.mainName;
-							this.currentSlide = 2;
-							this.currentInstallAppText = "Start Installation..."
-							this.cancelButtonText = 'Continue in background'
-							this.dockerProgress = new DockerProgress();
-						} else {
-							this.$buefy.toast.open({
-								message: res.data.message,
-								type: 'is-success'
-							})
-						}
-					}).catch((e) => {
-						this.$buefy.toast.open({
-							message: e.response.data.message,
-							// message: this.$t(`There was an error loading the data, please try again!`),
-							type: 'is-danger'
-						})
-					}).finally(() => {
+					this.installComposeApp(this.dockerComposeCommands, this.currentInstallId).finally(() => {
 						this.isLoading = false;
 					})
 				} else {
@@ -1133,6 +1116,29 @@ export default {
 			})
 		},
 
+		installComposeApp(dockerComposeCommands, appName) {
+			return this.$openAPI.appManagement.compose.installComposeApp(dockerComposeCommands).then((res) => {
+				if (res.status === 200) {
+					this.currentInstallAppName = appName;
+					this.currentSlide = 2;
+					this.currentInstallAppText = "Start Installation..."
+					this.cancelButtonText = 'Continue in background'
+					this.dockerProgress = new DockerProgress();
+				} else {
+					this.$buefy.toast.open({
+						message: res.data.message,
+						type: 'is-success'
+					})
+				}
+			}).catch((e) => {
+				this.$buefy.toast.open({
+					message: e.response.data.message,
+					// message: this.$t(`There was an error loading the data, please try again!`),
+					type: 'is-danger'
+				})
+			})
+		},
+
 		/**
 		 * @description: Save edit update
 		 * @return {*} void
@@ -1142,7 +1148,6 @@ export default {
 				if (valid.every(v => v === true)) {
 
 					this.$openAPI.appManagement.compose.applyComposeAppSettings(this.id, this.dockerComposeCommands).then((res) => {
-						console.log('updateComposeAppSettings :: ', res);
 						if (res.data.success == 200) {
 							this.$emit('updateState')
 						} else {
@@ -1244,7 +1249,7 @@ export default {
 		 */
 		exportYAML() {
 			const blob = new Blob([this.dockerComposeCommands], {type: ''});
-			FileSaver.saveAs(blob, `${this.mainName}.yaml`);
+			FileSaver.saveAs(blob, `${this.currentInstallId}.yaml`);
 		},
 
 		/**
@@ -1299,7 +1304,7 @@ export default {
 						animation: "zoom-in",
 						props: {
 							appid: containerId,
-							appName: this.mainName
+							appName: this.currentInstallId
 						}
 					})
 				}

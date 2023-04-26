@@ -28,7 +28,7 @@
 				v-model="tips" :mode="controlEditorState" :placeholder="$t('Something to remember eg. password')"
 				left-toolbar right-toolbar>
 			</VMdEditor>
-			<div class="is-flex is-flex-direction-row-reverse mt-2">
+			<div v-if="name" class="is-flex is-flex-direction-row-reverse mt-2">
 				<b-icon
 					:class="{'has-text-grey-800': !isEditing, 'has-text-green-default': isDifferentiation, 'has-text-grey-400': !isDifferentiation && isEditing}"
 					:icon="icon" pack="casa"
@@ -36,6 +36,17 @@
 			</div>
 		</section>
 		<!-- Modal-Card Body End -->
+
+		<!-- Modal-Card Footer Start-->
+		<footer v-if="!name" class="modal-card-foot is-flex is-align-items-center">
+			<div class="is-flex-grow-1"></div>
+			<div class="is-flex is-flex-direction-row-reverse">
+				<b-button rounded size="is-small" type="is-primary"
+						  @click="$emit('submit') && $emit('close')">{{ $t('Next Steps') }}
+				</b-button>
+			</div>
+		</footer>
+		<!-- Modal-Card Footer End-->
 	</div>
 </template>
 
@@ -75,7 +86,7 @@ export default {
 		},
 		name: {
 			type: String,
-			required: true
+			// required: true
 		}
 	},
 	computed: {
@@ -117,7 +128,7 @@ export default {
 				}*/
 
 				let getValueByPath = this.composeData['x-casaos']
-				if (getValueByPath && getValueByPath['tips'] && getValueByPath['tips']['custom'] || getValueByPath['tips']['before_install']) {
+				if (getValueByPath?.['tips']?.['custom'] || getValueByPath?.['tips']?.['before_install']) {
 					this.tips = getValueByPath['tips']['custom'] || ice_i18n(getValueByPath['tips']['before_install'])
 				} else {
 					this.tips = '';
