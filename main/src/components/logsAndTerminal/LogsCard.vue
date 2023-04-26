@@ -1,4 +1,14 @@
 <!--
+  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+  * @LastEditTime: 2023/4/25 下午6:54
+  * @FilePath: /CasaOS-UI/main/src/components/logsAndTerminal/LogsCard.vue
+  * @Description:
+  *
+  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
+
+  -->
+
+<!--
  * @Author: JerryK
  * @Date: 2021-10-28 13:56:32
  * @LastEditors: Jerryk jerry@icewhale.org
@@ -77,10 +87,16 @@ export default {
 .logs {
 	white-space: pre-wrap;
 	color: #fff;
-	font-size: 0.875rem;
+	font-size: 13px;
+	font-family: 'Monaco', 'Consolas', monospace !important;
+	padding: 0 0.25rem;
 	line-height: 1.5em;
 	overflow-y: auto;
 	overflow-x: hidden;
+
+	> div {
+		outline: none;
+	}
 
 	&.fullheight {
 		height: 100%;

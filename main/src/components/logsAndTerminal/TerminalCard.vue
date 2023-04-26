@@ -1,3 +1,12 @@
+<!--
+  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+  * @LastEditTime: 2023/4/25 下午7:10
+  * @FilePath: /CasaOS-UI/main/src/components/logsAndTerminal/TerminalCard.vue
+  * @Description:
+  *
+  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
+
+  -->
 <template>
 	<fullscreen :class="[{ 'mt-5': !fullscreen }, isVaild ? 'fdark-bg' : 'flight-bg']" :fullscreen.sync="fullscreen"
 				:page-only="true" :teleport="true" class="fullScreen  pl-2 pt-2 pb-2" @change="onWindowResize">
@@ -29,7 +38,7 @@
 						</b-field>
 						<div class="buttons mt-5">
 							<b-button :loading="isConnecting" expanded rounded type="is-primary" @click="checkLogin">{{
-								$t('Connect')
+									$t('Connect')
 								}}
 							</b-button>
 						</div>
@@ -130,12 +139,13 @@ export default {
 		initTerm() {
 			const term = new Terminal({
 				// rendererType: 'canvas',
-				fontSize: 14,
+				fontSize: 13,
 				cursorStyle: 'underline', //光标样式
 				cursorBlink: true, //光标闪烁
 				theme: {background: '#1E1E1E'},
 				rows: parseInt(this.rows), //行数
 				cols: parseInt(this.cols), // 不指定行数，自动回车后光标从下一行开始
+				fontFamily: "Consolas, Monaco, monospace",
 			});
 			const attachAddon = new AttachAddon(this.socket);
 
@@ -222,6 +232,7 @@ export default {
 	width: 100%;
 	height: 100%;
 	min-height: 35rem;
+	font-size: 0.75rem;
 
 	.card {
 		.card-content {
