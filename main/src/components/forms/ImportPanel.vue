@@ -26,6 +26,19 @@
 								 class="import-area"
 								 type="textarea"></b-input>
 					</b-field>
+
+					<b-upload ref="importUpload" v-model="dropFiles" accept=".yaml" drag-drop expanded
+							  @input="onSelect">
+						<section class="section">
+							<div class="content has-text-centered">
+								<p>
+									<b-icon :icon="uploadIcon" custom-size="is-size-2" size="is-40"></b-icon>
+								</p>
+								<p class="has-text-full-03">{{ dropText }}</p>
+							</div>
+						</section>
+					</b-upload>
+
 				</b-tab-item>
 				<b-tab-item v-if="false" label="Docker CLI">
 					<b-field :message="errors" :type="{ 'is-danger': !!errors}">
@@ -417,41 +430,42 @@ export default {
 			// 	}
 		},
 		onSelect(val) {
-			// 	const _this = this
-			// 	const reader = new FileReader();
-			// 	if (typeof FileReader === "undefined") {
-			// 		this.$buefy.toast.open({
-			// 			duration: 3000,
-			// 			message: this.$t('Your browser does not support file reading.'),
-			// 			type: 'is-danger'
-			// 		})
-			// 		return;
-			// 	}
-			// 	reader.readAsText(val)
-			// 	reader.onload = function () {
-			// 		try {
-			// 			_this.updateData = JSON.parse(this.result);
-			// 			if (_this.updateData.version === undefined || _this.updateData.version != "1.0") {
-			// 				_this.clearInput()
-			// 				return false
-			// 			} else {
-			// 				delete _this.updateData.versison
-			// 				_this.updateData.network_model = _this.getNetworkModel(_this.updateData.network_model)
-			// 				_this.updateData.memory = _this.deviceMemory
-			// 				if (!has(_this.updateData, 'protocol')) {
-			// 					_this.updateData.protocol = "http"
-			// 				}
-			// 				_this.dropText = val.name + " " + _this.$t('has been selected')
-			// 				_this.uploadIcon = "file-document"
-			// 				_this.appFileLoaded = true
-			// 				return true
-			// 			}
-			//
-			// 		} catch (e) {
-			// 			_this._this.clearInput()
-			// 			return false
-			// 		}
-			// 	}
+			const _this = this
+			const reader = new FileReader();
+			if (typeof FileReader === "undefined") {
+				this.$buefy.toast.open({
+					duration: 3000,
+					message: this.$t('Your browser does not support file reading.'),
+					type: 'is-danger'
+				})
+				return;
+			}
+			reader.readAsText(val)
+			reader.onload = function () {
+				_this.dockerComposeCommands = this.result
+				// try {
+				// 	_this.updateData = JSON.parse(this.result);
+				// 	if (_this.updateData.version === undefined || _this.updateData.version != "1.0") {
+				// 		_this.clearInput()
+				// 		return false
+				// 	} else {
+				// 		delete _this.updateData.versison
+				// 		_this.updateData.network_model = _this.getNetworkModel(_this.updateData.network_model)
+				// 		_this.updateData.memory = _this.deviceMemory
+				// 		if (!has(_this.updateData, 'protocol')) {
+				// 			_this.updateData.protocol = "http"
+				// 		}
+				// 		_this.dropText = val.name + " " + _this.$t('has been selected')
+				// 		_this.uploadIcon = "file-document"
+				// 		_this.appFileLoaded = true
+				// 		return true
+				// 	}
+				//
+				// } catch (e) {
+				// 	_this._this.clearInput()
+				// 	return false
+				// }
+			}
 		},
 		clearInput() {
 			this.uploadIcon = "upload"
@@ -477,11 +491,19 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .import-area {
 	.textarea {
 		max-height: 40em;
 		min-height: 173px;
+	}
+}
+
+.control {
+	height: 7.25rem;
+
+	.section {
+		padding: 0.84375rem;
 	}
 }
 </style>
