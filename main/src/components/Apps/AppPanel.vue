@@ -1487,6 +1487,7 @@ export default {
 
 		.modal-card-body {
 			overflow: overlay;
+			overflow-x: clip;
 		}
 	}
 }
