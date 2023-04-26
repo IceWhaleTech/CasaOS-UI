@@ -823,7 +823,12 @@ export default {
 				outputService.devices = service.devices.map((device) => {
 					return `${device.host}:${device.container}`;
 				});
-				outputService.environment = service.environment.map((env) => {
+				outputService.environment = service.environment.filter(env => {
+					if (env.container || env.host) {
+						return true
+					}
+					return false
+				}).map((env) => {
 					return `${env.container}=${env.host}`;
 				});
 				// outputService.volumes = service.volumes.map(volume => {
