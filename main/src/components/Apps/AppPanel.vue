@@ -1127,6 +1127,7 @@ export default {
 					this.cancelButtonText = 'Continue in background'
 					this.dockerProgress = new DockerProgress();
 				} else {
+					debugger
 					this.$buefy.toast.open({
 						message: res.data.message,
 						type: 'is-success'
