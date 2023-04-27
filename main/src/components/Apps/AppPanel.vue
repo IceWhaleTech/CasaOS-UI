@@ -74,7 +74,7 @@
 						<button class="icon-button mdi mdi-console" type="button" @click="showTerminalPanel"/>
 					</b-tooltip>
 
-					<b-tooltip v-if="showExportButton" :label="$t('Export AppFile')" position="is-bottom"
+					<b-tooltip v-if="showExportButton" :label="$t('Export ComposeFile')" position="is-bottom"
 							   type="is-dark">
 						<button class="icon-button mdi mdi-export-variant" type="button" @click="exportYAML"/>
 					</b-tooltip>

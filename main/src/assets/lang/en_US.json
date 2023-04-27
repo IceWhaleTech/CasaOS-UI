@@ -124,7 +124,7 @@
   "Your custom App Name": "Your custom app name",
   "Your custom icon URL": "Your custom icon URL",
   "Installing": "Installing",
-  "Export AppFile": "Export AppFile",
+  "Export ComposeFile": "Export ComposeFile",
   "AppFile": "AppFile",
   "Drop your app file here or click to upload": "Drop your AppFile here or click to upload",
   "Host": "Host",
