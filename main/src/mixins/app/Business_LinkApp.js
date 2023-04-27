@@ -21,7 +21,7 @@ export default {
 		async getLinkAppList() {
 			try {
 				// forecast null or String.
-				let LinkAppList = await this.$api.users.getLinkAppDetail().then(v => v.data.data);
+				let LinkAppList = await this.$api.users.getLinkAppDetail().then(v => v.data.data || []);
 				LinkAppList = this.transferLinkAppList(LinkAppList);
 				return LinkAppList
 			} catch (e) {
