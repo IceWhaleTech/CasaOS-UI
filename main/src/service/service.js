@@ -103,6 +103,8 @@ instance.interceptors.response.use(
 					console.log(error);
 				})
 
+			} else if (originalConfig.url === "/v1/users/refresh" && error?.response?.status === 401) {
+				logout()
 			}
 			return new Promise(resolve => {
 				requests.push((token) => {
