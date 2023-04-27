@@ -56,7 +56,7 @@
 			<!-- Sidebar End -->
 
 			<!-- Modal-Card Header Start -->
-			<header class="modal-card-head _b-line">
+			<header :class="{'setting-compose-panel' : currentSlide == 1 && isCasa}" class="modal-card-head _b-line">
 				<div class="is-flex-grow-1">
 					<h3 class="_title is-5">{{ panelTitle }}</h3>
 				</div>
@@ -91,168 +91,216 @@
 			</header>
 			<!-- Modal-Card Header End -->
 			<!-- Modal-Card Body Start -->
-			<section :class="{'_hideOverflow': !isCasa}" class="modal-card-body pt-3">
-				<!-- App Store List Start -->
-				<section v-if="currentSlide == 0 ">
+			<!-- App Store List Start -->
+			<section v-if="currentSlide == 0" :class="{'_hideOverflow': !isCasa}" class="modal-card-body pt-3">
 
-					<template v-if="!isLoadError">
+				<template v-if="!isLoadError">
 
-						<template v-if="recommendList.length > 0">
-							<h3 class="title is-5 has-text-weight-normal">{{ $t('Featured Apps') }}</h3>
-							<!-- Featured Slider Start -->
-							<div class="is-relative featured-app b-line">
-								<swiper ref="featureSwiper" :options="featureSwiperOptions" class="swiper ">
-									<swiper-slide v-for="(item,index) in recommendList " :key="index+item.title+item.id"
-												  class="pb-5">
-										<div class="gap" @click="showAppDetial(item.id)">
-											<b-image :placeholder="require('@/assets/img/app/swiper_placeholder.png')"
-													 :src="item.thumbnail"
-													 :src-fallback="require('@/assets/img/app/swiper_placeholder.png')"
-													 class="border-8 is-clickable"
-													 ratio="16by9"></b-image>
+					<template v-if="recommendList.length > 0">
+						<h3 class="title is-5 has-text-weight-normal">{{ $t('Featured Apps') }}</h3>
+						<!-- Featured Slider Start -->
+						<div class="is-relative featured-app b-line">
+							<swiper ref="featureSwiper" :options="featureSwiperOptions" class="swiper ">
+								<swiper-slide v-for="(item,index) in recommendList " :key="index+item.title+item.id"
+											  class="pb-5">
+									<div class="gap" @click="showAppDetial(item.id)">
+										<b-image :placeholder="require('@/assets/img/app/swiper_placeholder.png')"
+												 :src="item.thumbnail"
+												 :src-fallback="require('@/assets/img/app/swiper_placeholder.png')"
+												 class="border-8 is-clickable"
+												 ratio="16by9"></b-image>
+									</div>
+									<div class="is-flex pt-5 is-align-items-center">
+										<div class=" mr-3" @click="showAppDetial(item.id)">
+											<b-image :placeholder="require('@/assets/img/app/default.svg')"
+													 :src="item.icon"
+													 :src-fallback="require('@/assets/img/app/default.svg')"
+													 class="is-64x64 is-clickable icon-shadow"></b-image>
 										</div>
-										<div class="is-flex pt-5 is-align-items-center">
-											<div class=" mr-3" @click="showAppDetial(item.id)">
-												<b-image :placeholder="require('@/assets/img/app/default.svg')"
-														 :src="item.icon"
-														 :src-fallback="require('@/assets/img/app/default.svg')"
-														 class="is-64x64 is-clickable icon-shadow"></b-image>
-											</div>
-											<div class="is-flex-grow-1 mr-4 is-clickable"
-												 @click="showAppDetial(item.id);$messageBus('appstore_detail', item.title)">
-												<h6 class="title is-6 mb-2 ">{{ item.title }}</h6>
-												<p class="is-size-7 two-line">{{ item.tagline }}</p>
-											</div>
-											<div>
-												<b-button v-if="installedList.includes(item.id)"
-														  :loading="item.id == currentInstallId"
-														  rounded size="is-small"
-														  type="is-primary is-light"
-														  @click="openThirdContainerByAppInfo(item)">{{ $t('Open') }}
-												</b-button>
-												<b-button v-else :loading="item.id == currentInstallId"
-														  rounded size="is-small"
-														  type="is-primary is-light"
-														  @click="quickInstall(item.id);$messageBus('appstore_install', item.title)">
-													{{ $t('Install') }}
-												</b-button>
-											</div>
+										<div class="is-flex-grow-1 mr-4 is-clickable"
+											 @click="showAppDetial(item.id);$messageBus('appstore_detail', item.title)">
+											<h6 class="title is-6 mb-2 ">{{ item.title }}</h6>
+											<p class="is-size-7 two-line">{{ item.tagline }}</p>
 										</div>
-									</swiper-slide>
+										<div>
+											<b-button v-if="installedList.includes(item.id)"
+													  :loading="item.id == currentInstallId"
+													  rounded size="is-small"
+													  type="is-primary is-light"
+													  @click="openThirdContainerByAppInfo(item)">{{ $t('Open') }}
+											</b-button>
+											<b-button v-else :loading="item.id == currentInstallId"
+													  rounded size="is-small"
+													  type="is-primary is-light"
+													  @click="quickInstall(item.id);$messageBus('appstore_install', item.title)">
+												{{ $t('Install') }}
+											</b-button>
+										</div>
+									</div>
+								</swiper-slide>
 
-								</swiper>
-								<div :class="{'swiper-button-disabled':disFeaturedPrev}" class="swiper-button-prev"
-									 @click="$refs.featureSwiper.$swiper.slidePrev();$messageBus('appstore_slide')"></div>
-								<div :class="{'swiper-button-disabled':disFeaturedNext}" class="swiper-button-next"
-									 @click="$refs.featureSwiper.$swiper.slideNext();$messageBus('appstore_slide')"></div>
-							</div>
-						</template>
-						<!-- Featured Slider End -->
-
-						<!-- List condition Start -->
-						<div class="is-flex mt-5 mb-5">
-							<!-- Cate Start -->
-							<div class="mr-2 _polymorphic is-flex is-align-items-center _dropdown">
-								<b-dropdown v-model="currentCate" :max-height="240" :mobile-modal="false"
-											animation="fade1" aria-role="list" class="app-select file-dropdown"
-											position="is-bottom-right" scrollable>
-									<template #trigger="{ active }">
-										<div
-											class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
-											<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
-													icon="category"
-													pack="casa"></b-icon>
-											<span class="has-text-full-03">{{ currentCate.name }}</span>
-											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'"
-													class="ml-2 _dropdown__stateIcon"
-													custom-size="casa-16px"></b-icon>
-										</div>
-									</template>
-									<b-dropdown-item v-for="menu in cateMenu" :key="menu.id"
-													 :class="menu.id == currentCate.id?'is-active':''"
-													 :data-title="menu.count"
-													 :value="menu" aria-role="listitem"
-													 class="_dropdown__item">
-										<div class="media is-align-items-center is-flex has-text-full-03"
-											 @click="$messageBus('appstore_type', menu.name)">
-											<div class="media-content">
-												<h3>{{ menu.name }}</h3>
-											</div>
-										</div>
-									</b-dropdown-item>
-								</b-dropdown>
-
-							</div>
-							<!-- Cate End -->
-
-							<!-- Author Start -->
-							<div class="_polymorphic is-flex is-align-items-center _dropdown">
-								<b-dropdown v-model="currentAuthor" :max-height="240" :mobile-modal="false"
-											animation="fade1" aria-role="list" class="app-select file-dropdown"
-											position="is-bottom-right" scrollable>
-									<template #trigger="{ active }">
-										<div
-											class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
-											<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
-													icon="author"
-													pack="casa"></b-icon>
-											<span class="has-text-full-03">{{ currentAuthor.name }}</span>
-											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'"
-													class="ml-2 _dropdown__stateIcon"
-													custom-size="casa-16px"></b-icon>
-										</div>
-									</template>
-									<b-dropdown-item v-for="menu in authorMenu" :key="menu.id"
-													 :class="menu.id == currentAuthor.id?'is-active':''"
-													 :data-title="menu.count"
-													 :value="menu" aria-role="listitem"
-													 class="_dropdown__item">
-										<div class="media is-align-items-center is-flex has-text-full-03"
-											 @click="$messageBus('appstore_author', menu.name)">
-											<div class="media-content">
-												<h3>{{ menu.name }}</h3>
-											</div>
-										</div>
-									</b-dropdown-item>
-								</b-dropdown>
-
-							</div>
-							<!-- Author End -->
-
-							<!-- Sort Start -->
-							<!-- <div>
-							{{ $t('Sort by') }}:
-								<b-dropdown v-model="currentSort" :mobile-modal="false" animation="fade1"
-											aria-role="list" class="app-select file-dropdown"
-											position="is-bottom-right">
-									<template #trigger="{ active }">
-										<div class="button is-text auto-height pl-0 pt-0 pb-0 is-size-14px">
-											{{ currentSort.name }}
-											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'" class="ml-1"
-													size="is-normal"></b-icon>
-										</div>
-									
-									</template>
-									<b-dropdown-item v-for="(menu,index) in sortMenu" :key="'sort_'+index"
-													 :class="menu.slash == currentSort.slash?'is-active':''"
-													 :value="menu" aria-role="listitem">
-										<div class="media align-items-center is-flex"
-											 @click="$messageBus('appstore_sort', menu.name)">
-											<div class="media-content">
-												<h3>{{ menu.name }}</h3>
-											</div>
-										</div>
-									</b-dropdown-item>
-								</b-dropdown>
-							</div>-->
-							<!-- Sort End -->
+							</swiper>
+							<div :class="{'swiper-button-disabled':disFeaturedPrev}" class="swiper-button-prev"
+								 @click="$refs.featureSwiper.$swiper.slidePrev();$messageBus('appstore_slide')"></div>
+							<div :class="{'swiper-button-disabled':disFeaturedNext}" class="swiper-button-next"
+								 @click="$refs.featureSwiper.$swiper.slideNext();$messageBus('appstore_slide')"></div>
 						</div>
+					</template>
+					<!-- Featured Slider End -->
 
-						<!-- List condition End -->
-						<!-- App list Start-->
-						<div class="columns f-list is-multiline is-mobile pb-3 mb-5">
-							<div v-for="(item,index) in pageList" :key="index+item.title+item.id"
-								 class="column app-item is-one-quarter">
+					<!-- List condition Start -->
+					<div class="is-flex mt-5 mb-5">
+						<!-- Cate Start -->
+						<div class="mr-2 _polymorphic is-flex is-align-items-center _dropdown">
+							<b-dropdown v-model="currentCate" :max-height="240" :mobile-modal="false"
+										animation="fade1" aria-role="list" class="app-select file-dropdown"
+										position="is-bottom-right" scrollable>
+								<template #trigger="{ active }">
+									<div
+										class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
+										<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
+												icon="category"
+												pack="casa"></b-icon>
+										<span class="has-text-full-03">{{ currentCate.name }}</span>
+										<b-icon :icon="active ? 'chevron-up' : 'chevron-down'"
+												class="ml-2 _dropdown__stateIcon"
+												custom-size="casa-16px"></b-icon>
+									</div>
+								</template>
+								<b-dropdown-item v-for="menu in cateMenu" :key="menu.id"
+												 :class="menu.id == currentCate.id?'is-active':''"
+												 :data-title="menu.count"
+												 :value="menu" aria-role="listitem"
+												 class="_dropdown__item">
+									<div class="media is-align-items-center is-flex has-text-full-03"
+										 @click="$messageBus('appstore_type', menu.name)">
+										<div class="media-content">
+											<h3>{{ menu.name }}</h3>
+										</div>
+									</div>
+								</b-dropdown-item>
+							</b-dropdown>
+
+						</div>
+						<!-- Cate End -->
+
+						<!-- Author Start -->
+						<div class="_polymorphic is-flex is-align-items-center _dropdown">
+							<b-dropdown v-model="currentAuthor" :max-height="240" :mobile-modal="false"
+										animation="fade1" aria-role="list" class="app-select file-dropdown"
+										position="is-bottom-right" scrollable>
+								<template #trigger="{ active }">
+									<div
+										class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
+										<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
+												icon="author"
+												pack="casa"></b-icon>
+										<span class="has-text-full-03">{{ currentAuthor.name }}</span>
+										<b-icon :icon="active ? 'chevron-up' : 'chevron-down'"
+												class="ml-2 _dropdown__stateIcon"
+												custom-size="casa-16px"></b-icon>
+									</div>
+								</template>
+								<b-dropdown-item v-for="menu in authorMenu" :key="menu.id"
+												 :class="menu.id == currentAuthor.id?'is-active':''"
+												 :data-title="menu.count"
+												 :value="menu" aria-role="listitem"
+												 class="_dropdown__item">
+									<div class="media is-align-items-center is-flex has-text-full-03"
+										 @click="$messageBus('appstore_author', menu.name)">
+										<div class="media-content">
+											<h3>{{ menu.name }}</h3>
+										</div>
+									</div>
+								</b-dropdown-item>
+							</b-dropdown>
+
+						</div>
+						<!-- Author End -->
+
+						<!-- Sort Start -->
+						<!-- <div>
+						{{ $t('Sort by') }}:
+							<b-dropdown v-model="currentSort" :mobile-modal="false" animation="fade1"
+										aria-role="list" class="app-select file-dropdown"
+										position="is-bottom-right">
+								<template #trigger="{ active }">
+									<div class="button is-text auto-height pl-0 pt-0 pb-0 is-size-14px">
+										{{ currentSort.name }}
+										<b-icon :icon="active ? 'chevron-up' : 'chevron-down'" class="ml-1"
+												size="is-normal"></b-icon>
+									</div>
+
+								</template>
+								<b-dropdown-item v-for="(menu,index) in sortMenu" :key="'sort_'+index"
+												 :class="menu.slash == currentSort.slash?'is-active':''"
+												 :value="menu" aria-role="listitem">
+									<div class="media align-items-center is-flex"
+										 @click="$messageBus('appstore_sort', menu.name)">
+										<div class="media-content">
+											<h3>{{ menu.name }}</h3>
+										</div>
+									</div>
+								</b-dropdown-item>
+							</b-dropdown>
+						</div>-->
+						<!-- Sort End -->
+					</div>
+
+					<!-- List condition End -->
+					<!-- App list Start-->
+					<div class="columns f-list is-multiline is-mobile pb-3 mb-5">
+						<div v-for="(item,index) in pageList" :key="index+item.title+item.id"
+							 class="column app-item is-one-quarter">
+							<div class="is-flex  is-align-items-center">
+								<div class="list-icon mr-4 is-clickable" @click="showAppDetial(item.id)">
+									<b-image :src="item.icon"
+											 :src-fallback="require('@/assets/img/app/default.svg')"
+											 class="is-64x64 icon-shadow" webp-fallback=".jpg"></b-image>
+								</div>
+								<div class="is-flex-grow-1 mr-4 is-clickable"
+									 @click="showAppDetial(item.id);$messageBus('appstore_detail', item.title)">
+									<h6 class="title is-6 mb-2">{{ item.title }}</h6>
+									<p class="is-size-7 two-line">{{ item.tagline }}</p>
+								</div>
+
+							</div>
+							<div class="mt-1 ml-7 is-flex is-align-items-center">
+								<div class="is-flex-grow-1 is-size-7 has-text-grey-light">{{
+										item.category
+									}}
+								</div>
+								<b-button v-if="installedList.includes(item.id)"
+										  :loading="item.id == currentInstallId" rounded
+										  size="is-small"
+										  type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">
+									{{ $t('Open') }}
+								</b-button>
+								<b-button v-else :loading="item.id == currentInstallId" rounded
+										  size="is-small"
+										  type="is-primary is-light"
+										  @click="quickInstall(item.id);$messageBus('appstore_install', item.title)">
+									{{ $t('Install') }}
+								</b-button>
+
+							</div>
+						</div>
+					</div>
+
+					<!-- App list End-->
+
+					<!-- Community App List Start -->
+					<template v-if="communityList.length > 0">
+						<h3 class="title is-5 has-text-weight-normal">{{ $t('Community Apps') }}</h3>
+						<h3 class="subtitle is-7 has-text-grey-light">
+							{{
+								$t('From community contributors, not optimized for CasaOS, but provides a basic App experience.')
+							}}
+						</h3>
+
+						<div class="columns f-list is-multiline is-mobile  pb-3 mb-5">
+							<div v-for="(item,index) in communityList " :key="index+item.title+item.id"
+								 class="column is-one-quarter">
 								<div class="is-flex  is-align-items-center">
 									<div class="list-icon mr-4 is-clickable" @click="showAppDetial(item.id)">
 										<b-image :src="item.icon"
@@ -260,16 +308,15 @@
 												 class="is-64x64 icon-shadow" webp-fallback=".jpg"></b-image>
 									</div>
 									<div class="is-flex-grow-1 mr-4 is-clickable"
-										 @click="showAppDetial(item.id);$messageBus('appstore_detail', item.title)">
+										 @click="showAppDetial(item.id);$messageBus('appstorecommunity_detail', item.title)">
 										<h6 class="title is-6 mb-2">{{ item.title }}</h6>
 										<p class="is-size-7 two-line">{{ item.tagline }}</p>
 									</div>
 
 								</div>
 								<div class="mt-1 ml-7 is-flex is-align-items-center">
-									<div class="is-flex-grow-1 is-size-7 has-text-grey-light">{{
-											item.category
-										}}
+									<div class="is-flex-grow-1 is-size-7 has-text-grey-light	">
+										{{ item.category }}
 									</div>
 									<b-button v-if="installedList.includes(item.id)"
 											  :loading="item.id == currentInstallId" rounded
@@ -280,97 +327,50 @@
 									<b-button v-else :loading="item.id == currentInstallId" rounded
 											  size="is-small"
 											  type="is-primary is-light"
-											  @click="quickInstall(item.id);$messageBus('appstore_install', item.title)">
-										{{ $t('Install') }}
+											  @click="quickInstall(item.id);$messageBus('appstorecommunity_install', item.title)">
+										{{
+											$t('Install')
+										}}
 									</b-button>
-
 								</div>
 							</div>
 						</div>
-
-						<!-- App list End-->
-
-						<!-- Community App List Start -->
-						<template v-if="communityList.length > 0">
-							<h3 class="title is-5 has-text-weight-normal">{{ $t('Community Apps') }}</h3>
-							<h3 class="subtitle is-7 has-text-grey-light">
-								{{
-									$t('From community contributors, not optimized for CasaOS, but provides a basic App experience.')
-								}}
-							</h3>
-
-							<div class="columns f-list is-multiline is-mobile  pb-3 mb-5">
-								<div v-for="(item,index) in communityList " :key="index+item.title+item.id"
-									 class="column is-one-quarter">
-									<div class="is-flex  is-align-items-center">
-										<div class="list-icon mr-4 is-clickable" @click="showAppDetial(item.id)">
-											<b-image :src="item.icon"
-													 :src-fallback="require('@/assets/img/app/default.svg')"
-													 class="is-64x64 icon-shadow" webp-fallback=".jpg"></b-image>
-										</div>
-										<div class="is-flex-grow-1 mr-4 is-clickable"
-											 @click="showAppDetial(item.id);$messageBus('appstorecommunity_detail', item.title)">
-											<h6 class="title is-6 mb-2">{{ item.title }}</h6>
-											<p class="is-size-7 two-line">{{ item.tagline }}</p>
-										</div>
-
-									</div>
-									<div class="mt-1 ml-7 is-flex is-align-items-center">
-										<div class="is-flex-grow-1 is-size-7 has-text-grey-light	">
-											{{ item.category }}
-										</div>
-										<b-button v-if="installedList.includes(item.id)"
-												  :loading="item.id == currentInstallId" rounded
-												  size="is-small"
-												  type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">
-											{{ $t('Open') }}
-										</b-button>
-										<b-button v-else :loading="item.id == currentInstallId" rounded
-												  size="is-small"
-												  type="is-primary is-light"
-												  @click="quickInstall(item.id);$messageBus('appstorecommunity_install', item.title)">
-											{{
-												$t('Install')
-											}}
-										</b-button>
-									</div>
-								</div>
-							</div>
-						</template>
-
-						<!-- Community App List End -->
 					</template>
-					<template v-else>
-						<div class="is-flex is-align-items-center is-justify-content-center mt-6 mb-6">
-							<div class=" has-text-centered mt-6 mb-6">
-								<div class="is-flex is-align-items-center mb-5">
-									<b-icon class="mr-2" icon="alert-circle" type="is-danger"></b-icon>
-									{{ $t('There was an error loading the data, please try again!') }}
-								</div>
 
-								<b-button rounded type="is-primary" @click="retry()">Retry</b-button>
-
+					<!-- Community App List End -->
+				</template>
+				<template v-else>
+					<div class="is-flex is-align-items-center is-justify-content-center mt-6 mb-6">
+						<div class=" has-text-centered mt-6 mb-6">
+							<div class="is-flex is-align-items-center mb-5">
+								<b-icon class="mr-2" icon="alert-circle" type="is-danger"></b-icon>
+								{{ $t('There was an error loading the data, please try again!') }}
 							</div>
+
+							<b-button rounded type="is-primary" @click="retry()">Retry</b-button>
 
 						</div>
-					</template>
 
-				</section>
-				<!-- App Store List End -->
+					</div>
+				</template>
 
-				<!-- App Install Form Start -->
-				<section v-if="currentSlide == 1">
-					<!--:config-data="initConfigData"-->
-					<ComposeConfig v-if="isCasa" ref="compose"
-								   :cap-array="capArray"
-								   :docker-compose-commands="dockerComposeConfig" :networks="networks"
-								   :state="state"
-								   :total-memory="totalMemory"
-								   @updateDockerComposeCommands="updateDockerComposeCommands"
-								   @updateMainName="name=> currentInstallId = name"></ComposeConfig>
+			</section>
+			<!-- App Store List End -->
 
+			<!-- App Install Form Start -->
+			<template v-if="currentSlide == 1">
+				<!--:config-data="initConfigData"-->
+				<ComposeConfig v-if="isCasa" ref="compose"
+							   :cap-array="capArray"
+							   :docker-compose-commands="dockerComposeConfig" :networks="networks"
+							   :state="state"
+							   :total-memory="totalMemory"
+							   @updateDockerComposeCommands="updateDockerComposeCommands"
+							   @updateMainName="name=> currentInstallId = name"></ComposeConfig>
+
+				<section v-else :class="{'_hideOverflow': !isCasa}" class="modal-card-body pt-3">
 					<!--	导入"已存在的容器"，进行初始化操作	-->
-					<ValidationObserver v-else ref="containerValida">
+					<ValidationObserver ref="containerValida">
 						<ValidationProvider v-slot="{ errors, valid }" name="appName" rules="required">
 							<b-field :label="$t('App name')+' *'" :message="$t(errors)"
 									 :type="{ 'is-danger': errors[0], 'is-success': valid }">
@@ -413,29 +413,31 @@
 									 expanded></b-input>
 						</b-field>
 					</ValidationObserver>
-				</section>
-				<!-- App Install Form End -->
 
-				<!-- App Install Process Start -->
-				<section v-if="currentSlide == 2" class="_b-line">
-					<div class="installing-warpper mb-5">
-						<div class="is-flex is-align-items-center is-justify-content-center">
-							<lottie-animation :animationData="require('@/assets/ani/loading.json')" :autoPlay="true"
-											  :loop="true"
-											  class="install-animation mt-5 mb-2"></lottie-animation>
-						</div>
-						<b-progress
-							:value="totalPercentage"
-							format="percent"
-							show-value type="is-primary"></b-progress>
-						<h3 :class="currentInstallAppTextClass" class="title is-6 has-text-centered"
-							style="height: 20px"
-							v-html="currentInstallAppText"></h3>
-					</div>
 				</section>
-				<!-- App Install Process End -->
-				<b-loading v-model="isLoading" :can-cancel="false" :is-full-page="false"></b-loading>
+			</template>
+			<!-- App Install Form End -->
+
+			<!-- App Install Process Start -->
+			<section v-if="currentSlide == 2" :class="{'_hideOverflow': !isCasa}"
+					 class="modal-card-body pt-3 _b-line">
+				<div class="installing-warpper mb-5">
+					<div class="is-flex is-align-items-center is-justify-content-center">
+						<lottie-animation :animationData="require('@/assets/ani/loading.json')" :autoPlay="true"
+										  :loop="true"
+										  class="install-animation mt-5 mb-2"></lottie-animation>
+					</div>
+					<b-progress
+						:value="totalPercentage"
+						format="percent"
+						show-value type="is-primary"></b-progress>
+					<h3 :class="currentInstallAppTextClass" class="title is-6 has-text-centered"
+						style="height: 20px"
+						v-html="currentInstallAppText"></h3>
+				</div>
 			</section>
+			<!-- App Install Process End -->
+			<b-loading v-model="isLoading" :can-cancel="false" :is-full-page="false"></b-loading>
 			<!-- Modal-Card Body End -->
 
 		</template>
