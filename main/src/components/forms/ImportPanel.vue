@@ -126,14 +126,14 @@ export default {
 				}
 			} else if (this.activeTab == 0) {
 
-				if (this.checkYAML()) {
-					this.errors = ""
-					this.$emit('update', this.dockerComposeCommands)
-					this.$emit('close')
-				} else {
-					// 	this.errors = this.$t('Please fill correct compose YAML')
-					// 	this.parseError = true;
-				}
+				// if (this.checkYAML()) {
+				this.errors = ""
+				this.$emit('update', this.dockerComposeCommands)
+				this.$emit('close')
+				// } else {
+				// 	this.errors = this.$t('Please fill correct compose YAML')
+				// 	this.parseError = true;
+				// }
 			} else if (this.activeTab == 2) {
 				if (this.appFileLoaded) {
 					this.errors = ""

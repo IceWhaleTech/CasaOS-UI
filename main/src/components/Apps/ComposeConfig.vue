@@ -266,7 +266,7 @@ export default {
 			portSelected: null,
 
 			configData: {
-				name: "main_app",
+				// name: "main_app",
 				services: {
 					main_app: {
 						image: "",
@@ -507,7 +507,7 @@ export default {
 				this.volumes = yaml.volumes || {};
 
 				// set main app name
-				this.configData.name = yaml.name;
+				this.configData.name = yaml?.name;
 				// 解析 services，并将其赋值到 configData.services中。
 				for (const yamlKey in yaml.services) {
 					this.$set(this.configData.services, yamlKey, this.parseCompseItem(yaml.services[yamlKey]));
