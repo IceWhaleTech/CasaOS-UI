@@ -27,7 +27,7 @@
 								 type="textarea"></b-input>
 					</b-field>
 
-					<b-upload ref="importUpload" v-model="dropFiles" accept=".yaml" drag-drop expanded
+					<b-upload ref="importUpload" v-model="dropFiles" accept=".yaml,.yml" drag-drop expanded
 							  @input="onSelect">
 						<section class="section">
 							<div class="content has-text-centered">
