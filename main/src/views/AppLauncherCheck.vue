@@ -80,7 +80,8 @@ export default {
 		// Check container health
 		async healthCheck() {
 			try {
-				let res = await this.$api.container.containerLauncherCheck(this.appDetailData.name)
+				let res = await this.$openAPI.appManagement.compose.checkComposeAppHealthByID(this.appDetailData.name)
+				debugger
 				return res.status === 200
 			} catch (error) {
 				return false
