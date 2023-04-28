@@ -25,7 +25,8 @@
 				<template v-if="index < 1">
 					<b-field grouped>
 						<validation-provider v-if="showHostPost" v-slot="{errors,valid}" rules="yaml_port" slim>
-							<b-field :label="$t('Host')" :type="{ 'is-danger': errors[0], 'is-success': valid }"
+							<b-field :label="$t('Host')"
+									 :type="{ 'is-danger': errors[0], 'is-success': valid && !invalidPortsInUse(item.published), 'is-warning': invalidPortsInUse(item.published)}"
 									 expanded>
 								<b-input :placeholder="$t('Host')"
 										 :value="item.host_ip?`${item.host_ip}:`:'' + item.published" expanded
@@ -56,8 +57,9 @@
 				<template v-else>
 					<b-field grouped>
 						<validation-provider v-slot="{errors,valid}" rules="yaml_port" slim>
-							<b-field :type="{ 'is-danger': errors[0], 'is-success': valid }"
-									 expanded>
+							<b-field
+								:type="{ 'is-danger': errors[0], 'is-success': valid && !invalidPortsInUse(item.published), 'is-warning': invalidPortsInUse(item.published)}"
+								expanded>
 								<b-input v-if="showHostPost" :placeholder="$t('Host')"
 										 :value="item.host_ip?item.host_ip:'' + item.published" expanded
 										 @blur="(event)=> assignPortsItem(event.target._value, item)"
@@ -109,7 +111,8 @@ export default {
 	},
 	props: {
 		vData: Array,
-		showHostPost: Boolean
+		showHostPost: Boolean,
+		ports_in_use: Array,
 	},
 	computed: {
 		items: {
@@ -148,7 +151,10 @@ export default {
 			const partList = val.match(reg);
 			item.host_ip = partList?.[2] || '';
 			item.published = partList?.[4] || val;
-		}
+		},
+		invalidPortsInUse(port) {
+			return this.ports_in_use.includes(port)
+		},
 	},
 }
 </script>
