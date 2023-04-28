@@ -1127,7 +1127,6 @@ export default {
 					this.cancelButtonText = 'Continue in background'
 					this.dockerProgress = new DockerProgress();
 				} else {
-					debugger
 					this.$buefy.toast.open({
 						message: res.data.message,
 						type: 'is-success'
@@ -1251,7 +1250,6 @@ export default {
 		 * @return {*} void
 		 */
 		exportYAML() {
-			debugger
 			const blob = new Blob([this.dockerComposeCommands], {type: ''});
 			FileSaver.saveAs(blob, `${this.currentInstallId}.yaml`);
 		},
