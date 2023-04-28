@@ -348,6 +348,12 @@ export default {
 		dockerComposeCommands: {
 			type: String,
 		},
+		errInfo: {
+			type: Object,
+			default: {
+				ports_in_use: [],
+			}
+		}
 	},
 	watch: {
 		// Watch if Icon url has changed
@@ -386,6 +392,12 @@ export default {
 			},
 			immediate: true,
 		},
+		"errInfo.ports_in_use": {
+			handler(val) {
+				this.ports_in_use = val
+			},
+			immediate: true
+		}
 	},
 	computed: {
 		firstAppName() {

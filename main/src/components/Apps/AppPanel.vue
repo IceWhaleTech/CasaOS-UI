@@ -362,7 +362,7 @@
 				<!--:config-data="initConfigData"-->
 				<ComposeConfig v-if="isCasa" ref="compose"
 							   :cap-array="capArray"
-							   :docker-compose-commands="dockerComposeConfig" :networks="networks"
+							   :docker-compose-commands="dockerComposeConfig" :errInfo="errInfo" :networks="networks"
 							   :state="state"
 							   :total-memory="totalMemory"
 							   @updateDockerComposeCommands="updateDockerComposeCommands"
@@ -611,8 +611,11 @@ export default {
 				container_name: "",
 				appstore_id: 0,
 			},
+			// Assign value to compose_config component
 			dockerComposeConfig: '',
 			capArray: data,
+			errInfo: {},
+
 			pageIndex: 1,
 			pageSize: 5,
 			listTotal: 0,
@@ -1006,6 +1009,9 @@ export default {
 				}
 			}).then(res => {
 				if (res.status == 200) {
+					if (!this.checkComposeApp(res.data, id)) {
+						return
+					}
 					let composeJSON = parse(res.data)
 					if (composeJSON["x-casaos"]?.tips?.before_install?.en_us) {
 						this.$buefy.modal.open({
@@ -1118,6 +1124,22 @@ export default {
 			})
 		},
 
+		checkComposeApp(dockerComposeCommands, appName) {
+			// let api = new ComposeMethodsApiFactory('/v2/app_management');
+			// return api.installComposeApp(dockerComposeCommands, true).then((res) => {
+			return this.$openAPI.appManagement.compose.installComposeApp(dockerComposeCommands, true).then((res) => {
+				if (res.status !== 200) {
+					// Go to compose settings page
+					// TODO Combine dockerComposeConfig and dockerComposeCommands into one.
+					this.dockerComposeConfig = dockerComposeCommands;
+					this.currentSlide = 1;
+					this.errInfo = res.data
+					return false
+				}
+				return true
+			}).catch((e) => {
+			})
+		},
 		installComposeApp(dockerComposeCommands, appName) {
 			return this.$openAPI.appManagement.compose.installComposeApp(dockerComposeCommands).then((res) => {
 				if (res.status === 200) {
