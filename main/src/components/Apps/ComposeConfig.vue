@@ -717,21 +717,6 @@ export default {
 				},
 			};
 
-			// process Item x-casaos
-			// 判断是否存在 x-casaos
-			composeServicesItem["x-casaos"] = merge(
-				{
-					hostname: "",
-					scheme: "http",
-					index: "",
-					port_map: "",
-					host_name: "",
-					// container_name: "",
-					// appstore_id: "",
-				},
-				composeServicesItemInput["x-casaos"] || {}
-			);
-
 			return composeServicesItem;
 		},
 
