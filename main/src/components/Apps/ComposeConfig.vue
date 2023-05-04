@@ -646,7 +646,7 @@ export default {
 			});
 
 			// Devices
-			composeServicesItem.devices = this.makeArray(composeServicesItemInput.device).map((item) => {
+			composeServicesItem.devices = this.makeArray(composeServicesItemInput.devices).map((item) => {
 				let ii = item.split(":");
 				return {
 					container: ii[1],
@@ -829,7 +829,12 @@ export default {
 				let outputService = ConfigData.services[servicesKey];
 				// outputService.memory = service.memory + 'm';
 				outputService.deploy.resources.reservations.memory = service.deploy.resources.reservations.memory + "m";
-				outputService.devices = service.devices.map((device) => {
+				outputService.devices = service.devices.filter(device => {
+					if (device.container || device.host) {
+						return true
+					}
+					return false
+				}).map((device) => {
 					return `${device.host}:${device.container}`;
 				});
 				outputService.environment = service.environment.filter(env => {
