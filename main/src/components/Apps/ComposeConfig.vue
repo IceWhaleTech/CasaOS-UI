@@ -294,7 +294,7 @@ export default {
 				},
 				"x-casaos": {
 					hostname: "",
-					scheme: "https",
+					scheme: "http",
 					index: "/",
 					port_map: "3000",
 					// name: "",
