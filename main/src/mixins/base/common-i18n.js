@@ -10,7 +10,7 @@
 
 const i18n = function (data, fallback = 'en_us') {
 	let lang = localStorage.getItem('lang')
-	return data[lang] || data[fallback] || data['en_US']
+	return data?.[lang] || data?.[fallback] || data?.['en_US']
 }
 
 // Common usage
