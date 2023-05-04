@@ -328,7 +328,7 @@ export default {
 				},
 			},
 
-			ports_in_use: [],
+			ports_in_use: {UDP: [], TCP: []},
 		};
 	},
 	props: {
@@ -541,10 +541,10 @@ export default {
 				let DockerComposeCommands = YAML.stringify(this.configData)
 				this.$openAPI.appManagement.compose.installComposeApp(DockerComposeCommands, true).then((res) => {
 					if (res.status === 200) {
-
+						debugger
 					} else {
-						let temp = res.data?.ports_in_use || {}
-						Object.keys(temp).map(key => this.ports_in_use.concat(temp(key)))
+						this.ports_in_use = res.data?.ports_in_use || {}
+						debugger
 					}
 				})
 
