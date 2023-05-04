@@ -893,9 +893,9 @@ export default {
 						thumbnail: main_app_info.thumbnail,
 						title: ice_i18n(main_app_info.title),
 						state: 0,
-						scheme: main_app_info.apps[id].scheme,
-						port: main_app_info.apps[id].port_map,
-						index: main_app_info.apps[id].index,
+						// scheme: main_app_info.apps[id].scheme,
+						// port: main_app_info.apps[id].port_map,
+						// index: main_app_info.apps[id].index,
 					}
 				})
 			} catch (error) {
@@ -937,9 +937,9 @@ export default {
 						thumbnail: main_app_info.thumbnail,
 						title: ice_i18n(main_app_info.title),
 						state: 0,
-						scheme: main_app_info.apps[id].scheme,
-						port: main_app_info.apps[id].port_map,
-						index: main_app_info.apps[id].index,
+						// scheme: main_app_info.apps[id].scheme,
+						// port: main_app_info.apps[id].port_map,
+						// index: main_app_info.apps[id].index,
 					}
 				})
 				this.pageList = listRes;
