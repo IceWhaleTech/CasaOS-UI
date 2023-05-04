@@ -931,10 +931,6 @@ export default {
 .app-card .modal-card-head.setting-compose-panel {
 	background-color: hsla(208, 16%, 94%, 1);
 }
-
-//.modal-card {
-//	height: 100%;
-//}
 </style>
 <style lang="scss" scoped>
 

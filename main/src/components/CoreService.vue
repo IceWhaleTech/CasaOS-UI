@@ -521,7 +521,8 @@ export default {
 				id: res.Properties["app:name"],
 				success: false,
 				message: res.Properties["message"],
-				icon: res.Properties["app:icon"]
+				icon: res.Properties["app:icon"],
+				isNewTag: true
 			});
 		},
 		"app:update-begin"(res) {

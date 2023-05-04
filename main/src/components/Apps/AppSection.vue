@@ -477,6 +477,9 @@ export default {
 			});
 		},
 		"app:install-error"() {
+			this.getList().then(() => {
+				this.scrollToNewApp();
+			});
 		},
 		"app:uninstall-end"() {
 			this.getList();
