@@ -1437,15 +1437,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@icewhale/casaos-appmanagement-openapi@npm:^0.4.4-alpha4":
-  version: 0.4.4-dev6
-  resolution: "@icewhale/casaos-appmanagement-openapi@npm:0.4.4-dev6"
-  dependencies:
-    axios: ^1.1.0
-  checksum: db25e751798211bf6b5cadad6df6ae71a37d8a7e46da20ddb585f860bbf2dd4e7463f60a193a0ba8a7d385d66d0c33e0897f1c5afe228cb1a2e44610c35ab109
-  languageName: node
-  linkType: hard
-
 "@icewhale/casaos-appmanagement-openapi@npm:latest":
   version: 0.4.4-alpha4
   resolution: "@icewhale/casaos-appmanagement-openapi@npm:0.4.4-alpha4"
@@ -4400,7 +4391,7 @@ __metadata:
     "@babel/core": ^7.20.12
     "@babel/preset-typescript": ^7.18.6
     "@fontsource/roboto": ^4.5.7
-    "@icewhale/casaos-appmanagement-openapi": ^0.4.4-alpha4
+    "@icewhale/casaos-appmanagement-openapi": latest
     "@kangc/v-md-editor": ^1.7.11
     "@mdi/font": ^6.6.96
     "@tiptap/core": ^2.0.0-beta.220

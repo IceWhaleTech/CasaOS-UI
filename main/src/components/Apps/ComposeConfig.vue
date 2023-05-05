@@ -183,7 +183,7 @@
 						<b-field
 							:label="$t('Container Hostname')"
 							:message="$t(errors)"
-							:type="{ 'is-danger': errors[0], 'is-success': valid }"
+							:type="{ 'is-danger': errors[0], 'is-success': valid && service.container_name }"
 						>
 							<b-input
 								v-model="service.container_name"
@@ -280,6 +280,7 @@ export default {
 						environment: [],
 						devices: [],
 						command: [],
+						container_name: "",
 						deploy: {
 							resources: {
 								limits: {
@@ -700,6 +701,10 @@ export default {
 			} else {
 				composeServicesItem.command = [];
 			}
+
+			// container_name
+			// composeServicesItem.container_name = ""
+			this.$set(composeServicesItem, "container_name", "");
 
 			if (
 				composeServicesItemInput.cpu_shares === 0 ||

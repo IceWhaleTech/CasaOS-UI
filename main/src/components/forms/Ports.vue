@@ -26,7 +26,7 @@
 					<b-field grouped>
 						<validation-provider v-if="showHostPost" v-slot="{errors,valid}" rules="yaml_port" slim>
 							<b-field :label="$t('Host')"
-									 :type="{ 'is-danger': errors[0], 'is-success': valid && !invalidPortsInUse(item.published, item.protocol), 'is-warning': invalidPortsInUse(item.published, item.protocol)}"
+									 :type="{ 'is-danger': errors[0], 'is-success': valid && item.published && !invalidPortsInUse(item.published, item.protocol), 'is-warning': invalidPortsInUse(item.published, item.protocol)}"
 									 expanded>
 								<b-input :placeholder="$t('Host')"
 										 :value="item.host_ip?`${item.host_ip}:`:'' + item.published" expanded
@@ -58,7 +58,7 @@
 					<b-field grouped>
 						<validation-provider v-slot="{errors,valid}" rules="yaml_port" slim>
 							<b-field
-								:type="{ 'is-danger': errors[0], 'is-success': valid && !invalidPortsInUse(item.published, item.protocol), 'is-warning': invalidPortsInUse(item.published, item.protocol)}"
+								:type="{ 'is-danger': errors[0], 'is-success': valid && item.published && !invalidPortsInUse(item.published, item.protocol), 'is-warning': invalidPortsInUse(item.published, item.protocol)}"
 								expanded>
 								<b-input v-if="showHostPost" :placeholder="$t('Host')"
 										 :value="item.host_ip?item.host_ip:'' + item.published" expanded
