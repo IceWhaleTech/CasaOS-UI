@@ -271,7 +271,7 @@ export default {
 				services: {
 					main_app: {
 						image: "",
-						mem_reservation: "268435456",
+						mem_reservation: "0",
 						network_mode: "bridge",
 						restart: "unless-stopped",
 						volumes: [],
@@ -296,7 +296,7 @@ export default {
 					hostname: "",
 					scheme: "http",
 					index: "/",
-					port_map: "3000",
+					port_map: "",
 					// name: "",
 					// container_name: "",
 					// appstore_id: "",
@@ -306,7 +306,7 @@ export default {
 					volumes: [],
 
 					author: "",
-					category: "Developer",
+					category: "self",
 					description: {
 						en_us: "",
 					},
