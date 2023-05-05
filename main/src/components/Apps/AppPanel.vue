@@ -585,32 +585,6 @@ export default {
 			networks: [],
 			tempNetworks: [],
 			networkModes: [],
-			initConfigData: {
-				host: "",
-				protocol: "http",
-				port_map: null,
-				cpu_shares: 10,
-				memory: 300,
-				restart: "always",
-				label: "",
-				position: true,
-				index: "",
-				icon: "",
-				network_model: "",
-				image: "",
-				description: "",
-				origin: "custom",
-				ports: [],
-				volumes: [],
-				envs: [],
-				devices: [],
-				cap_add: [],
-				cmd: [],
-				privileged: false,
-				host_name: "",
-				container_name: "",
-				appstore_id: 0,
-			},
 			// Assign value to compose_config component
 			dockerComposeConfig: '',
 			capArray: data,
@@ -1156,8 +1130,7 @@ export default {
 				}
 			}).catch((e) => {
 				this.$buefy.toast.open({
-					message: e.response.data.message,
-					// message: this.$t(`There was an error loading the data, please try again!`),
+					message: e.response.data || e.response.status,
 					type: 'is-danger'
 				})
 			})
