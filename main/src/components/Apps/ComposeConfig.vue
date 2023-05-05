@@ -519,9 +519,10 @@ export default {
 
 				// set main app name
 				this.configData.name = yaml?.name;
+				this.configData.services = {};
 				// 解析 services，并将其赋值到 configData.services中。
-				for (const yamlKey in yaml.services) {
-					this.$set(this.configData.services, yamlKey, this.parseCompseItem(yaml.services[yamlKey]));
+				for (const serviceKey in yaml.services) {
+					this.$set(this.configData.services, serviceKey, this.parseCompseItem(yaml.services[serviceKey]));
 				}
 				// 删除掉原默认主应用。
 				this.$delete(this.configData.services, "main_app");
@@ -944,6 +945,11 @@ export default {
 
 			li {
 				font-size: 0.875rem;
+
+				a {
+					padding-top: 0.75rem;
+					padding-bottom: 5px;
+				}
 			}
 		}
 	}
