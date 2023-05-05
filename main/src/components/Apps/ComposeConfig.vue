@@ -541,10 +541,8 @@ export default {
 				let DockerComposeCommands = YAML.stringify(this.configData)
 				this.$openAPI.appManagement.compose.installComposeApp(DockerComposeCommands, true).then((res) => {
 					if (res.status === 200) {
-						debugger
 					} else {
 						this.ports_in_use = res.data?.ports_in_use || {}
-						debugger
 					}
 				})
 
