@@ -329,6 +329,10 @@ export default {
 			},
 
 			ports_in_use: {UDP: [], TCP: []},
+
+			// other level_config
+			volumes: [],
+
 		};
 	},
 	props: {
@@ -616,7 +620,7 @@ export default {
 					// 1\ replace variable in string for example: ${VOLUME_PATH}:/data
 					// this.volumes 可能为空。
 					Object.keys(this.volumes || {}).map((key) => {
-						item = item.replace(key, this.volumes[key]);
+						item = item.replace(key, this.volumes[key] || "");
 					});
 					// 2\ split string
 					let ii = item.split(":");
@@ -636,8 +640,8 @@ export default {
 				} else if (item) {
 					// 1\ replace value in object for example: {type: 'bind', source: '${VOLUME_PATH}', target: '/data'}
 					Object.keys(this.volumes || {}).map((key) => {
-						item.source = item.source && item.source.replace(key, this.volumes[key] || "");
-						item.target = item.target && item.target.replace(key, this.volumes[key] || "");
+						item.source = item?.source.replace(key, this?.volumes[key] || "");
+						item.target = item?.target
 					});
 
 					return item;
