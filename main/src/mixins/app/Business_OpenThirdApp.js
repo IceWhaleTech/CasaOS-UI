@@ -20,9 +20,7 @@ export default {
 				const port = appInfo.port ? `:${appInfo.port}` : ''
 				const url = `${scheme}://${hostIp}${port}${appInfo.index}`
 
-				if (appInfo.image.toLowerCase().indexOf("qbittorrent") === -1) {
-					isNewWindows ? window.open(url, '_blank') : window.location.replace(url);
-				} else if (isNewWindows) {
+				if (isNewWindows) {
 					var arg = '\u003cscript\u003elocation.replace("' + url + '")\u003c/script\u003e';
 					window.open('javascript:window.name;', arg);
 				} else {
