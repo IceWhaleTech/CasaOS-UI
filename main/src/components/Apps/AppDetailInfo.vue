@@ -131,15 +131,16 @@
 
 <script>
 
-import {Swiper, SwiperSlide} from 'vue-awesome-swiper'
-import business_OpenThirdApp from "@/mixins/app/Business_OpenThirdApp";
-import commonI18n            from "@/mixins/base/common-i18n";
-import app                   from "../../App.vue";
+import {Swiper, SwiperSlide}  from 'vue-awesome-swiper'
+import business_OpenThirdApp  from "@/mixins/app/Business_OpenThirdApp";
+import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
+import commonI18n             from "@/mixins/base/common-i18n";
+import app                    from "../../App.vue";
 
 export default {
 	name: "AppDetailInfo.vue",
 	components: {Swiper, SwiperSlide},
-	mixins: [business_OpenThirdApp, commonI18n],
+	mixins: [business_ShowNewAppTag, business_OpenThirdApp, commonI18n],
 	props: {
 		appDetailData: {
 			type: Object,

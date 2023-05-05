@@ -19,26 +19,7 @@ export default {
 				const scheme = appInfo.scheme || 'http'
 				const port = appInfo.port ? `:${appInfo.port}` : ''
 				const url = `${scheme}://${hostIp}${port}${appInfo.index}`
-				// TODO remove the deprecate code.
-				// let href = window.location.href.split("#")[0]
-				// if (url === href) {
-				//     this.$buefy.toast.open({
-				//         message: this.$t('The page to be opened is the same as current page'),
-				//         type: 'is-warning',
-				//         position: 'is-top',
-				//         duration: 5000,
-				//         queue: false,
-				//         container: null,
-				//         animation: 'fade',
-				//         onOpen: () => {
-				//         },
-				//         onClose: () => {
-				//         },
-				//         ariaRole: 'alert',
-				//         ariaLive: 'polite'
-				//     })
-				//     return
-				// }
+
 				if (appInfo.image.toLowerCase().indexOf("qbittorrent") === -1) {
 					isNewWindows ? window.open(url, '_blank') : window.location.replace(url);
 				} else if (isNewWindows) {
