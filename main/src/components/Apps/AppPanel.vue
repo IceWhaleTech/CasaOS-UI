@@ -1117,11 +1117,11 @@ export default {
 		installComposeApp(dockerComposeCommands, appName) {
 			return this.$openAPI.appManagement.compose.installComposeApp(dockerComposeCommands).then((res) => {
 				if (res.status === 200) {
-					this.currentInstallAppName = appName;
-					this.currentSlide = 2;
-					this.currentInstallAppText = "Start Installation..."
-					this.cancelButtonText = 'Continue in background'
-					this.dockerProgress = new DockerProgress();
+					// this.currentInstallAppName = appName;
+					// this.currentSlide = 2;
+					// this.currentInstallAppText = "Start Installation..."
+					// this.cancelButtonText = 'Continue in background'
+					// this.dockerProgress = new DockerProgress();
 				} else {
 					this.$buefy.toast.open({
 						message: res.data.message,
@@ -1445,6 +1445,13 @@ export default {
 	},
 
 	sockets: {
+		"app:install-begin"(res) {
+			this.currentInstallAppName = res.Properties["app:name"];
+			this.currentSlide = 2;
+			this.currentInstallAppText = "Start Installation..."
+			this.cancelButtonText = 'Continue in background'
+			this.dockerProgress = new DockerProgress();
+		},
 		"app:install-end"(res) {
 			this.installAppProgress({
 				finished: true,

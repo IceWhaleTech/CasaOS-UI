@@ -17,6 +17,21 @@
 		<b-tabs class="has-text-full-03" style="height:100%">
 			<b-tab-item v-for="(service, key) in configData.services" :key="key" :label="key">
 				<ValidationObserver :ref="key + 'valida'">
+					<!--					<ValidationProvider v-slot="{ errors, valid }" name="composeAppName" rules="required">
+											<b-field
+												:label="$t('App Name') + ' *'"
+												:message="$t(errors)"
+												:type="{ 'is-danger': errors[0], 'is-success': valid }"
+											>
+												<b-input
+													v-model="configData.name"
+													:placeholder="$t('e.g.,hello-world:latest')"
+													:readonly="state == 'update'"
+													@input="changeIcon"
+												></b-input>
+											</b-field>
+										</ValidationProvider>-->
+
 					<ValidationProvider v-slot="{ errors, valid }" name="Image" rules="required">
 						<b-field
 							:label="$t('Docker Image') + ' *'"
@@ -512,7 +527,7 @@ export default {
 				this.volumes = yaml.volumes || {};
 
 				// set main app name
-				this.configData.name = yaml?.name;
+				this.configData.name = yaml?.name || "";
 				this.configData.services = {};
 				// 解析 services，并将其赋值到 configData.services中。
 				for (const serviceKey in yaml.services) {
@@ -524,11 +539,11 @@ export default {
 				// 补全必要数据。
 				this.preProcessConfigData(this.configData);
 
-				this.configData["x-casaos"] = merge(this.configData["x-casaos"], {
-					title: {
-						en_us: this.configData.name,
-					},
-				});
+				// this.configData["x-casaos"] = merge(this.configData["x-casaos"], {
+				// 	title: {
+				// 		en_us: this.configData.name || 123123,
+				// 	},
+				// });
 				// set top level x-casaos data
 				this.configData["x-casaos"] = merge(this.configData["x-casaos"], yaml["x-casaos"]);
 
