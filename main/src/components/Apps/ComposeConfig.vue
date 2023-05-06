@@ -378,7 +378,6 @@ export default {
 		// Watch if configData changes
 		configData: {
 			handler(val, newVal) {
-				console.log("watch::configData", val, newVal);
 				if (this.state == "install") {
 					localStorage.setItem("app_data", JSON.stringify(val));
 				}
@@ -389,7 +388,6 @@ export default {
 		dockerComposeCommands: {
 			handler(val) {
 				if (val != null) {
-					console.log("watch::dockerComposeCommands", val);
 					this.parseComposeYaml(val);
 				} else {
 					let gg =
@@ -546,15 +544,6 @@ export default {
 				// });
 				// set top level x-casaos data
 				this.configData["x-casaos"] = merge(this.configData["x-casaos"], yaml["x-casaos"]);
-
-				// check form
-				let DockerComposeCommands = YAML.stringify(this.configData)
-				this.$openAPI.appManagement.compose.installComposeApp(DockerComposeCommands, true).then((res) => {
-					if (res.status === 200) {
-					} else {
-						this.ports_in_use = res.data?.ports_in_use || {}
-					}
-				})
 
 			} catch (error) {
 				console.log(error);
@@ -861,7 +850,18 @@ export default {
 				// 	return `${volume.source}:${volume.target}`
 				// })
 			}
-			console.log("updateConfigDataCommands :: ConfigData", ConfigData);
+			let yaml = YAML.parse(this.dockerComposeCommands);
+			ConfigData = merge(ConfigData, yaml)
+
+			// check
+			let DockerComposeCommands = YAML.stringify(ConfigData)
+			this.$openAPI.appManagement.compose.installComposeApp(DockerComposeCommands, true).then((res) => {
+				if (res.status === 200) {
+				} else {
+					this.ports_in_use = res.data?.ports_in_use || {}
+				}
+			})
+
 			this.$emit("updateDockerComposeCommands", YAML.stringify(ConfigData));
 		},
 
