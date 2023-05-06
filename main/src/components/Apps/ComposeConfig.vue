@@ -262,7 +262,6 @@ export default {
 	},
 	data() {
 		return {
-			appIcon: "",
 			baseUrl: "",
 			portSelected: null,
 
@@ -328,7 +327,7 @@ export default {
 					},
 				},
 			},
-
+			// error info
 			ports_in_use: {UDP: [], TCP: []},
 
 			// other level_config
@@ -361,10 +360,6 @@ export default {
 		}
 	},
 	watch: {
-		// Watch if Icon url has changed
-		"configData.icon": function (val) {
-			this.updateIconUrl(val);
-		},
 		// Watch if configData changes
 		configData: {
 			handler(val, newVal) {
@@ -407,7 +402,10 @@ export default {
 	computed: {
 		firstAppName() {
 			return Object.keys(this.configData.services)[0]
-		}
+		},
+		appIcon() {
+			return this.configData["x-casaos"].icon
+		},
 	},
 	created() {
 		// Set Front-end base url
@@ -456,15 +454,6 @@ export default {
 		changeIcon(image) {
 			this.main_app.icon = this.getIconFromImage(image);
 		},
-
-		/**
-		 * @description:
-		 * @param {*} function
-		 * @return {*}
-		 */
-		updateIconUrl: debounce(function (string) {
-			this.appIcon = string;
-		}, 300),
 
 		/**
 		 * @description: Get App icon form image
@@ -969,6 +958,10 @@ export default {
 		padding-left: 1.5rem;
 		height: calc(100% - 2.75rem);
 		overflow: auto;
+
+		.container-icon {
+			height: 2.5rem;
+		}
 	}
 }
 </style>
