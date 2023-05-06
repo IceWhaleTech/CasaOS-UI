@@ -55,7 +55,6 @@ jobs:
             -   run: yarn add global turbo -W
             -   run: yarn build
             -   run: |
-                    cp ./build/sysroot/var/lib/casaos/www/img/wallpaper0*.jpg ./build/sysroot/var/lib/casaos/www/ui/img/
                     tar -zcvf linux-all-casaos-${{ steps.get_version.outputs.VERSION }}.tar.gz build
             -   name: '更新 Update release'
                 uses: zhanghengxin/git-release-private@ice
