@@ -851,7 +851,7 @@ export default {
 				// })
 			}
 			let yaml = YAML.parse(this.dockerComposeCommands);
-			ConfigData = merge(ConfigData, yaml)
+			ConfigData = merge(yaml, ConfigData)
 
 			// check
 			let DockerComposeCommands = YAML.stringify(ConfigData)
