@@ -144,9 +144,9 @@
 					<b-field :label="$t('Memory Limit')">
 						<vue-slider
 							:max="totalMemory"
-							:min="256"
+							:min="memory_min"
 							:value="service.deploy.resources.reservations.memory | duplexDisplay"
-							@change="(v) => (service.deploy.resources.reservations.memory = v)"
+							@change="(v) => service.deploy.resources.reservations.memory = v"
 						></vue-slider>
 					</b-field>
 
@@ -297,9 +297,7 @@ export default {
 						container_name: "",
 						deploy: {
 							resources: {
-								limits: {
-									// memory: "256M"
-								},
+								limits: {},
 								reservations: {
 									memory: "256M",
 								},
@@ -345,6 +343,7 @@ export default {
 			// error info
 			ports_in_use: {UDP: [], TCP: []},
 
+			memory_min: 256,
 			// other level_config
 			volumes: [],
 
@@ -381,10 +380,11 @@ export default {
 				if (this.state == "install") {
 					localStorage.setItem("app_data", JSON.stringify(val));
 				}
-				this.updateConfigDataCommands(val);
+				this.outputConfigDataCommands(val);
 			},
 			deep: true,
 		},
+		// The parent component passes in data
 		dockerComposeCommands: {
 			handler(val) {
 				if (val != null) {
@@ -424,9 +424,9 @@ export default {
 		// Set Front-end base url
 		this.baseUrl = `${document.domain}`;
 
-		if (this.dockerComposeCommands) {
-			this.parseComposeYaml(this.dockerComposeCommands.trim());
-		}
+		// if (this.dockerComposeCommands) {
+		// 	this.parseComposeYaml(this.dockerComposeCommands.trim());
+		// }
 	},
 
 	methods: {
@@ -518,8 +518,7 @@ export default {
 		parseComposeYaml(val) {
 			try {
 				const yaml = YAML.parse(val);
-				console.log("检测传入的 yaml 文件", yaml);
-				console.log("检测传入的 yaml 文件的 services", yaml.services);
+				console.log("传入的 yaml 文件", yaml);
 
 				// 其他配置
 				this.volumes = yaml.volumes || {};
@@ -529,13 +528,15 @@ export default {
 				this.configData.services = {};
 				// 解析 services，并将其赋值到 configData.services中。
 				for (const serviceKey in yaml.services) {
-					this.$set(this.configData.services, serviceKey, this.parseCompseItem(yaml.services[serviceKey]));
+					let temp = this.parseCompseItem(yaml.services[serviceKey])
+					console.log("temp", temp)
+					this.$set(this.configData.services, serviceKey, temp);
 				}
 				// 删除掉原默认主应用。
 				this.$delete(this.configData.services, "main_app");
 
 				// 补全必要数据。
-				this.preProcessConfigData(this.configData);
+				// this.preProcessConfigData(this.configData);
 
 				// this.configData["x-casaos"] = merge(this.configData["x-casaos"], {
 				// 	title: {
@@ -606,6 +607,7 @@ export default {
 					return item;
 				}
 			});
+			isNil(composeServicesItem.ports) && this.$set(composeServicesItem, "ports", []);
 
 			//Volume
 			// https://yeasy.gitbook.io/docker_practice/compose/compose_file#volumes
@@ -641,6 +643,7 @@ export default {
 					return item;
 				}
 			});
+			isNil(composeServicesItem.volumes) && this.$set(composeServicesItem, "volumes", []);
 
 			// Devices
 			composeServicesItem.devices = this.makeArray(composeServicesItemInput.devices).map((item) => {
@@ -650,6 +653,7 @@ export default {
 					host: ii[0],
 				};
 			});
+			isNil(composeServicesItem.devices) && this.$set(composeServicesItem, "devices", []);
 
 			//Network
 			let pnetwork =
@@ -682,18 +686,17 @@ export default {
 			//cap-add
 			if (composeServicesItemInput.cap_add != undefined) {
 				composeServicesItem.cap_add = composeServicesItemInput.cap_add;
+			} else {
+				composeServicesItem.cap_add = []
 			}
 			//Restart
 			if (composeServicesItemInput.restart != undefined) {
 				composeServicesItem.restart = composeServicesItemInput.restart;
 			}
+			composeServicesItem.restart = composeServicesItem.restart === "no" ? "unless-stopped" : composeServicesItem.restart;
 
 			// command
-			if (composeServicesItemInput.command != undefined) {
-				composeServicesItem.command = composeServicesItemInput.command;
-			} else {
-				composeServicesItem.command = [];
-			}
+			composeServicesItem.command = this.makeArray(composeServicesItemInput.command)
 
 			// container_name
 			// composeServicesItem.container_name = ""
@@ -709,14 +712,21 @@ export default {
 				this.$set(composeServicesItem, "cpu_shares", composeServicesItemInput.cpu_shares);
 			}
 
-			// 赋 默认值
-			composeServicesItem.deploy = {
-				resources: {
-					reservations: {
-						memory: this.totalMemory,
-					},
-				},
-			};
+			// 判断是否存在
+			const memory = composeServicesItemInput?.deploy?.resources?.reservations?.memory;
+			let newMemory = 0
+			if (memory) {
+				// 存在的情况下，检测是否有单位
+				// 检测没有单位的情况
+				if (isNumber(memory - 0) && memory > 0) {
+					newMemory = memory / 1024 / 1024;
+				} else {
+					newMemory = memory.replace(/[Mm]/, "");
+				}
+			}
+			console.log("newMemory", newMemory)
+			let ob = merge(composeServicesItemInput?.deploy, {resources: {reservations: {memory: newMemory || this.totalMemory}}})
+			this.$set(composeServicesItem, "deploy", ob);
 
 			return composeServicesItem;
 		},
@@ -775,44 +785,29 @@ export default {
 
 		// 给 configData 添加默认值
 		preProcessConfigData(data) {
+			console.log("预处理::添加yaml默认值")
 			isNil(data.volumes) ? (this.volumes = data.volumes) : data.volumes;
 			for (const appKey in data.services) {
-				this.preProcessConfigDataItem(data.services[appKey]);
+				let app = data.services[appKey];
+				// default memory
+				// if (!app?.deploy?.resources?.reservations?.memory) {
+				// 	let ob = merge({resources: {reservations: {memory: this.totalMemory}}}, app?.deploy)
+				// 	this.$set(app, "deploy", ob);
+				// }
+
+				// isNil(app.environment) && this.$set(app, "environment", []);
+				// isNil(app.ports) && this.$set(app, "ports", []);
+				// isNil(app.volumes) && this.$set(app, "volumes", []);
+				// isNil(app.devices) && this.$set(app, "devices", []);
+				// network
+				// app.network_mode = app.network_mode === "default" ? "bridge" : app.network_mode;
+				// privileged
+				// isNil(app.cap_add) && this.$set(app, "cap_add", []);
+				// cap_add
+				// restart
+				// app.restart = app.restart === "no" ? "unless-stopped" : app.restart;
 			}
 		},
-
-		/**
-		 * @description: Pre-processed data before setting
-		 * @param {ConfigObject} data
-		 * @return {ConfigObject} data
-		 */
-		// TODO 合并到 yaml
-		preProcessConfigDataItem(app) {
-			isNil(app.environment) && this.$set(app, "environment", []);
-			isNil(app.ports) && this.$set(app, "ports", []);
-			isNil(app.volumes) && this.$set(app, "volumes", []);
-			isNil(app.devices) && this.$set(app, "devices", []);
-			// network
-			app.network_mode = app.network_mode === "default" ? "bridge" : app.network_mode;
-			// privileged
-			isNil(app.cap_add) && this.$set(app, "cap_add", []);
-			// cap_add
-			// restart
-			app.restart = app.restart === "no" ? "unless-stopped" : app.restart;
-
-			return app;
-		},
-
-		/**
-		 * @description: Process the datas before submit
-		 * @param {*}
-		 * @return {*} void
-		 */
-		/*processData() {
-			this.initConfigData.cpu_shares = Number(this.initConfigData.cpu_shares)
-			let model = this.initConfigData.network_mode.split("-");
-			this.initConfigData.network_mode = model[0]
-		},*/
 
 		// ****** migration !!! end !!!
 
@@ -820,7 +815,7 @@ export default {
 		 * follow this.configData
 		 * var : this.configData
 		 * */
-		updateConfigDataCommands(val) {
+		outputConfigDataCommands(val) {
 			// configData tans to docker-compose.yml
 			let ConfigData = cloneDeep(val);
 			for (const servicesKey in val.services) {
@@ -828,8 +823,8 @@ export default {
 				let service = val.services[servicesKey];
 				// 输出结果
 				let outputService = ConfigData.services[servicesKey];
-				// outputService.memory = service.memory + 'm';
-				outputService.deploy.resources.reservations.memory = service.deploy.resources.reservations.memory + "m";
+				// memory
+				outputService.deploy.resources.reservations.memory = service.deploy.resources.reservations.memory + "M";
 				outputService.devices = service.devices.filter(device => {
 					if (device.container || device.host) {
 						return true
@@ -931,10 +926,14 @@ export default {
 				return port.host.indexOf(service.port_map) >= 0;
 			});
 		},
+
 	},
 	filters: {
 		duplexDisplay(val) {
-			return (isNumber(val) && val) || val.replace(/[Mm]/, "");
+			if (!val) {
+				return 256//this.memory_min
+			}
+			return (isNumber(val) && val) || (val && val.replace(/[Mm]/, ""));
 		},
 	},
 };
