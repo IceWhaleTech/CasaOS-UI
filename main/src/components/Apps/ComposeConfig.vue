@@ -228,7 +228,6 @@ import "vue-slider-component/theme/default.css";
 import YAML                                     from "yaml";
 import lowerFirst                               from "lodash/lowerFirst";
 import isNil                                    from "lodash/isNil";
-import find                                     from "lodash/find";
 import {isNumber, isString}                     from "lodash/lang";
 import cloneDeep                                from "lodash/cloneDeep";
 import merge                                    from "lodash/merge";
@@ -390,11 +389,11 @@ export default {
 				if (val != null) {
 					this.parseComposeYaml(val);
 				} else {
-					let gg =
-						find(this.networks, (o) => {
-							return o.driver == "bridge";
-						}) || [];
-					this.configData.network_mode = gg.length > 0 ? gg[0].name : "bridge";
+					// let gg =
+					// 	find(this.networks, (o) => {
+					// 		return o.driver == "bridge";
+					// 	}) || [];
+					// this.configData.network_mode = gg.length > 0 ? gg[0].name : "bridge";
 				}
 			},
 			immediate: true,
