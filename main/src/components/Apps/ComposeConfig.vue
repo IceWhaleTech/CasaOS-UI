@@ -423,10 +423,6 @@ export default {
 	created() {
 		// Set Front-end base url
 		this.baseUrl = `${document.domain}`;
-
-		// if (this.dockerComposeCommands) {
-		// 	this.parseComposeYaml(this.dockerComposeCommands.trim());
-		// }
 	},
 
 	methods: {
@@ -528,15 +524,10 @@ export default {
 				this.configData.services = {};
 				// 解析 services，并将其赋值到 configData.services中。
 				for (const serviceKey in yaml.services) {
-					let temp = this.parseCompseItem(yaml.services[serviceKey])
-					console.log("temp", temp)
-					this.$set(this.configData.services, serviceKey, temp);
+					this.$set(this.configData.services, serviceKey, this.parseCompseItem(yaml.services[serviceKey]));
 				}
 				// 删除掉原默认主应用。
 				this.$delete(this.configData.services, "main_app");
-
-				// 补全必要数据。
-				// this.preProcessConfigData(this.configData);
 
 				// this.configData["x-casaos"] = merge(this.configData["x-casaos"], {
 				// 	title: {
@@ -781,32 +772,6 @@ export default {
 		makeArray(foo) {
 			const newArray = typeof foo == "string" ? [foo] : foo;
 			return newArray == undefined ? [] : newArray;
-		},
-
-		// 给 configData 添加默认值
-		preProcessConfigData(data) {
-			console.log("预处理::添加yaml默认值")
-			isNil(data.volumes) ? (this.volumes = data.volumes) : data.volumes;
-			for (const appKey in data.services) {
-				let app = data.services[appKey];
-				// default memory
-				// if (!app?.deploy?.resources?.reservations?.memory) {
-				// 	let ob = merge({resources: {reservations: {memory: this.totalMemory}}}, app?.deploy)
-				// 	this.$set(app, "deploy", ob);
-				// }
-
-				// isNil(app.environment) && this.$set(app, "environment", []);
-				// isNil(app.ports) && this.$set(app, "ports", []);
-				// isNil(app.volumes) && this.$set(app, "volumes", []);
-				// isNil(app.devices) && this.$set(app, "devices", []);
-				// network
-				// app.network_mode = app.network_mode === "default" ? "bridge" : app.network_mode;
-				// privileged
-				// isNil(app.cap_add) && this.$set(app, "cap_add", []);
-				// cap_add
-				// restart
-				// app.restart = app.restart === "no" ? "unless-stopped" : app.restart;
-			}
 		},
 
 		// ****** migration !!! end !!!
