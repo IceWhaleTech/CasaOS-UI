@@ -803,8 +803,14 @@ export default {
 				});
 			}
 			let yaml = YAML.parse(this.dockerComposeCommands);
-			ConfigData = merge(yaml, ConfigData)
+			Object.keys(yaml.services).map(key => {
+				yaml.services[key].ports = [];
+				yaml.services[key].volumes = [];
+				yaml.services[key].devices = [];
+				yaml.services[key].cap_add = [];
+			})
 
+			ConfigData = merge(yaml, ConfigData)
 			// check
 			let DockerComposeCommands = YAML.stringify(ConfigData)
 			this.$openAPI.appManagement.compose.installComposeApp(DockerComposeCommands, true).then((res) => {
