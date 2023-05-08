@@ -529,11 +529,6 @@ export default {
 				// 删除掉原默认主应用。
 				this.$delete(this.configData.services, "main_app");
 
-				// this.configData["x-casaos"] = merge(this.configData["x-casaos"], {
-				// 	title: {
-				// 		en_us: this.configData.name || 123123,
-				// 	},
-				// });
 				// set top level x-casaos data
 				this.configData["x-casaos"] = merge(this.configData["x-casaos"], yaml["x-casaos"]);
 
@@ -806,9 +801,6 @@ export default {
 				}).map((env) => {
 					return `${env.container}=${env.host}`;
 				});
-				// outputService.volumes = service.volumes.map(volume => {
-				// 	return `${volume.source}:${volume.target}`
-				// })
 			}
 			let yaml = YAML.parse(this.dockerComposeCommands);
 			ConfigData = merge(yaml, ConfigData)
