@@ -803,6 +803,7 @@ export default {
 				yaml.services[key].volumes = [];
 				yaml.services[key].devices = [];
 				yaml.services[key].cap_add = [];
+				yaml.services[key].command = [];
 			})
 
 			ConfigData = merge(yaml, ConfigData)
