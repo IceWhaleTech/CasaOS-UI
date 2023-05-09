@@ -68,7 +68,7 @@
 			</div>
 			<div v-else-if="noticeData.contentType === 'progress'"
 				 class="info is-flex is-flex-direction-column is-justify-content-center is-flex-grow-1">
-				<div class="has-text-grey-200 _is-normal mb-2 is-flex-wrap-nowrap _nowrap _fixed-height">
+				<div class="has-text-grey-200 _is-normal mb-2 is-flex-wrap-nowrap _nowrap">
 					{{ noticeData.content.text }}
 				</div>
 				<b-progress :value="noticeData.content.value" size="c-is-small" type="is-primary"></b-progress>

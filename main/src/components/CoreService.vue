@@ -404,17 +404,25 @@ export default {
 		},
 
 		transformAppInstallationProgress(res) {
-			if (this.noticesData[res.name]) {
-				// update progress
-				if (res.finished) {
+			// 4. delete the old one
+			// 5. Accidents skip ::When the end occurs more than once, it will be skipped.
+			if (res.finished) {
+				if (this.noticesData[res.name]) {
 					this.removeNotice(res.name);
-					this.$EventBus.$emit(events.RELOAD_APP_LIST);
-					if (res.isNewTag) {
-						// business :: Tagging of new app / scrollIntoView
-						this.addIdToSessionStorage(res.name)
-					}
-				} else if (res.message !== "") {
-					const messageArray = res.message.split(/[(\r\n)\r\n]+/);
+				}
+				this.$EventBus.$emit(events.RELOAD_APP_LIST);
+				if (res.isNewTag) {
+					// business :: Tagging of new app / scrollIntoView
+					this.addIdToSessionStorage(res.name)
+				}
+				return;
+			}
+
+			// 2. update noticesData
+			if (this.noticesData[res.name]) {
+				if (res.message !== "") {
+					console.log(res.message)
+					const messageArray = res.message?.split(/[(\r\n)\r\n]+/) || [];
 					messageArray.forEach((item, index) => {
 						if (!item) {
 							messageArray.splice(index, 1);
@@ -422,13 +430,10 @@ export default {
 					})
 					let totalPercentage = undefined;
 					const lastMessage = last(messageArray)
+					if (!lastMessage) {
+						return;
+					}
 					if (/Err/.test(lastMessage)) {
-						console.log(111111111, lastMessage)
-						this.$set(this.noticesData[res.name], 'content', {
-							text: lastMessage,
-							value: 0
-						})
-						debugger
 						console.error(lastMessage)
 						return;
 					}
@@ -454,15 +459,15 @@ export default {
 				}
 				return
 			}
-			// When the end occurs more than once, it will be skipped.
-			if (res.finished) {
-				return;
-			}
-			// add new app_install notice
+
+			// 1. add notice::add new app_install notice
 			const data = {
-				title: 'Installing app',
+				title: res?.title || 'Installing app',
 				icon: res.icon,
-				content: res.message || "",
+				content: {
+					text: res?.message,
+					value: 0
+				},
 				// show progress
 				contentType: 'progress',
 				// show Cancel button
@@ -477,14 +482,12 @@ export default {
 			this.$buefy.toast.open({
 				message: "The setting of " + res.Properties["app:name"] + " is complete",
 				duration: 5000,
-				type: "is-danger"
+				type: "is-success"
 			})
 			this.transformAppInstallationProgress({
 				finished: true,
 				// First name. Second app:name.The name from CheckThenUpdate.The app:name from install.
 				name: res.Properties["app:name"],
-				id: res.Properties["app:name"],
-				success: false,
 				message: res.Properties["message"],
 				icon: res.Properties["app:icon"]
 			});
@@ -496,11 +499,12 @@ export default {
 				type: "is-danger"
 			})
 			this.transformAppInstallationProgress({
-				finished: true,
+				// Display error messages
+				finished: false,
 				// First name. Second app:name.The name from CheckThenUpdate.The app:name from install.
-				name: res.Properties["app:name"],
-				id: res.Properties["app:name"],
+				name: res.Properties["app:name"] + "error",
 				success: false,
+				title: res.Properties["app:name"] + "Error Info",
 				message: res.Properties["message"],
 				icon: res.Properties["app:icon"]
 			});
@@ -517,11 +521,12 @@ export default {
 		},
 		"app:install-error"(res) {
 			this.transformAppInstallationProgress({
-				finished: true,
+				// Display error messages
+				finished: false,
 				// First name. Second app:name.The name from CheckThenUpdate.The app:name from install.
-				name: res.Properties["app:name"],
-				id: res.Properties["app:name"],
+				name: res.Properties["app:name"] + "error",
 				success: false,
+				title: res.Properties["app:name"] + "Error Info",
 				message: res.Properties["message"],
 				icon: res.Properties["app:icon"],
 				isNewTag: true
