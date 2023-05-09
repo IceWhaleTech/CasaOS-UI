@@ -30,10 +30,10 @@
 			<!-- end of section head-->
 
 			<!-- start of section body-->
-			<!--			list-->
+			<!-- list-->
 			<div
-			v-if="noticeData.contentType === 'list'"
-			class="info is-flex is-flex-direction-column is-justify-content-space-around is-flex-grow-1">
+				v-if="noticeData.contentType === 'list'"
+				class="info is-flex is-flex-direction-column is-justify-content-space-around is-flex-grow-1">
 				<div class="_widget-body is-flex mr-0">
 					<div class="image is-24x24 is-flex-shrink-0">
 						<img v-if="!noticeData.content[Object.keys(noticeData.content)[0]].icon"
@@ -103,10 +103,6 @@
 </template>
 
 <script>
-
-// import StorageManagerPanel from "@/components/Storage/StorageManagerPanel.vue";
-// import DiskLearnMore from "@/components/Storage/DiskLearnMore.vue";
-
 export default {
 	name: "notice-block",
 	props: {
@@ -264,12 +260,5 @@ export default {
 ::v-deep .progress.c-is-small {
 	height: 0.75rem !important;
 	border-radius: 0.5rem;
-	//background: rgba(172, 184, 195, 0.4);
-	//
-	//&::-webkit-progress-bar {
-	//	background: rgba(172, 184, 195, 0.4);
-	//}
-	//
-	//background-image: linear-gradient(to right, hsl(216deg, 90%, 54%) 30%, hsl(0deg, 0%, 93%) 30%) !important;
 }
 </style>

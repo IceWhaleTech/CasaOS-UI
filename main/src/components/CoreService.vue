@@ -38,10 +38,10 @@ import SyncBlock              from "@/components/syncthing/SyncBlock.vue";
 import SmartBlock             from "@/components/smartHome/SmartBlock.vue";
 import events                 from "@/events/events";
 import Business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
-// import StorageManagerPanel from "@/components/Storage/StorageManagerPanel.vue";
 import DiskLearnMore          from "@/components/Storage/DiskLearnMore.vue";
-// import DockerProgress from "@/components/Apps/progress.js";
 import last                   from "lodash/last";
+// import DockerProgress from "@/components/Apps/progress.js";
+// import StorageManagerPanel from "@/components/Storage/StorageManagerPanel.vue";
 
 export default {
 	components: {SmartBlock, SyncBlock, noticeBlock, Swiper, SwiperSlide},
@@ -423,6 +423,12 @@ export default {
 					let totalPercentage = undefined;
 					const lastMessage = last(messageArray)
 					if (/Err/.test(lastMessage)) {
+						console.log(111111111, lastMessage)
+						this.$set(this.noticesData[res.name], 'content', {
+							text: lastMessage,
+							value: 0
+						})
+						debugger
 						console.error(lastMessage)
 						return;
 					}
@@ -477,7 +483,6 @@ export default {
 				finished: true,
 				// First name. Second app:name.The name from CheckThenUpdate.The app:name from install.
 				name: res.Properties["app:name"],
-				// id: res.Properties["docker:container:id"],
 				id: res.Properties["app:name"],
 				success: false,
 				message: res.Properties["message"],
@@ -494,7 +499,6 @@ export default {
 				finished: true,
 				// First name. Second app:name.The name from CheckThenUpdate.The app:name from install.
 				name: res.Properties["app:name"],
-				// id: res.Properties["docker:container:id"],
 				id: res.Properties["app:name"],
 				success: false,
 				message: res.Properties["message"],
@@ -506,7 +510,6 @@ export default {
 				finished: true,
 				// First name. Second app:name.The name from CheckThenUpdate.The app:name from install.
 				name: res.Properties["app:name"],
-				// id: res.Properties["docker:container:id"],
 				id: res.Properties["app:name"],
 				icon: res.Properties["app:icon"],
 				isNewTag: true
@@ -517,7 +520,6 @@ export default {
 				finished: true,
 				// First name. Second app:name.The name from CheckThenUpdate.The app:name from install.
 				name: res.Properties["app:name"],
-				// id: res.Properties["docker:container:id"],
 				id: res.Properties["app:name"],
 				success: false,
 				message: res.Properties["message"],
@@ -547,7 +549,6 @@ export default {
 				finished: false,
 				// First name. Second app:name.The name from CheckThenUpdate.The app:name from install.
 				name: res.Properties["app:name"],
-				// id: res.Properties["docker:container:id"],
 				id: res.Properties["app:name"],
 				success: true,
 				type: "pull",
