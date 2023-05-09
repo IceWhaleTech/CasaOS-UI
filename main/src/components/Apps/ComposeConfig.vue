@@ -145,8 +145,8 @@
 						<vue-slider
 							:max="totalMemory"
 							:min="memory_min"
-							:value="service.deploy.resources.reservations.memory | duplexDisplay"
-							@change="(v) => service.deploy.resources.reservations.memory = v"
+							:value="service.deploy.resources.limits.memory | duplexDisplay"
+							@change="(v) => service.deploy.resources.limits.memory = v"
 						></vue-slider>
 					</b-field>
 
@@ -280,7 +280,6 @@ export default {
 			portSelected: null,
 
 			configData: {
-				// name: "main_app",
 				services: {
 					main_app: {
 						image: "",
@@ -297,9 +296,6 @@ export default {
 						deploy: {
 							resources: {
 								limits: {},
-								reservations: {
-									memory: "256M",
-								},
 							},
 						},
 					},
@@ -312,31 +308,31 @@ export default {
 					// name: "",
 					// container_name: "",
 					// appstore_id: "",
-					envs: [],
-					ports: [],
-					shell: "sh",
-					volumes: [],
+					// envs: [],
+					// ports: [],
+					// shell: "sh",
+					// volumes: [],
 
-					author: "",
+					author: "self",
 					category: "self",
-					description: {
-						en_us: "",
-					},
-					developer: "",
+					// description: {
+					// 	en_us: "",
+					// },
+					// developer: "",
 					icon: "",
-					screenshot_link: [],
-					tagline: {
-						en_us: "",
-					},
-					thumbnail: "",
-					tips: {
-						before_install: {
-							en_us: "",
-						},
-					},
-					title: {
-						en_us: "",
-					},
+					// screenshot_link: [],
+					// tagline: {
+					// 	en_us: "",
+					// },
+					// thumbnail: "",
+					// tips: {
+					// 	before_install: {
+					// 		en_us: "",
+					// 	},
+					// },
+					// title: {
+					// 	en_us: "",
+					// },
 				},
 			},
 			// error info
@@ -684,8 +680,8 @@ export default {
 			composeServicesItem.command = this.makeArray(composeServicesItemInput.command)
 
 			// container_name
-			// composeServicesItem.container_name = ""
-			this.$set(composeServicesItem, "container_name", "");
+			composeServicesItem.container_name = composeServicesItemInput?.container_name || ""
+			// this.$set(composeServicesItem, "container_name", composeServicesItemInput?.container_name);
 
 			if (
 				composeServicesItemInput.cpu_shares === 0 ||
@@ -698,7 +694,7 @@ export default {
 			}
 
 			// 判断是否存在
-			const memory = composeServicesItemInput?.deploy?.resources?.reservations?.memory;
+			const memory = composeServicesItemInput?.deploy?.resources?.limits?.memory;
 			let newMemory = 0
 			if (memory) {
 				// 存在的情况下，检测是否有单位
@@ -710,7 +706,7 @@ export default {
 				}
 			}
 			console.log("newMemory", newMemory)
-			let ob = merge(composeServicesItemInput?.deploy, {resources: {reservations: {memory: newMemory || this.totalMemory}}})
+			let ob = merge(composeServicesItemInput?.deploy, {resources: {limits: {memory: newMemory || this.totalMemory}}})
 			this.$set(composeServicesItem, "deploy", ob);
 
 			return composeServicesItem;
@@ -783,7 +779,7 @@ export default {
 				// 输出结果
 				let outputService = ConfigData.services[servicesKey];
 				// memory
-				outputService.deploy.resources.reservations.memory = service.deploy.resources.reservations.memory + "M";
+				outputService.deploy.resources.limits.memory = service.deploy.resources.limits.memory + "M";
 				outputService.devices = service.devices.filter(device => {
 					if (device.container || device.host) {
 						return true
