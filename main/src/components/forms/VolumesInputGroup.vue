@@ -101,6 +101,7 @@ export default {
 	methods: {
 		addItem() {
 			let itemObj = {
+				type: "bind",
 				target: "",
 				source: ""
 			}
