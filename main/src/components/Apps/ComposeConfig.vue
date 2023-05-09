@@ -336,7 +336,7 @@ export default {
 				},
 			},
 			// error info
-			ports_in_use: {UDP: [], TCP: []},
+			ports_in_use: {udp: [], tcp: []},
 
 			memory_min: 256,
 			// other level_config
@@ -808,12 +808,17 @@ export default {
 			ConfigData = merge(yaml, ConfigData)
 			// check
 			let DockerComposeCommands = YAML.stringify(ConfigData)
-			this.$openAPI.appManagement.compose.installComposeApp(DockerComposeCommands, true).then((res) => {
-				if (res.status === 200) {
-				} else {
-					this.ports_in_use = res.data?.ports_in_use || {}
-				}
+			this.$api.apps.checkPort().then(res => {
+				this.ports_in_use = res.data?.data || {}
 			})
+			// this.$openAPI.appManagement.compose.installComposeApp(DockerComposeCommands, true).then((res) => {
+			// 	debugger
+			//
+			// 	if (res.status === 200) {
+			// 	} else {
+			// 		this.ports_in_use = res.data || {}
+			// 	}
+			// })
 
 			this.$emit("updateDockerComposeCommands", YAML.stringify(ConfigData));
 		},

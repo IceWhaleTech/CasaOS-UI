@@ -24,9 +24,11 @@
 			<ValidationObserver ref="ob" v-slot="{ invalid }" slim>
 				<template v-if="index < 1">
 					<b-field grouped>
-						<validation-provider v-if="showHostPost" v-slot="{errors,valid}" rules="yaml_port" slim>
+						<validation-provider v-if="showHostPost" v-slot="{errors,valid}"
+											 :rules="'yaml_port|not_in_ports:'+  invalidPortsInUse(item.published, item.protocol)"
+											 slim>
 							<b-field :label="$t('Host')"
-									 :type="{ 'is-danger': errors[0], 'is-success': valid && item.published && !invalidPortsInUse(item.published, item.protocol), 'is-warning': invalidPortsInUse(item.published, item.protocol)}"
+									 :type="{ 'is-danger': errors[0], 'is-success': valid}"
 									 expanded>
 								<b-input :placeholder="$t('Host')"
 										 :value="item.host_ip?`${item.host_ip}:`:'' + item.published" expanded
@@ -38,7 +40,9 @@
 						<validation-provider v-slot="{errors,valid}" rules="yaml_port" slim>
 							<b-field :label="$t('Container')" :type="{ 'is-danger': errors[0], 'is-success': valid }"
 									 expanded>
-								<b-input v-model.number="item.target" :placeholder="$t('Container')" expanded
+								<b-input v-model.number="item.target"
+										 :placeholder="$t('Container')"
+										 expanded
 								></b-input>
 							</b-field>
 						</validation-provider>
@@ -56,9 +60,11 @@
 				</template>
 				<template v-else>
 					<b-field grouped>
-						<validation-provider v-slot="{errors,valid}" rules="yaml_port" slim>
+						<validation-provider v-slot="{errors,valid}"
+											 :rules="'yaml_port|not_in_ports:'+  invalidPortsInUse(item.published, item.protocol)"
+											 slim>
 							<b-field
-								:type="{ 'is-danger': errors[0], 'is-success': valid && item.published && !invalidPortsInUse(item.published, item.protocol), 'is-warning': invalidPortsInUse(item.published, item.protocol)}"
+								:type="{ 'is-danger': errors[0], 'is-success': valid}"
 								expanded>
 								<b-input v-if="showHostPost" :placeholder="$t('Host')"
 										 :value="item.host_ip?item.host_ip:'' + item.published" expanded
@@ -114,7 +120,7 @@ export default {
 		showHostPost: Boolean,
 		ports_in_use: {
 			default: () => {
-				return {TCP: [], UDP: []}
+				return {tcp: [], udp: []}
 			},
 			type: Object
 		},
@@ -157,17 +163,28 @@ export default {
 			item.host_ip = partList?.[2] || '';
 			item.published = partList?.[4] || val;
 		},
+		
 		/*
 		* type : tcp/udp
 		* */
 		invalidPortsInUse(port, type) {
+			port = port - 0;
 			if (type === 'both') {
-				return (this.ports_in_use?.["UDP"] || []).includes(port) || (this.ports_in_use?.["TCP"] || []).includes(port)
+				return (this.ports_in_use?.["udp"] || []).includes(port) || (this.ports_in_use?.["tcp"] || []).includes(port)
 			}
 			if (type) {
-				return (this.ports_in_use?.[type.toUpperCase()] || []).includes(port)
+				return (this.ports_in_use?.[type] || []).includes(port)
 			}
 			return false;
+		},
+
+		invalidPortsInUseRule(type) {
+			if (type === 'both') {
+				return (this.ports_in_use?.["udp"] || []).concat((this.ports_in_use?.["tcp"] || [])).join(',')
+			}
+			if (type) {
+				return (this.ports_in_use?.[type] || []).join(',')
+			}
 		},
 	},
 }

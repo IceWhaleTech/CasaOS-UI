@@ -62,3 +62,9 @@ extend('yaml_port', {
 	},
 	message: 'The field mast be a valid docker-compose port',
 })
+
+const notInPorts = (value, isInPorts) => {
+	return true
+	// return isInPorts?.[0] !== 'true'
+}
+extend('not_in_ports', notInPorts)

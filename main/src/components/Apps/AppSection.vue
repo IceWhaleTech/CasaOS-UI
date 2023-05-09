@@ -490,7 +490,7 @@ export default {
 		},
 		"app:apply-changes-end"(res) {
 			// toast info
-			this.messageBusToast(res.Properties['app:name'] + 'is OK', 'is-success');
+			this.messageBusToast(res.Properties['app:name'] + ' is OK', 'is-success');
 
 			// business :: Tagging of new app / scrollIntoView
 			this.addIdToSessionStorage(res.Properties['app:name'])

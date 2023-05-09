@@ -44,6 +44,11 @@ const apps = {
 		return api.patch(`${PREFIX2}/container/${id}`);
 	},
 
+	// Check port
+	checkPort() {
+		return api.get(`/v2/casaos/health/ports`);
+	}
+
 }
 
 export default apps;
