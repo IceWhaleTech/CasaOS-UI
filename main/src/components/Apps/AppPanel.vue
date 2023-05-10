@@ -46,8 +46,8 @@
 			<app-side-bar v-model="sidebarOpen" :overlay="true" :right="true" position="absolute">
 				<template slot-scope="{close}">
 					<AppDetailInfo :appDetailData="appDetailData" :arch="arch"
-								   :cateMenu="cateMenu" :close="close"
-								   :currentInstallId="currentInstallId"
+								   :cateMenu="cateMenu"
+								   :close="close" :currentInstallId="currentInstallId"
 								   :installedList="installedList" :showDetailSwiper="showDetailSwiper"
 								   @install="quickInstall">
 					</AppDetailInfo>
@@ -129,7 +129,8 @@
 													  type="is-primary is-light"
 													  @click="openThirdContainerByAppInfo(item)">{{ $t('Open') }}
 											</b-button>
-											<b-button v-else :loading="item.id == currentInstallId"
+											<b-button v-else :disabled="!item.architectures?.includes(arch)"
+													  :loading="item.id == currentInstallId"
 													  rounded size="is-small"
 													  type="is-primary is-light"
 													  @click="quickInstall(item.id);$messageBus('appstore_install', item.title)">
@@ -276,7 +277,9 @@
 										  type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">
 									{{ $t('Open') }}
 								</b-button>
-								<b-button v-else :loading="item.id == currentInstallId" rounded
+								<b-button v-else :disabled="!item.architectures?.includes(arch)"
+										  :loading="item.id == currentInstallId"
+										  rounded
 										  size="is-small"
 										  type="is-primary is-light"
 										  @click="quickInstall(item.id);$messageBus('appstore_install', item.title)">
@@ -324,7 +327,9 @@
 											  type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">
 										{{ $t('Open') }}
 									</b-button>
-									<b-button v-else :loading="item.id == currentInstallId" rounded
+									<b-button v-else :disabled="!item.architectures?.includes(arch)"
+											  :loading="item.id == currentInstallId"
+											  rounded
 											  size="is-small"
 											  type="is-primary is-light"
 											  @click="quickInstall(item.id);$messageBus('appstorecommunity_install', item.title)">
@@ -867,6 +872,7 @@ export default {
 						thumbnail: main_app_info.thumbnail,
 						title: ice_i18n(main_app_info.title),
 						state: 0,
+						architectures: main_app_info.architectures,
 						// scheme: main_app_info.apps[id].scheme,
 						// port: main_app_info.apps[id].port_map,
 						// index: main_app_info.apps[id].index,
@@ -911,6 +917,7 @@ export default {
 						thumbnail: main_app_info.thumbnail,
 						title: ice_i18n(main_app_info.title),
 						state: 0,
+						architectures: main_app_info.architectures,
 						// scheme: main_app_info.apps[id].scheme,
 						// port: main_app_info.apps[id].port_map,
 						// index: main_app_info.apps[id].index,
