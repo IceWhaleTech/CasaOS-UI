@@ -64,7 +64,7 @@
 		<b-modal v-model="isFileActive" :can-cancel="[]" :destroy-on-hide="false" animation="zoom-in" aria-modal
 				 custom-class="file-panel" full-screen has-modal-card @after-enter="afterFileEnter">
 			<template #default="props">
-				<file-panel ref="filePanel" @close="props.close"></file-panel>
+				<div id="container_file" ref="filePanel" @close="props.close"></div>
 			</template>
 		</b-modal>
 		<!-- File Panel End -->
@@ -78,11 +78,11 @@ import SideBar             from '@/components/SideBar.vue';
 import TopBar              from '@/components/TopBar.vue';
 import CoreService         from '@/components/CoreService.vue';
 import AppSection          from '@/components/Apps/AppSection.vue';
-import FilePanel           from '@/components/filebrowser/FilePanel.vue'
 import UpdateCompleteModal from '@/components/settings/UpdateCompleteModal.vue';
 import {mixin}             from '@/mixins/mixin';
 import events              from '@/events/events';
 import {nanoid}            from 'nanoid';
+import {loadMicroApp}      from "qiankun";
 
 
 const wallpaperConfig = "wallpaper"
@@ -96,7 +96,6 @@ export default {
 		AppSection,
 		TopBar,
 		CoreService,
-		FilePanel,
 	},
 	data() {
 		return {
@@ -113,7 +112,8 @@ export default {
 	},
 	provide() {
 		return {
-			homeShowFiles: this.showFiles,
+			// homeShowFiles: this.showFiles,
+			homeShowFiles: this.showMircoApp,
 		};
 	},
 
@@ -204,8 +204,58 @@ export default {
 		 */
 		showFiles(path) {
 			this.isFileActive = true
-			this.$nextTick(() => {
-				this.$refs.filePanel.init(path)
+			// this.$refs.filePanel.init(path)
+			// this.$microApp([{
+			// 	name: 'vueApp',
+			// 	entry: '/modules/icewhale_files/',
+			// container: '#container_file',
+			// activeRule: '/app-vue',
+			// }])
+			// this.$router.push({
+			// 	path: '/app-vue',
+			// 	query: {
+			// 		path: path
+			// 	}
+			// })
+			// loadMicroApp({
+			// 	name: 'vueApp',
+			// 	entry: '/modules/icewhale_files/',
+			// 	container: '#container_file',
+			// 	props: {
+			// 		slogan: 'hello'
+			// 	},
+			// 	sandbox: {
+			// 		experimentalStyleIsolation: true
+			// 	}
+			// })
+		},
+		showMircoApp() {
+			const vnode = this.$createElement('div', {
+				class: "mirco-app",
+				attrs: {
+					id: "microApp"
+				}
+			})
+			const microApp = loadMicroApp({
+				name: 'microApp',
+				entry: '/modules/icewhale_files/',
+				container: '#microApp',
+				props: {
+					slogan: 'hello'
+				},
+				sandbox: {
+					experimentalStyleIsolation: true
+				}
+			})
+			this.$buefy.modal.open({
+				content: [vnode],
+				fullScreen: true,
+				hasModalCard: true,
+				animation: "zoom-in",
+				canCancel: ["escape", "x"],
+				onCancel: () => {
+					microApp.unmount();
+				}
 			})
 		},
 
@@ -402,6 +452,17 @@ export default {
 @media screen and (max-width: $tablet) {
 	.columns {
 		display: flex;
+	}
+}
+</style>
+<style lang="scss">
+#microApp {
+	width: 100%;
+	height: 100%;
+
+	[data-name^="microApp"] {
+		width: 100%;
+		height: 100%;
 	}
 }
 </style>
