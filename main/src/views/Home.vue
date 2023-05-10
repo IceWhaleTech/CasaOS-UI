@@ -108,6 +108,7 @@ export default {
 				classes: 'fadeInDown',
 				duration: 800
 			},
+			fileMircoAppEntry: '',
 		}
 	},
 	provide() {
@@ -129,7 +130,7 @@ export default {
 		this.getHardwareInfo();
 		this.getWallpaperConfig();
 		this.getConfig();
-
+		this.fileMircoAppEntry = VUE_FILE_APP_ENTRY;
 		this.$store.commit('SET_ACCESS_ID', nanoid());
 	},
 	mounted() {
@@ -238,10 +239,10 @@ export default {
 			})
 			const microApp = loadMicroApp({
 				name: 'microApp',
-				entry: '/modules/icewhale_files/',
+				entry: this.fileMircoAppEntry,
 				container: '#microApp',
 				props: {
-					slogan: 'hello'
+					uuid: this.$store.state.access_id,
 				},
 				sandbox: {
 					experimentalStyleIsolation: true
