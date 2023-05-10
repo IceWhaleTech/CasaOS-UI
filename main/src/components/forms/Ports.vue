@@ -163,12 +163,13 @@ export default {
 			item.host_ip = partList?.[2] || '';
 			item.published = partList?.[4] || val;
 		},
-		
+
 		/*
 		* type : tcp/udp
 		* */
 		invalidPortsInUse(port, type) {
-			port = port - 0;
+			// The host's port input is String Type.
+			// port = port - 0;
 			if (type === 'both') {
 				return (this.ports_in_use?.["udp"] || []).includes(port) || (this.ports_in_use?.["tcp"] || []).includes(port)
 			}

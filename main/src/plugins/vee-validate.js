@@ -63,8 +63,12 @@ extend('yaml_port', {
 	message: 'The field mast be a valid docker-compose port',
 })
 
-const notInPorts = (value, isInPorts) => {
-	return true
-	// return isInPorts?.[0] !== 'true'
-}
-extend('not_in_ports', notInPorts)
+extend('not_in_ports', {
+	validate: (value, isInPortsResult) => {
+		// true : 满足，成功
+		// false : 不满足， 报错
+		// return true
+		return isInPortsResult?.[0] === 'false'
+	},
+	message: 'The port is used by other services',
+})

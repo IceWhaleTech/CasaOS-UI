@@ -364,9 +364,9 @@ export default {
 		errInfo: {
 			type: Object,
 			default: {
-				ports_in_use: [],
+				ports_in_use: {udp: [], tcp: []},
 			}
-		}
+		},
 	},
 	watch: {
 		// Watch if configData changes
@@ -810,17 +810,9 @@ export default {
 
 			ConfigData = merge(yaml, ConfigData)
 			// check
-			let DockerComposeCommands = YAML.stringify(ConfigData)
-			this.$api.apps.checkPort().then(res => {
-				this.ports_in_use = res.data?.data || {}
-			})
-			// this.$openAPI.appManagement.compose.installComposeApp(DockerComposeCommands, true).then((res) => {
-			// 	debugger
-			//
-			// 	if (res.status === 200) {
-			// 	} else {
-			// 		this.ports_in_use = res.data || {}
-			// 	}
+			// let DockerComposeCommands = YAML.stringify(ConfigData)
+			// this.$api.apps.checkPort().then(res => {
+			// 	this.ports_in_use = res.data?.data || {}
 			// })
 
 			this.$emit("updateDockerComposeCommands", YAML.stringify(ConfigData));
@@ -937,7 +929,8 @@ export default {
 		padding-right: 2.25rem;
 		padding-left: 1.5rem;
 		height: calc(100% - 2.75rem);
-		overflow: auto;
+		overflow-y: auto;
+		overflow-x: hidden;
 
 		.container-icon {
 			height: 2.5rem;

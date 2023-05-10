@@ -990,9 +990,9 @@ export default {
 				}
 			}).then(res => {
 				if (res.status == 200) {
-					if (!this.checkComposeApp(res.data, id)) {
-						return
-					}
+					// if (!this.checkComposeApp(res.data, id)) {
+					// 	return
+					// }
 					let composeJSON = parse(res.data)
 					if (composeJSON["x-casaos"]?.tips?.before_install?.en_us) {
 						this.$buefy.modal.open({
@@ -1104,35 +1104,17 @@ export default {
 				}
 			})
 		},
-
-		checkComposeApp(dockerComposeCommands, appName) {
-			// let api = new ComposeMethodsApiFactory('/v2/app_management');
-			// return api.installComposeApp(dockerComposeCommands, true).then((res) => {
-			return this.$openAPI.appManagement.compose.installComposeApp(dockerComposeCommands, true).then((res) => {
-				if (res.status !== 200) {
-					// Go to compose settings page
-					// TODO Combine dockerComposeConfig and dockerComposeCommands into one.
+		installComposeApp(dockerComposeCommands, appName) {
+			return this.$openAPI.appManagement.compose.installComposeApp(dockerComposeCommands, true).then(res => {
+				if (res.status === 200) {
+				} else {
 					this.dockerComposeConfig = dockerComposeCommands;
 					this.currentSlide = 1;
 					this.errInfo = res.data
-					return false
-				}
-				return true
-			}).catch((e) => {
-			})
-		},
-		installComposeApp(dockerComposeCommands, appName) {
-			return this.$openAPI.appManagement.compose.installComposeApp(dockerComposeCommands).then((res) => {
-				if (res.status === 200) {
-					// this.currentInstallAppName = appName;
-					// this.currentSlide = 2;
-					// this.currentInstallAppText = "Start Installation..."
-					// this.cancelButtonText = 'Continue in background'
-					// this.dockerProgress = new DockerProgress();
-				} else {
+
 					this.$buefy.toast.open({
-						message: res.data.message,
-						type: 'is-success'
+						message: this.$t('The information filled in needs to be corrected'),
+						type: 'is-warning'
 					})
 				}
 			}).catch((e) => {
@@ -1151,12 +1133,16 @@ export default {
 			this.$refs.compose.checkStep().then((valid) => {
 				if (valid.every(v => v === true)) {
 
-					this.$openAPI.appManagement.compose.applyComposeAppSettings(this.id, this.dockerComposeCommands).then((res) => {
-						if (res.data.success == 200) {
+					this.$openAPI.appManagement.compose.applyComposeAppSettings(this.id, this.dockerComposeCommands, true).then((res) => {
+						if (res.status == 200) {
 							this.$emit('updateState')
 						} else {
+							// this.dockerComposeConfig = dockerComposeCommands;
+							// this.currentSlide = 1;
+							this.errInfo = res.data
+
 							this.$buefy.toast.open({
-								message: res.data.message,
+								message: this.$t('The information filled in needs to be corrected'),
 								duration: 10000,
 								type: 'is-warning'
 							})
