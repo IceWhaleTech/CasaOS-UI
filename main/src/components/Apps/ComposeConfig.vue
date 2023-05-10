@@ -701,8 +701,10 @@ export default {
 				// 检测没有单位的情况
 				if (isNumber(memory - 0) && memory > 0) {
 					newMemory = memory / 1024 / 1024;
-				} else {
+				} else if (/[Mm]$/.test(memory)) {
 					newMemory = memory.replace(/[Mm]/, "");
+				} else if (/[Gg]$/.test(memory)) {
+					newMemory = memory.replace(/[Gg]/, "") * 1024;
 				}
 			}
 			console.log("newMemory", newMemory)
