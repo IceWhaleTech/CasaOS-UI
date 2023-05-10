@@ -526,7 +526,7 @@ export default {
 				// First name. Second app:name.The name from CheckThenUpdate.The app:name from install.
 				name: res.Properties["app:name"] + "error",
 				success: false,
-				title: res.Properties["app:name"] + "Error Info",
+				title: res.Properties["app:name"] + " Error Info",
 				message: res.Properties["message"],
 				icon: res.Properties["app:icon"],
 				isNewTag: true
