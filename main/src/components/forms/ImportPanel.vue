@@ -500,7 +500,7 @@ export default {
 }
 
 .control {
-	height: 7.25rem;
+	min-height: 7.25rem;
 
 	.section {
 		padding: 0.84375rem;
