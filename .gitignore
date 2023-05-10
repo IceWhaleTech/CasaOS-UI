@@ -31,3 +31,5 @@ unused-files.json
 
 # turbo
 .turbo
+
+/packages/icewhale*
