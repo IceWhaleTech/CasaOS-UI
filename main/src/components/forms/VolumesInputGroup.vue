@@ -102,8 +102,8 @@ export default {
 		addItem() {
 			let itemObj = {
 				type: "bind",
-				target: "",
-				source: ""
+				target: "/",
+				source: "/"
 			}
 			this.items.push(itemObj)
 		},
