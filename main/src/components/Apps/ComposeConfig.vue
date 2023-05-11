@@ -710,7 +710,6 @@ export default {
 					newMemory = memory.replace(/[Gg]/, "") * 1024;
 				}
 			}
-			console.log("newMemory", newMemory)
 			let ob = merge(composeServicesItemInput?.deploy, {resources: {limits: {memory: newMemory || this.totalMemory}}})
 			this.$set(composeServicesItem, "deploy", ob);
 
