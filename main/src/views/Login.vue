@@ -70,6 +70,7 @@ export default {
 			let name = JSON.parse(userString).username || '';
 			this.username = name;
 		}
+		document.querySelector('.modal.is-active ')?.remove();
 	},
 
 	methods: {
