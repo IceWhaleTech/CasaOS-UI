@@ -8,14 +8,6 @@
   
   -->
 
-<!--
- * @Author: JerryK
- * @Date: 2021-10-29 15:38:35
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-15 18:01:25
- * @Description:
- * @FilePath: /CasaOS-UI/src/components/Apps/AppTerminalPanel.vue
--->
 <template>
 	<div class="modal-card">
 
