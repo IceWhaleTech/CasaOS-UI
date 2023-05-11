@@ -371,6 +371,7 @@
 							   :state="state"
 							   :total-memory="totalMemory"
 							   @updateDockerComposeCommands="updateDockerComposeCommands"
+							   @updateDockerComposeServiceName="updateDockerComposeServiceName"
 							   @updateMainName="name=> currentInstallId = name"></ComposeConfig>
 
 				<section v-else :class="{'_hideOverflow': !isCasa}" class="modal-card-body pt-3">
@@ -590,10 +591,13 @@ export default {
 			networks: [],
 			tempNetworks: [],
 			networkModes: [],
+			// about @compose
 			// Assign value to compose_config component
 			dockerComposeConfig: '',
 			capArray: data,
 			errInfo: {},
+			dockerComposeCommands: '',
+			dockerComposeServiceName: '',
 
 			pageIndex: 1,
 			pageSize: 5,
@@ -682,7 +686,6 @@ export default {
 			installationLocation: '',
 			dockerProgress: null,
 			totalPercentage: 0,
-			dockerComposeCommands: '',
 			installedList: [],
 			counterPatchGetStoreList: 0
 		}
@@ -1280,7 +1283,8 @@ export default {
 			this.$openAPI.appManagement.compose.composeAppContainers(this.id).then((res) => {
 				if (res.status == 200) {
 					const containers = res.data.data.containers;
-					const containerId = containers[this.id].ID;
+					const main = res.data.data.main
+					const containerId = containers[this.dockerComposeServiceName].ID;
 					this.$buefy.modal.open({
 						parent: this,
 						component: AppTerminalPanel,
@@ -1292,7 +1296,8 @@ export default {
 						animation: "zoom-in",
 						props: {
 							appid: containerId,
-							appName: this.currentInstallId
+							appName: this.currentInstallId,
+							serviceName: this.dockerComposeServiceName,
 						}
 					})
 				}
@@ -1428,6 +1433,10 @@ export default {
 
 		updateDockerComposeCommands(val) {
 			this.dockerComposeCommands = val
+		},
+
+		updateDockerComposeServiceName(val) {
+			this.dockerComposeServiceName = val
 		},
 	},
 

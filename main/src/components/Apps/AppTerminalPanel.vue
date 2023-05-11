@@ -24,7 +24,7 @@
 			<div class="close-container">
 				<button class="delete" type="button" @click="$emit('close')"/>
 			</div>
-			<h3 class="title is-3">{{ appName }}</h3>
+			<h3 class="title is-3">{{ serviceName || appName }}</h3>
 			<div class="is-flex-grow-1">
 				<b-tabs :animated="false" @input="onInput">
 					<b-tab-item :label="$t('Terminal')" value="terminal">
@@ -64,7 +64,8 @@ export default {
 	},
 	props: {
 		appid: String,
-		appName: String
+		appName: String,
+		serviceName: String,
 	},
 	mounted() {
 		this.getLogs();
