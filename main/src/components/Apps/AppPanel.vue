@@ -1119,6 +1119,11 @@ export default {
 					})
 				}
 			}).catch((e) => {
+				if (e.response.status === 400) {
+					this.dockerComposeConfig = dockerComposeCommands;
+					this.currentSlide = 1;
+					this.errInfo = e.response.data.data
+				}
 				this.$buefy.toast.open({
 					message: e.response.data || e.response.status,
 					type: 'is-danger'
@@ -1150,6 +1155,10 @@ export default {
 						}
 						this.$emit('close')
 					}).catch((err) => {
+						if (err.response.status === 400) {
+							console.log("获取到错误1", err.response.data)
+							this.errInfo = err.response.data.data
+						}
 						this.$buefy.toast.open({
 							message: err.response.data.message,
 							duration: 5000,

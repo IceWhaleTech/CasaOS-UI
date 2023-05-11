@@ -174,7 +174,7 @@ export default {
 				return (this.ports_in_use?.["udp"] || []).includes(port) || (this.ports_in_use?.["tcp"] || []).includes(port)
 			}
 			if (type) {
-				return (this.ports_in_use?.[type] || []).includes(port)
+				return (this.ports_in_use?.[type] || this.ports_in_use?.[type.toUpperCase()] || []).includes(port + "")
 			}
 			return false;
 		},
