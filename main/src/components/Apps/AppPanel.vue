@@ -939,7 +939,8 @@ export default {
 		async showAppDetial(id) {
 			this.isLoading = true;
 			let min_memory = await this.$openAPI.appManagement.appStore.composeApp(id).then(res => {
-				return res.data.data.compose.services[id].deploy.resources.reservations.memory
+				// A district that is reserved for resource.
+				return res.data.data.compose.services[id]?.deploy?.resources?.reservations?.memory || '0'
 			})
 
 			if (min_memory.includes('GB')) {
