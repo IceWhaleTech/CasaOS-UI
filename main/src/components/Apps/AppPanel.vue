@@ -1106,7 +1106,7 @@ export default {
 			})
 		},
 		installComposeApp(dockerComposeCommands, appName) {
-			return this.$openAPI.appManagement.compose.installComposeApp(dockerComposeCommands, true).then(res => {
+			return this.$openAPI.appManagement.compose.installComposeApp(dockerComposeCommands, false, true).then(res => {
 				if (res.status === 200) {
 				} else {
 					this.dockerComposeConfig = dockerComposeCommands;
@@ -1134,7 +1134,7 @@ export default {
 			this.$refs.compose.checkStep().then((valid) => {
 				if (valid.every(v => v === true)) {
 
-					this.$openAPI.appManagement.compose.applyComposeAppSettings(this.id, this.dockerComposeCommands, true).then((res) => {
+					this.$openAPI.appManagement.compose.applyComposeAppSettings(this.id, this.dockerComposeCommands, false, true).then((res) => {
 						if (res.status == 200) {
 							this.$emit('updateState')
 						} else {
