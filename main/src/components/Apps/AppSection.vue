@@ -217,7 +217,7 @@ export default {
 				// all app list
 				let casaAppList = concat(builtInApplications, orgAppList, listLinkApp)
 				// get app sort info.
-				let lateSortList = await this.$api.users.getCustomStorage(orderConfig).then(res => res.data.data.data);
+				let lateSortList = await this.$api.users.getCustomStorage(orderConfig).then(res => res.data.data.data || []);
 
 				// filter anything not in casaAppList.
 				const propList = casaAppList.map((obj) => obj.name);

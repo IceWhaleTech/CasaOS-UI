@@ -371,6 +371,7 @@
 							   :state="state"
 							   :total-memory="totalMemory"
 							   @updateDockerComposeCommands="updateDockerComposeCommands"
+							   @updateDockerComposeServiceName="updateDockerComposeServiceName"
 							   @updateMainName="name=> currentInstallId = name"></ComposeConfig>
 
 				<section v-else :class="{'_hideOverflow': !isCasa}" class="modal-card-body pt-3">
@@ -590,10 +591,13 @@ export default {
 			networks: [],
 			tempNetworks: [],
 			networkModes: [],
+			// about @compose
 			// Assign value to compose_config component
 			dockerComposeConfig: '',
 			capArray: data,
 			errInfo: {},
+			dockerComposeCommands: '',
+			dockerComposeServiceName: '',
 
 			pageIndex: 1,
 			pageSize: 5,
@@ -682,7 +686,6 @@ export default {
 			installationLocation: '',
 			dockerProgress: null,
 			totalPercentage: 0,
-			dockerComposeCommands: '',
 			installedList: [],
 			counterPatchGetStoreList: 0
 		}
@@ -839,10 +842,7 @@ export default {
 		async getCategoryList() {
 			this.isLoading = true
 			try {
-				const res = await this.$api.appCategories.getAppCategory();
-				this.cateMenu = res.data.data.filter((item) => {
-					return item.count > 0
-				})
+				this.cateMenu = await this.$openAPI.appManagement.appStore.categoryList().then(res => res.data.data);
 				this.currentCate = this.cateMenu[0]
 				this.currentSort = this.sortMenu[0]
 				if (this.isFirst) {
@@ -939,7 +939,8 @@ export default {
 		async showAppDetial(id) {
 			this.isLoading = true;
 			let min_memory = await this.$openAPI.appManagement.appStore.composeApp(id).then(res => {
-				return res.data.data.compose.services[id].deploy.resources.reservations.memory
+				// A district that is reserved for resource.
+				return res.data.data.compose.services[id]?.deploy?.resources?.reservations?.memory || '0'
 			})
 
 			if (min_memory.includes('GB')) {
@@ -1105,7 +1106,7 @@ export default {
 			})
 		},
 		installComposeApp(dockerComposeCommands, appName) {
-			return this.$openAPI.appManagement.compose.installComposeApp(dockerComposeCommands, true).then(res => {
+			return this.$openAPI.appManagement.compose.installComposeApp(dockerComposeCommands, false, true).then(res => {
 				if (res.status === 200) {
 				} else {
 					this.dockerComposeConfig = dockerComposeCommands;
@@ -1118,6 +1119,11 @@ export default {
 					})
 				}
 			}).catch((e) => {
+				if (e.response.status === 400) {
+					this.dockerComposeConfig = dockerComposeCommands;
+					this.currentSlide = 1;
+					this.errInfo = e.response.data.data
+				}
 				this.$buefy.toast.open({
 					message: e.response.data || e.response.status,
 					type: 'is-danger'
@@ -1133,7 +1139,7 @@ export default {
 			this.$refs.compose.checkStep().then((valid) => {
 				if (valid.every(v => v === true)) {
 
-					this.$openAPI.appManagement.compose.applyComposeAppSettings(this.id, this.dockerComposeCommands, true).then((res) => {
+					this.$openAPI.appManagement.compose.applyComposeAppSettings(this.id, this.dockerComposeCommands, false, true).then((res) => {
 						if (res.status == 200) {
 							this.$emit('updateState')
 						} else {
@@ -1149,6 +1155,10 @@ export default {
 						}
 						this.$emit('close')
 					}).catch((err) => {
+						if (err.response.status === 400) {
+							console.log("获取到错误1", err.response.data)
+							this.errInfo = err.response.data.data
+						}
 						this.$buefy.toast.open({
 							message: err.response.data.message,
 							duration: 5000,
@@ -1282,7 +1292,8 @@ export default {
 			this.$openAPI.appManagement.compose.composeAppContainers(this.id).then((res) => {
 				if (res.status == 200) {
 					const containers = res.data.data.containers;
-					const containerId = containers[this.id].ID;
+					const main = res.data.data.main
+					const containerId = containers[this.dockerComposeServiceName].ID;
 					this.$buefy.modal.open({
 						parent: this,
 						component: AppTerminalPanel,
@@ -1294,7 +1305,8 @@ export default {
 						animation: "zoom-in",
 						props: {
 							appid: containerId,
-							appName: this.currentInstallId
+							appName: this.currentInstallId,
+							serviceName: this.dockerComposeServiceName,
 						}
 					})
 				}
@@ -1430,6 +1442,10 @@ export default {
 
 		updateDockerComposeCommands(val) {
 			this.dockerComposeCommands = val
+		},
+
+		updateDockerComposeServiceName(val) {
+			this.dockerComposeServiceName = val
 		},
 	},
 

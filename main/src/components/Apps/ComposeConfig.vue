@@ -14,8 +14,9 @@
 -->
 <template>
 	<section style="height: calc(100vh - 12.8125rem)">
-		<b-tabs class="has-text-full-03" style="height:100%">
-			<b-tab-item v-for="(service, key) in configData.services" :key="key" :label="key">
+		<b-tabs class="has-text-full-03" style="height:100%"
+				@input="key=> $emit('updateDockerComposeServiceName', key)">
+			<b-tab-item v-for="(service, key) in configData.services" :key="key" :label="key" :value="key">
 				<ValidationObserver :ref="key + 'valida'">
 					<!--					<ValidationProvider v-slot="{ errors, valid }" name="composeAppName" rules="required">
 											<b-field
@@ -418,6 +419,8 @@ export default {
 	created() {
 		// Set Front-end base url
 		this.baseUrl = `${document.domain}`;
+		// update Service Name.
+		this.$emit('updateDockerComposeServiceName', this.firstAppName)
 	},
 
 	methods: {
@@ -707,7 +710,6 @@ export default {
 					newMemory = memory.replace(/[Gg]/, "") * 1024;
 				}
 			}
-			console.log("newMemory", newMemory)
 			let ob = merge(composeServicesItemInput?.deploy, {resources: {limits: {memory: newMemory || this.totalMemory}}})
 			this.$set(composeServicesItem, "deploy", ob);
 

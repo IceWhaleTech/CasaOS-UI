@@ -86,7 +86,6 @@ export default {
 
 	},
 	created() {
-		console.log(this.vData)
 	},
 	computed: {
 		items: {

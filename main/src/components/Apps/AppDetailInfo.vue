@@ -234,7 +234,7 @@ export default {
 		// this.cateMenu : {name: 'appstore', title: 'App Store', icon: 'mdi-apps', component: 'AppStore'}
 		// param : this.cateMenu.name
 		getCateIcon(name) {
-			let tempO = this.cateMenu.find(item => item.name == name) || {font: 'mdi-apps'}
+			let tempO = this.cateMenu.find(item => item.name == name) || {font: 'apps'}
 			return tempO.font;
 		},
 
