@@ -61,10 +61,18 @@
 		<!-- Content End -->
 
 		<!-- File Panel Start -->
-		<b-modal v-model="isFileActive" :can-cancel="[]" :destroy-on-hide="false" animation="zoom-in" aria-modal
-				 custom-class="file-panel" full-screen has-modal-card @after-enter="afterFileEnter">
+		<b-modal v-model="isFileActive"
+			ref="microAppModal"
+			:can-cancel="['escape']"
+			:destroy-on-hide="false"
+			animation="zoom-in" aria-modal
+			custom-class="file-panel"
+			full-screen
+			has-modal-card
+			@cancel="hideMircoApp"
+			@after-enter="afterFileEnter">
 			<template #default="props">
-				<div id="container_file" ref="filePanel" @close="props.close"></div>
+				<div id="microApp"  @close="props.close"></div>
 			</template>
 		</b-modal>
 		<!-- File Panel End -->
@@ -83,6 +91,7 @@ import {mixin}             from '@/mixins/mixin';
 import events              from '@/events/events';
 import {nanoid}            from 'nanoid';
 import {loadMicroApp}      from "qiankun";
+import { MIRCO_APP_ACTION_ENUM } from "@/const";
 
 
 const wallpaperConfig = "wallpaper"
@@ -109,11 +118,11 @@ export default {
 				duration: 800
 			},
 			fileMircoAppEntry: '',
+			fileMircoAppInstance: null,
 		}
 	},
 	provide() {
 		return {
-			// homeShowFiles: this.showFiles,
 			homeShowFiles: this.showMircoApp,
 		};
 	},
@@ -231,33 +240,49 @@ export default {
 			// })
 		},
 		showMircoApp() {
-			const vnode = this.$createElement('div', {
-				class: "mirco-app",
-				attrs: {
-					id: "microApp"
-				}
-			})
-			const microApp = loadMicroApp({
+			if (!this.fileMircoAppInstance) {
+				this.createMircoApp();
+			} else if (!this.isFileActive) {
+				this.$messageBus('mircoapp_communicate', { action: MIRCO_APP_ACTION_ENUM.OPEN, peerType: 'file' });
+				this.isFileActive = true;
+			}
+		},
+
+		hideMircoApp() {
+			this.isFileActive = false;
+		},
+
+		createMircoApp() {
+			this.fileMircoAppInstance = loadMicroApp({
 				name: 'microApp',
 				entry: this.fileMircoAppEntry,
 				container: '#microApp',
 				props: {
-					uuid: this.$store.state.access_id,
+					store: { // sync necessary store status to child mirco app
+						device_id: this.$store.state.device_id,
+						access_id: this.$store.state.access_id,
+						access_token: this.$store.state.access_token,
+						refresh_token: this.$store.state.refresh_token,
+						casaos_lang: this.$store.state.casaos_lang,
+					}
 				},
 				sandbox: {
 					experimentalStyleIsolation: true
 				}
-			})
-			this.$buefy.modal.open({
-				content: [vnode],
-				fullScreen: true,
-				hasModalCard: true,
-				animation: "zoom-in",
-				canCancel: ["escape", "x"],
-				onCancel: () => {
-					microApp.unmount();
-				}
-			})
+			});
+			this.$nextTick(() => {
+				this.isFileActive = true;
+			});
+			return {
+				instance: this.fileMircoAppInstance,
+				modal: this.$refs.microAppModal,
+			};
+		},
+
+		destroyMircoApp() {
+			this.hideMircoApp();
+			this.fileMircoAppInstance.unmount();
+			this.fileMircoAppInstance = null;
 		},
 
 		afterFileEnter() {
@@ -363,7 +388,31 @@ export default {
 		},
 
 	},
+	sockets: {
+		"casaos-ui:app:mircoapp_communicate"(res) {
+			const data = res.Properties;
+			if (data.access_id === this.$store.state.access_id) {
+				switch (data.action) {
+					case MIRCO_APP_ACTION_ENUM.MOUNT:
+						this.showStorageManagerPanelModal();
+						break;
+					case MIRCO_APP_ACTION_ENUM.OPEN:
+						this.showMircoApp();
+						break;
+					case MIRCO_APP_ACTION_ENUM.CLOSE:
+						this.hideMircoApp();
+						break;
+					case MIRCO_APP_ACTION_ENUM.LOGIN:
+						this.$router.push("/login");
+						break;
+					default:
+						break;
+				}
+			}
+		}
+	},
 	beforeDestroy() {
+		this.destroyMircoApp();
 		window.removeEventListener("resize", this.onResize);
 		this.$EventBus.$off('casaUI:openStorageManager');
 	},

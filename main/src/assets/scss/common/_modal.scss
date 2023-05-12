@@ -206,6 +206,10 @@
 	background: rgba(0, 0, 0, 0.8);
 }
 
+.modal.is-full-screen > .animation-content {
+	background-color: transparent;
+}
+
 @media screen and (min-width: 769px) {
 	.terminal-modal {
 		.modal-card {

@@ -235,4 +235,9 @@ module.exports = {
 	files_open: async (peerid) => {
 		return await intermediateProcessor("casaos-ui:app:apps_open:files", {value: peerid})
 	},
+	// local message, params: { action, payload, peerType }
+	mircoapp_communicate: async (params) => {
+		const payload = typeof params === 'string' ? { value: params } : params;
+		return await intermediateProcessor("casaos-ui:app:mircoapp_communicate", payload);
+	},
 }
