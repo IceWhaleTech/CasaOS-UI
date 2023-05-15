@@ -22,13 +22,12 @@ import VueSocialSharing from 'vue-social-sharing'
 import VueSocketIOExt   from 'vue-socket.io-extended';
 import messageBus       from '@/events/index.js'
 // import {registerMicroApps, start} from "qiankun";
-
 // Import Styles
 import '@/assets/scss/app.scss'
 import VAnimateCss      from 'v-animate-css';
 
 const io = require("socket.io-client");
-
+debugger
 const isDev = process.env.NODE_ENV === 'dev';
 const protocol = document.location.protocol
 const wsProtocol = protocol === 'https:' ? 'wss:' : 'ws:'

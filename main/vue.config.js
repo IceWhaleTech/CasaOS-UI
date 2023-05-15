@@ -12,6 +12,16 @@
 const webpack = require('webpack')
 const path = require("path")
 
+let env = {}
+const prefixRE = /^VUE_APP_/;
+for (const key in process.env) {
+	if (key == "NODE_ENV" || key == "BASE_URL" || prefixRE.test(key)) {
+		env[key] = JSON.stringify(process.env[key]);
+		// env[key] = process.env[key];
+	}
+}
+console.log(1111, env)
+
 module.exports = {
 	publicPath: '/',
 	runtimeCompiler: true,
@@ -22,6 +32,24 @@ module.exports = {
 		extract: {
 			ignoreOrder: true
 		}
+	},
+	configureWebpack: {
+		resolve: {
+			fallback: {
+				"timers": require.resolve("timers-browserify"),
+				"url": require.resolve("url/"),
+				"https": require.resolve("https-browserify"),
+				"http": require.resolve("stream-http"),
+				"path": require.resolve("path-browserify"),
+				"stream": require.resolve("stream-browserify")
+			},
+		},
+		// plugins: [
+		// 	// new webpack.IgnorePlugin({resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/}),
+		// 	new webpack.DefinePlugin({
+		// 		env
+		// 	})
+		// ]
 	},
 	chainWebpack: config => {
 		const oneOfsMap = config.module.rule("scss").oneOfs.store;
@@ -38,7 +66,13 @@ module.exports = {
 				.end()
 		})
 		config.plugin('ignore')
-			.use(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
+			.use(new webpack.IgnorePlugin({resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/}));
+		config.plugin('define').use(new webpack.DefinePlugin({
+			"process.env": {
+				...process.env,
+				// ...env
+			}
+		}))
 		// Production only
 		if (process.env.NODE_ENV === "prod") {
 			config.output.filename('[name].[contenthash:8].js').end()
@@ -66,7 +100,6 @@ module.exports = {
 	devServer: {
 		open: true,
 		port: 8080,
-		inline: false,
 		// before: require('./mock/meta_data.js'),
 		// contentBase: publicPath,
 	}
