@@ -94,11 +94,11 @@ export default {
 		checkUpdate() {
 
 			this.timer = setInterval(() => {
-				const checkUrl = `${this.$protocol}//${this.$baseIp}:${this.port}`
+				const checkUrl = `${this.$protocol}//${this.$baseHostname}:${this.port}`
 				this.$api.sys.checkUiPort(checkUrl + '/v1/gateway/port').then(res => {
 					if (res.data.success == 200) {
 						clearInterval(this.timer);
-						const url = `${this.$protocol}//${this.$baseIp}:${res.data.data}`
+						const url = `${this.$protocol}//${this.$baseHostname}:${res.data.data}`
 						window.open(url, '_self');
 					}
 				})

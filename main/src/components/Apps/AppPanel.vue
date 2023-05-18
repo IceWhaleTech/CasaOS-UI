@@ -402,7 +402,7 @@
 								<option value="http">http://</option>
 								<option value="https">https://</option>
 							</b-select>
-							<b-input v-model="settingData.host" :placeholder="this.$baseIp"
+							<b-input v-model="settingData.host" :placeholder="this.$baseHostname"
 									 expanded></b-input>
 							<b-autocomplete
 								v-model="settingData.port_map"

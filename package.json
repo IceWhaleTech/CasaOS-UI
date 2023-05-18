@@ -8,7 +8,7 @@
     "dev:noCache": "turbo run serve --no-cache",
     "build": "turbo run build"
   },
-  "packageManager": "yarn@3.5.0",
+  "packageManager": "yarn@1.22.19",
   "workspaces": [
     "main",
     "packages/*"

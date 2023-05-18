@@ -50,7 +50,7 @@ const mutations = {
 
 	SET_DEFAULT_WALLPAPER(state) {
 		state.wallpaperObject = {
-			path: require('@/assets/background/default_wallpaper.jpg'),
+			path: require('@/assets/background/default_wallpaper1.jpg'),
 			from: "Built-in" //Built-in, Upload, Files
 		}
 	},

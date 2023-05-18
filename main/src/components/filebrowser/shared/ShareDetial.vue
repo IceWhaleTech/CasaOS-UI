@@ -27,11 +27,13 @@
 					{{ $t('Enter the following link to access the shared folder ( Samba ) .') }}
 				</div>
 				<b-field :label="$t('PC ( Windows explorer )')" class="mb-5" horizontal>
-					<b-input :value="pcPath" expanded icon-pack="casa" icon-right="copy" icon-right-clickable name="subject"
+					<b-input :value="pcPath" expanded icon-pack="casa" icon-right="copy" icon-right-clickable
+							 name="subject"
 							 readonly @icon-right-click="copyToClipboard(pcPath)"></b-input>
 				</b-field>
 				<b-field :label="$t('Mac ( Finder )')" class="mb-5" horizontal>
-					<b-input :value="macPath" expanded icon-pack="casa" icon-right="copy" icon-right-clickable name="subject"
+					<b-input :value="macPath" expanded icon-pack="casa" icon-right="copy" icon-right-clickable
+							 name="subject"
 							 readonly @icon-right-click="copyToClipboard(macPath)"></b-input>
 				</b-field>
 			</div>
@@ -62,11 +64,11 @@ export default {
 	computed: {
 		pcPath() {
 			const name = this.item.path.split('/').pop()
-			return "\\\\" + this.$baseIp + `\\` + name
+			return "\\\\" + this.$baseHostname + `\\` + name
 		},
 		macPath() {
 			const name = this.item.path.split('/').pop()
-			return "smb://" + this.$baseIp + `/` + name
+			return "smb://" + this.$baseHostname + `/` + name
 		},
 	},
 	created() {
