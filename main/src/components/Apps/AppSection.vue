@@ -203,7 +203,7 @@ export default {
 			try {
 				const orgAppList = await this.$openAPI.appGrid.getAppGrid().then(res => res.data.data || []);
 				orgAppList.forEach((item) => {
-					item.hostname = item.hostname || this.$baseIp;
+					item.hostname = item.hostname || this.$baseHostname;
 					// Container app does not have icon.
 					item.icon = item.icon || require(`@/assets/img/app/default.svg`);
 				})

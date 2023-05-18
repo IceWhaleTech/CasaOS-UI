@@ -1,0 +1,122 @@
+/*!
+ *  @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ *  @LastEditTime: 2023/5/16 下午1:16
+ *  @FilePath: /CasaOS-UI/main/src/assets/scss/common/_input.scss
+ *  @Description:
+ *
+ *  Copyright (c) 2023 by IceWhale, All Rights Reserved.
+ *
+ */
+
+/************************************
+	与 Buefy 深度绑定
+	Deep bound to Buefy
+*************************************/
+.c-dark {
+	.control {
+		// custom size
+		&.hug {
+			.input {
+				height: 2rem;
+				font-size: 0.875rem;
+			}
+			
+			.icon {
+				height: 2rem;
+				width: 2rem;
+				
+				i::before {
+					font-size: 1.25rem;
+					width: 1.25rem;
+				}
+			}
+		}
+		
+		.input {
+			border: 1px solid hsla(208, 16%, 72%, 1);
+			border-radius: 0.25rem;
+			background: hsla(208, 16%, 42%, 0);
+			caret-color: hsla(208, 100%, 45%, 1);
+			color: hsla(0, 0%, 100%, 1);
+			
+			&::placeholder {
+				color: hsla(208, 16%, 72%, 1);
+			}
+			
+			&[type="password"] {
+				//font-family: "Courier New", monospace;
+				//-webkit-text-security: disc;
+				//-moz-text-security: disc;
+				//text-security: disc;
+				//font-weight: bold;
+				//text-shadow: white 0 0 4px;
+			}
+			
+			&.is-success {
+				border: 1px solid hsla(208, 16%, 72%, 1);
+				box-shadow: none;
+			}
+			
+			&.is-danger {
+				border: 1px solid hsla(18, 89%, 55%, 1);
+				box-shadow: 0 0 0 2px hsla(18, 89%, 55%, 0.24);
+			}
+			
+			// 悬浮
+			&:hover {
+				border: 1px solid hsla(208, 100%, 45%, 1);
+				box-shadow: none;
+				
+				&.is-danger {
+					border: 1px solid hsla(208, 100%, 45%, 1);
+					box-shadow: none;
+				}
+			}
+			
+			// 激活
+			&:focus {
+				border-color: #007AE5;
+				box-shadow: 0 0 0 0.125em hsla(208, 100%, 45%, 1);
+				background: hsla(208, 14%, 58%, 0.5);
+			}
+		}
+		
+		.icon {
+			//background-image: url("~iconfonts-casaos/fonts/casaos.svg");
+			
+			i {
+				color: hsla(208, 16%, 85%, 1);
+			}
+			
+			.mdi-eye::before {
+				font-family: "casaos";
+				content: "\e949";
+			}
+			
+			.mdi-eye-off::before {
+				font-family: "casaos";
+				content: "\e94a";
+			}
+		}
+	}
+	
+	.help {
+		margin-top: 0.5rem;
+		/* Text 400Regular/Text04 */
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: 400;
+		font-size: 0.75rem;
+		line-height: 1rem;
+		/* identical to box height, or 133% */
+		font-feature-settings: 'pnum' on, 'lnum' on;
+		
+		&.is-danger {
+			color: hsla(18, 89%, 55%, 1) !important;
+		}
+	}
+}
+
+
+
+

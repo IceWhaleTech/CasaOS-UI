@@ -103,7 +103,7 @@ export default {
 			})
 			if (is8384SyncInstalled) {
 				this.isSyncInstalled = true
-				this.syncBaseURL = `http://${this.$baseIp}:8384`
+				this.syncBaseURL = `http://${this.$baseHostname}:8384`
 				this.syncPort = 8384
 				this.syncId = systemApps.find(app => {
 					return app.image.includes('syncthing') && app.port === 8384
@@ -125,7 +125,7 @@ export default {
 					this.syncId = systemApps.find(app => {
 						return app.image.includes('syncthing')
 					}).id
-					this.syncBaseURL = `http://${this.$baseIp}:${this.syncPort}`
+					this.syncBaseURL = `http://${this.$baseHostname}:${this.syncPort}`
 				}
 			}
 

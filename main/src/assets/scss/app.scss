@@ -21,7 +21,8 @@
 @import "~swiper/css/swiper.min.css";
 
 // Import CasaOS IconFont
-@import "common/iconfont";
+//@import "common/iconfont";
+@import '~iconfonts-casaos/casaos-iconfonts.css';
 
 // Custom Variables
 @import "common/variables";
@@ -52,6 +53,9 @@
 @import "common/sections";
 @import "common/toast";
 @import "common/snackbar";
+// following the casa design specification
+@import "common/input";
+@import "common/switch";
 
 // Pages and Components
 @import "components/filebrowser";
