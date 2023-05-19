@@ -10,7 +10,12 @@
 
 /************************************
 	与 Buefy 深度绑定
-	Deep bound to Buefy
+	Deeply integrate with Buefy.
+	
+	c- 表示遵循 casaos 设计模板
+	The prefix "c-" indicates compliance with the CasaOS design template.
+		"dark" 为主题样式
+		"dark" is the theme style.
 *************************************/
 .c-dark {
 	.control {
@@ -76,7 +81,7 @@
 			// 激活
 			&:focus {
 				border-color: #007AE5;
-				box-shadow: 0 0 0 0.125em hsla(208, 100%, 45%, 1);
+				box-shadow: 0 0 0 0.125em hsla(208, 100%, 45%, 0.24);
 				background: hsla(208, 14%, 58%, 0.5);
 			}
 		}
