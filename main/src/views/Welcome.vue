@@ -12,29 +12,29 @@
 		<div v-if="!isLoading" v-animate-css="initAni" :class="'step' + step" class="login-panel c-dark">
 
 			<div v-if="step == 1" class="has-text-centered">
-				<div v-animate-css="s1Ani" class="is-flex is-justify-content-center">
-					<b-image v-if="ZIMA" :src="require('@/assets/img/logo/zima-0.0.1-white.svg')"
+				<div v-animate-css="initS1Ani" class="is-flex is-justify-content-center">
+					<b-image v-if="isZIMA" :src="require('@/assets/img/logo/zima-0.0.1-white.svg')"
 							 class="is-72x72"></b-image>
 					<b-image v-else :src="require('@/assets/img/logo/casa-white.svg')"
 							 class="is-72x72"></b-image>
 				</div>
 
-				<h2 v-animate-css="s2Ani" class="title mt-5 has-text-centered has-text-title-03">
+				<h2 v-animate-css="initS2Ani" class="title mt-5 has-text-centered has-text-title-03">
 					{{
 						$t('Welcome to {name}', {name: TITLE})
 					}}
 				</h2>
-				<h2 v-animate-css="s3Ani" class="subtitle pt-1 mb-4 has-text-centered has-text-full-02">
+				<h2 v-animate-css="initS3Ani" class="subtitle pt-1 mb-4 has-text-centered has-text-full-02">
 					{{
 						$t(`Let's create your initial account`)
 					}}
 				</h2>
-				<b-button v-animate-css="s4Ani" class="mt-6" rounded type="is-primary" @click="goToStep(2)">{{
+				<b-button v-animate-css="initS4Ani" class="mt-6" rounded type="is-primary" @click="goToStep(2)">{{
 						$t(`Start`)
 					}}
 				</b-button>
 
-				<p v-if="ZIMA" v-animate-css="s4Ani"
+				<p v-if="isZIMA" v-animate-css="initS4Ani"
 				   class="pt-4 has-text-centered has-text-full-03 cursor-pointer">
 					<a href="https://docs.zimaboard.com/docs/Basic-functions-of-dedicated-systems" target="_blank">
 						{{
@@ -45,47 +45,46 @@
 
 			</div>
 
-			<div v-if="step == 2">
-				<div v-animate-css="s1Ani" class="is-flex is-justify-content-center">
+			<div v-if="step == 2" v-animate-css="s0Ani">
+				<div class="is-flex is-justify-content-center">
 					<div
 						class="account-icon has-text-centered has-text-white is-flex is-align-items-center is-justify-content-center">
 						<b-icon class="is-56" icon="posted-by" pack="casa"/>
 					</div>
 				</div>
-				<h2 v-animate-css="s2Ani" class="title mt-3 has-text-title-03 has-text-centered">{{
+				<h2 class="title mt-3 has-text-title-03 has-text-centered">{{
 						$t('Create Account')
 					}}</h2>
 				<ValidationObserver ref="observer" v-slot="{ handleSubmit }" class="has-text-full-03">
 					<ValidationProvider v-slot="{ errors, valid }" name="User" rules="required">
-						<b-field v-animate-css="s3Ani" :label="$t('Username')" :message="$t(errors)"
+						<b-field :label="$t('Username')" :message="$t(errors)"
 								 :type="{ 'is-danger': errors[0], 'is-success': valid }">
-							<b-input v-model="username" class="hug" placeholder="Please input" type="text"
+							<b-input v-model="username" autofocus class="hug" type="text"
 									 v-on:keyup.enter.native="handleSubmit(register)"></b-input>
 						</b-field>
 					</ValidationProvider>
 					<ValidationProvider v-slot="{ errors, valid }" name="Password" rules="required|min:5"
 										vid="password">
-						<b-field v-animate-css="s3Ani" :label="$t('Password')" :message="$t(errors)"
+						<b-field :label="$t('Password')" :message="$t(errors)"
 								 :type="{ 'is-danger': errors[0], 'is-success': valid }"
 								 class="mt-4">
-							<b-input v-model="password" class="hug" password-reveal placeholder="Please input"
+							<b-input v-model="password" class="hug" password-reveal
 									 type="password"
 									 v-on:keyup.enter.native="handleSubmit(register)"></b-input>
 						</b-field>
 					</ValidationProvider>
 					<ValidationProvider v-slot="{ errors, valid }" name="Password Confirmation"
 										rules="required|confirmed:password">
-						<b-field v-animate-css="s3Ani" :label="$t('Confirm Password')" :message="$t(errors)"
+						<b-field :label="$t('Confirm Password')" :message="$t(errors)"
 								 :type="{ 'is-danger': errors[0], 'is-success': valid }" class="mt-4">
-							<b-input v-model="confirmation" class="hug" password-reveal placeholder="Please input"
+							<b-input v-model="confirmation" class="hug" password-reveal
 									 type="password"
 									 v-on:keyup.enter.native="handleSubmit(register)"></b-input>
 						</b-field>
 					</ValidationProvider>
-					<div v-animate-css="s4Ani" class="is-flex is-justify-content-center mt-4">
+					<div class="is-flex is-justify-content-center mt-4">
 						<b-button class="mt-5" expanded rounded type="is-primary"
-								  @click="handleSubmit(goToStep(3))">
-							<!--								  @click="handleSubmit(register)">-->
+								  @click="handleSubmit(register)">
 							{{ $t('Create') }}
 						</b-button>
 					</div>
@@ -93,37 +92,37 @@
 				</ValidationObserver>
 			</div>
 
-			<div v-if="step === 3" key="step3">
-				<div v-animate-css="s1Ani" class="is-flex is-justify-content-center">
-					<b-image v-if="ZIMA" :src="require('@/assets/img/logo/zima-0.0.1-white.svg')"
+			<div v-if="step === 3" key="step3" v-animate-css="s0Ani">
+				<div class="is-flex is-justify-content-center">
+					<b-image v-if="isZIMA" :src="require('@/assets/img/logo/zima-0.0.1-white.svg')"
 							 class="is-72x72"></b-image>
 					<b-image v-else :src="require('@/assets/img/logo/casa-white.svg')"
 							 class="is-72x72"></b-image>
 				</div>
-				<h2 v-animate-css="s2Ani" class="title mt-4 has-text-centered has-text-title-03">
+				<h2 class="title mt-4 has-text-centered has-text-title-03">
 					{{
 						$t('Zima Client')
 					}}
 				</h2>
-				<h2 v-animate-css="s3Ani" class="subtitle mt-5 mb-4 has-text-full-03">
+				<h2 class="subtitle mt-5 mb-4 has-text-full-03">
 					{{
 						$t(`If you want to access remotely or sync data with your devices.`)
 					}}
 				</h2>
-				<div v-animate-css="s3Ani" class="is-flex mt-5">
+				<div class="is-flex is-align-items-center mt-5">
 					<span class="marker">•</span>
 					<span
-						class="text has-text-emphasis-03">Please reinstall the software on the following supported systems</span>
+						class="text has-text-emphasis-03">{{ $t('Install the software.') }}</span>
 				</div>
-				<div v-animate-css="s3Ani" class="columns is-variable is-2 mt-1 mb-3">
+				<div class="is-flex columns is-variable is-2 mt-1 mb-3">
 					<b-image :src="require('@/assets/img/learn/guidance-MacOS-AppStore.svg')" class="column"></b-image>
 					<b-image :src="require('@/assets/img/learn/guidance-Windows-AppStore.svg')"
 							 class="column"></b-image>
 				</div>
-				<div v-animate-css="s3Ani" class="is-flex ">
-					<span class="marker">•</span>
+				<div class="is-flex is-align-items-center mb-5">
+					<div class="marker" style="">•</div>
 					<span
-						class="text has-text-emphasis-03 mb-5">Use the remote access ID :</span>
+						class="text has-text-emphasis-03">{{ $t('Using the Network ID :') }}</span>
 					<b-button class="copy-board has-text-full-03" icon-pack="casa" icon-right="copy-outline"
 							  @click="copy">
 						{{
@@ -131,13 +130,13 @@
 						}}
 					</b-button>
 				</div>
-				<div v-animate-css="s3Ani" class="is-flex">
+				<div class="is-flex is-align-items-center">
 					<span class="marker">•</span>
 					<span
-						class="text has-text-emphasis-03">Search and connect zima in the software</span>
+						class="text has-text-emphasis-03">{{ $t('Connect Zima in the software.') }}</span>
 				</div>
 				<hr v-animate-css="s3Ani"/>
-				<div v-animate-css="s4Ani" class="is-flex is-justify-content-center">
+				<div class="is-flex is-justify-content-center">
 					<b-button expanded rounded type="is-primary"
 							  @click="goToStep(4)">
 						{{ $t('Continue') }}
@@ -145,81 +144,74 @@
 				</div>
 			</div>
 
-			<div v-if="step == 4" key="step4">
-				<div v-animate-css="s1Ani" class="is-flex is-justify-content-center">
-					<b-image v-if="ZIMA" :src="require('@/assets/img/logo/zima-0.0.1-white.svg')"
+			<div v-if="step == 4" key="step4" v-animate-css="s0Ani">
+				<div class="is-flex is-justify-content-center">
+					<b-image v-if="isZIMA" :src="require('@/assets/img/logo/zima-0.0.1-white.svg')"
 							 class="is-72x72"></b-image>
 					<b-image v-else :src="require('@/assets/img/logo/casa-white.svg')"
 							 class="is-72x72"></b-image>
 				</div>
-				<h2 v-if="ZIMA" v-animate-css="s2Ani" class="title mt-4 mb-5 has-text-centered has-text-title-03">
+				<h2 v-if="isZIMA" class="title mt-4 mb-5 has-text-centered has-text-title-03">
 					{{
 						$t('Zima customization system')
 					}}
 				</h2>
-				<h2 v-else v-animate-css="s2Ani" class="title mt-4 mb-5 has-text-centered has-text-title-03">
+				<h2 v-else class="title mt-4 mb-5 has-text-centered has-text-title-03">
 					{{
 						$t('About CasaOS System')
 					}}
 				</h2>
-				<div v-animate-css="s3Ani" class="title item-layout is-flex is-align-items-center has-text-title-06">
+				<div class="title item-layout is-flex is-align-items-center has-text-title-06">
 					<b-image :src="require('@/assets/img/app/disk_merge.svg')" class="is-24x24"></b-image>
 					<p class="ml-2">
-						{{ $t('Disk Merge') }}
+						{{ $t('Storage Merge') }}
 					</p>
 				</div>
-				<p v-animate-css="s3Ani" class="subtitle has-text-full-03 ml-4 pl-4">
-					{{ $t('Merge multiple disks into a single block.') }}
+				<p class="subtitle has-text-full-03 ml-4 pl-4">
+					{{ $t('Merge multiple disks into one.') }}
 				</p>
 
-				<div v-animate-css="s3Ani" class="title item-layout is-flex  is-align-items-center has-text-title-06">
+				<div class="title item-layout is-flex  is-align-items-center has-text-title-06">
 					<b-image :src="require('@/assets/img/app/files.svg')" class="is-24x24"></b-image>
 					<p class="ml-2">
 						{{ $t('Files') }}
 					</p>
 				</div>
-				<p v-animate-css="s3Ani" class="subtitle has-text-full-03 ml-4 pl-4">
+				<p class="subtitle has-text-full-03 ml-4 pl-4">
 					{{ $t('Manage all data in one page.') }}
 				</p>
 
-				<div v-animate-css="s3Ani" class="title item-layout is-flex  is-align-items-center has-text-title-06">
+				<div class="title item-layout is-flex  is-align-items-center has-text-title-06">
 					<b-image :src="require('@/assets/img/app/appstore.svg')" class="is-24x24"></b-image>
 					<p class="ml-2">
 						{{ $t('APP Store') }}
 					</p>
 				</div>
-				<p v-animate-css="s3Ani" class="subtitle has-text-full-03 ml-4 pl-4">
-					{{ $t('Manage all data in one page.') }}
+				<p class="subtitle has-text-full-03 ml-4 pl-4">
+					{{ $t('Over 40 applications installed with one click.') }}
 				</p>
 				<hr v-animate-css="s3Ani"/>
-				<p v-if="ZIMA" v-animate-css="s4Ani"
-				   class="subtitle mb-5 pb-4 has-text-centered has-text-full-03 cursor-pointer">
-					{{ $t('Please read before continuing') }}
-					<a href="https://casaos.io/privacy-full.html" target="_blank">
+				<p v-if="isZIMA" v-animate-css="s4Ani"
+				   class="subtitle mb-5 pb-4 has-text-centered has-text-full-03">
+					{{ $t('Please read before continuing ') }}
+					<a class="" href="https://casaos.io/privacy-full.html" target="_blank">
 						{{
 							$t(`Privacy Policy`)
 						}}
 					</a>
 				</p>
-				<div v-else v-animate-css="s4Ani" class="is-flex is-align-items-center mb-4 pb-5">
+				<div v-else class="is-flex is-align-items-center mb-4 pb-5">
 					<b-switch v-model="isAgreeRSS" class="c-large"></b-switch>
 					<span class="subtitle mt-0 mb-0 has-text-full-03">
-						{{ $t('Show news feeds from casaos blog.') }}
+						{{ $t('Show news feed from CasaOS blog.') }}
 					</span>
 				</div>
-				<div v-animate-css="s4Ani" class="is-flex is-justify-content-center">
+				<div class="is-flex is-justify-content-center">
 					<b-button expanded rounded type="is-primary"
 							  @click="complete">
 						{{ $t('Start') }}
 					</b-button>
 				</div>
-
-
-				<!--				<h2 class="title is-3  has-text-centered">{{ $t('All things done!') }}</h2>-->
-				<!--				<div class="is-flex is-align-items-center is-justify-content-center">-->
-				<!--					<lottie-animation :animationData="require('@/assets/ani/done.json')" :autoPlay="true" :loop="false"-->
-				<!--									  class="animation" @complete="complete"></lottie-animation>-->
-				<!--				</div>-->
 			</div>
 		</div>
 	</div>
@@ -230,7 +222,6 @@ import {ValidationObserver, ValidationProvider} from "vee-validate";
 import "@/plugins/vee-validate";
 import smoothReflow                             from 'vue-smooth-reflow'
 import axios                                    from "axios";
-// import LottieAnimation                          from "lottie-web-vue";
 
 
 export default {
@@ -249,55 +240,52 @@ export default {
 			notificationShow: false,
 			initAni: {
 				classes: 'zoomIn',
-				delay: 1000,
+				delay: 500,
 				duration: 700
 			},
-			s1Ani: {
+			initS1Ani: {
+				classes: 'fadeInUp',
+				delay: 750,
+				duration: 700
+			},
+			initS2Ani: {
+				classes: 'fadeInUp',
+				delay: 1150,
+				duration: 700
+			},
+			initS3Ani: {
 				classes: 'fadeInUp',
 				delay: 1300,
 				duration: 700
 			},
-			s2Ani: {
-				classes: 'fadeInUp',
-				delay: 1700,
-				duration: 700
-			},
-			s3Ani: {
-				classes: 'fadeInUp',
-				delay: 1900,
-				duration: 700
-			},
-			s4Ani: {
+			initS4Ani: {
 				classes: 'fadeIn',
-				delay: 2500,
+				delay: 1400,
 				duration: 700
 			},
-			ZIMA: false,
-			// ZIMA_NAME: '',
+			s0Ani: {
+				classes: 'fadeIn',
+				delay: 300,
+				duration: 500
+			},
+			isZIMA: false,
 			TITLE: "CasaOS",
 			V_ID: '!@#$%^&*()10',
 			isAgreeRSS: true,
 		}
 	},
-	// computed: {
-	// 	title() {
-	// 		if (this.ZIMA) {
-	// 			return this.ZIMA_NAME
-	// 		}
-	// 		return "CasaOS"
-	// 	}
-	// },
 	components: {
 		ValidationObserver,
 		ValidationProvider,
-		// LottieAnimation
 	},
 	async beforeCreate() {
 		try {
-			// const {device_model, device_name} = await axios.get(`${this.$baseHostname}:9527`).then(res => res.device_model || "CasaOS")
-			const {device_model = "ZimaBox", device_name} = await axios.get(`http://192.168.2.114:9527`)
-			this.ZIMA = /^Zima/.test(device_model)
-			// this.ZIMA_NAME = device_name
+			const {
+				device_model,
+				device_name
+			} = await axios.get(`${this.$baseHostname}:9527`).then(res => res.device_model || "CasaOS")
+			// const {device_model = "ZimaBox", device_name} = await axios.get(`http://192.168.2.114:9527`)
+			this.isZIMA = /^Zima/.test(device_model)
 			this.TITLE = device_model
 		} catch (e) {
 			console.error("GETTING THE CONFIG OF YOUR MACHINE IS EXPERIENCING AN ERROR:", e)
@@ -374,7 +362,7 @@ export default {
 			}
 		},
 		goToStep(step) {
-			if (!this.ZIMA && step === 3) {
+			if (!this.isZIMA && step === 3) {
 				this.step = 4
 			}
 			this.step = step
@@ -427,13 +415,10 @@ export default {
 		}
 
 		.input {
-			//background: rgba(255, 255, 255, 0.32);
-			//border-color: transparent;
 		}
 
 		hr {
 			height: 1px;
-			//margin-bottom: 2.5rem;
 			background-color: hsla(208, 16%, 94%, 0.2);
 		}
 
@@ -449,6 +434,21 @@ export default {
 		button {
 			height: 2.25rem;
 			width: 10rem;
+			background-color: hsla(208, 100%, 45%, 1);
+
+
+			&:active {
+				background-color: hsla(208, 100%, 32%, 1);
+			}
+
+			&:focus {
+				background-color: hsla(208, 100%, 45%, 1);
+				outline: 2px solid hsla(208, 100%, 45%, 0.24);
+			}
+
+			&:hover {
+				background-color: hsla(208, 100%, 38%, 1);
+			}
 		}
 
 		&.step1 {
@@ -487,7 +487,7 @@ export default {
 		&.step3 {
 			padding: 3.75rem 3rem 3.75rem 3rem;
 			width: 26.5rem;
-			height: 38.8125rem;
+			height: 36.8125rem;
 
 			.title {
 				color: hsla(208, 16%, 98%, 1);
@@ -506,7 +506,6 @@ export default {
 				width: 6px;
 				height: 6px;
 				margin-right: 8px;
-				margin-top: 7px;
 				background-color: hsla(208, 16%, 98%, 1);
 				border-radius: 50%;
 				font-size: 1px;
@@ -556,28 +555,6 @@ export default {
 			.item-layout {
 				margin-top: 1.25rem;
 				margin-bottom: 0;
-			}
-
-			// TODO: remove this when the switch to be component.
-			&._small input[type=checkbox] {
-				& + .check {
-					width: 2.286em;
-					height: 1.429em;
-					padding: 0;
-
-					&::before {
-						width: 1.143em;
-						height: 1.143em;
-						margin-left: 2px;
-						margin-right: 2px;
-					}
-				}
-
-				&:checked + .check {
-					&::before {
-						transform: translate3d(80%, 0, 0);
-					}
-				}
 			}
 		}
 	}

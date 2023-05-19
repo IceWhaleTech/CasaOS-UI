@@ -20,7 +20,8 @@
 				<brand-bar v-if="!$store.state.isMobile" v-animate-css="brandAni"></brand-bar>
 				<!-- BrandBar End -->
 				<!-- ContactBar Start -->
-				<contact-bar v-if="!$store.state.isMobile" v-animate-css="contactAni"></contact-bar>
+				<contact-bar v-if="!$store.state.isMobile && $router.currentRoute.path !== '/welcome'"
+							 v-animate-css="contactAni"></contact-bar>
 				<!-- ContactBar End -->
 			</div>
 
