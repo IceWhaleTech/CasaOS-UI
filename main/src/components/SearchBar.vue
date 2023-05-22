@@ -19,7 +19,7 @@
 <template>
 	<b-field class="search-bar has-text-white mb-4" position="is-centered ">
 		<b-input v-model="keyText" :class="['ovh', isFocus ? 'fo' : '']" :placeholder="$t('Search...')" expanded
-				 icon="magnifier" icon-pack="casa" icon-right="magnifier" icon-right-clickable size="is-medium"
+				 icon="search2-outline" icon-pack="casa" icon-right="magnifier" icon-right-clickable size="is-medium"
 				 @blur="onBlur" @focus="onFocus" @icon-right-click="gotoSearch" @keyup.enter.native="gotoSearch">
 		</b-input>
 	</b-field>
