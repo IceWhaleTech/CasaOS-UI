@@ -172,7 +172,7 @@
 											class="is-flex is-align-items-center modal-close-container modal-close-container-line"
 										>
 											<div class="close-button" @click="$emit('close')">
-												<b-icon icon="close" pack="casa"></b-icon>
+												<b-icon icon="close-outline" pack="casa"></b-icon>
 											</div>
 										</div>
 										<!--  Close Button End -->

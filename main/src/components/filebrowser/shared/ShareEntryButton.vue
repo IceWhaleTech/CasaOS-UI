@@ -21,7 +21,7 @@
 					<div class="is-flex ">
 						{{ $t('Start sharing your files on the local network.') }}
 						<div class="is-clickable ml-1 is-flex is-align-items-center" @click.stop="hideTip">
-							<b-icon icon="close-xs" pack="casa"></b-icon>
+							<b-icon icon="close-outline-xs" pack="casa"></b-icon>
 						</div>
 					</div>
 				</div>

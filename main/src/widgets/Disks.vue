@@ -18,7 +18,7 @@
 						{{ $t('Storage') }}
 					</div>
 					<div class="widget-icon-button is-flex-shrink-0" @click="showDiskManagement">
-						<b-icon icon="setting" pack="casa" size="is-20"></b-icon>
+						<b-icon icon="settings-outline" pack="casa" size="is-20"></b-icon>
 					</div>
 				</div>
 				<!-- Header End -->

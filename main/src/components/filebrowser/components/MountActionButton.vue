@@ -15,7 +15,7 @@
 					close-on-click position="is-bottom-left">
 			<template #trigger>
 				<p class=" is-clickable" role="button">
-					<b-icon custom-size="mdi-18px" icon="plus"></b-icon>
+					<b-icon custom-size="mdi-18px" icon="plus-outline"></b-icon>
 				</p>
 			</template>
 			<b-dropdown-item aria-role="menuitem" @click="showDiskManagement">
