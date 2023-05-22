@@ -220,7 +220,7 @@ export default {
 				this.networks[index][1].cacheTime = el.time;
 			});
 			this.networkId = this.networkId > this.networks.length - 1 ? 0 : this.networkId
-			this.$refs.chart.updateSeries(this.networks[this.networkId])
+			this.$refs.chart?.updateSeries(this.networks[this.networkId])
 			const upSpeed = this.networks[this.networkId][0].data[this.networks[this.networkId][0].data.length - 1]
 			const downSpeed = this.networks[this.networkId][1].data[this.networks[this.networkId][1].data.length - 1]
 			this.currentUpSpeed = isNaN(upSpeed) ? 0 : upSpeed
