@@ -9,23 +9,10 @@
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
 -->
 <template>
-	<div :class="{ '_max-width-320': currentStep === 1 || currentStep === 3 || currentStep === 4 }" class="modal-card">
-		<!--    head-->
-		<header :class="{ 'pri-head': currentStep <= 2 }" class="modal-card-head ">
-			<b-icon v-if="currentStep === 1" class="mr-2 has-text-red" custom-class="_has-text-red-default"
-					icon="danger"
-					pack="casa" size="is-20"></b-icon>
-			<div class="is-flex-grow-1">
-				<h3 class=" title is-3">{{ $t(title) }}
-					<cToolTip v-if="currentStep === 0" modal="is-success"></cToolTip>
-				</h3>
-			</div>
-			<button class="delete" type="button" @click="cancel"/>
-		</header>
-		<!--remind-->
+	<div :class="{ '_max-width-320': currentStep === 1 || currentStep === 3 || currentStep === 4 }">
 
 		<section v-if="currentStep === 0"
-				 class="notification is-overlay mr-5 ml-5 mb-0 pr-0 pl-0 pt-5 pb-3 non-backgroud">
+				 class="notification is-overlay mb-0 pr-0 pl-0 pt-5 pb-3 non-backgroud">
 			<div v-if="currentStep === 0" class="_is-normal _has-text-gray-600 mb-4">
 				{{ $t('All the checked Storage will be merged into CasaOS HD.') }}
 			</div>
@@ -70,28 +57,28 @@
 		</section>
 
 		<div v-if="currentStep === 0 && storageData.length < 2"
-			 class="_has-background-yellow-default _has-text-white _is-normal is-flex is-align-items-center font ml-5 mr-5 mb-4 pt-2 pb-2 _radius-line">
+			 class="_has-background-yellow-default _has-text-white _is-normal is-flex is-align-items-center font mb-4 pt-2 pb-2 _radius-line">
 			<div class="is-flex left ml-3 mr-2 is-align-items-center">
 				<b-icon class="is-16x16" custom-size="casa-19px" icon="danger" pack="casa"></b-icon>
 			</div>
 			{{ $t('At least one extra hard drive is needed for this feature.') }}
 		</div>
 		<div v-if="currentStep === 0 && checkBoxGroup.length > 0"
-			 class="_has-background-yellow-default _has-text-white _is-normal is-flex is-align-items-center font ml-5 mr-5 mb-4 pt-2 pb-2 _radius-line">
+			 class="_has-background-yellow-default _has-text-white _is-normal is-flex is-align-items-center font mb-4 pt-2 pb-2 _radius-line">
 			<div class="is-flex left ml-3 mr-2 is-align-items-center">
 				<b-icon class="is-16x16" custom-size="casa-19px" icon="danger" pack="casa"></b-icon>
 			</div>
 			{{ $t('If the chosen storage is not empty, format better first.') }}
 		</div>
 		<div v-if="currentStep === 0 && isSplit"
-			 class="_has-background-red-default _has-text-white _is-normal is-flex is-align-items-center ml-5 mr-5 mb-4 pt-2 pb-2 _radius-line">
+			 class="_has-background-red-default _has-text-white _is-normal is-flex is-align-items-center mb-4 pt-2 pb-2 _radius-line">
 			<div class="is-flex left ml-3 mr-2 is-align-items-center">
 				<b-icon custom-size="casa-19px" icon="danger" pack="casa"></b-icon>
 			</div>
 			{{ $t('Please back up your data in storage, otherwise the data may be lost.') }}
 		</div>
 		<div v-if="currentStep === 0"
-			 class="_has-background-red-default _has-text-white _is-normal is-flex is-align-items-center ml-5 mr-5 mb-4 pt-2 pb-2 _radius-line">
+			 class="_has-background-red-default _has-text-white _is-normal is-flex is-align-items-center mb-4 pt-2 pb-2 _radius-line">
 			<div class="is-flex left ml-3 mr-2 is-align-items-center">
 				<b-icon custom-size="casa-19px" icon="danger" pack="casa"></b-icon>
 			</div>
@@ -102,7 +89,7 @@
 		</div>
 
 		<section v-if="currentStep > 0"
-				 class="notification is-overlay mr-5 ml-5 mb-0 pr-0 pl-0 pt-5 pb-4 non-backgroud">
+				 class="notification is-overlay mb-0 pr-0 pl-0 pt-5 pb-4 non-backgroud">
 			<div v-if="currentStep === 1" class="is-flex is-align-items-center _is-normal">
 				{{
 					$t('This operation may clear all personal data and destroy the installed APPs.')
@@ -129,7 +116,7 @@
 			</div>
 		</section>
 
-		<footer :class="{ 't-line': currentStep <= 2 }" class="modal-card-foot is-flex is-align-items-center ">
+		<footer class="is-flex is-align-items-center">
 			<div class="is-flex-grow-1"></div>
 			<div class="mr-4">
 				<b-button v-show="currentStep > 2 || currentStep === 1" :label="$t('Cancel')"
