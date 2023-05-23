@@ -326,7 +326,7 @@ export default {
 					// 	en_us: "",
 					// },
 					// thumbnail: "",
-					// tips: {
+					// helper: {
 					// 	before_install: {
 					// 		en_us: "",
 					// 	},

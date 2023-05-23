@@ -394,10 +394,6 @@ export default {
 	height: 120px;
 }
 
-.cursor-pointer {
-	cursor: pointer;
-}
-
 #login-page {
 	height: calc(100% - 5.5rem);
 	position: relative;

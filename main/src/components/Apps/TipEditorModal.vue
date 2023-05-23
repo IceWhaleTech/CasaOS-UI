@@ -110,20 +110,20 @@ export default {
 		},
 		composeData: {
 			handler(val) {
-				//Get tips in compose.
-				console.log('watch tips', val)
+				//Get helper in compose.
+				console.log('watch helper', val)
 
 				/*let getValueByPath = this.composeData['services'][this.name]
-				if (getValueByPath && getValueByPath['tips'] && getValueByPath['tips']['before_install']) {
-					let multiLine = getValueByPath['tips']['before_install'].forEach(item => {
+				if (getValueByPath && getValueByPath['helper'] && getValueByPath['helper']['before_install']) {
+					let multiLine = getValueByPath['helper']['before_install'].forEach(item => {
 						let value = item.content['default'] && item.content['en_US']
 						return `${item.value}:${value}\n`
 					})
 					console.log('multiLine', multiLine)
 					// return multiLine
-					this.tips = multiLine;
+					this.helper = multiLine;
 				} else {
-					this.tips = '';
+					this.helper = '';
 					// return ''
 				}*/
 
@@ -169,7 +169,7 @@ export default {
 					})
 				}
 			}).catch(e => {
-				console.log('Error in saving tips:', e)
+				console.log('Error in saving helper:', e)
 				this.$buefy.toast.open({
 					message: e.response.data.data,
 					type: 'is-danger',
@@ -179,7 +179,7 @@ export default {
 			})
 		},
 		getCompleteComposeData() {
-			/*let lines = this.tips.split('\n');
+			/*let lines = this.helper.split('\n');
 			let body = [];
 			
 			lines.forEach(line => {
