@@ -210,7 +210,6 @@ export default {
 		Popper,
 		StorageCombination,
 		cToolTip: cToolTip,
-		MergeStorages,
 	},
 	mixins: [smoothReflow, mixin],
 	data() {
