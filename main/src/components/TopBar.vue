@@ -87,7 +87,7 @@
 					<div
 						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-							<b-icon class="mr-1 ml-2" icon="search-manage" pack="casa" size="is-20"></b-icon>
+							<b-icon class="mr-1 ml-2" icon="search-category-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('Show Search Bar') }}
 						</div>
 						<div>
@@ -125,7 +125,7 @@
 					<div
 						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-							<b-icon class="mr-1 ml-2" icon="language" pack="casa" size="is-20"></b-icon>
+							<b-icon class="mr-1 ml-2" icon="language-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('Language') }}
 						</div>
 						<div>
@@ -145,7 +145,7 @@
 					<div
 						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-							<b-icon class="mr-1 ml-2" icon="port" pack="casa" size="is-20"></b-icon>
+							<b-icon class="mr-1 ml-2" icon="port-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('WebUI Port') }}
 						</div>
 						<div>
@@ -164,7 +164,7 @@
 					<div
 						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-							<b-icon class="mr-1 ml-2" icon="picture" pack="casa" size="is-20"></b-icon>
+							<b-icon class="mr-1 ml-2" icon="gallery-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('Wallpaper') }}
 						</div>
 						<div class="ml-2">
@@ -180,7 +180,8 @@
 					<div v-if="this.$store.state.notImportList.length > 0"
 						 class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-							<b-icon class="mr-1 ml-2" icon="docker" pack="casa" size="is-20"></b-icon>
+							<b-icon class="mr-1 ml-2" icon="docker-outline" pack="casa"
+									size="is-20"></b-icon>
 							{{ $t('Show other Docker container app(s)') }}
 						</div>
 						<div>
@@ -197,7 +198,7 @@
 					<div
 						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-							<b-icon class="mr-1 ml-2" icon="news" pack="casa" size="is-20"></b-icon>
+							<b-icon class="mr-1 ml-2" icon="news-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('Show news feed from CasaOS Blog') }}
 						</div>
 						<div>
@@ -213,7 +214,8 @@
 					<div
 						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-							<b-icon class="mr-1 ml-2" icon="app-switch" pack="casa" size="is-20"></b-icon>
+							<b-icon class="mr-1 ml-2" icon="display-applications-outline" pack="casa"
+									size="is-20"></b-icon>
 							{{ $t('Show Recommended Apps') }}
 						</div>
 						<div>
@@ -230,7 +232,7 @@
 					<div
 						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-							<b-icon class="mr-1 ml-2" icon="usb" pack="casa" size="is-20"></b-icon>
+							<b-icon class="mr-1 ml-2" icon="usb-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('Automount USB Drive') }}
 							<b-tooltip v-if="isRaspberryPi"
 									   :label="$t('Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB')"
@@ -251,7 +253,7 @@
 					<div class="_is-large _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center">
 							<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-								<b-icon class="mr-1 ml-2" icon="upgrade" pack="casa" size="is-20"></b-icon>
+								<b-icon class="mr-1 ml-2" icon="update-outline" pack="casa" size="is-20"></b-icon>
 								<div :class="{ 'update-text-dot': updateInfo.need_update }">{{ $t('Update') }}</div>
 							</div>
 							<div class="_has-text-gray">
@@ -279,13 +281,13 @@
 						<div
 							class="mr-1 column is-half is-flex is-align-items-center is-justify-content-center _polymorphic _is-radius _is-normal"
 							@click="power('Restart')">
-							<b-icon class="mr-1" icon="restart" pack="casa"></b-icon>
+							<b-icon class="mr-1" icon="restart-outline" pack="casa"></b-icon>
 							{{ $t(restart) }}
 						</div>
 						<div
 							class="ml-1 column is-half is-flex is-align-items-center is-justify-content-center _polymorphic-attention _has-text-attention _is-radius"
 							@click="power('Shutdown')">
-							<b-icon class="mr-1" custom-class="_has-text-attention" icon="shutdown"
+							<b-icon class="mr-1" custom-class="_has-text-attention" icon="shutdown-outline"
 									pack="casa"></b-icon>
 							{{ $t(shutdown) }}
 						</div>
