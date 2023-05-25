@@ -123,8 +123,9 @@
 						  class="_has-background-gray-100 _radius-line" expaned @click="currentStep = 0"/>
 			</div>
 			<div>
-				<b-button v-show="currentStep === 0" :label="$t(affirm)" :loading="isConnecting" expaned rounded
-						  type="is-primary" @click="test"/>
+				<b-button v-show="currentStep === 0" :disabled="disableMergeButton" :label="$t(affirm)"
+						  :loading="isConnecting" expaned
+						  rounded type="is-primary" @click="test"/>
 				<b-button v-show="currentStep === 1" :label="$t(affirm)" :loading="isConnecting"
 						  class="_has-background-red-default _radius-line _has-text-white" expaned
 						  @click="currentStep = 2"/>
@@ -144,6 +145,7 @@ import {mixin}  from "@/mixins/mixin";
 import events   from '@/events/events';
 import cToolTip from '@/components/basicComponents/tooltip/tooltip.vue';
 import filter   from 'lodash/filter';
+import isEqual    from 'lodash/isEqual';
 
 export default {
 	name: "MergeStorages",
@@ -158,9 +160,10 @@ export default {
 	components: {
 		cToolTip
 	},
-	mounted() {
+	async mounted() {
 		this.checkBoxGroup.push(...this.mergeStorageList)
-		this.getDiskList();
+		await this.getDiskList();
+		this.tempCheckBox = [...this.checkBoxGroup, ...this.checkBoxMissGroup]
 	},
 	watch: {
 		// 0 default :mainstorage settings
@@ -201,7 +204,11 @@ export default {
 		},
 		isSplit() {
 			return !this.mergeStorageList.every(item => this.checkBoxGroup.includes(item) || this.storageMissData.includes(item))
-		}
+		},
+		disableMergeButton() {
+			// the value is false while checkBox has changed.
+			return isEqual([...this.checkBoxGroup, ...this.checkBoxMissGroup], this.tempCheckBox)
+		},
 	},
 	data() {
 		return {
@@ -218,10 +225,10 @@ export default {
 			mergeInfo: [],
 			password: '',
 			runName: '',
-			notEmpty: false
+			notEmpty: false,
+			tempCheckBox: [],
 		}
-	}
-	,
+	},
 	methods: {
 		/**
 		 * @description: Get disk list

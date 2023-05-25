@@ -20,7 +20,7 @@
 			<section :class="{ 'b-line': storageData.length > 0 && activeTab === 0}" class="pr-5 pl-5 mt-4 pb-2">
 				<!-- Storage and Disk List Start -->
 				<div v-if="!creatIsShow" class="is-flex-grow-1 is-relative">
-					<div v-if="activeTab == 0" class="create-container">
+					<div v-if="activeTab == 1" class="create-container">
 						<popper :options="{ placement: 'bottom', modifiers: { offset: { offset: '0,4px' } } }"
 								append-to-body
 								trigger="hover">
@@ -35,8 +35,9 @@
 							</div>
 						</popper>
 					</div>
-					<b-tabs v-model="activeTab" :animated="true">
-						<b-tab-item :label="$t('Merge')" class="scrollbars-light-auto tab-item">
+					<b-tabs v-model="activeTab" animateInitially animated type="is-toggle">
+						<b-tab-item :disabled="!isMultipleStorage" :label="$t('Merge')"
+									class="scrollbars-light-auto tab-item">
 							<MergeStorages></MergeStorages>
 						</b-tab-item>
 						<b-tab-item :label="$t('Storage')" class="scrollbars-light-auto tab-item">
@@ -47,13 +48,13 @@
 								<storage-item v-for="(item, index) in storageData" :key="'storage' + index" :item="item"
 											  @getDiskList="getDiskList"></storage-item>
 							</template>
-							<div v-if="diskData.length>1" class="_background-tips" style="position: relative">
+							<div v-if="showTipsMergeDisks" class="_background-tips" style="position: relative">
 								<div class="is-flex is-align-items-center is-justify-content-center is-flex-grow-1">
 									<div>
 										<p class="has-text-title-06">Tips:</p>
-										<p class="has-text-full-03">Insert more hard drives and restart.</p>
+										<p class="has-text-full-03">Use as ONE space, Try Merge</p>
 									</div>
-									<b-image :src="require('@/assets/img/learn/tips-insertMoreDrives.svg')"></b-image>
+									<b-image :src="require('@/assets/img/learn/tips-mergeStorage.svg')"></b-image>
 								</div>
 								<b-icon class="cursor-pointer" icon="close-outline" pack="casa"
 										size="is-small"
@@ -64,7 +65,7 @@
 						<b-tab-item :label="$t('Drive')" class="scrollbars-light-auto tab-item">
 							<drive-item v-for="(item, index) in diskData" :key="'disk' + index"
 										:item="item"></drive-item>
-							<div v-if="diskData.length>1"
+							<div v-if="diskData.length === 1"
 								 class="is-flex is-align-items-center is-justify-content-center _background-tips">
 								<div>
 									<p class="has-text-title-06">Tips:</p>
@@ -178,15 +179,15 @@
 							  type="is-primary" @click="createStorge(false)"/>
 				</div>
 			</template>
-			<template v-else-if="activeTab == 0 && !mergeConbinationsStorageData.length">
-				<div class="is-flex-grow-1"></div>
-				<div class="is-flex is-flex-direction-row-reverse">
-					<b-button :type="state_mainstorage_operability" class="width" rounded size="is-small"
-							  @click="showStorageSettingsModal">{{ $t('Merge Storages') }}
-					</b-button>
-					<cToolTip isBlock></cToolTip>
-				</div>
-			</template>
+			<!--			<template v-else-if="activeTab == 0 && !mergeConbinationsStorageData.length">-->
+			<!--				<div class="is-flex-grow-1"></div>-->
+			<!--				<div class="is-flex is-flex-direction-row-reverse">-->
+			<!--					<b-button :type="state_mainstorage_operability" class="width" rounded size="is-small"-->
+			<!--							  @click="showStorageSettingsModal">{{ $t('Merge Storages') }}-->
+			<!--					</b-button>-->
+			<!--					<cToolTip isBlock></cToolTip>-->
+			<!--				</div>-->
+			<!--			</template>-->
 
 		</footer>
 		<!-- Modal-Card Footer End -->
@@ -230,7 +231,7 @@ export default {
 			creatIsShow: false,
 			isCreating: false,
 			isValiding: false,
-			activeTab: 0,
+			activeTab: 2,
 			activeDisk: "",
 			createStorageName: "",
 			createStoragePath: "",
@@ -259,6 +260,13 @@ export default {
 				return "is-link"
 			}
 			return ""
+		},
+		isMultipleStorage() {
+			return this.storageData.length > 1
+		},
+		showTipsMergeDisks() {
+			// TODO test localstorage. exit : true.
+			return this.unDiskData === 0 && this.mergeConbinationsStorageData.length === 0 && this.storageData.length > 1
 		},
 	},
 
@@ -289,8 +297,13 @@ export default {
 
 		//Get disk list
 		let _this = this
-		delay(function () {
-			_this.getDiskList()
+		delay(async function () {
+			await _this.getDiskList()
+			if (_this.diskData.length === 1) {
+				_this.activeTab = 2
+			} else {
+				_this.activeTab = 1
+			}
 		}, 150);
 
 		this.$EventBus.$on(events.REFRESH_DISKLIST, () => {
@@ -652,5 +665,16 @@ export default {
 <style lang="scss">
 .popper[x-placement^="bottom"].dark .popper__arrow {
 	border-color: transparent transparent #505459 transparent !important;
+}
+
+.tabs ul {
+	flex-grow: 0 !important;
+	background-color: hsla(208, 16%, 91%, 1);
+	border-radius: 6px;
+
+	.tab {
+		background-color: hsla(0, 0%, 100%, 1);
+		border-radius: 4px;
+	}
 }
 </style>
