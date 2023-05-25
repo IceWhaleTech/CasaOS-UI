@@ -8,14 +8,6 @@
 
   -->
 
-<!--
- * @Author: JerryK
- * @Date: 2022-01-20 13:21:23
- * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-09-29 22:17:58
- * @Description:
- * @FilePath: /CasaOS-UI/src/components/Storage/DriveItem.vue
--->
 <template>
 	<div class="mb-4 background-item is-flex">
 		<div class="is-flex mt-3 mr-3 mb-3 ml-3 is-flex-grow-1">
@@ -32,15 +24,24 @@
 			</div>
 			<div class="is-flex is-align-items-center status pri-min-width">
 				<div>
-					<p class="has-text-left has-text-full-04 mb-3">{{ $t('Health') }}: <b v-if="item.health"
-																						  class="has-text-success">{{
-							$t('Healthy')
-						}}</b><b
-						v-if="!item.health" class="has-text-danger">{{ $t('Damage') }}</b></p>
-					<p class="has-text-left has-text-full-04 ">{{ $t('Temp') }}: <b v-if="item.temperature > 0">{{
-							item.temperature
-						}}°C
-						/ {{ item.temperature | toFahrenheit }}°F</b> <b v-else>N/A</b></p>
+					<p class="has-text-left has-text-full-04 mb-3">{{ $t('Health') }}:
+						<b v-if="item.health"
+						   class="has-text-success">
+							{{
+								$t('Healthy')
+							}}
+						</b>
+						<b v-if="!item.health" class="has-text-danger">{{ $t('Damage') }}</b>
+					</p>
+					<p class="has-text-left has-text-full-04 ">{{ $t('Temp') }}:
+						<b v-if="item.temperature > 0">
+							{{
+								item.temperature
+							}}°C / {{ item.temperature | toFahrenheit }}°F
+						</b>
+						<b v-else>N/A
+						</b>
+					</p>
 				</div>
 			</div>
 		</div>

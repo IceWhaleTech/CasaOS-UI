@@ -7,9 +7,9 @@
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
   -->
 <template>
-	<div v-show="showCombination" class="mb-5 mt-2 pt-5 pb-5 border-1">
+	<div v-show="showCombination" class="mb-5 mt-2 pt-5 pb-5 border-1 combination-box">
 		<div class="is-relative is-flex is-justify-content-center top--2rem">
-			<div class="pr-4 pl-4 has-background-white">CasaOS HD</div>
+			<div class="pr-4 pl-4 combination-title">CasaOS HD</div>
 		</div>
 		<div class="is-flex ">
 			<div class="is-flex-grow-1">
@@ -20,13 +20,14 @@
 					</div>
 					<div class="ml-3 is-flex-grow-1 is-flex is-align-items-center">
 						<div>
-							<h4 class="title is-size-14px mb-0 has-text-left one-line">{{
+							<h4 class="mb-0 has-text-left one-line has-text-emphasis-02 is-flex is-align-items-center">
+								{{
 									item.name || $t('undefined')
 								}}
-								<b-tag v-if="item.isSystem" class="ml-2">CasaOS</b-tag>
+								<b-tag v-if="item.isSystem" class="ml-2 has-text-full-04">CasaOS</b-tag>
 							</h4>
 
-							<p class="has-text-left is-size-7 has-text-grey-light	">{{ $t('Single Drive Storage') }},
+							<p class="has-text-left is-size-7 has-text-grey-light">{{ $t('Single Drive Storage') }},
 								<span
 									class="is-uppercase">{{ item.fsType || $t('undefined') }}</span>
 								<b-tooltip
@@ -162,5 +163,23 @@ export default {
 	top: -1.4rem;
 	margin-top: -1rem;
 	width: 100%
+}
+
+.combination-box {
+	background-color: hsla(208, 16%, 98%, 1);
+	border: 1px solid hsla(208, 16%, 91%, 1);
+	border-radius: 12px;
+
+	.combination-title {
+		background-color: hsla(208, 16%, 98%, 1);
+		border: 1px solid hsla(208, 16%, 91%, 1);
+		border-radius: 4px;
+	}
+
+	.tag {
+		background-color: hsla(208, 16%, 98%, 1);
+		border: 1px solid hsla(208, 100%, 45%, 1);
+		color: hsla(208, 100%, 45%, 1);
+	}
 }
 </style>
