@@ -850,7 +850,9 @@ export default {
 		async getCategoryList() {
 			this.isLoading = true
 			try {
-				this.cateMenu = await this.$openAPI.appManagement.appStore.categoryList().then(res => res.data.data);
+				this.cateMenu = await this.$openAPI.appManagement.appStore.categoryList().then(res => res.data.data.filter((item) => {
+					return item.count > 0
+				}));
 				this.currentCate = this.cateMenu[0]
 				this.currentSort = this.sortMenu[0]
 				if (this.isFirst) {
