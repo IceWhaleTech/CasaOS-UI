@@ -836,7 +836,7 @@ export default {
 			const vh = window.innerHeight * 0.01;
 			document.documentElement.style.setProperty('--vh', `${vh}px`);
 		},
-  
+
 		// this.cateMenu : {name: 'appstore', title: 'App Store', icon: 'mdi-apps', component: 'AppStore'}
 		// param : this.cateMenu.name
 		getCateIcon(name) {
@@ -879,7 +879,7 @@ export default {
 						category: main_app_info.category,
 						icon: main_app_info.icon,
 						tagline: ice_i18n(main_app_info.tagline),
-						thumbnail: main_app_info.thumbnail,
+						thumbnail: main_app_info.thumbnail || main_app_info.screenshot_link?.[0],
 						title: ice_i18n(main_app_info.title),
 						state: 0,
 						architectures: main_app_info.architectures,
@@ -924,7 +924,7 @@ export default {
 						category: main_app_info.category,
 						icon: main_app_info.icon,
 						tagline: ice_i18n(main_app_info.tagline),
-						thumbnail: main_app_info.thumbnail,
+						thumbnail: main_app_info.thumbnail || main_app_info.screenshot_link?.[0],
 						title: ice_i18n(main_app_info.title),
 						state: 0,
 						architectures: main_app_info.architectures,
