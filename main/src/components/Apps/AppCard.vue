@@ -46,6 +46,12 @@
 						</b-loading>
 					</b-button>
 
+					<b-button v-if="isV1App" :loading="isCloning"
+							  expanded type="is-text" @click="exportYAML(item.name)">{{
+							$t('Export to YAML')
+						}}
+					</b-button>
+
 					<b-dropdown v-if="false" :triggers="['click']" aria-role="list" class="is-right" expanded>
 						<template #trigger>
 							<b-button :label="$t('Advanced')" expanded type="is-text"/>
@@ -588,6 +594,12 @@ export default {
 					type: 'is-danger'
 				})
 			})
+		},
+
+		exportYAML(name) {
+			// TODO add API
+			const blob = new Blob([this.dockerComposeCommands], {type: ''});
+			FileSaver.saveAs(blob, `${name}.yaml`);
 		},
 
 		checkAppVersion(name) {
