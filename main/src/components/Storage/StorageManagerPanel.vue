@@ -251,7 +251,7 @@ export default {
 			return ""
 		},
 		isMultipleStorage() {
-			return this.storageData.length > -1
+			return this.storageData.length > 1
 		},
 		showTipsMergeDisks() {
 			// TODO test localstorage. exit : true.
@@ -276,11 +276,6 @@ export default {
 			}
 		}
 	},
-	// created() {
-	// 	this.$api.local_storage.getMergerfsInfo().then((res) => {
-	// 		this.mergeStorageList.push(...res.data.data[0]['source_volume_uuids'])
-	// 	})
-	// },
 	mounted() {
 		//Smooth
 		this.$smoothReflow({
