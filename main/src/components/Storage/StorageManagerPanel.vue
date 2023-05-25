@@ -35,7 +35,7 @@
 							</div>
 						</popper>
 					</div>
-					<b-tabs v-model="activeTab" animateInitially animated type="is-toggle">
+					<b-tabs v-model="activeTab" animateInitially animated>
 						<b-tab-item :disabled="!isMultipleStorage" :label="$t('Merge')"
 									class="scrollbars-light-auto tab-item">
 							<MergeStorages></MergeStorages>
@@ -166,29 +166,17 @@
 
 		<!-- Modal-Card Body End -->
 		<!-- Modal-Card Footer Start-->
-		<footer v-if="!isCreating" class="modal-card-foot is-flex is-align-items-center">
-			<template v-if="creatIsShow">
-				<div class="is-flex-grow-1"></div>
-				<div>
-					<b-button :label="$t('Cancel')" rounded @click="showDefault"/>
-					<b-button :label="$t('Format and Create')" :loading="isValiding"
-							  :type="createStorageType == 'format' ? 'is-primary' : ''" rounded
-							  @click="createStorge(true)"/>
-					<b-button v-if="createStorageType == 'mountable'" :label="$t('Create')" :loading="isValiding"
-							  rounded
-							  type="is-primary" @click="createStorge(false)"/>
-				</div>
-			</template>
-			<!--			<template v-else-if="activeTab == 0 && !mergeConbinationsStorageData.length">-->
-			<!--				<div class="is-flex-grow-1"></div>-->
-			<!--				<div class="is-flex is-flex-direction-row-reverse">-->
-			<!--					<b-button :type="state_mainstorage_operability" class="width" rounded size="is-small"-->
-			<!--							  @click="showStorageSettingsModal">{{ $t('Merge Storages') }}-->
-			<!--					</b-button>-->
-			<!--					<cToolTip isBlock></cToolTip>-->
-			<!--				</div>-->
-			<!--			</template>-->
-
+		<footer v-if="!isCreating && creatIsShow" class="modal-card-foot is-flex is-align-items-center">
+			<div class="is-flex-grow-1"></div>
+			<div>
+				<b-button :label="$t('Cancel')" rounded @click="showDefault"/>
+				<b-button :label="$t('Format and Create')" :loading="isValiding"
+						  :type="createStorageType == 'format' ? 'is-primary' : ''" rounded
+						  @click="createStorge(true)"/>
+				<b-button v-if="createStorageType == 'mountable'" :label="$t('Create')" :loading="isValiding"
+						  rounded
+						  type="is-primary" @click="createStorge(false)"/>
+			</div>
 		</footer>
 		<!-- Modal-Card Footer End -->
 
@@ -242,6 +230,7 @@ export default {
 			storageData: [],
 			mergeConbinationsStorageData: [],
 			hasMergeState: false,
+			mergeStorageList: [],
 		}
 	},
 
@@ -262,7 +251,7 @@ export default {
 			return ""
 		},
 		isMultipleStorage() {
-			return this.storageData.length > 1
+			return this.storageData.length > -1
 		},
 		showTipsMergeDisks() {
 			// TODO test localstorage. exit : true.
@@ -287,6 +276,11 @@ export default {
 			}
 		}
 	},
+	// created() {
+	// 	this.$api.local_storage.getMergerfsInfo().then((res) => {
+	// 		this.mergeStorageList.push(...res.data.data[0]['source_volume_uuids'])
+	// 	})
+	// },
 	mounted() {
 		//Smooth
 		this.$smoothReflow({
@@ -668,13 +662,44 @@ export default {
 }
 
 .tabs ul {
+	display: flex;
+	justify-content: center;
+	align-content: center;
 	flex-grow: 0 !important;
 	background-color: hsla(208, 16%, 91%, 1);
 	border-radius: 6px;
+	border: 2px solid hsla(208, 16%, 91%, 1);
 
-	.tab {
-		background-color: hsla(0, 0%, 100%, 1);
-		border-radius: 4px;
+	li {
+		/* Text 500Medium/Text03 */
+
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: 500 !important;
+		font-size: 14px;
+		line-height: 20px;
+		/* identical to box height, or 143% */
+
+		text-align: center;
+		font-feature-settings: 'pnum' on, 'lnum' on;
+
+		&.is-active {
+			background-color: hsla(0, 0%, 100%, 1);
+			border-radius: 4px;
+			height: 1.75rem;
+
+			a {
+				border-bottom: none !important;
+				color: hsla(208, 20%, 20%, 1);
+			}
+		}
+
+		a {
+			margin: 0 0.75rem !important;
+			padding: 0.25rem 0;
+			color: hsla(208, 14%, 58%, 1);
+			border-bottom: none !important;
+		}
 	}
 }
 </style>
