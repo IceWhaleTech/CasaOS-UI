@@ -9,10 +9,10 @@
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
 -->
 <template>
-	<div :class="{ '_max-width-320': currentStep === 1 || currentStep === 3 || currentStep === 4 }">
+	<div :class="{ '_max-width-320': currentStep === 1 || currentStep === 4 }">
 
 		<section v-if="currentStep === 0"
-				 class="notification is-overlay mb-0 pr-0 pl-0 pt-5 pb-3 non-backgroud">
+				 class="notification is-overlay mb-0 pr-0 pl-0 pt-2 pb-3 non-backgroud">
 			<div v-if="currentStep === 0" class="_is-normal _has-text-gray-600 mb-4">
 				{{ $t('All the checked Storage will be merged into CasaOS HD.') }}
 			</div>
@@ -104,7 +104,7 @@
 			</template>
 			<div v-if="currentStep === 3" class="is-flex is-align-items-center font">
 				<div class="message-danger left mr-2 is-flex is-align-items-center">
-					<b-icon class="is-38x38" custom-size="is-size-2" icon="danger" pack="casa"></b-icon>
+					<b-icon class="is-38x38" custom-size="is-size-2" icon="information-outline" pack="casa"></b-icon>
 				</div>
 				{{ $t('APPs is running') + ` , ` + $t('restart APPs to continue.') }}
 			</div>
@@ -116,11 +116,12 @@
 			</div>
 		</section>
 
-		<footer class="is-flex is-align-items-center">
+		<footer class="is-flex is-align-items-center mb-4">
 			<div class="is-flex-grow-1"></div>
 			<div class="mr-4">
 				<b-button v-show="currentStep > 2 || currentStep === 1" :label="$t('Cancel')"
-						  class="_has-background-gray-100 _radius-line" expaned @click="currentStep = 0"/>
+						  class="_has-background-gray-100" expaned rounded
+						  @click="currentStep = 0"/>
 			</div>
 			<div>
 				<b-button v-show="currentStep === 0" :disabled="disableMergeButton" :label="$t(affirm)"
@@ -152,18 +153,15 @@ import isEqual    from 'lodash/isEqual';
 export default {
 	name: "MergeStorages",
 	mixins: [mixin],
-	props: {
-		mergeStorageList: {
-			type: Array,
-			required: true,
-			default: () => []
-		},
-	},
 	components: {
 		cToolTip
 	},
-	async mounted() {
-		this.checkBoxGroup.push(...this.mergeStorageList)
+	async created() {
+		let mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => {
+			return res.data.data[0]['source_volume_uuids']
+		})
+		this.mergeStorageList.push(...mergeStorageList)
+		this.checkBoxGroup.push(...mergeStorageList)
 		await this.getDiskList();
 		this.tempCheckBox = [...this.checkBoxGroup, ...this.checkBoxMissGroup]
 	},
@@ -228,6 +226,7 @@ export default {
 			password: '',
 			runName: '',
 			notEmpty: false,
+			mergeStorageList: [],
 			tempCheckBox: [],
 		}
 	},
@@ -468,6 +467,8 @@ export default {
 						type: 'is-danger'
 					})
 					console.error(e)
+				}).finally(() => {
+					this.currentStep = 0
 				})
 			} catch (e) {
 				console.log(e)
