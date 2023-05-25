@@ -99,10 +99,11 @@ import smoothReflow                             from 'vue-smooth-reflow'
 import {ValidationObserver, ValidationProvider} from 'vee-validate'
 import "@/plugins/vee-validate";
 import Business_ShowNewAppTag                   from "@/mixins/app/Business_ShowNewAppTag";
+import Business_LinkApp                         from "@/mixins/app/Business_LinkApp";
 
 
 export default {
-	mixins: [smoothReflow, Business_ShowNewAppTag],
+	mixins: [smoothReflow, Business_ShowNewAppTag, Business_LinkApp],
 	components: {ValidationProvider, ValidationObserver},
 	props: {
 		linkName: {
@@ -171,9 +172,9 @@ export default {
 
 		connect() {
 			this.isLoading = true
-			this.checkStep(this.$refs.ob1).then(valid => {
+			this.checkStep(this.$refs.ob1).then(async valid => {
 				if (valid) {
-					let listLinkApp = JSON.parse(localStorage.getItem("listLinkApp"))
+					let listLinkApp = await this.getLinkAppList()
 					if (!listLinkApp.find((item) => {
 						if (item.name === this.name) {
 							item.hostname = this.hostname
@@ -225,7 +226,6 @@ export default {
 					if (stor === "") {
 						stor = []
 					}
-					localStorage.setItem('listLinkApp', JSON.stringify(stor))
 					this.$emit('updateState')
 					this.$emit('close')
 				} else {
