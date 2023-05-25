@@ -161,6 +161,7 @@ import isNull                 from "lodash/isNull";
 import tipEditorModal         from "@/components/Apps/TipEditorModal.vue";
 import YAML                   from "yaml";
 import commonI18n             from "@/mixins/base/common-i18n";
+import FileSaver              from 'file-saver';
 
 export default {
 	name: "app-card",
