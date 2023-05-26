@@ -38,6 +38,7 @@
 							:label="$t('Docker Image') + ' *'"
 							:message="$t(errors)"
 							:type="{ 'is-danger': errors[0], 'is-success': valid }"
+							class="mb-3"
 						>
 							<b-input
 								v-model="service.image"
