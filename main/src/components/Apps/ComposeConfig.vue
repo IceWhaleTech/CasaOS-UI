@@ -801,16 +801,18 @@ export default {
 					return `${env.container}=${env.host}`;
 				});
 			}
-			let yaml = YAML.parse(this.dockerComposeCommands);
-			Object.keys(yaml.services).map(key => {
-				yaml.services[key].ports = [];
-				yaml.services[key].volumes = [];
-				yaml.services[key].devices = [];
-				yaml.services[key].cap_add = [];
-				yaml.services[key].command = [];
-			})
+			if (this.dockerComposeCommands) {
+				let yaml = YAML.parse(this.dockerComposeCommands);
+				Object.keys(yaml.services).map(key => {
+					yaml.services[key].ports = [];
+					yaml.services[key].volumes = [];
+					yaml.services[key].devices = [];
+					yaml.services[key].cap_add = [];
+					yaml.services[key].command = [];
+				})
 
-			ConfigData = merge(yaml, ConfigData)
+				ConfigData = merge(yaml, ConfigData)
+			}
 			// check
 			// let DockerComposeCommands = YAML.stringify(ConfigData)
 			// this.$api.apps.checkPort().then(res => {
