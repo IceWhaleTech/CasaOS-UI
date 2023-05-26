@@ -688,6 +688,20 @@ export default {
 				this.isStarting = false
 			}
 		},
+		"app:restart-error"(res) {
+			// toast info.
+			this.$buefy.toast.open({
+				message: res.Properties["message"],
+				duration: 5000,
+				type: "is-danger",
+			})
+		},
+		"app:restart-end"(res) {
+			if (res.Properties["app:name"] === this.item.name) {
+				this.isRestarting = false
+				this.isStarting = false
+			}
+		},
 		"app:apply-changes-begin"(res) {
 			if (res.Properties["app:name"] === this.item.name) {
 				this.isSaving = true
