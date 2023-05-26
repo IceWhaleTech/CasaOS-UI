@@ -36,14 +36,14 @@
 				</div>
 				<div class="is-flex is-flex-grow-1 is-flex-direction-column is-justify-content-center ">
           <span class="is-uppercase one-line _is-text-emphasis-03 _has-text-gray-800">{{
-		          item.name || $t('undefined')
-	          }}</span>
+				  item.name || $t('undefined')
+			  }}</span>
 				</div>
 				<div class="is-flex is-flex-shrink-0 is-flex-direction-column is-justify-content-center mr-2">
           <span class="is-uppercase _is-text-full-03 _has-text-gray-600">{{
-		          renderSize(item.size -
-			          item.availSize)
-	          }}/{{ renderSize(item.size) }}</span>
+				  renderSize(item.size -
+					  item.availSize)
+			  }}/{{ renderSize(item.size) }}</span>
 				</div>
 				<b-checkbox v-model="checkBoxGroup" :disabled="item.persistedIn !== 'casaos' || item.isSystem"
 							:native-value="item.uuid" class="mr-2"></b-checkbox>
@@ -56,8 +56,8 @@
 				</div>
 				<div class="is-flex is-flex-grow-1 is-flex-direction-column is-justify-content-center ">
           <span class="is-uppercase one-line  _is-text-emphasis-03 _has-text-gray-800">{{
-		          item.name || $t('undefined')
-	          }}</span>
+				  item.name || $t('undefined')
+			  }}</span>
 				</div>
 				<div class="is-flex is-flex-shrink-0 is-flex-direction-column is-justify-content-center mr-2">
           <span class="is-flex is-align-items-center has-text-danger small-font">
@@ -96,7 +96,7 @@
 				<b-icon custom-size="casa-19px" icon="danger" pack="casa"></b-icon>
 			</div>
 			{{
-			$t(`* This feature is now testing and verifying, enabling it may clear personal data and destroy the
+				$t(`* This feature is now testing and verifying, enabling it may clear personal data and destroy the
 			installed APPs, so it is recommended to use it only during the startup.`)
 			}}
 		</div>
@@ -105,15 +105,15 @@
 				 class="notification is-overlay mr-5 ml-5 mb-0 pr-0 pl-0 pt-5 pb-4 non-backgroud">
 			<div v-if="currentStep === 1" class="is-flex is-align-items-center _is-normal">
 				{{
-				$t('This operation may clear all personal data and destroy the installed APPs.')
+					$t('This operation may clear all personal data and destroy the installed APPs.')
 				}}
 			</div>
 			<template v-if="currentStep === 2">
 				<div class="font">
-					{{ $t('Enter the password to continue.') }}
+					{{ $t('Enter "I AM SURE" to proceed with the operation.') }}
 				</div>
-				<b-input ref="inputPassword" v-model="password" class="mt-4" password-reveal type="password"
-						 @keyup.enter.native="verifyPassword(password)"></b-input>
+				<b-input ref="inputPassword" v-model="password" class="mt-4" password-reveal
+						 @keyup.enter.native="verifyOperate(password)"></b-input>
 			</template>
 			<div v-if="currentStep === 3" class="is-flex is-align-items-center font">
 				<div class="message-danger left mr-2 is-flex is-align-items-center">
@@ -142,7 +142,7 @@
 						  class="_has-background-red-default _radius-line _has-text-white" expaned
 						  @click="currentStep = 2"/>
 				<b-button v-show="currentStep === 2" :label="$t(affirm)" :loading="isConnecting" expaned rounded
-						  type="is-primary" @click="verifyPassword(password)"/>
+						  type="is-primary" @click="verifyOperate(password)"/>
 				<b-button v-show="currentStep === 3" :label="$t(affirm)" :loading="isConnecting" expaned rounded
 						  type="is-primary" @click="restart"/>
 				<b-button v-show="currentStep === 4" :label="$t(affirm)" :loading="isConnecting" expaned rounded
@@ -153,12 +153,10 @@
 </template>
 
 <script>
-import {mixin}    from "@/mixins/mixin";
-import jwt_decode from "jwt-decode";
-import MD5        from 'md5-es';
-import events     from '@/events/events';
-import cToolTip   from '@/components/basicComponents/tooltip/tooltip.vue';
-import filter     from 'lodash/filter';
+import {mixin}  from "@/mixins/mixin";
+import events   from '@/events/events';
+import cToolTip from '@/components/basicComponents/tooltip/tooltip.vue';
+import filter   from 'lodash/filter';
 
 export default {
 	name: "MergeStorages",
@@ -481,18 +479,14 @@ export default {
 
 		},
 
-		verifyPassword(password) {
-			// get token from the local storage
-			const token = localStorage.getItem('access_token')
-			// decode the token
-			const tokenJson = jwt_decode(token)
-			if (MD5.hash(password) === tokenJson.password) {
+		verifyOperate(content) {
+			if (content === "I AM SURE") {
 				this.submit(null, true);
 				return
 			}
 			this.$buefy.toast.open({
 				duration: 5000,
-				message: this.$t("Password is incorrect"),
+				message: this.$t("Incorrect input."),
 				type: 'is-danger'
 			})
 		}
