@@ -163,7 +163,7 @@ export default {
 		tipEditorModal,
 	},
 	mixins: [business_ShowNewAppTag, business_OpenThirdApp, business_LinkApp, commonI18n],
-	inject: ["homeShowFiles", "openAppStore"],
+	inject: ["showMircoApp", "openAppStore"],
 	data() {
 		return {
 			hover: false,
@@ -304,7 +304,10 @@ export default {
 					this.openAppStore()
 					break;
 				case "Files":
-					this.homeShowFiles()
+					this.showMircoApp(item)
+					break;
+				case "Remote Access":
+					this.showMircoApp(item)
 					break;
 				default:
 					break;

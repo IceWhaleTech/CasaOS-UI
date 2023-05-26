@@ -76,6 +76,10 @@
 			</template>
 		</b-modal>
 		<!-- File Panel End -->
+
+		<!-- Remote Access Start -->
+		<div id="remoteAccessMircoApp" v-show="isRemoteAccessActive"></div>
+		<!-- Remote Access End -->
 	</div>
 </template>
 
@@ -112,18 +116,19 @@ export default {
 			hardwareInfoLoading: true,
 			user_id: localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 1,
 			isFileActive: false,
+			isRemoteAccessActive: false,
 			barData: {},
 			topBarAni: {
 				classes: 'fadeInDown',
 				duration: 800
 			},
-			fileMircoAppEntry: '',
-			fileMircoAppInstance: null,
+			mircoAppInstanceMap: new Map(),
 		}
 	},
 	provide() {
 		return {
 			homeShowFiles: this.showMircoApp,
+			showMircoApp: this.showMircoApp,
 		};
 	},
 
@@ -139,7 +144,6 @@ export default {
 		this.getHardwareInfo();
 		this.getWallpaperConfig();
 		this.getConfig();
-		this.fileMircoAppEntry = VUE_FILE_APP_ENTRY;
 		this.$store.commit('SET_ACCESS_ID', nanoid());
 	},
 	mounted() {
@@ -208,81 +212,87 @@ export default {
 		},
 
 		/**
-		 * @description: Show Files
+		 * @description: Show MircoApp
 		 * @param {*}
 		 * @return {*} void
 		 */
-		showFiles(path) {
-			this.isFileActive = true
-			// this.$refs.filePanel.init(path)
-			// this.$microApp([{
-			// 	name: 'vueApp',
-			// 	entry: '/modules/icewhale_files/',
-			// container: '#container_file',
-			// activeRule: '/app-vue',
-			// }])
-			// this.$router.push({
-			// 	path: '/app-vue',
-			// 	query: {
-			// 		path: path
-			// 	}
-			// })
-			// loadMicroApp({
-			// 	name: 'vueApp',
-			// 	entry: '/modules/icewhale_files/',
-			// 	container: '#container_file',
-			// 	props: {
-			// 		slogan: 'hello'
-			// 	},
-			// 	sandbox: {
-			// 		experimentalStyleIsolation: true
-			// 	}
-			// })
-		},
-		showMircoApp() {
-			if (!this.fileMircoAppInstance) {
-				this.createMircoApp();
-			} else if (!this.isFileActive) {
-				this.$messageBus('mircoapp_communicate', { action: MIRCO_APP_ACTION_ENUM.OPEN, peerType: 'file' });
-				this.isFileActive = true;
+		showMircoApp(app) {
+			const appInstance = this.mircoAppInstanceMap.get(app.name);
+			if (!appInstance) {
+				this.createMircoApp(app);
+			} else if (app.name === 'Files') {
+				if (!this.isFileActive) {
+					this.$messageBus('mircoapp_communicate', { action: MIRCO_APP_ACTION_ENUM.OPEN, peerType: 'file' });
+					this.isFileActive = true;
+				}
+			} else if (app.name === 'Remote Access') {
+				if (!this.isRemoteAccessActive) {
+					this.$messageBus('mircoapp_communicate', { action: MIRCO_APP_ACTION_ENUM.OPEN, peerType: 'remoteAccess' });
+					this.isRemoteAccessActive = true;
+				}
 			}
 		},
 
-		hideMircoApp() {
+		hideMircoApp(peerType = '') {
 			this.isFileActive = false;
+			this.isRemoteAccessActive = false;
 		},
 
-		createMircoApp() {
-			this.fileMircoAppInstance = loadMicroApp({
-				name: 'microApp',
-				entry: this.fileMircoAppEntry,
-				container: '#microApp',
-				props: {
-					store: { // sync necessary store status to child mirco app
-						device_id: this.$store.state.device_id,
-						access_id: this.$store.state.access_id,
-						access_token: this.$store.state.access_token,
-						refresh_token: this.$store.state.refresh_token,
-						casaos_lang: this.$store.state.casaos_lang,
+		createMircoApp(app) {
+			if (app.name === 'Files') {
+				const fileAppInstance = loadMicroApp({
+					name: 'microApp',
+					entry: app.entry,
+					container: '#microApp',
+					props: {
+						store: { // sync necessary store status to child mirco app
+							device_id: this.$store.state.device_id,
+							access_id: this.$store.state.access_id,
+							access_token: this.$store.state.access_token,
+							refresh_token: this.$store.state.refresh_token,
+							casaos_lang: this.$store.state.casaos_lang,
+						}
+					},
+					sandbox: {
+						experimentalStyleIsolation: true
 					}
-				},
-				sandbox: {
-					experimentalStyleIsolation: true
-				}
-			});
-			this.$nextTick(() => {
-				this.isFileActive = true;
-			});
-			return {
-				instance: this.fileMircoAppInstance,
-				modal: this.$refs.microAppModal,
-			};
+				});
+				this.mircoAppInstanceMap.set(app.name, fileAppInstance);
+				this.$nextTick(() => {
+					this.isFileActive = true;
+				});
+			} else {
+				const remoteAccessAppInstance = loadMicroApp({
+					name: 'remoteAccessMircoApp',
+					entry: app.entry,
+					container: '#remoteAccessMircoApp',
+					props: {
+						store: { // sync necessary store status to child mirco app
+							device_id: this.$store.state.device_id,
+							access_id: this.$store.state.access_id,
+							access_token: this.$store.state.access_token,
+							refresh_token: this.$store.state.refresh_token,
+							casaos_lang: this.$store.state.casaos_lang,
+						}
+					},
+					sandbox: {
+						experimentalStyleIsolation: true
+					}
+				});
+				this.mircoAppInstanceMap.set(app.name, remoteAccessAppInstance);
+				this.$nextTick(() => {
+					this.isRemoteAccessActive = true;
+				});
+			}
 		},
 
-		destroyMircoApp() {
+		destroyMircoApp(name = '') {
 			this.hideMircoApp();
-			this.fileMircoAppInstance.unmount();
-			this.fileMircoAppInstance = null;
+			const instance = this.mircoAppInstanceMap.get(name);
+			if (instance) {
+				instance.unmount();
+				this.mircoAppInstanceMap.delete(name);
+			}
 		},
 
 		afterFileEnter() {
@@ -396,11 +406,8 @@ export default {
 					case MIRCO_APP_ACTION_ENUM.MOUNT:
 						this.showStorageManagerPanelModal();
 						break;
-					case MIRCO_APP_ACTION_ENUM.OPEN:
-						this.showMircoApp();
-						break;
 					case MIRCO_APP_ACTION_ENUM.CLOSE:
-						this.hideMircoApp();
+						this.hideMircoApp(data.peerType);
 						break;
 					case MIRCO_APP_ACTION_ENUM.LOGIN:
 						this.$router.push("/login");
@@ -412,7 +419,8 @@ export default {
 		}
 	},
 	beforeDestroy() {
-		this.destroyMircoApp();
+		this.destroyMircoApp('Files');
+		this.destroyMircoApp('Remote Access');
 		window.removeEventListener("resize", this.onResize);
 		this.$EventBus.$off('casaUI:openStorageManager');
 	},
@@ -428,7 +436,7 @@ export default {
 
 .contents {
 	flex: 1;
-	overflow-y: auto;
+	overflow-y: hidden;
 	overflow-x: hidden;
 	height: calc(100% - 7rem);
 }
@@ -514,5 +522,12 @@ export default {
 		width: 100%;
 		height: 100%;
 	}
+}
+#remoteAccessMircoApp {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
 }
 </style>

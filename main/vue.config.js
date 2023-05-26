@@ -48,6 +48,7 @@ module.exports = {
 		config.plugin('define')
 			.use(require('webpack/lib/DefinePlugin'), [{
 				VUE_FILE_APP_ENTRY: JSON.stringify(process.env.VUE_FILE_APP_ENTRY),
+				VUE_REMOTE_ACCESS_APP_ENTRY: JSON.stringify(process.env.VUE_REMOTE_ACCESS_APP_ENTRY),
 				MAIN_APP_VERSION_ID: JSON.stringify(commitHash),
 				BUILT_TIME: JSON.stringify(Date.now())
 			}]);
