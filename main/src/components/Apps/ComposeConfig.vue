@@ -296,7 +296,9 @@ export default {
 						container_name: "",
 						deploy: {
 							resources: {
-								limits: {},
+								limits: {
+									memory: "256",
+								},
 							},
 						},
 					},
@@ -306,34 +308,10 @@ export default {
 					scheme: "http",
 					index: "/",
 					port_map: "",
-					// name: "",
-					// container_name: "",
-					// appstore_id: "",
-					// envs: [],
-					// ports: [],
-					// shell: "sh",
-					// volumes: [],
 
 					author: "self",
 					category: "self",
-					// description: {
-					// 	en_us: "",
-					// },
-					// developer: "",
 					icon: "",
-					// screenshot_link: [],
-					// tagline: {
-					// 	en_us: "",
-					// },
-					// thumbnail: "",
-					// tips: {
-					// 	before_install: {
-					// 		en_us: "",
-					// 	},
-					// },
-					// title: {
-					// 	en_us: "",
-					// },
 				},
 			},
 			// error info
@@ -459,7 +437,7 @@ export default {
 		 * @return {*} void
 		 */
 		changeIcon(image) {
-			this.main_app.icon = this.getIconFromImage(image);
+			this.configData["x-casaos"].icon = this.getIconFromImage(image);
 		},
 
 		/**
@@ -520,12 +498,12 @@ export default {
 				// set main app name
 				this.configData.name = yaml?.name || "";
 				this.configData.services = {};
+				// 删除掉原默认主应用。
+				this.$delete(this.configData.services, "main_app");
 				// 解析 services，并将其赋值到 configData.services中。
 				for (const serviceKey in yaml.services) {
 					this.$set(this.configData.services, serviceKey, this.parseCompseItem(yaml.services[serviceKey]));
 				}
-				// 删除掉原默认主应用。
-				this.$delete(this.configData.services, "main_app");
 
 				// set top level x-casaos data
 				this.configData["x-casaos"] = merge(this.configData["x-casaos"], yaml["x-casaos"]);
