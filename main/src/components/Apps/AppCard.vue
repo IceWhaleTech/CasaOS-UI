@@ -46,6 +46,12 @@
 						</b-loading>
 					</b-button>
 
+					<b-button v-if="isV1App" :loading="isCloning"
+							  expanded type="is-text" @click="exportYAML(item)">{{
+							$t('Export as Compose')
+						}}
+					</b-button>
+
 					<b-dropdown v-if="false" :triggers="['click']" aria-role="list" class="is-right" expanded>
 						<template #trigger>
 							<b-button :label="$t('Advanced')" expanded type="is-text"/>
@@ -155,6 +161,7 @@ import isNull                 from "lodash/isNull";
 import tipEditorModal         from "@/components/Apps/TipEditorModal.vue";
 import YAML                   from "yaml";
 import commonI18n             from "@/mixins/base/common-i18n";
+import FileSaver              from 'file-saver';
 
 export default {
 	name: "app-card",
@@ -586,6 +593,18 @@ export default {
 				this.$buefy.toast.open({
 					message: this.$t(`There was an error loading the data, please try again!`),
 					type: 'is-danger'
+				})
+			})
+		},
+
+		exportYAML(item) {
+			this.$api.container.exportAsCompose(item.name).then(res => {
+				const blob = new Blob([res.data], {type: ''});
+				FileSaver.saveAs(blob, `${item.image}.yaml`);
+			}).catch((err) => {
+				this.$buefy.toast.open({
+					message: err.response.data.message,
+					type: 'is-warning'
 				})
 			})
 		},
