@@ -141,6 +141,10 @@ const container = {
 		return api.get(`${PREFIX2COMPOSE}/${id}/containers`);
 	},
 
+	// export container as compose file
+	exportAsCompose(id) {
+		return api.get(`${PREFIX}/${id}/compose`);
+	},
 }
 
 export default container;
