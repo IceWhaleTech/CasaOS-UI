@@ -22,7 +22,7 @@
 						}}
 					</h3>
 				</div>
-				<b-icon class="_polymorphic close" icon="close" pack="casa"
+				<b-icon class="_polymorphic close" icon="close-outline" pack="casa"
 						@click.native="$emit('close'); $messageBus('appstore_close')"/>
 			</header>
 			<p class="modal-card-body">
@@ -80,10 +80,12 @@
 					</b-tooltip>
 					<div v-if="currentSlide < 2"
 						 class="is-flex is-align-items-center modal-close-container modal-close-container-line ">
-						<b-icon class="_polymorphic close" icon="close" pack="casa" @click.native="$emit('close')"/>
+						<b-icon class="_polymorphic close" icon="close-outline" pack="casa"
+								@click.native="$emit('close')"/>
 					</div>
 					<div v-else-if="currentSlide === 2" class="is-flex is-align-items-center">
-						<b-icon class="_polymorphic close" icon="close" pack="casa" @click.native="$emit('close')"/>
+						<b-icon class="_polymorphic close" icon="close-outline" pack="casa"
+								@click.native="$emit('close')"/>
 					</div>
 
 				</div>
@@ -194,7 +196,7 @@
 									<div
 										class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
 										<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
-												icon="author"
+												icon="posted-by-outline"
 												pack="casa"></b-icon>
 										<span class="has-text-full-03">{{ currentAuthor.name }}</span>
 										<b-icon :icon="active ? 'chevron-up' : 'chevron-down'"
@@ -402,7 +404,7 @@
 								<option value="http">http://</option>
 								<option value="https">https://</option>
 							</b-select>
-							<b-input v-model="settingData.host" :placeholder="this.$baseIp"
+							<b-input v-model="settingData.host" :placeholder="this.$baseHostname"
 									 expanded></b-input>
 							<b-autocomplete
 								v-model="settingData.port_map"

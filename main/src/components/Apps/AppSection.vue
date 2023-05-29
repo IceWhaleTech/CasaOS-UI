@@ -18,7 +18,7 @@
 
 			<b-dropdown animation="fade1" aria-role="menu" class="file-dropdown" position="is-bottom-left">
 				<template #trigger>
-					<b-icon class="polymorphic is-clickable has-text-grey-100" icon="plus" pack="casa"
+					<b-icon class="polymorphic is-clickable has-text-grey-100" icon="plus-outline" pack="casa"
 							size="is-24"></b-icon>
 				</template>
 				<b-dropdown-item aria-role="menuitem" @click="showInstall(0, 'custom')">
@@ -215,7 +215,7 @@ export default {
 			try {
 				const orgAppList = await this.$openAPI.appGrid.getAppGrid().then(res => res.data.data || []);
 				orgAppList.forEach((item) => {
-					item.hostname = item.hostname || this.$baseIp;
+					item.hostname = item.hostname || this.$baseHostname;
 					// Container app does not have icon.
 					item.icon = item.icon || require(`@/assets/img/app/default.svg`);
 				})

@@ -1,24 +1,36 @@
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-	<g clip-path="url(#clip0_611_1120)">
-		<rect width="24" height="24" rx="5" fill="url(#paint0_linear_611_1120)"/>
+<!--
+  - * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+  - * @LastEditTime: 2023/5/15 下午5:11
+  - * @FilePath: /CasaOS-UI/main/src/assets/img/logo/casa-white.svg
+  - * @Description:
+  - *
+  - * Copyright (c) 2023 by IceWhale, All Rights Reserved.
+  -
+  -->
+
+<svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+	<g clip-path="url(#clip0_1133_9250)">
+		<path
+			d="M0 15C0 6.71573 6.71573 0 15 0H57C65.2843 0 72 6.71573 72 15V57C72 65.2843 65.2843 72 57 72H15C6.71573 72 0 65.2843 0 57V15Z"
+			fill="url(#paint0_linear_1133_9250)"/>
 		<path opacity="0.95"
-			  d="M7 18.1538C9.76142 18.1538 12 15.9152 12 13.1538C12 10.3924 9.76142 8.15378 7 8.15378C4.23858 8.15378 2 10.3924 2 13.1538C2 15.9152 4.23858 18.1538 7 18.1538Z"
+			  d="M21 54.4613C29.2843 54.4613 36 47.7456 36 39.4613C36 31.1771 29.2843 24.4613 21 24.4613C12.7157 24.4613 6 31.1771 6 39.4613C6 47.7456 12.7157 54.4613 21 54.4613Z"
 			  fill="#4CE7FF"/>
 		<path opacity="0.95"
-			  d="M11.9998 18.1753C15.7761 18.1753 18.8374 15.114 18.8374 11.3377C18.8374 7.56133 15.7761 4.5 11.9998 4.5C8.22344 4.5 5.16211 7.56133 5.16211 11.3377C5.16211 15.114 8.22344 18.1753 11.9998 18.1753Z"
+			  d="M36 54.526C47.329 54.526 56.513 45.342 56.513 34.013C56.513 22.684 47.329 13.5 36 13.5C24.671 13.5 15.487 22.684 15.487 34.013C15.487 45.342 24.671 54.526 36 54.526Z"
 			  fill="#0067C2"/>
 		<path opacity="0.95"
-			  d="M17 18.1538C19.7614 18.1538 22 15.9152 22 13.1538C22 10.3924 19.7614 8.15378 17 8.15378C14.2386 8.15378 12 10.3924 12 13.1538C12 15.9152 14.2386 18.1538 17 18.1538Z"
+			  d="M51 54.4613C59.2843 54.4613 66 47.7456 66 39.4613C66 31.1771 59.2843 24.4613 51 24.4613C42.7157 24.4613 36 31.1771 36 39.4613C36 47.7456 42.7157 54.4613 51 54.4613Z"
 			  fill="#4CE7FF"/>
 	</g>
 	<defs>
-		<linearGradient id="paint0_linear_611_1120" x1="12" y1="1.74621e-09" x2="12" y2="24"
+		<linearGradient id="paint0_linear_1133_9250" x1="36" y1="5.23863e-09" x2="36" y2="72"
 						gradientUnits="userSpaceOnUse">
 			<stop stop-color="#F7FAFC"/>
 			<stop offset="1" stop-color="#EDEFF2"/>
 		</linearGradient>
-		<clipPath id="clip0_611_1120">
-			<rect width="24" height="24" fill="white"/>
+		<clipPath id="clip0_1133_9250">
+			<rect width="72" height="72" fill="white"/>
 		</clipPath>
 	</defs>
 </svg>

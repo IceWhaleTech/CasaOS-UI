@@ -155,7 +155,7 @@ export default {
 		}
 		if (sessionStorage.getItem('fromWelcome')) {
 			this.$messageBus('global_newvisit')
-			this.rssConfirm()
+			// this.rssConfirm()
 			// one-off consumption
 			sessionStorage.removeItem('fromWelcome')
 		}
@@ -174,31 +174,36 @@ export default {
 		 * @return {*}
 		 */
 		async getConfig() {
-			let systemConfig = await this.$api.users.getCustomStorage("system")
-			if (systemConfig.data.success != 200 || systemConfig.data.data == "") {
-				const barData = {
-					lang: this.getLangFromBrowser(),
-					search_engine: "https://duckduckgo.com/?q=",
-					search_switch: true,
-					recommend_switch: true,
-					shortcuts_switch: true,
-					widgets_switch: true,
-					existing_apps_switch: true,
-					rss_switch: this.barData.rss_switch,
+			try {
+				let systemConfig = await this.$api.users.getCustomStorage("system")
+				if (systemConfig.data.success != 200 || systemConfig.data.data == "") {
+					const barData = {
+						lang: this.getLangFromBrowser(),
+						search_engine: "https://duckduckgo.com/?q=",
+						search_switch: true,
+						recommend_switch: true,
+						shortcuts_switch: true,
+						widgets_switch: true,
+						existing_apps_switch: true,
+						// first::form vuex
+						rss_switch: this.$store.state.rssSwitch,
+					}
+					// save
+					const saveRes = await this.$api.users.setCustomStorage("system", barData)
+					if (saveRes.data.success === 200) {
+						systemConfig = saveRes
+						this.barData = saveRes.data.data
+					}
 				}
-				// save
-				const saveRes = await this.$api.users.setCustomStorage("system", barData)
-				if (saveRes.data.success === 200) {
-					systemConfig = saveRes
-					this.barData = saveRes.data.data
-				}
-			}
 
-			this.$store.commit('SET_SEARCH_ENGINE_SWITCH', systemConfig.data.data.search_switch);
-			this.$store.commit('SET_RECOMMEND_SWITCH', systemConfig.data.data.recommend_switch);
-			this.$store.commit('SET_RSS_SWITCH', systemConfig.data.data.rss_switch);
-			this.barData = systemConfig.data.data
-			this.isLoading = false
+				this.$store.commit('SET_SEARCH_ENGINE_SWITCH', systemConfig.data.data.search_switch);
+				this.$store.commit('SET_RECOMMEND_SWITCH', systemConfig.data.data.recommend_switch);
+				this.$store.commit('SET_RSS_SWITCH', systemConfig.data.data.rss_switch);
+				this.barData = systemConfig.data.data
+				this.isLoading = false
+			} catch (e) {
+				console.error('GETTING SYSTEM INFO HAS ERROR:', e)
+			}
 
 		},
 

@@ -13,7 +13,7 @@
 		<!-- Modal-Card Header Start -->
 		<header class="modal-card-head">
 			<div class="is-flex-grow-1">
-				<h3 class="title is-3">{{ $t('Share CasaOS') }}</h3>
+				<h3 class="title is-3">{{ $t('Share {CasaOS}', {CasaOS: TITLE}) }}</h3>
 			</div>
 			<div>
 				<button class="delete" type="button" @click="$emit('close')"/>
@@ -26,8 +26,7 @@
 
 				<div>
 					<div class=" is-size-14px">{{
-						$t('Please invite more friends who are concerned about family and data privacy to join and use
-						CasaOS.')
+							$t('Please invite more friends who are concerned about family and data privacy to join and use CasaOS.')
 						}}
 					</div>
 
@@ -55,6 +54,7 @@
 import {marked} from 'marked'
 
 export default {
+	inject: ['TITLE'],
 	props: {
 		changeLog: {
 			type: String,

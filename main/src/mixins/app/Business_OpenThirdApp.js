@@ -15,7 +15,7 @@ export default {
 		openThirdApp(appInfo, isNewWindows) {
 			this.$messageBus('apps_open', appInfo.name);
 			if (appInfo.hostname !== "" || appInfo.port !== "" || appInfo.index !== "") {
-				const hostIp = appInfo.hostname || this.$baseIp
+				const hostIp = appInfo.hostname || this.$baseHostname
 				const scheme = appInfo.scheme || 'http'
 				const port = appInfo.port ? `:${appInfo.port}` : ''
 				const url = `${scheme}://${hostIp}${port}${appInfo.index}`
@@ -43,7 +43,7 @@ export default {
 					"id": appInfo.id,
 					"name": appInfo.id,
 					scheme: containerInfoV2.scheme,
-					hostname: containerInfoV2.hostname || this.$baseIp,
+					hostname: containerInfoV2.hostname || this.$baseHostname,
 					port: containerInfoV2.port_map,
 					index: containerInfoV2.index,
 					image: allinfo.compose.services[appInfo.id].image,

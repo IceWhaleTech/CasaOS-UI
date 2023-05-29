@@ -1,0 +1,65 @@
+/*!
+ *  @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ *  @LastEditTime: 2023/5/18 下午3:48
+ *  @FilePath: /CasaOS-UI/main/src/assets/scss/common/_switch.scss
+ *  @Description:
+ *
+ *  Copyright (c) 2023 by IceWhale, All Rights Reserved.
+ *
+ */
+
+/************************************
+	与 Buefy 深度绑定
+	Deeply integrate with Buefy.
+	
+	c- 表示遵循 casaos 设计模板
+	The prefix "c-" indicates compliance with the CasaOS design template.
+		"dark" 为主题样式
+		"dark" is the theme style.
+*************************************/
+
+// TODO: remove this when the switch to be component.
+.switch.c-small input[type=checkbox] {
+	& + .check {
+		width: 2.286em;
+		height: 1.429em;
+		padding: 0;
+		box-shadow: none !important;
+		
+		&::before {
+			width: 1.143em;
+			height: 1.143em;
+			margin-left: 2px;
+			margin-right: 2px;
+		}
+	}
+	
+	&:checked + .check {
+		&::before {
+			transform: translate3d(80%, 0, 0);
+		}
+	}
+}
+
+.switch.c-large {
+	input[type=checkbox] {
+		&:checked + .check {
+			&::before {
+				transform: translate3d(80%, 0, 0);
+			}
+		}
+	}
+	
+	span.check {
+		width: 2.5rem;
+		height: 1.5rem;
+		padding: 0;
+		box-shadow: none !important;
+		
+		&::before {
+			width: 1.25rem;
+			height: 1.25rem;
+			margin: 2px;
+		}
+	}
+}

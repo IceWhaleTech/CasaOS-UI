@@ -1,4 +1,14 @@
 <!--
+  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+  * @LastEditTime: 2023/5/22 下午2:47
+  * @FilePath: /CasaOS-UI/main/src/components/widgets/Settings.vue
+  * @Description:
+  *
+  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
+
+  -->
+
+<!--
  * @Author: JerryK
  * @Date: 2021-10-09 18:41:15
  * @LastEditors: Jerryk jerry@icewhale.org
@@ -21,7 +31,7 @@
 								{{ $t('Widgets Settings') }}
 							</div>
 							<div class="widget-icon-button is-flex-shrink-0">
-								<b-icon icon="right" pack="casa" size="is-20"></b-icon>
+								<b-icon icon="right-outline" pack="casa" size="is-20"></b-icon>
 							</div>
 						</div>
 						<!-- Header End -->
@@ -53,9 +63,9 @@
 import find from 'lodash/find';
 
 const widgetsComponents = require.context(
-'@/widgets',
-false,
-/.vue$/
+	'@/widgets',
+	false,
+	/.vue$/
 )
 
 
