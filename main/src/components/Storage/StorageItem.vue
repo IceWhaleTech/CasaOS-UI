@@ -22,8 +22,7 @@
 					</h4>
 
 					<p class="has-text-left has-text-full-04 has-text-grey-light mt-1">{{ $t('Single Drive Storage') }},
-						<span
-							class="is-uppercase">{{ item.fsType }}</span>
+						<span class="is-uppercase">{{ item.fsType }}</span>
 						<b-tooltip :label="$t('CasaOS reserves 1% of file space when creating storage in EXT4 format.')"
 								   append-to-body>
 							<b-icon class="mr-2 " icon="help-circle-outline" size="is-small"></b-icon>
@@ -55,10 +54,8 @@
 </template>
 
 <script>
-import {mixin}    from '@/mixins/mixin';
-import delay      from 'lodash/delay';
-import jwt_decode from "jwt-decode";
-import MD5        from 'md5-es';
+import {mixin} from '@/mixins/mixin';
+import delay   from 'lodash/delay';
 
 export default {
 	name: "drive-item",
@@ -96,46 +93,33 @@ export default {
 						path: path,
 						password: value
 					}
-					// get token from the local storage
-					const token = localStorage.getItem('access_token')
-					// decode the token
-					const tokenJson = jwt_decode(token)
-					if (MD5.hash(value) === tokenJson.password) {
-						this.$api.disks.umount(data).then((res) => {
-							if (res.data.success != 200) {
-								this.isRemoving = false;
-								this.$buefy.toast.open({
-									duration: 3000,
-									message: res.data.message,
-									type: 'is-danger'
-								})
-								console.error(res);
-							} else {
-								this.isRemoving = false;
-								let _this = this
-								delay(() => {
-									_this.isRemoving = false;
-									_this.$emit('getDiskList');
-								}, 1000);
-							}
-						}).catch(e => {
+
+					this.$api.disks.umount(data).then((res) => {
+						if (res.data.success != 200) {
 							this.isRemoving = false;
 							this.$buefy.toast.open({
 								duration: 3000,
-								message: e.response.data.message,
+								message: res.data.message,
 								type: 'is-danger'
 							})
-							console.error(e)
+							console.error(res);
+						} else {
+							this.isRemoving = false;
+							let _this = this
+							delay(() => {
+								_this.isRemoving = false;
+								_this.$emit('getDiskList');
+							}, 1000);
+						}
+					}).catch(e => {
+						this.isRemoving = false;
+						this.$buefy.toast.open({
+							duration: 3000,
+							message: e.response.data.message,
+							type: 'is-danger'
 						})
-						return
-					}
-					this.isRemoving = false;
-					this.$buefy.toast.open({
-						duration: 3000,
-						message: this.$t("Password is incorrect"),
-						type: 'is-danger'
+						console.error(e)
 					})
-					console.error("Password is incorrect")
 				}
 			})
 		},
@@ -161,45 +145,33 @@ export default {
 						volume: mount_point,
 						password: value
 					}
-					// get token from the local storage
-					const token = localStorage.getItem('access_token')
-					// decode the token
-					const tokenJson = jwt_decode(token)
-					if (MD5.hash(value) === tokenJson.password) {
-						this.$api.storage.format(data).then((res) => {
-							if (res.data.success != 200) {
-								this.isFormating = false;
-								this.$buefy.toast.open({
-									duration: 3000,
-									message: res.data.message,
-									type: 'is-danger'
-								})
-								console.error(res)
-							} else {
-								let _this = this
-								delay(() => {
-									_this.isFormating = false;
-									_this.$emit('getDiskList');
-								}, 1000);
-							}
-						}).catch(e => {
+
+					this.$api.storage.format(data).then((res) => {
+						if (res.data.success != 200) {
 							this.isFormating = false;
 							this.$buefy.toast.open({
 								duration: 3000,
-								message: e.response.data.message,
+								message: res.data.message,
 								type: 'is-danger'
 							})
-							console.error(e)
+							console.error(res)
+						} else {
+							let _this = this
+							delay(() => {
+								_this.isFormating = false;
+								_this.$emit('getDiskList');
+							}, 1000);
+						}
+					}).catch(e => {
+						this.isFormating = false;
+						this.$buefy.toast.open({
+							duration: 3000,
+							message: e.response.data.message,
+							type: 'is-danger'
 						})
-						return
-					}
-					this.isFormating = false;
-					this.$buefy.toast.open({
-						duration: 3000,
-						message: this.$t("Password is incorrect"),
-						type: 'is-danger'
+						console.error(e)
 					})
-					console.error("Password is incorrect")
+
 				}
 			})
 		},
