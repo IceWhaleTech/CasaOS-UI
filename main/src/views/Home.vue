@@ -62,7 +62,6 @@
 
 		<!-- File Panel Start -->
 		<b-modal v-model="isFileActive"
-			ref="microAppModal"
 			:can-cancel="['escape']"
 			:destroy-on-hide="false"
 			animation="zoom-in" aria-modal
@@ -245,45 +244,53 @@ export default {
 
 		createMircoApp(app) {
 			if (app.name === 'Files') {
-				const fileAppInstance = loadMicroApp({
-					name: 'microApp',
-					entry: app.entry,
-					container: '#microApp',
-					props: {
-						store: { // sync necessary store status to child mirco app
-							device_id: this.$store.state.device_id,
-							access_id: this.$store.state.access_id,
-							access_token: this.$store.state.access_token,
-							refresh_token: this.$store.state.refresh_token,
-							casaos_lang: this.$store.state.casaos_lang,
-						}
+				const fileAppInstance = loadMicroApp(
+					{
+						name: 'microApp',
+						entry: app.entry,
+						container: '#microApp',
+						props: {
+							store: { // sync necessary store status to child mirco app
+								device_id: this.$store.state.device_id,
+								access_id: this.$store.state.access_id,
+								access_token: this.$store.state.access_token,
+								refresh_token: this.$store.state.refresh_token,
+								casaos_lang: this.$store.state.casaos_lang,
+							}
+						}		
 					},
-					sandbox: {
-						experimentalStyleIsolation: true
+					{
+						sandbox: {
+							experimentalStyleIsolation: true
+						}
 					}
-				});
+				);
 				this.mircoAppInstanceMap.set(app.name, fileAppInstance);
 				this.$nextTick(() => {
 					this.isFileActive = true;
 				});
 			} else {
-				const remoteAccessAppInstance = loadMicroApp({
-					name: 'remoteAccessMircoApp',
-					entry: app.entry,
-					container: '#remoteAccessMircoApp',
-					props: {
-						store: { // sync necessary store status to child mirco app
-							device_id: this.$store.state.device_id,
-							access_id: this.$store.state.access_id,
-							access_token: this.$store.state.access_token,
-							refresh_token: this.$store.state.refresh_token,
-							casaos_lang: this.$store.state.casaos_lang,
-						}
+				const remoteAccessAppInstance = loadMicroApp(
+					{
+						name: 'remoteAccessMircoApp',
+						entry: app.entry,
+						container: '#remoteAccessMircoApp',
+						props: {
+							store: { // sync necessary store status to child mirco app
+								device_id: this.$store.state.device_id,
+								access_id: this.$store.state.access_id,
+								access_token: this.$store.state.access_token,
+								refresh_token: this.$store.state.refresh_token,
+								casaos_lang: this.$store.state.casaos_lang,
+							}
+						},
 					},
-					sandbox: {
-						experimentalStyleIsolation: true
+					{
+						sandbox: {
+							strictStyleIsolation: true
+						}
 					}
-				});
+				);
 				this.mircoAppInstanceMap.set(app.name, remoteAccessAppInstance);
 				this.$nextTick(() => {
 					this.isRemoteAccessActive = true;
