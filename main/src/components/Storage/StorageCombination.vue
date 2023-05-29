@@ -9,7 +9,7 @@
 <template>
 	<div v-show="showCombination" class="mb-5 mt-2 pt-5 pb-5 border-1 combination-box">
 		<div class="is-relative is-flex is-justify-content-center top--2rem">
-			<div class="pr-4 pl-4 combination-title">CasaOS HD</div>
+			<div class="pr-1 pl-1 combination-title has-text-full-04">CasaOS HD</div>
 		</div>
 		<div class="is-flex ">
 			<div class="is-flex-grow-1">
@@ -27,7 +27,9 @@
 								<b-tag v-if="item.isSystem" class="ml-2 has-text-full-04">CasaOS</b-tag>
 							</h4>
 
-							<p class="has-text-left is-size-7 has-text-grey-light">{{ $t('Single Drive Storage') }},
+							<p class="has-text-left has-text-full-04 has-text-grey-light mt-1">{{
+									$t('Single Drive Storage')
+								}},
 								<span
 									class="is-uppercase">{{ item.fsType || $t('undefined') }}</span>
 								<b-tooltip
@@ -36,7 +38,7 @@
 									<b-icon class="mr-2 " icon="help-circle-outline" size="is-small"></b-icon>
 								</b-tooltip>
 							</p>
-							<p class="has-text-left is-size-7 ">{{
+							<p class="has-text-left has-text-full-04 mt-1">{{
 									$t("Available Total", {
 										name: item.diskName || $t('undefined'),
 										avl: renderSize(item.availSize),
@@ -49,7 +51,9 @@
 				</div>
 			</div>
 			<div class="mr-5 is-flex is-flex-direction-column-reverse">
-				<div class="is-size-6 has-text-weight-medium mb-1">{{ renderSize(usage) }}/{{ renderSize(totleSize) }}
+				<div class="has-text-emphasis-01 has-text-weight-medium mb-1">{{
+						renderSize(usage)
+					}}/{{ renderSize(totleSize) }}
 				</div>
 			</div>
 		</div>
@@ -160,7 +164,7 @@ export default {
 }
 
 .top--2rem {
-	top: -1.4rem;
+	top: -1.1rem;
 	margin-top: -1rem;
 	width: 100%
 }
@@ -180,6 +184,8 @@ export default {
 		background-color: hsla(208, 16%, 98%, 1);
 		border: 1px solid hsla(208, 100%, 45%, 1);
 		color: hsla(208, 100%, 45%, 1);
+		padding: 2px 6px;
+		height: 1.25rem;
 	}
 }
 </style>

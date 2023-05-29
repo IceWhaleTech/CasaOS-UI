@@ -29,8 +29,7 @@
 							</div>
 							<div slot="reference">
 								<b-button :disabled="unDiskData.length == 0" :type="state_createstorage_operability"
-										  class="o" rounded
-										  size="is-small" @click="showCreate">{{ $t('Create Storage') }}
+										  rounded @click="showCreate">{{ $t('Create Storage') }}
 								</b-button>
 							</div>
 						</popper>
@@ -38,7 +37,7 @@
 					<b-tabs v-model="activeTab" animateInitially animated class="region-box">
 						<b-tab-item :disabled="!isShowMergeTab" :label="$t('Merge')"
 									class="scrollbars-light-auto tab-item">
-							<MergeStorages></MergeStorages>
+							<MergeStorages @update="()=> {getDiskList(); activeTab = 1;}"></MergeStorages>
 						</b-tab-item>
 						<b-tab-item :label="$t('Storage')" class="scrollbars-light-auto tab-item">
 							<storage-combination :storageData="mergeConbinationsStorageData"

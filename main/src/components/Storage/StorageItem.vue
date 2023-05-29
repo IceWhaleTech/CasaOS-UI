@@ -17,17 +17,19 @@
 				<div>
 					<h4 class="mb-0 has-text-left one-line has-text-emphasis-02 is-flex is-align-items-center">
 						{{ item.name }}
-						<b-tag v-if="item.isSystem" class="ml-2 has-text-full-04">CasaOS</b-tag>
+						<b-tag v-if="item.isSystem" class="ml-2 has-text-full-04">CasaOS
+						</b-tag>
 					</h4>
 
-					<p class="has-text-left is-size-7 has-text-grey-light	">{{ $t('Single Drive Storage') }}, <span
-						class="is-uppercase">{{ item.fsType }}</span>
+					<p class="has-text-left has-text-full-04 has-text-grey-light mt-1">{{ $t('Single Drive Storage') }},
+						<span
+							class="is-uppercase">{{ item.fsType }}</span>
 						<b-tooltip :label="$t('CasaOS reserves 1% of file space when creating storage in EXT4 format.')"
 								   append-to-body>
 							<b-icon class="mr-2 " icon="help-circle-outline" size="is-small"></b-icon>
 						</b-tooltip>
 					</p>
-					<p class="has-text-left is-size-7 ">{{
+					<p class="has-text-left has-text-full-04 mt-1">{{
 							$t("Available Total", {
 								name: item.diskName,
 								avl: renderSize(item.availSize),
@@ -210,6 +212,8 @@ export default {
 	background-color: hsla(208, 16%, 98%, 1);
 	border: 1px solid hsla(208, 100%, 45%, 1);
 	color: hsla(208, 100%, 45%, 1);
+	padding: 2px 6px;
+	height: 1.25rem;
 }
 
 .background-item {
