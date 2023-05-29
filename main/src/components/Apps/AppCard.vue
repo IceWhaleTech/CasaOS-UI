@@ -47,7 +47,7 @@
 					</b-button>
 
 					<b-button v-if="isV1App" :loading="isCloning"
-							  expanded type="is-text" @click="exportYAML(item.name)">{{
+							  expanded type="is-text" @click="exportYAML(item)">{{
 							$t('Export as Compose')
 						}}
 					</b-button>
@@ -597,10 +597,16 @@ export default {
 			})
 		},
 
-		exportYAML(name) {
-			// TODO add API
-			const blob = new Blob([this.dockerComposeCommands], {type: ''});
-			FileSaver.saveAs(blob, `${name}.yaml`);
+		exportYAML(item) {
+			this.$api.container.exportAsCompose(item.name).then(res => {
+				const blob = new Blob([res.data], {type: ''});
+				FileSaver.saveAs(blob, `${item.image}.yaml`);
+			}).catch((err) => {
+				this.$buefy.toast.open({
+					message: err.response.data.message,
+					type: 'is-warning'
+				})
+			})
 		},
 
 		checkAppVersion(name) {
