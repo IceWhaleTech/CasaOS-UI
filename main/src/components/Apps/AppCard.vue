@@ -48,7 +48,7 @@
 
 					<b-button v-if="isV1App" :loading="isCloning"
 							  expanded type="is-text" @click="exportYAML(item.name)">{{
-							$t('Export to YAML')
+							$t('Export as Compose')
 						}}
 					</b-button>
 
