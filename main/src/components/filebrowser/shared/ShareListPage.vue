@@ -24,7 +24,7 @@
 			<div class="is-flex is-align-items-center">
 				<!--  Close Button Start -->
 				<div class="close-button" @click="$emit('close')">
-					<b-icon icon="close" pack="casa"></b-icon>
+					<b-icon icon="close-outline" pack="casa"></b-icon>
 				</div>
 				<!--  Close Button End -->
 			</div>

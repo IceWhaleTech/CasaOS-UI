@@ -22,7 +22,6 @@ import VueSocialSharing from 'vue-social-sharing'
 import VueSocketIOExt   from 'vue-socket.io-extended';
 import messageBus       from '@/events/index.js'
 // import {registerMicroApps, start} from "qiankun";
-
 // Import Styles
 import '@/assets/scss/app.scss'
 import VAnimateCss      from 'v-animate-css';
@@ -36,7 +35,7 @@ const devIp = process.env.VUE_APP_DEV_IP
 const devPort = process.env.VUE_APP_DEV_PORT
 const localhost = document.location.host
 const localhostName = document.location.hostname
-const baseIp = isDev ? `${devIp}` : `${localhostName}`
+const baseHostname = isDev ? `${devIp}` : `${localhostName}`
 const baseURL = isDev ? `${devIp}:${devPort}` : `${localhost}`
 const wsURL = `${wsProtocol}//${baseURL}`
 
@@ -55,7 +54,7 @@ Vue.use(VueSocialSharing);
 Vue.config.productionTip = false
 Vue.prototype.$api = api;
 Vue.prototype.$openAPI = openAPI;
-Vue.prototype.$baseIp = baseIp;
+Vue.prototype.$baseHostname = baseHostname;
 Vue.prototype.$baseURL = baseURL;
 Vue.prototype.$protocol = protocol;
 Vue.prototype.$wsProtocol = wsProtocol;

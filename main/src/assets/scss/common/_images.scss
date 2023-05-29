@@ -56,8 +56,13 @@
 	}
 	
 	&.is-100x100 {
-		height: 80px;
-		width: 80px;
+		height: 100px;
+		width: 100px;
+	}
+	
+	&.is-128x128 {
+		height: 128px;
+		width: 128px;
 	}
 	
 	&.is-160x160 {
@@ -70,6 +75,36 @@
 		width: 176px;
 	}
 	
+}
+
+@media screen and (max-width: 480px) {
+	.image {
+		
+		&.is-80x80 {
+			height: 60px;
+			width: 60px;
+		}
+		
+		&.is-100x100 {
+			height: 80px;
+			width: 80px;
+		}
+		
+		.is-128x128 {
+			height: 96px;
+			width: 96px;
+		}
+		
+		&.is-160x160 {
+			height: 120px;
+			width: 120px;
+		}
+		
+		&.is-176x176 {
+			height: 132px;
+			width: 132px;
+		}
+	}
 }
 
 .img-c {

@@ -7,9 +7,9 @@
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
   -->
 <template>
-	<div v-show="showCombination" class="mb-5 mt-2 pt-5 pb-5 border-1">
+	<div v-show="showCombination" class="mb-5 mt-2 pt-5 pb-5 border-1 combination-box">
 		<div class="is-relative is-flex is-justify-content-center top--2rem">
-			<div class="pr-4 pl-4 has-background-white">CasaOS HD</div>
+			<div class="pr-1 pl-1 combination-title has-text-full-04">{{ TITLE }} HD</div>
 		</div>
 		<div class="is-flex ">
 			<div class="is-flex-grow-1">
@@ -20,41 +20,40 @@
 					</div>
 					<div class="ml-3 is-flex-grow-1 is-flex is-align-items-center">
 						<div>
-							<h4 class="title is-size-14px mb-0 has-text-left one-line">{{ item.name || $t('undefined')
+							<h4 class="mb-0 has-text-left one-line has-text-emphasis-02 is-flex is-align-items-center">
+								{{
+									item.name || $t('undefined')
 								}}
-								<b-tag v-if="item.isSystem" class="ml-2">CasaOS</b-tag>
+								<b-tag v-if="item.isSystem" class="ml-2 has-text-full-04">CasaOS</b-tag>
 							</h4>
 
-							<p class="has-text-left is-size-7 has-text-grey-light	">{{ $t('Single Drive Storage') }},
+							<p class="has-text-left has-text-full-04 has-text-grey-light mt-1">{{
+									$t('Single Drive Storage')
+								}},
 								<span
-								class="is-uppercase">{{ item.fsType || $t('undefined') }}</span>
+									class="is-uppercase">{{ item.fsType || $t('undefined') }}</span>
 								<b-tooltip
-								:label="$t('CasaOS reserves 1% of file space when creating storage in EXT4 format.')"
-								append-to-body>
+									:label="$t('CasaOS reserves 1% of file space when creating storage in EXT4 format.')"
+									append-to-body>
 									<b-icon class="mr-2 " icon="help-circle-outline" size="is-small"></b-icon>
 								</b-tooltip>
 							</p>
-							<p class="has-text-left is-size-7 ">{{
-								$t("Available Total", {
-								name: item.diskName || $t('undefined'),
-								avl: renderSize(item.availSize),
-								total: renderSize(item.size)
-								})
+							<p class="has-text-left has-text-full-04 mt-1">{{
+									$t("Available Total", {
+										name: item.diskName || $t('undefined'),
+										avl: renderSize(item.availSize),
+										total: renderSize(item.size)
+									})
 								}}</p>
 						</div>
 
 					</div>
 				</div>
 			</div>
-			<div class="mr-5 is-flex is-flex-direction-column is-justify-content-space-between">
-				<div class="is-flex is-flex-direction-row-reverse">
-					<b-button :type="type" class="width" rounded size="is-small"
-							  @click="showStorageSettingsModal">{{ $t('Merge Storages') }}
-					</b-button>
-					<cToolTip isBlock modal="is-success"></cToolTip>
-				</div>
-
-				<div class="is-size-6 has-text-weight-medium mb-1">{{ renderSize(usage) }}/{{ renderSize(totleSize) }}
+			<div class="mr-5 is-flex is-flex-direction-column-reverse">
+				<div class="has-text-emphasis-01 has-text-weight-medium mb-1">{{
+						renderSize(usage)
+					}}/{{ renderSize(totleSize) }}
 				</div>
 			</div>
 		</div>
@@ -64,13 +63,14 @@
 </template>
 
 <script>
-import {mixin} from '@/mixins/mixin';
+import {mixin}       from '@/mixins/mixin';
 import MergeStorages from "@/components/Storage/MergeStorages.vue";
-import cToolTip from "@/components/basicComponents/tooltip/tooltip.vue";
+import cToolTip      from "@/components/basicComponents/tooltip/tooltip.vue";
 
 export default {
 	name: "drive-combination",
 	mixins: [mixin],
+	inject: ['TITLE'],
 	components: {
 		cToolTip,
 	},
@@ -165,8 +165,28 @@ export default {
 }
 
 .top--2rem {
-	top: -1.4rem;
+	top: -1.1rem;
 	margin-top: -1rem;
 	width: 100%
+}
+
+.combination-box {
+	background-color: hsla(208, 16%, 98%, 1);
+	border: 1px solid hsla(208, 16%, 91%, 1);
+	border-radius: 12px;
+
+	.combination-title {
+		background-color: hsla(208, 16%, 98%, 1);
+		border: 1px solid hsla(208, 16%, 91%, 1);
+		border-radius: 4px;
+	}
+
+	.tag {
+		background-color: hsla(208, 16%, 98%, 1);
+		border: 1px solid hsla(208, 100%, 45%, 1);
+		color: hsla(208, 100%, 45%, 1);
+		padding: 2px 6px;
+		height: 1.25rem;
+	}
 }
 </style>

@@ -40,6 +40,15 @@
 		width: 2.5rem;
 		height: 2.5rem;
 	}
+	
+	&.is-56 {
+		width: 3.5rem;
+		height: 3.5rem;
+		
+		i {
+			font-size: 3.5rem !important;
+		}
+	}
 }
 
 .delete,

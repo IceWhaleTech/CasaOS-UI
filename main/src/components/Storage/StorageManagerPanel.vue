@@ -17,11 +17,10 @@
 					<button class="delete" type="button" @click="$emit('close')"/>
 				</div>
 			</header>
-			<section :class="{ 'b-line': storageData.length > 0 && activeTab === 0}" class="pr-5 pl-5 mt-4 pb-2 mb-2">
+			<section :class="{ 'b-line': storageData.length > 0 && activeTab === 0}" class="pr-5 pl-5 mt-4 pb-2">
 				<!-- Storage and Disk List Start -->
 				<div v-if="!creatIsShow" class="is-flex-grow-1 is-relative">
-					<div v-if="activeTab == 0" class="create-container">
-
+					<div v-if="activeTab == 1" class="create-container">
 						<popper :options="{ placement: 'bottom', modifiers: { offset: { offset: '0,4px' } } }"
 								append-to-body
 								trigger="hover">
@@ -30,14 +29,16 @@
 							</div>
 							<div slot="reference">
 								<b-button :disabled="unDiskData.length == 0" :type="state_createstorage_operability"
-										  class="o" rounded
-										  size="is-small" @click="showCreate">{{ $t('Create Storage') }}
+										  rounded @click="showCreate">{{ $t('Create Storage') }}
 								</b-button>
 							</div>
 						</popper>
-
 					</div>
-					<b-tabs v-model="activeTab" :animated="false">
+					<b-tabs v-model="activeTab" animateInitially animated class="region-box">
+						<b-tab-item :disabled="!isShowMergeTab" :label="$t('Merge')"
+									class="scrollbars-light-auto tab-item">
+							<MergeStorages @update="()=> {getDiskList(); activeTab = 1;}"></MergeStorages>
+						</b-tab-item>
 						<b-tab-item :label="$t('Storage')" class="scrollbars-light-auto tab-item">
 							<storage-combination :storageData="mergeConbinationsStorageData"
 												 :type="state_mainstorage_operability"
@@ -46,10 +47,31 @@
 								<storage-item v-for="(item, index) in storageData" :key="'storage' + index" :item="item"
 											  @getDiskList="getDiskList"></storage-item>
 							</template>
+							<div v-if="showTipsMergeDisks" class="_background-tips" style="position: relative">
+								<div class="is-flex is-align-items-center is-justify-content-center is-flex-grow-1">
+									<div>
+										<p class="has-text-title-06">Tips:</p>
+										<p class="has-text-full-03">Use as ONE space, Try Merge</p>
+									</div>
+									<b-image :src="require('@/assets/img/learn/tips-mergeStorage.svg')"></b-image>
+								</div>
+								<b-icon class="cursor-pointer" icon="close-outline" pack="casa"
+										size="is-small"
+										style="position: absolute;top: 0.25rem;right: 0.25rem;"
+										@click=""></b-icon>
+							</div>
 						</b-tab-item>
 						<b-tab-item :label="$t('Drive')" class="scrollbars-light-auto tab-item">
 							<drive-item v-for="(item, index) in diskData" :key="'disk' + index"
 										:item="item"></drive-item>
+							<div v-if="diskData.length === 1"
+								 class="is-flex is-align-items-center is-justify-content-center _background-tips">
+								<div>
+									<p class="has-text-title-06">Tips:</p>
+									<p class="has-text-full-03">Insert more hard drives and restart.</p>
+								</div>
+								<b-image :src="require('@/assets/img/learn/tips-insertMoreDrives.svg')"></b-image>
+							</div>
 						</b-tab-item>
 					</b-tabs>
 
@@ -143,29 +165,17 @@
 
 		<!-- Modal-Card Body End -->
 		<!-- Modal-Card Footer Start-->
-		<footer v-if="!isCreating" class="modal-card-foot is-flex is-align-items-center">
-			<template v-if="creatIsShow">
-				<div class="is-flex-grow-1"></div>
-				<div>
-					<b-button :label="$t('Cancel')" rounded @click="showDefault"/>
-					<b-button :label="$t('Format and Create')" :loading="isValiding"
-							  :type="createStorageType == 'format' ? 'is-primary' : ''" rounded
-							  @click="createStorge(true)"/>
-					<b-button v-if="createStorageType == 'mountable'" :label="$t('Create')" :loading="isValiding"
-							  rounded
-							  type="is-primary" @click="createStorge(false)"/>
-				</div>
-			</template>
-			<template v-else-if="activeTab == 0 && !mergeConbinationsStorageData.length">
-				<div class="is-flex-grow-1"></div>
-				<div class="is-flex is-flex-direction-row-reverse">
-					<b-button :type="state_mainstorage_operability" class="width" rounded size="is-small"
-							  @click="showStorageSettingsModal">{{ $t('Merge Storages') }}
-					</b-button>
-					<cToolTip isBlock></cToolTip>
-				</div>
-			</template>
-
+		<footer v-if="!isCreating && creatIsShow" class="modal-card-foot is-flex is-align-items-center">
+			<div class="is-flex-grow-1"></div>
+			<div>
+				<b-button :label="$t('Cancel')" rounded @click="showDefault"/>
+				<b-button :label="$t('Format and Create')" :loading="isValiding"
+						  :type="createStorageType == 'format' ? 'is-primary' : ''" rounded
+						  @click="createStorge(true)"/>
+				<b-button v-if="createStorageType == 'mountable'" :label="$t('Create')" :loading="isValiding"
+						  rounded
+						  type="is-primary" @click="createStorge(false)"/>
+			</div>
 		</footer>
 		<!-- Modal-Card Footer End -->
 
@@ -186,6 +196,7 @@ import Popper                                   from 'vue-popperjs';
 import StorageCombination                       from "./StorageCombination.vue";
 import cToolTip                                 from '@/components/basicComponents/tooltip/tooltip.vue';
 import events                                   from '@/events/events';
+import MergeStorages                            from '@/components/Storage/MergeStorages.vue';
 
 export default {
 	name: "storage-manager-panel",
@@ -198,6 +209,7 @@ export default {
 		Popper,
 		StorageCombination,
 		cToolTip: cToolTip,
+		MergeStorages,
 	},
 	mixins: [smoothReflow, mixin],
 	data() {
@@ -206,7 +218,7 @@ export default {
 			creatIsShow: false,
 			isCreating: false,
 			isValiding: false,
-			activeTab: 0,
+			activeTab: 2,
 			activeDisk: "",
 			createStorageName: "",
 			createStoragePath: "",
@@ -217,6 +229,7 @@ export default {
 			storageData: [],
 			mergeConbinationsStorageData: [],
 			hasMergeState: false,
+			mergeStorageList: [],
 		}
 	},
 
@@ -235,6 +248,13 @@ export default {
 				return "is-link"
 			}
 			return ""
+		},
+		isShowMergeTab() {
+			return this.storageData.length > 1 || this.mergeConbinationsStorageData.length > 0
+		},
+		showTipsMergeDisks() {
+			// TODO test localstorage. exit : true.
+			return this.unDiskData === 0 && this.mergeConbinationsStorageData.length === 0 && this.storageData.length > 1
 		},
 	},
 
@@ -265,8 +285,13 @@ export default {
 
 		//Get disk list
 		let _this = this
-		delay(function () {
-			_this.getDiskList()
+		delay(async function () {
+			await _this.getDiskList()
+			if (_this.diskData.length === 1) {
+				_this.activeTab = 2
+			} else {
+				_this.activeTab = 1
+			}
 		}, 150);
 
 		this.$EventBus.$on(events.REFRESH_DISKLIST, () => {
@@ -613,10 +638,62 @@ export default {
 .b-line {
 	border-bottom: 1px solid hsla(208, 16%, 94%, 1);
 }
+
+.tab-content {
+	padding: 1.5rem 0 0;
+}
+
+._background-tips {
+	background-color: hsla(208, 16%, 98%, 1);
+	border: 1px solid hsla(208, 16%, 91%, 1);
+	border-radius: 0.5rem;
+}
 </style>
 
 <style lang="scss">
 .popper[x-placement^="bottom"].dark .popper__arrow {
 	border-color: transparent transparent #505459 transparent !important;
+}
+
+.region-box .tabs ul {
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	flex-grow: 0 !important;
+	background-color: hsla(208, 16%, 91%, 1);
+	border-radius: 6px;
+	border: 2px solid hsla(208, 16%, 91%, 1);
+
+	li {
+		/* Text 500Medium/Text03 */
+
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: 500 !important;
+		font-size: 14px;
+		line-height: 20px;
+		/* identical to box height, or 143% */
+
+		text-align: center;
+		font-feature-settings: 'pnum' on, 'lnum' on;
+
+		&.is-active {
+			background-color: hsla(0, 0%, 100%, 1);
+			border-radius: 4px;
+			height: 1.75rem;
+
+			a {
+				border-bottom: none !important;
+				color: hsla(208, 20%, 20%, 1);
+			}
+		}
+
+		a {
+			margin: 0 0.75rem !important;
+			padding: 0.25rem 0;
+			color: hsla(208, 14%, 58%, 1);
+			border-bottom: none !important;
+		}
+	}
 }
 </style>

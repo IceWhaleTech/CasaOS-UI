@@ -18,7 +18,7 @@
 				<template>
 					<!-- <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center has-text-danger"
 						key="drop-context2" @click="cancel" v-if="showCancel">
-						<b-icon pack="casa" icon="close" class="mr-1 is-16x16" custom-size="casa-16px" /> {{ $t(cancelText)
+						<b-icon pack="casa" icon="close-outline" class="mr-1 is-16x16" custom-size="casa-16px" /> {{ $t(cancelText)
 						}}
 					</b-dropdown-item> -->
 					<b-dropdown-item key="drop-context1" aria-role="menuitem" class="is-flex is-align-items-center">

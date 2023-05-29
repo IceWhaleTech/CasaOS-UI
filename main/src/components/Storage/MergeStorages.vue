@@ -9,29 +9,16 @@
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
 -->
 <template>
-	<div :class="{ '_max-width-320': currentStep === 1 || currentStep === 3 || currentStep === 4 }" class="modal-card">
-		<!--    head-->
-		<header :class="{ 'pri-head': currentStep <= 2 }" class="modal-card-head ">
-			<b-icon v-if="currentStep === 1" class="mr-2 has-text-red" custom-class="_has-text-red-default"
-					icon="danger"
-					pack="casa" size="is-20"></b-icon>
-			<div class="is-flex-grow-1">
-				<h3 class=" title is-3">{{ $t(title) }}
-					<cToolTip v-if="currentStep === 0" modal="is-success"></cToolTip>
-				</h3>
-			</div>
-			<button class="delete" type="button" @click="cancel"/>
-		</header>
-		<!--remind-->
+	<div :class="{ '_max-width-320': currentStep === 1 || currentStep === 4 }">
 
 		<section v-if="currentStep === 0"
-				 class="notification is-overlay mr-5 ml-5 mb-0 pr-0 pl-0 pt-5 pb-3 non-backgroud">
+				 class="notification is-overlay mb-0 pr-0 pl-0 pt-2 pb-3 non-backgroud">
 			<div v-if="currentStep === 0" class="_is-normal _has-text-gray-600 mb-4">
-				{{ $t('All the checked Storage will be merged into CasaOS HD.') }}
+				{{ $t('All the checked Storage will be merged into {CasaOS} HD.', {CasaOS: TITLE}) }}
 			</div>
 
 			<div v-for="(item, index) in storageData" :key="item.path + index" class="is-flex mb-1 radius _height-40">
-				<div class="ml-2 mr-1 is-flex is-align-items-center _has-text-gray-600">
+				<div class="ml-2 mr-1 is-flex is-align-items-center _has-color-brand-400">
 					<b-icon icon="storage-other" pack="casa" size="is-20"></b-icon>
 				</div>
 				<div class="is-flex is-flex-grow-1 is-flex-direction-column is-justify-content-center ">
@@ -51,7 +38,7 @@
 
 			<div v-for="(item, index) in storageMissData" :key="item.path + index"
 				 class="is-flex mb-1 radius _height-40">
-				<div class="ml-2 mr-1 is-flex is-align-items-center _has-text-gray-600">
+				<div class="ml-2 mr-1 is-flex is-align-items-center _has-color-brand-400">
 					<b-icon icon="storage-other" pack="casa" size="is-20"></b-icon>
 				</div>
 				<div class="is-flex is-flex-grow-1 is-flex-direction-column is-justify-content-center ">
@@ -61,7 +48,7 @@
 				</div>
 				<div class="is-flex is-flex-shrink-0 is-flex-direction-column is-justify-content-center mr-2">
           <span class="is-flex is-align-items-center has-text-danger small-font">
-            <b-icon class="warn" custom-size="casa-16px" icon="danger" pack="casa"></b-icon>
+            <b-icon class="warn" custom-size="casa-16px" icon="warning-solid" pack="casa"></b-icon>
             {{ $t('Missing') }}
           </span>
 				</div>
@@ -69,31 +56,31 @@
 			</div>
 		</section>
 
-		<div v-if="currentStep === 0 && storageData.length < 2"
-			 class="_has-background-yellow-default _has-text-white _is-normal is-flex is-align-items-center font ml-5 mr-5 mb-4 pt-2 pb-2 _radius-line">
-			<div class="is-flex left ml-3 mr-2 is-align-items-center">
-				<b-icon class="is-16x16" custom-size="casa-19px" icon="danger" pack="casa"></b-icon>
-			</div>
-			{{ $t('At least one extra hard drive is needed for this feature.') }}
-		</div>
-		<div v-if="currentStep === 0 && checkBoxGroup.length > 0"
-			 class="_has-background-yellow-default _has-text-white _is-normal is-flex is-align-items-center font ml-5 mr-5 mb-4 pt-2 pb-2 _radius-line">
-			<div class="is-flex left ml-3 mr-2 is-align-items-center">
-				<b-icon class="is-16x16" custom-size="casa-19px" icon="danger" pack="casa"></b-icon>
-			</div>
-			{{ $t('If the chosen storage is not empty, format better first.') }}
-		</div>
-		<div v-if="currentStep === 0 && isSplit"
-			 class="_has-background-red-default _has-text-white _is-normal is-flex is-align-items-center ml-5 mr-5 mb-4 pt-2 pb-2 _radius-line">
-			<div class="is-flex left ml-3 mr-2 is-align-items-center">
-				<b-icon custom-size="casa-19px" icon="danger" pack="casa"></b-icon>
-			</div>
-			{{ $t('Please back up your data in storage, otherwise the data may be lost.') }}
-		</div>
+		<!--		<div v-if="currentStep !== 0 && storageData.length < 2"-->
+		<!--			 class="_has-background-yellow-default _has-text-white _is-normal is-flex is-align-items-center font mb-4 pt-2 pb-2 _radius-line">-->
+		<!--			<div class="is-flex left ml-3 mr-2 is-align-items-center">-->
+		<!--				<b-icon class="is-16x16" custom-size="casa-19px" icon="warning-solid" pack="casa"></b-icon>-->
+		<!--			</div>-->
+		<!--			{{ $t('At least one extra hard drive is needed for this feature.') }}-->
+		<!--		</div>-->
+		<!--		<div v-if="currentStep !== 0 && checkBoxGroup.length > 0"-->
+		<!--			 class="_has-background-yellow-default _has-text-white _is-normal is-flex is-align-items-center font mb-4 pt-2 pb-2 _radius-line">-->
+		<!--			<div class="is-flex left ml-3 mr-2 is-align-items-center">-->
+		<!--				<b-icon class="is-16x16" custom-size="casa-19px" icon="warning-solid" pack="casa"></b-icon>-->
+		<!--			</div>-->
+		<!--			{{ $t('If the chosen storage is not empty, format better first.') }}-->
+		<!--		</div>-->
+		<!--		<div v-if="currentStep !== 0 && isSplit"-->
+		<!--			 class="_has-background-red-default _has-text-white _is-normal is-flex is-align-items-center mb-4 pt-2 pb-2 _radius-line">-->
+		<!--			<div class="is-flex left ml-3 mr-2 is-align-items-center">-->
+		<!--				<b-icon custom-size="casa-19px" icon="warning-solid" pack="casa"></b-icon>-->
+		<!--			</div>-->
+		<!--			{{ $t('Please back up your data in storage, otherwise the data may be lost.') }}-->
+		<!--		</div>-->
 		<div v-if="currentStep === 0"
-			 class="_has-background-red-default _has-text-white _is-normal is-flex is-align-items-center ml-5 mr-5 mb-4 pt-2 pb-2 _radius-line">
+			 class="_has-background-red-default _has-text-white _is-normal is-flex is-align-items-center mb-4 pt-2 pb-2 _radius-line">
 			<div class="is-flex left ml-3 mr-2 is-align-items-center">
-				<b-icon custom-size="casa-19px" icon="danger" pack="casa"></b-icon>
+				<b-icon custom-size="casa-19px" icon="warning-solid" pack="casa"></b-icon>
 			</div>
 			{{
 				$t(`* This feature is now testing and verifying, enabling it may clear personal data and destroy the
@@ -102,7 +89,7 @@
 		</div>
 
 		<section v-if="currentStep > 0"
-				 class="notification is-overlay mr-5 ml-5 mb-0 pr-0 pl-0 pt-5 pb-4 non-backgroud">
+				 class="notification is-overlay mb-0 pr-0 pl-0 pt-5 pb-4 non-backgroud">
 			<div v-if="currentStep === 1" class="is-flex is-align-items-center _is-normal">
 				{{
 					$t('This operation may clear all personal data and destroy the installed APPs.')
@@ -117,27 +104,29 @@
 			</template>
 			<div v-if="currentStep === 3" class="is-flex is-align-items-center font">
 				<div class="message-danger left mr-2 is-flex is-align-items-center">
-					<b-icon class="is-38x38" custom-size="is-size-2" icon="danger" pack="casa"></b-icon>
+					<b-icon class="is-38x38" custom-size="is-size-2" icon="information-outline" pack="casa"></b-icon>
 				</div>
 				{{ $t('APPs is running') + ` , ` + $t('restart APPs to continue.') }}
 			</div>
 			<div v-if="currentStep === 4" class="is-flex is-align-items-center font">
 				<div class="message-danger left mr-2 is-flex is-align-items-center">
-					<b-icon class="is-38x38" custom-size="is-size-2" icon="danger" pack="casa"></b-icon>
+					<b-icon class="is-38x38" custom-size="is-size-2" icon="warning-solid" pack="casa"></b-icon>
 				</div>
 				{{ runName + $t(' is running, restart ') + runName + $t(' to continue.') }}
 			</div>
 		</section>
 
-		<footer :class="{ 't-line': currentStep <= 2 }" class="modal-card-foot is-flex is-align-items-center ">
+		<footer class="is-flex is-align-items-center mb-4">
 			<div class="is-flex-grow-1"></div>
 			<div class="mr-4">
 				<b-button v-show="currentStep > 2 || currentStep === 1" :label="$t('Cancel')"
-						  class="_has-background-gray-100 _radius-line" expaned @click="currentStep = 0"/>
+						  class="_has-background-gray-100" expaned rounded
+						  @click="currentStep = 0"/>
 			</div>
 			<div>
-				<b-button v-show="currentStep === 0" :label="$t(affirm)" :loading="isConnecting" expaned rounded
-						  type="is-primary" @click="test"/>
+				<b-button v-show="currentStep === 0" :disabled="disableMergeButton" :label="$t(affirm)"
+						  :loading="isConnecting" expaned
+						  rounded type="is-primary" @click="test"/>
 				<b-button v-show="currentStep === 1" :label="$t(affirm)" :loading="isConnecting"
 						  class="_has-background-red-default _radius-line _has-text-white" expaned
 						  @click="currentStep = 2"/>
@@ -157,23 +146,29 @@ import {mixin}  from "@/mixins/mixin";
 import events   from '@/events/events';
 import cToolTip from '@/components/basicComponents/tooltip/tooltip.vue';
 import filter   from 'lodash/filter';
+import isEqual  from 'lodash/isEqual';
 
 export default {
 	name: "MergeStorages",
 	mixins: [mixin],
-	props: {
-		mergeStorageList: {
-			type: Array,
-			required: true,
-			default: () => []
-		},
-	},
+	inject: ['TITLE'],
 	components: {
 		cToolTip
 	},
-	mounted() {
-		this.checkBoxGroup.push(...this.mergeStorageList)
-		this.getDiskList();
+	async created() {
+		let mergeStorageList;
+		try {
+			mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => {
+				return res.data.data[0]['source_volume_uuids']
+			})
+		} catch (e) {
+			console.log(e)
+			mergeStorageList = []
+		}
+		this.mergeStorageList.push(...mergeStorageList)
+		this.checkBoxGroup.push(...mergeStorageList)
+		await this.getDiskList();
+		this.tempCheckBox = [...this.checkBoxGroup, ...this.checkBoxMissGroup]
 	},
 	watch: {
 		// 0 default :mainstorage settings
@@ -214,7 +209,11 @@ export default {
 		},
 		isSplit() {
 			return !this.mergeStorageList.every(item => this.checkBoxGroup.includes(item) || this.storageMissData.includes(item))
-		}
+		},
+		disableMergeButton() {
+			// the value is false while checkBox has changed.
+			return isEqual([...this.checkBoxGroup, ...this.checkBoxMissGroup], this.tempCheckBox)
+		},
 	},
 	data() {
 		return {
@@ -231,10 +230,11 @@ export default {
 			mergeInfo: [],
 			password: '',
 			runName: '',
-			notEmpty: false
+			notEmpty: false,
+			mergeStorageList: [],
+			tempCheckBox: [],
 		}
-	}
-	,
+	},
 	methods: {
 		/**
 		 * @description: Get disk list
@@ -337,6 +337,7 @@ export default {
 							this.$router.push({name: 'StorageManager'})
 						}
 					})
+					this.$emit("update", true);
 					this.$EventBus.$emit(events.RELOAD_APP_LIST)
 				}).catch(e => {
 					this.$buefy.toast.open({
@@ -472,6 +473,8 @@ export default {
 						type: 'is-danger'
 					})
 					console.error(e)
+				}).finally(() => {
+					this.currentStep = 0
 				})
 			} catch (e) {
 				console.log(e)
@@ -575,6 +578,11 @@ export default {
 ._has-text-gray-600 {
 	/* Gary/600 */
 	color: hsla(208, 14%, 58%, 1);
+}
+
+._has-color-brand-400 {
+	/* Brand/400 */
+	color: hsla(208, 100%, 53%, 1);
 }
 
 ._has-text-red-default {

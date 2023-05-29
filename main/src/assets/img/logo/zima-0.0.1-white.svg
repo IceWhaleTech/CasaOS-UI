@@ -1,0 +1,25 @@
+<!--
+  - * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+  - * @LastEditTime: 2023/5/15 下午6:29
+  - * @FilePath: /CasaOS-UI/main/src/assets/img/logo/zima-0.0.1-white.svg
+  - * @Description:
+  - *
+  - * Copyright (c) 2023 by IceWhale, All Rights Reserved.
+  -
+  -->
+
+<svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+	<path
+		d="M0 12C0 5.37258 5.37258 0 12 0H60C66.6274 0 72 5.37258 72 12V60C72 66.6274 66.6274 72 60 72H12C5.37258 72 0 66.6274 0 60V12Z"
+		fill="url(#paint0_linear_1133_9331)"/>
+	<path
+		d="M39.6161 24.5759C32.5476 24.5759 25.4792 24.5759 18.4323 24.5759C18.4323 21.3767 18.4323 18.1992 18.4323 15C30.3212 15 42.2316 15 54.1637 15C53.861 20.5121 52.6505 23.279 51.2239 25.6351C49.7756 27.9696 48.1112 29.8718 45.9496 32.2712C41.3886 37.3294 36.8276 42.3875 32.2666 47.4457C39.6161 47.4457 46.9655 47.4457 54.3366 47.4457C54.3366 50.6233 54.3366 53.8224 54.3366 57C42.2316 57 30.105 57 18 57C18 53.282 18.4756 51.034 19.6212 48.5481C20.7669 46.0623 22.5826 43.3819 26.4303 39.1451C30.8183 34.2815 35.2064 29.4395 39.6161 24.5759Z"
+		fill="#FAB739"/>
+	<defs>
+		<linearGradient id="paint0_linear_1133_9331" x1="36" y1="0" x2="36" y2="72" gradientUnits="userSpaceOnUse">
+			<stop stop-color="#515154"/>
+			<stop offset="1" stop-color="#2B2B2E"/>
+		</linearGradient>
+	</defs>
+</svg>
+

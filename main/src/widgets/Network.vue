@@ -21,7 +21,8 @@
 					<b-dropdown v-model="networkId" :mobile-modal="false" animation="fade1" aria-role="list"
 								class="netowrk-dropdown" position="is-bottom-left">
 						<template #trigger="{ active }">
-							<b-button :icon-right="active ? 'up' : 'down'" :label="initNetwork[networkId].name"
+							<b-button :icon-right="active ? 'up-outline' : 'down-outline'"
+									  :label="initNetwork[networkId].name"
 									  icon-pack="casa" type="is-primary"/>
 						</template>
 						<b-dropdown-item v-for="(item, index) in initNetwork" :key="'net' + index" :value="index"

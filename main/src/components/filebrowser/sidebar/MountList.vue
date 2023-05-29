@@ -44,7 +44,7 @@
 							{{ mergeStorageList.length }}
 						</div>
 					</div>
-					<div class="is-flex-grow-1 one-line">CasaOS HD</div>
+					<div class="is-flex-grow-1 one-line">{{ TITLE }} HD</div>
 					<div v-if="testMergeMiss > 0" class="is-flex is-align-items-center">
 						<b-icon
 							class="warn"
@@ -119,8 +119,7 @@ import TreeListItem from "./TreeListItem.vue";
 export default {
 	components: {TreeListItem},
 	mixins: [mixin],
-	inject: ["filePanel"],
-
+	inject: ["filePanel", 'TITLE'],
 	props: {
 		path: {
 			type: String,
@@ -422,7 +421,9 @@ export default {
 			this.$buefy.dialog.confirm({
 				title: this.$t("Data Protected"),
 				message: this.$t(
-					"Changing internal files may break the structure of the CasaOS HD"
+					"Changing internal files may break the structure of the {CasaOS} HD", {
+						CasaOS: this.TITLE
+					}
 				),
 				confirmText: this.$t("Continue"),
 				cancelText: this.$t("Cancel"),
