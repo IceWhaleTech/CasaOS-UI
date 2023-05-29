@@ -48,7 +48,7 @@
 				</div>
 				<div class="is-flex is-flex-shrink-0 is-flex-direction-column is-justify-content-center mr-2">
           <span class="is-flex is-align-items-center has-text-danger small-font">
-            <b-icon class="warn" custom-size="casa-16px" icon="danger" pack="casa"></b-icon>
+            <b-icon class="warn" custom-size="casa-16px" icon="alert-circle-outline" pack="casa"></b-icon>
             {{ $t('Missing') }}
           </span>
 				</div>
@@ -56,31 +56,31 @@
 			</div>
 		</section>
 
-		<div v-if="currentStep === 0 && storageData.length < 2"
-			 class="_has-background-yellow-default _has-text-white _is-normal is-flex is-align-items-center font mb-4 pt-2 pb-2 _radius-line">
-			<div class="is-flex left ml-3 mr-2 is-align-items-center">
-				<b-icon class="is-16x16" custom-size="casa-19px" icon="danger" pack="casa"></b-icon>
-			</div>
-			{{ $t('At least one extra hard drive is needed for this feature.') }}
-		</div>
-		<div v-if="currentStep === 0 && checkBoxGroup.length > 0"
-			 class="_has-background-yellow-default _has-text-white _is-normal is-flex is-align-items-center font mb-4 pt-2 pb-2 _radius-line">
-			<div class="is-flex left ml-3 mr-2 is-align-items-center">
-				<b-icon class="is-16x16" custom-size="casa-19px" icon="danger" pack="casa"></b-icon>
-			</div>
-			{{ $t('If the chosen storage is not empty, format better first.') }}
-		</div>
-		<div v-if="currentStep === 0 && isSplit"
-			 class="_has-background-red-default _has-text-white _is-normal is-flex is-align-items-center mb-4 pt-2 pb-2 _radius-line">
-			<div class="is-flex left ml-3 mr-2 is-align-items-center">
-				<b-icon custom-size="casa-19px" icon="danger" pack="casa"></b-icon>
-			</div>
-			{{ $t('Please back up your data in storage, otherwise the data may be lost.') }}
-		</div>
+		<!--		<div v-if="currentStep !== 0 && storageData.length < 2"-->
+		<!--			 class="_has-background-yellow-default _has-text-white _is-normal is-flex is-align-items-center font mb-4 pt-2 pb-2 _radius-line">-->
+		<!--			<div class="is-flex left ml-3 mr-2 is-align-items-center">-->
+		<!--				<b-icon class="is-16x16" custom-size="casa-19px" icon="alert-circle-outline" pack="casa"></b-icon>-->
+		<!--			</div>-->
+		<!--			{{ $t('At least one extra hard drive is needed for this feature.') }}-->
+		<!--		</div>-->
+		<!--		<div v-if="currentStep !== 0 && checkBoxGroup.length > 0"-->
+		<!--			 class="_has-background-yellow-default _has-text-white _is-normal is-flex is-align-items-center font mb-4 pt-2 pb-2 _radius-line">-->
+		<!--			<div class="is-flex left ml-3 mr-2 is-align-items-center">-->
+		<!--				<b-icon class="is-16x16" custom-size="casa-19px" icon="alert-circle-outline" pack="casa"></b-icon>-->
+		<!--			</div>-->
+		<!--			{{ $t('If the chosen storage is not empty, format better first.') }}-->
+		<!--		</div>-->
+		<!--		<div v-if="currentStep !== 0 && isSplit"-->
+		<!--			 class="_has-background-red-default _has-text-white _is-normal is-flex is-align-items-center mb-4 pt-2 pb-2 _radius-line">-->
+		<!--			<div class="is-flex left ml-3 mr-2 is-align-items-center">-->
+		<!--				<b-icon custom-size="casa-19px" icon="alert-circle-outline" pack="casa"></b-icon>-->
+		<!--			</div>-->
+		<!--			{{ $t('Please back up your data in storage, otherwise the data may be lost.') }}-->
+		<!--		</div>-->
 		<div v-if="currentStep === 0"
 			 class="_has-background-red-default _has-text-white _is-normal is-flex is-align-items-center mb-4 pt-2 pb-2 _radius-line">
 			<div class="is-flex left ml-3 mr-2 is-align-items-center">
-				<b-icon custom-size="casa-19px" icon="danger" pack="casa"></b-icon>
+				<b-icon custom-size="casa-19px" icon="alert-circle-outline" pack="casa"></b-icon>
 			</div>
 			{{
 				$t(`* This feature is now testing and verifying, enabling it may clear personal data and destroy the
@@ -110,7 +110,7 @@
 			</div>
 			<div v-if="currentStep === 4" class="is-flex is-align-items-center font">
 				<div class="message-danger left mr-2 is-flex is-align-items-center">
-					<b-icon class="is-38x38" custom-size="is-size-2" icon="danger" pack="casa"></b-icon>
+					<b-icon class="is-38x38" custom-size="is-size-2" icon="alert-circle-outline" pack="casa"></b-icon>
 				</div>
 				{{ runName + $t(' is running, restart ') + runName + $t(' to continue.') }}
 			</div>
@@ -146,7 +146,7 @@ import {mixin}  from "@/mixins/mixin";
 import events   from '@/events/events';
 import cToolTip from '@/components/basicComponents/tooltip/tooltip.vue';
 import filter   from 'lodash/filter';
-import isEqual    from 'lodash/isEqual';
+import isEqual  from 'lodash/isEqual';
 
 export default {
 	name: "MergeStorages",

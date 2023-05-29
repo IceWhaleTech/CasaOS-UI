@@ -35,8 +35,8 @@
 							</div>
 						</popper>
 					</div>
-					<b-tabs v-model="activeTab" animateInitially animated>
-						<b-tab-item :disabled="!isMultipleStorage" :label="$t('Merge')"
+					<b-tabs v-model="activeTab" animateInitially animated class="region-box">
+						<b-tab-item :disabled="!isShowMergeTab" :label="$t('Merge')"
 									class="scrollbars-light-auto tab-item">
 							<MergeStorages></MergeStorages>
 						</b-tab-item>
@@ -250,8 +250,8 @@ export default {
 			}
 			return ""
 		},
-		isMultipleStorage() {
-			return this.storageData.length > 1
+		isShowMergeTab() {
+			return this.storageData.length > 1 || this.mergeConbinationsStorageData.length > 0
 		},
 		showTipsMergeDisks() {
 			// TODO test localstorage. exit : true.
@@ -656,7 +656,7 @@ export default {
 	border-color: transparent transparent #505459 transparent !important;
 }
 
-.tabs ul {
+.region-box .tabs ul {
 	display: flex;
 	justify-content: center;
 	align-content: center;
