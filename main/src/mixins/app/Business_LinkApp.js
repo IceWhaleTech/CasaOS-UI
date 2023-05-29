@@ -16,6 +16,8 @@
 *  item.status
 *  item.id
 * */
+import uniqWith from 'lodash/uniqWith'
+
 export default {
 	methods: {
 		async getLinkAppList() {
@@ -48,16 +50,18 @@ export default {
 
 		// for former version.
 		transferLinkAppList(LinkAppList) {
+			LinkAppList = uniqWith(LinkAppList, (a, b) => {
+				return a.name === b.name;
+			})
 			LinkAppList.forEach(item => {
 				if (item.type) {
 					item.app_type = item.type;
 					item.hostname = item.host;
 					item.status = item.state;
-					item.name = item.id;
+					item.name = item.name;
 					delete item.type;
 					delete item.host;
 					delete item.state;
-					delete item.id;
 					delete item.custom_id;
 				}
 			})

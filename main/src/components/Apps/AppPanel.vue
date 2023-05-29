@@ -254,7 +254,7 @@
 						<div v-for="(item,index) in pageList" :key="index+item.title+item.id"
 							 class="column app-item is-one-quarter">
 							<div class="is-flex  is-align-items-center">
-								<div class="list-icon mr-4 is-clickable" @click="showAppDetial(item.id)">
+								<div class="mr-4 is-clickable" @click="showAppDetial(item.id)">
 									<b-image :src="item.icon"
 											 :src-fallback="require('@/assets/img/app/default.svg')"
 											 class="is-64x64 icon-shadow" webp-fallback=".jpg"></b-image>
@@ -305,7 +305,7 @@
 							<div v-for="(item,index) in communityList " :key="index+item.title+item.id"
 								 class="column is-one-quarter">
 								<div class="is-flex  is-align-items-center">
-									<div class="list-icon mr-4 is-clickable" @click="showAppDetial(item.id)">
+									<div class="mr-4 is-clickable" @click="showAppDetial(item.id)">
 										<b-image :src="item.icon"
 												 :src-fallback="require('@/assets/img/app/default.svg')"
 												 class="is-64x64 icon-shadow" webp-fallback=".jpg"></b-image>
@@ -692,6 +692,9 @@ export default {
 	},
 
 	created() {
+		window.addEventListener('resize', this.setCSSVHVar);
+		this.setCSSVHVar();
+
 		//Get recommend
 		this.getStoreRecommend();
 
@@ -827,6 +830,11 @@ export default {
 		}
 	},
 	methods: {
+		setCSSVHVar() {
+			const vh = window.innerHeight * 0.01;
+			document.documentElement.style.setProperty('--vh', `${vh}px`);
+		},
+
 		// this.cateMenu : {name: 'appstore', title: 'App Store', icon: 'mdi-apps', component: 'AppStore'}
 		// param : this.cateMenu.name
 		getCateIcon(name) {
@@ -842,7 +850,9 @@ export default {
 		async getCategoryList() {
 			this.isLoading = true
 			try {
-				this.cateMenu = await this.$openAPI.appManagement.appStore.categoryList().then(res => res.data.data);
+				this.cateMenu = await this.$openAPI.appManagement.appStore.categoryList().then(res => res.data.data.filter((item) => {
+					return item.count > 0
+				}));
 				this.currentCate = this.cateMenu[0]
 				this.currentSort = this.sortMenu[0]
 				if (this.isFirst) {
@@ -869,7 +879,7 @@ export default {
 						category: main_app_info.category,
 						icon: main_app_info.icon,
 						tagline: ice_i18n(main_app_info.tagline),
-						thumbnail: main_app_info.thumbnail,
+						thumbnail: main_app_info.thumbnail || main_app_info.screenshot_link?.[0],
 						title: ice_i18n(main_app_info.title),
 						state: 0,
 						architectures: main_app_info.architectures,
@@ -914,7 +924,7 @@ export default {
 						category: main_app_info.category,
 						icon: main_app_info.icon,
 						tagline: ice_i18n(main_app_info.tagline),
-						thumbnail: main_app_info.thumbnail,
+						thumbnail: main_app_info.thumbnail || main_app_info.screenshot_link?.[0],
 						title: ice_i18n(main_app_info.title),
 						state: 0,
 						architectures: main_app_info.architectures,
@@ -1450,6 +1460,7 @@ export default {
 	},
 
 	destroyed() {
+		window.addEventListener('resize', this.setCSSVHVar);
 		clearInterval(this.timer)
 	},
 
@@ -1650,7 +1661,7 @@ export default {
 
 @media screen and (max-width: 768px) {
 	.modal-card {
-		max-height: 100vh !important;
+		max-height: calc(var(--vh, 1vh) * 100);
 		border-radius: 0;
 	}
 }
