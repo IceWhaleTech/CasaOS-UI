@@ -40,6 +40,8 @@ import BrandBar      from './components/BrandBar.vue'
 import ContactBar    from './components/ContactBar.vue'
 import CasaWallpaper from './components/wallpaper/CasaWallpaper.vue'
 import {mixin}       from './mixins/mixin';
+import axios         from "axios";
+import {computed}    from 'vue'
 
 const customIconConfig = {
 	customIconPacks: {
@@ -99,6 +101,10 @@ export default {
 				classes: "fadeInRight",
 				duration: 700
 			},
+
+			isZIMA: false,
+			TITLE: "CasaOS",
+			V_ID: '!@#$%^&*()10',
 		}
 	},
 
@@ -111,7 +117,27 @@ export default {
 			return this.$store.state.needInitialization
 		}
 	},
-
+	provide() {
+		return {
+			// V_ID: this.V_ID,
+			isZIMA: computed(() => this.isZIMA),
+			TITLE: computed(() => this.TITLE),
+		}
+	},
+	async beforeCreate() {
+		try {
+			// const {
+			// 	device_model,
+			// 	device_name
+			// } = await axios.get(`${this.$baseHostname}:9527`).then(res => res.device_model || "CasaOS")
+			const {device_model = "ZimaBox", device_name} = await axios.get(`http://192.168.2.114:9527`)
+			this.isZIMA = /^Zima/.test(device_model)
+			this.TITLE = device_model
+			console.log('vue', this.isZIMA, this.TITLE)
+		} catch (e) {
+			console.error("GETTING THE CONFIG OF YOUR MACHINE IS EXPERIENCING AN ERROR:", e)
+		}
+	},
 	created() {
 		console.log(`%c
 _____             _____ _____

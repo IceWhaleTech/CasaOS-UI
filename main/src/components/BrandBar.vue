@@ -8,7 +8,7 @@
   -->
 <template>
 	<div class="brand-bar is-flex is-align-items-flex-end has-text-white">
-		<figure class="image _is-136x26 mb-3">
+		<figure v-if="!isZIMA" class="image _is-136x26 mb-3">
 			<!--			<img alt="logo" :srcset="`${require('@/assets/img/logo/logo.svg')} 2x, ${require('@/assets/img/logo/logo.png')} 1x`">-->
 			<img alt="logo" srcset="../assets/img/logo/logo.svg 2x, ../assets/img/logo/logo.png 1x">
 		</figure>
@@ -30,6 +30,7 @@ import Parser from "rss-parser";
 export default {
 	name: "brand-bar",
 	components: {},
+	inject: ['isZIMA'],
 	computed: {
 		rssShow() {
 			let which = this.$store.state.rssSwitch

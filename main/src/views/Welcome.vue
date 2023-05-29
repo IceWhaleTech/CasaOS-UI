@@ -123,7 +123,8 @@
 					<div class="marker" style="">•</div>
 					<span
 						class="text has-text-emphasis-03">{{ $t('Using the Network ID :') }}</span>
-					<b-button class="copy-board has-text-full-03" icon-pack="casa" icon-right="copy-outline"
+					<b-button class="copy-board has-text-full-03" icon-pack="casa"
+							  icon-right="copy-outline"
 							  @click="copy">
 						{{
 							V_ID
@@ -135,7 +136,7 @@
 					<span
 						class="text has-text-emphasis-03">{{ $t('Connect Zima in the software.') }}</span>
 				</div>
-				<hr v-animate-css="s3Ani"/>
+				<hr/>
 				<div class="is-flex is-justify-content-center">
 					<b-button expanded rounded type="is-primary"
 							  @click="goToStep(4)">
@@ -190,9 +191,8 @@
 				<p class="subtitle has-text-full-03 ml-4 pl-4">
 					{{ $t('Over 40 applications installed with one click.') }}
 				</p>
-				<hr v-animate-css="s3Ani"/>
-				<p v-if="isZIMA" v-animate-css="s4Ani"
-				   class="subtitle mb-5 pb-4 has-text-centered has-text-full-03">
+				<hr/>
+				<p v-if="isZIMA" class="subtitle mb-5 pb-4 has-text-centered has-text-full-03">
 					{{ $t('Please read before continuing ') }}
 					<a class="" href="https://casaos.io/privacy-full.html" target="_blank">
 						{{
@@ -221,8 +221,7 @@
 import {ValidationObserver, ValidationProvider} from "vee-validate";
 import "@/plugins/vee-validate";
 import smoothReflow                             from 'vue-smooth-reflow'
-import axios                                    from "axios";
-
+import {ZerotierMethodsApi}                     from "@icewhale/casaos-openapi"
 
 export default {
 
@@ -268,8 +267,6 @@ export default {
 				delay: 300,
 				duration: 500
 			},
-			isZIMA: false,
-			TITLE: "CasaOS",
 			V_ID: '!@#$%^&*()10',
 			isAgreeRSS: true,
 		}
@@ -278,24 +275,15 @@ export default {
 		ValidationObserver,
 		ValidationProvider,
 	},
-	async beforeCreate() {
-		try {
-			const {
-				device_model,
-				device_name
-			} = await axios.get(`${this.$baseHostname}:9527`).then(res => res.device_model || "CasaOS")
-			// const {device_model = "ZimaBox", device_name} = await axios.get(`http://192.168.2.114:9527`)
-			this.isZIMA = /^Zima/.test(device_model)
-			this.TITLE = device_model
-		} catch (e) {
-			console.error("GETTING THE CONFIG OF YOUR MACHINE IS EXPERIENCING AN ERROR:", e)
-		}
-	},
-	created() {
+	inject: ['isZIMA', 'TITLE'],
+	async created() {
 		this.path = '@/assets/img/logo/zima-0.0.1-white.svg'
+		const api = new ZerotierMethodsApi();
+		this.V_ID = await api.getZerotierInfo().then(res => res.data.id)
 	},
-
 	mounted() {
+		console.log('welcome', this.isZIMA, this.TITLE)
+
 		this.$smoothReflow({
 			el: '.login-panel',
 			property: ['height', 'width'],
@@ -518,6 +506,13 @@ export default {
 				width: 113px;
 				color: hsla(0, 0%, 100%, 1);
 				background-color: hsla(208, 14%, 58%, 1);
+
+				span {
+					text-overflow: ellipsis;
+					white-space: nowrap;
+					overflow: hidden;
+					max-width: 11ch;
+				}
 
 				.icon {
 					border-radius: 0 3px 3px 0;

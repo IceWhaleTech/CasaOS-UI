@@ -14,7 +14,7 @@
 		<section v-if="currentStep === 0"
 				 class="notification is-overlay mb-0 pr-0 pl-0 pt-2 pb-3 non-backgroud">
 			<div v-if="currentStep === 0" class="_is-normal _has-text-gray-600 mb-4">
-				{{ $t('All the checked Storage will be merged into CasaOS HD.') }}
+				{{ $t('All the checked Storage will be merged into {CasaOS} HD.', {CasaOS: TITLE}) }}
 			</div>
 
 			<div v-for="(item, index) in storageData" :key="item.path + index" class="is-flex mb-1 radius _height-40">
@@ -151,13 +151,20 @@ import isEqual  from 'lodash/isEqual';
 export default {
 	name: "MergeStorages",
 	mixins: [mixin],
+	inject: ['TITLE'],
 	components: {
 		cToolTip
 	},
 	async created() {
-		let mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => {
-			return res.data.data[0]['source_volume_uuids']
-		})
+		let mergeStorageList;
+		try {
+			mergeStorageList = await this.$api.local_storage.getMergerfsInfo().then((res) => {
+				return res.data.data[0]['source_volume_uuids']
+			})
+		} catch (e) {
+			console.log(e)
+			mergeStorageList = []
+		}
 		this.mergeStorageList.push(...mergeStorageList)
 		this.checkBoxGroup.push(...mergeStorageList)
 		await this.getDiskList();

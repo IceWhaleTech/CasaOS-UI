@@ -1081,6 +1081,13 @@
   dependencies:
     axios "^1.1.0"
 
+"@icewhale/casaos-openapi@latest":
+  version "0.4.4-alpha3-50816c6"
+  resolved "https://registry.yarnpkg.com/@icewhale/casaos-openapi/-/casaos-openapi-0.4.4-alpha3-50816c6.tgz#19dd9e5342d7d37ac2229961e35df387a6ba6873"
+  integrity sha512-6Uc+xnJKdl+GUSbc+osKIR0dMMgnKwReV8AhjlCS4vXFGANhREpY13TTVFuDvnjZ1UUv3/lE014+A9k1+vKf2Q==
+  dependencies:
+    axios "^1.1.0"
+
 "@intervolga/optimize-cssnano-plugin@^1.0.5":
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/@intervolga/optimize-cssnano-plugin/-/optimize-cssnano-plugin-1.0.6.tgz#be7c7846128b88f6a9b1d1261a0ad06eb5c0fdf8"
