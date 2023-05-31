@@ -123,9 +123,9 @@
 					<div class="marker" style="">•</div>
 					<span
 						class="text has-text-emphasis-03">{{ $t('Using the Network ID :') }}</span>
-					<b-button class="copy-board has-text-full-03" icon-pack="casa"
+					<b-button class="copy-board has-text-full-04" icon-pack="casa"
 							  icon-right="copy-outline"
-							  @click="copy">
+							  @click="copyValue">
 						{{
 							V_ID
 						}}
@@ -221,6 +221,7 @@
 import {ValidationObserver, ValidationProvider} from "vee-validate";
 import "@/plugins/vee-validate";
 import smoothReflow                             from 'vue-smooth-reflow'
+import copy                                     from 'clipboard-copy'
 
 export default {
 
@@ -367,13 +368,9 @@ export default {
 				this.$router.push("/login");
 			}
 		},
-		async copy(e) {
-			try {
-				await navigator.clipboard.writeText(this.V_ID);
-				this.$buefy.notification.open('Copy complete!')
-			} catch (err) {
-				console.error('Failed to copy: ', err);
-			}
+		async copyValue(e) {
+			copy(this.V_ID);
+			this.$buefy.notification.open('Copy complete!')
 
 		}
 	}
@@ -510,13 +507,6 @@ export default {
 				width: 113px;
 				color: hsla(0, 0%, 100%, 1);
 				background-color: hsla(208, 14%, 58%, 1);
-
-				span {
-					text-overflow: ellipsis;
-					white-space: nowrap;
-					overflow: hidden;
-					max-width: 11ch;
-				}
 
 				.icon {
 					border-radius: 0 3px 3px 0;
