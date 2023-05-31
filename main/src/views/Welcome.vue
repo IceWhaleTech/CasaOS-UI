@@ -278,8 +278,12 @@ export default {
 	inject: ['isZIMA', 'TITLE'],
 	async created() {
 		this.path = '@/assets/img/logo/zima-0.0.1-white.svg'
-		const api = new ZerotierMethodsApi();
-		this.V_ID = await api.getZerotierInfo().then(res => res.data.id)
+		try {
+			const api = new ZerotierMethodsApi();
+			this.V_ID = await api.getZerotierInfo().then(res => res.data.id)
+		} catch (e) {
+			console.error(e)
+		}
 	},
 	mounted() {
 		console.log('welcome', this.isZIMA, this.TITLE)
@@ -352,6 +356,7 @@ export default {
 		goToStep(step) {
 			if (!this.isZIMA && step === 3) {
 				this.step = 4
+				return
 			}
 			this.step = step
 		},
