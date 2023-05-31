@@ -61,28 +61,40 @@
 		<!-- Content End -->
 
 		<!-- File Panel Start -->
-		<b-modal v-model="isFileActive" :can-cancel="[]" :destroy-on-hide="false" animation="zoom-in" aria-modal
-				 custom-class="file-panel" full-screen has-modal-card @after-enter="afterFileEnter">
+		<b-modal v-model="isFileActive"
+				 :can-cancel="['escape']"
+				 :destroy-on-hide="false"
+				 animation="zoom-in" aria-modal
+				 custom-class="file-panel"
+				 full-screen
+				 has-modal-card
+				 @cancel="hideMircoApp"
+				 @after-enter="afterFileEnter">
 			<template #default="props">
-				<file-panel ref="filePanel" @close="props.close"></file-panel>
+				<div id="microApp" @close="props.close"></div>
 			</template>
 		</b-modal>
 		<!-- File Panel End -->
+
+		<!-- Remote Access Start -->
+		<div v-show="isRemoteAccessActive" id="remoteAccessMircoApp"></div>
+		<!-- Remote Access End -->
 	</div>
 </template>
 
 <script>
 
-import SearchBar           from '@/components/SearchBar.vue';
-import SideBar             from '@/components/SideBar.vue';
-import TopBar              from '@/components/TopBar.vue';
-import CoreService         from '@/components/CoreService.vue';
-import AppSection          from '@/components/Apps/AppSection.vue';
-import FilePanel           from '@/components/filebrowser/FilePanel.vue'
-import UpdateCompleteModal from '@/components/settings/UpdateCompleteModal.vue';
-import {mixin}             from '@/mixins/mixin';
-import events              from '@/events/events';
-import {nanoid}            from 'nanoid';
+import SearchBar               from '@/components/SearchBar.vue';
+import SideBar                 from '@/components/SideBar.vue';
+import TopBar                  from '@/components/TopBar.vue';
+import CoreService             from '@/components/CoreService.vue';
+import AppSection              from '@/components/Apps/AppSection.vue';
+import UpdateCompleteModal     from '@/components/settings/UpdateCompleteModal.vue';
+import {mixin}                 from '@/mixins/mixin';
+import events                  from '@/events/events';
+import {nanoid}                from 'nanoid';
+import {loadMicroApp}          from "qiankun";
+import {MIRCO_APP_ACTION_ENUM} from "@/const";
 
 
 const wallpaperConfig = "wallpaper"
@@ -96,7 +108,6 @@ export default {
 		AppSection,
 		TopBar,
 		CoreService,
-		FilePanel,
 	},
 	data() {
 		return {
@@ -104,16 +115,19 @@ export default {
 			hardwareInfoLoading: true,
 			user_id: localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 1,
 			isFileActive: false,
+			isRemoteAccessActive: false,
 			barData: {},
 			topBarAni: {
 				classes: 'fadeInDown',
 				duration: 800
 			},
+			mircoAppInstanceMap: new Map(),
 		}
 	},
 	provide() {
 		return {
-			homeShowFiles: this.showFiles,
+			homeShowFiles: this.showMircoApp,
+			showMircoApp: this.showMircoApp,
 		};
 	},
 
@@ -129,7 +143,6 @@ export default {
 		this.getHardwareInfo();
 		this.getWallpaperConfig();
 		this.getConfig();
-
 		this.$store.commit('SET_ACCESS_ID', nanoid());
 	},
 	mounted() {
@@ -203,15 +216,98 @@ export default {
 		},
 
 		/**
-		 * @description: Show Files
+		 * @description: Show MircoApp
 		 * @param {*}
 		 * @return {*} void
 		 */
-		showFiles(path) {
-			this.isFileActive = true
-			this.$nextTick(() => {
-				this.$refs.filePanel.init(path)
-			})
+		showMircoApp(app) {
+			const appInstance = this.mircoAppInstanceMap.get(app.name);
+			if (!appInstance) {
+				this.createMircoApp(app);
+			} else if (app.name === 'Files') {
+				if (!this.isFileActive) {
+					this.$messageBus('mircoapp_communicate', {action: MIRCO_APP_ACTION_ENUM.OPEN, peerType: 'file'});
+					this.isFileActive = true;
+				}
+			} else if (app.name === 'Remote Access') {
+				if (!this.isRemoteAccessActive) {
+					this.$messageBus('mircoapp_communicate', {
+						action: MIRCO_APP_ACTION_ENUM.OPEN,
+						peerType: 'remoteAccess'
+					});
+					this.isRemoteAccessActive = true;
+				}
+			}
+		},
+
+		hideMircoApp(peerType = '') {
+			this.isFileActive = false;
+			this.isRemoteAccessActive = false;
+		},
+
+		createMircoApp(app) {
+			if (app.name === 'Files') {
+				const fileAppInstance = loadMicroApp(
+					{
+						name: 'microApp',
+						entry: app.entry,
+						container: '#microApp',
+						props: {
+							store: { // sync necessary store status to child mirco app
+								device_id: this.$store.state.device_id,
+								access_id: this.$store.state.access_id,
+								access_token: this.$store.state.access_token,
+								refresh_token: this.$store.state.refresh_token,
+								casaos_lang: this.$store.state.casaos_lang,
+							}
+						}
+					},
+					{
+						sandbox: {
+							experimentalStyleIsolation: true
+						}
+					}
+				);
+				this.mircoAppInstanceMap.set(app.name, fileAppInstance);
+				this.$nextTick(() => {
+					this.isFileActive = true;
+				});
+			} else {
+				const remoteAccessAppInstance = loadMicroApp(
+					{
+						name: 'remoteAccessMircoApp',
+						entry: app.entry,
+						container: '#remoteAccessMircoApp',
+						props: {
+							store: { // sync necessary store status to child mirco app
+								device_id: this.$store.state.device_id,
+								access_id: this.$store.state.access_id,
+								access_token: this.$store.state.access_token,
+								refresh_token: this.$store.state.refresh_token,
+								casaos_lang: this.$store.state.casaos_lang,
+							}
+						},
+					},
+					{
+						sandbox: {
+							strictStyleIsolation: true
+						}
+					}
+				);
+				this.mircoAppInstanceMap.set(app.name, remoteAccessAppInstance);
+				this.$nextTick(() => {
+					this.isRemoteAccessActive = true;
+				});
+			}
+		},
+
+		destroyMircoApp(name = '') {
+			this.hideMircoApp();
+			const instance = this.mircoAppInstanceMap.get(name);
+			if (instance) {
+				instance.unmount();
+				this.mircoAppInstanceMap.delete(name);
+			}
 		},
 
 		afterFileEnter() {
@@ -317,7 +413,29 @@ export default {
 		},
 
 	},
+	sockets: {
+		"casaos-ui:app:mircoapp_communicate"(res) {
+			const data = res.Properties;
+			if (data.access_id === this.$store.state.access_id) {
+				switch (data.action) {
+					case MIRCO_APP_ACTION_ENUM.MOUNT:
+						this.showStorageManagerPanelModal();
+						break;
+					case MIRCO_APP_ACTION_ENUM.CLOSE:
+						this.hideMircoApp(data.peerType);
+						break;
+					case MIRCO_APP_ACTION_ENUM.LOGIN:
+						this.$router.push("/login");
+						break;
+					default:
+						break;
+				}
+			}
+		}
+	},
 	beforeDestroy() {
+		this.destroyMircoApp('Files');
+		this.destroyMircoApp('Remote Access');
 		window.removeEventListener("resize", this.onResize);
 		this.$EventBus.$off('casaUI:openStorageManager');
 	},
@@ -333,7 +451,7 @@ export default {
 
 .contents {
 	flex: 1;
-	overflow-y: auto;
+	overflow-y: hidden;
 	overflow-x: hidden;
 	height: calc(100% - 7rem);
 }
@@ -408,5 +526,24 @@ export default {
 	.columns {
 		display: flex;
 	}
+}
+</style>
+<style lang="scss">
+#microApp {
+	width: 100%;
+	height: 100%;
+
+	[data-name^="microApp"] {
+		width: 100%;
+		height: 100%;
+	}
+}
+
+#remoteAccessMircoApp {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
 }
 </style>

@@ -12,6 +12,12 @@
 const webpack = require('webpack')
 const path = require("path")
 
+const commitHash = require('child_process')
+  .execSync('git describe --always')
+  .toString()
+  .trim();
+
+
 module.exports = {
 	publicPath: '/',
 	runtimeCompiler: true,
@@ -39,6 +45,13 @@ module.exports = {
 		})
 		config.plugin('ignore')
 			.use(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
+		config.plugin('define')
+			.use(require('webpack/lib/DefinePlugin'), [{
+				VUE_FILE_APP_ENTRY: JSON.stringify(process.env.VUE_FILE_APP_ENTRY),
+				VUE_REMOTE_ACCESS_APP_ENTRY: JSON.stringify(process.env.VUE_REMOTE_ACCESS_APP_ENTRY),
+				MAIN_APP_VERSION_ID: JSON.stringify(commitHash),
+				BUILT_TIME: JSON.stringify(Date.now())
+			}]);
 		// Production only
 		if (process.env.NODE_ENV === "prod") {
 			config.output.filename('[name].[contenthash:8].js').end()

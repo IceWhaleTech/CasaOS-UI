@@ -76,6 +76,11 @@ new Vue({
 	render: h => h(App)
 }).$mount('#app')
 
+window.info = {
+	version: MAIN_APP_VERSION_ID,
+	built: BUILT_TIME,
+};
+
 
 
 
