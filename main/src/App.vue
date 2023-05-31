@@ -127,9 +127,9 @@ export default {
 	async beforeCreate() {
 		try {
 			const {
-				device_model,
+				device_model = 'CasaOS',
 				device_name
-			} = await axios.get(`http://${this.$baseHostname}:9527`).then(res => res.device_model || "CasaOS")
+			} = await axios.get(`http://${this.$baseHostname}:9527`).then(res => res.data)
 			// const {device_model = "ZimaBox", device_name} = await axios.get(`http://192.168.2.114:9527`)
 			this.isZIMA = /^Zima/.test(device_model)
 			this.TITLE = device_model
