@@ -278,12 +278,6 @@ export default {
 	inject: ['isZIMA', 'TITLE'],
 	async created() {
 		this.path = '@/assets/img/logo/zima-0.0.1-white.svg'
-		try {
-			const api = new ZerotierMethodsApi();
-			this.V_ID = await api.getZerotierInfo().then(res => res.data.id)
-		} catch (e) {
-			console.error(e)
-		}
 	},
 	mounted() {
 		console.log('welcome', this.isZIMA, this.TITLE)
@@ -303,9 +297,9 @@ export default {
 		 */
 		register() {
 			const initKey = this.$store.state.initKey;
-			this.$api.users.register(this.username, this.password, initKey).then(res => {
+			this.$api.users.register(this.username, this.password, initKey).then(async res => {
 				if (res.data.success == 200) {
-					this.login().then(() => {
+					await this.login().then(() => {
 						// First login set default app order
 						this.$api.users.setCustomStorage("app_order", {data: ["App Store", "Files"]})
 					});
@@ -346,6 +340,9 @@ export default {
 				}
 				sessionStorage.setItem("fromWelcome", true);
 				this.isLogin = true
+
+				const api = new ZerotierMethodsApi();
+				this.V_ID = await api.getZerotierInfo().then(res => res.data.id)
 
 			} else {
 				this.isLogin = false
