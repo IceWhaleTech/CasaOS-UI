@@ -83,7 +83,7 @@
 						</b-field>
 					</ValidationProvider>
 					<div class="is-flex is-justify-content-center mt-4">
-						<b-button class="mt-5" expanded rounded type="is-primary"
+						<b-button :loading="isCreating" class="mt-5" expanded rounded type="is-primary"
 								  @click="handleSubmit(register)">
 							{{ $t('Create') }}
 						</b-button>
@@ -221,7 +221,6 @@
 import {ValidationObserver, ValidationProvider} from "vee-validate";
 import "@/plugins/vee-validate";
 import smoothReflow                             from 'vue-smooth-reflow'
-import {ZerotierMethodsApi}                     from "@icewhale/casaos-openapi"
 
 export default {
 
@@ -269,6 +268,7 @@ export default {
 			},
 			V_ID: '!@#$%^&*()10',
 			isAgreeRSS: true,
+			isCreating: false,
 		}
 	},
 	components: {
@@ -297,6 +297,7 @@ export default {
 		 */
 		register() {
 			const initKey = this.$store.state.initKey;
+			this.isCreating = true;
 			this.$api.users.register(this.username, this.password, initKey).then(async res => {
 				if (res.data.success == 200) {
 					await this.login().then(() => {
@@ -313,6 +314,8 @@ export default {
 					duration: 5000,
 					queue: false
 				})
+			}).finally(() => {
+				this.isCreating = false;
 			})
 		},
 
@@ -341,8 +344,7 @@ export default {
 				sessionStorage.setItem("fromWelcome", true);
 				this.isLogin = true
 
-				const api = new ZerotierMethodsApi();
-				this.V_ID = await api.getZerotierInfo().then(res => res.data.id)
+				this.V_ID = await this.$openAPI.zerotier.getZerotierInfo().then(res => res.data.id)
 
 			} else {
 				this.isLogin = false
