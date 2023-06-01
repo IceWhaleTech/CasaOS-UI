@@ -96,7 +96,7 @@ export default {
 			// parseError: false,
 			appFileLoaded: false,
 			errors: "",
-			dropText: this.$t('Drop your Docker Compose here or click to upload'),
+			dropText: this.$t('Drop your Docker Compose file here or click to upload'),
 			uploadIcon: "upload",
 			// updateData: this.initData
 		}
@@ -357,7 +357,7 @@ export default {
 		},
 		clearInput() {
 			this.uploadIcon = "upload"
-			this.dropText = this.$t('Drop your Docker Compose here or click to upload')
+			this.dropText = this.$t('Drop your Docker Compose file here or click to upload')
 			this.appFileLoaded = false
 			this.$refs.importUpload.clearInput()
 			this.$buefy.toast.open({
