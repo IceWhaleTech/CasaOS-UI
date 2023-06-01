@@ -205,9 +205,9 @@
 	
 	font-family: $family-sans-serif !important;
 	font-style: normal;
-	font-weight: 400;
-	font-size: 0.875rem;
-	line-height: 1.25rem;
+	font-weight: 400 !important;
+	font-size: 0.875rem !important;
+	line-height: 1.25rem !important;
 	/* identical to box height, or 143% */
 	
 	font-feature-settings: 'pnum' on, 'lnum' on;

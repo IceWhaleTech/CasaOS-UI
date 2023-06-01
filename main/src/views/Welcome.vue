@@ -267,7 +267,7 @@ export default {
 				delay: 300,
 				duration: 500
 			},
-			V_ID: '!@#$%^&*()10',
+			V_ID: '!@#$%^&*()123450',
 			isAgreeRSS: true,
 			isCreating: false,
 		}
@@ -345,7 +345,9 @@ export default {
 				sessionStorage.setItem("fromWelcome", true);
 				this.isLogin = true
 
-				this.V_ID = await this.$openAPI.zerotier.getZerotierInfo().then(res => res.data.id)
+				if (this.isZIMA) {
+					this.V_ID = await this.$openAPI.zerotier.getZerotierInfo().then(res => res.data.id)
+				}
 
 			} else {
 				this.isLogin = false
@@ -499,14 +501,23 @@ export default {
 			}
 
 			.copy-board {
-				margin-left: 0.5rem;
+				margin-left: 8px;
 				padding: 0;
 				border: 0;
 				border-radius: 3px;
 				height: 1.5rem;
-				width: 113px;
+				font-size: 12px;
+				width: 151px;
 				color: hsla(0, 0%, 100%, 1);
 				background-color: hsla(208, 14%, 58%, 1);
+
+				:first-child {
+					flex-grow: 1;
+				}
+
+				:last-child {
+					flex-shrink: 0;
+				}
 
 				.icon {
 					border-radius: 0 3px 3px 0;
