@@ -13,9 +13,9 @@ const webpack = require('webpack')
 const path = require("path")
 
 const commitHash = require('child_process')
-  .execSync('git describe --always')
-  .toString()
-  .trim();
+	.execSync('git describe --always')
+	.toString()
+	.trim();
 
 
 module.exports = {

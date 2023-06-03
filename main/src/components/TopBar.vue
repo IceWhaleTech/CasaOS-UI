@@ -85,7 +85,7 @@
 					<hr class="mt-0 mb-4"/>
 					<!-- Search Engine Switch Start  -->
 					<div
-						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+						class="is-flex is-align-items-center mb-1  _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="search-category-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('Show Search Bar') }}
@@ -102,7 +102,7 @@
 
 					<!-- Search Engine Start -->
 					<div v-if="barData.search_switch"
-						 class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+						 class="is-flex is-align-items-center mb-1  _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="search2-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('Search Engine') }}
@@ -123,7 +123,7 @@
 
 					<!-- Language Start -->
 					<div
-						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+						class="is-flex is-align-items-center mb-1  _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="language-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('Language') }}
@@ -143,7 +143,7 @@
 
 					<!-- WebUI Port Start -->
 					<div
-						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+						class="is-flex is-align-items-center mb-1  _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="port-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('WebUI Port') }}
@@ -162,7 +162,7 @@
 
 					<!-- Background Start -->
 					<div
-						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+						class="is-flex is-align-items-center mb-1  _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="gallery-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('Wallpaper') }}
@@ -178,7 +178,7 @@
 
 					<!--  Show other Docker container app(s) Switch Start  -->
 					<div v-if="this.$store.state.notImportList.length > 0"
-						 class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+						 class="is-flex is-align-items-center mb-1  _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="docker-outline" pack="casa"
 									size="is-20"></b-icon>
@@ -196,7 +196,7 @@
 
 					<!--  Show other Docker container app(s) Switch Start  -->
 					<div
-						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+						class="is-flex is-align-items-center mb-1  _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="news-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('Show news feed from CasaOS Blog') }}
@@ -212,25 +212,37 @@
 					<!--  Show other Docker container app(s) Switch End  -->
 					<!--  Recommended modules Switch Start  -->
 					<div
-						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+						class="is-flex is-align-items-center mb-1  _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="display-applications-outline" pack="casa"
 									size="is-20"></b-icon>
-							{{ $t('Show Recommended Apps') }}
+							{{ $t('View tutorial') }}
 						</div>
-						<div>
-							<b-field>
-								<b-switch v-model="barData.recommend_switch"
-										  class="is-flex-direction-row-reverse mr-0 _small"
-										  type="is-dark" @input="saveData"></b-switch>
-							</b-field>
+						<div class="multi-select">
+							<b-dropdown v-model="barData.tutorial_switch" multiple style="height: 2rem;">
+								<template #trigger>
+									<b-button icon-pack="casa" icon-right="down-outline">
+										{{ barData.tutorial_switch.length }} items selected
+									</b-button>
+								</template>
+
+								<b-dropdown-item
+									v-for="item in tutorialList" :key="item.name" :value="item.name"
+									@click="saveData">
+									<b-checkbox
+										:key="item.name" :value="barData.tutorial_switch.includes(item.name)"
+										style="pointer-events: none">
+										<span class="has-text-full-04">{{ item.name }}</span>
+									</b-checkbox>
+								</b-dropdown-item>
+							</b-dropdown>
 						</div>
 					</div>
 					<!-- Recommended modules Switch End  -->
 
 					<!-- Automount USB Drive Start  -->
 					<div
-						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+						class="is-flex is-align-items-center mb-1  _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="usb-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('Automount USB Drive') }}
@@ -345,8 +357,7 @@ import TerminalPanel from './logsAndTerminal/TerminalPanel.vue'
 import PortPanel     from './settings/PortPanel.vue'
 import UpdateModal   from './settings/UpdateModal.vue'
 import {mixin}       from '@/mixins/mixin';
-
-import events from '@/events/events';
+import events        from '@/events/events';
 
 const systemConfigName = "system"
 
@@ -363,7 +374,7 @@ export default {
 				lang: this.getInitLang(),
 				search_engine: "https://duckduckgo.com/?q=",
 				search_switch: true,
-				recommend_switch: true,
+				tutorial_switch: [],
 				shortcuts_switch: false, // Not used
 				widgets_switch: false, // Not used
 				existing_apps_switch: true,
@@ -415,6 +426,11 @@ export default {
 			showPower: false,
 			showPowerTitle: '',
 			showPowerMessage: '',
+			tutorialList: [
+				{id: 1, name: 'Data station'},
+				{id: 2, name: 'Remote Access'},
+				{id: 3, name: 'File Manage'},
+			],
 		}
 	},
 	props: {
@@ -431,7 +447,7 @@ export default {
 		},
 		isRaspberryPi() {
 			return this.deviceModel.toLowerCase().indexOf("raspberry") >= 0
-		}
+		},
 	},
 	watch: {
 		'barData.lang': {
@@ -475,9 +491,9 @@ export default {
 			},
 			deep: true
 		},
-		'barData.recommend_switch': {
+		'barData.tutorial_switch': {
 			handler(val) {
-				this.$store.commit('SET_RECOMMEND_SWITCH', val);
+				this.$store.commit('SET_TUTORIAL_SWITCH', val);
 			},
 			deep: true
 		},
@@ -492,13 +508,18 @@ export default {
 			},
 			deep: true
 		},
-		initBarData(val) {
-			this.barData = val
-		},
+		// initBarData(val) {
+		// 	this.barData = val
+		// },
 
 	},
 	created() {
-		this.barData = this.initBarData
+		// For upgrade skip miss.
+		if (this.initBarData?.tutorial_switch) {
+			this.barData = this.initBarData
+		} else {
+			this.barData = {...this.initBarData, tutorial_switch: this.$store.state.tutorialSwitch}
+		}
 		// this.getConfig();
 		this.getPort();
 	},
@@ -952,6 +973,41 @@ export default {
 
 					.item {
 						height: 2rem;
+					}
+				}
+
+				// casaos style
+				.multi-select {
+					// ...
+					.dropdown-trigger {
+						button {
+							width: 10rem;
+						}
+					}
+
+					.dropdown-menu {
+						width: 10rem;
+						min-width: 10rem;
+						margin-top: 0;
+						border: 1px solid hsla(208, 16%, 91%, 1);
+						box-shadow: 0px 16px 32px -8px rgba(28, 31, 34, 0.12);
+						border-radius: 6px;
+
+						.dropdown-content {
+							a.dropdown-item {
+								padding: 6px 12px;
+								color: hsla(208, 20%, 20%, 1);
+
+								.control-label {
+									padding-left: 0.5rem;
+								}
+
+								&.is-active {
+									background-color: transparent;
+									color: hsla(208, 20%, 20%, 1);
+								}
+							}
+						}
 					}
 				}
 			}

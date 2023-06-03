@@ -14,13 +14,13 @@
 		<swiper-slide v-for="(noticeCard, key) in noticesData" :key="key" :class="{ _singleWidth: showFullCard }">
 			<noticeBlock :noticeData="noticeCard" :noticeType="key" @deleteNotice="refreshNotice"></noticeBlock>
 		</swiper-slide>
-		<swiper-slide v-if="recommendShow">
+		<swiper-slide v-if="tutorialList">
 			<sync-block></sync-block>
 		</swiper-slide>
-		<swiper-slide v-if="recommendShow">
+		<swiper-slide v-if="tutorialList">
 			<smart-block></smart-block>
 		</swiper-slide>
-		<div v-show="recommendShow || noticeLength !== 0" slot="pagination" class="swiper-pagination">
+		<div v-show="tutorialList.length !== 0 || noticeLength !== 0" slot="pagination" class="swiper-pagination">
 		</div>
 		<img slot="button-prev" :src="require('@/assets/img/widgets/swiper-left.svg')" alt="prev"
 			 class="swiper-button-prev"/>
@@ -48,15 +48,15 @@ export default {
 	name: "core-service",
 	mixins: [mixin, Business_ShowNewAppTag],
 	computed: {
-		recommendShow() {
-			return this.$store.state.recommendSwitch
+		tutorialList() {
+			return this.$store.state.tutorialSwitch
 		},
 		noticeLength() {
 			return Object.keys(this.noticesData).length
 		},
 		// full width to show with single notice card
 		showFullCard() {
-			return this.noticeLength === 1 && !this.recommendShow
+			return this.noticeLength === 1 && !this.tutorialList
 		}
 	},
 	watch: {

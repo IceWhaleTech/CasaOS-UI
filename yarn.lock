@@ -4687,7 +4687,7 @@ __metadata:
     v-viewer: ^1.6.4
     validator: ^13.7.0
     vee-validate: ^3.4.12
-    vue: ^2.6.11
+    vue: ^2.7.1
     vue-apexcharts: ^1.6.2
     vue-awesome-swiper: =4.1.1
     vue-breakpoint-mixin: ^1.3.2
@@ -16204,7 +16204,7 @@ iconfonts-casaos@latest:
   languageName: node
   linkType: hard
 
-"vue@npm:^2.6.11, vue@npm:^2.6.12":
+"vue@npm:^2.6.11, vue@npm:^2.6.12, vue@npm:^2.7.1":
   version: 2.7.14
   resolution: "vue@npm:2.7.14"
   dependencies:

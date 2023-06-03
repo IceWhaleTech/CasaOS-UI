@@ -31,7 +31,7 @@ const state = {
 	searchEngine: '',
 	searchEngineSwitch: true,
 	existingAppsSwitch: true,
-	recommendSwitch: true,
+	tutorialSwitch: ['Data station', 'Remote Access', 'File Manage'],
 	rssSwitch: false,
 
 	siteLoading: true,

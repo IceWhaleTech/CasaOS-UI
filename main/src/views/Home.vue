@@ -180,7 +180,7 @@ export default {
 						lang: this.getLangFromBrowser(),
 						search_engine: "https://duckduckgo.com/?q=",
 						search_switch: true,
-						recommend_switch: true,
+						tutorial_switch: this.$store.state.tutorialSwitch,
 						shortcuts_switch: true,
 						widgets_switch: true,
 						existing_apps_switch: true,
@@ -194,11 +194,14 @@ export default {
 						this.barData = saveRes.data.data
 					}
 				}
-
-				this.$store.commit('SET_SEARCH_ENGINE_SWITCH', systemConfig.data.data.search_switch);
-				this.$store.commit('SET_RECOMMEND_SWITCH', systemConfig.data.data.recommend_switch);
-				this.$store.commit('SET_RSS_SWITCH', systemConfig.data.data.rss_switch);
 				this.barData = systemConfig.data.data
+				// For upgrade skip miss.
+				if (this.initBarData?.tutorial_switch) {
+					this.$store.commit('SET_TUTORIAL_SWITCH', systemConfig.data.data.tutorial_switch);
+				}
+				this.$store.commit('SET_SEARCH_ENGINE_SWITCH', systemConfig.data.data.search_switch);
+				this.$store.commit('SET_RSS_SWITCH', systemConfig.data.data.rss_switch);
+
 				this.isLoading = false
 			} catch (e) {
 				console.error('GETTING SYSTEM INFO HAS ERROR:', e)

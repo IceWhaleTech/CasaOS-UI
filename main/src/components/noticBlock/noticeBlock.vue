@@ -31,9 +31,8 @@
 
 			<!-- start of section body-->
 			<!-- list-->
-			<div
-				v-if="noticeData.contentType === 'list'"
-				class="info is-flex is-flex-direction-column is-justify-content-space-around is-flex-grow-1">
+			<div v-if="noticeData.contentType === 'list'"
+				 class="info is-flex is-flex-direction-column is-justify-content-space-around is-flex-grow-1">
 				<div class="_widget-body is-flex mr-0">
 					<div class="image is-24x24 is-flex-shrink-0">
 						<img v-if="!noticeData.content[Object.keys(noticeData.content)[0]].icon"

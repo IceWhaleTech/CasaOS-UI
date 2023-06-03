@@ -71,8 +71,8 @@ const mutations = {
 		state.existingAppsSwitch = val
 	},
 
-	SET_RECOMMEND_SWITCH(state, val) {
-		state.recommendSwitch = val
+	SET_TUTORIAL_SWITCH(state, val) {
+		state.tutorialSwitch = val
 	},
 
 	SET_RSS_SWITCH(state, val) {
