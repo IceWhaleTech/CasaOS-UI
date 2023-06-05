@@ -14,7 +14,7 @@
 			<template v-slot:content>
 				<div class="mr-1">{{ $t(label) }}</div>
 				<div class="is-clickable" @click="hideTip">
-					<b-icon icon="close-outline-xs-outline" pack="casa"></b-icon>
+					<b-icon icon="close-xs-outline" pack="casa"></b-icon>
 				</div>
 			</template>
 			<span class="mr-2">{{ $t(title) }}</span>
