@@ -372,8 +372,13 @@ export default {
 		},
 		async copyValue(e) {
 			copy(this.V_ID);
-			this.$buefy.notification.open('Copy complete!')
-
+			this.$buefy.toast.open({
+				message: this.$t('Copy complete!'),
+				type: 'is-success',
+				position: 'is-top',
+				duration: 5000,
+				queue: false
+			})
 		}
 	}
 }
