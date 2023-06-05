@@ -194,7 +194,7 @@
 				<hr/>
 				<p v-if="isZIMA" class="subtitle mb-5 pb-4 has-text-centered has-text-full-03">
 					{{ $t('Please read before continuing ') }}
-					<a class="" href="https://casaos.io/privacy-full.html" target="_blank">
+					<a class="" href="/privacy%20policy.pdf" target="_blank">
 						{{
 							$t(`Privacy Policy`)
 						}}
