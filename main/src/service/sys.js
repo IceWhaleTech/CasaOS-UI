@@ -1,4 +1,14 @@
 /*
+ * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ * @LastEditTime: 2023/6/6 下午6:36
+ * @FilePath: /CasaOS-UI/main/src/service/sys.js
+ * @Description:
+ *
+ * Copyright (c) 2023 by IceWhale, All Rights Reserved.
+
+ */
+
+/*
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: zhanghengxin ezreal.ice@icloud.com
@@ -121,6 +131,10 @@ const sys = {
 	// power -- data:restart
 	power(data) {
 		return api.put(`${PREFIX}/state/${data}`);
+	},
+
+	getEntry() {
+		return api.get(`${PREFIX}/entry`);
 	},
 }
 export default sys;

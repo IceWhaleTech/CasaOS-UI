@@ -12,8 +12,25 @@ const fs = import('node:fs');
 // 引入nodejs的path模块
 const path = import('node:path');
 
+let resultArray = [
+	{
+		"title": "icewhale_files",
+		"entry": "/modules/icewhale_files",
+		"icon": "/modules/icewhale_files/icon.png",
+		"description": "xxxx",
+		"formality": {
+			"type": "modal",
+			"props": {
+				"fullscreen": true,
+				"hasModalCard": true,
+				"animation": "zoom-in"
+			}
+		}
+	}
+];
+
 export default function gatherMicro() {
-	let resultArray = []
+	// let resultArray = []
 	// 获取packages文件夹路径
 	const currentPath = path.resolve(__dirname, '../packages');
 

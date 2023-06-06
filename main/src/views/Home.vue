@@ -8,7 +8,7 @@
   -->
 
 <template>
-	<div v-if="!isLoading" class="out-container">
+	<div v-if="!isLoading" ref="home" class="out-container">
 		<!-- NavBar Start -->
 		<top-bar v-animate-css="topBarAni" :initBarData="barData" @showSideBar="showSideBar"></top-bar>
 		<!-- NavBar End -->
@@ -60,25 +60,25 @@
 		</div>
 		<!-- Content End -->
 
-		<!-- File Panel Start -->
-		<b-modal v-model="isFileActive"
-				 :can-cancel="['escape']"
-				 :destroy-on-hide="false"
-				 animation="zoom-in" aria-modal
-				 custom-class="file-panel"
-				 full-screen
-				 has-modal-card
-				 @cancel="hideMircoApp"
-				 @after-enter="afterFileEnter">
-			<template #default="props">
-				<div id="microApp" @close="props.close"></div>
-			</template>
-		</b-modal>
-		<!-- File Panel End -->
+		<!--		&lt;!&ndash; File Panel Start &ndash;&gt;-->
+		<!--		<b-modal v-model="isFileActive"-->
+		<!--				 :can-cancel="['escape']"-->
+		<!--				 :destroy-on-hide="false"-->
+		<!--				 animation="zoom-in" aria-modal-->
+		<!--				 custom-class="file-panel"-->
+		<!--				 full-screen-->
+		<!--				 has-modal-card-->
+		<!--				 @cancel="hideMircoApp"-->
+		<!--				 @after-enter="afterFileEnter">-->
+		<!--			<template #default="props">-->
+		<!--				<div id="microApp" @close="props.close"></div>-->
+		<!--			</template>-->
+		<!--		</b-modal>-->
+		<!--		&lt;!&ndash; File Panel End &ndash;&gt;-->
 
-		<!-- Remote Access Start -->
-		<div v-show="isRemoteAccessActive" id="remoteAccessMircoApp"></div>
-		<!-- Remote Access End -->
+		<!--		&lt;!&ndash; Remote Access Start &ndash;&gt;-->
+		<!--		<div v-show="isRemoteAccessActive" id="remoteAccessMircoApp"></div>-->
+		<!--		&lt;!&ndash; Remote Access End &ndash;&gt;-->
 	</div>
 </template>
 
@@ -115,14 +115,15 @@ export default {
 			isLoading: true,
 			hardwareInfoLoading: true,
 			user_id: localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 1,
-			isFileActive: false,
-			isRemoteAccessActive: false,
+			// isFileActive: false,
+			// isRemoteAccessActive: false,
 			barData: {},
 			topBarAni: {
 				classes: 'fadeInDown',
 				duration: 800
 			},
 			mircoAppInstanceMap: new Map(),
+			customModalMap: new Map(),
 		}
 	},
 	provide() {
@@ -226,84 +227,143 @@ export default {
 		 * @return {*} void
 		 */
 		showMircoApp(app) {
-			const appInstance = this.mircoAppInstanceMap.get(app.name);
+			const appInstance = this.mircoAppInstanceMap.get(app.id);
 			if (!appInstance) {
 				this.createMircoApp(app);
-			} else if (app.name === 'Files') {
-				if (!this.isFileActive) {
-					this.$messageBus('mircoapp_communicate', {action: MIRCO_APP_ACTION_ENUM.OPEN, peerType: 'file'});
-					this.isFileActive = true;
-				}
-			} else if (app.name === 'Remote Access') {
-				if (!this.isRemoteAccessActive) {
-					this.$messageBus('mircoapp_communicate', {
-						action: MIRCO_APP_ACTION_ENUM.OPEN,
-						peerType: 'remoteAccess'
-					});
-					this.isRemoteAccessActive = true;
-				}
+			}
+				// else if (app.name === 'Files') {
+				// 	if (!this.isFileActive) {
+				// 		this.$messageBus('mircoapp_communicate', {action: MIRCO_APP_ACTION_ENUM.OPEN, peerType: 'file'});
+				// 		this.isFileActive = true;
+				// 	}
+				// } else if (app.name === 'Remote Access') {
+				// 	if (!this.isRemoteAccessActive) {
+				// 		this.$messageBus('mircoapp_communicate', {
+				// 			action: MIRCO_APP_ACTION_ENUM.OPEN,
+				// 			peerType: 'remoteAccess'
+				// 		});
+				// 		this.isRemoteAccessActive = true;
+				// 	}
+			// }
+			else {
+				const modal = this.customModalMap.get(app.id);
+				console.log(this.$buefy.modal, modal);
+				// this.$buefy.modal.open();
+				// modal.isActive = true;
+				modal.$el.style.display = 'block';
+				// document.getElementById(app.id).style.display = 'block';
 			}
 		},
 
-		hideMircoApp(peerType = '') {
+		hideMircoApp(peerType = '') { // NOTICE: hide all mirco app for now
 			this.isFileActive = false;
 			this.isRemoteAccessActive = false;
+			this.customModalMap.forEach(modal => modal?.close());
 		},
 
 		createMircoApp(app) {
-			if (app.name === 'Files') {
-				const fileAppInstance = loadMicroApp(
-					{
-						name: 'microApp',
-						entry: app.entry,
-						container: '#microApp',
-						props: {
-							store: { // sync necessary store status to child mirco app
-								device_id: this.$store.state.device_id,
-								access_id: this.$store.state.access_id,
-								access_token: this.$store.state.access_token,
-								refresh_token: this.$store.state.refresh_token,
-								casaos_lang: this.$store.state.casaos_lang,
-							}
-						}
-					},
-					{
-						sandbox: {
-							experimentalStyleIsolation: true
+			// if (app.name === 'Files') {
+			// 	const fileAppInstance = loadMicroApp(
+			// 		{
+			// 			name: 'microApp',
+			// 			entry: app.entry,
+			// 			container: '#microApp',
+			// 			props: {
+			// 				store: { // sync necessary store status to child mirco app
+			// 					device_id: this.$store.state.device_id,
+			// 					access_id: this.$store.state.access_id,
+			// 					access_token: this.$store.state.access_token,
+			// 					refresh_token: this.$store.state.refresh_token,
+			// 					casaos_lang: this.$store.state.casaos_lang,
+			// 				}
+			// 			}
+			// 		},
+			// 		{
+			// 			sandbox: {
+			// 				experimentalStyleIsolation: true
+			// 			}
+			// 		}
+			// 	);
+			// 	this.mircoAppInstanceMap.set(app.id, fileAppInstance);
+			// 	this.$nextTick(() => {
+			// 		this.isFileActive = true;
+			// 	});
+			// } else if (app.name === 'Remote Access') {
+			// 	const remoteAccessAppInstance = loadMicroApp(
+			// 		{
+			// 			name: 'remoteAccessMircoApp',
+			// 			entry: app.entry,
+			// 			container: '#remoteAccessMircoApp',
+			// 			props: {
+			// 				store: { // sync necessary store status to child mirco app
+			// 					device_id: this.$store.state.device_id,
+			// 					access_id: this.$store.state.access_id,
+			// 					access_token: this.$store.state.access_token,
+			// 					refresh_token: this.$store.state.refresh_token,
+			// 					casaos_lang: this.$store.state.casaos_lang,
+			// 				}
+			// 			},
+			// 		},
+			// 		{
+			// 			sandbox: {
+			// 				strictStyleIsolation: true
+			// 			}
+			// 		}
+			// 	);
+			// 	this.mircoAppInstanceMap.set(app.id, remoteAccessAppInstance);
+			// 	this.$nextTick(() => {
+			// 		this.isRemoteAccessActive = true;
+			// 	});
+			// } else {
+			const customVNode = this.$createElement('div', {
+				class: "full-screen-container",
+				attrs: {
+					id: app.id
+				}
+			});
+			const customModal = this.$buefy.modal.open({
+				content: [customVNode],
+				fullScreen: true,
+				hasModalCard: true,
+				destroyOnHide: false,
+				animation: "zoom-in",
+				canCancel: ["escape", "x"],
+				onCancel: () => {
+					this.hideMircoApp(app.id);
+				}
+			});
+
+			this.$nextTick(() => {
+				const customAppInstance = loadMicroApp({
+					name: app.id,
+					entry: app.entry,
+					container: `#${app.id}`,
+					props: {
+						store: { // sync necessary store status to child mirco app
+							device_id: this.$store.state.device_id,
+							access_id: this.$store.state.access_id,
+							access_token: this.$store.state.access_token,
+							refresh_token: this.$store.state.refresh_token,
+							casaos_lang: this.$store.state.casaos_lang,
 						}
 					}
-				);
-				this.mircoAppInstanceMap.set(app.name, fileAppInstance);
-				this.$nextTick(() => {
-					this.isFileActive = true;
-				});
-			} else {
-				const remoteAccessAppInstance = loadMicroApp(
-					{
-						name: 'remoteAccessMircoApp',
-						entry: app.entry,
-						container: '#remoteAccessMircoApp',
-						props: {
-							store: { // sync necessary store status to child mirco app
-								device_id: this.$store.state.device_id,
-								access_id: this.$store.state.access_id,
-								access_token: this.$store.state.access_token,
-								refresh_token: this.$store.state.refresh_token,
-								casaos_lang: this.$store.state.casaos_lang,
-							}
-						},
-					},
-					{
-						sandbox: {
-							strictStyleIsolation: true
-						}
+				}, {
+					sandbox: {
+						experimentalStyleIsolation: true
 					}
-				);
-				this.mircoAppInstanceMap.set(app.name, remoteAccessAppInstance);
-				this.$nextTick(() => {
-					this.isRemoteAccessActive = true;
 				});
-			}
+				this.customModalMap.set(app.id, customModal);
+				this.mircoAppInstanceMap.set(app.id, customAppInstance);
+			});
+			// }
+		},
+
+		async inintMircoApp() {
+			const mircoAppJsonStr = await this.$api.sys.getEntry().then(res => res.data.data || []);
+			const mircoAppListRaw = JSON.parse(mircoAppJsonStr);
+			mircoAppListRaw.forEach(app => {
+				this.createMircoApp(app)
+			})
 		},
 
 		destroyMircoApp(name = '') {
@@ -423,6 +483,9 @@ export default {
 			const data = res.Properties;
 			if (data.access_id === this.$store.state.access_id) {
 				switch (data.action) {
+					case MIRCO_APP_ACTION_ENUM.OPEN:
+						this.showMircoApp(data.peerType);
+						break;
 					case MIRCO_APP_ACTION_ENUM.MOUNT:
 						this.showStorageManagerPanelModal();
 						break;
@@ -456,7 +519,6 @@ export default {
 
 .contents {
 	flex: 1;
-	overflow-y: hidden;
 	overflow-x: hidden;
 	height: calc(100% - 5rem);
 }
@@ -545,6 +607,14 @@ export default {
 }
 
 #remoteAccessMircoApp {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+.full-screen-container {
 	position: absolute;
 	top: 0;
 	left: 0;

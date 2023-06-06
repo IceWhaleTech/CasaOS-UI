@@ -293,6 +293,8 @@ export default {
 			}
 			if (item.app_type === "system") {
 				this.openSystemApps(item)
+			} else if (item.app_type === 'mircoApp') {
+				this.showMircoApp(item);
 			} else if (this.isLinkApp) {
 				window.open(item.hostname, '_blank');
 				this.removeIdFromSessionStorage(item.name);
@@ -308,14 +310,14 @@ export default {
 		openSystemApps(item) {
 			switch (item.name) {
 				case "App Store":
-					this.openAppStore()
+					this.openAppStore();
 					break;
-				case "Files":
-					this.showMircoApp(item)
-					break;
-				case "Remote Access":
-					this.showMircoApp(item)
-					break;
+				// case "Files":
+				// 	this.showMircoApp(item);
+				// 	break;
+				// case "Remote Access":
+				// 	this.showMircoApp(item);
+				// 	break;
 				default:
 					break;
 			}

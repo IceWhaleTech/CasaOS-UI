@@ -73,6 +73,7 @@ import last                   from 'lodash/last';
 import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
 import business_LinkApp       from "@/mixins/app/Business_LinkApp";
 import isEqual                from "lodash/isEqual";
+import {nanoid}               from 'nanoid';
 
 const SYNCTHING_STORE_ID = 74
 
@@ -173,7 +174,7 @@ export default {
 		});
 
 		this.ListRefreshTimer = setInterval(() => {
-			this.getList();
+			// this.getList();
 		}, 5000)
 	},
 	beforeDestroy() {
@@ -214,6 +215,23 @@ export default {
 
 			try {
 				const orgAppList = await this.$openAPI.appGrid.getAppGrid().then(res => res.data.data || []);
+				const mircoAppJsonStr = await this.$api.sys.getEntry().then(res => res.data.data || []);
+				const mircoAppListRaw = JSON.parse(mircoAppJsonStr);
+				const mircoAppList = mircoAppListRaw.map(item => {
+					return {
+						id: `${nanoid()}-${item.title}`,
+						name: item.title,
+						entry: item.entry,
+						title: {
+							en_us: item.title,
+						},
+						icon: item.icon,
+						formality: item.formality,
+						status: "running",
+						app_type: "mircoApp"
+					}
+				});
+
 				orgAppList.forEach((item) => {
 					item.hostname = item.hostname || this.$baseHostname;
 					// Container app does not have icon.
@@ -227,7 +245,7 @@ export default {
 					}
 				})
 				// all app list
-				let casaAppList = concat(builtInApplications, orgAppList, listLinkApp)
+				let casaAppList = concat(builtInApplications, orgAppList, mircoAppList, listLinkApp)
 				// get app sort info.
 				let lateSortList = await this.$api.users.getCustomStorage(orderConfig).then(res => res.data.data.data || []);
 
@@ -257,7 +275,7 @@ export default {
 				if (this.retryCount < 5) {
 					setTimeout(() => {
 						this.retryCount++
-						this.getList();
+						// this.getList();
 					}, 2000)
 				} else {
 
