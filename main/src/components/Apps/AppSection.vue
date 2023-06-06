@@ -157,9 +157,9 @@ export default {
 		showDragTip() {
 			return this.draggable === ".handle"
 		},
-		exsitingAppsShow() {
-			return this.$store.state.existingAppsSwitch
-		}
+		// exsitingAppsShow() {
+		// 	return this.$store.state.existingAppsSwitch
+		// }
 	},
 	created() {
 		this.getList();

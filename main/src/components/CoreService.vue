@@ -14,12 +14,6 @@
 		<swiper-slide v-for="(noticeCard, key) in noticesData" :key="key" :class="{ _singleWidth: showFullCard }">
 			<noticeBlock :noticeData="noticeCard" :noticeType="key" @deleteNotice="refreshNotice"></noticeBlock>
 		</swiper-slide>
-		<swiper-slide v-if="tutorialList">
-			<sync-block></sync-block>
-		</swiper-slide>
-		<swiper-slide v-if="tutorialList">
-			<smart-block></smart-block>
-		</swiper-slide>
 		<div v-show="tutorialList.length !== 0 || noticeLength !== 0" slot="pagination" class="swiper-pagination">
 		</div>
 		<img slot="button-prev" :src="require('@/assets/img/widgets/swiper-left.svg')" alt="prev"
@@ -30,21 +24,21 @@
 </template>
 
 <script>
-import noticeBlock            from "@/components/noticBlock/noticeBlock";
-import {Swiper, SwiperSlide}  from 'vue-awesome-swiper'
-import {mixin}                from '@/mixins/mixin';
-import sortBy                 from 'lodash/sortBy';
-import SyncBlock              from "@/components/syncthing/SyncBlock.vue";
-import SmartBlock             from "@/components/smartHome/SmartBlock.vue";
-import events                 from "@/events/events";
-import Business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
-import DiskLearnMore          from "@/components/Storage/DiskLearnMore.vue";
-import last                   from "lodash/last";
+// import noticeBlock            from "@/components/noticBlock/noticeBlock";
+import noticeBlock             from "@/components/business_YouShouldKnow/noticeBlock";
+import {Swiper, SwiperSlide}   from 'vue-awesome-swiper'
+import {mixin}                 from '@/mixins/mixin';
+import sortBy                  from 'lodash/sortBy';
+import events                  from "@/events/events";
+import Business_ShowNewAppTag  from "@/mixins/app/Business_ShowNewAppTag";
+import DiskLearnMore           from "@/components/Storage/DiskLearnMore.vue";
+import last                    from "lodash/last";
+import {MIRCO_APP_ACTION_ENUM} from "@/const";
 // import DockerProgress from "@/components/Apps/progress.js";
 // import StorageManagerPanel from "@/components/Storage/StorageManagerPanel.vue";
 
 export default {
-	components: {SmartBlock, SyncBlock, noticeBlock, Swiper, SwiperSlide},
+	components: {noticeBlock, Swiper, SwiperSlide},
 	name: "core-service",
 	mixins: [mixin, Business_ShowNewAppTag],
 	computed: {
@@ -56,7 +50,7 @@ export default {
 		},
 		// full width to show with single notice card
 		showFullCard() {
-			return this.noticeLength === 1 && !this.tutorialList
+			return this.noticeLength === 1
 		}
 	},
 	watch: {
@@ -71,6 +65,12 @@ export default {
 					this.$messageBus('youshouldknow_show', 'true');
 				}
 			},
+		},
+		tutorialList: {
+			handler(v) {
+				this.controlTutorialData(v)
+			},
+			immediate: true
 		}
 	},
 	data() {
@@ -108,26 +108,41 @@ export default {
 			noticesData: {
 				// example data:
 				/*'local-storage': {
-				  prelude: {
-					title: 'local-storage',
-					icon: 'mdi-usb',
-				  },
-				  content: {
-					a: {
-					  title: 'Found a new drive',
-					  icon: '/storage/disk.png',
-					  color: 'is-primary',
-					  path: '/storage',
-					  uuid: '456',
-					  value: '100G/500G'
-					},},
-				  contentType: 'list',
-				  operate: {
-					type: 'button',
-					title: 'More',
-					path: '/storage',
-					icon: 'mdi-arrow-right',
-				  },
+						title: 'local-storage',
+						icon: 'casa-storage-USB',
+					content: {
+						a: {
+							title: 'Found a new drive',
+							icon: '/storage/disk.png',
+							color: 'is-primary',
+							path: '/storage',
+							uuid: '456',
+							value: '100G/500G'
+						},
+					},
+					contentType: 'list',
+					operate: {
+						type: 'button',
+						title: 'More',
+						path: '/storage',
+						icon: 'mdi-arrow-right',
+					},
+				},
+				'local-info': {
+						title: 'local-storage',
+						icon: 'casa-storage-USB',
+					content: {
+						icon: "https://icon.casaos.io/main/all/zerotier.png",
+						text: "1234567890qwertyuiopasdfghjklzxcvbnm"
+					},
+					contentType: 'info',
+					operate: {
+						type: 'casaUI:eventBus',
+						title: 'More',
+						event: 'mircoapp_communicate',
+						icon: 'mdi-arrow-right',
+						payload: {}
+					},
 				},*/
 			},
 			dockerProgress: {},
@@ -141,7 +156,7 @@ export default {
 	mounted() {
 		this.WSHub = this.initMessageBus();
 	},
-	inject: ['homeShowFiles'],
+	inject: ['homeShowFiles', 'barData'],
 	methods: {
 		createWS(domain) {
 			let socket
@@ -219,6 +234,14 @@ export default {
 		refreshNotice(data, type) {
 			// this.noticesData[type] = data
 			this.$delete(this.noticesData, type)
+			// To delete the tutorial that belongs to the system configuration.
+			if (this.tutorialList.includes(type)) {
+				let list = this.tutorialList.filter(item => item !== type)
+				console.log(list, 'list')
+				this.$store.commit('SET_TUTORIAL_SWITCH', list)
+				this.barData.tutorial_switch = list
+				this.$api.users.setCustomStorage('system', this.barData)
+			}
 		},
 		patchTransform(eventJson) {
 			// only show which is disk from local-storage
@@ -388,16 +411,8 @@ export default {
 				}
 			}
 		},
-		addNotice(Json, rootName) {
-			this.$set(this.noticesData, rootName, {
-				prelude: {
-					title: Json.title,
-					icon: Json.icon,
-				},
-				content: Json.content,
-				contentType: Json.contentType,
-				operate: Json.operate,
-			})
+		addNotice(notice, rootName) {
+			this.$set(this.noticesData, rootName, notice)
 		},
 		removeNotice(rootName) {
 			this.$delete(this.noticesData, rootName)
@@ -474,6 +489,88 @@ export default {
 				operate: false,
 			}
 			this.addNotice(data, res.name)
+		},
+		controlTutorialData(list) {
+			const configData = {
+				'Data station': {
+					title: 'Build data station',
+					icon: 'casa-storage-USB',
+					content: {
+						text: "For a data station with more storage capacity, it is recommended to add more hard drives."
+					},
+					contentType: 'info',
+					operate: {
+						type: 'casaUI:eventBus',
+						title: 'Learn more',
+						event: 'mircoapp_communicate',
+						icon: 'mdi-arrow-right',
+					},
+					payload: {
+						action: MIRCO_APP_ACTION_ENUM.OPEN,
+						peerType: 'file'
+					}
+				},
+				'Remote Access': {
+					title: 'Remote Access',
+					icon: 'casa-storage-USB',
+					content: {
+						text: "Configure Remote Access to access your home cloud remotely from anywhere."
+					},
+					contentType: 'info',
+					operate: {
+						type: 'casaUI:eventBus',
+						title: 'Learn more',
+						event: 'mircoapp_communicate',
+						icon: 'mdi-arrow-right',
+					},
+					payload: {
+						action: MIRCO_APP_ACTION_ENUM.OPEN,
+						peerType: 'file'
+					}
+				},
+				'File Manage': {
+					title: 'File Management',
+					icon: 'casa-storage-USB',
+					content: {
+						text: "Use Files to manage your data from different locations, such as your computer, phone, netdisk and server."
+					},
+					contentType: 'info',
+					operate: {
+						type: 'casaUI:eventBus',
+						title: 'Learn more',
+						event: 'mircoapp_communicate',
+						icon: 'mdi-arrow-right',
+					},
+					payload: {
+						action: MIRCO_APP_ACTION_ENUM.OPEN,
+						peerType: 'file'
+					}
+				}
+			}
+			// if (type === 'add') {
+			for (const key in configData) {
+				if (list.includes(key)) {
+					if (this.noticesData[key]) {
+						continue
+					}
+					this.addNotice(configData[key], key)
+				} else {
+					if (this.noticesData[key]) {
+						this.removeNotice(key)
+					}
+				}
+			}
+			// }
+			// if (type === 'remove') {
+			// 	for (const key in configData) {
+			// 		if (!list.includes(key)) {
+			// 			// this.removeNotice(key) same as Store.
+			// 			this.$store.commit('SET_TUTORIAL_SWITCH', list)
+			// 			return
+			// 		}
+			// 	}
+			// }
+
 		},
 
 	},

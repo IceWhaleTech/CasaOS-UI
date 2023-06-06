@@ -8,9 +8,11 @@
 
   -->
 <script setup>
-import {_defineProps} from 'vue'
+import {defineProps} from 'vue'
 
-_defineProps(['noticeData'])
+const props = defineProps({
+	noticeData: Object
+})
 </script>
 
 <template>
@@ -51,5 +53,23 @@ _defineProps(['noticeData'])
 </template>
 
 <style lang="scss" scoped>
+._widget-body {
+	align-items: center;
+	position: relative;
 
+	.body-title {
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: 500;
+		font-size: 14px;
+		line-height: 20px;
+		color: hsla(208, 16%, 96%, 1);
+	}
+}
+
+._nowrap {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
 </style>

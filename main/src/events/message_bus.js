@@ -237,7 +237,7 @@ module.exports = {
 	},
 	// local message, params: { action, payload, peerType }
 	mircoapp_communicate: async (params) => {
-		const payload = typeof params === 'string' ? { value: params } : params;
+		const payload = typeof params === 'string' ? {value: params} : params;
 		return await intermediateProcessor("casaos-ui:app:mircoapp_communicate", payload);
 	},
 }

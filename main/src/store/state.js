@@ -30,7 +30,7 @@ const state = {
 	// System Config
 	searchEngine: '',
 	searchEngineSwitch: true,
-	existingAppsSwitch: true,
+	// existingAppsSwitch: true,
 	tutorialSwitch: ['Data station', 'Remote Access', 'File Manage'],
 	rssSwitch: false,
 

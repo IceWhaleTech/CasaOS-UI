@@ -95,6 +95,7 @@ import events                  from '@/events/events';
 import {nanoid}                from 'nanoid';
 import {loadMicroApp}          from "qiankun";
 import {MIRCO_APP_ACTION_ENUM} from "@/const";
+import {computed}              from "vue";
 
 
 const wallpaperConfig = "wallpaper"
@@ -128,6 +129,7 @@ export default {
 		return {
 			homeShowFiles: this.showMircoApp,
 			showMircoApp: this.showMircoApp,
+			barData: computed(() => this.barData)
 		};
 	},
 
@@ -183,7 +185,7 @@ export default {
 						tutorial_switch: this.$store.state.tutorialSwitch,
 						shortcuts_switch: true,
 						widgets_switch: true,
-						existing_apps_switch: true,
+						// existing_apps_switch: true,
 						// first::form vuex
 						rss_switch: this.$store.state.rssSwitch,
 					}
@@ -195,9 +197,9 @@ export default {
 					}
 				}
 				this.barData = systemConfig.data.data
-				// For upgrade skip miss.
-				if (this.initBarData?.tutorial_switch) {
-					this.$store.commit('SET_TUTORIAL_SWITCH', systemConfig.data.data.tutorial_switch);
+				// To ensure a smooth upgrade process, it is necessary to handle any missing elements.
+				if (this.barData?.tutorial_switch) {
+					this.$store.commit('SET_TUTORIAL_SWITCH', this.barData.tutorial_switch);
 				}
 				this.$store.commit('SET_SEARCH_ENGINE_SWITCH', systemConfig.data.data.search_switch);
 				this.$store.commit('SET_RSS_SWITCH', systemConfig.data.data.rss_switch);

@@ -177,21 +177,21 @@
 					<!-- Background End -->
 
 					<!--  Show other Docker container app(s) Switch Start  -->
-					<div v-if="this.$store.state.notImportList.length > 0"
-						 class="is-flex is-align-items-center mb-1  _box _polymorphic _is-radius pr-2 mr-4 ml-4">
-						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-							<b-icon class="mr-1 ml-2" icon="docker-outline" pack="casa"
-									size="is-20"></b-icon>
-							{{ $t('Show other Docker container app(s)') }}
-						</div>
-						<div>
-							<b-field>
-								<b-switch v-model="barData.existing_apps_switch"
-										  class="is-flex-direction-row-reverse mr-0 _small" type="is-dark"
-										  @input="saveData"></b-switch>
-							</b-field>
-						</div>
-					</div>
+					<!--					<div v-if="this.$store.state.notImportList.length > 0"-->
+					<!--						 class="is-flex is-align-items-center mb-1  _box _polymorphic _is-radius pr-2 mr-4 ml-4">-->
+					<!--						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">-->
+					<!--							<b-icon class="mr-1 ml-2" icon="docker-outline" pack="casa"-->
+					<!--									size="is-20"></b-icon>-->
+					<!--							{{ $t('Show other Docker container app(s)') }}-->
+					<!--						</div>-->
+					<!--						<div>-->
+					<!--							<b-field>-->
+					<!--								<b-switch v-model="barData.existing_apps_switch"-->
+					<!--										  class="is-flex-direction-row-reverse mr-0 _small" type="is-dark"-->
+					<!--										  @input="saveData"></b-switch>-->
+					<!--							</b-field>-->
+					<!--						</div>-->
+					<!--					</div>-->
 					<!--  Show other Docker container app(s) Switch End  -->
 
 					<!--  Show other Docker container app(s) Switch Start  -->
@@ -358,6 +358,7 @@ import PortPanel     from './settings/PortPanel.vue'
 import UpdateModal   from './settings/UpdateModal.vue'
 import {mixin}       from '@/mixins/mixin';
 import events        from '@/events/events';
+import isEqual       from "lodash/isEqual";
 
 const systemConfigName = "system"
 
@@ -377,7 +378,7 @@ export default {
 				tutorial_switch: [],
 				shortcuts_switch: false, // Not used
 				widgets_switch: false, // Not used
-				existing_apps_switch: true,
+				// existing_apps_switch: true,
 				rss_switch: false,
 			},
 			rss_switch: false,
@@ -481,16 +482,16 @@ export default {
 			},
 			deep: true
 		},
-		"barData.existing_apps_switch": {
-			handler(val, oldValue) {
-				if (val === oldValue) {
-					return
-				}
-				this.$messageBus('dashboardsetting_showexistingapp', val.toString());
-				this.$store.commit('SET_EXISTING_APPS_SWITCH', val);
-			},
-			deep: true
-		},
+		// "barData.existing_apps_switch": {
+		// 	handler(val, oldValue) {
+		// 		if (val === oldValue) {
+		// 			return
+		// 		}
+		// 		this.$messageBus('dashboardsetting_showexistingapp', val.toString());
+		// 		this.$store.commit('SET_EXISTING_APPS_SWITCH', val);
+		// 	},
+		// 	deep: true
+		// },
 		'barData.tutorial_switch': {
 			handler(val) {
 				this.$store.commit('SET_TUTORIAL_SWITCH', val);
@@ -514,7 +515,7 @@ export default {
 
 	},
 	created() {
-		// For upgrade skip miss.
+		// For backward compatibility, during the upgrade, necessary processing needs to be performed to avoid errors.
 		if (this.initBarData?.tutorial_switch) {
 			this.barData = this.initBarData
 		} else {
@@ -542,7 +543,11 @@ export default {
 		async saveData() {
 			const saveRes = await this.$api.users.setCustomStorage(systemConfigName, this.barData)
 			if (saveRes.data.success === 200) {
-				this.barData = saveRes.data.data
+				let data = saveRes.data.data
+				if (isEqual(this.barData, data)) {
+					return
+				}
+				this.barData = data
 			}
 		},
 

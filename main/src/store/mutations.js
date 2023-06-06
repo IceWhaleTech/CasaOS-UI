@@ -67,9 +67,9 @@ const mutations = {
 		state.searchEngineSwitch = val
 	},
 
-	SET_EXISTING_APPS_SWITCH(state, val) {
-		state.existingAppsSwitch = val
-	},
+	// SET_EXISTING_APPS_SWITCH(state, val) {
+	// 	state.existingAppsSwitch = val
+	// },
 
 	SET_TUTORIAL_SWITCH(state, val) {
 		state.tutorialSwitch = val
