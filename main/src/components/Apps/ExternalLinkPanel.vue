@@ -166,7 +166,6 @@ export default {
 		 */
 		async checkStep(ref) {
 			let isValid = await ref.validate()
-			console.log(ref)
 			return isValid
 		},
 

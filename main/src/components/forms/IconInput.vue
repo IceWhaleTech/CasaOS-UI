@@ -67,8 +67,6 @@ export default {
 			this.showFileModal();
 		},
 		showFileModal() {
-			console.log('initPath', this.initPath)
-			console.log('rootPath', this.rootPath)
 			this.$buefy.modal.open({
 				parent: this,
 				component: FilePanel,

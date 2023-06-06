@@ -1,3 +1,12 @@
+<!--
+  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+  * @LastEditTime: 2023/6/6 下午6:18
+  * @FilePath: /CasaOS-UI/main/src/components/Apps/Dropdown.vue
+  * @Description:
+  *
+  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
+
+  -->
 <template>
 	<div ref="dropdown" :class="rootClasses" class="dropdown dropdown-menu-animation" @mouseleave="isHoverable = false">
 		<div v-if="!inline" ref="trigger" :tabindex="disabled ? false : triggerTabindex" aria-haspopup="true"
@@ -135,10 +144,10 @@ export default {
 		},
 		cancelOptions() {
 			return typeof this.canClose === 'boolean'
-			? this.canClose
-			? DEFAULT_CLOSE_OPTIONS
-			: []
-			: this.canClose
+				? this.canClose
+					? DEFAULT_CLOSE_OPTIONS
+					: []
+				: this.canClose
 		},
 		contentStyle() {
 			return {
@@ -353,7 +362,6 @@ export default {
 					left -= (dropdownMenu.clientWidth - trigger.clientWidth)
 				}
 				if (this.position && this.position.indexOf('is-right') >= 0) {
-					console.log('is-right');
 					top += 0
 					left -= 0
 				}

@@ -38,7 +38,6 @@ export default {
 					return res.data.data
 				})
 				let containerInfoV2 = allinfo.store_info
-				console.log(containerInfoV2, 'containerInfoV2');
 				let app = {
 					"id": appInfo.id,
 					"name": appInfo.id,

@@ -160,7 +160,6 @@ export default {
 		// get parent list
 		getParentList() {
 			let backDir = dropRight(this.path.split("/"), 1).join("/");
-			console.log('backDir', backDir)
 			if (backDir === "")
 				backDir = "/"
 

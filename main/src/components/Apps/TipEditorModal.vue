@@ -95,8 +95,7 @@ export default {
 		},
 	},
 	watch: {
-		isEditing(val, a) {
-			console.log('isEditing', val, a)
+		isEditing(val) {
 			if (val) {
 				// editor is editable
 				this.controlEditorState = 'edit'
@@ -110,9 +109,6 @@ export default {
 		},
 		composeData: {
 			handler(val) {
-				//Get helper in compose.
-				console.log('watch helper', val)
-
 				/*let getValueByPath = this.composeData['services'][this.name]
 				if (getValueByPath && getValueByPath['helper'] && getValueByPath['helper']['before_install']) {
 					let multiLine = getValueByPath['helper']['before_install'].forEach(item => {
