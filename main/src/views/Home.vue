@@ -458,7 +458,7 @@ export default {
 	flex: 1;
 	overflow-y: hidden;
 	overflow-x: hidden;
-	height: calc(100% - 7rem);
+	height: calc(100% - 5rem);
 }
 
 .main-content {
