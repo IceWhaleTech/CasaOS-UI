@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "preinstall": "npx only-allow yarn",
+    "postinstall": "patch-package",
     "dev": "turbo run serve",
     "dev:noCache": "turbo run serve --no-cache",
     "build": "turbo run build"
@@ -97,6 +98,8 @@
     "jwt-decode": "^3.1.2",
     "md5-es": "^1.8.2",
     "optimize-css-assets-webpack-plugin": "^6.0.1",
+    "patch-package": "^7.0.0",
+    "postinstall-postinstall": "^2.1.0",
     "rss-parser": "^3.12.0",
     "sass": "^1.51.0",
     "sass-loader": "10.1.1",

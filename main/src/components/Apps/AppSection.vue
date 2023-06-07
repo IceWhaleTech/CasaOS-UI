@@ -73,7 +73,6 @@ import last                   from 'lodash/last';
 import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
 import business_LinkApp       from "@/mixins/app/Business_LinkApp";
 import isEqual                from "lodash/isEqual";
-import {nanoid}               from 'nanoid';
 
 const SYNCTHING_STORE_ID = 74
 
@@ -89,31 +88,33 @@ const builtInApplications = [
 		status: "running",
 		app_type: "system"
 	},
-	{
-		id: "2",
-		name: "Files",
-		entry: VUE_FILE_APP_ENTRY,
-		title: {
-			en_us: "Files",
-		},
-		icon: require(`@/assets/img/app/files.svg`),
-		status: "running",
-		app_type: "system"
-	},
-	{
-		id: "3",
-		name: "Remote Access",
-		entry: VUE_REMOTE_ACCESS_APP_ENTRY,
-		title: {
-			en_us: "Remote Access",
-		},
-		icon: require(`@/assets/img/app/zerotier.png`),
-		status: "running",
-		app_type: "system"
-	},
+	// {
+	// 	id: "2",
+	// 	name: "Files",
+	// 	entry: VUE_FILE_APP_ENTRY,
+	// 	title: {
+	// 		en_us: "Files",
+	// 	},
+	// 	icon: require(`@/assets/img/app/files.svg`),
+	// 	status: "running",
+	// 	app_type: "system"
+	// },
+	// {
+	// 	id: "3",
+	// 	name: "Remote Access",
+	// 	entry: VUE_REMOTE_ACCESS_APP_ENTRY,
+	// 	title: {
+	// 		en_us: "Remote Access",
+	// 	},
+	// 	icon: require(`@/assets/img/app/zerotier.png`),
+	// 	status: "running",
+	// 	app_type: "system"
+	// },
 ]
 
 const orderConfig = "app_order"
+
+import { prefetchApps } from 'qiankun';
 
 export default {
 	mixins: [business_ShowNewAppTag, business_LinkApp],
@@ -132,6 +133,7 @@ export default {
 			appListErrorMessage: "",
 			skCount: 0,
 			ListRefreshTimer: null,
+			prefetched: false,
 		}
 	},
 	components: {
@@ -152,7 +154,6 @@ export default {
 				group: "description",
 				disabled: false,
 				ghostClass: "ghost",
-
 			};
 		},
 		showDragTip() {
@@ -215,12 +216,17 @@ export default {
 
 			try {
 				const orgAppList = await this.$openAPI.appGrid.getAppGrid().then(res => res.data.data || []);
-				const mircoAppJsonStr = await this.$api.sys.getEntry().then(res => res.data.data || []);
-				const mircoAppListRaw = JSON.parse(mircoAppJsonStr);
+				const mircoAppListStr = await this.$api.sys.getEntry().then(res => res.data.data || []);
+				const mircoAppListRaw = JSON.parse(mircoAppListStr);
+				const prefetchMircoAppList = [];
 				const mircoAppList = mircoAppListRaw.map(item => {
+					if (item.prefetch) {
+						prefetchMircoAppList.push({ name: item.title, entry: item.entry });
+					}
 					return {
-						id: `${nanoid()}-${item.title}`,
+						id: item.title,
 						name: item.title,
+						peerType: item.peerType,
 						entry: item.entry,
 						title: {
 							en_us: item.title,
@@ -231,7 +237,11 @@ export default {
 						app_type: "mircoApp"
 					}
 				});
-
+				if (!this.prefetched) {
+					prefetchApps(prefetchMircoAppList);
+					this.prefetched = true;
+				}
+				console.log(mircoAppList)
 				orgAppList.forEach((item) => {
 					item.hostname = item.hostname || this.$baseHostname;
 					// Container app does not have icon.

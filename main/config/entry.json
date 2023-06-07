@@ -1,7 +1,9 @@
 [
   {
     "title": "icewhale_files",
-    "entry": "/modules/icewhale_files",
+    "entry": "http://localhost:8081",
+    "peerType": "file",
+    "prefetch": true,
     "icon": "/modules/icewhale_files/icon.png",
     "description": "xxxx",
     "formality": {
