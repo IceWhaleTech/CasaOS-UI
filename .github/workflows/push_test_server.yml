@@ -2,6 +2,8 @@ name: push_test_server
 
 on:
     push:
+        branch:
+            - feature
     workflow_dispatch:
 
 jobs:
