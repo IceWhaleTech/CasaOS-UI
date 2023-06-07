@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --mode dev",
+    "postinstall": "patch-package",
     "build": "node message_bus.build.js && vue-cli-service build --dest ../build/sysroot/var/lib/casaos/www/ --mode production",
     "lint": "vue-cli-service lint",
     "build:messagebus": "node message_bus.build.js"
@@ -32,9 +33,13 @@
     "lottie-web-vue": "1.2.1",
     "marked": "^4.0.15",
     "nanoid": "^4.0.0",
+    "patch-package": "^7.0.0",
     "qs": "^6.10.3",
+    "sass": "^1.51.0",
+    "sass-loader": "10.1.1",
     "simple-uploader.js": "^0.6.0",
     "socket.io-client": "^2.4.0",
+    "style-resources-loader": "^1.5.0",
     "uuid-validate": "^0.0.3",
     "v-animate-css": "^0.0.6",
     "validator": "^13.7.0",
