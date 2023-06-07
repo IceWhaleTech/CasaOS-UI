@@ -66,8 +66,8 @@ module.exports = {
 				.use(require.resolve('optimize-css-assets-webpack-plugin'), [{cssProcessorOptions: {safe: true}}])
 		} else {
 			// Development only
-			config.plugin('webpack-bundle-analyzer')
-				.use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
+			// config.plugin('webpack-bundle-analyzer')
+			// 	.use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
 			config.devServer.proxy({
 				'/': {
 					target: `http://${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}`,
@@ -80,7 +80,7 @@ module.exports = {
 		open: true,
 		port: 8080,
 		inline: false,
-		// before: require('./mock/meta_data.js'),
+		before: require('./mock/meta_data.js'),
 		// contentBase: publicPath,
 	}
 }

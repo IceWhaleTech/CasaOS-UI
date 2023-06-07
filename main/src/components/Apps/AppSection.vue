@@ -87,29 +87,7 @@ const builtInApplications = [
 		icon: require(`@/assets/img/app/appstore.svg`),
 		status: "running",
 		app_type: "system"
-	},
-	// {
-	// 	id: "2",
-	// 	name: "Files",
-	// 	entry: VUE_FILE_APP_ENTRY,
-	// 	title: {
-	// 		en_us: "Files",
-	// 	},
-	// 	icon: require(`@/assets/img/app/files.svg`),
-	// 	status: "running",
-	// 	app_type: "system"
-	// },
-	// {
-	// 	id: "3",
-	// 	name: "Remote Access",
-	// 	entry: VUE_REMOTE_ACCESS_APP_ENTRY,
-	// 	title: {
-	// 		en_us: "Remote Access",
-	// 	},
-	// 	icon: require(`@/assets/img/app/zerotier.png`),
-	// 	status: "running",
-	// 	app_type: "system"
-	// },
+	}
 ]
 
 const orderConfig = "app_order"

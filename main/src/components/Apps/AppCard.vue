@@ -312,12 +312,12 @@ export default {
 				case "App Store":
 					this.openAppStore();
 					break;
-				// case "Files":
-				// 	this.showMircoApp(item);
-				// 	break;
-				// case "Remote Access":
-				// 	this.showMircoApp(item);
-				// 	break;
+				case "Files":
+					this.showMircoApp(item);
+					break;
+				case "Remote Access":
+					this.showMircoApp(item);
+					break;
 				default:
 					break;
 			}
