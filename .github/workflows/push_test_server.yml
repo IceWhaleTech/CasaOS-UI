@@ -50,6 +50,7 @@ jobs:
                 # run: echo ${{ steps.get_version.outputs.VERSION }}
 
             -   run: yarn preinstall
+            -   run: yarn postinstall
             -   run: yarn add global turbo -W
             -   run: yarn build
             -   run: |
