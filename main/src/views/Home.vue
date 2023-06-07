@@ -302,10 +302,12 @@ export default {
 
 		destroyMircoApp(name = '') {
 			this.hideMircoApp();
-			const { instance, modal } = this.mircoAppInstanceMap.get(name);
-			instance?.unmount();
-			modal?.close();
-			this.mircoAppInstanceMap.delete(name);
+			if (this.mircoAppInstanceMap.has(name)) {
+				const { instance, modal } = this.mircoAppInstanceMap.get(name);
+				instance?.unmount();	
+				modal?.close();
+				this.mircoAppInstanceMap.delete(name);
+			}
 		},
 
 		afterFileEnter() {
@@ -432,10 +434,9 @@ export default {
 		}
 	},
 	beforeDestroy() {
-		this.destroyMircoApp('Files');
-		this.destroyMircoApp('Remote Access');
 		window.removeEventListener("resize", this.onResize);
 		this.$EventBus.$off('casaUI:openStorageManager');
+		this.mircoAppInstanceMap.forEach((v, name) => { this.destroyMircoApp(name); });
 	},
 
 }
