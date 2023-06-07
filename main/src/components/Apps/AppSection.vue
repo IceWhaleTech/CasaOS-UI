@@ -194,8 +194,8 @@ export default {
 
 			try {
 				const orgAppList = await this.$openAPI.appGrid.getAppGrid().then(res => res.data.data || []);
-				const mircoAppListStr = await this.$api.sys.getEntry().then(res => res.data.data || []);
-				const mircoAppListRaw = JSON.parse(mircoAppListStr);
+				const mircoAppListRaw = await this.$api.sys.getEntry().then(res => res.data.data || []);
+				// const mircoAppListRaw = JSON.parse(mircoAppListStr);
 				const prefetchMircoAppList = [];
 				const mircoAppList = mircoAppListRaw.map(item => {
 					if (item.prefetch) {
