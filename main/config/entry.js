@@ -8,21 +8,21 @@
 
  */
 
-exports.entry = `[{
+exports.entry = [{
 	"name": "icewhale_files",
-	 title:{
-        en_us:"icewhale_files",
-    },
+	"title": {
+		"en_us": "icewhale_files",
+	},
 	"entry": "http://localhost:8081",
-  	"prefetch": true,
+	"prefetch": true,
 	"icon": "/modules/icewhale_files/icon.png",
 	"description": "xxxx",
 	"formality": {
 		"type": "modal",
 		"props": {
-			"fullscreen": false,
+			"fullscreen": true,
 			"hasModalCard": true,
 			"animation": "zoom-in"
 		}
 	}
-}]`
+}]
