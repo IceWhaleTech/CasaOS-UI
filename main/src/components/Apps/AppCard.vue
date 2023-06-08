@@ -11,7 +11,7 @@
 		 @mouseleave="hover = true" @mouseover="hover = true">
 
 		<!-- Action Button Start -->
-		<div v-if="item.app_type !== 'system' && !isContainerApp && !isUninstalling" class="action-btn">
+		<div v-if="item.app_type !== 'system' && !isMircoApp && !isContainerApp && !isUninstalling" class="action-btn">
 			<b-dropdown ref="dro" :mobile-modal="false" :triggers="['contextmenu', 'click']" animation="fade1"
 						append-to-body aria-role="list" class="app-card-drop" position="is-bottom-left"
 						@active-change="setDropState">
@@ -241,6 +241,9 @@ export default {
 		isLoading() {
 			let active = this.isUninstalling || this.isUpdating || this.isRestarting || this.isStarting || this.isSaving // || this.isStoping || this.isSaving
 			return active
+		},
+		isMircoApp() {
+			return this.item.app_type === "mircoApp"
 		},
 		isV1App() {
 			return this.item.app_type === "v1app"
