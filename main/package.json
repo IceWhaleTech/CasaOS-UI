@@ -44,7 +44,7 @@
     "v-animate-css": "^0.0.6",
     "validator": "^13.7.0",
     "vee-validate": "^3.4.12",
-    "vue": "^2.6.11",
+    "vue": "^2.7.1",
     "vue-apexcharts": "^1.6.2",
     "vue-awesome-swiper": "=4.1.1",
     "vue-breakpoint-mixin": "^1.3.2",
