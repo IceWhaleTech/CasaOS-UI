@@ -49,6 +49,20 @@ const needInit = async () => {
 	}
 }
 
+function checkUrlToken() {
+	const searchParams = new URLSearchParams(window.location.search);
+	const token = searchParams.get("token")
+	if (typeof token === 'string' && token !== '') {
+		store.commit('SET_NEED_INITIALIZATION', false);
+		localStorage.setItem("access_token", token);
+	}
+	searchParams.delete("token")
+	let newUrl = window.location.pathname
+	if (searchParams.toString()) {
+		newUrl += "?" + searchParams.toString()
+	}
+	window.history.replaceState(null, '', newUrl);
+}
 
 router.beforeEach(async (to, from, next) => {
 
@@ -57,11 +71,6 @@ router.beforeEach(async (to, from, next) => {
 	const requireAuth = to.matched.some(record => {
 		return record.meta.requireAuth
 	});
-	const checkoutToken = to.query.token;
-	if (checkoutToken) {
-		await localStorage.setItem("access_token", checkoutToken)
-		return next('/')
-	}
 
 	// 判断是否需要初始化
 	let needInitRes = await needInit();
@@ -107,9 +116,9 @@ router.beforeEach(async (to, from, next) => {
 			next("/login");
 		}
 	}
-
-
 })
 
+// NOTICE: check only once when router inited
+checkUrlToken();
 
-export default router
+export default router;

@@ -69,6 +69,8 @@ Vue.prototype.$wsProtocol = wsProtocol;
 Vue.prototype.$EventBus = new Vue();
 Vue.prototype.$messageBus = messageBus;
 
+// console.log(Router.prototype.currentRoute("http://localhost:8080/#/about?param1=value1&param2=value2"))
+
 new Vue({
 	router,
 	i18n,
