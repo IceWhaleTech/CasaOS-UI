@@ -50,12 +50,18 @@ const needInit = async () => {
 }
 
 function checkUrlToken() {
-	const res = router.resolve(window.location.search);
-	const token = res.resolved?.query?.token;
+	const searchParams = new URLSearchParams(window.location.search);
+	const token = searchParams.get("token")
 	if (typeof token === 'string' && token !== '') {
 		store.commit('SET_NEED_INITIALIZATION', false);
 		localStorage.setItem("access_token", token);
 	}
+	searchParams.delete("token")
+	let newUrl = window.location.pathname
+	if (searchParams.toString()) {
+		newUrl += "?" + searchParams.toString()
+	}
+	window.history.replaceState(null, '', newUrl);
 }
 
 router.beforeEach(async (to, from, next) => {
