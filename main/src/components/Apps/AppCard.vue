@@ -152,16 +152,17 @@
 </template>
 
 <script>
-import events                 from '@/events/events';
-import cTooltip               from '@/components/basicComponents/tooltip/tooltip.vue';
-import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
-import business_OpenThirdApp  from "@/mixins/app/Business_OpenThirdApp";
-import business_LinkApp       from "@/mixins/app/Business_LinkApp";
-import isNull                 from "lodash/isNull";
-import tipEditorModal         from "@/components/Apps/TipEditorModal.vue";
-import YAML                   from "yaml";
-import commonI18n             from "@/mixins/base/common-i18n";
-import FileSaver              from 'file-saver';
+import events                  from '@/events/events';
+import cTooltip                from '@/components/basicComponents/tooltip/tooltip.vue';
+import business_ShowNewAppTag  from "@/mixins/app/Business_ShowNewAppTag";
+import business_OpenThirdApp   from "@/mixins/app/Business_OpenThirdApp";
+import business_LinkApp        from "@/mixins/app/Business_LinkApp";
+import isNull                  from "lodash/isNull";
+import tipEditorModal          from "@/components/Apps/TipEditorModal.vue";
+import YAML                    from "yaml";
+import commonI18n              from "@/mixins/base/common-i18n";
+import FileSaver               from 'file-saver';
+import {MIRCO_APP_ACTION_ENUM} from "@/const";
 
 export default {
 	name: "app-card",
@@ -294,7 +295,12 @@ export default {
 			if (item.app_type === "system") {
 				this.openSystemApps(item)
 			} else if (item.app_type === 'mircoApp') {
-				this.showMircoApp(item);
+				// this.showMircoApp(item);
+				this.$messageBus('mircoapp_communicate', {
+					action: MIRCO_APP_ACTION_ENUM.OPEN,
+					peerType: item.peerType,
+					name: item.name
+				})
 			} else if (this.isLinkApp) {
 				window.open(item.hostname, '_blank');
 				this.removeIdFromSessionStorage(item.name);
@@ -312,12 +318,12 @@ export default {
 				case "App Store":
 					this.openAppStore();
 					break;
-				case "Files":
-					this.showMircoApp(item);
-					break;
-				case "Remote Access":
-					this.showMircoApp(item);
-					break;
+				// case "Files":
+				// 	this.showMircoApp(item);
+				// 	break;
+				// case "Remote Access":
+				// 	this.showMircoApp(item);
+				// 	break;
 				default:
 					break;
 			}

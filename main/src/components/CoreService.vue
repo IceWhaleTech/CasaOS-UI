@@ -156,7 +156,7 @@ export default {
 	mounted() {
 		this.WSHub = this.initMessageBus();
 	},
-	inject: ['homeShowFiles', 'barData'],
+	inject: ['barData'],
 	methods: {
 		createWS(domain) {
 			let socket
@@ -178,9 +178,9 @@ export default {
 			return socket
 		},
 		initUIEventBus() {
-			this.$EventBus.$on('casaUI:openInFiles', (path) => {
-				this.homeShowFiles(path);
-			});
+			// this.$EventBus.$on('casaUI:openInFiles', (path) => {
+			// 	this.homeShowFiles(path);
+			// });
 
 			this.$EventBus.$on('casaUI:openDiskLearnMore', () => {
 				this.$buefy.modal.open({
@@ -507,7 +507,8 @@ export default {
 					},
 					payload: {
 						action: MIRCO_APP_ACTION_ENUM.OPEN,
-						peerType: 'file'
+						peerType: 'file',
+						name: 'icewhale_files'
 					}
 				},
 				'Remote Access': {
@@ -525,7 +526,8 @@ export default {
 					},
 					payload: {
 						action: MIRCO_APP_ACTION_ENUM.OPEN,
-						peerType: 'file'
+						peerType: 'file',
+						name: 'Remote Access'
 					}
 				},
 				'File Manage': {
@@ -543,7 +545,8 @@ export default {
 					},
 					payload: {
 						action: MIRCO_APP_ACTION_ENUM.OPEN,
-						peerType: 'file'
+						peerType: 'file',
+						name: 'icewhale_files'
 					}
 				}
 			}

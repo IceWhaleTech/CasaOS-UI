@@ -9,16 +9,17 @@
  */
 
 exports.entry = `[{
+	"name": "icewhale_files",
 	"title": "icewhale_files",
 	"entry": "http://localhost:8081",
 	"peerType": "file",
-  "prefetch": true,
+  	"prefetch": true,
 	"icon": "/modules/icewhale_files/icon.png",
 	"description": "xxxx",
 	"formality": {
 		"type": "modal",
 		"props": {
-			"fullscreen": true,
+			"fullscreen": false,
 			"hasModalCard": true,
 			"animation": "zoom-in"
 		}

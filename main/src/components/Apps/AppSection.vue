@@ -60,19 +60,21 @@
 </template>
 
 <script>
-import AppCard                from './AppCard.vue'
-import AppCardSkeleton        from './AppCardSkeleton.vue';
-import AppPanel               from './AppPanel.vue'
-import ExternalLinkPanel      from "@/components/Apps/ExternalLinkPanel";
-import AppSectionTitleTip     from './AppSectionTitleTip.vue'
-import draggable              from 'vuedraggable'
-import xor                    from 'lodash/xor'
-import concat                 from 'lodash/concat'
-import events                 from '@/events/events';
-import last                   from 'lodash/last';
-import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
-import business_LinkApp       from "@/mixins/app/Business_LinkApp";
-import isEqual                from "lodash/isEqual";
+import AppCard                      from './AppCard.vue'
+import AppCardSkeleton              from './AppCardSkeleton.vue';
+import AppPanel                     from './AppPanel.vue'
+import ExternalLinkPanel            from "@/components/Apps/ExternalLinkPanel";
+import AppSectionTitleTip           from './AppSectionTitleTip.vue'
+import draggable                    from 'vuedraggable'
+import xor                          from 'lodash/xor'
+import concat                       from 'lodash/concat'
+import events                       from '@/events/events';
+import last                         from 'lodash/last';
+import business_ShowNewAppTag       from "@/mixins/app/Business_ShowNewAppTag";
+import business_LinkApp             from "@/mixins/app/Business_LinkApp";
+import isEqual                      from "lodash/isEqual";
+import {loadMicroApp, prefetchApps} from 'qiankun';
+import {MIRCO_APP_ACTION_ENUM}      from "@/const";
 
 const SYNCTHING_STORE_ID = 74
 
@@ -92,8 +94,6 @@ const builtInApplications = [
 
 const orderConfig = "app_order"
 
-import { prefetchApps } from 'qiankun';
-
 export default {
 	mixins: [business_ShowNewAppTag, business_LinkApp],
 	data() {
@@ -111,7 +111,9 @@ export default {
 			appListErrorMessage: "",
 			skCount: 0,
 			ListRefreshTimer: null,
-			prefetched: false,
+			// prefetched: false,
+			mircoAppInstanceMap: new Map(),
+			mircoAppList: []
 		}
 	},
 	components: {
@@ -123,6 +125,8 @@ export default {
 	provide() {
 		return {
 			openAppStore: this.showInstall,
+			homeShowFiles: this.showMircoApp,
+			showMircoApp: this.showMircoApp,
 		};
 	},
 	computed: {
@@ -141,7 +145,8 @@ export default {
 		// 	return this.$store.state.existingAppsSwitch
 		// }
 	},
-	created() {
+	async created() {
+		await this.inintMircoApp();
 		this.getList();
 		this.draggable = this.isMobile() ? "" : ".handle";
 		this.$EventBus.$on(events.OPEN_APP_STORE_AND_GOTO_SYNCTHING, () => {
@@ -161,6 +166,9 @@ export default {
 		window.removeEventListener('resize', this.getSkCount);
 
 		clearInterval(this.ListRefreshTimer);
+		this.mircoAppInstanceMap.forEach((v, name) => {
+			this.destroyMircoApp(name);
+		});
 	},
 	mounted() {
 		window.addEventListener('resize', this.getSkCount);
@@ -194,32 +202,6 @@ export default {
 
 			try {
 				const orgAppList = await this.$openAPI.appGrid.getAppGrid().then(res => res.data.data || []);
-				const mircoAppListRaw = await this.$api.sys.getEntry().then(res => res.data.data || []);
-				// const mircoAppListRaw = JSON.parse(mircoAppListStr);
-				const prefetchMircoAppList = [];
-				const mircoAppList = mircoAppListRaw.map(item => {
-					if (item.prefetch) {
-						prefetchMircoAppList.push({ name: item.title, entry: item.entry });
-					}
-					return {
-						id: item.title,
-						name: item.title,
-						peerType: item.peerType,
-						entry: item.entry,
-						title: {
-							en_us: item.title,
-						},
-						icon: item.icon,
-						formality: item.formality,
-						status: "running",
-						app_type: "mircoApp"
-					}
-				});
-				if (!this.prefetched) {
-					prefetchApps(prefetchMircoAppList);
-					this.prefetched = true;
-				}
-				console.log(mircoAppList)
 				orgAppList.forEach((item) => {
 					item.hostname = item.hostname || this.$baseHostname;
 					// Container app does not have icon.
@@ -233,7 +215,7 @@ export default {
 					}
 				})
 				// all app list
-				let casaAppList = concat(builtInApplications, orgAppList, mircoAppList, listLinkApp)
+				let casaAppList = concat(builtInApplications, orgAppList, this.mircoAppList, listLinkApp)
 				// get app sort info.
 				let lateSortList = await this.$api.users.getCustomStorage(orderConfig).then(res => res.data.data.data || []);
 
@@ -273,6 +255,109 @@ export default {
 						type: 'is-danger'
 					})
 				}
+			}
+		},
+
+		async inintMircoApp() {
+			const mircoAppListRaw = await this.$api.sys.getEntry().then(res => res.data.data || []);
+			const prefetchMircoAppList = [];
+			this.mircoAppList = mircoAppListRaw.map(item => {
+				if (item.prefetch) {
+					prefetchMircoAppList.push({name: item.title, entry: item.entry});
+				}
+				return {
+					id: item.title,
+					name: item.title,
+					peerType: item.peerType,
+					entry: item.entry,
+					title: {
+						en_us: item.title,
+					},
+					icon: item.icon,
+					formality: item.formality,
+					status: "running",
+					app_type: "mircoApp",
+					// TODO Resolve metadata structure conflicts and ensure uniformity and non-redundancy in the application's data models.
+					formlity: app.formlity
+				}
+			});
+			prefetchApps(prefetchMircoAppList);
+		},
+
+		createMircoApp(app) {
+			const customVNode = this.$createElement('div', {
+				class: "full-screen-container",
+				attrs: {
+					id: app.name
+				}
+			});
+			const customModal = this.$buefy.modal.open({
+				content: [customVNode],
+				fullScreen: (/true/i).test(app.formality?.props?.fullscreen) || true,
+				hasModalCard: (/true/i).test(app.formality?.props?.hasModalCard) || true,
+				destroyOnHide: false,
+				animation: app.formality?.props?.animation || "zoom-in",
+				canCancel: ["escape", "x"],
+				onCancel: () => {
+					this.hideMircoApp(app.name);
+				}
+			});
+
+			this.$nextTick(() => {
+				try {
+					const customAppInstance = loadMicroApp({
+						name: app.name,
+						entry: app.entry,
+						container: `#${app.name}`,
+						props: {
+							store: { // sync necessary store status to child mirco app
+								device_id: this.$store.state.device_id,
+								access_id: this.$store.state.access_id,
+								access_token: this.$store.state.access_token,
+								refresh_token: this.$store.state.refresh_token,
+								casaos_lang: this.$store.state.casaos_lang,
+							}
+						}
+					}, {
+						sandbox: {
+							experimentalStyleIsolation: true
+						}
+					});
+					this.mircoAppInstanceMap.set(app.id, {
+						instance: customAppInstance,
+						modal: customModal
+					});
+				} catch (e) {
+					this.$buefy.toast.open({
+						message: `Error occured in loading mirco app ${app.name}, please check mirco app`,
+						duration: 5000,
+						type: "is-danger"
+					});
+				}
+			});
+		},
+
+		hideMircoApp(peerType = '') { // NOTICE: hide all mirco app for now
+			this.mircoAppInstanceMap.forEach(({modal}) => modal?.close());
+		},
+
+		showMircoApp(appName) {
+			const {instance = null, modal = null} = this.mircoAppInstanceMap.get(appName) || {};
+			if (!instance) {
+				let app = this.mircoAppList.find(app => app.name === appName)
+				this.createMircoApp(app);
+			} else {
+				modal?.open();
+			}
+		},
+
+		destroyMircoApp(name = '') {
+			this.hideMircoApp();
+			if (this.mircoAppInstanceMap.has(name)) {
+				const {instance, modal} = this.mircoAppInstanceMap.get(name);
+				instance?.unmount();
+				modal?.close();
+				this.mircoAppInstanceMap.delete(name);
 			}
 		},
 
@@ -547,7 +632,24 @@ export default {
 				})
 			}
 		},
-
+		"casaos-ui:app:mircoapp_communicate"(res) {
+			const data = res.Properties;
+			if (data.access_id === this.$store.state.access_id) {
+				switch (data.action) {
+					case MIRCO_APP_ACTION_ENUM.OPEN:
+						this.showMircoApp(data.name);
+						break;
+					case MIRCO_APP_ACTION_ENUM.CLOSE:
+						this.hideMircoApp(data.peerType);
+						break;
+					// case MIRCO_APP_ACTION_ENUM.LOGIN:
+					// 	this.$router.push("/login");
+					// 	break;
+					default:
+						break;
+				}
+			}
+		}
 	}
 }
 </script>

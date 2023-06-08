@@ -93,7 +93,6 @@ import UpdateCompleteModal     from '@/components/settings/UpdateCompleteModal.v
 import {mixin}                 from '@/mixins/mixin';
 import events                  from '@/events/events';
 import {nanoid}                from 'nanoid';
-import {loadMicroApp}          from "qiankun";
 import {MIRCO_APP_ACTION_ENUM} from "@/const";
 import {computed}              from "vue";
 
@@ -120,13 +119,10 @@ export default {
 				classes: 'fadeInDown',
 				duration: 800
 			},
-			mircoAppInstanceMap: new Map(),
 		}
 	},
 	provide() {
 		return {
-			homeShowFiles: this.showMircoApp,
-			showMircoApp: this.showMircoApp,
 			barData: computed(() => this.barData)
 		};
 	},
@@ -215,99 +211,6 @@ export default {
 		 */
 		showSideBar() {
 			console.log("showSidebar");
-		},
-
-		/**
-		 * @description: Show MircoApp
-		 * @param {*}
-		 * @return {*} void
-		 */
-		showMircoApp(app) {
-			const { instance = null, modal = null } = this.mircoAppInstanceMap.get(app.name) || {};
-			if (!instance) {
-				this.createMircoApp(app);
-			} else {
-				modal?.open();
-				this.$messageBus('mircoapp_communicate', {
-					action: MIRCO_APP_ACTION_ENUM.OPEN,
-					peerType: app.peerType
-				});
-			}
-		},
-
-		hideMircoApp(peerType = '') { // NOTICE: hide all mirco app for now
-			this.mircoAppInstanceMap.forEach(({ modal }) => modal?.close());
-		},
-
-		createMircoApp(app) {
-			const customVNode = this.$createElement('div', {
-				class: "full-screen-container",
-				attrs: {
-					id: app.name
-				}
-			});
-			const customModal = this.$buefy.modal.open({
-				content: [customVNode],
-				fullScreen: true,
-				hasModalCard: true,
-				destroyOnHide: false,
-				animation: "zoom-in",
-				canCancel: ["escape", "x"],
-				onCancel: () => {
-					this.hideMircoApp(app.name);
-				}
-			});
-
-			this.$nextTick(() => {
-				try {
-					const customAppInstance = loadMicroApp({
-						name: app.name,
-						entry: app.entry,
-						container: `#${app.name}`,
-						props: {
-							store: { // sync necessary store status to child mirco app
-								device_id: this.$store.state.device_id,
-								access_id: this.$store.state.access_id,
-								access_token: this.$store.state.access_token,
-								refresh_token: this.$store.state.refresh_token,
-								casaos_lang: this.$store.state.casaos_lang,
-							}
-						}
-					}, {
-						sandbox: {
-							experimentalStyleIsolation: true
-						}
-					});
-					this.mircoAppInstanceMap.set(app.id, {
-						instance: customAppInstance,
-						modal: customModal
-					});
-				} catch (e) {
-					this.$buefy.toast.open({
-						message: `Error occured in loading mirco app ${app.name}, please check mirco app`,
-						duration: 5000,
-						type: "is-danger"
-					});
-				}
-			});
-		},
-
-		// async inintMircoApp() {
-		// 	const mircoAppListRaw = await this.$api.sys.getEntry().then(res => res.data.data || []);
-
-		// 	mircoAppListRaw.forEach(app => {
-		// 		this.createMircoApp(app)
-		// 	})
-		// },
-
-		destroyMircoApp(name = '') {
-			this.hideMircoApp();
-			if (this.mircoAppInstanceMap.has(name)) {
-				const { instance, modal } = this.mircoAppInstanceMap.get(name);
-				instance?.unmount();	
-				modal?.close();
-				this.mircoAppInstanceMap.delete(name);
-			}
 		},
 
 		afterFileEnter() {
@@ -421,9 +324,9 @@ export default {
 					case MIRCO_APP_ACTION_ENUM.MOUNT:
 						this.showStorageManagerPanelModal();
 						break;
-					case MIRCO_APP_ACTION_ENUM.CLOSE:
-						this.hideMircoApp(data.peerType);
-						break;
+					// case MIRCO_APP_ACTION_ENUM.CLOSE:
+					// 	this.hideMircoApp(data.peerType);
+					// 	break;
 					case MIRCO_APP_ACTION_ENUM.LOGIN:
 						this.$router.push("/login");
 						break;
@@ -436,7 +339,6 @@ export default {
 	beforeDestroy() {
 		window.removeEventListener("resize", this.onResize);
 		this.$EventBus.$off('casaUI:openStorageManager');
-		this.mircoAppInstanceMap.forEach((v, name) => { this.destroyMircoApp(name); });
 	},
 
 }

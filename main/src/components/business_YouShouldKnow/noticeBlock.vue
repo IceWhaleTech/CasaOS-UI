@@ -129,7 +129,7 @@ export default {
 	data() {
 		return {}
 	},
-	inject: ['homeShowFiles'],
+	// inject: ['homeShowFiles'],
 	created() {
 
 	},
