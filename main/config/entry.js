@@ -10,9 +10,10 @@
 
 exports.entry = `[{
 	"name": "icewhale_files",
-	"title": "icewhale_files",
+	 title:{
+        en_us:"icewhale_files",
+    },
 	"entry": "http://localhost:8081",
-	"peerType": "file",
   	"prefetch": true,
 	"icon": "/modules/icewhale_files/icon.png",
 	"description": "xxxx",

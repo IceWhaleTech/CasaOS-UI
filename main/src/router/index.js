@@ -24,6 +24,9 @@ const router = new VueRouter({
 })
 
 const originalPush = VueRouter.prototype.push
+
+let externalMircoApp = '';
+
 VueRouter.prototype.push = function push(location) {
 	return originalPush.call(this, location).catch((err) => err)
 }
@@ -52,15 +55,18 @@ const needInit = async () => {
 function checkUrlToken() {
 	const searchParams = new URLSearchParams(window.location.search);
 	const token = searchParams.get("token")
+	externalMircoApp = searchParams.get("appName") || ''
 	if (typeof token === 'string' && token !== '') {
 		store.commit('SET_NEED_INITIALIZATION', false);
 		localStorage.setItem("access_token", token);
 	}
 	searchParams.delete("token")
+	searchParams.delete("appName")
 	let newUrl = window.location.pathname
 	if (searchParams.toString()) {
 		newUrl += "?" + searchParams.toString()
 	}
+	// NOTICE: try to avoid page reload
 	window.history.replaceState(null, '', newUrl);
 }
 
@@ -121,4 +127,5 @@ router.beforeEach(async (to, from, next) => {
 // NOTICE: check only once when router inited
 checkUrlToken();
 
+export {externalMircoApp};
 export default router;

@@ -301,7 +301,6 @@ export default {
 				// this.showMircoApp(item);
 				this.$messageBus('mircoapp_communicate', {
 					action: MIRCO_APP_ACTION_ENUM.OPEN,
-					peerType: item.peerType,
 					name: item.name
 				})
 			} else if (this.isLinkApp) {

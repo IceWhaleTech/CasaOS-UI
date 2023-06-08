@@ -75,6 +75,7 @@ import business_LinkApp             from "@/mixins/app/Business_LinkApp";
 import isEqual                      from "lodash/isEqual";
 import {loadMicroApp, prefetchApps} from 'qiankun';
 import {MIRCO_APP_ACTION_ENUM}      from "@/const";
+import {externalMircoApp}           from "@/router";
 
 const SYNCTHING_STORE_ID = 74
 
@@ -266,22 +267,25 @@ export default {
 					prefetchMircoAppList.push({name: item.title, entry: item.entry});
 				}
 				return {
-					id: item.title,
-					name: item.title,
-					peerType: item.peerType,
+					name: item.name,
 					entry: item.entry,
-					title: {
-						en_us: item.title,
-					},
+					title: item.title,
 					icon: item.icon,
-					formality: item.formality,
 					status: "running",
 					app_type: "mircoApp",
 					// TODO Resolve metadata structure conflicts and ensure uniformity and non-redundancy in the application's data models.
-					formlity: app.formlity
+					formality: item.formality,
+					prefetch: item.prefetch
 				}
 			});
 			prefetchApps(prefetchMircoAppList);
+			if (externalMircoApp) {
+				this.$messageBus('mircoapp_communicate', {
+					action: MIRCO_APP_ACTION_ENUM.OPEN,
+					name: externalMircoApp
+				})
+				externalMircoApp = null
+			}
 		},
 
 		createMircoApp(app) {
@@ -345,7 +349,7 @@ export default {
 			const {instance = null, modal = null} = this.mircoAppInstanceMap.get(appName) || {};
 			if (!instance) {
 				let app = this.mircoAppList.find(app => app.name === appName)
-				this.createMircoApp(app);
+				app && this.createMircoApp(app);
 			} else {
 				modal?.open();
 			}
