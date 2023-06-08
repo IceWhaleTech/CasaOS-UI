@@ -47,10 +47,12 @@ module.exports = {
 			.use(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
 		config.plugin('define')
 			.use(require('webpack/lib/DefinePlugin'), [{
-				VUE_FILE_APP_ENTRY: JSON.stringify(process.env.VUE_FILE_APP_ENTRY),
-				VUE_REMOTE_ACCESS_APP_ENTRY: JSON.stringify(process.env.VUE_REMOTE_ACCESS_APP_ENTRY),
+				'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+				'process.env.VUE_APP_DEV_IP': JSON.stringify(process.env.VUE_APP_DEV_IP),
+				'process.env.VUE_APP_DEV_PORT': JSON.stringify(process.env.VUE_APP_DEV_PORT),
+				'process.env.VUE_APP_BASE_URL': JSON.stringify(process.env.VUE_APP_BASE_URL),
 				MAIN_APP_VERSION_ID: JSON.stringify(commitHash),
-				BUILT_TIME: JSON.stringify(Date.now())
+				BUILT_TIME: JSON.stringify(Date()),
 			}]);
 		// Production only
 		if (process.env.NODE_ENV === "prod") {

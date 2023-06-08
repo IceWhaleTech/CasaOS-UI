@@ -59,17 +59,10 @@ Vue.prototype.$baseURL = baseURL;
 Vue.prototype.$protocol = protocol;
 Vue.prototype.$wsProtocol = wsProtocol;
 
-// Vue.prototype.$microApp = (microApp) => {
-// 	registerMicroApps(microApp);
-// 	console.log('microApp', microApp)
-// 	start();
-// }
-
 // Create an EventBus
 Vue.prototype.$EventBus = new Vue();
 Vue.prototype.$messageBus = messageBus;
 
-// console.log(Router.prototype.currentRoute("http://localhost:8080/#/about?param1=value1&param2=value2"))
 
 new Vue({
 	router,
