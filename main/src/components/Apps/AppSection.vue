@@ -644,7 +644,7 @@ export default {
 						this.showMircoApp(data.name);
 						break;
 					case MIRCO_APP_ACTION_ENUM.CLOSE:
-						this.hideMircoApp(data.peerType);
+						this.hideMircoApp(data.name);
 						break;
 					// case MIRCO_APP_ACTION_ENUM.LOGIN:
 					// 	this.$router.push("/login");
