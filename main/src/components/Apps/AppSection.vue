@@ -284,7 +284,6 @@ export default {
 					action: MIRCO_APP_ACTION_ENUM.OPEN,
 					name: externalMircoApp
 				})
-				externalMircoApp = null
 			}
 		},
 
