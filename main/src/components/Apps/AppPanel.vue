@@ -248,12 +248,22 @@
 							</b-dropdown>
 						</div>-->
 						<!-- Sort End -->
+
+						<div class="is-flex-grow-1 is-flex is-justify-content-flex-end">
+							<b-input type="text" 
+									@input="debounceSearchInput" 
+									@keyup.enter.native="counterPatchGetStoreList++"
+									:placeholder="$t('Search an app...')" 
+									ref="search_app" 
+									class="app-search"></b-input>
+						</div>
+
 					</div>
 
 					<!-- List condition End -->
 					<!-- App list Start-->
 					<div class="columns f-list is-multiline is-mobile pb-3 mb-5">
-						<div v-for="(item,index) in pageList" :key="index+item.title+item.id"
+						<div v-for="(item,index) in filteredPageList" :key="index+item.title+item.id"
 							 class="column app-item is-one-quarter">
 							<div class="is-flex  is-align-items-center">
 								<div class="mr-4 is-clickable" @click="showAppDetial(item.id)">
@@ -492,6 +502,7 @@ import "@/plugins/vee-validate";
 import uniq                                     from 'lodash/uniq';
 import isNull                                   from 'lodash/isNull'
 import orderBy                                  from 'lodash/orderBy';
+import debounce									from 'lodash/debounce'
 import FileSaver                                from 'file-saver';
 import {Swiper, SwiperSlide}                    from 'vue-awesome-swiper'
 import AppsInstallationLocation                 from "@/components/Apps/AppsInstallationLocation";
@@ -743,6 +754,12 @@ export default {
 		this.arch = localStorage.getItem('arch')
 	},
 
+	mounted() {
+		this.$nextTick().then(() => {
+			this.$refs.search_app.$el.children[0].focus();
+		});
+	},
+
 	computed: {
 		showImportButton() {
 			return this.currentSlide == 1 && this.state == 'install'
@@ -785,6 +802,17 @@ export default {
 				return 'armv7'
 			}
 			return this.arch
+		},
+		filteredPageList() {
+			return this.pageList.filter(app => {
+					const keywords = (app.title + app.tagline).toLocaleLowerCase();
+					for (const term of this.searchKey.split(' ')) {
+						if (keywords.indexOf(term.toLocaleLowerCase()) !== -1) {
+							return true;
+						}
+					}
+					return false;
+				})
 		}
 
 	},
@@ -1459,6 +1487,9 @@ export default {
 		updateDockerComposeServiceName(val) {
 			this.dockerComposeServiceName = val
 		},
+		debounceSearchInput: debounce(function(e) {
+			this.searchKey = e;
+		}, 250)
 	},
 
 	destroyed() {
@@ -1516,6 +1547,11 @@ export default {
 			overflow-x: clip;
 		}
 	}
+}
+
+.app-search {
+	max-width: 320px;
+	width: 100%;
 }
 
 .app-item {
