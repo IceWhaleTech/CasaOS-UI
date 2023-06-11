@@ -804,6 +804,7 @@ export default {
 			return this.arch
 		},
 		filteredPageList() {
+			if (Object.keys(this.pageList).length === 0) return [];
 			return this.pageList.filter(app => {
 					const keywords = (app.title + app.tagline).toLocaleLowerCase();
 					for (const term of this.searchKey.split(' ')) {
