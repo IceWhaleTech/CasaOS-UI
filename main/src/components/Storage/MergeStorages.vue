@@ -382,8 +382,8 @@ export default {
 			// submit
 			this.$messageBus('storagemanager_mergestorage');
 			// this.notEmpty = await this.$api.folder.getFolderSize('/DATA').then(res => {
-			this.notEmpty = await this.$openAPI.folder.getFiles('/DATA').then(res => {
-				return res.data.size
+			this.notEmpty = await this.$openAPI.iceFolder.getFolderInfo('/DATA', true).then(res => {
+				return res.data?.[0].size > 4 * 1024;
 			}).catch(e => {
 				this.$buefy.toast.open({
 					message: e.response.data.data || e.response.data.message,

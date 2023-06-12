@@ -62,7 +62,8 @@ export default {
 	methods: {
 		async parseFeed() {
 			let parser = new Parser();
-			let params = await this.$api.file.getContent('/var/lib/casaos/baseinfo.conf').then(res => {
+			// let params = await this.$api.file.getContent('/var/lib/casaos/baseinfo.conf').then(res => {
+			let params = await this.$openAPI.iceFile.getFileDownload('/var/lib/casaos/baseinfo.conf').then(res => {
 				return JSON.parse(res.data.data)
 			})
 			this.$store.commit('SET_DEVICE_ID', params.i)

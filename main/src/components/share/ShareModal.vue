@@ -97,7 +97,8 @@ export default {
 		 */
 		getUpdateLogs() {
 			this.updateTimer = setInterval(() => {
-				this.$api.file.getContent(`/var/log/casaos/upgrade.log`).then(res => {
+				// this.$api.file.getContent(`/var/log/casaos/upgrade.log`).then(res => {
+				this.$openAPI.iceFile.getFileDownload(`/var/log/casaos/upgrade.log`).then(res => {
 
 					this.updateLogs = res.data.data;
 					if (this.updateLogs.includes(`CasaOS upgrade successfully`)) {

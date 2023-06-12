@@ -16,15 +16,15 @@
 				<h3 class="title is-3">{{ $t('Update') }}</h3>
 			</div>
 			<div>
-				<button type="button" class="delete" @click="$emit('close')" v-if="!isUpdating"/>
+				<button v-if="!isUpdating" class="delete" type="button" @click="$emit('close')"/>
 			</div>
 		</header>
 		<!-- Modal-Card Header End -->
 		<!-- Modal-Card Body Start -->
 		<section class="modal-card-body ">
 			<div class="node-card fixed-height">
-				<div class="update-info-container  is-size-14px" v-html="markdownToHtml" v-if="!isUpdating"></div>
-				<div class="update-info-container  is-size-14px" v-html="updateMarkdownHtml" v-else></div>
+				<div v-if="!isUpdating" class="update-info-container  is-size-14px" v-html="markdownToHtml"></div>
+				<div v-else class="update-info-container  is-size-14px" v-html="updateMarkdownHtml"></div>
 			</div>
 		</section>
 		<!-- Modal-Card Body End -->
@@ -32,7 +32,7 @@
 		<footer class="modal-card-foot is-flex is-align-items-center">
 			<div class="is-flex-grow-1"></div>
 			<div>
-				<b-button :label="$t('Upgrade Now')" type="is-primary" rounded expaned :loading="isUpdating"
+				<b-button :label="$t('Upgrade Now')" :loading="isUpdating" expaned rounded type="is-primary"
 						  @click="updateSystem"/>
 			</div>
 		</footer>
@@ -86,7 +86,8 @@ export default {
 		 */
 		getUpdateLogs() {
 			this.updateTimer = setInterval(() => {
-				this.$api.file.getContent(`/var/log/casaos/upgrade.log`).then(res => {
+				// this.$api.file.getContent(`/var/log/casaos/upgrade.log`).then(res => {
+				this.$openAPI.iceFile.getFileDownload(`/var/log/casaos/upgrade.log`).then(res => {
 
 					this.updateLogs = res.data.data;
 					if (this.updateLogs.includes(`CasaOS upgrade successfully`)) {
