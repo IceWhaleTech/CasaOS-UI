@@ -1580,6 +1580,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@icewhale/icewhale-files-openapi@npm:latest":
+  version: 0.0.1-dev2
+  resolution: "@icewhale/icewhale-files-openapi@npm:0.0.1-dev2"
+  dependencies:
+    axios: ^1.1.0
+  checksum: 9b64429ffe874b4ae1307cd55e698539c4370f075e291cecd674e58ed8991d9b0b8a4be3d34764a60b525041ceec2555f6fe4b2f43d5fcb96311bd9f676b7109
+  languageName: node
+  linkType: hard
+
 "@intervolga/optimize-cssnano-plugin@npm:^1.0.5":
   version: 1.0.6
   resolution: "@intervolga/optimize-cssnano-plugin@npm:1.0.6"
@@ -4048,6 +4057,7 @@ __metadata:
     "@fontsource/roboto": ^4.5.7
     "@icewhale/casaos-appmanagement-openapi": latest
     "@icewhale/casaos-openapi": latest
+    "@icewhale/icewhale-files-openapi": latest
     "@kangc/v-md-editor": ^1.7.11
     "@mdi/font": ^6.6.96
     "@vue/cli-plugin-babel": 4.5.13

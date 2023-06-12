@@ -18,7 +18,10 @@ import {
 }                 from "@icewhale/casaos-appmanagement-openapi";
 import {
 	ZerotierMethodsApi
-}                 from "@icewhale/casaos-openapi"
+}                 from "@icewhale/casaos-openapi";
+import {
+	FileApiFactory
+}                 from "@icewhale/icewhale-files-openapi";
 
 const axiosBaseURL = (process.env.NODE_ENV === "dev") ? `${document.location.protocol}//${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}` : ``
 
@@ -31,6 +34,6 @@ appManagement.compose = new ComposeMethodsApiFactory(config, '/v2/app_management
 appManagement.appStore = new AppStoreMethodsApi(config, '/v2/app_management', instance);
 const appGrid = new InternalMethodsApiFactory(config, '/v2/app_management', instance);
 const zerotier = new ZerotierMethodsApi(config, '/v2/casaos/', instance);
-
+const folder = new FileApiFactory(config, '/v2', instance);
 // apiClient.axios = instance;
-export default {appManagement, appGrid, zerotier};
+export default {appManagement, appGrid, zerotier, folder};
