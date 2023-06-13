@@ -7,14 +7,6 @@
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
  */
 
-/*
- * @Author: JerryK
- * @Date: 2022-01-20 12:01:07
- * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-09-20 22:46:06
- * @Description:
- * @FilePath: /CasaOS-UI/src/mixins/mixin.js
- */
 import qs    from 'qs'
 import has   from 'lodash/has'
 import union from 'lodash/union'

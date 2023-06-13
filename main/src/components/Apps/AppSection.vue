@@ -147,7 +147,7 @@ export default {
 		// }
 	},
 	async created() {
-		await this.inintMircoApp();
+		await this.initMircoApp();
 		this.getList();
 		this.draggable = this.isMobile() ? "" : ".handle";
 		this.$EventBus.$on(events.OPEN_APP_STORE_AND_GOTO_SYNCTHING, () => {
@@ -259,7 +259,7 @@ export default {
 			}
 		},
 
-		async inintMircoApp() {
+		async initMircoApp() {
 			const mircoAppListRaw = await this.$api.sys.getEntry().then(res => res.data.data || []);
 			const prefetchMircoAppList = [];
 			this.mircoAppList = mircoAppListRaw.map(item => {
@@ -296,8 +296,8 @@ export default {
 			});
 			const customModal = this.$buefy.modal.open({
 				content: [customVNode],
-				fullScreen: (/true/i).test(app.formality?.props?.fullscreen) || true,
-				hasModalCard: (/true/i).test(app.formality?.props?.hasModalCard) || true,
+				fullScreen: app.formality?.props?.fullscreen || true,
+				hasModalCard: app.formality?.props?.hasModalCard || true,
 				destroyOnHide: false,
 				animation: app.formality?.props?.animation || "zoom-in",
 				canCancel: ["escape", "x"],
@@ -326,7 +326,7 @@ export default {
 							experimentalStyleIsolation: true
 						}
 					});
-					this.mircoAppInstanceMap.set(app.id, {
+					this.mircoAppInstanceMap.set(app.name, {
 						instance: customAppInstance,
 						modal: customModal
 					});
@@ -341,6 +341,11 @@ export default {
 		},
 
 		hideMircoApp(peerType = '') { // NOTICE: hide all mirco app for now
+			if (peerType) {
+				let {modal} = this.mircoAppInstanceMap.get(peerType) || {};
+				modal?.close();
+				return
+			}
 			this.mircoAppInstanceMap.forEach(({modal}) => modal?.close());
 		},
 
