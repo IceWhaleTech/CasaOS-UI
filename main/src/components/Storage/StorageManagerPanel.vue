@@ -187,7 +187,6 @@ import LottieAnimation                          from "lottie-web-vue";
 import smoothReflow                             from 'vue-smooth-reflow'
 import delay                                    from 'lodash/delay';
 import max                                      from 'lodash/max';
-import orderBy                                  from 'lodash/orderBy';
 import {ValidationObserver, ValidationProvider} from "vee-validate";
 import {mixin}                                  from '@/mixins/mixin';
 import DriveItem                                from './DriveItem.vue'
@@ -351,9 +350,25 @@ export default {
 						}
 					})
 				})
-				// sort
-				let storageArraySort = orderBy(storageArray, ['diskName', 'label'], ['desc', 'asc']);
-				let mergeConbinationsSort = orderBy(mergeConbinations, ['diskName', 'label'], ['desc', 'asc']);
+				// sort Business: The System comes first.
+				let storageArraySort = storageArray.sort((a, b) => {
+					if (a.diskName === 'System') {
+						return -1
+					} else if (b.diskName === 'System') {
+						return 1
+					} else {
+						return 0
+					}
+				})
+				let mergeConbinationsSort = mergeConbinations.sort((a, b) => {
+					if (a.diskName === 'System') {
+						return -1
+					} else if (b.diskName === 'System') {
+						return 1
+					} else {
+						return 0
+					}
+				});
 				// mergeConbinations.reverse();
 				testMergeMiss.forEach(item => {
 					mergeConbinationsSort.push({
