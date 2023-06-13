@@ -9,7 +9,10 @@
     "lint": "vue-cli-service lint",
     "build:messagebus": "node message_bus.build.js"
   },
-  "packageManager": "yarn@3.5.0",
+  "installConfig": {
+    "hoistingLimits": "workspaces"
+  },
+  "packageManager": "yarn@3.5.1",
   "dependencies": {
     "@fontsource/roboto": "^4.5.7",
     "@icewhale/casaos-appmanagement-openapi": "latest",
@@ -20,7 +23,7 @@
     "apexcharts": "^3.33.2",
     "axios": "^0.26.0",
     "browser-info": "^1.3.0",
-    "buefy": "^0.9.19",
+    "buefy": "^0.9.23",
     "bulma": "0.9.4",
     "clipboard-copy": "^4.0.1",
     "dateformat": "^5.0.2",

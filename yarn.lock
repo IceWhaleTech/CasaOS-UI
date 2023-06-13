@@ -3798,7 +3798,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"buefy@npm:^0.9.19":
+"buefy@npm:^0.9.23":
   version: 0.9.23
   resolution: "buefy@npm:0.9.23"
   dependencies:
@@ -4064,7 +4064,7 @@ __metadata:
     apexcharts: ^3.33.2
     axios: ^0.26.0
     browser-info: ^1.3.0
-    buefy: ^0.9.19
+    buefy: ^0.9.23
     bulma: 0.9.4
     clipboard-copy: ^4.0.1
     dateformat: ^5.0.2
@@ -4080,6 +4080,7 @@ __metadata:
     nanoid: ^4.0.0
     optimize-css-assets-webpack-plugin: ^6.0.1
     patch-package: ^7.0.0
+    postinstall-postinstall: ^2.1.0
     qiankun: ^2.10.5
     qs: ^6.10.3
     rss-parser: ^3.12.0
@@ -11608,6 +11609,13 @@ __metadata:
     picocolors: ^1.0.0
     source-map-js: ^1.0.2
   checksum: 814e2126dacfea313588eda09cc99a9b4c26ec55c059188aa7a916d20d26d483483106dc5ff9e560731b59f45c5bb91b945dfadc670aed875cc90ddbbf4e787d
+  languageName: node
+  linkType: hard
+
+"postinstall-postinstall@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "postinstall-postinstall@npm:2.1.0"
+  checksum: e1d34252cf8d2c5641c7d2db7426ec96e3d7a975f01c174c68f09ef5b8327bc8d5a9aa2001a45e693db2cdbf69577094d3fe6597b564ad2d2202b65fba76134b
   languageName: node
   linkType: hard
 
