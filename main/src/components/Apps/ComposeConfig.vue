@@ -840,7 +840,7 @@ export default {
 				let service = services[key]
 				service.ports.map(function (item) {
 					// TODO 需要健壮一下
-					const TEMPORARY_PORT_INFORMATION = item.published?.split(":");
+					const TEMPORARY_PORT_INFORMATION = item.published?.toString()?.split(":");
 					if (TEMPORARY_PORT_INFORMATION.length > 1) {
 						published = TEMPORARY_PORT_INFORMATION[1];
 					} else {
