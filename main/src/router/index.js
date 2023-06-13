@@ -62,9 +62,9 @@ function checkUrlToken() {
 	}
 	searchParams.delete("token")
 	searchParams.delete("appName")
-	let newUrl = window.location.pathname
+	let newUrl = window.location.pathname + window.location.hash
 	if (searchParams.toString()) {
-		newUrl += "?" + searchParams.toString()
+		newUrl += "?" + searchParams.toString() + "/" + window.location.hash
 	}
 	// NOTICE: try to avoid page reload
 	window.history.replaceState(null, '', newUrl);
