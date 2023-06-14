@@ -49,8 +49,6 @@ jobs:
                 run: echo ${{ env.VERSION }}
                 # run: echo ${{ steps.get_version.outputs.VERSION }}
 
-            -   run: yarn set version 3.5.1
-            -   run: yarn plugin import workspace-tools
             -   run: yarn
             -   run: yarn build
             -   run: |
