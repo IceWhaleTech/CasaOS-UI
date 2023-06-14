@@ -1,19 +1,19 @@
 diff --git a/node_modules/buefy/src/components/modal/Modal.vue b/node_modules/buefy/src/components/modal/Modal.vue
-index 61ee674..9185170 100644
+index 48d14d6..942d9f1 100644
 --- a/node_modules/buefy/src/components/modal/Modal.vue
 +++ b/node_modules/buefy/src/components/modal/Modal.vue
 @@ -73,6 +73,14 @@ export default {
              type: [String, Number],
              default: 960
          },
-+        appendToBody: {
-+            type: Boolean,
-+            default: true,
-+        },
-+        appendTo: {
-+            type: HTMLElement,
-+            default: null
-+        },
++		appendToBody: {
++			type: Boolean,
++			default: true
++		},
++		appendTo: {
++			type: HTMLElement,
++			default: null
++		},
          hasModalCard: Boolean,
          animation: {
              type: String,
@@ -21,12 +21,12 @@ index 61ee674..9185170 100644
          close() {
              this.$emit('close')
              this.$emit('update:active', false)
-+            this.isActive = false
++			this.isActive = false
  
              // Timeout for the animation complete before destroying
 -            if (this.programmatic) {
 -                this.isActive = false
-+            if (this.programmatic && this.destroyOnHide) {
++			if (this.programmatic && this.destroyOnHide) {
                  setTimeout(() => {
                      this.$destroy()
                      removeElement(this.$el)
@@ -34,13 +34,13 @@ index 61ee674..9185170 100644
              }
          },
  
-+        open() {
-+            if (!this.destroyOnHide) {
-+                this.$emit('open')
-+                this.$emit('update:active', true)    
-+                this.isActive = true
-+            }
-+        },
++		open() {
++			if (!this.destroyOnHide) {
++				this.$emit('open')
++				this.$emit('update:active', true)
++				this.isActive = true
++			}
++		},
 +
          /**
          * Keypress event that is bound to the document.
@@ -50,15 +50,15 @@ index 61ee674..9185170 100644
          // Insert the Modal component in body tag
          // only if it's programmatic
 -        this.programmatic && document.body.appendChild(this.$el)
-+        if (this.programmatic) {
-+            if (this.appendTo && this.appendTo instanceof HTMLElement) {
-+                this.appendTo.appendChild(this.$el)
-+            } else if (this.appendToBody) {
-+                document.body.appendChild(this.$el)
-+            } else {
-+                this.$parent.$el.appendChild(this.$el)
-+            }
-+        }
++		if (this.programmatic) {
++			if (this.appendTo && this.appendTo instanceof HTMLElement) {
++				this.appendTo.appendChild(this.$el)
++			} else if (this.appendToBody) {
++				document.body.appendChild(this.$el)
++			} else {
++				this.$parent.$el.appendChild(this.$el)
++			}
++		}
 +        // this.programmatic && document.body.appendChild(this.$el)
      },
      mounted() {

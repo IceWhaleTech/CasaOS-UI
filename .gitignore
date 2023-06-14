@@ -32,4 +32,7 @@ unused-files.json
 # turbo
 .turbo
 
+# yarn 3.5.1
+.pnp.*
+
 /packages/icewhale*

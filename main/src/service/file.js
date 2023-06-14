@@ -1,11 +1,13 @@
 /*
- * @Author: JerryK
- * @Date: 2021-09-18 21:32:13
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 12:24:01
- * @Description: File API
- * @FilePath: \CasaOS-UI\src\service\file.js
+ * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ * @LastEditTime: 2023/6/12 下午5:52
+ * @FilePath: /CasaOS-UI/main/src/service/file.js
+ * @Description:
+ *
+ * Copyright (c) 2023 by IceWhale, All Rights Reserved.
+
  */
+
 import {api} from "./service.js";
 
 const PREFIX = "/file"
