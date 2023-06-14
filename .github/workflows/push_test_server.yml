@@ -3,7 +3,7 @@ name: push_test_server
 on:
     push:
         branch:
-            - feature
+            - feature*
     workflow_dispatch:
 
 jobs:
@@ -50,8 +50,8 @@ jobs:
                 # run: echo ${{ steps.get_version.outputs.VERSION }}
 
             -   run: yarn preinstall
-            -   run: yarn install --check-files
-            -   run: yarn add global turbo -W
+            -   run: yarn install
+            -   run: yarn postinstall
             -   run: yarn build
             -   run: |
                     tar -zcvf linux-all-casaos-v99.99.99.tar.gz build
