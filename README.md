@@ -1,8 +1,12 @@
 # How to develop this project.
 
 ```shell
-# install tool
-yarn global add turbo
+# Node.js <16.17 or <18.6 
+corepack prepare yarn@3.5.1 --activate
+yarn set version 3.5.1
+
+# Node.js ^16.17 or >=18.6
+corepack prepare yarn@stable --activate
 
 # install dependencies
 yarn install

@@ -26,7 +26,7 @@ pnpm-debug.log*
 unused-files.json
 
 # package manager
-.yarnrc.yml
+# .yarnrc.yml
 .yarn/
 
 # turbo
