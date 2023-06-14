@@ -75,6 +75,7 @@
   "Storage Status": "Lemez állapota",
   "Network Status": "Hálózat állapota",
   "Search...": "Keresés...",
+  "Search an app...": "Alkalmazás keresése...",
   "Sync your data": "Adatok szinkronizálása",
   "Use Syncthing to sync your files between multiple devices.": "A Syncthing alkalmazás lehetővé teszi a több eszköz közötti fájl-szinkronizálást",
   "Install": "Telepítés",

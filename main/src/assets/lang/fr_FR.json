@@ -75,6 +75,7 @@
   "Storage Status": "Statut du stockage",
   "Network Status": "État du réseau",
   "Search...": "Rechercher…",
+  "Search an app...": "Rechercher une application...",
   "Sync your data": "Synchronisez vos données",
   "Use Syncthing to sync your files between multiple devices.": "Utilisez Syncthing pour synchroniser vos fichiers entre plusieurs appareils",
   "Install": "Installer",

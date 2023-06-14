@@ -75,6 +75,7 @@
   "Storage Status": "Состояние хранилища",
   "Network Status": "Статус сети",
   "Search...": "Поиск...",
+  "Search an app...": "Поиск приложения...",
   "Sync your data": "Синхронизируйте ваши данные",
   "Use Syncthing to sync your files between multiple devices.": "Используйте Syncthing для синхронизации файлов между разными устройствами",
   "Install": "Установить",

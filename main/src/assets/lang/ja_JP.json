@@ -77,6 +77,7 @@
   "Network Status": "Network Status",
   "available of": "{avl} available of {total}",
   "Search...": "Search...",
+  "Search an app...": "アプリを検索する...",
   "Sync your data": "Sync your data",
   "Use Syncthing to sync your files between multiple devices.": "Use Syncthing to sync your files between multiple devices.",
   "Install": "Install",
