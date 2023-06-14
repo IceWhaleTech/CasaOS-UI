@@ -84,6 +84,15 @@ import 'codemirror/addon/hint/show-hint.js'
 import 'codemirror/addon/hint/show-hint.css'
 import 'codemirror/addon/hint/javascript-hint.js'
 
+// lint
+import 'codemirror/addon/lint/css-lint.js'
+import 'codemirror/addon/lint/html-lint.js'
+import 'codemirror/addon/lint/javascript-lint.js'
+import 'codemirror/addon/lint/json-lint.js'
+import 'codemirror/addon/lint/yaml-lint.js'
+import 'codemirror/addon/lint/lint.js'
+import 'codemirror/addon/lint/lint.css'
+
 // highlightSelectionMatches
 import 'codemirror/addon/scroll/annotatescrollbar.js'
 import 'codemirror/addon/scroll/simplescrollbars'
@@ -131,6 +140,17 @@ import 'codemirror/mode/ruby/ruby'
 import 'codemirror/mode/rust/rust'
 import 'codemirror/mode/shell/shell'
 
+// Lint libs
+import { CSSLint } from "csslint";
+import { JSHINT } from "jshint";
+import jsonlint from "@/plugins/jsonlint";
+import jsyaml from "js-yaml";
+
+window.CSSLint = CSSLint;
+window.JSHINT = JSHINT;
+window.jsonlint = jsonlint;
+window.jsyaml = jsyaml;
+
 export default {
 	mixins: [mixin],
 	components: {
@@ -157,8 +177,9 @@ export default {
 				lineNumbers: true,
 				styleSelectedText: false,
 				line: true,
+				lint: true,
 				foldGutter: true,
-				gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+				gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-lint-markers"],
 				highlightSelectionMatches: {showToken: /\w/, annotateScrollbar: true},
 				mode: "text/javascript",
 				// hint.js options
@@ -220,7 +241,9 @@ export default {
 
 			this.$api.file.download(this.item.path).then(res => {
 				if (this.getFileExt(this.item) == 'json') {
-					this.code = JSON.stringify(res.data, null, 2)
+					this.code = typeof res.data === 'string'
+            ? res.data
+            : JSON.stringify(res.data, null, 2)
 				} else {
 					this.code = String(res.data)
 				}
@@ -230,7 +253,9 @@ export default {
 			})
 		},
 		saveFile(leave = false) {
-			let content = this.codemirror.getValue()
+			const content = this.getFileExt(this.item) == 'json'
+						? JSON.stringify(this.codemirror.getValue())
+						: this.codemirror.getValue()
 			this.$api.file.update(this.item.path, content).then(res => {
 				if (res.data.success == 200) {
 					// this.readFile();

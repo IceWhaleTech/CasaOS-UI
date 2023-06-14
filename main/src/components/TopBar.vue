@@ -462,16 +462,16 @@ export default {
 			},
 			deep: true
 		},
-		"barData.existing_apps_switch": {
-			handler(val, oldValue) {
-				if (val === oldValue) {
-					return
-				}
-				this.$messageBus('dashboardsetting_showexistingapp', val.toString());
-				this.$store.commit('SET_EXISTING_APPS_SWITCH', val);
-			},
-			deep: true
-		},
+		// "barData.existing_apps_switch": {
+		// 	handler(val, oldValue) {
+		// 		if (val === oldValue) {
+		// 			return
+		// 		}
+		// 		this.$messageBus('dashboardsetting_showexistingapp', val.toString());
+		// 		this.$store.commit('SET_EXISTING_APPS_SWITCH', val);
+		// 	},
+		// 	deep: true
+		// },
 		'barData.recommend_switch': {
 			handler(val) {
 				this.$store.commit('SET_RECOMMEND_SWITCH', val);
