@@ -49,8 +49,8 @@ jobs:
                 run: echo ${{ env.VERSION }}
                 # run: echo ${{ steps.get_version.outputs.VERSION }}
 
+            -   run: yarn set version 3.5.1
             -   run: yarn
-            -   run: yarn postinstall
             -   run: yarn build
             -   run: |
                     tar -zcvf linux-all-casaos-v99.99.99.tar.gz build
