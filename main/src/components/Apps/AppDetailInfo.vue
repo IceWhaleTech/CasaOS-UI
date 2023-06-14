@@ -253,7 +253,7 @@ export default {
 				hasModalCard: true,
 				destroyOnHide: true,
 				animation: "zoom-in",
-				canCancel: ["escape", "x"]
+				canCancel: ["escape", "outside", "x"]
 			});
 		}
 	}
