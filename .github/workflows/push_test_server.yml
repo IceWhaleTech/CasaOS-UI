@@ -50,8 +50,6 @@ jobs:
                 # run: echo ${{ steps.get_version.outputs.VERSION }}
 
             -   run: corepack prepare yarn@3.5.1 --activate
-            -   run: yarn set version 3.5.1
-            -   run: yarn plugin import workspace-tools
             -   run: yarn
             -   run: yarn build
             -   run: |
