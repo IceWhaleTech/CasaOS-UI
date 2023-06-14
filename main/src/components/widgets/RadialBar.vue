@@ -12,23 +12,33 @@
 	<div :style="cssVariables">
 		<div class="container">
 			<svg class="circle-container" viewBox="2 -3 28 38" xmlns="http://www.w3.org/2000/svg">
-				<linearGradient id="gradient" x1="0.17" y1="0.13" x2="0.83" y2="0.87">
-					<stop :style="{stopColor:stop2}" offset="0%"/>
-					<stop :style="{stopColor:stop1}" offset="100%"/>
+				<linearGradient id="gradient" x1="0.17" x2="0.83" y1="0.13" y2="0.87">
+					<stop :style="{ stopColor: stop2 }" offset="0%"/>
+					<stop :style="{ stopColor: stop1 }" offset="100%"/>
 				</linearGradient>
-				<circle class="circle-container__background" r="16" cx="16" cy="16"
-						shape-rendering="geometricPrecision"></circle>
-				<circle class="circle-container__progress" r="16" cx="16" cy="16"
-						:style="{'stroke-dashoffset': inPercent}" shape-rendering="geometricPrecision">
-				</circle>
+				<circle
+					class="circle-container__background"
+					cx="16"
+					cy="16"
+					r="16"
+					shape-rendering="geometricPrecision"
+				></circle>
+				<circle
+					:style="{ 'stroke-dashoffset': inPercent }"
+					class="circle-container__progress"
+					cx="16"
+					cy="16"
+					r="16"
+					shape-rendering="geometricPrecision"
+				></circle>
 			</svg>
 			<div class="overlay">
-				<div class="per">{{percent}}</div>
-				<div class="label">{{label}}</div>
+				<div class="per">{{ percent }}</div>
+				<div class="label">{{ label }}</div>
 			</div>
 		</div>
-		<div class="bar-content">
-			{{extendContent}}
+		<div :class="{ 'is-clickable': extendContentClickable }" class="bar-content" @click="extendClick">
+			{{ extendContent }}
 		</div>
 	</div>
 </template>
@@ -38,59 +48,68 @@ export default {
 	props: {
 		dotDiameter: {
 			type: String,
-			default: "92px"
+			default: "92px",
 		},
 		circleBorderWidth: {
 			type: String,
-			default: "5px"
+			default: "5px",
 		},
 		circleBackgroundColor: {
 			type: String,
-			default: "rgba(255, 255, 255, 0.4)"
+			default: "rgba(255, 255, 255, 0.4)",
 		},
 		stopColorStart: {
 			type: String,
-			default: "#33FFAA"
+			default: "#33FFAA",
 		},
 		stopColorEnd: {
 			type: String,
-			default: "#FFD580"
+			default: "#FFD580",
 		},
 		percent: {
 			type: Number,
-			default: 0
+			default: 0,
 		},
 		label: {
 			type: String,
-			default: ""
+			default: "",
 		},
 		extendContent: {
 			type: String,
-			default: ""
-		}
+			default: "",
+		},
+		extendContentClickable: {
+			type: Boolean,
+			default: false,
+		},
 	},
 
 	data() {
 		return {
 			stop1: this.stopColorStart,
 			stop2: this.stopColorEnd,
-
-		}
+		};
 	},
 	computed: {
 		inPercent() {
-			return (100 - this.percent) * .75
+			return (100 - this.percent) * 0.75;
 		},
 		cssVariables() {
 			return {
 				"--dot-diameter": this.dotDiameter,
 				"--circle-border-width": this.circleBorderWidth,
 				"--circle-background-color": this.circleBackgroundColor,
-			}
-		}
+			};
+		},
 	},
-
-}
+	methods: {
+		extendClick() {
+			if (this.extendContentClickable) {
+				this.$emit("extendContentClick");
+			}
+		},
+	},
+};
 </script>
 
 <style lang="scss" scoped>

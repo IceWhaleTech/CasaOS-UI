@@ -12,8 +12,8 @@
 	<div class="widget has-text-white clock">
 		<div class="blur-background"></div>
 		<div class="widget-content">
-			<div class="time mb-2">{{timeText}}</div>
-			<div class="date">{{dateText}}</div>
+			<div class="time mb-2 is-clickable" @click="changeFormat">{{ timeText }}</div>
+			<div class="date">{{ dateText }}</div>
 		</div>
 	</div>
 </template>
@@ -32,26 +32,25 @@ export default {
 			timer: 0,
 			timeText: "",
 			dateText: "",
-			lang: this.$i18n.locale.replace("_", "-")
-		}
+			lang: this.$i18n.locale.replace("_", "-"),
+			timeFormat: localStorage.getItem("timeFormat") ? localStorage.getItem("timeFormat") : "HH:MM",
+		};
 	},
 	mounted() {
 		if (this.timer) {
-			clearInterval(this.timer)
+			clearInterval(this.timer);
 		}
-		this.updateClock()
+		this.updateClock();
 		this.timer = setInterval(() => {
-			this.updateClock()
-		}, 1000)
-
-
+			this.updateClock();
+		}, 1000);
 	},
 	watch: {
-		'$i18n.locale': {
+		"$i18n.locale": {
 			handler(data) {
-				this.lang = data.replace("_", "-")
+				this.lang = data.replace("_", "-");
 			},
-			deep: true
+			deep: true,
 		},
 	},
 
@@ -59,17 +58,21 @@ export default {
 		updateClock() {
 			var today = new Date();
 
-			this.timeText = dateFormat(today, "HH:MM");
+			this.timeText = dateFormat(today, this.timeFormat);
 			this.dateText = today.toLocaleDateString(this.lang, {
 				weekday: "long",
 				year: "numeric",
 				month: "long",
-				day: "numeric"
-			})
-		}
+				day: "numeric",
+			});
+		},
+		changeFormat() {
+			this.timeFormat = this.timeFormat == "HH:MM" ? "h:MM TT" : "HH:MM";
+			localStorage.setItem("timeFormat", this.timeFormat);
+			this.updateClock();
+		},
 	},
-
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -83,7 +86,6 @@ export default {
 		font-weight: 600;
 		line-height: 1.125em;
 		color: $grey-100;
-
 	}
 
 	.date {
