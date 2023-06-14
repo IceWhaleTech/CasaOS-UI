@@ -115,9 +115,14 @@
 						class="text has-text-emphasis-03">{{ $t('Install the software.') }}</span>
 				</div>
 				<div class="is-flex columns is-variable is-2 mt-1 mb-3">
-					<b-image :src="require('@/assets/img/learn/guidance-MacOS-AppStore.svg')" class="column"></b-image>
-					<b-image :src="require('@/assets/img/learn/guidance-Windows-AppStore.svg')"
-							 class="column"></b-image>
+					<b-image
+						:src="require('@/assets/img/learn/guidance-MacOS-AppStore.svg')"
+						class="column" @click="MACPATH">
+					</b-image>
+					<b-image
+						:src="require('@/assets/img/learn/guidance-Windows-AppStore.svg')"
+						class="column" @click="WINPATH">
+					</b-image>
 				</div>
 				<div class="is-flex is-align-items-center mb-5">
 					<div class="marker" style="">•</div>
@@ -270,6 +275,8 @@ export default {
 			V_ID: '!@#$%^&*()123450',
 			isAgreeRSS: true,
 			isCreating: false,
+			WINPATH: '',
+			MACPATH: '',
 		}
 	},
 	components: {
@@ -278,7 +285,9 @@ export default {
 	},
 	inject: ['isZIMA', 'TITLE'],
 	async created() {
-		this.path = '@/assets/img/logo/zima-0.0.1-white.svg'
+		this.path = '@/assets/img/logo/zima-0.0.1-white.svg';
+		this.WINPATH = "https://zimaos.oss-accelerate.aliyuncs.com/client/releases/latest/squirrel.windows/x64/Zima-latest%20Setup.exe"
+		this.MACPATH = `https://zimaos.oss-accelerate.aliyuncs.com/client/releases/latest/Zima-latest-${this.getSystemArchitecture()}.dmg`
 	},
 	mounted() {
 		console.log('welcome', this.isZIMA, this.TITLE)
@@ -379,7 +388,15 @@ export default {
 				duration: 5000,
 				queue: false
 			})
-		}
+		},
+		getSystemArchitecture() {
+			const userAgent = window.navigator.userAgent.toUpperCase();
+			if (userAgent.includes("INTER")) {
+				return "x64";
+			} else {
+				return "arm64";
+			}
+		},
 	}
 }
 </script>
