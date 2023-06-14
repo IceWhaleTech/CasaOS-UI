@@ -49,7 +49,6 @@ jobs:
                 run: echo ${{ env.VERSION }}
                 # run: echo ${{ steps.get_version.outputs.VERSION }}
 
-            -   run: corepack prepare yarn@3.5.1 --activate
             -   run: yarn
             -   run: yarn build
             -   run: |
