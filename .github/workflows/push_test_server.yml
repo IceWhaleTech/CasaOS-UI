@@ -49,8 +49,7 @@ jobs:
                 run: echo ${{ env.VERSION }}
                 # run: echo ${{ steps.get_version.outputs.VERSION }}
 
-            -   run: yarn preinstall
-            -   run: yarn install
+            -   run: yarn
             -   run: yarn postinstall
             -   run: yarn build
             -   run: |
