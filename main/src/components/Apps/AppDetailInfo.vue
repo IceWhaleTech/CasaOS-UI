@@ -104,6 +104,7 @@
 						<div class="gap">
 							<b-image :src="item"
 									 :src-fallback="require('@/assets/img/app/swiper_placeholder.png')"
+									 @click.native="zoomScreenshot(item)"
 									 class="border-8" placeholder ratio="16by9"></b-image>
 						</div>
 					</swiper-slide>
@@ -237,11 +238,56 @@ export default {
 			let tempO = this.cateMenu.find(item => item.name == name) || {font: 'apps'}
 			return tempO.font;
 		},
+		zoomScreenshot(img) {
+			const customVNode = this.$createElement('div', { 
+									class: 'modal-content' 
+								}, [
+									this.$createElement('img', { attrs: { src: img } })
+								]);
+								
 
+			this.$buefy.modal.open({
+				content: [customVNode],
+				customClass: 'zoom-screenshot',
+				fullScreen: true,
+				hasModalCard: true,
+				destroyOnHide: true,
+				animation: "zoom-in",
+				canCancel: ["escape", "x"]
+			});
+		}
 	}
 }
 </script>
 
-<style scoped>
+<style lang="scss">
+	.modal.zoom-screenshot {
 
+		.animation-content {
+			display: flex;
+			align-items: center;
+		}
+
+		.modal-content {
+			width: auto;
+			overflow: unset;
+
+			img {
+				max-width: 90vw;
+				max-height: 90vh;
+				border: 3px solid #ccc;
+				border-radius: 1rem;
+				box-shadow: 0 0 40px 0 rgba(255,255,255,0.5);
+			}
+		}
+
+		.modal-close {
+			position: absolute;
+
+			&::before, &::after {
+				background: #fff;
+			}
+		}
+
+	}
 </style>
