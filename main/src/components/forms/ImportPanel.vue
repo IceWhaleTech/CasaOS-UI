@@ -40,7 +40,7 @@
 					</b-upload>
 
 				</b-tab-item>
-				<b-tab-item v-if="false" label="Docker CLI">
+				<b-tab-item label="Docker CLI">
 					<b-field :message="errors" :type="{ 'is-danger': !!errors}">
 						<b-input v-model="dockerCliCommands" class="import-area" type="textarea"></b-input>
 					</b-field>
@@ -82,7 +82,8 @@
 
 <script>
 
-import YAML from "yaml"
+import YAML        from "yaml"
+import composerize from "composerize";
 
 export default {
 	data() {
@@ -118,14 +119,9 @@ export default {
 		 */
 		emitSubmit() {
 			if (this.activeTab == 1) {
-				if (this.parseCli()) {
-					this.errors = ""
-					// this.$emit('update', this.updateData)
-					this.$emit('close')
-				} else {
-					this.errors = this.$t('Please fill correct command line')
-					this.parseError = true;
-				}
+				this.dockerComposeCommands = composerize(this.dockerCliCommands);
+				this.$emit('update', this.dockerComposeCommands)
+				this.$emit('close')
 			} else if (this.activeTab == 0) {
 
 				// if (this.checkYAML()) {
@@ -193,116 +189,6 @@ export default {
 			})
 
 			return finalHostPath
-		},
-
-
-		/**
-		 * @description: Parse Import Docker Cli Commands
-		 * @return {Boolean}
-		 */
-		parseCli() {
-			// const formattedInput = this.dockerCliCommands.replace(/<[^>]*>/g, 'Custom_data').replace(/[\r\n]/g, "").replace(/\\/g, "\\ ").replace("-d", "").replace(/[\\]/g, '').trim();
-			// const parsedInput = parser(formattedInput)
-			// const {_: command} = parsedInput;
-			// if (command[0] !== 'docker' || (command[1] !== 'run' && command[1] !== 'create')) {
-			// 	return false
-			// } else {
-			//
-			// 	//Image
-			// 	this.updateData.image = [...command].pop()
-			// 	//Label
-			// 	if (parsedInput.name != undefined) {
-			// 		this.updateData.label = upperFirst(parsedInput.name)
-			// 	} else {
-			// 		const imageArray = this.updateData.image.split("/")
-			// 		const lastNode = [...imageArray].pop()
-			// 		this.updateData.label = upperFirst(lastNode.split(":")[0])
-			// 	}
-			//
-			// 	//Envs
-			// 	let env = concat(this.makeArray(parsedInput.e), this.makeArray(parsedInput.env))
-			// 	this.updateData.envs = env.map(item => {
-			// 		let ii = item.split("=");
-			// 		return {
-			// 			hostname: ii[1].replace(/"/g, ""),
-			// 			container: ii[0]
-			// 		}
-			// 	})
-			// 	//Ports
-			// 	let ports = concat(this.makeArray(parsedInput.p), this.makeArray(parsedInput.publish))
-			// 	this.updateData.ports = ports.map(item => {
-			// 		let pArray = item.split(":")
-			// 		let endArray = pArray[1].split("/")
-			// 		let protocol = (endArray[1]) ? endArray[1] : 'tcp';
-			// 		return {
-			// 			container: endArray[0],
-			// 			hostname: pArray[0],
-			// 			protocol: protocol
-			// 		}
-			// 	})
-			// 	//Volume
-			// 	let volumes = concat(this.makeArray(parsedInput.v), this.makeArray(parsedInput.volume))
-			// 	this.updateData.volumes = volumes.map(item => {
-			// 		let ii = item.split(":");
-			// 		if (ii.length > 1) {
-			// 			// console.log(this.volumeAutoCheck(ii[1],ii[0], _.lowerFirst(this.updateData.label)));
-			// 			return {
-			// 				container: ii[1],
-			// 				hostname: this.volumeAutoCheck(ii[1], ii[0], lowerFirst(this.updateData.label))
-			// 			}
-			// 		} else {
-			// 			return {
-			// 				container: ii[0],
-			// 				hostname: this.volumeAutoCheck(ii[0], "", lowerFirst(this.updateData.label))
-			// 			}
-			// 		}
-			//
-			// 	})
-			// 	// Devices
-			// 	this.updateData.devices = this.makeArray(parsedInput.device).map(item => {
-			// 		let ii = item.split(":");
-			// 		return {
-			// 			container: ii[1],
-			// 			hostname: ii[0]
-			// 		}
-			// 	})
-			//
-			// 	//Network
-			// 	let pnetwork = (parsedInput.network != undefined) ? parsedInput.network : parsedInput.net
-			// 	if (pnetwork != undefined) {
-			// 		let network = (pnetwork == 'physical') ? 'macvlan' : pnetwork;
-			// 		let seletNetworks = this.netWorks.filter(item => {
-			// 			if (item.driver == network) {
-			// 				return true
-			// 			}
-			// 		})
-			// 		if (seletNetworks.length > 0) {
-			// 			this.updateData.network_model = seletNetworks[0].networks[0].name;
-			// 		}
-			// 	}
-			//
-			// 	//privileged
-			// 	this.updateData.privileged = parsedInput.privileged != undefined
-			// 	//cap-add
-			// 	this.updateData.cap_add = this.makeArray(parsedInput.capAdd)
-			//
-			// 	//hostname
-			// 	if (parsedInput.hostname != undefined) {
-			// 		this.updateData.host_name = parsedInput.hostname
-			// 	} else {
-			// 		if (parsedInput.h != undefined) {
-			// 			this.updateData.host_name = parsedInput.h
-			// 		} else {
-			// 			this.updateData.host_name = ""
-			// 		}
-			// 	}
-			//
-			// 	//Restart
-			// 	if (parsedInput.restart != undefined) {
-			// 		this.updateData.restart = parsedInput.restart
-			// 	}
-			// 	return true
-			// }
 		},
 
 		/**
