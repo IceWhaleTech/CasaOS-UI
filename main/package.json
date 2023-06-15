@@ -25,6 +25,7 @@
     "browser-info": "^1.3.0",
     "buefy": "^0.9.19",
     "clipboard-copy": "^4.0.1",
+    "composerize": "^1.2.0",
     "dateformat": "^5.0.2",
     "dayjs": "^1.10.8",
     "file-saver": "^2.0.5",
