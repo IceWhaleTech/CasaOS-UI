@@ -18,20 +18,19 @@
 				@input="key=> $emit('updateDockerComposeServiceName', key)">
 			<b-tab-item v-for="(service, key) in configData.services" :key="key" :label="key" :value="key">
 				<ValidationObserver :ref="key + 'valida'">
-					<!--					<ValidationProvider v-slot="{ errors, valid }" name="composeAppName" rules="required">
-											<b-field
-												:label="$t('App Name') + ' *'"
-												:message="$t(errors)"
-												:type="{ 'is-danger': errors[0], 'is-success': valid }"
-											>
-												<b-input
-													v-model="configData.name"
-													:placeholder="$t('e.g.,hello-world:latest')"
-													:readonly="state == 'update'"
-													@input="changeIcon"
-												></b-input>
-											</b-field>
-										</ValidationProvider>-->
+					<ValidationProvider v-slot="{ errors, valid }" name="composeAppName" rules="required">
+						<b-field
+							:label="$t('App Name') + ' *'"
+							:message="$t(errors)"
+							:type="{ 'is-danger': errors[0], 'is-success': valid }"
+						>
+							<b-input
+								:placeholder="$t('e.g.,Your App Name')"
+								:value="ice_i18n(configData['x-casaos'].title)"
+								@blur="E=>configData['x-casaos'].title.custom = E.target._value"
+							></b-input>
+						</b-field>
+					</ValidationProvider>
 
 					<ValidationProvider v-slot="{ errors, valid }" name="Image" rules="required">
 						<b-field
@@ -233,6 +232,7 @@ import isNil                                    from "lodash/isNil";
 import {isNumber, isString}                     from "lodash/lang";
 import cloneDeep                                from "lodash/cloneDeep";
 import merge                                    from "lodash/merge";
+import {ice_i18n}                               from "@/mixins/base/common-i18n";
 
 const data = [
 	"AUDIT_CONTROL",
@@ -313,6 +313,9 @@ export default {
 					author: "self",
 					category: "self",
 					icon: "",
+					title: {
+						"custom": ""
+					},
 				},
 			},
 			// error info
@@ -403,6 +406,7 @@ export default {
 	},
 
 	methods: {
+		ice_i18n,
 		// ****** migration !!! start !!!
 		/**
 		 * @description: Get remote synchronization information
@@ -792,6 +796,7 @@ export default {
 
 				ConfigData = merge(yaml, ConfigData)
 			}
+
 			// check
 			// let DockerComposeCommands = YAML.stringify(ConfigData)
 			// this.$api.apps.checkPort().then(res => {
