@@ -15,6 +15,7 @@
 		<section class="modal-card-body " style="overflow:hidden">
 			<h3 class="title is-3">CasaOS</h3>
 			<div class="close-container">
+				<span class="mdi mdi-tray-arrow-down is-size-20px mr-4 cursor-pointer" @click="download"></span>
 				<button class="delete" type="button" @click="$emit('close')"/>
 			</div>
 			<div class="is-flex-grow-1">
@@ -78,7 +79,10 @@ export default {
 				this.$refs.logs.active(true)
 				this.$messageBus('terminallogs_logs')
 			}
-		}
+		},
+		download() {
+			window.open(`${this.$protocol}${this.$baseUrl}/v2/casaos/health/logs`, '_self');
+		},
 	},
 	destroyed() {
 		clearInterval(this.timer);
@@ -87,5 +91,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.cursor-pointer {
+	cursor: pointer;
+}
 </style>
