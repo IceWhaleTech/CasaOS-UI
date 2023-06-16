@@ -104,8 +104,8 @@
 						<div class="gap">
 							<b-image :src="item"
 									 :src-fallback="require('@/assets/img/app/swiper_placeholder.png')"
-									 @click.native="zoomScreenshot(item)"
-									 class="border-8" placeholder ratio="16by9"></b-image>
+									 class="border-8"
+									 placeholder ratio="16by9" @click.native="zoomScreenshot(item)"></b-image>
 						</div>
 					</swiper-slide>
 
@@ -239,16 +239,16 @@ export default {
 			return tempO.font;
 		},
 		zoomScreenshot(img) {
-			const customVNode = this.$createElement('div', { 
-									class: 'modal-content' 
-								}, [
-									this.$createElement('img', { attrs: { src: img } })
-								]);
-								
+			const customVNode = this.$createElement('div', {
+				class: 'modal-content'
+			}, [
+				this.$createElement('img', {attrs: {src: img}})
+			]);
+
 
 			this.$buefy.modal.open({
 				content: [customVNode],
-				customClass: 'zoom-screenshot',
+				customClass: '_zoom-screenshot',
 				fullScreen: true,
 				hasModalCard: true,
 				destroyOnHide: true,
@@ -261,33 +261,34 @@ export default {
 </script>
 
 <style lang="scss">
-	.modal.zoom-screenshot {
+//The underscore "_" here represents that it is only used in this context and needs to be placed in the modularized CSS later.
+.modal._zoom-screenshot {
 
-		.animation-content {
-			display: flex;
-			align-items: center;
-		}
-
-		.modal-content {
-			width: auto;
-			overflow: unset;
-
-			img {
-				max-width: 90vw;
-				max-height: 90vh;
-				border: 3px solid #ccc;
-				border-radius: 1rem;
-				box-shadow: 0 0 40px 0 rgba(255,255,255,0.5);
-			}
-		}
-
-		.modal-close {
-			position: absolute;
-
-			&::before, &::after {
-				background: #fff;
-			}
-		}
-
+	.animation-content {
+		display: flex;
+		align-items: center;
 	}
+
+	.modal-content {
+		width: auto;
+		overflow: unset;
+
+		img {
+			max-width: 90vw;
+			max-height: 90vh;
+			border: 3px solid #ccc;
+			border-radius: 1rem;
+			box-shadow: 0 0 40px 0 rgba(255, 255, 255, 0.5);
+		}
+	}
+
+	.modal-close {
+		position: absolute;
+
+		&::before, &::after {
+			background: #fff;
+		}
+	}
+
+}
 </style>
