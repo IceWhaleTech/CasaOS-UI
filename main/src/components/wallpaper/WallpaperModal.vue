@@ -67,6 +67,42 @@ const wallpaperConfig = "wallpaper"
 import Uploader from 'simple-uploader.js'
 
 export default {
+	inject: ['isZIMA'],
+	computed: {
+		wallpaperItems() {
+			if (this.isZIMA) {
+				return [
+					{
+						name: "Built-in wallpaper 1",
+						path: require('@/assets/background/wallpaper01-ZIMA.png')
+					},
+					{
+						name: "Built-in wallpaper 2",
+						path: require('@/assets/background/wallpaper02-ZIMA.png')
+					},
+					{
+						name: "Built-in wallpaper 3",
+						path: require('@/assets/background/wallpaper03-ZIMA.png')
+					},
+					{
+						name: "Built-in wallpaper 4",
+						path: require('@/assets/background/wallpaper04-ZIMA.png')
+					}
+				]
+			} else {
+				return [
+					{
+						name: "Built-in wallpaper 1",
+						path: require('@/assets/background/wallpaper01.jpg')
+					},
+					{
+						name: "Built-in wallpaper 2",
+						path: require('@/assets/background/wallpaper02.jpg')
+					}
+				]
+			}
+		},
+	},
 	data() {
 		return {
 			isLoading: false,
@@ -75,16 +111,6 @@ export default {
 			attributes: {
 				accept: 'image/png, image/jpeg, image/svg+xml, image/bmp, image/png, image/gif'
 			},
-			wallpaperItems: [
-				{
-					name: "Built-in wallpaper 1",
-					path: require('@/assets/background/wallpaper01.jpg')
-				},
-				{
-					name: "Built-in wallpaper 2",
-					path: require('@/assets/background/wallpaper02.jpg')
-				}
-			],
 			backgroundStyleObj: {
 				backgroundImage: `url(${this.parseUrl(this.$store.state.wallpaperObject.path)})`
 			},
@@ -200,10 +226,10 @@ export default {
 	background-origin: padding-box, border-box;
 	background-image: linear-gradient(to right, #fff, #fff),
 	linear-gradient(
-	108.27deg,
-	rgba(57, 60, 64, 1) 1.44%,
-	rgba(92, 96, 102, 1) 55.8%,
-	rgba(34, 36, 38, 1) 110.95%
+			108.27deg,
+			rgba(57, 60, 64, 1) 1.44%,
+			rgba(92, 96, 102, 1) 55.8%,
+			rgba(34, 36, 38, 1) 110.95%
 	);
 	box-shadow: 0px 16px 24px rgba(115, 120, 128, 0.4);
 	overflow: hidden;

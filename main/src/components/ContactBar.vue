@@ -53,7 +53,7 @@
       modifiers: { offset: { offset: '0,4px' } }
     }" enter-active-class="fade-enter-active" leave-active-class="" transition='fade' trigger="hover">
 			<div class="popper  tooltip-content">
-				{{ $t('Share CasaOS') }}
+				{{ $t('Share {CasaOS}', {CasaOS: TITLE}) }}
 			</div>
 			<a slot="reference" @click="showShareModal">
 				<b-icon icon="chat" pack="casa"></b-icon>
@@ -71,6 +71,7 @@ import Popper        from 'vue-popperjs';
 
 export default {
 	name: "contact-bar",
+	inject: ['TITLE'],
 	components: {
 		Popper,
 	},

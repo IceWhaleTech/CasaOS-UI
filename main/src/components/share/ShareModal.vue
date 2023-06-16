@@ -26,11 +26,13 @@
 
 				<div>
 					<div class=" is-size-14px">{{
-							$t('Please invite more friends who are concerned about family and data privacy to join and use CasaOS.')
+							$t('Please invite more friends who are concerned about family and data privacy to join and use {OS}.', {OS: TITLE})
 						}}
 					</div>
 
-					<b-image :src="require('@/assets/img//social/share_img.png')"
+					<b-image v-if="!isZIMA" :src="require('@/assets/img//social/share_img.png')"
+							 class="share-img-shadow share-img"></b-image>
+					<b-image v-else :src="require('@/assets/img//social/share.png')"
 							 class="share-img-shadow share-img"></b-image>
 				</div>
 
@@ -54,7 +56,7 @@
 import {marked} from 'marked'
 
 export default {
-	inject: ['TITLE'],
+	inject: ['TITLE', 'isZIMA'],
 	props: {
 		changeLog: {
 			type: String,
