@@ -250,12 +250,12 @@
 						<!-- Sort End -->
 
 						<div class="is-flex-grow-1 is-flex is-justify-content-flex-end">
-							<b-input type="text" 
-									@input="debounceSearchInput" 
-									@keyup.enter.native="counterPatchGetStoreList++"
-									:placeholder="$t('Search an app...')" 
-									ref="search_app" 
-									class="app-search"></b-input>
+							<b-input ref="search_app"
+									 :placeholder="$t('Search an app...')"
+									 class="app-search"
+									 type="text"
+									 @input="debounceSearchInput"
+									 @keyup.enter.native="counterPatchGetStoreList++"></b-input>
 						</div>
 
 					</div>
@@ -502,7 +502,7 @@ import "@/plugins/vee-validate";
 import uniq                                     from 'lodash/uniq';
 import isNull                                   from 'lodash/isNull'
 import orderBy                                  from 'lodash/orderBy';
-import debounce									from 'lodash/debounce'
+import debounce                                 from 'lodash/debounce'
 import FileSaver                                from 'file-saver';
 import {Swiper, SwiperSlide}                    from 'vue-awesome-swiper'
 import AppsInstallationLocation                 from "@/components/Apps/AppsInstallationLocation";
@@ -755,7 +755,7 @@ export default {
 	},
 
 	mounted() {
-		this.$nextTick().then(() => {
+		this.currentSlide === 0 && this.$nextTick().then(() => {
 			this.$refs.search_app.$el.children[0].focus();
 		});
 	},
@@ -806,14 +806,14 @@ export default {
 		filteredPageList() {
 			if (Object.keys(this.pageList).length === 0) return [];
 			return this.pageList.filter(app => {
-					const keywords = (app.title + app.tagline).toLocaleLowerCase();
-					for (const term of this.searchKey.split(' ')) {
-						if (keywords.indexOf(term.toLocaleLowerCase()) !== -1) {
-							return true;
-						}
+				const keywords = (app.title + app.tagline).toLocaleLowerCase();
+				for (const term of this.searchKey.split(' ')) {
+					if (keywords.indexOf(term.toLocaleLowerCase()) !== -1) {
+						return true;
 					}
-					return false;
-				})
+				}
+				return false;
+			})
 		}
 
 	},
@@ -1488,7 +1488,7 @@ export default {
 		updateDockerComposeServiceName(val) {
 			this.dockerComposeServiceName = val
 		},
-		debounceSearchInput: debounce(function(e) {
+		debounceSearchInput: debounce(function (e) {
 			this.searchKey = e;
 		}, 250)
 	},
