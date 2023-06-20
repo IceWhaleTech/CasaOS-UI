@@ -91,8 +91,9 @@
 					</b-field>
 
 					<b-field :label="$t('Network')">
-						<b-select v-model="service.network_mode" expanded placeholder="Select">
-							<optgroup v-for="net in networks" :key="net.driver" :label="net.driver">
+						<b-select :value="service.network_mode || service.networks[0]" expanded placeholder="Select"
+								  @input="v=> patchNetworkValue(v, service)">
+							<optgroup v-for="net in appendNetworks" :key="net.driver" :label="net.driver">
 								<option
 									v-for="(option, index) in net.networks"
 									:key="option.name + index"
@@ -233,6 +234,8 @@ import {isNumber, isString}                     from "lodash/lang";
 import cloneDeep                                from "lodash/cloneDeep";
 import merge                                    from "lodash/merge";
 import {ice_i18n}                               from "@/mixins/base/common-i18n";
+import {nanoid}                                 from "nanoid";
+import find                                     from "lodash/find";
 
 const data = [
 	"AUDIT_CONTROL",
@@ -333,6 +336,38 @@ export default {
 			type: Number,
 			required: true,
 		},
+		/*networks STRUCTURE [
+			{
+				"driver": "host",
+				"networks": [
+					{
+						"driver": "host",
+						"id": "3014e1842267eb8aabea9e83b21ff95f36d988c519a51b107d86db9906501ba0",
+						"name": "host"
+					}
+				]
+			},
+			{
+				"driver": "bridge",
+				"networks": [
+					{
+						"driver": "bridge",
+						"id": "AAA",
+						"name": "AAA"
+					},
+					{
+						"driver": "bridge",
+						"id": "BBB",
+						"name": "BBB"
+					},
+					{
+						"driver": "bridge",
+						"id": "CCC",
+						"name": "bridge"
+					}
+				]
+			}
+		]*/
 		networks: {
 			type: Array,
 			required: true,
@@ -396,6 +431,31 @@ export default {
 		},
 		appIcon() {
 			return this.configData["x-casaos"].icon
+		},
+		appendNetworks() {
+			let log = this.networks.map((item) => {
+				if (item.driver == 'bridge') {
+					if (find(item.networks, ['name', this.firstAppName])) {
+						return item
+					} else {
+						return {
+							driver: 'bridge',
+							networks: [
+								{
+									driver: 'bridge',
+									id: nanoid(),
+									name: this.firstAppName
+								},
+								...item.networks
+							]
+						}
+					}
+				} else {
+					return item
+				}
+			});
+			console.log(log, '11111')
+			return log
 		},
 	},
 	created() {
@@ -622,7 +682,7 @@ export default {
 			});
 			isNil(composeServicesItem.devices) && this.$set(composeServicesItem, "devices", []);
 
-			//Network
+			//Network_mode
 			let pnetwork =
 				composeServicesItemInput.network_mode != undefined
 					? composeServicesItemInput.network_mode
@@ -643,6 +703,12 @@ export default {
 				}
 			} else {
 				composeServicesItem.network_mode = "bridge";
+			}
+
+			if (composeServicesItemInput.networks != undefined) {
+				composeServicesItem.networks = Object.keys(composeServicesItemInput.networks)
+				// this.$delete(composeServicesItem, "network_mode");
+				delete composeServicesItem.network_mode;
 			}
 
 			//hostname
@@ -792,6 +858,8 @@ export default {
 					yaml.services[key].devices = [];
 					yaml.services[key].cap_add = [];
 					yaml.services[key].command = [];
+					delete yaml.services[key]?.network_mode;
+					delete yaml.services[key]?.networks;
 				})
 
 				ConfigData = merge(yaml, ConfigData)
@@ -807,8 +875,8 @@ export default {
 		},
 
 		showPorts(service) {
-			if (!service.network_mode) {
-				return false;
+			if (service.networks) {
+				return true
 			}
 			// 存在
 			if (
@@ -872,6 +940,18 @@ export default {
 				return port.host.indexOf(service.port_map) >= 0;
 			});
 		},
+		// networks or network_mode
+		patchNetworkValue(value, service) {
+			if (value === 'host' || value === 'bridge') {
+				this.$delete(service, 'networks')
+				this.$set(service, 'network_mode', value)
+			} else {
+				this.$delete(service, 'network_mode')
+				this.$set(service, 'networks', [value])
+				const tempNetworks = merge(this.configData?.networks || {}, {[value]: {name: value}})
+				this.$set(this.configData, 'networks', tempNetworks);
+			}
+		}
 
 	},
 	filters: {

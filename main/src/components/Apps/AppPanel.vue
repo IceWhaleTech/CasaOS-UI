@@ -1195,8 +1195,8 @@ export default {
 						this.$emit('close')
 					}).catch((err) => {
 						if (err.response.status === 400) {
-							console.log("获取到错误1", err.response.data)
-							this.errInfo = err.response.data.data
+							console.log("Get ERROR:", err.response.data)
+							this.errInfo = err.response.data
 						}
 						this.$buefy.toast.open({
 							message: err.response.data.message,
