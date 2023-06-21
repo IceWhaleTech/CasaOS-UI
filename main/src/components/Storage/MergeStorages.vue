@@ -117,7 +117,11 @@
 		</section>
 
 		<footer class="is-flex is-align-items-center mb-4">
-			<div class="is-flex-grow-1"></div>
+			<div class="is-flex-grow-1">
+				<a href="https://docs.zimaboard.com/docs/Small-body-Big-applications-OMV-install.html">{{
+						$t("Other ways to merge storages")
+					}}</a>
+			</div>
 			<div class="mr-4">
 				<b-button v-show="currentStep > 2 || currentStep === 1" :label="$t('Cancel')"
 						  class="_has-background-gray-100" expaned rounded
@@ -142,11 +146,11 @@
 </template>
 
 <script>
-import {mixin}  from "@/mixins/mixin";
-import events   from '@/events/events';
+import {mixin} from "@/mixins/mixin";
+import events from '@/events/events';
 import cToolTip from '@/components/basicComponents/tooltip/tooltip.vue';
-import filter   from 'lodash/filter';
-import isEqual  from 'lodash/isEqual';
+import filter from 'lodash/filter';
+import isEqual from 'lodash/isEqual';
 
 export default {
 	name: "MergeStorages",
