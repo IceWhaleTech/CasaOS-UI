@@ -94,7 +94,7 @@
 			<!-- Modal-Card Header End -->
 			<!-- Modal-Card Body Start -->
 			<!-- App Store List Start -->
-			<section v-if="currentSlide == 0" :class="{'_hideOverflow': !isCasa}" class="modal-card-body pt-3">
+			<section v-if="currentSlide == 0" :class="{'_hideOverflow': !isCasa}" class="modal-card-body pt-3 _pl">
 
 				<template v-if="!isLoadError">
 
@@ -152,7 +152,7 @@
 					<!-- Featured Slider End -->
 
 					<!-- List condition Start -->
-					<div class="is-flex mt-5 mb-5">
+					<div class="is-flex mt-5 mb-5 is-justify-content-center">
 						<!-- Cate Start -->
 						<div class="mr-2 _polymorphic is-flex is-align-items-center _dropdown">
 							<b-dropdown v-model="currentCate" :max-height="240" :mobile-modal="false"
@@ -249,14 +249,14 @@
 						</div>-->
 						<!-- Sort End -->
 
-						<div class="is-flex-grow-1 is-flex is-justify-content-flex-end">
-							<b-input ref="search_app"
-									 :placeholder="$t('Search an app...')"
-									 class="app-search"
-									 type="text"
-									 @input="debounceSearchInput"
-									 @keyup.enter.native="counterPatchGetStoreList++"></b-input>
-						</div>
+						<b-input ref="search_app"
+								 :placeholder="$t('Search an app...')"
+								 class="app-search"
+								 type="text"
+								 @input="debounceSearchInput"
+								 @keyup.enter.native="counterPatchGetStoreList++"></b-input>
+						<div class="is-flex-grow-1"></div>
+						<AppStoreSourceManagement class="ml-2"></AppStoreSourceManagement>
 
 					</div>
 
@@ -514,6 +514,7 @@ import AppDetailInfo                            from '@/components/Apps/AppDetai
 import {ValidationObserver, ValidationProvider} from "vee-validate";
 import {ice_i18n}                               from "@/mixins/base/common-i18n";
 import {parse}                                  from "yaml";
+import AppStoreSourceManagement                 from "@/components/Apps/AppStoreSourceManagement.vue";
 
 const data = [
 	"AUDIT_CONTROL",
@@ -547,6 +548,7 @@ const data = [
 
 export default {
 	components: {
+		AppStoreSourceManagement,
 		AppDetailInfo,
 		AppSideBar,
 		LottieAnimation,
@@ -1544,15 +1546,19 @@ export default {
 		min-height: calc(100vh - 2.5rem);
 
 		.modal-card-body {
-			overflow: overlay;
+			overflow-y: scroll;
 			overflow-x: clip;
 		}
 	}
 }
 
 .app-search {
-	max-width: 320px;
+	max-width: 12.5rem;
 	width: 100%;
+
+	.input {
+		height: 2rem !important;
+	}
 }
 
 .app-item {
@@ -1670,6 +1676,11 @@ export default {
 			&.narrow {
 				width: 50rem !important;
 			}
+
+			._pl {
+				margin-right: 0;
+				margin-left: calc(90vw - 100%);
+			}
 		}
 	}
 }
@@ -1678,6 +1689,11 @@ export default {
 	.app-panel {
 		.modal-card {
 			width: 81rem !important;
+
+			._pl {
+				margin-right: 0;
+				margin-left: calc(81rem - 100%);
+			}
 		}
 	}
 }
@@ -1702,6 +1718,11 @@ export default {
 	.modal-card {
 		max-height: calc(var(--vh, 1vh) * 100);
 		border-radius: 0;
+
+		._pl {
+			margin-right: 0;
+			margin-left: calc(100vw - 100%);
+		}
 	}
 }
 

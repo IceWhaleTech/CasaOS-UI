@@ -68,10 +68,9 @@
 .one-line {
 	overflow: hidden;
 	text-overflow: ellipsis;
-	display: -webkit-box;
+	white-space: nowrap;
 	word-break: break-all;
 	-webkit-line-clamp: 1; //行数
-	-webkit-box-orient: vertical;
 }
 
 .two-line {
