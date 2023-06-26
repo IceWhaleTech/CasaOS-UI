@@ -52,6 +52,10 @@ function registerAppStore(url) {
 	})
 }
 
+function unregisterAppStore(id) {
+	app.$openAPI.appManagement.appStore.unregisterAppStore(id);
+}
+
 class StateMachine {
 	constructor(initialState) {
 		this.state = initialState;
@@ -63,40 +67,55 @@ class StateMachine {
 }
 
 const sourceList = ref([
-	{id: 1, name: 'Data station'},
-	{id: 2, name: 'Remote Access'},
-	{id: 3, name: 'File Manage'},
+	{url: "https://github.com/WisdomSky/CasaOS-Appstore/archive/refs/heads/main.zip", name: 'Data station'},
+	{url: "https://github.com/WisdomSky/CasaOS-Appstore/archive/refs/heads/main.zip", name: 'Remote Access'},
+	{url: "https://github.com/WisdomSky/CasaOS-Appstore/archive/refs/heads/main.zip", name: 'File Manage'},
 ])
+
+const url = ref("");
+const operationSourceName = ref("");
 
 onMounted(() => {
 	// new StateMachine("init")
 	app.$openAPI.appManagement.appStore.appStoreList().then(res => {
 		if (res.status === 200) {
-			sourceList.value = res.data.data
-			if (res.data.data.length === 1) {
-				componentState.value = 'first_add_state'
-			}
-			switch (res.data.data.length) {
-				case 1:
+			const storeList = res.data.data.filter(item => {
+				let hostname = new URL(item.url).pathname.split("/")[1];
+				if (hostname === "IceWhaleTech") {
+					return false
+				} else {
+					item.name = hostname
+					return true
+				}
+			})
+			sourceList.value = storeList.map(item => {
+				return {
+					id: item.id,
+					url: item.url,
+					name: item.name
+				}
+			})
+			switch (storeList.length) {
+				case 0:
 					componentState.value = 'first_add_state';
-				case 2:
-					componentState.value = 'second_list_state';
+					break;
 				default:
-					componentState.value = 'first_add_state';
+					componentState.value = 'second_list_state';
+					break;
 			}
 		}
 	})
 
-	app.$socket.$subscribe("app:install-begin", data => {
-		console.log('111', data)
-	})
 })
 </script>
 
 <script>
 export default {
-	unmounted() {
-		this.$socket.$unsubscribe("app:install-begin");
+	sockets: {
+		"app-store:register-end"(res) {
+		},
+		"app-store:register-error"(res) {
+		},
 	}
 }
 </script>
@@ -118,17 +137,25 @@ export default {
 				<b-dropdown-item
 					v-for="item in sourceList" :key="item.name" :value="item.name"
 					@click="">
-					<b-checkbox
-						:key="item.name"
-						style="pointer-events: none">
-						<span class="has-text-full-04">{{ item.name }}</span>
-					</b-checkbox>
+					<div class="is-flex is-align-items-center">
+						<span class="has-text-full-04 is-flex-grow-1">{{ item.name }}</span>
+						<b-icon v-if="operationSourceName !== item.name" class="is-flex-shrink-0"
+								icon="trash-outline" pack="casa"
+								@click="operationSourceName = item.name"></b-icon>
+						<template v-else>
+							<b-icon class="is-flex-shrink-0" icon="checkmark-xs-outline" pack="casa"
+									@click="operationSourceName = ''"></b-icon>
+							<b-icon class="is-flex-shrink-0" icon="check-outline" pack="casa"
+									@click="unregisterAppStore(item.id)"></b-icon>
+						</template>
+					</div>
+
 				</b-dropdown-item>
 			</b-dropdown>
 		</div>
 		<div v-else-if="componentState === 'active_input_state'" class="is-flex is-align-items-center">
-			<b-input class="is-flex-grow-1"></b-input>
-			<span class="is-flex-shrink-0" @click="">add</span>
+			<b-input v-model="url" class="is-flex-grow-1"></b-input>
+			<span class="is-flex-shrink-0" @click="registerAppStore(url)">add</span>
 		</div>
 	</div>
 
