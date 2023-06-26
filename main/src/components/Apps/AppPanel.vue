@@ -256,7 +256,9 @@
 								 @input="debounceSearchInput"
 								 @keyup.enter.native="counterPatchGetStoreList++"></b-input>
 						<div class="is-flex-grow-1"></div>
-						<AppStoreSourceManagement class="ml-2"></AppStoreSourceManagement>
+						<AppStoreSourceManagement :totalApps="pageList.length"
+												  class="ml-2"
+												  @refresh-app-store="getStoreList"></AppStoreSourceManagement>
 
 					</div>
 
@@ -269,7 +271,8 @@
 								<div class="mr-4 is-clickable" @click="showAppDetial(item.id)">
 									<b-image :src="item.icon"
 											 :src-fallback="require('@/assets/img/app/default.svg')"
-											 class="is-64x64 icon-shadow" webp-fallback=".jpg"></b-image>
+											 class="is-64x64 icon-shadow" style="display: flex;align-items: center;"
+											 webp-fallback=".jpg"></b-image>
 								</div>
 								<div class="is-flex-grow-1 mr-4 is-clickable"
 									 @click="showAppDetial(item.id);$messageBus('appstore_detail', item.title)">
