@@ -10,9 +10,8 @@
 
 -->
 <template>
-	<div
-		:class="{'narrow': currentSlide > 0 ,'card-width': isFirstInstall, '_stepStoreList' : currentSlide === 0}"
-		class="app-card modal-card">
+	<div :class="{'narrow': currentSlide > 0 ,'card-width': isFirstInstall, '_stepStoreList' : currentSlide === 0}"
+		 class="app-card modal-card">
 		<!--    first setting！！ apps installation location-->
 		<template v-if="isFirstInstall">
 			<header class="modal-card-head b-line">
@@ -153,111 +152,104 @@
 
 					<!-- List condition Start -->
 					<div class="is-flex mt-5 mb-5 is-justify-content-center">
-						<!-- Cate Start -->
-						<div class="mr-2 _polymorphic is-flex is-align-items-center _dropdown">
-							<b-dropdown v-model="currentCate" :max-height="240" :mobile-modal="false"
-										animation="fade1" aria-role="list" class="app-select file-dropdown"
-										position="is-bottom-right" scrollable>
-								<template #trigger="{ active }">
-									<div
-										class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
-										<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
-												icon="category"
-												pack="casa"></b-icon>
-										<span class="has-text-full-03">{{ currentCate.name }}</span>
-										<b-icon :icon="active ? 'chevron-up' : 'chevron-down'"
-												class="ml-2 _dropdown__stateIcon"
-												custom-size="casa-16px"></b-icon>
-									</div>
-								</template>
-								<b-dropdown-item v-for="menu in cateMenu" :key="menu.id"
-												 :class="menu.id == currentCate.id?'is-active':''"
-												 :data-title="menu.count"
-												 :value="menu" aria-role="listitem"
-												 class="_dropdown__item">
-									<div class="media is-align-items-center is-flex has-text-full-03"
-										 @click="$messageBus('appstore_type', menu.name)">
-										<div class="media-content">
-											<h3>{{ menu.name }}</h3>
-										</div>
-									</div>
-								</b-dropdown-item>
-							</b-dropdown>
 
-						</div>
+						<!-- Cate Start -->
+						<transition name="slide-fade">
+							<div v-if="!activeAppStoreSourceInput || !isMobile"
+								 class="mr-2 _polymorphic is-flex is-align-items-center _dropdown">
+								<b-dropdown v-model="currentCate" :max-height="240" :mobile-modal="false"
+											animation="fade1"
+											aria-role="list" class="app-select file-dropdown" scrollable>
+									<template #trigger="{ active }">
+										<div
+											class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
+											<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
+													icon="category"
+													pack="casa"></b-icon>
+											<span class="has-text-full-03">{{ currentCate.name }}</span>
+											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'"
+													class="ml-2 _dropdown__stateIcon"
+													custom-size="casa-16px"></b-icon>
+										</div>
+									</template>
+									<b-dropdown-item v-for="menu in cateMenu" :key="menu.id"
+													 :class="menu.id == currentCate.id?'is-active':''"
+													 :data-title="menu.count"
+													 :value="menu" aria-role="listitem"
+													 class="_dropdown__item">
+										<div class="media is-align-items-center is-flex has-text-full-03"
+											 @click="$messageBus('appstore_type', menu.name)">
+											<div class="media-content">
+												<h3>{{ menu.name }}</h3>
+											</div>
+										</div>
+									</b-dropdown-item>
+								</b-dropdown>
+
+							</div>
+						</transition>
 						<!-- Cate End -->
 
-						<!-- Author Start -->
-						<div class="_polymorphic is-flex is-align-items-center _dropdown">
-							<b-dropdown v-model="currentAuthor" :max-height="240" :mobile-modal="false"
-										animation="fade1" aria-role="list" class="app-select file-dropdown"
-										position="is-bottom-right" scrollable>
-								<template #trigger="{ active }">
-									<div
-										class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
-										<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
-												icon="posted-by-outline"
-												pack="casa"></b-icon>
-										<span class="has-text-full-03">{{ currentAuthor.name }}</span>
-										<b-icon :icon="active ? 'chevron-up' : 'chevron-down'"
-												class="ml-2 _dropdown__stateIcon"
-												custom-size="casa-16px"></b-icon>
-									</div>
-								</template>
-								<b-dropdown-item v-for="menu in authorMenu" :key="menu.id"
-												 :class="menu.id == currentAuthor.id?'is-active':''"
-												 :data-title="menu.count"
-												 :value="menu" aria-role="listitem"
-												 class="_dropdown__item">
-									<div class="media is-align-items-center is-flex has-text-full-03"
-										 @click="$messageBus('appstore_author', menu.name)">
-										<div class="media-content">
-											<h3>{{ menu.name }}</h3>
-										</div>
-									</div>
-								</b-dropdown-item>
-							</b-dropdown>
 
-						</div>
+						<!-- Author Start -->
+						<transition name="slide-fade">
+							<div v-if="!activeAppStoreSourceInput || !isMobile"
+								 class="_polymorphic is-flex is-align-items-center _dropdown">
+								<b-dropdown v-model="currentAuthor" :max-height="240" :mobile-modal="false"
+											animation="fade1" aria-role="list" class="app-select file-dropdown"
+											position="is-bottom-right" scrollable>
+									<template #trigger="{ active }">
+										<div
+											class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
+											<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
+													icon="posted-by-outline"
+													pack="casa"></b-icon>
+											<span class="has-text-full-03">{{ currentAuthor.name }}</span>
+											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'"
+													class="ml-2 _dropdown__stateIcon"
+													custom-size="casa-16px"></b-icon>
+										</div>
+									</template>
+									<b-dropdown-item v-for="menu in authorMenu" :key="menu.id"
+													 :class="menu.id == currentAuthor.id?'is-active':''"
+													 :data-title="menu.count"
+													 :value="menu" aria-role="listitem"
+													 class="_dropdown__item">
+										<div class="media is-align-items-center is-flex has-text-full-03"
+											 @click="$messageBus('appstore_author', menu.name)">
+											<div class="media-content">
+												<h3>{{ menu.name }}</h3>
+											</div>
+										</div>
+									</b-dropdown-item>
+								</b-dropdown>
+
+							</div>
+						</transition>
 						<!-- Author End -->
 
-						<!-- Sort Start -->
-						<!-- <div>
-						{{ $t('Sort by') }}:
-							<b-dropdown v-model="currentSort" :mobile-modal="false" animation="fade1"
-										aria-role="list" class="app-select file-dropdown"
-										position="is-bottom-right">
-								<template #trigger="{ active }">
-									<div class="button is-text auto-height pl-0 pt-0 pb-0 is-size-14px">
-										{{ currentSort.name }}
-										<b-icon :icon="active ? 'chevron-up' : 'chevron-down'" class="ml-1"
-												size="is-normal"></b-icon>
-									</div>
+						<transition name="search-fade">
+							<b-icon v-if="searchAndSourcesStatus === 'showSources'"
+									class="is-flex is-align-self-center" icon="search-outline"
+									pack="casa"
+									@click.native="searchAndSourcesStatusController"></b-icon>
+						</transition>
+						<transition name="search-fade">
 
-								</template>
-								<b-dropdown-item v-for="(menu,index) in sortMenu" :key="'sort_'+index"
-												 :class="menu.slash == currentSort.slash?'is-active':''"
-												 :value="menu" aria-role="listitem">
-									<div class="media align-items-center is-flex"
-										 @click="$messageBus('appstore_sort', menu.name)">
-										<div class="media-content">
-											<h3>{{ menu.name }}</h3>
-										</div>
-									</div>
-								</b-dropdown-item>
-							</b-dropdown>
-						</div>-->
-						<!-- Sort End -->
+							<b-input v-if="searchAndSourcesStatus !== 'showSources'"
+									 ref="search_app"
+									 v-on-click-outside="resetSearchAndSourcesStatus"
+									 :placeholder="$t('Search an app...')"
+									 class="app-search"
+									 type="text"
+									 @input="debounceSearchInput"
+									 @keyup.enter.native="counterPatchGetStoreList++"></b-input>
 
-						<b-input ref="search_app"
-								 :placeholder="$t('Search an app...')"
-								 class="app-search"
-								 type="text"
-								 @input="debounceSearchInput"
-								 @keyup.enter.native="counterPatchGetStoreList++"></b-input>
+						</transition>
 						<div class="is-flex-grow-1"></div>
-						<AppStoreSourceManagement :totalApps="pageList.length"
-												  class="ml-2"
+						<AppStoreSourceManagement v-show="searchAndSourcesStatus !== 'showSearch'"
+												  :totalApps="pageList.length" class="ml-2"
+												  @refreshSize="refreshAppStoreSourceManagementSizeStatus"
 												  @refresh-app-store="getStoreList"></AppStoreSourceManagement>
 
 					</div>
@@ -518,6 +510,7 @@ import {ValidationObserver, ValidationProvider} from "vee-validate";
 import {ice_i18n}                               from "@/mixins/base/common-i18n";
 import {parse}                                  from "yaml";
 import AppStoreSourceManagement                 from "@/components/Apps/AppStoreSourceManagement.vue";
+import {vOnClickOutside}                        from '@vueuse/components'
 
 const data = [
 	"AUDIT_CONTROL",
@@ -563,6 +556,9 @@ export default {
 		ValidationProvider,
 	},
 	mixins: [business_ShowNewAppTag, business_OpenThirdApp],
+	directives: {
+		OnClickOutside: vOnClickOutside
+	},
 	props: {
 		id: String,
 		state: String,
@@ -705,7 +701,9 @@ export default {
 			dockerProgress: null,
 			totalPercentage: 0,
 			installedList: [],
-			counterPatchGetStoreList: 0
+			counterPatchGetStoreList: 0,
+			searchAndSourcesStatus: "",
+			activeAppStoreSourceInput: false,
 		}
 	},
 
@@ -760,9 +758,10 @@ export default {
 	},
 
 	mounted() {
-		this.currentSlide === 0 && this.$nextTick().then(() => {
+		this.currentSlide === 0 && !this.isMobile && this.$nextTick().then(() => {
 			this.$refs.search_app.$el.children[0].focus();
 		});
+		this.searchAndSourcesStatusController();
 	},
 
 	computed: {
@@ -819,7 +818,10 @@ export default {
 				}
 				return false;
 			})
-		}
+		},
+		isMobile() {
+			return this.$store.state.isMobile
+		},
 
 	},
 	watch: {
@@ -866,6 +868,35 @@ export default {
 		}
 	},
 	methods: {
+		resetSearchAndSourcesStatus() {
+			switch (this.isMobile) {
+				case true:
+					this.searchAndSourcesStatus = 'showSources'
+					break;
+				case false:
+					this.searchAndSourcesStatus = 'showAll'
+					break;
+			}
+		},
+		searchAndSourcesStatusController() {
+			// Status for three. One of them is "showSearch", "showSources", "showAll"
+			if (this.isMobile && this.searchAndSourcesStatus === "showSources") {
+				this.searchAndSourcesStatus = "showSearch";
+			} else if (this.isMobile) {
+				this.searchAndSourcesStatus = "showSources";
+			} else {
+				this.searchAndSourcesStatus = "showAll";
+			}
+		},
+
+		refreshAppStoreSourceManagementSizeStatus(status) {
+			if (status === "active_input_state") {
+				this.activeAppStoreSourceInput = true
+			} else {
+				this.activeAppStoreSourceInput = false
+			}
+		},
+
 		setCSSVHVar() {
 			const vh = window.innerHeight * 0.01;
 			document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -1640,30 +1671,6 @@ export default {
 	.dropdown-menu {
 		min-width: 1rem !important;
 	}
-
-	.dropdown-content {
-		border-radius: 0.5rem;
-		overflow-y: overlay !important;
-
-		&::-webkit-scrollbar {
-			width: 8px;
-		}
-
-		&::-webkit-scrollbar-track {
-			background: transparent;
-		}
-
-		&::-webkit-scrollbar-thumb {
-			background: rgba(0, 0, 0, 0.2);
-			border-radius: 10px;
-			outline: none;
-		}
-	}
-
-	a.dropdown-item {
-		padding-right: 1.5rem;
-		font-size: 0.875rem;
-	}
 }
 
 @media screen and (min-width: 769px) {
@@ -1904,5 +1911,23 @@ export default {
 		margin-right: 6px;
 		margin-bottom: 2px;
 	}
+}
+
+.slide-fade-enter-active, .search-fade-enter-active {
+	transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active, search-fade-leave-active {
+	transition: opacity 0s;
+}
+
+.search-fade-enter-from {
+	transform: translateY(-20px);
+	opacity: 0;
+}
+
+.slide-fade-enter-from {
+	transform: translateX(20px);
+	opacity: 0;
 }
 </style>

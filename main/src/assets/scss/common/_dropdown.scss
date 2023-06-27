@@ -1,0 +1,48 @@
+/*!
+ *  @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ *  @LastEditTime: 2023/6/27 上午11:45
+ *  @FilePath: /CasaOS-UI/main/src/assets/scss/common/_dropdown.scss
+ *  @Description:
+ *
+ *  Copyright (c) 2023 by IceWhale, All Rights Reserved.
+ *
+ */
+.dropdown-menu {
+	.dropdown-content {
+		border-radius: 0.5rem;
+		padding: 5px;
+		overflow-x: hidden !important;
+		overflow-y: overlay !important;
+		
+		&::-webkit-scrollbar {
+			width: 8px;
+		}
+		
+		&::-webkit-scrollbar-track {
+			background: transparent;
+		}
+		
+		&::-webkit-scrollbar-thumb {
+			background: rgba(0, 0, 0, 0.2);
+			border-radius: 10px;
+			outline: none;
+		}
+		
+		.dropdown-item {
+			border-radius: 5px;
+			overflow: hidden;
+			padding-left: .5rem;
+			padding-right: .5rem;
+			text-align: left;
+			text-overflow: ellipsis;
+			transition: all .25s;
+			white-space: nowrap
+		}
+	}
+}
+
+
+a.dropdown-item {
+	padding-right: 1.5rem;
+	font-size: 0.875rem;
+}
