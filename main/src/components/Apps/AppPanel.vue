@@ -10,9 +10,8 @@
 
 -->
 <template>
-	<div
-		:class="{'narrow': currentSlide > 0 ,'card-width': isFirstInstall, '_stepStoreList' : currentSlide === 0}"
-		class="app-card modal-card">
+	<div :class="{'narrow': currentSlide > 0 ,'card-width': isFirstInstall, '_stepStoreList' : currentSlide === 0}"
+		 class="app-card modal-card">
 		<!--    first setting！！ apps installation location-->
 		<template v-if="isFirstInstall">
 			<header class="modal-card-head b-line">
@@ -22,7 +21,7 @@
 						}}
 					</h3>
 				</div>
-				<b-icon class="_polymorphic close" icon="close" pack="casa"
+				<b-icon class="_polymorphic close" icon="close-outline" pack="casa"
 						@click.native="$emit('close'); $messageBus('appstore_close')"/>
 			</header>
 			<p class="modal-card-body">
@@ -80,10 +79,12 @@
 					</b-tooltip>
 					<div v-if="currentSlide < 2"
 						 class="is-flex is-align-items-center modal-close-container modal-close-container-line ">
-						<b-icon class="_polymorphic close" icon="close" pack="casa" @click.native="$emit('close')"/>
+						<b-icon class="_polymorphic close" icon="close-outline" pack="casa"
+								@click.native="$emit('close')"/>
 					</div>
 					<div v-else-if="currentSlide === 2" class="is-flex is-align-items-center">
-						<b-icon class="_polymorphic close" icon="close" pack="casa" @click.native="$emit('close')"/>
+						<b-icon class="_polymorphic close" icon="close-outline" pack="casa"
+								@click.native="$emit('close')"/>
 					</div>
 
 				</div>
@@ -92,7 +93,7 @@
 			<!-- Modal-Card Header End -->
 			<!-- Modal-Card Body Start -->
 			<!-- App Store List Start -->
-			<section v-if="currentSlide == 0" :class="{'_hideOverflow': !isCasa}" class="modal-card-body pt-3">
+			<section v-if="currentSlide == 0" :class="{'_hideOverflow': !isCasa}" class="modal-card-body pt-3 _pl">
 
 				<template v-if="!isLoadError">
 
@@ -150,124 +151,120 @@
 					<!-- Featured Slider End -->
 
 					<!-- List condition Start -->
-					<div class="is-flex mt-5 mb-5">
-						<!-- Cate Start -->
-						<div class="mr-2 _polymorphic is-flex is-align-items-center _dropdown">
-							<b-dropdown v-model="currentCate" :max-height="240" :mobile-modal="false"
-										animation="fade1" aria-role="list" class="app-select file-dropdown"
-										position="is-bottom-right" scrollable>
-								<template #trigger="{ active }">
-									<div
-										class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
-										<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
-												icon="category"
-												pack="casa"></b-icon>
-										<span class="has-text-full-03">{{ currentCate.name }}</span>
-										<b-icon :icon="active ? 'chevron-up' : 'chevron-down'"
-												class="ml-2 _dropdown__stateIcon"
-												custom-size="casa-16px"></b-icon>
-									</div>
-								</template>
-								<b-dropdown-item v-for="menu in cateMenu" :key="menu.id"
-												 :class="menu.id == currentCate.id?'is-active':''"
-												 :data-title="menu.count"
-												 :value="menu" aria-role="listitem"
-												 class="_dropdown__item">
-									<div class="media is-align-items-center is-flex has-text-full-03"
-										 @click="$messageBus('appstore_type', menu.name)">
-										<div class="media-content">
-											<h3>{{ menu.name }}</h3>
-										</div>
-									</div>
-								</b-dropdown-item>
-							</b-dropdown>
+					<div class="is-flex mt-5 mb-5 is-justify-content-center">
 
-						</div>
+						<!-- Cate Start -->
+						<transition name="slide-fade">
+							<div v-if="!activeAppStoreSourceInput || !isMobile"
+								 class="mr-2 _polymorphic is-flex is-align-items-center _dropdown">
+								<b-dropdown v-model="currentCate" :max-height="240" :mobile-modal="false"
+											animation="fade1"
+											aria-role="list" class="app-select file-dropdown" scrollable>
+									<template #trigger="{ active }">
+										<div
+											class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
+											<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
+													icon="category"
+													pack="casa"></b-icon>
+											<span class="has-text-full-03">{{ currentCate.name }}</span>
+											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'"
+													class="ml-2 _dropdown__stateIcon"
+													custom-size="casa-16px"></b-icon>
+										</div>
+									</template>
+									<b-dropdown-item v-for="menu in cateMenu" :key="menu.id"
+													 :class="menu.id == currentCate.id?'is-active':''"
+													 :data-title="menu.count"
+													 :value="menu" aria-role="listitem"
+													 class="_dropdown__item">
+										<div class="media is-align-items-center is-flex has-text-full-03"
+											 @click="$messageBus('appstore_type', menu.name)">
+											<div class="media-content">
+												<h3>{{ menu.name }}</h3>
+											</div>
+										</div>
+									</b-dropdown-item>
+								</b-dropdown>
+
+							</div>
+						</transition>
 						<!-- Cate End -->
 
-						<!-- Author Start -->
-						<div class="_polymorphic is-flex is-align-items-center _dropdown">
-							<b-dropdown v-model="currentAuthor" :max-height="240" :mobile-modal="false"
-										animation="fade1" aria-role="list" class="app-select file-dropdown"
-										position="is-bottom-right" scrollable>
-								<template #trigger="{ active }">
-									<div
-										class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
-										<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
-												icon="author"
-												pack="casa"></b-icon>
-										<span class="has-text-full-03">{{ currentAuthor.name }}</span>
-										<b-icon :icon="active ? 'chevron-up' : 'chevron-down'"
-												class="ml-2 _dropdown__stateIcon"
-												custom-size="casa-16px"></b-icon>
-									</div>
-								</template>
-								<b-dropdown-item v-for="menu in authorMenu" :key="menu.id"
-												 :class="menu.id == currentAuthor.id?'is-active':''"
-												 :data-title="menu.count"
-												 :value="menu" aria-role="listitem"
-												 class="_dropdown__item">
-									<div class="media is-align-items-center is-flex has-text-full-03"
-										 @click="$messageBus('appstore_author', menu.name)">
-										<div class="media-content">
-											<h3>{{ menu.name }}</h3>
-										</div>
-									</div>
-								</b-dropdown-item>
-							</b-dropdown>
 
-						</div>
+						<!-- Author Start -->
+						<transition name="slide-fade">
+							<div v-if="!activeAppStoreSourceInput || !isMobile"
+								 class="_polymorphic is-flex is-align-items-center _dropdown">
+								<b-dropdown v-model="currentAuthor" :max-height="240" :mobile-modal="false"
+											animation="fade1" aria-role="list" class="app-select file-dropdown"
+											position="is-bottom-right" scrollable>
+									<template #trigger="{ active }">
+										<div
+											class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
+											<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
+													icon="posted-by-outline"
+													pack="casa"></b-icon>
+											<span class="has-text-full-03">{{ currentAuthor.name }}</span>
+											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'"
+													class="ml-2 _dropdown__stateIcon"
+													custom-size="casa-16px"></b-icon>
+										</div>
+									</template>
+									<b-dropdown-item v-for="menu in authorMenu" :key="menu.id"
+													 :class="menu.id == currentAuthor.id?'is-active':''"
+													 :data-title="menu.count"
+													 :value="menu" aria-role="listitem"
+													 class="_dropdown__item">
+										<div class="media is-align-items-center is-flex has-text-full-03"
+											 @click="$messageBus('appstore_author', menu.name)">
+											<div class="media-content">
+												<h3>{{ menu.name }}</h3>
+											</div>
+										</div>
+									</b-dropdown-item>
+								</b-dropdown>
+
+							</div>
+						</transition>
 						<!-- Author End -->
 
-						<!-- Sort Start -->
-						<!-- <div>
-						{{ $t('Sort by') }}:
-							<b-dropdown v-model="currentSort" :mobile-modal="false" animation="fade1"
-										aria-role="list" class="app-select file-dropdown"
-										position="is-bottom-right">
-								<template #trigger="{ active }">
-									<div class="button is-text auto-height pl-0 pt-0 pb-0 is-size-14px">
-										{{ currentSort.name }}
-										<b-icon :icon="active ? 'chevron-up' : 'chevron-down'" class="ml-1"
-												size="is-normal"></b-icon>
-									</div>
+						<transition name="search-fade">
+							<b-icon v-if="searchAndSourcesStatus === 'showSources'"
+									class="is-flex is-align-self-center" icon="search-outline"
+									pack="casa"
+									@click.native="searchAndSourcesStatusController"></b-icon>
+						</transition>
+						<transition name="search-fade">
 
-								</template>
-								<b-dropdown-item v-for="(menu,index) in sortMenu" :key="'sort_'+index"
-												 :class="menu.slash == currentSort.slash?'is-active':''"
-												 :value="menu" aria-role="listitem">
-									<div class="media align-items-center is-flex"
-										 @click="$messageBus('appstore_sort', menu.name)">
-										<div class="media-content">
-											<h3>{{ menu.name }}</h3>
-										</div>
-									</div>
-								</b-dropdown-item>
-							</b-dropdown>
-						</div>-->
-						<!-- Sort End -->
-
-						<div class="is-flex-grow-1 is-flex is-justify-content-flex-end">
-							<b-input ref="search_app"
+							<b-input v-if="searchAndSourcesStatus !== 'showSources'"
+									 ref="search_app"
+									 v-on-click-outside="resetSearchAndSourcesStatus"
 									 :placeholder="$t('Search an app...')"
 									 class="app-search"
 									 type="text"
 									 @input="debounceSearchInput"
 									 @keyup.enter.native="counterPatchGetStoreList++"></b-input>
-						</div>
+
+						</transition>
+						<div class="is-flex-grow-1"></div>
+						<AppStoreSourceManagement v-show="searchAndSourcesStatus !== 'showSearch'"
+												  :totalApps="pageList.length" class="ml-2"
+												  @refreshAppStore="getStoreList"
+												  @refreshSize="refreshAppStoreSourceManagementSizeStatus"></AppStoreSourceManagement>
 
 					</div>
 
 					<!-- List condition End -->
 					<!-- App list Start-->
 					<div class="columns f-list is-multiline is-mobile pb-3 mb-5">
-						<div v-for="(item,index) in pageList" :key="index+item.title+item.id"
+						<div v-for="(item,index) in filteredPageList" :key="index+item.title+item.id"
 							 class="column app-item is-one-quarter">
 							<div class="is-flex  is-align-items-center">
 								<div class="mr-4 is-clickable" @click="showAppDetial(item.id)">
 									<b-image :src="item.icon"
 											 :src-fallback="require('@/assets/img/app/default.svg')"
-											 class="is-64x64 icon-shadow" webp-fallback=".jpg"></b-image>
+											 class="is-64x64 icon-shadow" style="display: flex;align-items: center;"
+											 webp-fallback=".jpg"></b-image>
 								</div>
 								<div class="is-flex-grow-1 mr-4 is-clickable"
 									 @click="showAppDetial(item.id);$messageBus('appstore_detail', item.title)">
@@ -412,7 +409,7 @@
 								<option value="http">http://</option>
 								<option value="https">https://</option>
 							</b-select>
-							<b-input v-model="settingData.host" :placeholder="this.$baseIp"
+							<b-input v-model="settingData.host" :placeholder="this.$baseHostname"
 									 expanded></b-input>
 							<b-autocomplete
 								v-model="settingData.port_map"
@@ -547,6 +544,7 @@ const data = [
 
 export default {
 	components: {
+		AppStoreSourceManagement,
 		AppDetailInfo,
 		AppSideBar,
 		LottieAnimation,
@@ -558,6 +556,9 @@ export default {
 		ValidationProvider,
 	},
 	mixins: [business_ShowNewAppTag, business_OpenThirdApp],
+	directives: {
+		OnClickOutside: vOnClickOutside
+	},
 	props: {
 		id: String,
 		state: String,
@@ -700,7 +701,9 @@ export default {
 			dockerProgress: null,
 			totalPercentage: 0,
 			installedList: [],
-			counterPatchGetStoreList: 0
+			counterPatchGetStoreList: 0,
+			searchAndSourcesStatus: "",
+			activeAppStoreSourceInput: false,
 		}
 	},
 
@@ -755,9 +758,10 @@ export default {
 	},
 
 	mounted() {
-		this.currentSlide === 0 && this.$nextTick().then(() => {
+		this.currentSlide === 0 && !this.isMobile && this.$nextTick().then(() => {
 			this.$refs.search_app.$el.children[0].focus();
 		});
+		this.searchAndSourcesStatusController();
 	},
 
 	computed: {
@@ -814,7 +818,10 @@ export default {
 				}
 				return false;
 			})
-		}
+		},
+		isMobile() {
+			return this.$store.state.isMobile
+		},
 
 	},
 	watch: {
@@ -861,6 +868,35 @@ export default {
 		}
 	},
 	methods: {
+		resetSearchAndSourcesStatus() {
+			switch (this.isMobile) {
+				case true:
+					this.searchAndSourcesStatus = 'showSources'
+					break;
+				case false:
+					this.searchAndSourcesStatus = 'showAll'
+					break;
+			}
+		},
+		searchAndSourcesStatusController() {
+			// Status for three. One of them is "showSearch", "showSources", "showAll"
+			if (this.isMobile && this.searchAndSourcesStatus === "showSources") {
+				this.searchAndSourcesStatus = "showSearch";
+			} else if (this.isMobile) {
+				this.searchAndSourcesStatus = "showSources";
+			} else {
+				this.searchAndSourcesStatus = "showAll";
+			}
+		},
+
+		refreshAppStoreSourceManagementSizeStatus(status) {
+			if (status === "active_input_state") {
+				this.activeAppStoreSourceInput = true
+			} else {
+				this.activeAppStoreSourceInput = false
+			}
+		},
+
 		setCSSVHVar() {
 			const vh = window.innerHeight * 0.01;
 			document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -1544,7 +1580,7 @@ export default {
 		min-height: calc(100vh - 2.5rem);
 
 		.modal-card-body {
-			overflow: overlay;
+			overflow-y: scroll;
 			overflow-x: clip;
 		}
 	}
@@ -1899,5 +1935,23 @@ export default {
 		margin-right: 6px;
 		margin-bottom: 2px;
 	}
+}
+
+.slide-fade-enter-active, .search-fade-enter-active {
+	transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active, search-fade-leave-active {
+	transition: opacity 0s;
+}
+
+.search-fade-enter-from {
+	transform: translateY(-20px);
+	opacity: 0;
+}
+
+.slide-fade-enter-from {
+	transform: translateX(20px);
+	opacity: 0;
 }
 </style>

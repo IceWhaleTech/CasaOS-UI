@@ -12,6 +12,12 @@
 const webpack = require('webpack')
 const path = require("path")
 
+const commitHash = require('child_process')
+	.execSync('git describe --always')
+	.toString()
+	.trim();
+
+
 module.exports = {
 	publicPath: '/',
 	runtimeCompiler: true,
@@ -24,6 +30,13 @@ module.exports = {
 		}
 	},
 	chainWebpack: config => {
+		config.module
+			.rule("mjs")
+			.test(/\.mjs$/)
+			.type("javascript/auto")
+			.include.add(/node_modules/)
+			.end();
+
 		const oneOfsMap = config.module.rule("scss").oneOfs.store;
 		oneOfsMap.forEach(item => {
 			item
@@ -39,6 +52,15 @@ module.exports = {
 		})
 		config.plugin('ignore')
 			.use(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
+		config.plugin('define')
+			.use(require('webpack/lib/DefinePlugin'), [{
+				'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+				'process.env.VUE_APP_DEV_IP': JSON.stringify(process.env.VUE_APP_DEV_IP),
+				'process.env.VUE_APP_DEV_PORT': JSON.stringify(process.env.VUE_APP_DEV_PORT),
+				'process.env.VUE_APP_BASE_URL': JSON.stringify(process.env.VUE_APP_BASE_URL),
+				MAIN_APP_VERSION_ID: JSON.stringify(commitHash),
+				BUILT_TIME: JSON.stringify(Date()),
+			}]);
 		// Production only
 		if (process.env.NODE_ENV === "prod") {
 			config.output.filename('[name].[contenthash:8].js').end()
@@ -53,8 +75,8 @@ module.exports = {
 				.use(require.resolve('optimize-css-assets-webpack-plugin'), [{cssProcessorOptions: {safe: true}}])
 		} else {
 			// Development only
-			config.plugin('webpack-bundle-analyzer')
-				.use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
+			// config.plugin('webpack-bundle-analyzer')
+			// 	.use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
 			config.devServer.proxy({
 				'/': {
 					target: `http://${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}`,
@@ -67,7 +89,8 @@ module.exports = {
 		open: true,
 		port: 8080,
 		inline: false,
-		// before: require('./mock/meta_data.js'),
+		before: require('./mock/meta_data.js'),
+		hot: true,
 		// contentBase: publicPath,
 	}
 }
