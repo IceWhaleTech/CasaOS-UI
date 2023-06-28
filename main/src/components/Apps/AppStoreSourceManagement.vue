@@ -14,36 +14,35 @@ import {vOnClickOutside}                                                        
 const emit = defineEmits(["refreshAppStore", "refreshSize"]);
 const props = defineProps(['totalApps']);
 /*
-* 0. 初始化状态
-* @查询列表 为空则显示第一种状态、有数据则显示第二种状态
-* */
-
-/* 1. 第一次打开，为添加按钮，
-* 此时点击 @出现输入框
-* @添加 this.$openAPI.appManagement.appStore.registerAppStore(url).then(res=>{})
-* @完成添加，等待结果 socketIO 通知
-*
-* @返回结果之后，更改状态
-*
-* */
-
-/*
-* 2. 第二次打开 为下拉列表
-* @查询列表 this.$openAPI.appManagement.appStore.appStoreList().then(res => {})
-*
-* */
-const app = getCurrentInstance().proxy
-const subscribe = app.$socket.$subscribe
-const unsubscribe = app.$socket.$unsubscribe
-const componentState = ref("init")
-// const
 const stateBox = {
 	init: "init",
 	first_add_state: "first_add_state",
 	second_list_state: "second_list_state",
 	active_input_state: "active_input_state"
 }
-const clickedInCompontent = ref(false)
+* 0. Initialization status
+* @If the query list is empty, the first state is displayed, and the second state is displayed if there is data
+* */
+
+/* 1. First open, add a button，
+* While click
+* @The input box appears
+* @Adding this.$openAPI.appManagement.appStore.registerAppStore(url).then(res=>{})
+* @Finish adding and wait for the resulting socketIO notification
+*
+* @After the results are returned, change the status
+*
+* */
+
+/*
+* 2.Open the second time for the drop-down list
+* @Query the list: this.$openAPI.appManagement.appStore.appStoreList().then(res => {})
+*
+* */
+const app = getCurrentInstance().proxy
+const subscribe = app.$socket.$subscribe
+const unsubscribe = app.$socket.$unsubscribe
+const componentState = ref("init")
 const ignoreElRef = ref(null)
 const onClickOutsideHandler = [
 	(ev) => {
@@ -75,12 +74,10 @@ function changeInputState(alwaysNotDisplay = false) {
 }
 
 function registerAppStore(url) {
-	if (!url) {
-		return
+	if (url) {
+		addLoadingState.value = true
+		app.$openAPI.appManagement.appStore.registerAppStore(url)
 	}
-	clickedInCompontent.value = true
-	addLoadingState.value = true
-	app.$openAPI.appManagement.appStore.registerAppStore(url)
 }
 
 function unregisterAppStore(id) {
@@ -97,7 +94,6 @@ function unregisterAppStore(id) {
 }
 
 function redirectURL() {
-	clickedInCompontent.value = true
 	window.open("https://github.com/IceWhaleTech/CasaOS-AppStore", "_blank");
 }
 
@@ -257,16 +253,14 @@ onBeforeUnmount(() => {
 		width: 2rem !important;
 	}
 }
-</style>
 
-<style lang="scss">
 .management-change-enter-active {
 	transition: all .3s ease;
 }
 
-.slide-fade-leave-active {
-	transition: opacity 0;
-}
+//.slide-fade-leave-active {
+//	transition: opacity 0;
+//}
 
 .management-change-enter {
 	transform: translateX(-10px);
