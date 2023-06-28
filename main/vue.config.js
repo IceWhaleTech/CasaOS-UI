@@ -90,6 +90,7 @@ module.exports = {
 		port: 8080,
 		inline: false,
 		before: require('./mock/meta_data.js'),
+		hot: true,
 		// contentBase: publicPath,
 	}
 }

@@ -8,8 +8,8 @@
 
   -->
 <script setup>
-import {defineEmits, defineProps, getCurrentInstance, onMounted, ref} from "vue";
-import {vOnClickOutside}                                              from '@vueuse/components'
+import {defineEmits, defineProps, getCurrentInstance, onBeforeUnmount, onMounted, ref} from "vue";
+import {vOnClickOutside}                                                               from '@vueuse/components'
 
 const emit = defineEmits(["refreshAppStore", "refreshSize"]);
 const props = defineProps(['totalApps']);
@@ -33,6 +33,8 @@ const props = defineProps(['totalApps']);
 *
 * */
 const app = getCurrentInstance().proxy
+const subscribe = app.$socket.$subscribe
+const unsubscribe = app.$socket.$unsubscribe
 const componentState = ref("init")
 // const
 const stateBox = {
@@ -82,8 +84,16 @@ function registerAppStore(url) {
 }
 
 function unregisterAppStore(id) {
-	removeLoadingState.value = true
-	app.$openAPI.appManagement.appStore.unregisterAppStore(id)
+	removeLoadingState.value = true;
+	app.$openAPI.appManagement.appStore.unregisterAppStore(id).then(res => {
+		if (res.status === 200) {
+			emit("refreshAppStore");
+			getSourceList();
+		}
+	}).finally(() => {
+		operationSourceName.value = -1;
+		removeLoadingState.value = false;
+	})
 }
 
 function redirectURL() {
@@ -133,31 +143,33 @@ function getSourceList() {
 
 onMounted(() => {
 	getSourceList()
+	subscribe("app-store:register-end", res => {
+		console.log(res)
+		app.$buefy.toast.open({
+			message: "Updating the information source of the app store is complete.",
+			duration: 5000,
+			type: 'is-success'
+		})
+		getSourceList();
+		emit("refreshAppStore");
+		url.value = "";
+		addLoadingState.value = false;
+	})
+	subscribe("app-store:register-error", res => {
+		app.$buefy.toast.open({
+			message: "Failed to update the information source of the app store.",
+			duration: 5000,
+			type: 'is-warning'
+		})
+		url.value = "";
+		addLoadingState.value = false;
+	})
 })
-</script>
 
-<script>
-export default {
-	sockets: {
-		"app-store:register-end"(res) {
-			this.addLoadingState = false;
-			this.getSourceList()
-			this.$emit("refreshAppStore");
-		},
-		"app-store:register-error"(res) {
-			this.addLoadingState = false;
-		},
-		"app-store:unregister-end"(res) {
-			this.removeLoadingState = false;
-			this.getSourceList()
-			this.$emit("refreshAppStore");
-
-		},
-		"app-store:unregister-error"(res) {
-			this.removeLoadingState = false;
-		},
-	}
-}
+onBeforeUnmount(() => {
+	unsubscribe("app-store:register-end");
+	unsubscribe("app-store:register-error");
+})
 </script>
 
 <template>

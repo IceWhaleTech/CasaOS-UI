@@ -249,8 +249,8 @@
 						<div class="is-flex-grow-1"></div>
 						<AppStoreSourceManagement v-show="searchAndSourcesStatus !== 'showSearch'"
 												  :totalApps="pageList.length" class="ml-2"
-												  @refreshSize="refreshAppStoreSourceManagementSizeStatus"
-												  @refresh-app-store="getStoreList"></AppStoreSourceManagement>
+												  @refreshAppStore="getStoreList"
+												  @refreshSize="refreshAppStoreSourceManagementSizeStatus"></AppStoreSourceManagement>
 
 					</div>
 
