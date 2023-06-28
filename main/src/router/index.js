@@ -65,6 +65,8 @@ function checkUrlToken() {
 	let newUrl = window.location.pathname;
 	if (searchParams.toString()) {
 		newUrl += "?" + searchParams.toString() + "/" + window.location.hash
+	} else {
+		newUrl += window.location.hash
 	}
 	// NOTICE: try to avoid page reload
 	window.history.replaceState(null, '', newUrl);
