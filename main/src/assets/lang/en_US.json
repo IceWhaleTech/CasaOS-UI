@@ -382,5 +382,6 @@
   "File transfer completed.": "File transfer completed.",
   "Save {name} {size} from {device}.": "Save {name} {size} from {device}.",
   "Connection lost. Retry in 5 seconds...": "Connection lost. Retry in 5 seconds...",
-  "cli to compose...": "cli to compose..."
+  "cli to compose...": "cli to compose...",
+  "View tutorial": "View tutorial"
 }

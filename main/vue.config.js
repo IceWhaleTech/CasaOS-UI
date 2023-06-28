@@ -30,6 +30,13 @@ module.exports = {
 		}
 	},
 	chainWebpack: config => {
+		config.module
+			.rule("mjs")
+			.test(/\.mjs$/)
+			.type("javascript/auto")
+			.include.add(/node_modules/)
+			.end();
+
 		const oneOfsMap = config.module.rule("scss").oneOfs.store;
 		oneOfsMap.forEach(item => {
 			item
@@ -83,6 +90,7 @@ module.exports = {
 		port: 8080,
 		inline: false,
 		before: require('./mock/meta_data.js'),
+		hot: true,
 		// contentBase: publicPath,
 	}
 }
