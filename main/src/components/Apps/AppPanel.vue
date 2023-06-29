@@ -1453,7 +1453,8 @@ export default {
 			}
 			try {
 
-				await this.$api.folder.create(path)
+				// await this.$api.folder.create(path)
+				await this.$openAPI.iceFile.putFile(path)
 			} catch (e) {
 				this.$buefy.toast.open({
 					message: this.$t('Error when creating installation path for apps'),
