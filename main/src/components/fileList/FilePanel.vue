@@ -109,7 +109,6 @@ export default {
 		},
 		// check show breadcrumb
 		showPopUp() {
-			console.log('showItem', this.path, this.rootPath)
 			return this.path != this.rootPath
 		},
 		// check show breadcrumb dots
@@ -122,20 +121,20 @@ export default {
 		},
 	},
 	created() {
-		this.path = (this.path == this.rootPath) ? this.path : dropRight(this.path.split("/"), 1).join("/")
+		this.path = (this.path == this.rootPath) ? this.path : (this.path.endsWith("/") && this.path.length !== 1) ? dropRight(this.path.split("/"), 1).join("/") : this.path;
 		this.getFileList(this.path, true);
 	},
 
 	methods: {
 		// get file list from api
 		getFileList(path, locate = false) {
-			this.$api.folder.getList(path).then(res => {
-				if (res.data.success == 200) {
+			this.$openAPI.iceFile.getFiles(path).then(res => {
+				if (res.status == 200) {
 					this.path = path
 					if (this.showFile) {
-						this.fileList = res.data.data.content;
+						this.fileList = res.data.content;
 					} else {
-						this.fileList = res.data.data.content.filter((item) => {
+						this.fileList = res.data.content.filter((item) => {
 							return item.is_dir
 						});
 					}
