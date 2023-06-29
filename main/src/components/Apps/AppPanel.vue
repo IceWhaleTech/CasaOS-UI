@@ -512,6 +512,8 @@ import AppDetailInfo                            from '@/components/Apps/AppDetai
 import {ValidationObserver, ValidationProvider} from "vee-validate";
 import {ice_i18n}                               from "@/mixins/base/common-i18n";
 import {parse}                                  from "yaml";
+import AppStoreSourceManagement                 from "@/components/Apps/AppStoreSourceManagement.vue";
+import {vOnClickOutside}                        from '@vueuse/components'
 
 const data = [
 	"AUDIT_CONTROL",
@@ -1548,6 +1550,15 @@ export default {
 	}
 }
 
+.app-search {
+	max-width: 12.5rem;
+	width: 100%;
+
+	.input {
+		height: 2rem !important;
+	}
+}
+
 .app-item {
 	border-radius: 0.5rem;
 	transition: background 0.3s ease;
@@ -1663,6 +1674,11 @@ export default {
 			&.narrow {
 				width: 50rem !important;
 			}
+
+			._pl {
+				margin-right: 0;
+				margin-left: calc(90vw - 100%);
+			}
 		}
 	}
 }
@@ -1671,6 +1687,11 @@ export default {
 	.app-panel {
 		.modal-card {
 			width: 81rem !important;
+
+			._pl {
+				margin-right: 0;
+				margin-left: calc(81rem - 100%);
+			}
 		}
 	}
 }
@@ -1695,6 +1716,11 @@ export default {
 	.modal-card {
 		max-height: calc(var(--vh, 1vh) * 100);
 		border-radius: 0;
+
+		._pl {
+			margin-right: 0;
+			margin-left: calc(100vw - 100%);
+		}
 	}
 }
 

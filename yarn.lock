@@ -1534,6 +1534,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@icewhale/casaos-openapi@npm:latest":
+  version: 0.4.4-alpha3-50816c6
+  resolution: "@icewhale/casaos-openapi@npm:0.4.4-alpha3-50816c6"
+  dependencies:
+    axios: ^1.1.0
+  checksum: 10c0228a5c23f11c540ab9eb1adf568e6f78999eed37795065f8ab04fc2ddd491502fa215737fe99384df3ad4e37c1a58d17692e41a5d353f38a967d0ce0396d
+  languageName: node
+  linkType: hard
+
+"@icewhale/icewhale-files-openapi@npm:latest":
+  version: 0.0.1-dev6
+  resolution: "@icewhale/icewhale-files-openapi@npm:0.0.1-dev6"
+  dependencies:
+    axios: ^1.1.0
+  checksum: 4dd150f34cb6e6ab7947b0f52714469bff30ee60467bd19d19b1ea7159f80700986dd95f4c0420ba5248ef9cc561e8c9382da769c4d24cc300a717c0df3df710
+  languageName: node
+  linkType: hard
+
 "@intervolga/optimize-cssnano-plugin@npm:^1.0.5":
   version: 1.0.6
   resolution: "@intervolga/optimize-cssnano-plugin@npm:1.0.6"
@@ -2377,6 +2395,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/web-bluetooth@npm:^0.0.17":
+  version: 0.0.17
+  resolution: "@types/web-bluetooth@npm:0.0.17"
+  checksum: 8c72ba8cd1d7abd3fcab608e1d8eb828420df23f67d783f1282d4a747f995e91a0c861f92fa195e9423edb22bb34854452028f8a68148a593b35915635a4f4db
+  languageName: node
+  linkType: hard
+
 "@types/webpack-dev-server@npm:^3.11.0":
   version: 3.11.6
   resolution: "@types/webpack-dev-server@npm:3.11.6"
@@ -2895,6 +2920,45 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vueuse/components@npm:^10.2.0":
+  version: 10.2.1
+  resolution: "@vueuse/components@npm:10.2.1"
+  dependencies:
+    "@vueuse/core": 10.2.1
+    "@vueuse/shared": 10.2.1
+    vue-demi: ">=0.14.5"
+  checksum: 53eea93d2c320aea9bdbb49b7bcfc6bb50f5ec305a58655e0844bcee7e03ab71fea75e4476d1b957ead6386de87a64cd094872e5b8e9db91c93c14ab3c7fe362
+  languageName: node
+  linkType: hard
+
+"@vueuse/core@npm:10.2.1, @vueuse/core@npm:^10.2.0":
+  version: 10.2.1
+  resolution: "@vueuse/core@npm:10.2.1"
+  dependencies:
+    "@types/web-bluetooth": ^0.0.17
+    "@vueuse/metadata": 10.2.1
+    "@vueuse/shared": 10.2.1
+    vue-demi: ">=0.14.5"
+  checksum: 1a7a7ad8372a2ff87ceddee2663a29a911dcd8a1a40b0e63436bc3b0f0786598f70e40e02e69d3cacfb634e35fdcd98136e049431a73516109ff062d8004cd54
+  languageName: node
+  linkType: hard
+
+"@vueuse/metadata@npm:10.2.1":
+  version: 10.2.1
+  resolution: "@vueuse/metadata@npm:10.2.1"
+  checksum: 1672c0e6e6a54fe397c04b83bf4b78a8db410df272010f5db829e9f72ed285d526ca8bb4d7a3373b17aac2fb37c83d866f6077e667f54afc1ae20bf1ab1a5478
+  languageName: node
+  linkType: hard
+
+"@vueuse/shared@npm:10.2.1":
+  version: 10.2.1
+  resolution: "@vueuse/shared@npm:10.2.1"
+  dependencies:
+    vue-demi: ">=0.14.5"
+  checksum: eeb19c0448d3f238615e24c738d2a6ebdc8b7d840405dd8704b5d0a3cd84ac3a8d5ec87856b501fac89f0f3bb868e7339d46e5fc3ece02c07160aedd41e507b2
+  languageName: node
+  linkType: hard
+
 "@webassemblyjs/ast@npm:1.8.5":
   version: 1.8.5
   resolution: "@webassemblyjs/ast@npm:1.8.5"
@@ -3302,6 +3366,13 @@ __metadata:
   version: 4.2.2
   resolution: "@xtuc/long@npm:4.2.2"
   checksum: 8ed0d477ce3bc9c6fe2bf6a6a2cc316bb9c4127c5a7827bae947fa8ec34c7092395c5a283cc300c05b5fa01cbbfa1f938f410a7bf75db7c7846fea41949989ec
+  languageName: node
+  linkType: hard
+
+"@yarnpkg/lockfile@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@yarnpkg/lockfile@npm:1.1.0"
+  checksum: 05b881b4866a3546861fee756e6d3812776ea47fa6eb7098f983d6d0eefa02e12b66c3fff931574120f196286a7ad4879ce02743c8bb2be36c6a576c7852083a
   languageName: node
   linkType: hard
 
@@ -3824,6 +3895,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"at-least-node@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "at-least-node@npm:1.0.0"
+  checksum: 463e2f8e43384f1afb54bc68485c436d7622acec08b6fad269b421cb1d29cebb5af751426793d0961ed243146fe4dc983402f6d5a51b720b277818dbf6f2e49e
+  languageName: node
+  linkType: hard
+
 "atob@npm:^2.1.2":
   version: 2.1.2
   resolution: "atob@npm:2.1.2"
@@ -4310,7 +4388,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"buefy@npm:^0.9.19":
+"buefy@npm:^0.9.19, buefy@npm:^0.9.23":
   version: 0.9.23
   resolution: "buefy@npm:0.9.23"
   dependencies:
@@ -4590,6 +4668,8 @@ __metadata:
     "@babel/preset-typescript": ^7.18.6
     "@fontsource/roboto": ^4.5.7
     "@icewhale/casaos-appmanagement-openapi": latest
+    "@icewhale/casaos-openapi": latest
+    "@icewhale/icewhale-files-openapi": latest
     "@kangc/v-md-editor": ^1.7.11
     "@mdi/font": ^6.6.96
     "@tiptap/core": ^2.0.0-beta.220
@@ -4604,12 +4684,15 @@ __metadata:
     "@vue/cli-plugin-vuex": 4.5.13
     "@vue/cli-service": 4.5.13
     "@vue/runtime-dom": ^3.2.45
+    "@vueuse/components": ^10.2.0
+    "@vueuse/core": ^10.2.0
     apexcharts: ^3.33.2
     axios: ^0.26.0
     babel-eslint: ^10.1.0
     browser-info: ^1.3.0
     browserslist: ^4.21.5
-    buefy: ^0.9.19
+    buefy: ^0.9.23
+    bulma: 0.9.4
     clipboard-copy: ^4.0.1
     composerize: ^1.2.0
     compression-webpack-plugin: 5.0.0
@@ -4620,6 +4703,7 @@ __metadata:
     file-saver: ^2.0.5
     gsap: ^3.11.4
     hitbox-js: ^1.0.2
+    iconfonts-casaos: latest
     intersection-observer: ^0.12.0
     is-valid-hostname: ^1.0.2
     jwt-decode: ^3.1.2
@@ -4631,6 +4715,8 @@ __metadata:
     mime: ^3.0.0
     nanoid: ^4.0.0
     optimize-css-assets-webpack-plugin: ^6.0.1
+    patch-package: ^7.0.0
+    postinstall-postinstall: ^2.1.0
     qiankun: ^2.10.5
     qs: ^6.10.3
     rss-parser: ^3.12.0
@@ -4649,7 +4735,7 @@ __metadata:
     v-viewer: ^1.6.4
     validator: ^13.7.0
     vee-validate: ^3.4.12
-    vue: ^2.6.11
+    vue: ^2.7.1
     vue-apexcharts: ^1.6.2
     vue-awesome-swiper: =4.1.1
     vue-breakpoint-mixin: ^1.3.2
@@ -4933,6 +5019,13 @@ __metadata:
   version: 1.6.0
   resolution: "ci-info@npm:1.6.0"
   checksum: dfc058f60c3889793befe77349c3cd1a5452d21bed5ff60cb34382bee7bbdccc5c4c2ff2b77eab8c411c54d84f93963dacf593b9d901b43b93b7ad2a422aa163
+  languageName: node
+  linkType: hard
+
+"ci-info@npm:^3.7.0":
+  version: 3.8.0
+  resolution: "ci-info@npm:3.8.0"
+  checksum: d0a4d3160497cae54294974a7246202244fff031b0a6ea20dd57b10ec510aa17399c41a1b0982142c105f3255aff2173e5c0dd7302ee1b2f28ba3debda375098
   languageName: node
   linkType: hard
 
@@ -8151,6 +8244,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"find-yarn-workspace-root@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "find-yarn-workspace-root@npm:2.0.0"
+  dependencies:
+    micromatch: ^4.0.2
+  checksum: fa5ca8f9d08fe7a54ce7c0a5931ff9b7e36f9ee7b9475fb13752bcea80ec6b5f180fa5102d60b376d5526ce924ea3fc6b19301262efa0a5d248dd710f3644242
+  languageName: node
+  linkType: hard
+
 "flat-cache@npm:^2.0.1":
   version: 2.0.1
   resolution: "flat-cache@npm:2.0.1"
@@ -8285,6 +8387,18 @@ __metadata:
     jsonfile: ^4.0.0
     universalify: ^0.1.0
   checksum: 141b9dccb23b66a66cefdd81f4cda959ff89282b1d721b98cea19ba08db3dcbe6f862f28841f3cf24bb299e0b7e6c42303908f65093cb7e201708e86ea5a8dcf
+  languageName: node
+  linkType: hard
+
+"fs-extra@npm:^9.0.0":
+  version: 9.1.0
+  resolution: "fs-extra@npm:9.1.0"
+  dependencies:
+    at-least-node: ^1.0.0
+    graceful-fs: ^4.2.0
+    jsonfile: ^6.0.1
+    universalify: ^2.0.0
+  checksum: ba71ba32e0faa74ab931b7a0031d1523c66a73e225de7426e275e238e312d07313d2da2d33e34a52aa406c8763ade5712eb3ec9ba4d9edce652bcacdc29e6b20
   languageName: node
   linkType: hard
 
@@ -8624,7 +8738,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graceful-fs@npm:^4.1.11, graceful-fs@npm:^4.1.15, graceful-fs@npm:^4.1.2, graceful-fs@npm:^4.1.6, graceful-fs@npm:^4.2.6":
+"graceful-fs@npm:^4.1.11, graceful-fs@npm:^4.1.15, graceful-fs@npm:^4.1.2, graceful-fs@npm:^4.1.6, graceful-fs@npm:^4.2.0, graceful-fs@npm:^4.2.6":
   version: 4.2.11
   resolution: "graceful-fs@npm:4.2.11"
   checksum: ac85f94da92d8eb6b7f5a8b20ce65e43d66761c55ce85ac96df6865308390da45a8d3f0296dd3a663de65d30ba497bd46c696cc1e248c72b13d6d567138a4fc7
@@ -9181,6 +9295,13 @@ __metadata:
   dependencies:
     ms: ^2.0.0
   checksum: 9c7a74a2827f9294c009266c82031030eae811ca87b0da3dceb8d6071b9bde22c9f3daef0469c3c533cc67a97d8a167cd9fc0389350e5f415f61a79b171ded16
+  languageName: node
+  linkType: hard
+
+"iconfonts-casaos@npm:latest":
+  version: 1.0.2
+  resolution: "iconfonts-casaos@npm:1.0.2"
+  checksum: dae9d4f3fdccc660bac14717cc245377b3033e7c2ae1f5ec80471322f31fdfef5643852bf422ae767a4670307d0e372be7bf0f7570c557b01bd0cce62763260c
   languageName: node
   linkType: hard
 
@@ -10252,6 +10373,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jsonfile@npm:^6.0.1":
+  version: 6.1.0
+  resolution: "jsonfile@npm:6.1.0"
+  dependencies:
+    graceful-fs: ^4.1.6
+    universalify: ^2.0.0
+  dependenciesMeta:
+    graceful-fs:
+      optional: true
+  checksum: 7af3b8e1ac8fe7f1eccc6263c6ca14e1966fcbc74b618d3c78a0a2075579487547b94f72b7a1114e844a1e15bb00d440e5d1720bfc4612d790a6f285d5ea8354
+  languageName: node
+  linkType: hard
+
 "jsonlint@npm:^1.6.3":
   version: 1.6.3
   resolution: "jsonlint@npm:1.6.3"
@@ -10337,6 +10471,15 @@ __metadata:
   version: 6.0.3
   resolution: "kind-of@npm:6.0.3"
   checksum: 3ab01e7b1d440b22fe4c31f23d8d38b4d9b91d9f291df683476576493d5dfd2e03848a8b05813dd0c3f0e835bc63f433007ddeceb71f05cb25c45ae1b19c6d3b
+  languageName: node
+  linkType: hard
+
+"klaw-sync@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "klaw-sync@npm:6.0.0"
+  dependencies:
+    graceful-fs: ^4.1.11
+  checksum: 0da397f8961313c3ef8f79fb63af9002cde5a8fb2aeb1a37351feff0dd6006129c790400c3f5c3b4e757bedcabb13d21ec0a5eaef5a593d59515d4f2c291e475
   languageName: node
   linkType: hard
 
@@ -11836,6 +11979,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"open@npm:^7.4.2":
+  version: 7.4.2
+  resolution: "open@npm:7.4.2"
+  dependencies:
+    is-docker: ^2.0.0
+    is-wsl: ^2.1.1
+  checksum: 3333900ec0e420d64c23b831bc3467e57031461d843c801f569b2204a1acc3cd7b3ec3c7897afc9dde86491dfa289708eb92bba164093d8bd88fb2c231843c91
+  languageName: node
+  linkType: hard
+
 "opencollective-postinstall@npm:^2.0.2":
   version: 2.0.3
   resolution: "opencollective-postinstall@npm:2.0.3"
@@ -12133,6 +12286,30 @@ __metadata:
   version: 0.1.1
   resolution: "pascalcase@npm:0.1.1"
   checksum: f83681c3c8ff75fa473a2bb2b113289952f802ff895d435edd717e7cb898b0408cbdb247117a938edcbc5d141020909846cc2b92c47213d764e2a94d2ad2b925
+  languageName: node
+  linkType: hard
+
+"patch-package@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "patch-package@npm:7.0.0"
+  dependencies:
+    "@yarnpkg/lockfile": ^1.1.0
+    chalk: ^4.1.2
+    ci-info: ^3.7.0
+    cross-spawn: ^7.0.3
+    find-yarn-workspace-root: ^2.0.0
+    fs-extra: ^9.0.0
+    klaw-sync: ^6.0.0
+    minimist: ^1.2.6
+    open: ^7.4.2
+    rimraf: ^2.6.3
+    semver: ^5.6.0
+    slash: ^2.0.0
+    tmp: ^0.0.33
+    yaml: ^2.2.2
+  bin:
+    patch-package: index.js
+  checksum: 63f6589320f8953ac06b5c0c1549c82ef051aea81db91173157ab270a8f4910deb895e0b4d49ee1626a4a0a02d74f134bdbeb76052b639a2239e2df83c4a7ce6
   languageName: node
   linkType: hard
 
@@ -13121,6 +13298,13 @@ __metadata:
     picocolors: ^1.0.0
     source-map-js: ^1.0.2
   checksum: 814e2126dacfea313588eda09cc99a9b4c26ec55c059188aa7a916d20d26d483483106dc5ff9e560731b59f45c5bb91b945dfadc670aed875cc90ddbbf4e787d
+  languageName: node
+  linkType: hard
+
+"postinstall-postinstall@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "postinstall-postinstall@npm:2.1.0"
+  checksum: e1d34252cf8d2c5641c7d2db7426ec96e3d7a975f01c174c68f09ef5b8327bc8d5a9aa2001a45e693db2cdbf69577094d3fe6597b564ad2d2202b65fba76134b
   languageName: node
   linkType: hard
 
@@ -16071,6 +16255,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"universalify@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "universalify@npm:2.0.0"
+  checksum: 2406a4edf4a8830aa6813278bab1f953a8e40f2f63a37873ffa9a3bc8f9745d06cc8e88f3572cb899b7e509013f7f6fcc3e37e8a6d914167a5381d8440518c44
+  languageName: node
+  linkType: hard
+
 "unpipe@npm:1.0.0, unpipe@npm:~1.0.0":
   version: 1.0.0
   resolution: "unpipe@npm:1.0.0"
@@ -16429,6 +16620,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vue-demi@npm:>=0.14.5":
+  version: 0.14.5
+  resolution: "vue-demi@npm:0.14.5"
+  peerDependencies:
+    "@vue/composition-api": ^1.0.0-rc.1
+    vue: ^3.0.0-0 || ^2.6.0
+  peerDependenciesMeta:
+    "@vue/composition-api":
+      optional: true
+  bin:
+    vue-demi-fix: bin/vue-demi-fix.js
+    vue-demi-switch: bin/vue-demi-switch.js
+  checksum: ff44b9372b8224590514252a2f73363cced6062205f9628a6b130dccb80e2023d55cd9d1da94aeb68d5539b7ea9eedcecf88ab281a3a9ff48b8db4c5366b9643
+  languageName: node
+  linkType: hard
+
 "vue-ellipse-progress@npm:^1.3.1":
   version: 1.3.1
   resolution: "vue-ellipse-progress@npm:1.3.1"
@@ -16642,7 +16849,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue@npm:^2.6.11, vue@npm:^2.6.12":
+"vue@npm:^2.6.11, vue@npm:^2.6.12, vue@npm:^2.7.1":
   version: 2.7.14
   resolution: "vue@npm:2.7.14"
   dependencies:
@@ -17338,6 +17545,13 @@ __metadata:
   version: 1.10.2
   resolution: "yaml@npm:1.10.2"
   checksum: ce4ada136e8a78a0b08dc10b4b900936912d15de59905b2bf415b4d33c63df1d555d23acb2a41b23cf9fb5da41c256441afca3d6509de7247daa062fd2c5ea5f
+  languageName: node
+  linkType: hard
+
+"yaml@npm:^2.2.2":
+  version: 2.3.1
+  resolution: "yaml@npm:2.3.1"
+  checksum: 2c7bc9a7cd4c9f40d3b0b0a98e370781b68b8b7c4515720869aced2b00d92f5da1762b4ffa947f9e795d6cd6b19f410bd4d15fdd38aca7bd96df59bd9486fb54
   languageName: node
   linkType: hard
 
