@@ -369,5 +369,7 @@
   "Ignore": "忽略",
   "File transfer completed.": "文件传输完成。",
   "Save {name} {size} from {device}.": "保存来自于 {device} 的 {name} {size} 。",
-  "Connection lost. Retry in 5 seconds...": "连接丢失。5秒后重试..."
+  "Connection lost. Retry in 5 seconds...": "连接丢失。5秒后重试...",
+  "Other ways to merge storages": "其他合并存储的方法",
+  "Free up storage": "节省存储空间的方法"
 }

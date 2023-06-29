@@ -47,6 +47,9 @@
 						  rounded size="is-small" @click="removeStorage(item.disk)"> {{ $t('Remove') }}
 				</b-button>
 			</div>
+			<p v-else-if="true" class="has-text-right is-flex is-flex-direction-column-reverse">
+				<a href="/">{{ $t("Free up storage") }}</a>
+			</p>
 		</div>
 		<b-progress :type="item.usePercent | getProgressType" :value="item.usePercent || 0"
 					class="ml-3 mr-3" size="is-small"></b-progress>
