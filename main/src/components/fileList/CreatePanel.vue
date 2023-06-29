@@ -62,7 +62,6 @@ export default {
 			let path = `${this.initPath}/${this.name}`
 			if (this.isDir) {
 				this.$openAPI.iceFile.putFile(path).then(res => {
-					debugger
 					if (res.status == 200) {
 						this.successCallBack(path);
 					} else {
