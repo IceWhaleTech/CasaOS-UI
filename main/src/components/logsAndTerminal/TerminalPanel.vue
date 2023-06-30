@@ -15,7 +15,8 @@
 		<section class="modal-card-body " style="overflow:hidden">
 			<h3 class="title is-3">CasaOS</h3>
 			<div class="close-container">
-				<span class="mdi mdi-tray-arrow-down is-size-20px mr-4 cursor-pointer" @click="download"></span>
+				<span class="mdi mdi-tray-arrow-down is-size-20px mr-4 cursor-pointer"
+					  @click="downloadSystemLog"></span>
 				<button class="delete" type="button" @click="$emit('close')"/>
 			</div>
 			<div class="is-flex-grow-1">
@@ -80,8 +81,8 @@ export default {
 				this.$messageBus('terminallogs_logs')
 			}
 		},
-		download() {
-			window.open(`${this.$protocol}${this.$baseUrl}/v2/casaos/health/logs`, '_self');
+		downloadSystemLog() {
+			window.open(`/v2/casaos/health/logs`, '_self');
 		},
 	},
 	destroyed() {
