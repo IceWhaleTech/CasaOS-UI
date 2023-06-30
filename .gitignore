@@ -27,8 +27,9 @@ unused-files.json
 
 # package manager
 #.yarnrc.yml
-.yarn/
-!.yarn/releases/
+#!/releases/yarn**
+.yarn/*
+!.yarn/releases
 
 # turbo
 .turbo
