@@ -7,31 +7,13 @@
   * Copyright (c) 2023 by IceWhale, All Rights Reserved.
   
   -->
-<!--
-	warning:
-	当用户自定义数据时，主应用名字为'main_app'.
-	当用户 文件导入、CLI导入、yaml 导入、安装应用商店时，按照应有数据展示.
--->
+
 <template>
 	<section style="height: calc(100vh - 12.8125rem)">
 		<b-tabs class="has-text-full-03" style="height:100%"
 				@input="key=> $emit('updateDockerComposeServiceName', key)">
 			<b-tab-item v-for="(service, key) in configData.services" :key="key" :label="key" :value="key">
 				<ValidationObserver :ref="key + 'valida'">
-					<ValidationProvider v-slot="{ errors, valid }" name="composeAppName" rules="required">
-						<b-field
-							:label="$t('App Name') + ' *'"
-							:message="$t(errors)"
-							:type="{ 'is-danger': errors[0], 'is-success': valid }"
-						>
-							<b-input
-								:placeholder="$t('e.g.,Your App Name')"
-								:value="ice_i18n(configData['x-casaos'].title)"
-								@blur="E=>configData['x-casaos'].title.custom = E.target._value"
-							></b-input>
-						</b-field>
-					</ValidationProvider>
-
 					<ValidationProvider v-slot="{ errors, valid }" name="Image" rules="required">
 						<b-field
 							:label="$t('Docker Image') + ' *'"
@@ -44,6 +26,20 @@
 								:placeholder="$t('e.g.,hello-world:latest')"
 								:readonly="state == 'update'"
 								@input="changeIcon"
+							></b-input>
+						</b-field>
+					</ValidationProvider>
+
+					<ValidationProvider v-slot="{ errors, valid }" name="composeAppName" rules="required">
+						<b-field
+							:label="$t('App Name') + ' *'"
+							:message="$t(errors)"
+							:type="{ 'is-danger': errors[0], 'is-success': valid }"
+						>
+							<b-input
+								:placeholder="$t('e.g.,Your App Name')"
+								:value="ice_i18n(configData['x-casaos'].title)"
+								@blur="E=>configData['x-casaos'].title.custom = E.target._value"
 							></b-input>
 						</b-field>
 					</ValidationProvider>
