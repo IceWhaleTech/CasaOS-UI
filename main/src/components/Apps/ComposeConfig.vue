@@ -7,31 +7,13 @@
   * Copyright (c) 2023 by IceWhale, All Rights Reserved.
   
   -->
-<!--
-	warning:
-	当用户自定义数据时，主应用名字为'main_app'.
-	当用户 文件导入、CLI导入、yaml 导入、安装应用商店时，按照应有数据展示.
--->
+
 <template>
 	<section style="height: calc(100vh - 12.8125rem)">
 		<b-tabs class="has-text-full-03" style="height:100%"
 				@input="key=> $emit('updateDockerComposeServiceName', key)">
 			<b-tab-item v-for="(service, key) in configData.services" :key="key" :label="key" :value="key">
 				<ValidationObserver :ref="key + 'valida'">
-					<ValidationProvider v-slot="{ errors, valid }" name="composeAppName" rules="required">
-						<b-field
-							:label="$t('App Name') + ' *'"
-							:message="$t(errors)"
-							:type="{ 'is-danger': errors[0], 'is-success': valid }"
-						>
-							<b-input
-								:placeholder="$t('e.g.,Your App Name')"
-								:value="ice_i18n(configData['x-casaos'].title)"
-								@blur="E=>configData['x-casaos'].title.custom = E.target._value"
-							></b-input>
-						</b-field>
-					</ValidationProvider>
-
 					<ValidationProvider v-slot="{ errors, valid }" name="Image" rules="required">
 						<b-field
 							:label="$t('Docker Image') + ' *'"
@@ -44,6 +26,20 @@
 								:placeholder="$t('e.g.,hello-world:latest')"
 								:readonly="state == 'update'"
 								@input="changeIcon"
+							></b-input>
+						</b-field>
+					</ValidationProvider>
+
+					<ValidationProvider v-slot="{ errors, valid }" name="composeAppName" rules="required">
+						<b-field
+							:label="$t('App Name') + ' *'"
+							:message="$t(errors)"
+							:type="{ 'is-danger': errors[0], 'is-success': valid }"
+						>
+							<b-input
+								:placeholder="$t('e.g.,Your App Name')"
+								:value="ice_i18n(configData['x-casaos'].title)"
+								@blur="E=>configData['x-casaos'].title.custom = E.target._value"
 							></b-input>
 						</b-field>
 					</ValidationProvider>
@@ -91,7 +87,8 @@
 					</b-field>
 
 					<b-field :label="$t('Network')">
-						<b-select :value="service.network_mode || service.networks[0]" expanded placeholder="Select"
+						<b-select :value="service.network_mode || service.networks[0]" expanded
+								  placeholder="Select"
 								  @input="v=> patchNetworkValue(v, service)">
 							<optgroup v-for="net in appendNetworks" :key="net.driver" :label="net.driver">
 								<option
@@ -236,6 +233,7 @@ import merge                                    from "lodash/merge";
 import {ice_i18n}                               from "@/mixins/base/common-i18n";
 import {nanoid}                                 from "nanoid";
 import find                                     from "lodash/find";
+import isArray                                  from "lodash/isArray";
 
 const data = [
 	"AUDIT_CONTROL",
@@ -683,32 +681,16 @@ export default {
 			isNil(composeServicesItem.devices) && this.$set(composeServicesItem, "devices", []);
 
 			//Network_mode
-			let pnetwork =
-				composeServicesItemInput.network_mode != undefined
-					? composeServicesItemInput.network_mode
-					: composeServicesItemInput.network != undefined
-						? composeServicesItemInput.network[0]
-						: undefined;
-			if (pnetwork != undefined) {
-				let network = pnetwork == "physical" ? "macvlan" : pnetwork;
-				let seletNetworks = this.networks.filter((item) => {
-					if (item.driver == network) {
-						return true;
-					}
-				});
-				if (seletNetworks.length > 0) {
-					composeServicesItem.network_mode = seletNetworks[0].networks[0].name;
-				} else {
-					composeServicesItem.network_mode = composeServicesItemInput.network_mode;
-				}
-			} else {
-				composeServicesItem.network_mode = "bridge";
-			}
-
-			if (composeServicesItemInput.networks != undefined) {
-				composeServicesItem.networks = Object.keys(composeServicesItemInput.networks)
-				// this.$delete(composeServicesItem, "network_mode");
-				delete composeServicesItem.network_mode;
+			const network_mode = composeServicesItemInput?.network_mode;
+			const networks = composeServicesItemInput?.networks;
+			if (networks) {
+				composeServicesItem.networks = isArray(networks) ? networks : Object.keys(networks);
+			} else if (network_mode == "bridge" || network_mode == undefined) {
+				composeServicesItem.network_mode = "bridge"
+			} else if (network_mode == "host") {
+				composeServicesItem.network_mode = "host"
+			} else if (network_mode == "physical") {
+				composeServicesItem.network_mode = "macvlan"
 			}
 
 			//hostname
