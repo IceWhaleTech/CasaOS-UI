@@ -40,7 +40,8 @@
 
 <script>
 import TerminalCard from './TerminalCard.vue';
-import LogsCard     from './LogsCard.vue';
+import LogsCard from './LogsCard.vue';
+import {api}    from "@/service/service.js";
 
 export default {
 	name: 'terminal-panel',
@@ -82,7 +83,8 @@ export default {
 			}
 		},
 		downloadSystemLog() {
-			window.open(`/v2/casaos/health/logs`, '_self');
+			//window.open(`/v2/casaos/health/logs`, '_self');
+			api.get('/v2/casaos/health/logs');
 		},
 	},
 	destroyed() {
