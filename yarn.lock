@@ -4140,7 +4140,6 @@ __metadata:
     dateformat: ^5.0.2
     dayjs: ^1.10.8
     file-saver: ^2.0.5
-    hitbox-js: ^1.0.2
     iconfonts-casaos: latest
     intersection-observer: ^0.12.0
     is-valid-hostname: ^1.0.2
@@ -7866,13 +7865,6 @@ __metadata:
   version: 10.7.3
   resolution: "highlight.js@npm:10.7.3"
   checksum: defeafcd546b535d710d8efb8e650af9e3b369ef53e28c3dc7893eacfe263200bba4c5fcf43524ae66d5c0c296b1af0870523ceae3e3104d24b7abf6374a4fea
-  languageName: node
-  linkType: hard
-
-"hitbox-js@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "hitbox-js@npm:1.0.2"
-  checksum: 053f3a570d587c2fa82db908b34918bd9e7b92d69b05fd16726249f9e813ad59ac1e428c493894c40398695b8897022e9797ad5813e0147d5395aea027222825
   languageName: node
   linkType: hard
 

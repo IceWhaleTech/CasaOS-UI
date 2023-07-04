@@ -111,39 +111,9 @@ export const mixin = {
 				isDir = item.is_dir
 			}
 			if (isDir) {
-				let folder = "folder-default"
-				if (item.type == "application") {
-					folder = "folder-application"
-				} else if (item.type == "usb") {
-					folder = "folder-usb"
-				} else if (["sata", "nvme", "spi", "sas"].includes(item.type)) {
-					folder = "folder-hdd"
-				} else if (item.type == "home") {
-					folder = "folder-root"
-				} else if (item.name == "Media") {
-					folder = "folder-video"
-				} else if (item.name == "Downloads") {
-					folder = "folder-download"
-				} else if (item.name == "Documents") {
-					folder = "folder-documents"
-				} else if (item.name == "Gallery") {
-					folder = "folder-pictures"
-				} else if (item.name == "AppData") {
-					folder = "folder-application"
-				} else {
-					folder = "folder-default"
-				}
-				return require(`@/assets/img/filebrowser/${folder}.svg`)
+				return require(`@/assets/img/filebrowser/folder-default.svg`)
 			} else {
-				const ext = this.getFileExt(item);
-				let type = "unknown"
-				Object.keys(typeMap).forEach((_type) => {
-					const extensions = typeMap[_type]
-					if (extensions.indexOf(ext.toLowerCase()) > -1) {
-						type = _type
-					}
-				})
-				return require(`@/assets/img/filebrowser/${type}.svg`)
+				return require(`@/assets/img/filebrowser/unknown.svg`)
 			}
 		},
 		getPanelType(item) {
