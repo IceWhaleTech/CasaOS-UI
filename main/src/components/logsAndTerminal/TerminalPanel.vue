@@ -41,6 +41,7 @@
 <script>
 import TerminalCard from './TerminalCard.vue';
 import LogsCard     from './LogsCard.vue';
+import qs           from "qs";
 
 export default {
 	name: 'terminal-panel',
@@ -82,7 +83,10 @@ export default {
 			}
 		},
 		downloadSystemLog() {
-			window.open(`/v2/casaos/health/logs`, '_self');
+			let parameters = {
+				token: this.$store.state.access_token
+			}
+			window.open(`/v2/casaos/health/logs?${qs.stringify(parameters)}`, '_self');
 		},
 	},
 	destroyed() {
