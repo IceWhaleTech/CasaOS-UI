@@ -8,8 +8,8 @@
 
   -->
 <script setup>
-import {defineEmits, defineProps, getCurrentInstance, onBeforeUnmount, onMounted, ref} from "vue";
-import {vOnClickOutside}                                                               from '@vueuse/components'
+import {getCurrentInstance, onBeforeUnmount, onMounted, ref} from "vue";
+import {vOnClickOutside}                                     from '@vueuse/components'
 
 const emit = defineEmits(["refreshAppStore", "refreshSize"]);
 const props = defineProps(['totalApps']);

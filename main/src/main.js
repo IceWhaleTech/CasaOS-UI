@@ -8,21 +8,68 @@
  */
 
 import 'intersection-observer'
-import Vue              from 'vue'
-import App              from '@/App.vue'
-import router           from '@/router'
-import store            from '@/store'
-import i18n             from '@/plugins/i18n'
-import api              from '@/service/api.js'
-import openAPI          from '@/service/index.js'
-import Buefy            from 'buefy/src/index.js'
+import Vue     from 'vue'
+import App     from '@/App.vue'
+import router  from '@/router'
+import store   from '@/store'
+import i18n    from '@/plugins/i18n'
+import api     from '@/service/api.js'
+import openAPI from '@/service/index.js'
+import {
+	Icon,
+	Field,
+	Input,
+	Tooltip,
+	Dropdown,
+	Image,
+	Button,
+	Switch,
+	Select,
+	Checkbox,
+	Modal,
+	Tabs,
+	Toast,
+	Tag,
+	Loading,
+	Progress,
+	Autocomplete,
+	Taginput,
+	Upload,
+	Notification,
+	Dialog,
+	Message
+}              from 'buefy'
+import 'buefy/dist/buefy.css'
+
+Vue.use(Icon)
+Vue.use(Field)
+Vue.use(Input)
+Vue.use(Tooltip)
+Vue.use(Dropdown)
+Vue.use(Image)
+Vue.use(Button)
+Vue.use(Switch)
+Vue.use(Select)
+Vue.use(Checkbox)
+Vue.use(Modal)
+Vue.use(Tabs)
+Vue.use(Toast)
+Vue.use(Tag)
+Vue.use(Loading)
+Vue.use(Progress)
+Vue.use(Autocomplete)
+Vue.use(Taginput)
+Vue.use(Upload)
+Vue.use(Notification)
+Vue.use(Dialog)
+Vue.use(Message)
+
 import VueFullscreen    from 'vue-fullscreen'
 import Vue2TouchEvents  from 'vue2-touch-events'
 import VueSocialSharing from 'vue-social-sharing'
 import VueSocketIOExt   from 'vue-socket.io-extended';
 import messageBus       from '@/events/index.js'
-// import {registerMicroApps, start} from "qiankun";
-// Import Styles
+
 import '@/assets/scss/app.scss'
 import VAnimateCss      from 'v-animate-css';
 
@@ -44,7 +91,6 @@ const socket = io(wsURL, {
 	path: '/v2/message_bus/socket.io/',
 });
 
-Vue.use(Buefy)
 Vue.use(VueFullscreen)
 Vue.use(VAnimateCss, {animateCSSPath: '/css/animate.min.css'});
 Vue.use(Vue2TouchEvents)

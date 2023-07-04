@@ -36,12 +36,13 @@
 </template>
 
 <script>
-import BrandBar      from './components/BrandBar.vue'
-import ContactBar    from './components/ContactBar.vue'
-import CasaWallpaper from './components/wallpaper/CasaWallpaper.vue'
-import {mixin}       from './mixins/mixin';
-import axios         from "axios";
-import {computed}    from 'vue'
+import BrandBar             from './components/BrandBar.vue'
+import ContactBar           from './components/ContactBar.vue'
+import CasaWallpaper        from './components/wallpaper/CasaWallpaper.vue'
+import {mixin}              from './mixins/mixin';
+import axios                from "axios";
+import {computed}           from 'vue'
+import {ConfigProgrammatic} from 'buefy'
 
 const customIconConfig = {
 	customIconPacks: {
@@ -146,7 +147,8 @@ _____             _____ _____
 -- Made by IceWhale with YOU --
 `, `font-family: monospace`);
 
-		this.$buefy.config.setOptions(customIconConfig)
+		// this.$buefy.config.setOptions(customIconConfig)
+		ConfigProgrammatic.setOptions(customIconConfig);
 	},
 	mounted() {
 		this.setInitLang();
