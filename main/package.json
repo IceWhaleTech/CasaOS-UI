@@ -12,7 +12,7 @@
   "installConfig": {
     "hoistingLimits": "workspaces"
   },
-  "packageManager": "yarn@3.5.1",
+  "packageManager": "yarn@berry",
   "dependencies": {
     "@fontsource/roboto": "^4.5.7",
     "@icewhale/casaos-appmanagement-openapi": "latest",
@@ -21,8 +21,6 @@
     "@kangc/v-md-editor": "^1.7.11",
     "@mdi/font": "^6.6.96",
     "@vueuse/components": "^10.2.0",
-    "@vueuse/core": "^10.2.0",
-    "apexcharts": "^3.33.2",
     "axios": "^0.26.0",
     "browser-info": "^1.3.0",
     "buefy": "^0.9.23",
