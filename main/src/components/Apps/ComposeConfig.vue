@@ -708,7 +708,7 @@ export default {
 			if (composeServicesItemInput.restart != undefined) {
 				composeServicesItem.restart = composeServicesItemInput.restart;
 			}
-			composeServicesItem.restart = composeServicesItem.restart === "no" ? "unless-stopped" : composeServicesItem.restart;
+			composeServicesItem.restart = (composeServicesItem.restart === "no" || !composeServicesItem.restart) ? "unless-stopped" : composeServicesItem.restart;
 
 			// command
 			composeServicesItem.command = this.makeArray(composeServicesItemInput.command)
