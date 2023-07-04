@@ -74,19 +74,19 @@ export default {
 				return [
 					{
 						name: "Built-in wallpaper 1",
-						path: require('@/assets/background/wallpaper01-ZIMA.png')
+						path: require('@/assets/background/wallpaper01-ZIMA.jpg')
 					},
 					{
 						name: "Built-in wallpaper 2",
-						path: require('@/assets/background/wallpaper02-ZIMA.png')
+						path: require('@/assets/background/wallpaper02-ZIMA.jpg')
 					},
 					{
 						name: "Built-in wallpaper 3",
-						path: require('@/assets/background/wallpaper03-ZIMA.png')
+						path: require('@/assets/background/wallpaper03-ZIMA.jpg')
 					},
 					{
 						name: "Built-in wallpaper 4",
-						path: require('@/assets/background/wallpaper04-ZIMA.png')
+						path: require('@/assets/background/wallpaper04-ZIMA.jpg')
 					}
 				]
 			} else {
