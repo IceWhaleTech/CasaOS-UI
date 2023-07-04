@@ -81,6 +81,7 @@ jobs:
                 run: |
                     sshpass -p "${{ secrets.ssh_password }}" scp -r -o StrictHostKeyChecking=no -P 22 ./linux-all-casaos-v99.99.99.tar.gz root@10.147.18.11:/var/www/download
                     echo "ping success"
-            -   name: send message
+            -   name: Error Handling
+                if: ${{ failure() }}
                 run: |
-                    curl -X POST -H "Content-Type: application/json" -d '{"msg_type":"text","content":{"text":"CasaOS-UI updated ${{ env.VERSION }}"}}'  https://open.feishu.cn/open-apis/bot/v2/hook/eb8f45c7-9636-4b64-84f2-a66d9aeb9d30
+                    curl -X POST -H "Content-Type: application/json" -d '{"msg_type":"text","content":{"text":"CasaOS-UI push error"}}' ${{ secrets.SSH_ROBOT_URL }} 
