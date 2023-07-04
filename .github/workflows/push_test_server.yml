@@ -84,7 +84,7 @@ jobs:
                 run: |
                     sshpass -p "${{ secrets.ssh_password }}" scp -r -o StrictHostKeyChecking=no -P 22 ./linux-all-casaos-v99.99.99.tar.gz root@10.147.18.11:/var/www/download
                     echo "ping success"
-            -   name: Error Handling
-                if: ${{ failure() }}
-                run: |
-                    curl -X POST -H "Content-Type: application/json" -d '{"msg_type":"text","content":{"text":"CasaOS-UI push error"}}' ${{ secrets.SSH_ROBOT_URL }} 
+#             -   name: Error Handling
+#                 if: ${{ failure() }}
+#                 run: |
+#                     curl -X POST -H "Content-Type: application/json" -d '{"msg_type":"text","content":{"text":"CasaOS-UI push error"}}' ${{ secrets.SSH_ROBOT_URL }} 
