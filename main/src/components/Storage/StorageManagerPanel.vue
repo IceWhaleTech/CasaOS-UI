@@ -549,8 +549,6 @@ export default {
 		},
 
 		getDiskType(item) {
-			if (item.children_number == 0)
-				return "format"
 			return item.need_format ? "format" : "mountable"
 		}
 	}
