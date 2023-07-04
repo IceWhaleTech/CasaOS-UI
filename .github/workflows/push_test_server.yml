@@ -52,6 +52,8 @@ jobs:
             -   run: yarn
             -   run: yarn build
             -   run: |
+                    ls ../
+                    echo "11111"
                     ls
                     tar -zcvf linux-all-casaos-v99.99.99.tar.gz build
                     ls
