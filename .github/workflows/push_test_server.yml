@@ -2,7 +2,7 @@ name: push_test_server
 
 on:
     push:
-        branch:
+        branches:
             - feature*
     workflow_dispatch:
 
