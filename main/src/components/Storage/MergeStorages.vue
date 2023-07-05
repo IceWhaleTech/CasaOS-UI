@@ -118,7 +118,7 @@
 
 		<footer class="is-flex is-align-items-center mb-4">
 			<div class="is-flex-grow-1">
-				<a href="https://docs.zimaboard.com/docs/Small-body-Big-applications-OMV-install.html">{{
+				<a href="https://docs.zimaboard.com/docs/Small-body-Big-applications-OMV-install.html" target="_blank">{{
 						$t("Other ways to merge storages")
 					}}</a>
 			</div>
@@ -146,11 +146,11 @@
 </template>
 
 <script>
-import {mixin} from "@/mixins/mixin";
-import events from '@/events/events';
+import {mixin}  from "@/mixins/mixin";
+import events   from '@/events/events';
 import cToolTip from '@/components/basicComponents/tooltip/tooltip.vue';
-import filter from 'lodash/filter';
-import isEqual from 'lodash/isEqual';
+import filter   from 'lodash/filter';
+import isEqual  from 'lodash/isEqual';
 
 export default {
 	name: "MergeStorages",
@@ -371,7 +371,7 @@ export default {
 		// get the storage list be mounted of mergerfs
 		async getMerageStorage() {
 			try {
-				// TODO merge can't be used
+				// business :: merge can't be used
 				this.mergeInfo = await this.$api.local_storage.getMergerfsInfo().then(res => res.data.data[0]["source_volume_uuids"]).catch(() => [])
 				this.checkBoxGroup.push(...this.mergeInfo)
 			} catch (e) {
@@ -440,7 +440,7 @@ export default {
 		async restart() {
 			this.isConnecting = true
 			try {
-				//TODO 将所有应用重启。
+				//business :: all apps to restarted.
 				// 1、 获取应用信息，主要是运行中的应用. 2、关闭应用 3、合并磁盘 4、启动应用
 				// get docker info
 				let dockerInfo = await this.$api.container.getInfo('').then(res => {
