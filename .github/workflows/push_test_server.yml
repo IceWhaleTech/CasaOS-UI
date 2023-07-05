@@ -49,8 +49,7 @@ jobs:
                 run: echo ${{ env.VERSION }}
                 # run: echo ${{ steps.get_version.outputs.VERSION }}
 
-            -   run: yarn cache clean
-            -   run: yarn --frozen-lockfile
+            -   run: yarn install
             -   run: yarn build
             -   run: |
                     tar -zcvf linux-all-casaos-v99.99.99.tar.gz build

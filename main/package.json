@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --mode dev",
-    "postinstall": "patch-package",
+    "postinstall": "npx patch-package",
     "build": "node message_bus.build.js && vue-cli-service build --dest ../build/sysroot/var/lib/casaos/www/ --mode production",
     "lint": "vue-cli-service lint",
     "build:messagebus": "node message_bus.build.js"
@@ -12,7 +12,7 @@
   "installConfig": {
     "hoistingLimits": "workspaces"
   },
-  "packageManager": "yarn@berry",
+  "packageManager": "yarn@3.6.1",
   "dependencies": {
     "@fontsource/roboto": "^4.5.7",
     "@icewhale/casaos-appmanagement-openapi": "latest",
@@ -24,7 +24,7 @@
     "apexcharts": "^3.33.2",
     "axios": "^0.26.0",
     "browser-info": "^1.3.0",
-    "buefy": "^0.9.23",
+    "buefy": "0.9.23",
     "bulma": "0.9.4",
     "clipboard-copy": "^4.0.1",
     "composerize": "^1.2.0",
