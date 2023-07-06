@@ -65,7 +65,7 @@
 							<drive-item v-for="(item, index) in diskData" :key="'disk' + index"
 										:item="item"></drive-item>
 							<div v-if="diskData.length === 1"
-								 class="is-flex is-align-items-center is-justify-content-center _background-tips">
+								 class="is-flex is-align-items-center is-justify-content-center _background-tips mb-5">
 								<div>
 									<p class="has-text-title-06">Tips:</p>
 									<p class="has-text-full-03">Insert more hard drives and restart.</p>
