@@ -38,7 +38,7 @@ import {
 	Notification,
 	Dialog,
 	Message
-}              from 'buefy'
+}              from 'buefy/src/index.js'
 import 'buefy/dist/buefy.css'
 
 Vue.use(Icon)
