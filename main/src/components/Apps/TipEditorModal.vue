@@ -76,7 +76,7 @@ export default {
 			tips: '',
 			tempTips: '',
 			controlEditorState: 'preview',
-			icon: 'edit'
+			icon: 'edit-outline'
 		}
 	},
 	props: {
@@ -99,11 +99,11 @@ export default {
 			if (val) {
 				// editor is editable
 				this.controlEditorState = 'edit'
-				this.icon = 'matching'
+				this.icon = 'check-outline'
 			} else {
 				// editor is not editable
 				this.controlEditorState = 'preview'
-				this.icon = 'edit'
+				this.icon = 'edit-outline'
 			}
 			return this.isEditing
 		},
