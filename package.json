@@ -5,7 +5,7 @@
   "scripts": {
     "preinstall": "npx only-allow yarn",
     "dev": "turbo run serve",
-    "dev:noCache": "turbo run serve --no-cache",
+    "dev:noCache": "turbo run serve --force --cache-dir ./.turbo/cache",
     "build": "turbo run build"
   },
   "packageManager": "yarn@3.6.0",
