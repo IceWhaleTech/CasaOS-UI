@@ -87,7 +87,7 @@
 					</b-field>
 
 					<b-field :label="$t('Network')">
-						<b-select :value="service.network_mode || service.networks[0]" expanded
+						<b-select :value="service.network_mode || service?.networks?.[0]" expanded
 								  placeholder="Select"
 								  @input="v=> patchNetworkValue(v, service)">
 							<optgroup v-for="net in appendNetworks" :key="net.driver" :label="net.driver">
@@ -431,7 +431,7 @@ export default {
 			return this.configData["x-casaos"].icon
 		},
 		appendNetworks() {
-			let log = this.networks.map((item) => {
+			return this.networks.map((item) => {
 				if (item.driver == 'bridge') {
 					if (find(item.networks, ['name', this.firstAppName])) {
 						return item
@@ -452,8 +452,6 @@ export default {
 					return item
 				}
 			});
-			console.log(log, '11111')
-			return log
 		},
 	},
 	created() {
@@ -691,6 +689,8 @@ export default {
 				composeServicesItem.network_mode = "host"
 			} else if (network_mode == "physical") {
 				composeServicesItem.network_mode = "macvlan"
+			} else {
+				composeServicesItem.network_mode = network_mode
 			}
 
 			//hostname
@@ -859,6 +859,9 @@ export default {
 		showPorts(service) {
 			if (service.networks) {
 				return true
+			}
+			if (!service?.network_mode) {
+				return true;
 			}
 			// 存在
 			if (
