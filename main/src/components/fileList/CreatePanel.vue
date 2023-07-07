@@ -19,8 +19,8 @@
 		<!-- Modal-Card Header End -->
 		<!-- Modal-Card Body Start -->
 		<section class="modal-card-body">
-			<b-field :label="$t('Name ')" :type="errorType" :message="message">
-				<b-input v-model="name" maxlength="255" expanded></b-input>
+			<b-field :label="$t('Name ')" :message="message" :type="errorType">
+				<b-input v-model="name" expanded maxlength="255"></b-input>
 			</b-field>
 
 		</section>
@@ -29,8 +29,8 @@
 		<footer class="modal-card-foot is-flex is-align-items-center">
 			<div class="is-flex-grow-1"></div>
 			<div>
-				<b-button :label="$t('Cancel')" type="is-grey" @click="$emit('close')" rounded/>
-				<b-button :label="$t('Submit')" type="is-dark" @click="create()" rounded/>
+				<b-button :label="$t('Cancel')" rounded type="is-grey" @click="$emit('close')"/>
+				<b-button :label="$t('Submit')" rounded type="is-dark" @click="create()"/>
 			</div>
 		</footer>
 		<!-- Modal-Card Footer End-->
@@ -61,16 +61,23 @@ export default {
 		create() {
 			let path = `${this.initPath}/${this.name}`
 			if (this.isDir) {
-				this.$api.folder.create(path).then(res => {
-					if (res.data.success == 200) {
+				this.$openAPI.iceFolder.createFolder({path}).then(res => {
+					if (res.status == 200) {
 						this.successCallBack(path);
 					} else {
 						this.errorCallBack(res.data.message);
 					}
 				})
-			} else {
-				this.$api.file.create(path).then(res => {
+				/*this.$api.folder.create(path).then(res => {
 					if (res.data.success == 200) {
+						this.successCallBack(path);
+					} else {
+						this.errorCallBack(res.data.message);
+					}
+				})*/
+			} else {
+				this.$openAPI.iceFile.postCreateFile({path}).then(res => {
+					if (res.status == 200) {
 						this.successCallBack(path);
 					} else {
 						this.errorType = "is-danger"
