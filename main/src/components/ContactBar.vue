@@ -18,7 +18,7 @@
 				{{ $t('Submit a feedback or report an issue') }}
 			</div>
 			<a slot="reference" @click="showFeedback">
-				<b-icon icon="feedback" pack="casa"></b-icon>
+				<b-icon icon="eedback" pack="casa"></b-icon>
 			</a>
 		</popper>
 
@@ -56,7 +56,7 @@
 				{{ $t('Share CasaOS') }}
 			</div>
 			<a slot="reference" @click="showShareModal">
-				<b-icon icon="social-share" pack="casa"></b-icon>
+				<b-icon icon="share" pack="casa"></b-icon>
 			</a>
 		</popper>
 
