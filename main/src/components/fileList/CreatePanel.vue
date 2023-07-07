@@ -61,7 +61,7 @@ export default {
 		create() {
 			let path = `${this.initPath}/${this.name}`
 			if (this.isDir) {
-				this.$openAPI.iceFile.putFile(path).then(res => {
+				this.$openAPI.iceFolder.createFolder({path}).then(res => {
 					if (res.status == 200) {
 						this.successCallBack(path);
 					} else {
@@ -76,8 +76,8 @@ export default {
 					}
 				})*/
 			} else {
-				this.$api.file.create(path).then(res => {
-					if (res.data.success == 200) {
+				this.$openAPI.iceFile.postCreateFile({path}).then(res => {
+					if (res.status == 200) {
 						this.successCallBack(path);
 					} else {
 						this.errorType = "is-danger"
