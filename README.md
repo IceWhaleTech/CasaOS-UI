@@ -1,4 +1,10 @@
-# How to develop this project.
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=IceWhaleTech_CasaOS-UI&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=IceWhaleTech_CasaOS-UI)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=IceWhaleTech_CasaOS-UI&metric=bugs)](https://sonarcloud.io/summary/new_code?id=IceWhaleTech_CasaOS-UI)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=IceWhaleTech_CasaOS-UI&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=IceWhaleTech_CasaOS-UI)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=IceWhaleTech_CasaOS-UI&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=IceWhaleTech_CasaOS-UI)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=IceWhaleTech_CasaOS-UI&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=IceWhaleTech_CasaOS-UI)
+
+# How to develop this project
 
 ```shell
 # install tool
@@ -11,7 +17,7 @@ yarn install
 yarn dev 
 ```
 
-# How to build this project.
+# How to build this project
 
 ```shell
 # install tool
@@ -24,11 +30,11 @@ yarn install
 yarn build 
 ```
 
-# TODO how to test this project.
+# TODO how to test this project
 
-# TODO how to deploy this project.
+# TODO how to deploy this project
 
-# How to contribute to this project.
+# How to contribute to this project
 
 CasaOS is a community-driven open source project and the people involved are CasaOS users. That means CasaOS will always
 need contributions from community members just like you!
@@ -36,9 +42,9 @@ need contributions from community members just like you!
 - See <https://wiki.casaos.io/en/contribute> for ways of contribution to CasaOS
 - See <https://wiki.casaos.io/en/contribute/development> if you want to be involved in code contribution specificially
 
-# TODO how to license this project.
+# TODO how to license this project
 
-# How to contact this project.
+# How to contact this project
 
 The word Casa comes from the Spanish word for "home". Project CasaOS originated as a pre-installed system for
 crowdfunded product [ZimaBoard](https://www.zimaboard.com) on Kickstarter.
