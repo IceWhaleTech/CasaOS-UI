@@ -76,6 +76,7 @@ import isEqual                      from "lodash/isEqual";
 import {loadMicroApp, prefetchApps} from 'qiankun';
 import {MIRCO_APP_ACTION_ENUM}      from "@/const";
 import {externalMircoApp}           from "@/router";
+import {ice_i18n}                   from "@/mixins/base/common-i18n";
 
 const SYNCTHING_STORE_ID = 74
 
@@ -600,8 +601,10 @@ export default {
 			this.messageBusToast(res.Properties.message, 'is-danger');
 		},
 		"app:apply-changes-end"(res) {
+			let languages = JSON.parse(res.Properties["app:title"])
+			const title = ice_i18n(languages)
 			// toast info
-			this.messageBusToast(res.Properties['app:name'] + ' is OK', 'is-success');
+			this.messageBusToast(title + ' is OK', 'is-success');
 
 			// business :: Tagging of new app / scrollIntoView
 			this.addIdToSessionStorage(res.Properties['app:name'])
