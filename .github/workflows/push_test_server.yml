@@ -42,7 +42,7 @@ jobs:
                 id: get_version
                 # run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
                 # run: echo "VERSION=$(git describe --abbrev=0 --tags | awk -F- '{print $1}')" >> $GITHUB_ENV
-                run: echo "VERSION=v99.99.99" >> $GITHUB_ENV
+                run: echo "VERSION=v00.00.00" >> $GITHUB_ENV
 
             -   name: show version
                 id: show_version
@@ -79,7 +79,7 @@ jobs:
             -   name: copy tar to target hostname
                 shell: bash
                 run: |
-                    sshpass -p "${{ secrets.ssh_password }}" scp -r -o StrictHostKeyChecking=no -P 22 ./linux-all-casaos-v99.99.99.tar.gz root@10.147.18.11:/var/www/download
+                    sshpass -p "${{ secrets.ssh_password }}" scp -r -o StrictHostKeyChecking=no -P 22 ./linux-all-casaos-v00.00.00.tar.gz root@10.147.18.11:/var/www/download
                     echo "ping success"
             -   name: Error Handling
                 if: ${{ failure() }}
