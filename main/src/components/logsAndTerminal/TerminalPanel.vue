@@ -15,7 +15,7 @@
 		<section class="modal-card-body " style="overflow:hidden">
 			<h3 class="title is-3">CasaOS</h3>
 			<div class="close-container">
-				<span class="mdi mdi-tray-arrow-down is-size-20px mr-4 cursor-pointer"
+				<span v-show="showTabName === 'logs'" class="mdi mdi-tray-arrow-down is-size-20px mr-4 cursor-pointer"
 					  @click="downloadSystemLog"></span>
 				<button class="delete" type="button" @click="$emit('close')"/>
 			</div>
@@ -55,6 +55,7 @@ export default {
 			wsUrl: ``,
 			logData: "",
 			timer: '',
+			showTabName: "terminal"
 		}
 	},
 	mounted() {
@@ -73,10 +74,12 @@ export default {
 		},
 		onInput(e) {
 			if (e == "terminal") {
+				this.showTabName = "terminal"
 				this.$refs.terminal.active(true)
 				this.$refs.logs.active(false)
 				this.$messageBus('terminallogs_terminal')
 			} else {
+				this.showTabName = "logs"
 				this.$refs.terminal.active(false)
 				this.$refs.logs.active(true)
 				this.$messageBus('terminallogs_logs')
