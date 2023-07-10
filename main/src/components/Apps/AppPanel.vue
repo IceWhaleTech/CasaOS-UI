@@ -202,7 +202,7 @@
 										<div
 											class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
 											<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
-													icon="posted-by-outline"
+													icon="author"
 													pack="casa"></b-icon>
 											<span class="has-text-full-03">{{ currentAuthor.name }}</span>
 											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'"

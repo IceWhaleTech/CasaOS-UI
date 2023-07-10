@@ -219,7 +219,7 @@ onBeforeUnmount(() => {
 			</div>
 			<div v-else-if="componentState === 'active_input_state'" key="3" class="is-flex is-align-items-center">
 				<b-input ref="inputSourceURL" v-model="url" :disabled="addLoadingState"
-						 class="is-flex-grow-1 _sources_input" icon-pack="casa" icon-right="question-outline"
+						 class="is-flex-grow-1 _sources_input" icon-pack="casa" icon-right="question"
 						 icon-right-clickable @icon-right-click="redirectURL"></b-input>
 				<b-button :loading="addLoadingState" class="is-flex-shrink-0 _button-icon"
 						  icon-pack="casa" icon-right="plus"
