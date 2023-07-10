@@ -13,8 +13,14 @@
     "main",
     "packages/*"
   ],
+  "dependencies": {
+    "csslint": "^1.0.5",
+    "htmlhint": "^1.1.4",
+    "jshint": "^2.13.6",
+    "jsonlint": "^1.6.3"
+  },
   "devDependencies": {
-    "turbo": "1.10.7"
+    "turbo": "1.10.3"
   },
   "browserslist": [
     "> 1%",
