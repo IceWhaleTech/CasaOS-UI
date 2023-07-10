@@ -49,7 +49,7 @@ jobs:
                 run: echo ${{ env.VERSION }}
                 # run: echo ${{ steps.get_version.outputs.VERSION }}
 
-            -   run: yarn install
+            -   run: yarn install --frozen-lockfile
             -   run: yarn build
             -   run: |
                     tar -zcvf linux-all-casaos-${{ env.VERSION }}.tar.gz build
