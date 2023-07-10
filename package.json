@@ -13,11 +13,7 @@
     "main",
     "packages/*"
   ],
-  "dependencies": {
-    "@icewhale/casaos-appmanagement-openapi": "latest"
-  },
   "devDependencies": {
-    "babel-eslint": "^10.1.0",
     "turbo": "1.10.7"
   },
   "browserslist": [

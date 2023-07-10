@@ -4752,8 +4752,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "casaos@workspace:."
   dependencies:
-    "@icewhale/casaos-appmanagement-openapi": latest
-    babel-eslint: ^10.1.0
     turbo: 1.10.7
   languageName: unknown
   linkType: soft
