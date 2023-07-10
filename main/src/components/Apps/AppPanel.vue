@@ -21,7 +21,7 @@
 						}}
 					</h3>
 				</div>
-				<b-icon class="_polymorphic close" icon="close-outline" pack="casa"
+				<b-icon class="_polymorphic close" icon="close" pack="casa"
 						@click.native="$emit('close'); $messageBus('appstore_close')"/>
 			</header>
 			<p class="modal-card-body">
@@ -79,11 +79,11 @@
 					</b-tooltip>
 					<div v-if="currentSlide < 2"
 						 class="is-flex is-align-items-center modal-close-container modal-close-container-line ">
-						<b-icon class="_polymorphic close" icon="close-outline" pack="casa"
+						<b-icon class="_polymorphic close" icon="close" pack="casa"
 								@click.native="$emit('close')"/>
 					</div>
 					<div v-else-if="currentSlide === 2" class="is-flex is-align-items-center">
-						<b-icon class="_polymorphic close" icon="close-outline" pack="casa"
+						<b-icon class="_polymorphic close" icon="close" pack="casa"
 								@click.native="$emit('close')"/>
 					</div>
 

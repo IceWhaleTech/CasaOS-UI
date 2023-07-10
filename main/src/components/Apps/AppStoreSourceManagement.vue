@@ -193,7 +193,7 @@ onBeforeUnmount(() => {
 									  type="is-text" @click.native="operationSourceName = item.id"></b-button>
 							<template v-else>
 								<b-button class="is-flex-shrink-0 _button-icon" icon-pack="casa"
-										  icon-right="close-outline"
+										  icon-right="close"
 										  type="is-text" @click.native="operationSourceName = -1"></b-button>
 								<b-button :loading="removeLoadingState" class="is-flex-shrink-0 _button-icon"
 										  icon-pack="casa"
@@ -222,7 +222,7 @@ onBeforeUnmount(() => {
 						 class="is-flex-grow-1 _sources_input" icon-pack="casa" icon-right="question-outline"
 						 icon-right-clickable @icon-right-click="redirectURL"></b-input>
 				<b-button :loading="addLoadingState" class="is-flex-shrink-0 _button-icon"
-						  icon-pack="casa" icon-right="plus-outline"
+						  icon-pack="casa" icon-right="plus"
 						  @click="registerAppStore(url)">add
 				</b-button>
 			</div>

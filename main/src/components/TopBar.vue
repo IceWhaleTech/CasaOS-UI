@@ -29,7 +29,7 @@
 					<b-tooltip :active="!$store.state.isMobile" :label="$t('Account')"
 							   position="is-right" type="is-dark" @click.native="$messageBus('account_setting')">
 						<p role="button">
-							<b-icon class="picon" icon="account-outline" pack="casa" size="is-20"></b-icon>
+							<b-icon class="picon" icon="account" pack="casa" size="is-20"></b-icon>
 						</p>
 					</b-tooltip>
 				</template>
@@ -72,8 +72,7 @@
 					<b-tooltip :active="!$store.state.isMobile" :label="$t('Settings')" position="is-right"
 							   type="is-dark" @click.native="$messageBus('dashboardsetting')">
 						<p role="button">
-							<b-icon :class="{ 'update-icon-dot': updateInfo.need_update }" class="picon"
-									icon="settings-outline"
+							<b-icon :class="{ 'update-icon-dot': updateInfo.need_update }" class="picon" icon="tune"
 									pack="casa" size="is-20"></b-icon>
 						</p>
 					</b-tooltip>
@@ -87,7 +86,7 @@
 					<div
 						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-							<b-icon class="mr-1 ml-2" icon="search-category-outline" pack="casa" size="is-20"></b-icon>
+							<b-icon class="mr-1 ml-2" icon="search-manage" pack="casa" size="is-20"></b-icon>
 							{{ $t('Show Search Bar') }}
 						</div>
 						<div>
@@ -104,7 +103,7 @@
 					<div v-if="barData.search_switch"
 						 class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-							<b-icon class="mr-1 ml-2" icon="search2-outline" pack="casa" size="is-20"></b-icon>
+							<b-icon class="mr-1 ml-2" icon="magnifier" pack="casa" size="is-20"></b-icon>
 							{{ $t('Search Engine') }}
 						</div>
 						<div>
@@ -125,7 +124,7 @@
 					<div
 						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-							<b-icon class="mr-1 ml-2" icon="language-outline" pack="casa" size="is-20"></b-icon>
+							<b-icon class="mr-1 ml-2" icon="language" pack="casa" size="is-20"></b-icon>
 							{{ $t('Language') }}
 						</div>
 						<div>
@@ -145,7 +144,7 @@
 					<div
 						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-							<b-icon class="mr-1 ml-2" icon="port-outline" pack="casa" size="is-20"></b-icon>
+							<b-icon class="mr-1 ml-2" icon="port" pack="casa" size="is-20"></b-icon>
 							{{ $t('WebUI Port') }}
 						</div>
 						<div>
@@ -164,7 +163,7 @@
 					<div
 						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-							<b-icon class="mr-1 ml-2" icon="wallpaper-outline" pack="casa" size="is-20"></b-icon>
+							<b-icon class="mr-1 ml-2" icon="picture" pack="casa" size="is-20"></b-icon>
 							{{ $t('Wallpaper') }}
 						</div>
 						<div class="ml-2">
@@ -177,27 +176,27 @@
 					<!-- Background End -->
 
 					<!--  Show other Docker container app(s) Switch Start  -->
-					<!--					<div v-if="this.$store.state.notImportList.length > 0"
-											 class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
-											<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-												<b-icon class="mr-1 ml-2" icon="docker" pack="casa" size="is-20"></b-icon>
-												{{ $t('Show other Docker container app(s)') }}
-											</div>
-											<div>
-												<b-field>
-													<b-switch v-model="barData.existing_apps_switch"
-															  class="is-flex-direction-row-reverse mr-0 _small" type="is-dark"
-															  @input="saveData"></b-switch>
-												</b-field>
-											</div>
-										</div>-->
+					<div v-if="this.$store.state.notImportList.length > 0"
+						 class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
+							<b-icon class="mr-1 ml-2" icon="docker" pack="casa" size="is-20"></b-icon>
+							{{ $t('Show other Docker container app(s)') }}
+						</div>
+						<div>
+							<b-field>
+								<b-switch v-model="barData.existing_apps_switch"
+										  class="is-flex-direction-row-reverse mr-0 _small" type="is-dark"
+										  @input="saveData"></b-switch>
+							</b-field>
+						</div>
+					</div>
 					<!--  Show other Docker container app(s) Switch End  -->
 
 					<!--  Show other Docker container app(s) Switch Start  -->
 					<div
 						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-							<b-icon class="mr-1 ml-2" icon="news-outline" pack="casa" size="is-20"></b-icon>
+							<b-icon class="mr-1 ml-2" icon="news" pack="casa" size="is-20"></b-icon>
 							{{ $t('Show news feed from CasaOS Blog') }}
 						</div>
 						<div>
@@ -213,8 +212,7 @@
 					<div
 						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-							<b-icon class="mr-1 ml-2" icon="display-applications-outline" pack="casa"
-									size="is-20"></b-icon>
+							<b-icon class="mr-1 ml-2" icon="app-switch" pack="casa" size="is-20"></b-icon>
 							{{ $t('Show Recommended Apps') }}
 						</div>
 						<div>
@@ -231,7 +229,7 @@
 					<div
 						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-							<b-icon class="mr-1 ml-2" icon="usb-outline" pack="casa" size="is-20"></b-icon>
+							<b-icon class="mr-1 ml-2" icon="usb" pack="casa" size="is-20"></b-icon>
 							{{ $t('Automount USB Drive') }}
 							<b-tooltip v-if="isRaspberryPi"
 									   :label="$t('Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB')"
@@ -252,7 +250,7 @@
 					<div class="_is-large _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center">
 							<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-								<b-icon class="mr-1 ml-2" icon="update-outline" pack="casa" size="is-20"></b-icon>
+								<b-icon class="mr-1 ml-2" icon="upgrade" pack="casa" size="is-20"></b-icon>
 								<div :class="{ 'update-text-dot': updateInfo.need_update }">{{ $t('Update') }}</div>
 							</div>
 							<div class="_has-text-gray">
@@ -301,7 +299,7 @@
 			<div class="is-flex is-align-items-center ml-3 _fixed-height" @click="showTerminalPanel">
 				<b-tooltip :active="!$store.state.isMobile" :label="$t('Terminal & Logs')" position="is-right"
 						   style="height: 1.25rem;" type="is-dark">
-					<b-icon class="picon" icon="terminal-outline" pack="casa" size="is-20"></b-icon>
+					<b-icon class="picon" icon="terminal" pack="casa" size="is-20"></b-icon>
 				</b-tooltip>
 			</div>
 			<!-- Terminal  End -->
