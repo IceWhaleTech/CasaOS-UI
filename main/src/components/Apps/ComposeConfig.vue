@@ -5,7 +5,7 @@
   * @Description:
   *
   * Copyright (c) 2023 by IceWhale, All Rights Reserved.
-  
+
   -->
 
 <template>
@@ -288,7 +288,7 @@ export default {
 						image: "",
 						mem_reservation: "0",
 						network_mode: "bridge",
-						cpu_shares: "10",
+						cpu_shares: 10,
 						restart: "unless-stopped",
 						volumes: [],
 						depends_on: [],
