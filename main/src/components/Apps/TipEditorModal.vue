@@ -5,7 +5,7 @@
   * @Description:
   *
   * Copyright (c) 2023 by IceWhale, All Rights Reserved.
-  
+
   -->
 <template>
 	<div class="modal-card">
@@ -76,7 +76,7 @@ export default {
 			tips: '',
 			tempTips: '',
 			controlEditorState: 'preview',
-			icon: 'edit-outline'
+			icon: 'edit'
 		}
 	},
 	props: {
@@ -100,11 +100,11 @@ export default {
 			if (val) {
 				// editor is editable
 				this.controlEditorState = 'edit'
-				this.icon = 'check-outline'
+				this.icon = 'matching'
 			} else {
 				// editor is not editable
 				this.controlEditorState = 'preview'
-				this.icon = 'edit-outline'
+				this.icon = 'edit'
 			}
 			return this.isEditing
 		},
@@ -181,7 +181,7 @@ export default {
 		getCompleteComposeData() {
 			/*let lines = this.tips.split('\n');
 			let body = [];
-			
+
 			lines.forEach(line => {
 				let splitArray = line.split(':');
 				let value = splitArray.length > 1 ? splitArray[0] : 'user input';
