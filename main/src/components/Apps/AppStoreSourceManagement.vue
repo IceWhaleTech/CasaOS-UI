@@ -94,7 +94,7 @@ function unregisterAppStore(id) {
 }
 
 function redirectURL() {
-	window.open("https://github.com/IceWhaleTech/CasaOS-AppStore", "_blank");
+	window.open("https://awesome.casaos.io/content/3rd-party-app-stores/list.html", "_blank");
 }
 
 function activeInput() {
