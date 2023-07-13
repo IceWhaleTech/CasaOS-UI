@@ -1,7 +1,7 @@
 <!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/6/21 下午3:18
-  * @FilePath: /CasaOS-UI/main/src/components/Apps/AppStoreSourceManagement.vue
+ * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ * @LastEditTime: 2023-07-13 13:31:07
+ * @FilePath: /CasaOS-UI/main/src/components/Apps/AppStoreSourceManagement.vue
   * @Description:
   *
   * Copyright (c) 2023 by IceWhale, All Rights Reserved.
@@ -178,7 +178,7 @@ onBeforeUnmount(() => {
 			<div v-else-if="componentState === 'second_list_state'" key="2">
 				<b-dropdown aria-role="menu" position="is-bottom-left" style="height: 2rem;">
 					<template #trigger>
-						<b-button icon-pack="casa" icon-right="down-outline">
+						<b-button icon-pack="casa" icon-right="down">
 							{{ props.totalApps }} APPS
 						</b-button>
 					</template>
@@ -189,7 +189,7 @@ onBeforeUnmount(() => {
 						<p :ref="`removeButton${item.id}`" class="is-flex is-align-items-center">
 							<span class="has-text-full-04 is-flex-grow-1 one-line">{{ item.name }}</span>
 							<b-button v-if="operationSourceName !== item.id" class="is-flex-shrink-0 _button-icon"
-									  icon-pack="casa" icon-right="trash-outline"
+									  icon-pack="mdi" icon-right="trash-can-outline"
 									  type="is-text" @click.native="operationSourceName = item.id"></b-button>
 							<template v-else>
 								<b-button class="is-flex-shrink-0 _button-icon" icon-pack="casa"
@@ -197,7 +197,7 @@ onBeforeUnmount(() => {
 										  type="is-text" @click.native="operationSourceName = -1"></b-button>
 								<b-button :loading="removeLoadingState" class="is-flex-shrink-0 _button-icon"
 										  icon-pack="casa"
-										  icon-right="check-outline" type="is-text"
+										  icon-right="matching" type="is-text"
 										  @click.native="unregisterAppStore(item.id)"></b-button>
 							</template>
 						</p>
