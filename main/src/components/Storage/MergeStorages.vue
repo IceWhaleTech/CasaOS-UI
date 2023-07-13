@@ -1,9 +1,9 @@
 <!--
  * @Author: zhanghengxin hengxin.zhang@icewhale.org
  * @Date:  2022-09-13 17:01:37
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-06 17:45:12
- * @FilePath: /CasaOS-UI/src/components/Storage/MergeStorages.vue
+ * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ * @LastEditTime: 2023-07-13 12:52:59
+ * @FilePath: /CasaOS-UI/main/src/components/Storage/MergeStorages.vue
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -146,11 +146,12 @@
 </template>
 
 <script>
-import {mixin}  from "@/mixins/mixin";
-import events   from '@/events/events';
-import cToolTip from '@/components/basicComponents/tooltip/tooltip.vue';
-import filter   from 'lodash/filter';
-import isEqual  from 'lodash/isEqual';
+import {mixin}    from "@/mixins/mixin";
+import events     from '@/events/events';
+import cToolTip   from '@/components/basicComponents/tooltip/tooltip.vue';
+import filter     from 'lodash/filter';
+import isEqual    from 'lodash/isEqual';
+import {ice_i18n} from "@/mixins/base/common-i18n";
 
 export default {
 	name: "MergeStorages",
@@ -328,7 +329,11 @@ export default {
 			}).then(res => {
 				// started all containers
 				Promise.all(dockerInfo.map(async item => {
-					await this.$api.container.updateState(item.id, "start")
+					if (item.app_type === "v2app") {
+						await this.$openAPI.appCompose.setComposeAppStatus(item.name, "start")
+					} else {
+						await this.$api.container.updateState(item.name, "start")
+					}
 				})).then(() => {
 					this.$buefy.toast.open({
 						message: 'Merge Storages Success',
@@ -414,20 +419,18 @@ export default {
 			let notSplit = this.mergeStorageList.every(item => this.checkBoxGroup.includes(item) || this.checkBoxMissGroup.includes(item))
 			if (notSplit || nextStep) {
 				// get docker info
-				// TODO: migrate to v2
-				// 为空列出所有 app 信息
-				let dockerInfo = await this.$api.container.getInfo('').then(res => res.data.data.casaos_apps);
-				dockerInfo = filter(dockerInfo, {state: "running"})
+				let dockerInfo = await this.$openAPI.appGrid.getAppGrid().then(res => res.data.data || [])
+				dockerInfo = filter(dockerInfo, {status: "running"})
 				if (this.notEmpty) {
 					this.restart()
 					return
 				} else if (dockerInfo.length === 1) {
 					this.currentStep = 4
-					this.runName = dockerInfo[0].name
+					this.runName = ice_i18n(dockerInfo[0].title)
 					return
 				} else if (dockerInfo.length > 1) {
 					this.currentStep = 3
-					this.runName = dockerInfo.map(item => item.name).join(',')
+					this.runName = dockerInfo.map(item => ice_i18n(item.title)).join(',')
 					return
 				} else {
 					this.restart()
@@ -442,14 +445,16 @@ export default {
 			try {
 				//business :: all apps to restarted.
 				// 1、 获取应用信息，主要是运行中的应用. 2、关闭应用 3、合并磁盘 4、启动应用
-				// get docker info
-				let dockerInfo = await this.$api.container.getInfo('').then(res => {
-					return res.data.data.casaos_apps
-				})
-				dockerInfo = filter(dockerInfo, {state: "running"})
-				let container = this.$api.container
+				let dockerInfo = await this.$openAPI.appGrid.getAppGrid().then(res => res.data.data || [])
+				dockerInfo = filter(dockerInfo, {status: "running"})
+				const container = this.$api.container
+				const compose = this.$openAPI.appCompose
 				Promise.all(dockerInfo.map(async item => {
-					await container.updateState(item.id, "stop")
+					if (item.app_type === "v2app") {
+						await compose.setComposeAppStatus(item.name, 'stop')
+					} else {
+						await container.updateState(item.name, "stop")
+					}
 				})).then(() => {
 					this.$api.local_storage.getInitMergerfsStatus().then(res => {
 						if (res.data.data !== 'initialized') {

@@ -1,7 +1,7 @@
 /*
  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
- * @LastEditTime: 2023/2/27 下午2:38
- * @FilePath: /CasaOS-UI/src/service/index.js
+ * @LastEditTime: 2023-07-13 12:39:22
+ * @FilePath: /CasaOS-UI/main/src/service/index.js
  * @Description:
  *
  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
@@ -32,8 +32,9 @@ const appManagement = {}
 appManagement.compose = new ComposeMethodsApiFactory(config, '/v2/app_management', instance);
 appManagement.appStore = new AppStoreMethodsApi(config, '/v2/app_management', instance);
 const appGrid = new InternalMethodsApiFactory(config, '/v2/app_management', instance);
+const appCompose = new ComposeMethodsApiFactory(config, '/v2/app_management', instance);
 const zerotier = new ZerotierMethodsApi(config, '/v2/casaos/', instance);
 const iceFile = new FileApiFactory(config, '/v2', instance);
 const iceFolder = new FolderApiFactory(config, '/v2', instance);
 
-export default {appManagement, appGrid, zerotier, iceFile, iceFolder}
+export default {appManagement, appGrid, appCompose, zerotier, iceFile, iceFolder}
