@@ -1,9 +1,9 @@
 <!--
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-08-03 15:28:43
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-18 10:51:36
- * @FilePath: \CasaOS-UI-dev\src\components\filebrowser\modals\NewNetworkStorage.vue
+ * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ * @LastEditTime: 2023-07-13 13:09:16
+ * @FilePath: /CasaOS-UI/main/src/components/filebrowser/modals/NewNetworkStorage.vue
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -174,7 +174,7 @@ export default {
 
 				} else {
 
-					const hostname = this.host.replace("smb://", "").replace("nfs://", "")
+					const host = this.host.replace("smb://", "").replace("nfs://", "")
 					const data = this.isGuest ? {
 						host: host,
 						username: "guest",
