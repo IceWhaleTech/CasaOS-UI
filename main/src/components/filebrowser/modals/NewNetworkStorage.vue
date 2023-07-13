@@ -2,7 +2,7 @@
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-08-03 15:28:43
  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
- * @LastEditTime: 2023-07-13 13:09:16
+ * @LastEditTime: 2023-07-13 17:02:12
  * @FilePath: /CasaOS-UI/main/src/components/filebrowser/modals/NewNetworkStorage.vue
  * @Description:
  *
@@ -28,7 +28,7 @@
 					<b-field :label="$t('Server Address')">
 						<b-autocomplete ref="inputs" v-model="host" :data="filteredDataObj"
 										:placeholder="$t('eg : smb://192.168.1.1')"
-										append-to-body field="hostname" max-height="120px" open-on-focus
+										append-to-body field="host" max-height="120px" open-on-focus
 										@select="option => selected = option">
 							<template slot-scope="props">
 								<div class="media is-align-items-center smb-media">
