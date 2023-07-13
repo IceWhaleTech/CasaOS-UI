@@ -1325,8 +1325,14 @@ export default {
 		 * @return {*} void
 		 */
 		exportYAML() {
+			let title = YAML.parse(this.dockerComposeCommands)?.["x-casaos"]?.["title"]
+			if (title) {
+				title = ice_i18n(title)
+			} else {
+				title = this.currentInstallId
+			}
 			const blob = new Blob([this.dockerComposeCommands], {type: ''});
-			FileSaver.saveAs(blob, `${this.currentInstallId}.yaml`);
+			FileSaver.saveAs(blob, `${title}.yaml`);
 		},
 
 		/**
