@@ -1332,7 +1332,7 @@ export default {
 				title = this.currentInstallId
 			}
 			const blob = new Blob([this.dockerComposeCommands], {type: ''});
-			FileSaver.saveAs(blob, `${title}.yaml`);
+			FileSaver.saveAs(blob, `${title}.yml`);
 		},
 
 		/**
