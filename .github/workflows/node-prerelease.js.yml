@@ -35,6 +35,8 @@ jobs:
                 with:
                     path: node_modules
                     key: ${{runner.OS}}-${{hashFiles('**/yarn.lock')}}
+            -   name: Fetch all tags
+                run: sudo git fetch --force --tags
             -   name: '读取当前版本号 Read the current version number'
                 id: version
                 uses: zhanghengxin/reading-a-file-of-JSON@ice
@@ -51,8 +53,7 @@ jobs:
                     echo github ${{ github }}
                     echo github.sha ${{ github.sha }}
                     echo env.VERSION ${{ steps.get_version.outputs.VERSION }}
-            -   run: yarn preinstall
-            -   run: yarn add global turbo -W
+            -   run: yarn install
             -   run: yarn build
             -   run: |
                     tar -zcvf linux-all-casaos-${{ steps.get_version.outputs.VERSION }}.tar.gz build
