@@ -600,7 +600,7 @@ export default {
 		exportYAML(item) {
 			this.$api.container.exportAsCompose(item.name).then(res => {
 				const blob = new Blob([res.data], {type: ''});
-				FileSaver.saveAs(blob, `${item.image}.yaml`);
+				FileSaver.saveAs(blob, `${item.image}.yml`);
 			}).catch((err) => {
 				this.$buefy.toast.open({
 					message: err.response.data.message,
