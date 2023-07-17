@@ -370,5 +370,12 @@
   "Save {name} {size} from {device}.": "Save {name} {size} from {device}.",
   "Connection lost. Retry in 5 seconds...": "Connection lost. Retry in 5 seconds...",
   "cli to compose...": "cli to compose...",
-  "View tutorial": "View tutorial"
+  "View tutorial": "View tutorial",
+  "Add Source": "Add Source",
+  "Search an app...": "Search an app...",
+  "Tips": "Tips",
+  "Export as Compose": "Export as Compose",
+  "Something to remember eg. password": "Something to remember eg. password",
+  "Other ways to merge storages": "Other ways to merge storages",
+  "Free up storage": "Free up storage"
 }

@@ -368,5 +368,13 @@
   "Ignore": "忽略",
   "File transfer completed.": "文件传输完成。",
   "Save {name} {size} from {device}.": "保存来自于 {device} 的 {name} {size} 。",
-  "Connection lost. Retry in 5 seconds...": "连接丢失。5秒后重试..."
+  "Connection lost. Retry in 5 seconds...": "连接丢失。5秒后重试...",
+  "View tutorial": "查看引导",
+  "Add Source": "添加商店源",
+  "Search an app...": "查询应用...",
+  "Tips": "备注",
+  "Export as Compose": "导出为Compose",
+  "Something to remember eg. password": "记事本 例如: 密码",
+  "Other ways to merge storages": "安装包已准备就绪",
+  "Free up storage": "节省存储空间的方法"
 }
