@@ -371,10 +371,12 @@
   "Connection lost. Retry in 5 seconds...": "连接丢失。5秒后重试...",
   "View tutorial": "查看引导",
   "Add Source": "添加商店源",
+  "More": "更多",
   "Search an app...": "查询应用...",
   "Tips": "备注",
   "Export as Compose": "导出为Compose",
   "Something to remember eg. password": "记事本 例如: 密码",
   "Other ways to merge storages": "安装包已准备就绪",
-  "Free up storage": "节省存储空间的方法"
+  "Free up storage": "节省存储空间的方法",
+  "In the process of asynchronous updating.": "正在异步更新中。"
 }
