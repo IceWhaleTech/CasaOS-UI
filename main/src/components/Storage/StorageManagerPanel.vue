@@ -65,12 +65,16 @@
 							<drive-item v-for="(item, index) in diskData" :key="'disk' + index"
 										:item="item"></drive-item>
 							<div v-if="diskData.length === 1"
-								 class="is-flex is-align-items-center is-justify-content-center _background-tips mb-5">
-								<div>
-									<p class="has-text-title-06">Tips:</p>
-									<p class="has-text-full-03">Insert more hard drives and restart.</p>
+								 class="is-flex is-align-items-center is-justify-content-center _background-tips mb-5 p-4">
+								<div class="_236x88">
+									<p class="has-text-title-06">{{ $t("Tips") }}:</p>
+									<p class="has-text-full-03 ">
+										{{
+											$t("The device has six 3.5-inch HDD bays and four M.2 hard drive bays, Insert more disks.")
+										}}</p>
 								</div>
-								<b-image :src="require('@/assets/img/learn/tips-insertMoreDrives.svg')"></b-image>
+								<b-image :src="require('@/assets/img/learn/tips-insertMoreDrives.svg')"
+										 class="_320x100"></b-image>
 							</div>
 						</b-tab-item>
 					</b-tabs>
@@ -664,6 +668,16 @@ export default {
 </style>
 
 <style lang="scss">
+._236x88 {
+	width: 14.75rem;
+	height: 5.5rem;
+}
+
+._320x100 {
+	width: 20rem;
+	height: 6.25rem;
+}
+
 .popper[x-placement^="bottom"].dark .popper__arrow {
 	border-color: transparent transparent #505459 transparent !important;
 }
