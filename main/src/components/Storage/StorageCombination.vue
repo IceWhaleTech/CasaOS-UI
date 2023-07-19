@@ -9,7 +9,7 @@
 <template>
 	<div v-show="showCombination" class="mb-5 mt-2 pt-5 pb-5 border-1 combination-box">
 		<div class="is-relative is-flex is-justify-content-center top--2rem">
-			<div class="pr-1 pl-1 combination-title has-text-full-04">{{ TITLE }} HD</div>
+			<div class="pr-1 pl-1 combination-title has-text-full-04">{{ OS }} HD</div>
 		</div>
 		<div class="is-flex ">
 			<div class="is-flex-grow-1">
@@ -74,7 +74,7 @@ import cToolTip      from "@/components/basicComponents/tooltip/tooltip.vue";
 export default {
 	name: "drive-combination",
 	mixins: [mixin],
-	inject: ['TITLE'],
+	inject: ['OS'],
 	components: {
 		cToolTip,
 	},

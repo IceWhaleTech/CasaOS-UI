@@ -13,7 +13,7 @@
 
 		<!-- Modal-Card Body Start -->
 		<section class="modal-card-body " style="overflow:hidden">
-			<h3 class="title is-3">CasaOS</h3>
+			<h3 class="title is-3">{{ $t("Terminal & Logs") }}</h3>
 			<div class="close-container">
 				<span v-show="showTabName === 'logs'" class="mdi mdi-tray-arrow-down is-size-20px mr-4 cursor-pointer"
 					  @click="downloadSystemLog"></span>

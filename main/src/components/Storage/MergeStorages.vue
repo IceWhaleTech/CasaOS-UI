@@ -14,7 +14,7 @@
 		<section v-if="currentStep === 0"
 				 class="notification is-overlay mb-0 pr-0 pl-0 pt-2 pb-3 non-backgroud">
 			<div v-if="currentStep === 0" class="_is-normal _has-text-gray-600 mb-4">
-				{{ $t('All the checked Storage will be merged into {CasaOS} HD.', {CasaOS: TITLE}) }}
+				{{ $t('All the checked Storage will be merged into {CasaOS} HD.', {CasaOS: OS}) }}
 			</div>
 
 			<div v-for="(item, index) in storageData" :key="item.path + index" class="is-flex mb-1 radius _height-40">
@@ -158,7 +158,7 @@ import {ice_i18n} from "@/mixins/base/common-i18n";
 export default {
 	name: "MergeStorages",
 	mixins: [mixin],
-	inject: ['TITLE'],
+	inject: ['OS'],
 	components: {
 		cToolTip
 	},
