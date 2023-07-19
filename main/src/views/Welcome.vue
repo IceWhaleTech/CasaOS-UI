@@ -117,11 +117,11 @@
 				<div class="is-flex columns is-variable is-2 mt-1 mb-3">
 					<b-image
 						:src="require('@/assets/img/learn/guidance-MacOS-AppStore.svg')"
-						class="column" @click="MACPATH">
+						class="column cursor-pointer" @click.native="openLink(MACPATH)">
 					</b-image>
 					<b-image
 						:src="require('@/assets/img/learn/guidance-Windows-AppStore.svg')"
-						class="column" @click="WINPATH">
+						class="column cursor-pointer" @click.native="openLink(WINPATH)">
 					</b-image>
 				</div>
 				<div class="is-flex is-align-items-center mb-5">
@@ -396,6 +396,11 @@ export default {
 			} else {
 				return "arm64";
 			}
+		},
+		openLink(link) {
+			// open the link
+			debugger
+			window.open(link, '_blank');
 		},
 	}
 }
