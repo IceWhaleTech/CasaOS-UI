@@ -617,8 +617,12 @@ export default {
 				if (resp.status === 200) {
 					// messageBus :: apps_checkThenUpdate
 					this.$messageBus('apps_checkupdate', this.item.name.toString());
+
+					// TODO: this is need to i18n. But the resp.data.message contain app name. 
+					// So it may is hard to do 
 					this.$buefy.toast.open({
-						message: this.$t(`In the process of asynchronous updating.`),
+						// value is `In the process of asynchronous updating.` or `compose app `app Name` is up to date`
+						message: resp.data.message, 
 						type: 'is-success'
 					})
 
