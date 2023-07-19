@@ -133,8 +133,21 @@ export default {
 				device_name
 			} = await axios.get(`http://${this.$baseHostname}:9527`).then(res => res.data)
 			// const {device_model = "ZimaBox", device_name} = await axios.get(`http://192.168.2.114:9527`)
-			this.isZIMA = true || /^Zima/.test(device_model)
+			this.isZIMA = /^Zima/.test(device_model)
 			this.TITLE = device_model
+			if (this.$router.currentRoute.path === "/welcome") {
+				if (device_model.toLowerCase() === 'zimablade') {
+					this.$store.commit("SET_WALLPAPER", {
+						path: require('@/assets/background/wallpaper01-ZIMA.jpg'),
+						from: "Built-in" //Built-in, Upload, Files
+					})
+				} else {
+					this.$store.commit("SET_WALLPAPER", {
+						path: require('@/assets/background/wallpaper01-ZIMA.jpg'),
+						from: "Built-in" //Built-in, Upload, Files
+					})
+				}
+			}
 		} catch (e) {
 			console.error("GETTING THE CONFIG OF YOUR MACHINE IS EXPERIENCING AN ERROR:", e)
 		}
