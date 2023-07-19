@@ -1,6 +1,6 @@
 <!--
   - * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  - * @LastEditTime: 2023/5/15 下午6:29
+  - * @LastEditTime: 2023/7/19 下午4:08
   - * @FilePath: /CasaOS-UI/main/src/assets/img/logo/zima-0.0.1-white.svg
   - * @Description:
   - *
@@ -8,18 +8,31 @@
   -
   -->
 
-<svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-	<path
-		d="M0 12C0 5.37258 5.37258 0 12 0H60C66.6274 0 72 5.37258 72 12V60C72 66.6274 66.6274 72 60 72H12C5.37258 72 0 66.6274 0 60V12Z"
-		fill="url(#paint0_linear_1133_9331)"/>
-	<path
-		d="M39.6161 24.5759C32.5476 24.5759 25.4792 24.5759 18.4323 24.5759C18.4323 21.3767 18.4323 18.1992 18.4323 15C30.3212 15 42.2316 15 54.1637 15C53.861 20.5121 52.6505 23.279 51.2239 25.6351C49.7756 27.9696 48.1112 29.8718 45.9496 32.2712C41.3886 37.3294 36.8276 42.3875 32.2666 47.4457C39.6161 47.4457 46.9655 47.4457 54.3366 47.4457C54.3366 50.6233 54.3366 53.8224 54.3366 57C42.2316 57 30.105 57 18 57C18 53.282 18.4756 51.034 19.6212 48.5481C20.7669 46.0623 22.5826 43.3819 26.4303 39.1451C30.8183 34.2815 35.2064 29.4395 39.6161 24.5759Z"
-		fill="#FAB739"/>
+<svg width="76" height="76" viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+	<g filter="url(#filter0_d_1381_12256)">
+		<path
+			d="M2 12C2 5.37258 7.37258 0 14 0H62C68.6274 0 74 5.37258 74 12V60C74 66.6274 68.6274 72 62 72H14C7.37258 72 2 66.6274 2 60V12Z"
+			fill="url(#paint0_linear_1381_12256)"/>
+	</g>
+	<path fill-rule="evenodd" clip-rule="evenodd"
+		  d="M56.6994 25.6012C59.6268 25.6012 62 23.2281 62 20.3006C62 17.3732 59.6268 15 56.6994 15C53.7719 15 51.3988 17.3732 51.3988 20.3006C51.3988 23.2281 53.7719 25.6012 56.6994 25.6012ZM26.8982 46.9506H46.3926V55.6377H14V55.2402C14 50.6316 15.708 46.288 18.7411 42.8573L33.2295 26.7935H14V18.2389H46.3926C46.3926 22.98 44.4196 27.5886 41.254 31.1371L26.8982 46.9506ZM52.2822 55.6385H61.1166V34.436C61.1166 31.506 58.746 29.1354 55.816 29.1354H52.2822V55.6385Z"
+		  fill="#FAB739"/>
 	<defs>
-		<linearGradient id="paint0_linear_1133_9331" x1="36" y1="0" x2="36" y2="72" gradientUnits="userSpaceOnUse">
+		<filter id="filter0_d_1381_12256" x="0" y="0" width="76" height="76" filterUnits="userSpaceOnUse"
+				color-interpolation-filters="sRGB">
+			<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+			<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+						   result="hardAlpha"/>
+			<feOffset dy="2"/>
+			<feGaussianBlur stdDeviation="1"/>
+			<feComposite in2="hardAlpha" operator="out"/>
+			<feColorMatrix type="matrix" values="0 0 0 0 0.109804 0 0 0 0 0.122353 0 0 0 0 0.133333 0 0 0 0.12 0"/>
+			<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1381_12256"/>
+			<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1381_12256" result="shape"/>
+		</filter>
+		<linearGradient id="paint0_linear_1381_12256" x1="38" y1="0" x2="38" y2="72" gradientUnits="userSpaceOnUse">
 			<stop stop-color="#515154"/>
 			<stop offset="1" stop-color="#2B2B2E"/>
 		</linearGradient>
 	</defs>
 </svg>
-

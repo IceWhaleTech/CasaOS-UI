@@ -285,7 +285,7 @@ export default {
 	},
 	inject: ['isZIMA', 'TITLE'],
 	async created() {
-		this.path = '@/assets/img/logo/zima-0.0.1-white.svg';
+		// this.path = '@/assets/img/logo/zima-0.0.1-white.svg';
 		this.WINPATH = "https://zimaos.oss-accelerate.aliyuncs.com/client/releases/latest/squirrel.windows/x64/Zima-latest%20Setup.exe"
 		this.MACPATH = `https://zimaos.oss-accelerate.aliyuncs.com/client/releases/latest/Zima-latest-${this.getSystemArchitecture()}.dmg`
 	},
