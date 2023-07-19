@@ -24,7 +24,7 @@
 								{{
 									item.name || $t('undefined')
 								}}
-								<b-tag v-if="item.isSystem" class="ml-2 has-text-full-04">CasaOS</b-tag>
+								<b-tag v-if="item.isSystem" class="ml-2 has-text-full-04">OS</b-tag>
 							</h4>
 
 							<p class="has-text-left has-text-full-04 has-text-grey-light mt-1">{{

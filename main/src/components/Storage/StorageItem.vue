@@ -17,7 +17,7 @@
 				<div>
 					<h4 class="mb-0 has-text-left one-line has-text-emphasis-02 is-flex is-align-items-center">
 						{{ item.name }}
-						<b-tag v-if="item.isSystem" class="ml-2 has-text-full-04">CasaOS
+						<b-tag v-if="item.isSystem" class="ml-2 has-text-full-04">OS
 						</b-tag>
 					</h4>
 
