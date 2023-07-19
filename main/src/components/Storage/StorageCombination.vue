@@ -50,11 +50,15 @@
 					</div>
 				</div>
 			</div>
-			<div class="mr-5 is-flex is-flex-direction-column-reverse">
+			<div class="mr-5 is-flex is-flex-direction-column-reverse is-justify-content-space-between">
 				<div class="has-text-emphasis-01 has-text-weight-medium mb-1">{{
 						renderSize(usage)
 					}}/{{ renderSize(totleSize) }}
 				</div>
+				<p v-if="usePercent >= 0.8"
+				   class="has-text-right is-flex is-flex-direction-row-reverse">
+					<a href="https://wiki.casaos.io/zh/guides" target="_blank">{{ $t("Free up storage") }}</a>
+				</p>
 			</div>
 		</div>
 		<b-progress :type="usePercent | getProgressType" :value="usePercent" class="ml-5 mr-5"
