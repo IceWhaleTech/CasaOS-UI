@@ -118,7 +118,9 @@
 
 		<footer class="is-flex is-align-items-center mb-4">
 			<div class="is-flex-grow-1">
-				<a href="https://docs.zimaboard.com/docs/Small-body-Big-applications-OMV-install.html" target="_blank">{{
+				<a v-show="currentStep === 0"
+				   href="https://docs.zimaboard.com/docs/Small-body-Big-applications-OMV-install.html"
+				   target="_blank">{{
 						$t("Other ways to merge storages")
 					}}</a>
 			</div>
