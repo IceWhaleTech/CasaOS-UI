@@ -134,7 +134,7 @@
 						  :loading="isConnecting" expaned
 						  rounded type="is-primary" @click="test"/>
 				<b-button v-show="currentStep === 1" :label="$t(affirm)" :loading="isConnecting"
-						  class="_has-background-red-default _radius-line _has-text-white" expaned
+						  class="_has-background-red-default is-rounded _has-text-white" expaned
 						  @click="currentStep = 2"/>
 				<b-button v-show="currentStep === 2" :label="$t(affirm)" :loading="isConnecting" expaned rounded
 						  type="is-primary" @click="verifyOperate(password)"/>
