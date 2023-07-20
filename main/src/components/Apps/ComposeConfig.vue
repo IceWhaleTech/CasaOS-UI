@@ -696,8 +696,11 @@ export default {
 
 			//hostname
 			// configData.host_name = parsedInput.hostname != undefined ? parsedInput.hostname : ""
+			
 			// privileged
-			composeServicesItem.privileged = composeServicesItemInput.privileged != undefined;
+			// relation issue: https://github.com/IceWhaleTech/CasaOS/issues/1264
+			// if privileged is undefined or false, set it to false.
+			composeServicesItem.privileged = composeServicesItemInput.privileged;
 
 			//cap-add
 			if (composeServicesItemInput.cap_add != undefined) {
