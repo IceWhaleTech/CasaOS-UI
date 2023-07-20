@@ -571,7 +571,6 @@ export default {
 				this.configData["x-casaos"] = merge(this.configData["x-casaos"], yaml["x-casaos"]);
 
 			} catch (error) {
-				console.log()
 				console.log(error);
 			}
 		},
