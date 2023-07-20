@@ -833,7 +833,7 @@ export default {
 					}
 					return false
 				}).map((env) => {
-					return `${env.container}:${env.host}`;
+					return `${env.container}=${env.host}`;
 				});
 			}
 			if (this.dockerComposeCommands) {
