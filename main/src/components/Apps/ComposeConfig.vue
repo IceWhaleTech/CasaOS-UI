@@ -571,6 +571,7 @@ export default {
 				this.configData["x-casaos"] = merge(this.configData["x-casaos"], yaml["x-casaos"]);
 
 			} catch (error) {
+				console.log()
 				console.log(error);
 			}
 		},
@@ -696,8 +697,10 @@ export default {
 
 			//hostname
 			// configData.host_name = parsedInput.hostname != undefined ? parsedInput.hostname : ""
+			
 			// privileged
-			composeServicesItem.privileged = composeServicesItemInput.privileged != undefined;
+			// relation issue: https://github.com/IceWhaleTech/CasaOS/issues/1264
+			composeServicesItem.privileged = (composeServicesItemInput.privileged == true);
 
 			//cap-add
 			if (composeServicesItemInput.cap_add != undefined) {
@@ -830,7 +833,7 @@ export default {
 					}
 					return false
 				}).map((env) => {
-					return `${env.container}=${env.host}`;
+					return `${env.container}:${env.host}`;
 				});
 			}
 			if (this.dockerComposeCommands) {
