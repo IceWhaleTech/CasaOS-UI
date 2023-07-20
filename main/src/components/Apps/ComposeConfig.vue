@@ -700,7 +700,8 @@ export default {
 			
 			// privileged
 			// relation issue: https://github.com/IceWhaleTech/CasaOS/issues/1264
-			composeServicesItem.privileged = (composeServicesItemInput.privileged == true);
+			// if privileged is undefined or false, set it to false.
+			composeServicesItem.privileged = composeServicesItemInput.privileged;
 
 			//cap-add
 			if (composeServicesItemInput.cap_add != undefined) {
