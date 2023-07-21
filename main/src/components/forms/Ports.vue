@@ -32,8 +32,9 @@
 								:type="{ 'is-danger': errors[0], 'is-success': valid}" expanded
 							>
 								<b-input :placeholder="$t('Host')"
-									:value="item.host_ip?`${item.host_ip}:`:'' + item.published" expanded
-									@input="text => assignPortsItem(text, item)"
+										 :value="item.host_ip?`${item.host_ip}:${item.published}`:item.published"
+										 expanded
+										 @blur="(event, val)=> assignPortsItem(event.target._value, item)"
 								></b-input>
 							</b-field>
 						</validation-provider>
@@ -158,6 +159,7 @@ export default {
 		assignPortsItem(val, item) {
 			const reg = /((^(\d{1,3}\.){3}\d{1,3}):)?(\d{1,5}$)/;
 			const partList = val.match(reg);
+			console.log(partList?.[2], partList?.[4], val, "------")
 			item.host_ip = partList?.[2] || '';
 			item.published = partList?.[4] || val;
 		},

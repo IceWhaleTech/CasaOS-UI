@@ -45,7 +45,7 @@
 						<b-tab-item label="CPU">
 							<div v-for="(item, index) in containerCpuList" :key="item.title + index + '-cpu'">
 								<div v-if="!isNaN(item.usage)" class="is-flex is-size-7 is-align-items-center mb-2">
-									<div class="is-flex-grow-1 is-flex is-align-items-center">
+									<div class="is-flex-grow-1 is-flex is-align-items-center is-clipped">
 										<b-image
 											:lazy="false"
 											:src="item.icon"
@@ -65,7 +65,8 @@
 									v-if="!isNaN(item.usage) && renderSize(item.usage).split(' ')[0] != 0"
 									class="is-flex is-size-7 is-align-items-center mb-2"
 								>
-									<div class="is-flex-grow-1 is-flex is-align-items-center">
+									<div
+										class="is-flex-grow-1 is-flex-shrink-1 is-flex is-align-items-center is-clipped">
 										<b-image
 											:src="item.icon"
 											:src-fallback="require('@/assets/img/app/default.svg')"
