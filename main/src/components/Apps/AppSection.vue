@@ -56,6 +56,28 @@
 		</draggable>
 		<!-- App List End -->
 
+		<template v-if="oldAppList.length > 0">
+			<!-- Title Bar Start -->
+			<div class="title-bar is-flex is-align-items-center mt-2rem  mb-5">
+				<app-section-title-tip id="appTitle2" class="is-flex-grow-1 has-text-sub-04" label="Need to be rebuild."
+									   title="Legacy app">
+				</app-section-title-tip>
+			</div>
+			<!-- Title Bar End -->
+
+			<!-- App List Start -->
+			<div class="columns is-variable is-2 is-multiline app-list contextmenu-canvas">
+				<!-- Application not imported Start -->
+				<div v-for="(item) in oldAppList" :id="'app-' + item.name" :key="'app-' + item.name"
+					 class="column is-narrow is-3">
+					<app-card :isCasa="false" :item="item" @configApp="showConfigPanel" @importApp="showConfigPanel"
+							  @updateState="getList"></app-card>
+				</div>
+				<!-- Application not imported End -->
+			</div>
+			<!-- App List End -->
+		</template>
+
 	</div>
 </template>
 
@@ -102,6 +124,7 @@ export default {
 		return {
 			user_id: localStorage.getItem("user_id"),
 			appList: [],
+			oldAppList: [],
 			appConfig: {},
 			drag: false,
 			isLoading: false,
@@ -204,11 +227,19 @@ export default {
 
 			try {
 				const orgAppList = await this.$openAPI.appGrid.getAppGrid().then(res => res.data.data || []);
+				let orgOldAppList = [], orgNewAppList = [];
 				orgAppList.forEach((item) => {
 					item.hostname = item.hostname || this.$baseHostname;
 					// Container app does not have icon.
 					item.icon = item.icon || require(`@/assets/img/app/default.svg`);
+					if (item.app_type === "v1app" || item.app_type === "container") {
+						orgOldAppList.push(item);
+					} else {
+						orgNewAppList.push(item);
+					}
 				})
+				this.oldAppList = orgOldAppList;
+
 				let listLinkApp = await this.getLinkAppList();
 				listLinkApp.forEach((item) => {
 					// linkApp does not have title.
@@ -217,7 +248,7 @@ export default {
 					}
 				})
 				// all app list
-				let casaAppList = concat(builtInApplications, orgAppList, this.mircoAppList, listLinkApp)
+				let casaAppList = concat(builtInApplications, orgNewAppList, this.mircoAppList, listLinkApp)
 				// get app sort info.
 				let lateSortList = await this.$api.users.getCustomStorage(orderConfig).then(res => res.data.data.data || []);
 
@@ -247,7 +278,7 @@ export default {
 				if (this.retryCount < 5) {
 					setTimeout(() => {
 						this.retryCount++
-						// this.getList();
+						this.getList();
 					}, 2000)
 				} else {
 
