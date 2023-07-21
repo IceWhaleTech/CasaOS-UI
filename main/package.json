@@ -95,7 +95,6 @@
     "@vue/cli-plugin-router": "4.5.13",
     "@vue/cli-plugin-vuex": "4.5.13",
     "@vue/cli-service": "4.5.13",
-    "@vue/runtime-dom": "^3.2.45",
     "babel-eslint": "^10.1.0",
     "browserslist": "^4.21.5",
     "compression-webpack-plugin": "5.0.0",
