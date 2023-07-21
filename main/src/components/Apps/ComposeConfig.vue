@@ -123,7 +123,7 @@
 					>
 					</env-input-group>
 					<input-group
-						v-model="service.devices"
+						:devices="service.devices"
 						:label="$t('Devices')"
 						:message="$t('No devices now, click “+” to add one.')"
 						type="device"
