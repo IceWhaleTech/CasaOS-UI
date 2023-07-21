@@ -136,17 +136,17 @@ export default {
 			this.isZIMA = /^Zima/.test(device_model)
 			this.TITLE = device_model
 			if (this.$router.currentRoute.path === "/welcome") {
+				let wallpaper = {
+					from: "Built-in",
+					path: require('@/assets/background/default_wallpaper.jpg')
+				};
 				if (device_model.toLowerCase() === 'zimablade') {
-					this.$store.commit("SET_WALLPAPER", {
+					wallpaper = {
 						path: require('@/assets/background/wallpaper01-ZIMA.jpg'),
 						from: "Built-in" //Built-in, Upload, Files
-					})
-				} else {
-					this.$store.commit("SET_WALLPAPER", {
-						path: require('@/assets/background/wallpaper01-ZIMA.jpg'),
-						from: "Built-in" //Built-in, Upload, Files
-					})
+					}
 				}
+				this.$store.commit('SET_WALLPAPER', wallpaper)
 			}
 		} catch (e) {
 			console.error("GETTING THE CONFIG OF YOUR MACHINE IS EXPERIENCING AN ERROR:", e)

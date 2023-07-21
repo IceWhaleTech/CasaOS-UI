@@ -371,9 +371,25 @@ export default {
 			}
 			this.step = step
 		},
-		complete() {
+		async complete() {
 			this.$store.commit('SET_RSS_SWITCH', this.isAgreeRSS)
 			if (this.isLogin) {
+
+				try {
+					await this.$api.users.setCustomStorage("wallpaper", this.$store.state.wallpaperObject)
+					setTimeout(() => {
+						this.$store.commit('SET_WALLPAPER', {
+							path: res.data.data.path,
+							from: res.data.data.from
+						})
+					}, 300)
+				} catch (e) {
+					this.$buefy.toast.open({
+						message: this.$t('Save failed, please try again!'),
+						type: 'is-danger'
+					})
+				}
+
 				this.$router.push("/");
 			} else {
 				this.$router.push("/login");
