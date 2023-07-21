@@ -53,7 +53,7 @@
 							<b-select v-model="item.protocol" :placeholder="$t('Protocol')" expanded>
 								<option value="tcp">TCP</option>
 								<option value="udp">UDP</option>
-								<option value="both">TCP + UDP</option>
+								<option value="">TCP + UDP</option>
 							</b-select>
 						</b-field>
 					</b-field>
@@ -86,7 +86,7 @@
 						<b-select v-model="item.protocol" :placeholder="$t('Protocol')" expanded>
 							<option value="tcp">TCP</option>
 							<option value="udp">UDP</option>
-							<option value="both">TCP + UDP</option>
+							<option value="">TCP + UDP</option>
 						</b-select>
 					</b-field>
 
@@ -130,6 +130,11 @@ export default {
 	computed: {
 		items: {
 			get() {
+				this.vData.forEach(item => {
+					if (!item?.protocol) {
+						this.$set(item, 'protocol', "");
+					}
+				})
 				return this.vData;
 			},
 			set(val) {
