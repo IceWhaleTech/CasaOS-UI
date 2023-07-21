@@ -145,6 +145,11 @@ const container = {
 	exportAsCompose(id) {
 		return api.get(`${PREFIX}/${id}/compose`);
 	},
+
+	// rebuild app
+	archive(id) {
+		return api.put(`${PREFIX}/archive/${id}`);
+	}
 }
 
 export default container;

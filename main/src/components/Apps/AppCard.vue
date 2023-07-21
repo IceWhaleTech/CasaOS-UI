@@ -46,9 +46,15 @@
 						</b-loading>
 					</b-button>
 
-					<b-button v-if="isV1App" :loading="isCloning"
+					<b-button v-if="isV1App"
 							  expanded type="is-text" @click="exportYAML(item)">{{
 							$t('Export as Compose')
+						}}
+					</b-button>
+
+					<b-button v-if="isV1App" :loading="isRebuilding"
+							  expanded type="is-text" @click="rebuild(item)">{{
+							$t('Rebuild')
 						}}
 					</b-button>
 
@@ -160,8 +166,9 @@ import business_LinkApp       from "@/mixins/app/Business_LinkApp";
 import isNull                 from "lodash/isNull";
 import tipEditorModal         from "@/components/Apps/TipEditorModal.vue";
 import YAML                   from "yaml";
-import commonI18n             from "@/mixins/base/common-i18n";
+import commonI18n, {ice_i18n} from "@/mixins/base/common-i18n";
 import FileSaver              from 'file-saver';
+import {query}                from "vue/src/platforms/web/util";
 
 export default {
 	name: "app-card",
@@ -181,6 +188,7 @@ export default {
 			isUpdating: false,
 			isRestarting: false,
 			isStarting: false,
+			isRebuilding: false,
 			// isStoping: false,
 			// Public. Only changes the state of the card, not the state of the button.
 			isSaving: false,
@@ -211,6 +219,8 @@ export default {
 						return this.$t('Restarting')
 					} else if (this.isStarting) {
 						return this.$t('updateState')
+					} else if (this.isRebuilding) {
+						return this.$t('Rebuilding')
 					} else if (this.isCheckThenUpdate) { // this.isCheckThenUpdate !!!
 						return this.$t('CheckThenUpdate')
 					} else if (this.item.status === 'running') {
@@ -238,7 +248,7 @@ export default {
 			}
 		},
 		isLoading() {
-			let active = this.isUninstalling || this.isUpdating || this.isRestarting || this.isStarting || this.isSaving // || this.isStoping || this.isSaving
+			let active = this.isUninstalling || this.isUpdating || this.isRestarting || this.isStarting || this.isSaving || this.isRebuilding // || this.isStoping || this.isSaving
 			return active
 		},
 		isV1App() {
@@ -609,6 +619,27 @@ export default {
 			})
 		},
 
+		async rebuild(app) {
+			this.isRebuilding = true;
+			try {
+				// 1. get yaml
+				const file = await this.$api.container.exportAsCompose(app.name).then(res => res.data)
+				// 2. archive
+				await this.$api.container.archive(app.name)
+				// 3.install compose
+				await this.$openAPI.appManagement.compose.installComposeApp(file, {name: app.name})
+			} catch (e) {
+				console.error('rebuild Error:', e)
+				this.$buefy.toast.open({
+					message: this.$t(`Rebulid error`),
+					type: 'is-danger'
+				})
+			}
+			// 4.sockiet :: install-end :: change UI status.
+			// this.isRebuilding = false;
+			this.$refs.dro.isActive = false;
+		},
+
 		checkAppVersion(name) {
 			this.isCheckThenUpdate = true;
 			const params = `${this.item.name}?name=${this.item.name}&pull=true&cid=${this.item.name}`
@@ -618,11 +649,11 @@ export default {
 					// messageBus :: apps_checkThenUpdate
 					this.$messageBus('apps_checkupdate', this.item.name.toString());
 
-					// TODO: this is need to i18n. But the resp.data.message contain app name. 
-					// So it may is hard to do 
+					// TODO: this is need to i18n. But the resp.data.message contain app name.
+					// So it may is hard to do
 					this.$buefy.toast.open({
 						// value is `In the process of asynchronous updating.` or `compose app `app Name` is up to date`
-						message: resp.data.message, 
+						message: resp.data.message,
 						type: 'is-success'
 					})
 
@@ -776,7 +807,17 @@ export default {
 				duration: 5000
 			})
 		},
-
+		"app:install-end"(res) {
+			if (res.Properties["dry_run.name"] === this.item.name) {
+				// 4.sockiet :: install-end :: change UI status.
+				this.isRebuilding = false;
+				// 5.message toast
+				this.$buefy.toast.open({
+					message: this.$t(`{title} rebulid completed`, {title: ice_i18n(this.item.title)}),
+					type: 'is-success'
+				})
+			}
+		},
 		"app:uninstall-error"(res) {
 			// TODO verify
 			if (res.Properties['id'] === this.item.name) {
