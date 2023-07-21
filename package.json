@@ -20,7 +20,7 @@
     "jsonlint": "^1.6.3"
   },
   "devDependencies": {
-    "turbo": "1.10.3"
+    "turbo": "1.10.9"
   },
   "browserslist": [
     "> 1%",
