@@ -2834,15 +2834,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/composition-api@npm:^1.7.1":
-  version: 1.7.1
-  resolution: "@vue/composition-api@npm:1.7.1"
-  peerDependencies:
-    vue: ">= 2.5 < 2.7"
-  checksum: dedd90e17cc6d3577510b5439a568932862a122dcff922c52ab0a25db7ee289caea1aa2d5e43c817eb91619e1b955e5e8e9460a4435f5c3565284d39750c9d4c
-  languageName: node
-  linkType: hard
-
 "@vue/preload-webpack-plugin@npm:^1.1.0":
   version: 1.1.2
   resolution: "@vue/preload-webpack-plugin@npm:1.1.2"
@@ -4782,7 +4773,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "casaos@workspace:."
   dependencies:
-    "@vue/composition-api": ^1.7.1
     csslint: ^1.0.5
     htmlhint: ^1.1.4
     jshint: ^2.13.6

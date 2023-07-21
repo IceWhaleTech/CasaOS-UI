@@ -21,8 +21,6 @@ import Vue2TouchEvents  from 'vue2-touch-events'
 import VueSocialSharing from 'vue-social-sharing'
 import VueSocketIOExt   from 'vue-socket.io-extended';
 import messageBus       from '@/events/index.js'
-import VueCompositionAPI from '@vue/composition-api'
-
 
 // import {registerMicroApps, start} from "qiankun";
 
@@ -54,7 +52,6 @@ Vue.use(VAnimateCss, {animateCSSPath: '/css/animate.min.css'});
 Vue.use(Vue2TouchEvents)
 Vue.use(VueSocketIOExt, socket);
 Vue.use(VueSocialSharing);
-Vue.use(VueCompositionAPI)
 
 Vue.config.productionTip = false
 Vue.prototype.$api = api;
