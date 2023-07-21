@@ -700,7 +700,157 @@ export default {
 			// privileged
 			// relation issue: https://github.com/IceWhaleTech/CasaOS/issues/1264
 			// if privileged is undefined or false, set it to false.
-			composeServicesItem.privileged = (composeServicesItemInput.privileged === true);
+
+     667
+          return item;
+668
+        }
+669
+      });
+670
+      isNil(composeServicesItem.volumes) && this.$set(composeServicesItem, "volumes", []);
+671
+​
+672
+      // Devices
+673
+      composeServicesItem.devices = this.makeArray(composeServicesItemInput.devices).map((item) => {
+674
+        let ii = item.split(":");
+675
+        return {
+676
+          container: ii[1],
+677
+          host: ii[0],
+678
+        };
+679
+      });
+680
+      isNil(composeServicesItem.devices) && this.$set(composeServicesItem, "devices", []);
+681
+​
+682
+      //Network_mode
+683
+      const network_mode = composeServicesItemInput?.network_mode;
+684
+      const networks = composeServicesItemInput?.networks;
+685
+      if (networks) {
+686
+        composeServicesItem.networks = isArray(networks) ? networks : Object.keys(networks);
+687
+      } else if (network_mode == "bridge" || network_mode == undefined) {
+688
+        composeServicesItem.network_mode = "bridge"
+689
+      } else if (network_mode == "host") {
+690
+        composeServicesItem.network_mode = "host"
+691
+      } else if (network_mode == "physical") {
+692
+        composeServicesItem.network_mode = "macvlan"
+693
+      } else {
+694
+        composeServicesItem.network_mode = network_mode
+695
+      }
+696
+​
+697
+      //hostname
+698
+      // configData.host_name = parsedInput.hostname != undefined ? parsedInput.hostname : ""
+699
+      
+700
+      // privileged
+701
+      // relation issue: https://github.com/IceWhaleTech/CasaOS/issues/1264
+702
+      // if privileged is undefined or false, set it to false.
+703
+​
+704
+     composeServicesItem.privileged = (composeServicesItemInput.privileged === true);
+705
+​
+706
+      //cap-add
+707
+      if (composeServicesItemInput.cap_add != undefined) {
+708
+        composeServicesItem.cap_add = composeServicesItemInput.cap_add;
+709
+      } else {
+710
+        composeServicesItem.cap_add = []
+711
+      }
+712
+      //Restart
+713
+      if (composeServicesItemInput.restart != undefined) {
+714
+        composeServicesItem.restart = composeServicesItemInput.restart;
+715
+      }
+716
+      composeServicesItem.restart = (composeServicesItem.restart === "no" || !composeServicesItem.restart) ? "unless-stopped" : composeServicesItem.restart;
+717
+​
+718
+      // command
+719
+      composeServicesItem.command = this.makeArray(composeServicesItemInput.command)
+720
+​
+721
+      // container_name
+722
+      composeServicesItem.container_name = composeServicesItemInput?.container_name || ""
+723
+      // this.$set(composeServicesItem, "container_name", composeServicesItemInput?.container_name);
+724
+​
+725
+      if (
+726
+        composeServicesItemInput.cpu_shares === 0 ||
+727
+        composeServicesItemInput.cpu_shares > 99 ||
+728
+        isNil(composeServicesItemInput.cpu_shares)
+729
+      ) {
+730
+        this.$set(composeServicesItem, "cpu_shares", 90);
+731
+      } else {
+732
+        this.$set(composeServicesItem, "cpu_shares", composeServicesItemInput.cpu_shares);
+733
+      }
+734
+​
+735
+      // 判断是否存在
+736
+      const memory = composeServicesItemInput?.deploy?.resources?.limits?.memory;
+737
+      let newMemory = 0
+738
+      if (memory) {
+739
+        // 存在的情况下，检测是否有单位
+740
+         Detect the absence of units
+741
+        if (isNumber(memory - 0) && memory > 0) {composeServicesItem.privileged = (composeServicesItemInput.privileged === true);
 
 			//cap-add
 			if (composeServicesItemInput.cap_add != undefined) {

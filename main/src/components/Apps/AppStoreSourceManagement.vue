@@ -223,7 +223,7 @@ onBeforeUnmount(() => {
 						 icon-right-clickable @icon-right-click="redirectURL"></b-input>
 				<b-button :loading="addLoadingState" class="is-flex-shrink-0 _button-icon"
 						  icon-pack="casa" icon-right="plus"
-						  @click="registerAppStore(url)">add
+						  @click="registerAppStore(url)">{{ $t("Add") }}
 				</b-button>
 			</div>
 		</Transition>
