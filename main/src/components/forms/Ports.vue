@@ -1,6 +1,6 @@
 <!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org CorrectRoadH
-  * @LastEditTime: 2023/7/21 下午4:15
+  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+  * @LastEditTime: 2023/2/16 下午4:15
   * @FilePath: /CasaOS-UI/src/components/forms/Ports.vue
   * @Description:
   *
@@ -24,8 +24,8 @@
 			<ValidationObserver ref="ob" v-slot="{ invalid }" slim>
 				<template>
 					<b-field grouped>
-						<validation-provider v-if="showHostPost" v-slot="{errors,valid}" 
-							:rules="'yaml_port|not_in_ports:' + invalidPortsInUse(item.published, item.protocol)" slim 
+						<validation-provider v-if="showHostPost" v-slot="{errors,valid}"
+							:rules="'yaml_port|not_in_ports:' + invalidPortsInUse(item.published, item.protocol)" slim
 						>
 							<!-- Only show title when the first item. -->
 							<b-field :label=" index<1 ? $t('Host') : '' "
@@ -41,8 +41,8 @@
 
 						<validation-provider v-slot="{errors,valid}" rules="yaml_port" slim>
 							<!-- Only show title when the first item. -->
-							<b-field :label=" index<1 ? $t('Container') : '' " 
-								:type="{ 'is-danger': errors[0], 'is-success': valid }" expanded 
+							<b-field :label=" index<1 ? $t('Container') : '' "
+								:type="{ 'is-danger': errors[0], 'is-success': valid }" expanded
 							>
 								<b-input v-model.number="item.target"
 									:placeholder="$t('Container')"
@@ -136,7 +136,6 @@ export default {
 		assignPortsItem(val, item) {
 			const reg = /((^(\d{1,3}\.){3}\d{1,3}):)?(\d{1,5}$)/;
 			const partList = val.match(reg);
-			console.log(partList?.[2], partList?.[4], val, "------")
 			item.host_ip = partList?.[2] || '';
 			item.published = partList?.[4] || val;
 		},
