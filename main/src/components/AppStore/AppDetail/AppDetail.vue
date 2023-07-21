@@ -25,79 +25,66 @@
 				:appDetailData="appDetailData"
 			></AppScreenshotSlider>
 
-			<!-- App Info  Start -->
-			<div class="app-desc mt-4 mb-6">
-				<p class="is-size-14px mb-2 un-break-word">{{ i18n(appDetailData.tagline) }}</p>
-				<p class="is-size-14px un-break-word">{{ i18n(appDetailData.description) }}</p>
-				<!-- <p class="is-size-14px " v-html="appDetailData.tip"></p> -->
-			</div>
-			<!-- App Info  End -->
+			<AppDescription 
+				:appDetailData="appDetailData"
+			></AppDescription>
 
 		</section>
 	</div>
 </template>
 
-<script>
+<script setup>
 
-import business_OpenThirdApp  from "@/mixins/app/Business_OpenThirdApp";
-import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
-import commonI18n             from "@/mixins/base/common-i18n";
 import AppInfoTable 		  from './AppInfoTable';
 import AppInfoHeader 		  from './AppInfoHeader';
 import AppScreenshotSlider    from './AppScreenshotSlider';
 import AppDetailHeader        from './AppDetailHeader'
+import AppDescription         from './AppDescription';
 
-export default {
-	name: "AppDetail.vue",
-	components: { AppInfoTable, AppInfoHeader, AppScreenshotSlider, AppDetailHeader },
-	mixins: [business_ShowNewAppTag, business_OpenThirdApp, commonI18n],
-	props: {
-		appDetailData: {
-			type: Object,
-			default: () => {
+import { defineProps, computed } from 'vue';
 
-			}
-		},
-		installedList: {
-			type: Array,
-			default: () => {
-			}
-		},
-		currentInstallId: {
-			type: String,
-			default: ""
-		},
-		arch: {
-			type: String,
-			default: ""
-		},
-		showDetailSwiper: {
-			type: Boolean,
-			default: false
-		},
-		cateMenu: {
-			type: Array,
-			default: []
-		},
-		close: {
-			type: Function,
-			default: () => {
-			}
+const props = defineProps({
+	appDetailData: {
+		type: Object,
+		default: () => {}
+	},
+	installedList: {
+		type: Array,
+		default: () => {}
+	},
+	currentInstallId: {
+		type: String,
+		default: ""
+	},
+	arch: {
+		type: String,
+		default: ""
+	},
+	showDetailSwiper: {
+		type: Boolean,
+		default: false
+	},
+	cateMenu: {
+		type: Array,
+		default: []
+	},
+	close: {
+		type: Function,
+		default: () => {}
+	}
+	});
+
+	const archTitle = computed(() => {
+		// 如果是 arm 默认显示 armv7
+		if (props.arch === 'arm') {
+			return 'armv7'
 		}
-	},
-	computed: {
-		archTitle() {
-			// 如果是 arm 默认显示 armv7
-			if (this.arch === 'arm') {
-				return 'armv7'
-			}
-			return this.arch
-		},
-		unusable() {
-			return !this.appDetailData.architectures?.includes(this.arch);
-		},
-	},
-}
+		return props.arch
+	});
+
+	const unusable = computed(() => {
+		return !props.appDetailData.architectures?.includes(props.arch);
+	});
 </script>
 
 <style scoped>
