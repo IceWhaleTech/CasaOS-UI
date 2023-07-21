@@ -51,62 +51,51 @@
 	</div>
 </template>
 
-<script>
+<script setup>
+import { computed } from 'vue'
 import IconInput from '../forms/IconInput.vue'
 
-export default {
-	name: 'input-group',
-	components: {
-		IconInput,
-	},
-	data() {
-		return {
-			isLoading: false,
-			min: 0
-		}
-	},
-	model: {
-		prop: 'vData',
-		event: 'change'
-	},
-	props: {
-		vData: Array,
-		label: String,
-		message: String,
+
+const props = defineProps({
+	devices: Array,
+	label: String,
+	message: String,
+	type: String,
+	name1: {
 		type: String,
-		name1: {
-			type: String,
-			default: "Container"
-		},
-		name2: {
-			type: String,
-			default: "Host"
-		},
+		default: "Container"
+	},
+	name2: {
+		type: String,
+		default: "Host"
+	},
+})
 
+const items = computed({
+	get() {
+		console.log(props.devices)
+		return props.devices
 	},
-	computed: {
-		items: {
-			get() {
-				return this.vData
-			},
-			set(val) {
-				this.$emit('change', val)
-			}
-		}
-	},
-	methods: {
-		addItem() {
-			let itemObj = {
-				container: "",
-				host: ""
-			}
-			this.items.push(itemObj)
-		},
+	set(val) {
+		emit('change', val)
+	}
+})
 
-		removeItem(index) {
-			this.items.splice(index, 1)
-		},
-	},
+const addItem = () => {
+	let itemObj = {
+		container: "",
+		host: ""
+	}
+	items.value.push(itemObj)
 }
-</script>
 
+const removeItem = (index) => {
+	items.value.splice(index, 1)
+}
+defineExpose({
+	items,
+	addItem,
+	removeItem
+})
+
+</script>
