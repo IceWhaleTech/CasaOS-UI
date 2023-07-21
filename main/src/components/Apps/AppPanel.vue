@@ -384,7 +384,7 @@
 				<section v-else :class="{'_hideOverflow': !isCasa}" class="modal-card-body pt-3">
 					<!--	导入"已存在的容器"，进行初始化操作	-->
 					<ValidationObserver ref="containerValida">
-						<ValidationProvider v-slot="{ errors, valid }" name="appName" rules="required">
+						<ValidationProvider v-slot="{ errors, valid }" name="appName">
 							<b-field :label="$t('App name')+' *'" :message="$t(errors)"
 									 :type="{ 'is-danger': errors[0], 'is-success': valid }">
 								<b-input v-model="settingData.label" :placeholder="$t('Your custom App Name')"

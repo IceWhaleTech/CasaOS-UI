@@ -1,12 +1,11 @@
 <!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/2/22 下午12:18
+  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org CorrectRoadH
+  * @LastEditTime: 2023/7/21 下午12:18
   * @FilePath: /CasaOS-UI/src/components/Apps/ComposeConfig.vue
   * @Description:
   *
   * Copyright (c) 2023 by IceWhale, All Rights Reserved.
-
-  -->
+-->
 
 <template>
 	<section style="height: calc(100vh - 12.8125rem)">
@@ -812,6 +811,7 @@ export default {
 		outputConfigDataCommands(val) {
 			// configData tans to docker-compose.yml
 			let ConfigData = cloneDeep(val);
+
 			for (const servicesKey in val.services) {
 				// 数据源
 				let service = val.services[servicesKey];
@@ -827,6 +827,7 @@ export default {
 				}).map((device) => {
 					return `${device.host}:${device.container}`;
 				});
+
 				outputService.environment = service.environment.filter(env => {
 					if (env.container || env.host) {
 						return true
@@ -836,6 +837,7 @@ export default {
 					return `${env.container}=${env.host}`;
 				});
 			}
+
 			if (this.dockerComposeCommands) {
 				let yaml = YAML.parse(this.dockerComposeCommands);
 				Object.keys(yaml.services).map(key => {
@@ -857,6 +859,7 @@ export default {
 			// 	this.ports_in_use = res.data?.data || {}
 			// })
 
+			console.log(ConfigData)
 			this.$emit("updateDockerComposeCommands", YAML.stringify(ConfigData));
 		},
 
