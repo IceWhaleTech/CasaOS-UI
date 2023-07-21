@@ -18,7 +18,8 @@
 					{{ $t('Network Status') }}
 				</div>
 				<div class="is-flex-shrink-0">
-					<b-dropdown v-model="networkId" :mobile-modal="false" animation="fade1" aria-role="list"
+					<b-dropdown v-if="initNetwork.length > 0" v-model="networkId" :mobile-modal="false"
+								animation="fade1" aria-role="list"
 								class="netowrk-dropdown" position="is-bottom-left">
 						<template #trigger="{ active }">
 							<b-button :icon-right="active ? 'up-outline' : 'down-outline'"
@@ -181,6 +182,9 @@ export default {
 
 	methods: {
 		buildDatas(data) {
+			if (data.length == 0) {
+				return
+			}
 			data.forEach((el, index) => {
 				if (this.networks[index] === undefined) {
 					this.networks[index] = [
@@ -222,10 +226,12 @@ export default {
 			});
 			this.networkId = this.networkId > this.networks.length - 1 ? 0 : this.networkId
 			this.$refs.chart?.updateSeries(this.networks[this.networkId])
-			const upSpeed = this.networks[this.networkId][0].data[this.networks[this.networkId][0].data.length - 1]
-			const downSpeed = this.networks[this.networkId][1].data[this.networks[this.networkId][1].data.length - 1]
-			this.currentUpSpeed = isNaN(upSpeed) ? 0 : upSpeed
-			this.currentDownSpeed = isNaN(downSpeed) ? 0 : downSpeed
+			if (this.networks) {
+				const upSpeed = this.networks[this.networkId][0].data[this.networks[this.networkId][0].data.length - 1]
+				const downSpeed = this.networks[this.networkId][1].data[this.networks[this.networkId][1].data.length - 1]
+				this.currentUpSpeed = isNaN(upSpeed) ? 0 : upSpeed
+				this.currentDownSpeed = isNaN(downSpeed) ? 0 : downSpeed
+			}
 		},
 		covertToKB(bytes) {
 			return (bytes / 1024).toFixed(0) > 0 ? (bytes / 1024).toFixed(0) : 0;
