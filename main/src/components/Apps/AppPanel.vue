@@ -48,7 +48,7 @@
 						:appDetailData="appDetailData" 
 						:arch="arch"
 						:cateMenu="cateMenu"
-						:close="close" 
+						:handleBackBtnClick="close" 
 						:currentInstallId="currentInstallId"
 						:installedList="installedList" 
 						:showDetailSwiper="showDetailSwiper"

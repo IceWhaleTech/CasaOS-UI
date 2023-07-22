@@ -4,7 +4,7 @@
 			<div>
 				<p class="heading">{{ $t('CATEGORY') }}</p>
 				<p class="title">
-					<b-icon :icon="getCategoryIcon(appDetailData.category)"
+					<b-icon :icon="categoryIcon"
 							custom-size="mdi-36px"></b-icon>
 				</p>
 				<p class="footing is-size-14px">{{ appDetailData.category }}</p>
@@ -32,7 +32,7 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
+import { computed, defineProps } from 'vue';
 const props = defineProps({
 	appDetailData: {
 		type: Object,
@@ -49,6 +49,10 @@ const getCategoryIcon = (name) => {
 	let category = props.cateMenu.find(item => item.name == name) || {font: 'apps'}
 	return category.font;
 };
+
+const categoryIcon = computed(() => {
+	return getCategoryIcon(props.appDetailData.category);
+});
 
 </script>
 

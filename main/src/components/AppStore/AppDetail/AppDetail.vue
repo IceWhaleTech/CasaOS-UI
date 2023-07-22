@@ -1,7 +1,7 @@
 <template>
 	<div class="modal-card app-detail">
 		<AppDetailHeader
-			:close="close"
+			:handleBackBtnClick="handleBackBtnClick"
 		></AppDetailHeader>
 
 		<section id="ss-content" class="modal-card-body">
@@ -68,7 +68,7 @@ const props = defineProps({
 		type: Array,
 		default: []
 	},
-	close: {
+	handleBackBtnClick: {
 		type: Function,
 		default: () => {}
 	}
