@@ -15,10 +15,14 @@
 				@install="$emit('install',appDetailData.id)">
 			></AppInfoHeader>
 
+			<SpiltLine  />
+
 			<AppInfoTable 
 				:appDetailData="appDetailData" 
 				:cateMenu="cateMenu"
 			></AppInfoTable>
+
+			<SpiltLine  />
 
 			<AppScreenshotSlider 
 				v-if="showDetailSwiper"
@@ -28,6 +32,8 @@
 			<AppDescription 
 				:appDetailData="appDetailData"
 			></AppDescription>
+
+			<SpiltLine  />
 
 		</section>
 	</div>
@@ -40,6 +46,7 @@ import AppInfoHeader 		  from './AppInfoHeader';
 import AppScreenshotSlider    from './AppScreenshotSlider';
 import AppDetailHeader        from './AppDetailHeader'
 import AppDescription         from './AppDescription';
+import SpiltLine              from './SpiltLine';
 
 import { defineProps, computed } from 'vue';
 

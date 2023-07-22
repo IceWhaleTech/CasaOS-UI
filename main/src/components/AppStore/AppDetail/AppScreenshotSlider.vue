@@ -4,9 +4,12 @@
 				class="swiper swiper-responsive-breakpoints">
 			<swiper-slide v-for="item in appDetailData.screenshot_link" :key="'sc'+item">
 				<div class="gap">
-					<b-image :src="item"
+					<b-image 
+						class="app-screenshot"
+						:src="item"
 						:src-fallback="require('@/assets/img/app/swiper_placeholder.png')"
-						class="border-8" placeholder ratio="16by9"></b-image>
+						placeholder ratio="16by9">
+					</b-image>
 				</div>
 			</swiper-slide>
 		</swiper>
@@ -65,6 +68,12 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
+.app-screenshot{
+	border-radius: 8px;
+	border: 1px solid #cfcfcf;
+	overflow: hidden;
+
+}
 .swiper-button-next, .swiper-rtl .swiper-button-prev {
 	right: -20px;
 	left: auto;

@@ -10,6 +10,9 @@
 				<p class="footing is-size-14px">{{ appDetailData.category }}</p>
 			</div>
 		</div>
+
+		<div class="vertical-line"/>
+
 		<div class="level-item has-text-centered">
 			<div>
 				<p class="heading">{{ $t('DEVELOPER') }}</p>
@@ -19,6 +22,9 @@
 				<p class="footing is-size-14px">{{ appDetailData.developer }}</p>
 			</div>
 		</div>
+
+		<div class="vertical-line"/>
+
 		<div class="level-item has-text-centered">
 			<div>
 				<p class="heading "><span class="is-hidden-mobile">{{
@@ -58,10 +64,17 @@ const categoryIcon = computed(() => {
 
 <style scoped>
 .level {
+	position: relative;
 	.footing {
 		color: hsl(0, 0%, 48%);
 	}
 }
+
+.vertical-line{
+	border-left: 1px solid #cfcfcf;
+	height: 36px;
+}
+
 
 @media screen and (max-width: 480px) {
 	.level {
