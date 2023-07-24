@@ -145,6 +145,11 @@ export default {
 						path: require('@/assets/background/wallpaper01-ZIMA.jpg'),
 						from: "Built-in" //Built-in, Upload, Files
 					}
+				} else if (device_model.toLowerCase() === 'zimabox') {
+					wallpaper = {
+						path: require('@/assets/background/wallpaper02-ZIMA.jpg'),
+						from: "Built-in" //Built-in, Upload, Files
+					}
 				}
 				this.$store.commit('SET_WALLPAPER', wallpaper)
 			}
