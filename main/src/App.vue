@@ -123,7 +123,7 @@ export default {
 			// V_ID: this.V_ID,
 			isZIMA: computed(() => this.isZIMA),
 			TITLE: computed(() => this.TITLE),
-			OS: computed(() => this.isZIMA ? 'ZIMA' : 'CasaOS'),
+			OS: computed(() => this.isZIMA ? 'Zima' : 'CasaOS'),
 		}
 	},
 	async beforeCreate() {
