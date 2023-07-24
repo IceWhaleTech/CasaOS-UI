@@ -17,7 +17,7 @@
 			<!-- start of section head-->
 			<div class="widget-header is-flex is-flex-shrink-0">
 				<div class="image is-24x24 is-flex-shrink-0">
-					<img v-if="noticeData.icon" :src="noticeData.icon" alt=""/>
+					<img v-if="noticeData?.icon" :src="noticeData.icon" alt=""/>
 					<img v-else :src="require('@/assets/img/logo/casa-white.svg')" alt=""/>
 				</div>
 				<div class="header-title pl-2 is-flex-grow-1">
@@ -155,7 +155,11 @@ export default {
 		},
 		eventBus() {
 			this.$messageBus('youshouldknow_cardaction');
-			this.$messageBus(this.noticeData.operate.event, {...this.noticeData.payload})
+			if (this.noticeData.operate.event.includes("casaUI:")) {
+				this.$EventBus.$emit(this.noticeData.operate.event, this.noticeData.operate.path);
+			} else {
+				this.$messageBus(this.noticeData.operate.event, {...this.noticeData.payload})
+			}
 		}
 	}
 }

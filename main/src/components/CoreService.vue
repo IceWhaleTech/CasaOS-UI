@@ -335,6 +335,9 @@ export default {
 						path: '/Storage',
 						icon: 'mdi-arrow-right',
 					},
+					payload: {
+						path: '/Storage',
+					}
 				})
 			}
 			if (operateType === 'added') {
@@ -491,15 +494,16 @@ export default {
 			const configData = {
 				'Data station': {
 					title: 'Build data station',
-					icon: 'casa-storage-USB',
+					icon: '',
 					content: {
-						text: "For a data station with more storage capacity, it is recommended to add more hard drives."
+						text: "For a data station with more storage capacity, it is recommended to add more hard drives.",
+						icon: "./img/storage/disk.png",
 					},
 					contentType: 'info',
 					operate: {
 						type: 'casaUI:eventBus',
 						title: 'Learn more',
-						event: 'mircoapp_communicate',
+						event: 'casaUI:openStorageManager',
 						icon: 'mdi-arrow-right',
 					},
 					payload: {
@@ -510,9 +514,10 @@ export default {
 				},
 				'Remote Access': {
 					title: 'Remote Access',
-					icon: 'casa-storage-USB',
+					icon: '/modules/icewhale_remote_access/appicon.svg',
 					content: {
-						text: "Configure Remote Access to access your home cloud remotely from anywhere."
+						text: "Configure Remote Access to access your home cloud remotely from anywhere.",
+						icon: "/modules/icewhale_remote_access/appicon.svg",
 					},
 					contentType: 'info',
 					operate: {
@@ -523,15 +528,16 @@ export default {
 					},
 					payload: {
 						action: MIRCO_APP_ACTION_ENUM.OPEN,
-						peerType: 'file',
-						name: 'Remote Access'
+						peerType: 'access',
+						name: 'icewhale_remote_access'
 					}
 				},
 				'File Manage': {
 					title: 'File Management',
-					icon: 'casa-storage-USB',
+					icon: '/modules/icewhale_files/appicon.svg',
 					content: {
-						text: "Use Files to manage your data from different locations, such as your computer, phone, netdisk and server."
+						text: "Use Files to manage your data from different locations, such as your computer, phone, netdisk and server.",
+						icon: "/modules/icewhale_files/appicon.svg",
 					},
 					contentType: 'info',
 					operate: {
