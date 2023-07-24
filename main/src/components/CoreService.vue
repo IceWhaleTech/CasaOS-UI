@@ -33,6 +33,7 @@ import Business_ShowNewAppTag  from "@/mixins/app/Business_ShowNewAppTag";
 import DiskLearnMore           from "@/components/Storage/DiskLearnMore.vue";
 import last                    from "lodash/last";
 import {MIRCO_APP_ACTION_ENUM} from "@/const";
+import {ice_i18n}              from "@/mixins/base/common-i18n";
 
 export default {
 	components: {noticeBlock, Swiper, SwiperSlide},
@@ -477,7 +478,7 @@ export default {
 
 			// 1. add notice::add new app_install notice
 			const data = {
-				title: res?.title || 'Installing app',
+				title: $t('Installing {title}', {title: res.title}),
 				icon: res.icon,
 				content: {
 					text: res?.message,
@@ -643,10 +644,12 @@ export default {
 			});
 		},
 		"docker:image:pull-progress"(res) {
+			const title = ice_i18n(JSON.parse(res.Properties["app:title"]));
 			this.transformAppInstallationProgress({
 				finished: false,
 				// First name. Second app:name.The name from CheckThenUpdate.The app:name from install.
 				name: res.Properties["app:name"],
+				title,
 				id: res.Properties["app:name"],
 				success: true,
 				type: "pull",
