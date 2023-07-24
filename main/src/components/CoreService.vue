@@ -24,7 +24,6 @@
 </template>
 
 <script>
-// import noticeBlock            from "@/components/noticBlock/noticeBlock";
 import noticeBlock             from "@/components/business_YouShouldKnow/noticeBlock";
 import {Swiper, SwiperSlide}   from 'vue-awesome-swiper'
 import {mixin}                 from '@/mixins/mixin';
@@ -34,8 +33,6 @@ import Business_ShowNewAppTag  from "@/mixins/app/Business_ShowNewAppTag";
 import DiskLearnMore           from "@/components/Storage/DiskLearnMore.vue";
 import last                    from "lodash/last";
 import {MIRCO_APP_ACTION_ENUM} from "@/const";
-// import DockerProgress from "@/components/Apps/progress.js";
-// import StorageManagerPanel from "@/components/Storage/StorageManagerPanel.vue";
 
 export default {
 	components: {noticeBlock, Swiper, SwiperSlide},
@@ -563,16 +560,6 @@ export default {
 					}
 				}
 			}
-			// }
-			// if (type === 'remove') {
-			// 	for (const key in configData) {
-			// 		if (!list.includes(key)) {
-			// 			// this.removeNotice(key) same as Store.
-			// 			this.$store.commit('SET_TUTORIAL_SWITCH', list)
-			// 			return
-			// 		}
-			// 	}
-			// }
 
 		},
 
