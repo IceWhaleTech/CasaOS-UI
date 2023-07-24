@@ -180,7 +180,7 @@
 				<div class="title item-layout is-flex  is-align-items-center has-text-title-06">
 					<b-image :src="require('@/assets/img/app/files.svg')" class="is-24x24"></b-image>
 					<p class="ml-2">
-						{{ $t('Files') }}
+						Files
 					</p>
 				</div>
 				<p class="subtitle has-text-full-03 ml-4 pl-4">
