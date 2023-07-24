@@ -14,6 +14,10 @@
 					{{ i18n(appDetailData.tagline) }}
 				</p>
 
+				<h4 class="title store-title is-4 ">{{ i18n(appDetailData.title) }}</h4>
+				<p class="subtitle is-size-14px two-line mb-3">{{
+						i18n(appDetailData.tagline)
+					}}</p>
 				<p class="description mb-2">
 					<b-button v-if="installedList.includes(appDetailData.id)"
 						:loading="appDetailData.id == currentInstallId" rounded
