@@ -1,2 +1,3 @@
 import AppDetail from "./AppDetail";
-export { AppDetail }
+import AppRecommend from "./AppRecommend";
+export { AppDetail, AppRecommend }
