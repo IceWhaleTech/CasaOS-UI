@@ -74,10 +74,10 @@ export default {
 	input {
 		transition: all 0.2s;
 		appearance: none;
-		border-radius: $backDropBorderRadius;
 		background: $backDropColor;
 		backdrop-filter: $backDropBlur;
-		border: none;
+		border: $backDropBorder;
+		border-radius: $backDropBorderRadius;
 		outline: none;
 		font-size: 0.875rem !important;
 		color: rgba(255, 255, 255, 0.6);
