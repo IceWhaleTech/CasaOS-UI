@@ -44,12 +44,16 @@
 			<!-- Sidebar Start -->
 			<app-side-bar v-model="sidebarOpen" :overlay="true" :right="true" position="absolute">
 				<template slot-scope="{close}">
-					<AppDetailInfo :appDetailData="appDetailData" :arch="arch"
-								   :cateMenu="cateMenu"
-								   :close="close" :currentInstallId="currentInstallId"
-								   :installedList="installedList" :showDetailSwiper="showDetailSwiper"
-								   @install="quickInstall">
-					</AppDetailInfo>
+					<AppDetail 
+						:appDetailData="appDetailData" 
+						:arch="arch"
+						:cateMenu="cateMenu"
+						:handleBackBtnClick="close" 
+						:currentInstallId="currentInstallId"
+						:installedList="installedList" 
+						:showDetailSwiper="showDetailSwiper"
+						@install="quickInstall">
+					</AppDetail>
 				</template>
 			</app-side-bar>
 			<!-- Sidebar End -->
@@ -505,13 +509,12 @@ import business_ShowNewAppTag                   from "@/mixins/app/Business_Show
 import business_OpenThirdApp                    from "@/mixins/app/Business_OpenThirdApp";
 import DockerProgress                           from "@/components/Apps/progress.js";
 import ComposeConfig                            from "@/components/Apps/ComposeConfig.vue";
-import AppDetailInfo                            from '@/components/Apps/AppDetailInfo.vue'
 import {ValidationObserver, ValidationProvider} from "vee-validate";
 import {ice_i18n}                               from "@/mixins/base/common-i18n";
 import {parse}                                  from "yaml";
 import AppStoreSourceManagement                 from "@/components/Apps/AppStoreSourceManagement.vue";
 import {vOnClickOutside}                        from '@vueuse/components'
-
+import { AppDetail } from "@/components/AppStore";
 const data = [
 	"AUDIT_CONTROL",
 	"AUDIT_READ",
@@ -545,7 +548,6 @@ const data = [
 export default {
 	components: {
 		AppStoreSourceManagement,
-		AppDetailInfo,
 		AppSideBar,
 		LottieAnimation,
 		Swiper,
@@ -554,6 +556,7 @@ export default {
 		ComposeConfig,
 		ValidationObserver,
 		ValidationProvider,
+		AppDetail
 	},
 	mixins: [business_ShowNewAppTag, business_OpenThirdApp],
 	directives: {
@@ -1627,33 +1630,6 @@ export default {
 	height: 16rem;
 }
 
-.app-detial {
-	overflow: auto;
-	height: 100%;
-
-	.app-header {
-		position: relative;
-	}
-
-	.level {
-		.footing {
-			color: hsl(0, 0%, 48%);
-		}
-	}
-
-	.swiper-button-next,
-	.swiper-rtl .swiper-button-prev {
-		right: -20px;
-		left: auto;
-	}
-
-	.swiper-button-prev,
-	.swiper-rtl .swiper-button-next {
-		left: -20px;
-		right: auto;
-	}
-}
-
 .featured-app {
 	.swiper-button-next,
 	.swiper-rtl .swiper-button-prev {
@@ -1744,58 +1720,6 @@ export default {
 }
 
 @media screen and (max-width: 480px) {
-	.app-detial {
-		overflow: auto;
-		height: 100%;
-
-		.modal-card-head {
-			.button {
-				-webkit-tap-highlight-color: transparent;
-			}
-		}
-
-		.app-header {
-			position: relative;
-
-			.header-icon {
-				.is-128x128 {
-					height: 96px;
-					width: 96px;
-				}
-			}
-
-			.store-title {
-				font-size: 1.125rem;
-			}
-
-			.subtitle {
-				font-size: 0.75rem;
-				margin-bottom: 0.75rem;
-			}
-
-			.description {
-				.button {
-					font-size: 0.75rem;
-				}
-			}
-		}
-
-		.level {
-			.mdi-36px.mdi-set,
-			.mdi-36px.mdi:before {
-				font-size: 24px;
-			}
-
-			.title {
-				font-size: 24px;
-			}
-
-			.footing {
-				font-size: 0.6rem !important;
-			}
-		}
-	}
-
 	.f-list {
 		.is-one-quarter {
 			width: 100% !important;
