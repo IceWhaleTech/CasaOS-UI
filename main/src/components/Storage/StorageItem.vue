@@ -47,7 +47,7 @@
 						  rounded size="is-small" @click="removeStorage(item.disk)"> {{ $t('Remove') }}
 				</b-button>
 			</div>
-			<p v-else-if="item.usePercent >= 0.8" class="has-text-right is-flex is-flex-direction-column-reverse">
+			<p v-else-if="item.usePercent >= 80" class="has-text-right is-flex is-flex-direction-column-reverse">
 				<a href="https://wiki.casaos.io/zh/guides" target="_blank">{{ $t("Free up storage") }}</a>
 			</p>
 		</div>
@@ -61,7 +61,7 @@ import {mixin} from '@/mixins/mixin';
 import delay   from 'lodash/delay';
 
 export default {
-	name: "drive-item",
+	name: "storage-item",
 	mixins: [mixin],
 	props: {
 		item: {

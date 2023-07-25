@@ -31,10 +31,10 @@
 									$t('Single Drive Storage')
 								}},
 								<span
-									class="is-uppercase">{{ item.fsType || $t('undefined') }}</span>
+								class="is-uppercase">{{ item.fsType || $t('undefined') }}</span>
 								<b-tooltip
-									:label="$t('CasaOS reserves 1% of file space when creating storage in EXT4 format.')"
-									append-to-body>
+								:label="$t('CasaOS reserves 1% of file space when creating storage in EXT4 format.')"
+								append-to-body>
 									<b-icon class="mr-2 " icon="help-circle-outline" size="is-small"></b-icon>
 								</b-tooltip>
 							</p>
@@ -55,7 +55,7 @@
 						renderSize(usage)
 					}}/{{ renderSize(totleSize) }}
 				</div>
-				<p v-if="usePercent >= 0.8"
+				<p v-if="usePercent >= 80"
 				   class="has-text-right is-flex is-flex-direction-row-reverse">
 					<a href="https://wiki.casaos.io/zh/guides" target="_blank">{{ $t("Free up storage") }}</a>
 				</p>
@@ -72,7 +72,7 @@ import MergeStorages from "@/components/Storage/MergeStorages.vue";
 import cToolTip      from "@/components/basicComponents/tooltip/tooltip.vue";
 
 export default {
-	name: "drive-combination",
+	name: "storage-combination",
 	mixins: [mixin],
 	inject: ['OS'],
 	components: {
