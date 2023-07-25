@@ -7,34 +7,28 @@
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
   -->
 
-<!--
- * @Author: JerryK
- * @Date: 2022-01-20 13:21:12
- * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-09-29 22:12:35
- * @Description:
- * @FilePath: /CasaOS-UI/src/components/Storage/StorageItem.vue
--->
 <template>
-	<div class="mb-5 mt-2">
-		<div class="is-flex mb-2">
+	<div class="mb-4 pb-3 background-item is-flex is-flex-direction-column">
+		<div class="is-flex mt-3 mr-3 mb-3 ml-3">
 			<div class="header-icon">
 				<b-image :src="require('@/assets/img/storage/storage.png')" class="is-64x64"></b-image>
 			</div>
 			<div class="ml-3 is-flex-grow-1 is-flex is-align-items-center">
 				<div>
-					<h4 class="title is-size-14px mb-0 has-text-left one-line">{{ item.name }}
-						<b-tag v-if="item.isSystem" class="ml-2">CasaOS</b-tag>
+					<h4 class="mb-0 has-text-left one-line has-text-emphasis-02 is-flex is-align-items-center">
+						{{ item.name }}
+						<b-tag v-if="item.isSystem" class="ml-2 has-text-full-04">OS
+						</b-tag>
 					</h4>
 
-					<p class="has-text-left is-size-7 has-text-grey-light	">{{ $t('Single Drive Storage') }}, <span
-						class="is-uppercase">{{ item.fsType }}</span>
+					<p class="has-text-left has-text-full-04 has-text-grey-light mt-1">{{ $t('Single Drive Storage') }},
+						<span class="is-uppercase">{{ item.fsType }}</span>
 						<b-tooltip :label="$t('CasaOS reserves 1% of file space when creating storage in EXT4 format.')"
 								   append-to-body>
 							<b-icon class="mr-2 " icon="help-circle-outline" size="is-small"></b-icon>
 						</b-tooltip>
 					</p>
-					<p class="has-text-left is-size-7 ">{{
+					<p class="has-text-left has-text-full-04 mt-1">{{
 							$t("Available Total", {
 								name: item.diskName,
 								avl: renderSize(item.availSize),
@@ -53,9 +47,12 @@
 						  rounded size="is-small" @click="removeStorage(item.disk)"> {{ $t('Remove') }}
 				</b-button>
 			</div>
+			<p v-else-if="item.usePercent >= 80" class="has-text-right is-flex is-flex-direction-column-reverse">
+				<a href="https://wiki.casaos.io/zh/guides" target="_blank">{{ $t("Free up storage") }}</a>
+			</p>
 		</div>
 		<b-progress :type="item.usePercent | getProgressType" :value="item.usePercent || 0"
-					size="is-small"></b-progress>
+					class="ml-3 mr-3" size="is-small"></b-progress>
 	</div>
 </template>
 
@@ -64,7 +61,7 @@ import {mixin} from '@/mixins/mixin';
 import delay   from 'lodash/delay';
 
 export default {
-	name: "drive-item",
+	name: "storage-item",
 	mixins: [mixin],
 	props: {
 		item: {
@@ -185,3 +182,17 @@ export default {
 	},
 }
 </script>
+<style lang="scss" scoped>
+.tag {
+	background-color: hsla(208, 16%, 98%, 1);
+	border: 1px solid hsla(208, 100%, 45%, 1);
+	color: hsla(208, 100%, 45%, 1);
+	padding: 2px 6px;
+	height: 1.25rem;
+}
+
+.background-item {
+	background-color: hsla(208, 16%, 98%, 1);
+	border-radius: 0.5rem;
+}
+</style>

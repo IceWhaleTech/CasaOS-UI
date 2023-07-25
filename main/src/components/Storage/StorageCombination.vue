@@ -7,7 +7,7 @@
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
   -->
 <template>
-	<div v-show="showCombination" class="mb-5 mt-2 pt-5 pb-5 border-1">
+	<div v-show="showCombination" class="mb-5 mt-2 pt-5 pb-5 border-1 combination-box">
 		<div class="is-relative is-flex is-justify-content-center top--2rem">
 			<div class="pr-4 pl-4 has-background-white">CasaOS HD</div>
 		</div>
@@ -46,16 +46,15 @@
 					</div>
 				</div>
 			</div>
-			<div class="mr-5 is-flex is-flex-direction-column is-justify-content-space-between">
-				<div class="is-flex is-flex-direction-row-reverse">
-					<b-button :type="type" class="width" rounded size="is-small"
-							  @click="showStorageSettingsModal">{{ $t('Merge Storages') }}
-					</b-button>
-					<cToolTip isBlock modal="is-success"></cToolTip>
+			<div class="mr-5 is-flex is-flex-direction-column-reverse is-justify-content-space-between">
+				<div class="has-text-emphasis-01 has-text-weight-medium mb-1">{{
+						renderSize(usage)
+					}}/{{ renderSize(totleSize) }}
 				</div>
-
-				<div class="is-size-6 has-text-weight-medium mb-1">{{ renderSize(usage) }}/{{ renderSize(totleSize) }}
-				</div>
+				<p v-if="usePercent >= 80"
+				   class="has-text-right is-flex is-flex-direction-row-reverse">
+					<a href="https://wiki.casaos.io/zh/guides" target="_blank">{{ $t("Free up storage") }}</a>
+				</p>
 			</div>
 		</div>
 		<b-progress :type="usePercent | getProgressType" :value="usePercent" class="ml-5 mr-5"
@@ -64,12 +63,12 @@
 </template>
 
 <script>
-import {mixin} from '@/mixins/mixin';
+import {mixin}       from '@/mixins/mixin';
 import MergeStorages from "@/components/Storage/MergeStorages.vue";
-import cToolTip from "@/components/basicComponents/tooltip/tooltip.vue";
+import cToolTip      from "@/components/basicComponents/tooltip/tooltip.vue";
 
 export default {
-	name: "drive-combination",
+	name: "storage-combination",
 	mixins: [mixin],
 	components: {
 		cToolTip,
@@ -168,5 +167,25 @@ export default {
 	top: -1.4rem;
 	margin-top: -1rem;
 	width: 100%
+}
+
+.combination-box {
+	background-color: hsla(208, 16%, 98%, 1);
+	border: 1px solid hsla(208, 16%, 91%, 1);
+	border-radius: 12px;
+
+	.combination-title {
+		background-color: hsla(208, 16%, 98%, 1);
+		border: 1px solid hsla(208, 16%, 91%, 1);
+		border-radius: 4px;
+	}
+
+	.tag {
+		background-color: hsla(208, 16%, 98%, 1);
+		border: 1px solid hsla(208, 100%, 45%, 1);
+		color: hsla(208, 100%, 45%, 1);
+		padding: 2px 6px;
+		height: 1.25rem;
+	}
 }
 </style>
