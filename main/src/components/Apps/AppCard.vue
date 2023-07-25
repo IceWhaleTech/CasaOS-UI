@@ -648,9 +648,6 @@ export default {
 				if (resp.status === 200) {
 					// messageBus :: apps_checkThenUpdate
 					this.$messageBus('apps_checkupdate', this.item.name.toString());
-
-					// TODO: this is need to i18n. But the resp.data.message contain app name.
-					// So it may is hard to do
 					this.$buefy.toast.open({
 						// value is `In the process of asynchronous updating.` or `compose app `app Name` is up to date`
 						message: resp.data.message,
@@ -815,6 +812,17 @@ export default {
 				this.$buefy.toast.open({
 					message: this.$t(`{title} rebulid completed`, {title: ice_i18n(this.item.title)}),
 					type: 'is-success'
+				})
+			}
+		},
+		"app:install-error"(res) {
+			if (res.Properties["dry_run.name"] === this.item.name) {
+				// 4.sockiet :: install-end :: change UI status.
+				this.isRebuilding = false;
+				// 5.message toast
+				this.$buefy.toast.open({
+					message: res.Properties["message"],
+					type: 'is-warning'
 				})
 			}
 		},
