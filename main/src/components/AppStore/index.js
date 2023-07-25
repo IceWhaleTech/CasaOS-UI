@@ -1,3 +1,4 @@
 import AppDetail from "./AppDetail";
 import AppRecommend from "./AppRecommend";
-export { AppDetail, AppRecommend }
+import AppCondition from "./AppCondition";
+export { AppDetail, AppRecommend, AppCondition }

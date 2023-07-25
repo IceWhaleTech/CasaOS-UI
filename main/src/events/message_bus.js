@@ -222,6 +222,9 @@ module.exports = {
 	appstore_type: async (type) => {
 		return await intermediateProcessor("casaos-ui:appstore:appstore_type", {value: type})
 	},
+	// appstore_author: async (type) => {
+	// 	return await intermediateProcessor("casaos-ui:appstore:appstore_author", {value: type})
+	// },
 	appstore_sort: async (type) => {
 		return await intermediateProcessor("casaos-ui:appstore:appstore_sort", {value: type})
 	},
