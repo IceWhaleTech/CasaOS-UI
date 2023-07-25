@@ -77,6 +77,7 @@ export default {
 		background: $backDropColor;
 		backdrop-filter: $backDropBlur;
 		border: $backDropBorder;
+		box-shadow: $backDropShadow;
 		border-radius: $backDropBorderRadius;
 		outline: none;
 		font-size: 0.875rem !important;
@@ -85,7 +86,7 @@ export default {
 
 		&:focus {
 			border: none;
-			box-shadow: none;
+			box-shadow: rgb(255 255 255 / 25%) 0.5px 1px 1px 0px inset;
 		}
 
 		&::placeholder {

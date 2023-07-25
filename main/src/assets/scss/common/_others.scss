@@ -102,6 +102,7 @@
 	border-radius: $backDropBorderRadius;
 	background: $backDropColor;
 	backdrop-filter: $backDropBlur;
+	box-shadow: $backDropShadow;
 	border: $backDropBorder;
 	position: absolute;
 	z-index: 0;
