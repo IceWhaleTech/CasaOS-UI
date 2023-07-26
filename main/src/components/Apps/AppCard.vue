@@ -641,6 +641,7 @@ export default {
 				// 3.install compose
 				await this.$openAPI.appManagement.compose.installComposeApp(file, {name: app.name})
 			} catch (e) {
+				this.isRebuilding = false;
 				console.error('rebuild Error:', e)
 				this.$buefy.toast.open({
 					message: this.$t(`Rebulid error`),
