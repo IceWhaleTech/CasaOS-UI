@@ -61,7 +61,7 @@
 			<!-- Title Bar Start -->
 			<div class="title-bar is-flex is-align-items-center mt-2rem  mb-5">
 				<app-section-title-tip id="appTitle2" class="is-flex-grow-1 has-text-sub-04" label="Need to be rebuild."
-									   title="Legacy app">
+									   title="Legacy app(Need to be rebuild).">
 				</app-section-title-tip>
 			</div>
 			<!-- Title Bar End -->
