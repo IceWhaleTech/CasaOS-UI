@@ -482,7 +482,7 @@ export default {
 
 			// 1. add notice::add new app_install notice
 			const data = {
-				title: $t('Installing {title}', {title: res.title}),
+				title: this.$t('Installing {title}', {title: res.title}),
 				icon: res.icon,
 				content: {
 					text: res?.message,
