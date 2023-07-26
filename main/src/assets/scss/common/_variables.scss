@@ -266,12 +266,12 @@ $link-invert: $primary-invert;
 $link-focus-border: $primary;
 
 
-// BackDrop 
+// BackDrop
 $backDropColor: rgba(53, 54, 58, 0.4);
 $backDropBlur: blur(5px) saturate(180%);
 $backDropBorder: none;
 $backDropBorderRadius: 10px;
-$backDropShadow: rgb(255 255 255 / 12.5%) 0.5px 1px 1px 0px inset;
+$backDropShadow: rgb(255 255 255 / 12.5%) 0px 1px 1px 0px inset;
 
 // Avatar
 $avatar-border-color: hsl(0, 0%, 89%);
