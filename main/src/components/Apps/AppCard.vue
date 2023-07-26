@@ -122,7 +122,7 @@
 					   animation="fade1" class="in-card" type="is-white">
 
 				<div
-					class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-5 pb-3px img-c">
+				class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-5 pb-3px img-c">
 					<div class="is-flex is-justify-content-center">
 						<div class="is-relative">
 							<b-image :class="dotClass(item.status, isLoading)" :src="item.icon"
@@ -329,12 +329,12 @@ export default {
 				case "App Store":
 					this.openAppStore();
 					break;
-				// case "Files":
-				// 	this.showMircoApp(item);
-				// 	break;
-				// case "Remote Access":
-				// 	this.showMircoApp(item);
-				// 	break;
+			// case "Files":
+			// 	this.showMircoApp(item);
+			// 	break;
+			// case "Remote Access":
+			// 	this.showMircoApp(item);
+			// 	break;
 				default:
 					break;
 			}
@@ -641,6 +641,7 @@ export default {
 				// 3.install compose
 				await this.$openAPI.appManagement.compose.installComposeApp(file, {name: app.name})
 			} catch (e) {
+				this.isRebuilding = false;
 				console.error('rebuild Error:', e)
 				this.$buefy.toast.open({
 					message: this.$t(`Rebulid error`),
@@ -824,6 +825,17 @@ export default {
 				this.$buefy.toast.open({
 					message: this.$t(`{title} rebulid completed`, {title: ice_i18n(this.item.title)}),
 					type: 'is-success'
+				})
+			}
+		},
+		"app:install-error"(res) {
+			if (res.Properties["dry_run.name"] === this.item.name) {
+				// 4.sockiet :: install-end :: change UI status.
+				this.isRebuilding = false;
+				// 5.message toast
+				this.$buefy.toast.open({
+					message: res.Properties["message"],
+					type: 'is-warning'
 				})
 			}
 		},
