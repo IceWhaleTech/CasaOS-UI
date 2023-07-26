@@ -403,5 +403,6 @@
   "Rebuilding": "Reconstruyendo",
   "{title} rebulid completed": "Reconstrución {title} completada",
   "Rebulid error": "Error en la reconstrución",
-  "Installing {title}": "Installing {title}"
+  "Installing {title}": "Installing {title}",
+  "Merge": "Merge"
 }

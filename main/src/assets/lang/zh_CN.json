@@ -403,5 +403,6 @@
   "Rebuilding": "重建中",
   "{title} rebulid completed": "{title} rebulid completed",
   "Rebulid error": "重建错误",
-  "Installing {title}": "Installing {title}"
+  "Installing {title}": "Installing {title}",
+  "Merge": "合并磁盘"
 }
