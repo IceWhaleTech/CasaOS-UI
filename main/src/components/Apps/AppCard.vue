@@ -122,7 +122,7 @@
 					   animation="fade1" class="in-card" type="is-white">
 
 				<div
-					class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-5 pb-3px img-c">
+				class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-5 pb-3px img-c">
 					<div class="is-flex is-justify-content-center">
 						<div class="is-relative">
 							<b-image :class="dotClass(item.status, isLoading)" :src="item.icon"
@@ -629,6 +629,7 @@ export default {
 				// 3.install compose
 				await this.$openAPI.appManagement.compose.installComposeApp(file, {name: app.name})
 			} catch (e) {
+				this.isRebuilding = false;
 				console.error('rebuild Error:', e)
 				this.$buefy.toast.open({
 					message: this.$t(`Rebulid error`),
