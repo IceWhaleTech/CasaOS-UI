@@ -14,7 +14,7 @@
 		<div ref="wsettings" class="wsettings">
 			<b-dropdown :mobile-modal="false" :position="position" animation="fade1" aria-role="list">
 				<template #trigger>
-					<div class=" widget-content" @click="$messageBus('widget_widgetsetting')">
+					<div class="widget-content" @click="$messageBus('widget_widgetsetting')">
 						<!-- Header Start -->
 						<div class="widget-header is-flex is-clickable	">
 							<div class="widget-title is-flex-grow-1">
