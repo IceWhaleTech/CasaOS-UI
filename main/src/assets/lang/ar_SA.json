@@ -404,5 +404,6 @@
   "{title} rebulid completed": "{title} rebulid completed",
   "Rebulid error": "Rebulid error",
   "Installing {title}": "Installing {title}",
-  "Merge": "Merge"
+  "Merge": "Merge",
+  "Legacy app(Need to be rebuild).": "Legacy app(Need to be rebuild)."
 }

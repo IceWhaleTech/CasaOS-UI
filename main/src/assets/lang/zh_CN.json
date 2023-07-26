@@ -404,5 +404,6 @@
   "{title} rebulid completed": "{title} rebulid completed",
   "Rebulid error": "重建错误",
   "Installing {title}": "Installing {title}",
-  "Merge": "合并磁盘"
+  "Merge": "合并",
+  "Legacy app(Need to be rebuild).": "遗留应用（需要重建）"
 }
