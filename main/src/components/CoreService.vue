@@ -40,6 +40,7 @@ import events                 from "@/events/events";
 import Business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
 import DiskLearnMore          from "@/components/Storage/DiskLearnMore.vue";
 import last                   from "lodash/last";
+import {ice_i18n}             from "@/mixins/base/common-i18n";
 // import DockerProgress from "@/components/Apps/progress.js";
 // import StorageManagerPanel from "@/components/Storage/StorageManagerPanel.vue";
 
@@ -466,7 +467,7 @@ export default {
 
 			// 1. add notice::add new app_install notice
 			const data = {
-				title: $t('Installing {title}', {title: res.title}),
+				title: this.$t('Installing {title}', {title: res.title}),
 				icon: res.icon,
 				content: {
 					text: res?.message,
