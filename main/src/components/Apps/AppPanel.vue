@@ -122,10 +122,10 @@
 						:installedList="installedList"
 						:isLoading="isLoading"
 						@update-pageList="updatePageList"
-						@updateIsLoading="updateIsLoading"
-						@updateInstalledList="updateInstalledList"
-						@updateIsLoadError="updateIsLoadError"
-						@updateSearchKey="updateSearchKey"
+						@update-isLoading="updateIsLoading"
+						@update-isLoadError="updateIsLoadError"
+						@update-installed-list="updateInstalledList"
+						@update-searchKey="updateSearchKey"
 					/>
 
 					<!-- List condition End -->
@@ -736,37 +736,6 @@ export default {
 			const vh = window.innerHeight * 0.01;
 			document.documentElement.style.setProperty('--vh', `${vh}px`);
 		},
-
-		// this.cateMenu : {name: 'appstore', title: 'App Store', icon: 'mdi-apps', component: 'AppStore'}
-		// param : this.cateMenu.name
-		// getCateIcon(name) {
-		// 	let tempO = this.cateMenu.find(item => item.name == name) || {font: 'mdi-apps'}
-		// 	return tempO.font;
-		// },
-
-		/**
-		 * @description: Get category list
-		 * @param {*}
-		 * @return {*} void
-		 */
-		// async getCategoryList() {
-		// 	this.isLoading = true
-		// 	try {
-		// 		this.cateMenu = await this.$openAPI.appManagement.appStore.categoryList().then(res => res.data.data.filter((item) => {
-		// 			return item.count > 0
-		// 		}));
-		// 		this.currentCate = this.cateMenu[0]
-		// 		this.currentSort = this.sortMenu[0]
-		// 		if (this.isFirst) {
-		// 			this.isFirst = false
-		// 		}
-		// 	} catch (error) {
-		// 		this.loadErrorStep = 1
-		// 		this.isLoading = false;
-		// 		this.isLoadError = true;
-		// 	}
-
-		// },
 
 		async getStoreRecommend() {
 			try {

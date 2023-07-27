@@ -4,8 +4,8 @@
 			icon="category"
 			:activeAppStoreSourceInput="activeAppStoreSourceInput"
 			:isMobile="isMobile"
-			:current="currentCategory"
-			:menuData="categoryMenu"
+			:currentOption="currentCategory"
+			:listData="categoryMenu"
 			:handleOptionClickCallBack="handleCategoryOptionClick"
 			@update-current-option="updateCurrentCategory"
 		></ListBox>
@@ -14,9 +14,8 @@
 			icon="posted-by-outline"
 			:activeAppStoreSourceInput="activeAppStoreSourceInput"
 			:isMobile="isMobile"
-			:current="currentAuthor"
-			:menuData="authorMenu"
-			:handleOptionClickCallBack="handleAuthorOptionClick"
+			:currentOption="currentAuthor"
+			:listData="authorMenu"
 			@update-current-option="updateCurrentAuthor"
 		></ListBox>
 
@@ -26,19 +25,20 @@
 					pack="casa"
 					@click.native="searchAndSourcesStatusController"></b-icon>
 		</transition>
+
 		<transition name="search-fade">
-
-		<b-input v-if="searchAndSourcesStatus !== 'showSources'"
-			ref="search_app"
-			:placeholder="$t('Search an app...')"
-			class="app-search"
-			type="text"
-			@input="debounceSearchInput"
-			@keyup.enter.native="counterPatchGetStoreList++">
-		</b-input>
-
+			<b-input v-if="searchAndSourcesStatus !== 'showSources'"
+				ref="search_app"
+				:placeholder="$t('Search an app...')"
+				class="app-search"
+				type="text"
+				@input="debounceSearchInput"
+				@keyup.enter.native="counterPatchGetStoreList++">
+			</b-input>
 		</transition>
+
 		<div class="is-flex-grow-1"></div>
+
 		<AppStoreSourceManagement v-show="searchAndSourcesStatus !== 'showSearch'"
 			:totalApps="pageList.length" class="ml-2"
 			@refreshAppStore="getStoreList"
@@ -48,22 +48,23 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, ref, reactive, watch, onMounted } from 'vue';
-import messageBus from '@/events';
+import { defineProps, defineEmits, ref, onMounted, watch } from 'vue';
+
+import ListBox  from "@/kit/ListBox/ListBox.vue";
 import AppStoreSourceManagement                 from "@/components/Apps/AppStoreSourceManagement.vue";
+
+import messageBus from '@/events';
 import openAPI from '@/service/index.js'
-import {ice_i18n}                               from "@/mixins/base/common-i18n";
+import { ice_i18n }                               from "@/mixins/base/common-i18n";
 import debounce                                 from 'lodash/debounce'
 
-import {ListBox} from "@/kit";
 
 const emit = defineEmits([
 	'update-pageList',
-	'updateInstalledList',
-	'updateIsLoading',
-	'updateIsLoadError',
-	"updateSearchKey"
-	// 'updateCategoryMenu'
+	'update-installed-list',
+	'update-isLoading',
+	'update-isLoadError',
+	"update-searchKey"
 ])
 
 const props = defineProps({
@@ -98,7 +99,6 @@ const updateCurrentAuthor = (value)=>{
 	currentAuthor.value = value
 }
 
-
 const currentCategory = ref({count: 0, font: "category", id: 0, name: "All"});
 const updateCurrentCategory = (value)=>{
 	currentCategory.value = value
@@ -106,17 +106,6 @@ const updateCurrentCategory = (value)=>{
 
 const searchAndSourcesStatus = ref("")
 const activeAppStoreSourceInput = ref(false)
-
-// const resetSearchAndSourcesStatus = () => {
-// 	switch (props.isMobile) {
-// 		case true:
-// 			searchAndSourcesStatus.value = 'showSources'
-// 			break;
-// 		case false:
-// 			searchAndSourcesStatus.value = 'showAll'
-// 			break;
-// 	}
-// }
 
 const searchAndSourcesStatusController = () => {
 	// Status for three. One of them is "showSearch", "showSources", "showAll"
@@ -138,35 +127,32 @@ const refreshAppStoreSourceManagementSizeStatus = (status) =>{
 }
 
 const getCategoryList = async() => {
-	emit('updateIsLoading',true)
+	emit('update-isLoading',true)
 	try {
 		const categoryMenuRes = await openAPI.appManagement.appStore.categoryList().then(res => res.data.data.filter((item) => {
 			return item.count > 0
 		}));
 		categoryMenu.value = categoryMenuRes
 		currentCategory.value = categoryMenuRes[0]
-		// currentSort = this.sortMenu[0]
 		// if (this.isFirst) {
 		// 	this.isFirst = false
 		// }
 	} catch (error) {
 		// this.loadErrorStep = 1
-		emit('updateIsLoading',false)
-		emit('updateIsLoadError',true)
+		emit('update-isLoading',false)
+		emit('update-isLoadError',true)
 	}
-	emit('updateIsLoading',false)
-
+	emit('update-isLoading',false)
 }
 
 onMounted(async () => {
-	console.log("init")
 	await getCategoryList()
 	await getStoreList()
 	searchAndSourcesStatusController()
 })
 
 const getStoreList = async () => {
-	emit('updateIsLoading',true)
+	emit('update-isLoading',true)
 	try {
 		const category = currentCategory.value.name
 		const authorType = currentAuthor.value.name
@@ -181,6 +167,7 @@ const getStoreList = async () => {
 			res = await openAPI.appManagement.appStore.composeAppStoreInfoList().then(res => res.data.data)
 		}
 		const list = res.list
+
 		const listRes = Object.keys(list).map(id => {
 			const main_app_info = list[id]
 			return {
@@ -198,30 +185,36 @@ const getStoreList = async () => {
 			}
 		})
 		emit('update-pageList', listRes)
-		emit('updateInstalledList',res.installed)
+		emit('update-installedList',res.installed)
 	} catch (e) {
 		console.log('load store list error', e)
 	}
-	emit('updateIsLoading',false)
+	emit('update-isLoading',false)
 }
 
 const handleCategoryOptionClick = (category) => {
 	messageBus('appstore_type', category.name)
-	// TODO to fix the bug
-	getStoreList()
-
 };
 
 const handleAuthorOptionClick = (author) => {
+	// TODO the `appstore_author` message bus is not implemented in the backend
 	messageBus('appstore_author', author.name)
-	getStoreList()
 };
 
-const debounceSearchInput =  debounce(function (e) {
-	// this.searchKey = e;
-	emit('updateSearchKey',e)
-}, 250)
 
+watch(currentCategory, (val) => {
+	getStoreList()
+	handleCategoryOptionClick(val)
+})
+
+watch(currentAuthor, (val) => {
+	getStoreList()
+	handleAuthorOptionClick(val)
+})
+
+const debounceSearchInput =  debounce(function (e) {
+	emit('update-searchKey',e)
+}, 250)
 
 </script>
 

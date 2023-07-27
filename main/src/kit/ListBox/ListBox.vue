@@ -2,7 +2,7 @@
 	<transition name="slide-fade">
 		<div v-if="!activeAppStoreSourceInput || !isMobile"
 			class="_polymorphic is-flex is-align-items-center _dropdown">
-			<b-dropdown v-model="currentOption" :max-height="240" :mobile-modal="false"
+			<b-dropdown v-model="currentOptionProxy" :max-height="240" :mobile-modal="false"
 						animation="fade1" aria-role="list" class="app-select file-dropdown"
 						position="is-bottom-right" scrollable>
 				<template #trigger="{ active }">
@@ -24,15 +24,15 @@
 						</b-icon>
 					</div>
 				</template>
-				<b-dropdown-item v-for="menu in menuData" :key="menu.id"
-					:class="menu.id == menuData.id?'is-active':''"
-					:data-title="menu.count"
-					:value="menu" aria-role="listitem"
+				<b-dropdown-item v-for="option in listData" :key="option.id"
+					:class="option.id == listData.id?'is-active':''"
+					:data-title="option.count"
+					:value="option" aria-role="listitem"
 					class="_dropdown__item">
 					<div class="media is-align-items-center is-flex has-text-full-03"
-						@click="handleOptionClick(menu)">
+						@click="handleOptionClick(option)">
 						<div class="media-content">
-							<h3>{{ menu.name }}</h3>
+							<h3>{{ option.name }}</h3>
 						</div>
 					</div>
 				</b-dropdown-item>
@@ -42,7 +42,7 @@
 	</transition>
 </template>
 <script setup>
-import { defineProps } from 'vue';
+import { computed, defineProps } from 'vue';
 
 const emit = defineEmits([
 	'update-current-option',
@@ -52,14 +52,24 @@ const props = defineProps({
 	activeAppStoreSourceInput: Boolean,
 	isMobile: Boolean,
 	currentOption: Object,
-	menuData: Array,
-	handleOptionClickCallBack: Function,
+	listData: Array,
+	handleOptionClickCallBack: {
+		type: Function,
+		default: () => {}
+	},
 	icon: String,
 });
 
-const handleOptionClick = (menu) => {
-	emit('update-current-option', menu)
-	props.handleOptionClickCallBack(menu)
+// to avoid mutating a prop directly
+const currentOptionProxy = computed({
+	get: () => props.currentOption,
+	set: (val) => {
+		emit('update-current-option', val)
+	}
+})
+
+const handleOptionClick = (option) => {
+	props.handleOptionClickCallBack(option)
 }
 </script>
 
