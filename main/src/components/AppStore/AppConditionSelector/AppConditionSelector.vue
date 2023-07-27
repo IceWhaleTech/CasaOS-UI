@@ -1,24 +1,24 @@
 <template>
 	<div class="is-flex mt-5 mb-5 is-justify-content-center app-condition-selector">
-		<AppMenu
-			iconLogo="category"
+		<ListBox
+			icon="category"
 			:activeAppStoreSourceInput="activeAppStoreSourceInput"
 			:isMobile="isMobile"
 			:current="currentCategory"
 			:menuData="categoryMenu"
 			:handleOptionClickCallBack="handleCategoryOptionClick"
-			@update-current="updateCurrentCategory"
-		></AppMenu>
+			@update-current-option="updateCurrentCategory"
+		></ListBox>
 
-		<AppMenu
-			iconLogo="posted-by-outline"
+		<ListBox
+			icon="posted-by-outline"
 			:activeAppStoreSourceInput="activeAppStoreSourceInput"
 			:isMobile="isMobile"
 			:current="currentAuthor"
 			:menuData="authorMenu"
 			:handleOptionClickCallBack="handleAuthorOptionClick"
-			@update-current="updateCurrentAuthor"
-		></AppMenu>
+			@update-current-option="updateCurrentAuthor"
+		></ListBox>
 
 		<transition name="search-fade">
 			<b-icon v-if="searchAndSourcesStatus === 'showSources'"
@@ -55,7 +55,7 @@ import openAPI from '@/service/index.js'
 import {ice_i18n}                               from "@/mixins/base/common-i18n";
 import debounce                                 from 'lodash/debounce'
 
-import AppMenu from "./AppMenu.vue"
+import {ListBox} from "@/kit";
 
 const emit = defineEmits([
 	'update-pageList',
