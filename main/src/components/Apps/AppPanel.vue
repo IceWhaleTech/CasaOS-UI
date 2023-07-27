@@ -674,37 +674,6 @@ export default {
 				this.isLoading = false;
 			}
 		},
-		currentCate: {
-			handler(val) {
-				console.log("hello")
-				if (!this.isFirst) {
-					this.counterPatchGetStoreList++
-				}
-
-			},
-			deep: true
-		},
-		currentAuthor: {
-			handler(val) {
-				if (!this.isFirst) {
-					this.counterPatchGetStoreList++
-				}
-			},
-			deep: true
-		},
-		// Watch if app sort changes
-		currentSort: {
-			handler(val) {
-				if (!this.isFirst) {
-					this.counterPatchGetStoreList++
-				}
-			},
-			deep: true
-		},
-		counterPatchGetStoreList() {
-			this.getStoreList();
-			return 0
-		}
 	},
 	methods: {
 		updatePageList(val){
@@ -754,55 +723,7 @@ export default {
 				console.log('load recommend error', error);
 			}
 		},
-
-		/**
-		 * @description: Get App store list
-		 * @param {*}
-		 * @return {*} void
-		 */
-		async getStoreList() {
-			this.isLoading = true
-
-			try {
-				// let {category, authorType} = this.storeQueryData
-				let category = this.currentCate.name
-				let authorType = this.currentAuthor.name
-				let res;
-				if (authorType !== 'All' && category !== 'All') {
-					res = await this.$openAPI.appManagement.appStore.composeAppStoreInfoList(category, authorType).then(res => res.data.data)
-				} else if (authorType !== 'All') {
-					res = await this.$openAPI.appManagement.appStore.composeAppStoreInfoList(undefined, authorType).then(res => res.data.data)
-				} else if (category !== 'All') {
-					res = await this.$openAPI.appManagement.appStore.composeAppStoreInfoList(category, undefined, false).then(res => res.data.data)
-				} else {
-					res = await this.$openAPI.appManagement.appStore.composeAppStoreInfoList().then(res => res.data.data)
-				}
-
-				let list = res.list
-				let listRes = Object.keys(list).map(id => {
-					let main_app_info = list[id]
-					return {
-						id,
-						category: main_app_info.category,
-						icon: main_app_info.icon,
-						tagline: ice_i18n(main_app_info.tagline),
-						thumbnail: main_app_info.thumbnail || main_app_info.screenshot_link?.[0],
-						title: ice_i18n(main_app_info.title),
-						state: 0,
-						architectures: main_app_info.architectures,
-						// scheme: main_app_info.apps[id].scheme,
-						// port: main_app_info.apps[id].port_map,
-						// index: main_app_info.apps[id].index,
-					}
-				})
-				this.pageList = listRes;
-				this.installedList = res.installed
-			} catch (e) {
-				console.log('load store list error', e)
-			}
-			this.isLoading = false
-		},
-
+		
 		/**
 		 * @description: Show the details of app
 		 * @param {id} String
@@ -840,13 +761,14 @@ export default {
 			})
 		},
 
-		// retry() {
-		// 	if (this.loadErrorStep === 1) {
-		// 		this.getCategoryList()
-		// 	} else if (this.loadErrorStep === 2) {
-		// 		this.getStoreList()
-		// 	}
-		// },
+		retry() {
+			// TODO the function will reImplement in next refactor
+			// if (this.loadErrorStep === 1) {
+			// 	this.getCategoryList()
+			// } else if (this.loadErrorStep === 2) {
+			// 	this.getStoreList()
+			// }
+		},
 
 
 		/**
