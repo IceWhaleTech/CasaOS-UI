@@ -24,18 +24,18 @@
 			<div class="columns is-mobile mt-0 mb-1">
 				<div class="column is-half has-text-centered">
 					<radial-bar
-						:extendContent="power + temperature"
-						:extendContentClickable="true"
-						:percent="parseInt(cpuSeries)"
-						label="CPU"
-						@extendContentClick="changeFormat"
+					:extendContent="power + temperature"
+					:extendContentClickable="true"
+					:percent="parseInt(cpuSeries)"
+					label="CPU"
+					@extendContentClick="changeFormat"
 					></radial-bar>
 				</div>
 				<div class="column is-half has-text-centered">
 					<radial-bar
-						:extendContent="renderSize(totalMemory)"
-						:percent="parseInt(ramSeries)"
-						label="RAM"
+					:extendContent="renderSize(totalMemory)"
+					:percent="parseInt(ramSeries)"
+					label="RAM"
 					></radial-bar>
 				</div>
 			</div>
@@ -45,12 +45,12 @@
 						<b-tab-item label="CPU">
 							<div v-for="(item, index) in containerCpuList" :key="item.title + index + '-cpu'">
 								<div v-if="!isNaN(item.usage)" class="is-flex is-size-7 is-align-items-center mb-2">
-									<div class="is-flex-grow-1 is-flex is-align-items-center">
+									<div class="is-flex-grow-1 is-flex is-align-items-center is-clipped">
 										<b-image
-											:lazy="false"
-											:src="item.icon"
-											:src-fallback="require('@/assets/img/app/default.svg')"
-											class="is-16x16 mr-2 is-flex-shrink-0"
+										:lazy="false"
+										:src="item.icon"
+										:src-fallback="require('@/assets/img/app/default.svg')"
+										class="is-16x16 mr-2 is-flex-shrink-0"
 										></b-image>
 										<span class="one-line">{{ item.title }}</span>
 									</div>
@@ -62,14 +62,15 @@
 						<b-tab-item label="RAM">
 							<div v-for="(item, index) in containerRamList" :key="item.title + index + '-rem'">
 								<div
-									v-if="!isNaN(item.usage) && renderSize(item.usage).split(' ')[0] != 0"
-									class="is-flex is-size-7 is-align-items-center mb-2"
+								v-if="!isNaN(item.usage) && renderSize(item.usage).split(' ')[0] != 0"
+								class="is-flex is-size-7 is-align-items-center mb-2"
 								>
-									<div class="is-flex-grow-1 is-flex is-align-items-center">
+									<div
+									class="is-flex-grow-1 is-flex-shrink-1 is-flex is-align-items-center is-clipped">
 										<b-image
-											:src="item.icon"
-											:src-fallback="require('@/assets/img/app/default.svg')"
-											class="is-16x16 mr-2 is-flex-shrink-0"
+										:src="item.icon"
+										:src-fallback="require('@/assets/img/app/default.svg')"
+										class="is-16x16 mr-2 is-flex-shrink-0"
 										></b-image>
 										<span class="one-line">{{ item.title }}</span>
 									</div>
@@ -117,8 +118,8 @@ export default {
 			containerCpuList: [],
 			containerRamList: [],
 			temperatureFormat: localStorage.getItem("temperatureFormat")
-				? localStorage.getItem("temperatureFormat")
-				: "°C",
+			? localStorage.getItem("temperatureFormat")
+			: "°C",
 			orgTemperature: 0,
 			power: "0W / ",
 			powerList: [],
@@ -144,9 +145,9 @@ export default {
 	computed: {
 		temperature() {
 			const temp =
-				this.temperatureFormat == "°C"
-					? this.orgTemperature + "°C"
-					: this.celsiusToFahrenheit(this.orgTemperature) + "°F";
+			this.temperatureFormat == "°C"
+			? this.orgTemperature + "°C"
+			: this.celsiusToFahrenheit(this.orgTemperature) + "°F";
 			return temp;
 		},
 	},
@@ -197,11 +198,11 @@ export default {
 			this.orgTemperature = cpu.temperature == undefined ? 0 : cpu.temperature;
 			if (this.powerList.length == 2 && cpu.model === "intel") {
 				this.power =
-					(
-						(this.powerList[1].value - this.powerList[0].value) /
-						1000000 /
-						(this.powerList[1].timestamp - this.powerList[0].timestamp)
-					).toFixed(1) + "W / ";
+				(
+				(this.powerList[1].value - this.powerList[0].value) /
+				1000000 /
+				(this.powerList[1].timestamp - this.powerList[0].timestamp)
+				).toFixed(1) + "W / ";
 			} else {
 				this.power = "";
 			}
@@ -224,9 +225,9 @@ export default {
 						// Look at here  https://docs.docker.com/engine/api/v1.41/#operation/ContainerStats
 
 						const cpu_delta =
-							item.data.cpu_stats.cpu_usage.total_usage - item.previous.cpu_stats.cpu_usage.total_usage;
+						item.data.cpu_stats.cpu_usage.total_usage - item.previous.cpu_stats.cpu_usage.total_usage;
 						const system_cpu_delta =
-							item.data.cpu_stats.system_cpu_usage - item.previous.cpu_stats.system_cpu_usage + 1;
+						item.data.cpu_stats.system_cpu_usage - item.previous.cpu_stats.system_cpu_usage + 1;
 						// const number_cpus = item.data.cpu_stats.online_cpus
 						usage = Math.floor((cpu_delta / system_cpu_delta) * 1000) / 10;
 					}
