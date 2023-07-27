@@ -47,7 +47,6 @@
 					<AppDetail 
 						:appDetailData="appDetailData" 
 						:arch="arch"
-						:cateMenu="cateMenu"
 						:handleBackBtnClick="close" 
 						:currentInstallId="currentInstallId"
 						:installedList="installedList" 
@@ -115,18 +114,16 @@
 					<!-- Featured Slider End -->
 
 					<!-- List condition Start -->
-					<AppCondition 
+					<AppConditionSelector 
 						:pageList="pageList"
-						:cateMenu="cateMenu"
-						:authorMenu="authorMenu"
-						:activeAppStoreSourceInput="activeAppStoreSourceInput"
 						:isMobile="isMobile"
-						:refreshAppStoreSourceManagementSizeStatus="refreshAppStoreSourceManagementSizeStatus"
-						:searchAndSourcesStatus="searchAndSourcesStatus"
-						:searchAndSourcesStatusController="searchAndSourcesStatusController"
-						:resetSearchAndSourcesStatus="resetSearchAndSourcesStatus"
-						:debounceSearchInput="debounceSearchInput"
-						:getStoreList="getStoreList"
+						:installedList="installedList"
+						:isLoading="isLoading"
+						@update-pageList="updatePageList"
+						@updateIsLoading="updateIsLoading"
+						@updateInstalledList="updateInstalledList"
+						@updateIsLoadError="updateIsLoadError"
+						@updateSearchKey="updateSearchKey"
 					/>
 					
 					<!-- List condition End -->
@@ -372,7 +369,6 @@ import "@/plugins/vee-validate";
 import uniq                                     from 'lodash/uniq';
 import isNull                                   from 'lodash/isNull'
 import orderBy                                  from 'lodash/orderBy';
-import debounce                                 from 'lodash/debounce'
 import FileSaver                                from 'file-saver';
 import {Swiper, SwiperSlide}                    from 'vue-awesome-swiper'
 import AppsInstallationLocation                 from "@/components/Apps/AppsInstallationLocation";
@@ -385,7 +381,7 @@ import {ice_i18n}                               from "@/mixins/base/common-i18n"
 import {parse}                                  from "yaml";
 import AppStoreSourceManagement                 from "@/components/Apps/AppStoreSourceManagement.vue";
 import {vOnClickOutside}                        from '@vueuse/components'
-import { AppDetail, AppRecommend, AppCondition } from "@/components/AppStore";
+import { AppDetail, AppRecommend, AppConditionSelector } from "@/components/AppStore";
 const data = [
 	"AUDIT_CONTROL",
 	"AUDIT_READ",
@@ -427,7 +423,7 @@ export default {
 		ComposeConfig,
 		ValidationObserver,
 		ValidationProvider,
-		AppDetail, AppRecommend, AppCondition
+		AppDetail, AppRecommend, AppConditionSelector
 	},
 	mixins: [business_ShowNewAppTag, business_OpenThirdApp],
 	directives: {
@@ -498,22 +494,13 @@ export default {
 
 			// Featured Swiper
 			searchKey: "",
-			currentCate: {},
-			// currentAuthor: {},
 			currentAuthor: {count: 0, font: "author", id: 0, name: "All"},
 			currentSort: {},
-			cateMenu: [],
-			authorMenu: [
-				{count: 0, font: "author", id: 0, name: "All"},
-				{count: 0, font: "author", id: 1, name: "official"},
-				{count: 0, font: "author", id: 2, name: "by_casaos"},
-				{count: 0, font: "author", id: 3, name: "community"}
-			],
-			sortMenu: [
-				{icon: "", slash: "rank", name: "Popular"},
-				{icon: "", slash: "new", name: "New"},
-				{icon: "", slash: "name", name: "Name"},
-			],
+			// sortMenu: [
+			// 	{icon: "", slash: "rank", name: "Popular"},
+			// 	{icon: "", slash: "new", name: "New"},
+			// 	{icon: "", slash: "name", name: "Name"},
+			// ],
 			storeQueryData: {
 				index: 1,
 				category: "All",
@@ -555,8 +542,6 @@ export default {
 			totalPercentage: 0,
 			installedList: [],
 			counterPatchGetStoreList: 0,
-			searchAndSourcesStatus: "",
-			activeAppStoreSourceInput: false,
 		}
 	},
 
@@ -591,7 +576,7 @@ export default {
 			this.currentSlide = 1
 
 		} else {
-			this.getCategoryList();
+			// this.getCategoryList();
 		}
 
 		// If StoreId is not 0
@@ -614,7 +599,7 @@ export default {
 		this.currentSlide === 0 && !this.isMobile && this.$nextTick().then(() => {
 			this.$refs.search_app.$el.children[0].focus();
 		});
-		this.searchAndSourcesStatusController();
+		// this.searchAndSourcesStatusController();
 	},
 
 	computed: {
@@ -722,33 +707,20 @@ export default {
 		}
 	},
 	methods: {
-		resetSearchAndSourcesStatus() {
-			switch (this.isMobile) {
-				case true:
-					this.searchAndSourcesStatus = 'showSources'
-					break;
-				case false:
-					this.searchAndSourcesStatus = 'showAll'
-					break;
-			}
+		updatePageList(val){
+			this.pageList = val
 		},
-		searchAndSourcesStatusController() {
-			// Status for three. One of them is "showSearch", "showSources", "showAll"
-			if (this.isMobile && this.searchAndSourcesStatus === "showSources") {
-				this.searchAndSourcesStatus = "showSearch";
-			} else if (this.isMobile) {
-				this.searchAndSourcesStatus = "showSources";
-			} else {
-				this.searchAndSourcesStatus = "showAll";
-			}
+		updateIsLoading(val){
+			this.isLoading = val
 		},
-
-		refreshAppStoreSourceManagementSizeStatus(status) {
-			if (status === "active_input_state") {
-				this.activeAppStoreSourceInput = true
-			} else {
-				this.activeAppStoreSourceInput = false
-			}
+		updateInstalledList(val){
+			this.installedList = val
+		},
+		updateIsLoadError(val){
+			this.isLoadError = val
+		},
+		updateSearchKey(val){
+			this.searchKey = val
 		},
 
 		setCSSVHVar() {
@@ -758,34 +730,34 @@ export default {
 
 		// this.cateMenu : {name: 'appstore', title: 'App Store', icon: 'mdi-apps', component: 'AppStore'}
 		// param : this.cateMenu.name
-		getCateIcon(name) {
-			let tempO = this.cateMenu.find(item => item.name == name) || {font: 'mdi-apps'}
-			return tempO.font;
-		},
+		// getCateIcon(name) {
+		// 	let tempO = this.cateMenu.find(item => item.name == name) || {font: 'mdi-apps'}
+		// 	return tempO.font;
+		// },
 
 		/**
 		 * @description: Get category list
 		 * @param {*}
 		 * @return {*} void
 		 */
-		async getCategoryList() {
-			this.isLoading = true
-			try {
-				this.cateMenu = await this.$openAPI.appManagement.appStore.categoryList().then(res => res.data.data.filter((item) => {
-					return item.count > 0
-				}));
-				this.currentCate = this.cateMenu[0]
-				this.currentSort = this.sortMenu[0]
-				if (this.isFirst) {
-					this.isFirst = false
-				}
-			} catch (error) {
-				this.loadErrorStep = 1
-				this.isLoading = false;
-				this.isLoadError = true;
-			}
+		// async getCategoryList() {
+		// 	this.isLoading = true
+		// 	try {
+		// 		this.cateMenu = await this.$openAPI.appManagement.appStore.categoryList().then(res => res.data.data.filter((item) => {
+		// 			return item.count > 0
+		// 		}));
+		// 		this.currentCate = this.cateMenu[0]
+		// 		this.currentSort = this.sortMenu[0]
+		// 		if (this.isFirst) {
+		// 			this.isFirst = false
+		// 		}
+		// 	} catch (error) {
+		// 		this.loadErrorStep = 1
+		// 		this.isLoading = false;
+		// 		this.isLoadError = true;
+		// 	}
 
-		},
+		// },
 
 		async getStoreRecommend() {
 			try {
@@ -899,13 +871,13 @@ export default {
 			})
 		},
 
-		retry() {
-			if (this.loadErrorStep === 1) {
-				this.getCategoryList()
-			} else if (this.loadErrorStep === 2) {
-				this.getStoreList()
-			}
-		},
+		// retry() {
+		// 	if (this.loadErrorStep === 1) {
+		// 		this.getCategoryList()
+		// 	} else if (this.loadErrorStep === 2) {
+		// 		this.getStoreList()
+		// 	}
+		// },
 
 
 		/**
@@ -1385,9 +1357,6 @@ export default {
 		updateDockerComposeServiceName(val) {
 			this.dockerComposeServiceName = val
 		},
-		debounceSearchInput: debounce(function (e) {
-			this.searchKey = e;
-		}, 250)
 	},
 
 	destroyed() {
@@ -1676,21 +1645,4 @@ export default {
 	}
 }
 
-.slide-fade-enter-active, .search-fade-enter-active {
-	transition: all 0.3s ease-out;
-}
-
-.slide-fade-leave-active, search-fade-leave-active {
-	transition: opacity 0s;
-}
-
-.search-fade-enter-from {
-	transform: translateY(-20px);
-	opacity: 0;
-}
-
-.slide-fade-enter-from {
-	transform: translateX(20px);
-	opacity: 0;
-}
 </style>

@@ -1,4 +1,4 @@
 import AppDetail from "./AppDetail";
 import AppRecommend from "./AppRecommend";
-import AppCondition from "./AppCondition";
-export { AppDetail, AppRecommend, AppCondition }
+import AppConditionSelector from "./AppConditionSelector";
+export { AppDetail, AppRecommend, AppConditionSelector }

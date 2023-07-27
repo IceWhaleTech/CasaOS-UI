@@ -7,13 +7,9 @@
 				webp-fallback=".jpg">
 			</b-image>
 		</div>
+		
 		<div class="is-flex-grow-1 is-flex is-align-items-center">
 			<div>
-				<h3 class="title store-title is-4">{{ i18n(appDetailData.title) }}</h3>
-				<p class="subtitle is-size-14px two-line mb-3">
-					{{ i18n(appDetailData.tagline) }}
-				</p>
-
 				<h4 class="title store-title is-4 ">{{ i18n(appDetailData.title) }}</h4>
 				<p class="subtitle is-size-14px two-line mb-3">{{
 						i18n(appDetailData.tagline)
