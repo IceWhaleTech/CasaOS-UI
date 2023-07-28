@@ -70,7 +70,7 @@
 				<!-- Application not imported Start -->
 				<div v-for="(item) in oldAppList" :id="'app-' + item.name" :key="'app-' + item.name"
 					 class="column is-narrow is-3">
-					<app-card :isCasa="false" :item="item" @configApp="showConfigPanel" @importApp="showConfigPanel"
+					<app-card :isCasa="false" :item="item" @configApp="showConfigPanel" @importApp="showContainerPanel"
 							  @updateState="getList"></app-card>
 				</div>
 				<!-- Application not imported End -->
@@ -488,7 +488,7 @@ export default {
 		 */
 		async showConfigPanel(item, isCasa) {
 			let name = item.name;
-			this.$messageBus('appsexsiting_open', name);
+			// this.$messageBus('appsexsiting_open', name);
 			try {
 				if (item.app_type === 'LinkApp') {
 					await this.showExternalLinkPanel(item)
