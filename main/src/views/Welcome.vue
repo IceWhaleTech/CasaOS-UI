@@ -376,6 +376,7 @@ export default {
 			if (this.isLogin) {
 
 				try {
+					// if users do not complete step, wallpaper will be black.
 					await this.$api.users.setCustomStorage("wallpaper", this.$store.state.wallpaperObject)
 					setTimeout(() => {
 						this.$store.commit('SET_WALLPAPER', {

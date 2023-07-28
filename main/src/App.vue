@@ -105,8 +105,8 @@ export default {
 			},
 
 			isZIMA: false,
-			TITLE: "CasaOS",
-			OS: "CasaOS",
+			TITLE: "NAME",
+			OS: "OS",
 			V_ID: '!@#$%^&*()10',
 		}
 	},
