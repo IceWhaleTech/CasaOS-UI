@@ -71,7 +71,7 @@
 				<!-- Application not imported Start -->
 				<div v-for="(item) in oldAppList" :id="'app-' + item.name" :key="'app-' + item.name"
 					 class="column is-narrow is-3">
-					<app-card :isCasa="false" :item="item" @configApp="showConfigPanel" @importApp="showConfigPanel"
+					<app-card :isCasa="false" :item="item" @configApp="showConfigPanel" @importApp="showContainerPanel"
 							  @updateState="getList"></app-card>
 				</div>
 				<!-- Application not imported End -->
