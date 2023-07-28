@@ -376,7 +376,7 @@
   "More": "浏览更多",
   "Search an app...": "搜索应用……",
   "Tips": "提示",
-  "Export as Compose": "导出为Compse",
+  "Export as Compose": "导出为Compose",
   "Something to remember eg. password": "帮助记住一些内容。比如：密码。",
   "Other ways to merge storages": "其他合并存储的方式",
   "Free up storage": "释放空间",
@@ -405,5 +405,5 @@
   "Rebulid error": "重建错误",
   "Installing {title}": "Installing {title}",
   "Merge": "合并",
-  "Legacy app(Need to be rebuild).": "遗留应用（需要重建）"
+  "To be rebuilt.": "待重建。"
 }
