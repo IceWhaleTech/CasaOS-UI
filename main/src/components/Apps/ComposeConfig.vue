@@ -564,7 +564,7 @@ export default {
 				this.$delete(this.configData.services, "main_app");
 				// 解析 services，并将其赋值到 configData.services中。
 				for (const serviceKey in yaml.services) {
-					this.$set(this.configData.services, serviceKey, this.parseCompseItem(yaml.services[serviceKey]));
+					this.$set(this.configData.services, serviceKey, this.parseComposeItem(yaml.services[serviceKey]));
 				}
 
 				// set top level x-casaos data
@@ -578,7 +578,7 @@ export default {
 		/*
 		 * formate for render
 		 * */
-		parseCompseItem(composeServicesItemInput) {
+		parseComposeItem(composeServicesItemInput) {
 			let composeServicesItem = {};
 			// Image
 			composeServicesItem.image = composeServicesItemInput.image;
@@ -696,7 +696,7 @@ export default {
 
 			//hostname
 			// configData.host_name = parsedInput.hostname != undefined ? parsedInput.hostname : ""
-			
+
 			// privileged
 			// relation issue: https://github.com/IceWhaleTech/CasaOS/issues/1264
 			// if privileged is undefined or false, set it to false.
