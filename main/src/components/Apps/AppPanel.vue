@@ -1256,6 +1256,7 @@ export default {
 		updateContainer() {
 			this.$refs.containerValida.validate().then((valid) => {
 				if (valid) {
+					this.isLoading = true;
 					this.$api.container.update(this.id, this.settingData).then((res) => {
 						if (res.data.success == 200) {
 							this.isLoading = false;
