@@ -1,21 +1,30 @@
+<!--
+  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+  * @LastEditTime: 2023/7/31 上午11:56
+  * @FilePath: /CasaOS-UI/main/src/components/AppStore/AppConditionSelector/AppConditionSelector.vue
+  * @Description:
+  *
+  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
+
+  -->
 <template>
 	<div class="is-flex mt-5 mb-5 is-justify-content-center app-condition-selector">
 		<ListBox
-			icon="category"
 			:activeAppStoreSourceInput="activeAppStoreSourceInput"
-			:isMobile="isMobile"
 			:currentOption="currentCategory"
-			:listData="categoryMenu"
 			:handleOptionClickCallBack="handleCategoryOptionClick"
+			:isMobile="isMobile"
+			:listData="categoryMenu"
+			icon="category"
 			@update-current-option="updateCurrentCategory"
 		></ListBox>
 
 		<ListBox
-			icon="posted-by-outline"
 			:activeAppStoreSourceInput="activeAppStoreSourceInput"
-			:isMobile="isMobile"
 			:currentOption="currentAuthor"
+			:isMobile="isMobile"
 			:listData="authorMenu"
+			icon="posted-by-outline"
 			@update-current-option="updateCurrentAuthor"
 		></ListBox>
 
@@ -28,36 +37,35 @@
 
 		<transition name="search-fade">
 			<b-input v-if="searchAndSourcesStatus !== 'showSources'"
-				ref="search_app"
-				:placeholder="$t('Search an app...')"
-				class="app-search"
-				type="text"
-				@input="debounceSearchInput"
-				@keyup.enter.native="counterPatchGetStoreList++">
+					 ref="search_app"
+					 :placeholder="$t('Search an app...')"
+					 class="app-search"
+					 type="text"
+					 @input="debounceSearchInput"
+					 @keyup.enter.native="counterPatchGetStoreList++">
 			</b-input>
 		</transition>
 
 		<div class="is-flex-grow-1"></div>
 
 		<AppStoreSourceManagement v-show="searchAndSourcesStatus !== 'showSearch'"
-			:totalApps="pageList.length" class="ml-2"
-			@refreshAppStore="getStoreList"
-			@refreshSize="refreshAppStoreSourceManagementSizeStatus">
+								  :totalApps="pageList.length" class="ml-2"
+								  @refreshAppStore="getStoreList"
+								  @refreshSize="refreshAppStoreSourceManagementSizeStatus">
 		</AppStoreSourceManagement>
 	</div>
 </template>
 
 <script setup>
-import { defineProps, defineEmits, ref, onMounted, watch } from 'vue';
+import {defineEmits, defineProps, onMounted, ref, watch} from 'vue';
 
 // TODO import ListBox from kit not a file.
-import ListBox  from "@/kit/ListBox/ListBox.vue";
-import AppStoreSourceManagement                 from "@/components/Apps/AppStoreSourceManagement.vue";
-
-import messageBus from '@/events';
-import openAPI from '@/service/index.js'
-import { ice_i18n }                               from "@/mixins/base/common-i18n";
-import debounce                                 from 'lodash/debounce'
+import ListBox                  from "@/kit/ListBox/ListBox.vue";
+import AppStoreSourceManagement from "@/components/Apps/AppStoreSourceManagement.vue";
+import messageBus               from '@/events';
+import openAPI                  from '@/service/index.js'
+import {ice_i18n}               from "@/mixins/base/common-i18n";
+import debounce                 from 'lodash/debounce'
 
 
 const emit = defineEmits([
@@ -71,7 +79,8 @@ const emit = defineEmits([
 const props = defineProps({
 	pageList: {
 		type: Array,
-		default: () => {}
+		default: () => {
+		}
 	},
 	isMobile: {
 		type: Boolean,
@@ -79,7 +88,8 @@ const props = defineProps({
 	},
 	installedList: {
 		type: Array,
-		default: () => {}
+		default: () => {
+		}
 	},
 	isLoading: {
 		type: Boolean,
@@ -88,7 +98,7 @@ const props = defineProps({
 })
 
 const categoryMenu = ref([]);
-const authorMenu =  [
+const authorMenu = [
 	{count: 0, font: "author", id: 0, name: "All"},
 	{count: 1, font: "author", id: 1, name: "official"},
 	{count: 2, font: "author", id: 2, name: "by_casaos"},
@@ -96,12 +106,12 @@ const authorMenu =  [
 ]
 
 const currentAuthor = ref(authorMenu[0]);
-const updateCurrentAuthor = (value)=>{
+const updateCurrentAuthor = (value) => {
 	currentAuthor.value = value
 }
 
 const currentCategory = ref({count: 0, font: "category", id: 0, name: "All"});
-const updateCurrentCategory = (value)=>{
+const updateCurrentCategory = (value) => {
 	currentCategory.value = value
 }
 
@@ -119,7 +129,7 @@ const searchAndSourcesStatusController = () => {
 	}
 }
 
-const refreshAppStoreSourceManagementSizeStatus = (status) =>{
+const refreshAppStoreSourceManagementSizeStatus = (status) => {
 	if (status === "active_input_state") {
 		activeAppStoreSourceInput.value = true
 	} else {
@@ -127,8 +137,8 @@ const refreshAppStoreSourceManagementSizeStatus = (status) =>{
 	}
 }
 
-const getCategoryList = async() => {
-	emit('update-isLoading',true)
+const getCategoryList = async () => {
+	emit('update-isLoading', true)
 	try {
 		const categoryMenuRes = await openAPI.appManagement.appStore.categoryList().then(res => res.data.data.filter((item) => {
 			return item.count > 0
@@ -140,10 +150,10 @@ const getCategoryList = async() => {
 		// }
 	} catch (error) {
 		// this.loadErrorStep = 1
-		emit('update-isLoading',false)
-		emit('update-isLoadError',true)
+		emit('update-isLoading', false)
+		emit('update-isLoadError', true)
 	}
-	emit('update-isLoading',false)
+	emit('update-isLoading', false)
 }
 
 onMounted(async () => {
@@ -153,7 +163,7 @@ onMounted(async () => {
 })
 
 const getStoreList = async () => {
-	emit('update-isLoading',true)
+	emit('update-isLoading', true)
 	try {
 		const category = currentCategory.value.name
 		const authorType = currentAuthor.value.name
@@ -186,11 +196,11 @@ const getStoreList = async () => {
 			}
 		})
 		emit('update-pageList', listRes)
-		emit('update-installedList',res.installed)
+		emit('update-installedList', res.installed)
 	} catch (e) {
 		console.log('load store list error', e)
 	}
-	emit('update-isLoading',false)
+	emit('update-isLoading', false)
 }
 
 const handleCategoryOptionClick = (category) => {
@@ -213,14 +223,14 @@ watch(currentAuthor, (val) => {
 	handleAuthorOptionClick(val)
 })
 
-const debounceSearchInput =  debounce(function (e) {
-	emit('update-searchKey',e)
+const debounceSearchInput = debounce(function (e) {
+	emit('update-searchKey', e)
 }, 250)
 
 </script>
 
-<style  scoped>
-.app-condition-selector{
+<style scoped>
+.app-condition-selector {
 	display: flex;
 	gap: 10px;
 }
