@@ -402,5 +402,8 @@
   "All the checked Storage will be merged into {CasaOS} HD.": "All the checked Storage will be merged into {CasaOS} HD.",
   "Rebuilding": "Rebuilding",
   "{title} rebulid completed": "{title} rebulid completed",
-  "Rebulid error": "Rebulid error"
+  "Rebulid error": "Rebulid error",
+  "Installing {title}": "Installing {title}",
+  "Legacy app (To be rebuilt).": "Legacy app (To be rebuilt).",
+  "To be rebuilt.": "To be rebuilt."
 }
