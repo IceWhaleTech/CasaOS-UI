@@ -33,9 +33,9 @@
 
 			<section class="modal-card-body is-overlay">
 				<AppsInstallationLocation
-					v-for="(item,index) in storageData" :key="'storage'+index" :item="item"
-					:scence="storage_item_scence"
-					@selection="getSelection">
+				v-for="(item,index) in storageData" :key="'storage'+index" :item="item"
+				:scence="storage_item_scence"
+				@selection="getSelection">
 				</AppsInstallationLocation>
 			</section>
 		</template>
@@ -44,15 +44,15 @@
 			<!-- Sidebar Start -->
 			<app-side-bar v-model="sidebarOpen" :overlay="true" :right="true" position="absolute">
 				<template slot-scope="{close}">
-					<AppDetail 
-						:appDetailData="appDetailData" 
-						:arch="arch"
-						:cateMenu="cateMenu"
-						:handleBackBtnClick="close" 
-						:currentInstallId="currentInstallId"
-						:installedList="installedList" 
-						:showDetailSwiper="showDetailSwiper"
-						@install="quickInstall">
+					<AppDetail
+					:appDetailData="appDetailData"
+					:arch="arch"
+					:cateMenu="cateMenu"
+					:currentInstallId="currentInstallId"
+					:handleBackBtnClick="close"
+					:installedList="installedList"
+					:showDetailSwiper="showDetailSwiper"
+					@install="quickInstall">
 					</AppDetail>
 				</template>
 			</app-side-bar>
@@ -102,14 +102,14 @@
 				<template v-if="!isLoadError">
 
 
-					<AppRecommend 
-						v-if="recommendList.length > 0"
-						:recommendList="recommendList" 
-						:installedList="installedList" 
-						:currentInstallId="currentInstallId"
-						:arch="arch"
-						:showDetailSwiper="showDetailSwiper"
-						@quickInstall="quickInstall"
+					<AppRecommend
+					v-if="recommendList.length > 0"
+					:arch="arch"
+					:currentInstallId="currentInstallId"
+					:installedList="installedList"
+					:recommendList="recommendList"
+					:showDetailSwiper="showDetailSwiper"
+					@quickInstall="quickInstall"
 					>
 					</AppRecommend>
 					<!-- Featured Slider End -->
@@ -126,7 +126,7 @@
 											aria-role="list" class="app-select file-dropdown" scrollable>
 									<template #trigger="{ active }">
 										<div
-											class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
+										class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
 											<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
 													icon="category"
 													pack="casa"></b-icon>
@@ -164,7 +164,7 @@
 											position="is-bottom-right" scrollable>
 									<template #trigger="{ active }">
 										<div
-											class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
+										class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
 											<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
 													icon="posted-by-outline"
 													pack="casa"></b-icon>
@@ -376,15 +376,15 @@
 							<b-input v-model="settingData.host" :placeholder="this.$baseHostname"
 									 expanded></b-input>
 							<b-autocomplete
-								v-model="settingData.port_map"
-								:data="(()=>{
+							v-model="settingData.port_map"
+							:data="(()=>{
 								return (settingData.ports || []).map((item)=>{
 									return item.host
 								})
 							})()"
-								:open-on-focus="true"
-								:placeholder="$t('Port')" class="has-colon" field="hostname"
-								@select="option => (settingData.port_map = option)"></b-autocomplete>
+							:open-on-focus="true"
+							:placeholder="$t('Port')" class="has-colon" field="hostname"
+							@select="option => (settingData.port_map = option)"></b-autocomplete>
 							<b-input v-model="settingData.index"
 									 :placeholder="'/index.html '+ $t('[Optional]')"
 									 expanded></b-input>
@@ -405,9 +405,9 @@
 										  class="install-animation mt-5 mb-2"></lottie-animation>
 					</div>
 					<b-progress
-						:value="totalPercentage"
-						format="percent"
-						show-value type="is-primary"></b-progress>
+					:value="totalPercentage"
+					format="percent"
+					show-value type="is-primary"></b-progress>
 					<h3 :class="currentInstallAppTextClass" class="title is-6 has-text-centered"
 						style="height: 20px"
 						v-html="currentInstallAppText"></h3>
@@ -474,7 +474,8 @@ import {ice_i18n}                               from "@/mixins/base/common-i18n"
 import {parse}                                  from "yaml";
 import AppStoreSourceManagement                 from "@/components/Apps/AppStoreSourceManagement.vue";
 import {vOnClickOutside}                        from '@vueuse/components'
-import { AppDetail, AppRecommend } from "@/components/AppStore";
+import {AppDetail, AppRecommend}                from "@/components/AppStore";
+
 const data = [
 	"AUDIT_CONTROL",
 	"AUDIT_READ",
@@ -1198,6 +1199,7 @@ export default {
 		updateContainer() {
 			this.$refs.containerValida.validate().then((valid) => {
 				if (valid) {
+					this.isLoading = true;
 					this.$api.container.update(this.id, this.settingData).then((res) => {
 						if (res.data.success == 200) {
 							this.isLoading = false;
@@ -1240,15 +1242,15 @@ export default {
 						this.$buefy.dialog.alert({
 							title: '⚠️ ' + this.$t('Attention'),
 							message: '<div class="nobrk"><h4 class="title is-5">' + this.$t('AutoFill only helps you to complete most of the configuration.') + '</h4>' +
-								'<p class="mb-3">' + this.$t('Some configuration information such as:') + '</p>' +
-								'<ul>' +
-								'<li>1. ' + this.$t('the port and path of the Web UI') + '</li>' +
-								'<li>2. ' + this.$t('the mount location of the volume or file') + '</li>' +
-								'<li>3. ' + this.$t('the port mapping of the Host') + '</li>' +
-								'<li>4. ' + this.$t('optional configuration items') + '</li>' +
-								'</ul>' +
-								'<p class="mt-3">' + this.$t('These include but are not limited to these cases and <b>still need to be confirmed or modified by you.</b>') + '</p>' +
-								'<p class="mt-3">' + this.$t('Feel free to suggest improvements to this feature in Discord Server!') + '</p></div>',
+							'<p class="mb-3">' + this.$t('Some configuration information such as:') + '</p>' +
+							'<ul>' +
+							'<li>1. ' + this.$t('the port and path of the Web UI') + '</li>' +
+							'<li>2. ' + this.$t('the mount location of the volume or file') + '</li>' +
+							'<li>3. ' + this.$t('the port mapping of the Host') + '</li>' +
+							'<li>4. ' + this.$t('optional configuration items') + '</li>' +
+							'</ul>' +
+							'<p class="mt-3">' + this.$t('These include but are not limited to these cases and <b>still need to be confirmed or modified by you.</b>') + '</p>' +
+							'<p class="mt-3">' + this.$t('Feel free to suggest improvements to this feature in Discord Server!') + '</p></div>',
 							type: 'is-dark'
 						})
 					}
