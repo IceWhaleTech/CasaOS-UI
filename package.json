@@ -7,7 +7,9 @@
     "postinstall": "yarn workspaces foreach run postinstall",
     "dev": "turbo run serve",
     "dev:noCache": "turbo run serve --no-cache",
-    "build": "turbo run build"
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "yarn workspaces foreach run lint"
   },
   "packageManager": "yarn@3.6.1",
   "workspaces": [
