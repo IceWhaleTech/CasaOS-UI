@@ -85,6 +85,7 @@
 import AppCard                      from './AppCard.vue'
 import AppCardSkeleton              from './AppCardSkeleton.vue';
 import AppPanel                     from './AppPanel.vue'
+import AppSettingPanel               from '@/components/AppSettingPanel/AppSettingPanel.vue'
 import ExternalLinkPanel            from "@/components/Apps/ExternalLinkPanel";
 import AppSectionTitleTip           from './AppSectionTitleTip.vue'
 import draggable                    from 'vuedraggable'
@@ -508,7 +509,7 @@ export default {
 				});
 				this.$buefy.modal.open({
 					parent: this,
-					component: AppPanel,
+					component: AppSettingPanel,
 					hasModalCard: true,
 					customClass: '',
 					trapFocus: true,
