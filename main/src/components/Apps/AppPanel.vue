@@ -755,6 +755,14 @@ export default {
 
 		// get architecture
 		this.arch = localStorage.getItem('arch')
+		if (!this.arch) {
+			this.$api.sys.hardwareInfo().then(res => {
+				if (res.data.success == 200) {
+					localStorage.setItem('arch', res.data.data.arch || "")
+					this.arch = res.data.data.arch || ""
+				}
+			})
+		}
 	},
 
 	mounted() {
