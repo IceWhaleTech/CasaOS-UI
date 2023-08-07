@@ -7,14 +7,6 @@
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
   -->
 
-<!--
- * @Author: JerryK
- * @Date: 2021-10-25 18:19:17
- * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-08-30 16:23:26
- * @Description:
- * @FilePath: /CasaOS-UI/src/components/account/AccountPanel.vue
--->
 <template>
 	<div class="modal-card">
 		<ValidationObserver ref="observer" v-slot="{ handleSubmit }">
@@ -209,22 +201,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.account-modal {
-	.modal-card-head1 {
-		padding: 1.5rem 1.5rem 0.5rem 1.5rem;
-	}
+.modal-card-head1 {
+	padding: 1.5rem 1.5rem 0.5rem 1.5rem;
+}
 
-	.modal-card {
-		width: 30rem;
-	}
+.modal-card {
+	border-radius: 10px;
+}
 
-	.input {
-		background: rgba(255, 255, 255, 0.32);
-		border-color: transparent;
-	}
+.input {
+	background: rgba(255, 255, 255, 0.32);
+	border-color: transparent;
+}
 
-	.title {
-		line-height: 1.5em;
-	}
+.title {
+	line-height: 1.5em;
 }
 </style>
