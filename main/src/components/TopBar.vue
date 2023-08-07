@@ -46,7 +46,7 @@
 						</div>
 						<div>
 							<a aria-role="button" @click="showAccountPanel">
-								<b-icon icon="account-edit" pack="casa"></b-icon>
+								<b-icon icon="user-edit-outline" pack="casa"></b-icon>
 							</a>
 						</div>
 					</div>
