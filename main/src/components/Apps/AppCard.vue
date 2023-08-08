@@ -130,6 +130,9 @@
 									 webp-fallback=".jpg" @click.native="openApp(item)"></b-image>
 							<!-- Unstable-->
 							<cTooltip v-if="newAppIds.includes(item.name)" class="__position" content="NEW"></cTooltip>
+							<cTooltip v-else-if="hasUpdate" class="__position" modal="is-info" :is-block="true">
+								<b-icon icon="alert-decagram" type="is-warning" style="overflow:unset" :title="$t('New version available!')"></b-icon>
+							</cTooltip>
 						</div>
 
 						<!-- Loading Bar Start -->
@@ -169,6 +172,7 @@ import YAML                    from "yaml";
 import commonI18n, {ice_i18n}  from "@/mixins/base/common-i18n";
 import FileSaver               from 'file-saver';
 import {MIRCO_APP_ACTION_ENUM} from "@/const";
+import apps from "../../service/apps.js";
 
 export default {
 	name: "app-card",
@@ -193,12 +197,35 @@ export default {
 			// Public. Only changes the state of the card, not the state of the button.
 			isSaving: false,
 			isActiveTooltip: false,
+			hasUpdate: false
 		}
 	},
 	props: {
 		item: {
 			type: Object
 		},
+	},
+
+	async mounted() {
+
+		if (!!this.item.store_app_id) {
+			try {
+				const { data: { data: response }} = await apps.getAppComposeV2(this.item.store_app_id);
+
+				const image = response.compose.services[response.store_info.main].image;
+
+				if (!/:latest$/.test(this.item.image) && !/:latest$/.test(image)) {
+					if (this.item.image.trim() !== image.trim()) {
+						this.hasUpdate = true;
+					}
+				} else {
+					// TO DO: logic for handling images with `latest` tag
+				}
+
+			} catch (e) {}
+			
+		}
+
 	},
 
 	computed: {
