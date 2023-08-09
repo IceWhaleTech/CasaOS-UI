@@ -39,13 +39,14 @@
 
 					<div class="is-flex is-align-items-center item">
 						<div class="is-flex is-align-items-center is-flex-grow-1">
-							<b-image :src="require('@/assets/img/account/default-avatar.svg')" class="is-40x40 mr-3"
+							<b-image :src="require('@/assets/img/account/default-avatar.svg')"
+									 class="is-40x40 mr-3 account-background-color"
 									 rounded></b-image>
 							<b>{{ userInfo.username }}</b>
 						</div>
 						<div>
 							<a aria-role="button" @click="showAccountPanel">
-								<b-icon icon="account-edit" pack="casa"></b-icon>
+								<b-icon icon="user-edit-outline" pack="casa"></b-icon>
 							</a>
 						</div>
 					</div>
@@ -85,7 +86,7 @@
 					<hr class="mt-0 mb-4"/>
 					<!-- Search Engine Switch Start  -->
 					<div
-						class="is-flex is-align-items-center mb-1  _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+					class="is-flex is-align-items-center mb-1  _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="search-category-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('Show Search Bar') }}
@@ -123,7 +124,7 @@
 
 					<!-- Language Start -->
 					<div
-						class="is-flex is-align-items-center mb-1  _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+					class="is-flex is-align-items-center mb-1  _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="language-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('Language') }}
@@ -143,7 +144,7 @@
 
 					<!-- WebUI Port Start -->
 					<div
-						class="is-flex is-align-items-center mb-1  _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+					class="is-flex is-align-items-center mb-1  _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="port-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('WebUI Port') }}
@@ -162,7 +163,7 @@
 
 					<!-- Background Start -->
 					<div
-						class="is-flex is-align-items-center mb-1  _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+					class="is-flex is-align-items-center mb-1  _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="gallery-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('Wallpaper') }}
@@ -196,7 +197,7 @@
 
 					<!--  Show other Docker container app(s) Switch Start  -->
 					<div
-						class="is-flex is-align-items-center mb-1  _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+					class="is-flex is-align-items-center mb-1  _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="news-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('Show news feed from CasaOS Blog') }}
@@ -212,7 +213,7 @@
 					<!--  Show other Docker container app(s) Switch End  -->
 					<!--  Recommended modules Switch Start  -->
 					<div
-						class="is-flex is-align-items-center mb-1  _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+					class="is-flex is-align-items-center mb-1  _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="display-applications-outline" pack="casa"
 									size="is-20"></b-icon>
@@ -227,11 +228,11 @@
 								</template>
 
 								<b-dropdown-item
-									v-for="item in tutorialList" :key="item.name" :value="item.name"
-									@click="saveData">
+								v-for="item in tutorialList" :key="item.name" :value="item.name"
+								@click="saveData">
 									<b-checkbox
-										:key="item.name" :value="barData.tutorial_switch.includes(item.name)"
-										style="pointer-events: none">
+									:key="item.name" :value="barData.tutorial_switch.includes(item.name)"
+									style="pointer-events: none">
 										<span class="has-text-full-04">{{ item.name }}</span>
 									</b-checkbox>
 								</b-dropdown-item>
@@ -242,7 +243,7 @@
 
 					<!-- Automount USB Drive Start  -->
 					<div
-						class="is-flex is-align-items-center mb-1  _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+					class="is-flex is-align-items-center mb-1  _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="usb-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('Automount USB Drive') }}
@@ -291,14 +292,14 @@
 					<!-- Restart or Shutdown Start -->
 					<div class="is-flex is-align-content-center is-justify-content-center _box ml-2 mr-2">
 						<div
-							class="mr-1 column is-half is-flex is-align-items-center is-justify-content-center _polymorphic _is-radius _is-normal"
-							@click="power('Restart')">
+						class="mr-1 column is-half is-flex is-align-items-center is-justify-content-center _polymorphic _is-radius _is-normal"
+						@click="power('Restart')">
 							<b-icon class="mr-1" icon="restart-outline" pack="casa"></b-icon>
 							{{ $t(restart) }}
 						</div>
 						<div
-							class="ml-1 column is-half is-flex is-align-items-center is-justify-content-center _polymorphic-attention _has-text-attention _is-radius"
-							@click="power('Shutdown')">
+						class="ml-1 column is-half is-flex is-align-items-center is-justify-content-center _polymorphic-attention _has-text-attention _is-radius"
+						@click="power('Shutdown')">
 							<b-icon class="mr-1" custom-class="_has-text-attention" icon="shutdown-outline"
 									pack="casa"></b-icon>
 							{{ $t(shutdown) }}
@@ -341,7 +342,7 @@
 			<footer v-if="showPowerTitle !== 'Now shutting down'"
 					class="has-background-white is-flex is-flex-direction-row-reverse">
 				<button
-					class="ml-2 mr-5 mt-3 mb-3 pr-4 pl-4 _is-normal _has-background-blue is-flex is-align-items-center is-justify-content-center">
+				class="ml-2 mr-5 mt-3 mb-3 pr-4 pl-4 _is-normal _has-background-blue is-flex is-align-items-center is-justify-content-center">
 					{{ $t('Connecting') }}
 					<img :src="require('@/assets/img/power/waiting-white.svg')" alt="loading" class="ml-1"/>
 				</button>
@@ -1137,6 +1138,12 @@ export default {
 }
 
 // TODO
+.account-background-color {
+	img {
+		background-color: hsla(219, 7%, 57%, 1);
+	}
+}
+
 ._is-normal {
 	/* Text 400Regular/Text03 */
 	font-family: 'Roboto';

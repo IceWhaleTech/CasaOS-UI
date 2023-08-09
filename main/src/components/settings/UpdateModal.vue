@@ -137,6 +137,7 @@ export default {
 }
 
 .update-info-container {
+	line-height: 1.5rem;
 	border-radius: 4px;
 	overflow: hidden;
 	min-height: 20rem;

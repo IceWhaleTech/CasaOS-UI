@@ -9,14 +9,18 @@
 
 <template>
 	<div id="login-page" class="is-flex is-justify-content-center is-align-items-center ">
-		<div v-if="!isLoading" class="login-panel step4 is-shadow">
-			<div class="is-flex is-justify-content-center ">
-				<div class="has-text-centered">
-					<b-image :src="require('@/assets/img/account/default-avatar.svg')" class="is-128x128"
+		<div v-if="!isLoading" class="login-panel step4 is-shadow c-dark">
+			<div class="has-text-centered">
+				<div class="is-flex is-justify-content-center">
+					<b-image :src="require('@/assets/img/account/default-avatar.svg')" class="is-80x80"
 							 rounded></b-image>
 					<!--					<p class="is-size-5 has-text-weight-bold mt-3">{{ username }}</p>-->
 				</div>
-
+				<h2 class="title mt-3 has-text-centered has-text-title-03">
+					{{
+						$t('Welcome back')
+					}}
+				</h2>
 			</div>
 			<b-notification v-model="notificationShow" aria-close-label="Close notification" auto-close role="alert"
 							type="is-danger">
@@ -27,18 +31,23 @@
 					<b-field :label="$t('Username')" :message="errors"
 							 :type="{ 'is-danger': errors[0], 'is-success': valid }"
 							 class="mt-5">
-						<b-input v-model="username" type="text" v-on:keyup.enter.native="handleSubmit(login)"></b-input>
+						<b-input v-model="username" class="hug" type="text"
+								 v-on:keyup.enter.native="handleSubmit(login)"></b-input>
 					</b-field>
 				</ValidationProvider>
 				<ValidationProvider v-slot="{ errors, valid }" name="Password" rules="required|min:5" vid="password">
 					<b-field :label="$t('Password')" :message="$t(errors)"
 							 :type="{ 'is-danger': errors[0], 'is-success': valid }" class="mt-2">
-						<b-input v-model="password" autofocus password-reveal
-								 type="password" v-on:keyup.enter.native="handleSubmit(login)"></b-input>
+						<b-input v-model="password" autofocus class="hug"
+								 password-reveal type="password"
+								 v-on:keyup.enter.native="handleSubmit(login)"></b-input>
 					</b-field>
 				</ValidationProvider>
-				<b-button class="mt-5" expanded rounded type="is-primary" @click="handleSubmit(login)">{{ $t('Login') }}
-				</b-button>
+				<div class="is-flex is-justify-content-center mt-4">
+					<b-button class="mt-5" expanded rounded type="is-primary" @click="handleSubmit(login)">
+						{{ $t('Login') }}
+					</b-button>
+				</div>
 			</ValidationObserver>
 		</div>
 	</div>
@@ -92,8 +101,15 @@ export default {
 				}
 				this.$router.push("/");
 			} catch (err) {
-				this.message = this.$t("Username or Password error!")
-				this.notificationShow = true
+				// this.message = this.$t("Username or Password error!")
+				// this.notificationShow = true
+				this.$buefy.toast.open({
+					message: this.$t("Username or Password error!"),
+					type: "is-danger",
+					duration: 3000,
+					position: "is-top",
+					queue: false,
+				});
 			}
 		}
 	}
@@ -108,18 +124,35 @@ export default {
 
 	.login-panel {
 		text-align: left;
-		background: rgba(255, 255, 255, 0.46);
-		backdrop-filter: blur(1rem);
-		border-radius: 8px;
-		padding: 2.5rem 4rem;
+		background: rgba(90, 108, 124, 0.3);
+		backdrop-filter: blur(0.75rem);
+		border-radius: 12px;
+		padding: 3rem 3rem;
 
 		.label {
 			color: #dfdfdf;
 		}
 
 		.input {
-			background: rgba(255, 255, 255, 0.32);
-			border-color: transparent;
+		}
+
+		button {
+			height: 2.25rem;
+			width: 10rem;
+			background-color: hsla(208, 100%, 45%, 1);
+
+			&:active {
+				background-color: hsla(208, 100%, 32%, 1);
+			}
+
+			&:focus {
+				background-color: hsla(208, 100%, 45%, 1);
+				outline: 2px solid hsla(208, 100%, 45%, 0.24);
+			}
+
+			&:hover {
+				background-color: hsla(208, 100%, 38%, 1);
+			}
 		}
 
 		&.step1 {
@@ -136,7 +169,11 @@ export default {
 		}
 
 		&.step4 {
-			width: 28rem;
+			width: 22.5rem;
+
+			.title {
+				color: hsla(208, 16%, 98%, 1);
+			}
 		}
 	}
 }

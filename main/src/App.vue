@@ -17,10 +17,11 @@
 			<div class="base-bar is-flex"
 				 style="background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%);">
 				<!-- BrandBar Start -->
-				<brand-bar v-if="!$store.state.isMobile" v-animate-css="brandAni"></brand-bar>
+				<brand-bar v-if="!$store.state.isMobile && $router.currentRoute.path === '/'"
+						   v-animate-css="brandAni"></brand-bar>
 				<!-- BrandBar End -->
 				<!-- ContactBar Start -->
-				<contact-bar v-if="!$store.state.isMobile && $router.currentRoute.path !== '/welcome'"
+				<contact-bar v-if="!$store.state.isMobile && $router.currentRoute.path === '/'"
 							 v-animate-css="contactAni"></contact-bar>
 				<!-- ContactBar End -->
 			</div>
@@ -104,7 +105,8 @@ export default {
 			},
 
 			isZIMA: false,
-			TITLE: "CasaOS",
+			TITLE: "NAME",
+			OS: "OS",
 			V_ID: '!@#$%^&*()10',
 		}
 	},
@@ -123,39 +125,45 @@ export default {
 			// V_ID: this.V_ID,
 			isZIMA: computed(() => this.isZIMA),
 			TITLE: computed(() => this.TITLE),
-			OS: computed(() => this.isZIMA ? 'Zima' : 'CasaOS'),
+			OS: computed(() => this.OS),
 		}
 	},
-	async beforeCreate() {
-		try {
+	watch: {
+		TITLE: {
+			handler(val) {
+				if (this.$router.currentRoute.path !== "/") {
+					let wallpaper = {
+						from: "Built-in",
+						path: require('@/assets/background/default_wallpaper.jpg')
+					};
+					if (this.TITLE.toLowerCase() === 'zimablade') {
+						wallpaper = {
+							path: require('@/assets/background/wallpaper01-ZIMA.jpg'),
+							from: "Built-in" //Built-in, Upload, Files
+						}
+					} else if (this.TITLE.toLowerCase() === 'zimabox') {
+						wallpaper = {
+							path: require('@/assets/background/wallpaper02-ZIMA.jpg'),
+							from: "Built-in" //Built-in, Upload, Files
+						}
+					}
+					this.$store.commit('SET_WALLPAPER', wallpaper)
+				}
+			}
+		}
+	},
+	beforeCreate() {
+		axios.get(`http://${this.$baseHostname}:9527`).then(res => {
 			const {
 				device_model = 'CasaOS',
-				device_name
-			} = await axios.get(`http://${this.$baseHostname}:9527`).then(res => res.data)
-			// const {device_model = "ZimaBox", device_name} = await axios.get(`http://192.168.2.114:9527`)
+				device_name = 'CasaOS'
+			} = res.data
 			this.isZIMA = /^Zima/.test(device_model)
-			this.TITLE = device_model
-			if (this.$router.currentRoute.path === "/welcome") {
-				let wallpaper = {
-					from: "Built-in",
-					path: require('@/assets/background/default_wallpaper.jpg')
-				};
-				if (device_model.toLowerCase() === 'zimablade') {
-					wallpaper = {
-						path: require('@/assets/background/wallpaper01-ZIMA.jpg'),
-						from: "Built-in" //Built-in, Upload, Files
-					}
-				} else if (device_model.toLowerCase() === 'zimabox') {
-					wallpaper = {
-						path: require('@/assets/background/wallpaper02-ZIMA.jpg'),
-						from: "Built-in" //Built-in, Upload, Files
-					}
-				}
-				this.$store.commit('SET_WALLPAPER', wallpaper)
-			}
-		} catch (e) {
+			this.OS = device_model
+			this.TITLE = device_name
+		}).catch(e => {
 			console.error("GETTING THE CONFIG OF YOUR MACHINE IS EXPERIENCING AN ERROR:", e)
-		}
+		})
 	},
 	created() {
 		console.log(`%c

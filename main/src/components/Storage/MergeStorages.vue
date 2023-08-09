@@ -9,7 +9,7 @@
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
 -->
 <template>
-	<div :class="{ '_max-width-320': currentStep === 1 || currentStep === 4 }">
+	<div :class="{ '_max-width-320': currentStep === 1 }">
 
 		<section v-if="currentStep === 0"
 				 class="notification is-overlay mb-0 pr-0 pl-0 pt-2 pb-3 non-backgroud">
@@ -29,7 +29,7 @@
 				<div class="is-flex is-flex-shrink-0 is-flex-direction-column is-justify-content-center mr-2">
           <span class="is-uppercase _is-text-full-03 _has-text-gray-600">{{
 				  renderSize(item.size -
-					  item.availSize)
+				  item.availSize)
 			  }}/{{ renderSize(item.size) }}</span>
 				</div>
 				<b-checkbox v-model="checkBoxGroup" :disabled="item.persistedIn !== 'casaos' || item.isSystem"

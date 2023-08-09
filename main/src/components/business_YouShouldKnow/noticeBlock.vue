@@ -57,9 +57,9 @@
 						{{ $t('Cancel') }}
 					</b-button>
 					<b-button
-						v-else-if="noticeData.operate.type === 'casaUI:eventBus'"
-						:disabled="false" class="width" rounded size="is-small"
-						type="is-primary" @click="eventBus">
+					v-else-if="noticeData.operate.type === 'casaUI:eventBus'"
+					:disabled="false" class="width" rounded size="is-small"
+					type="is-primary" @click="eventBus">
 						{{ $t(noticeData.operate.title) }}
 					</b-button>
 				</template>
@@ -160,6 +160,7 @@ export default {
 			} else {
 				this.$messageBus(this.noticeData.operate.event, {...this.noticeData.payload})
 			}
+			this.close();
 		}
 	}
 }

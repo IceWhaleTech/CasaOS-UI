@@ -62,6 +62,10 @@ export default {
 				} else if (oldValue === 0) {
 					this.$messageBus('youshouldknow_show', 'true');
 				}
+				// skip new notice card
+				this.$nextTick(() => {
+					this.$refs['mySwiper'].$swiper.slideTo(val - 1, 1000, true)
+				})
 			},
 		},
 		tutorialList: {
@@ -478,7 +482,7 @@ export default {
 
 			// 1. add notice::add new app_install notice
 			const data = {
-				title: $t('Installing {title}', {title: res.title}),
+				title: this.$t('Installing {title}', {title: res.title}),
 				icon: res.icon,
 				content: {
 					text: res?.message,

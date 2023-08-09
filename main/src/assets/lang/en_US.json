@@ -399,5 +399,11 @@
   "Share {CasaOS}": "Share {CasaOS}",
   "Please invite more friends who are concerned about family and data privacy to join and use {OS}.": "Please invite more friends who care about data privacy to join and use {OS}.",
   "Changing internal files may break the structure of the {CasaOS} HD": "Changing internal files may break the structure of the {CasaOS} HD.",
-  "All the checked Storage will be merged into {CasaOS} HD.": "All the checked Storage will be merged into {CasaOS} HD."
+  "All the checked Storage will be merged into {CasaOS} HD.": "All the checked Storage will be merged into {CasaOS} HD.",
+  "Rebuilding": "Rebuilding",
+  "{title} rebulid completed": "{title} rebulid completed",
+  "Rebulid error": "Rebulid error",
+  "Installing {title}": "Installing {title}",
+  "Merge": "Merge",
+  "To be rebuilt.": "To be rebuilt."
 }

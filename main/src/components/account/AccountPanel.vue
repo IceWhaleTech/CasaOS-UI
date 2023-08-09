@@ -209,22 +209,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.account-modal {
-	.modal-card-head1 {
-		padding: 1.5rem 1.5rem 0.5rem 1.5rem;
-	}
+.modal-card-head1 {
+	padding: 1.5rem 1.5rem 0.5rem 1.5rem;
+}
 
-	.modal-card {
-		width: 30rem;
-	}
+.modal-card {
+	border-radius: 10px;
+}
 
-	.input {
-		background: rgba(255, 255, 255, 0.32);
-		border-color: transparent;
-	}
+.input {
+	background: rgba(255, 255, 255, 0.32);
+	border-color: transparent;
+}
 
-	.title {
-		line-height: 1.5em;
-	}
+.title {
+	line-height: 1.5em;
 }
 </style>

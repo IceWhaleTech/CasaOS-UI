@@ -48,7 +48,7 @@
 			<div v-if="step == 2" v-animate-css="s0Ani">
 				<div class="is-flex is-justify-content-center">
 					<div
-						class="account-icon has-text-centered has-text-white is-flex is-align-items-center is-justify-content-center">
+					class="account-icon has-text-centered has-text-white is-flex is-align-items-center is-justify-content-center">
 						<b-icon class="is-56" icon="posted-by" pack="casa"/>
 					</div>
 				</div>
@@ -112,22 +112,22 @@
 				<div class="is-flex is-align-items-center mt-5">
 					<span class="marker">•</span>
 					<span
-						class="text has-text-emphasis-03">{{ $t('Install the software.') }}</span>
+					class="text has-text-emphasis-03">{{ $t('Install the software.') }}</span>
 				</div>
 				<div class="is-flex columns is-variable is-2 mt-1 mb-3">
 					<b-image
-						:src="require('@/assets/img/learn/guidance-MacOS-AppStore.svg')"
-						class="column cursor-pointer" @click.native="openLink(MACPATH)">
+					:src="require('@/assets/img/learn/guidance-MacOS-AppStore.svg')"
+					class="column cursor-pointer" @click.native="openLink(MACPATH)">
 					</b-image>
 					<b-image
-						:src="require('@/assets/img/learn/guidance-Windows-AppStore.svg')"
-						class="column cursor-pointer" @click.native="openLink(WINPATH)">
+					:src="require('@/assets/img/learn/guidance-Windows-AppStore.svg')"
+					class="column cursor-pointer" @click.native="openLink(WINPATH)">
 					</b-image>
 				</div>
 				<div class="is-flex is-align-items-center mb-5">
 					<div class="marker" style="">•</div>
 					<span
-						class="text has-text-emphasis-03">{{ $t('Using the Network ID :') }}</span>
+					class="text has-text-emphasis-03">{{ $t('Using the Network ID :') }}</span>
 					<b-button class="copy-board has-text-full-04" icon-pack="casa"
 							  icon-right="copy-outline"
 							  @click="copyValue">
@@ -139,7 +139,7 @@
 				<div class="is-flex is-align-items-center">
 					<span class="marker">•</span>
 					<span
-						class="text has-text-emphasis-03">{{ $t('Connect Zima in the software.') }}</span>
+					class="text has-text-emphasis-03">{{ $t('Connect Zima in the software.') }}</span>
 				</div>
 				<hr/>
 				<div class="is-flex is-justify-content-center">
@@ -376,6 +376,7 @@ export default {
 			if (this.isLogin) {
 
 				try {
+					// if users do not complete step, wallpaper will be black.
 					await this.$api.users.setCustomStorage("wallpaper", this.$store.state.wallpaperObject)
 					setTimeout(() => {
 						this.$store.commit('SET_WALLPAPER', {
@@ -415,7 +416,6 @@ export default {
 		},
 		openLink(link) {
 			// open the link
-			debugger
 			window.open(link, '_blank');
 		},
 	}

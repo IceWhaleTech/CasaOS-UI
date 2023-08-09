@@ -59,8 +59,8 @@
 		<template v-if="oldAppList.length > 0">
 			<!-- Title Bar Start -->
 			<div class="title-bar is-flex is-align-items-center mt-2rem  mb-5">
-				<app-section-title-tip id="appTitle2" class="is-flex-grow-1 has-text-sub-04" label="Need to be rebuild."
-									   title="Legacy app">
+				<app-section-title-tip id="appTitle2" class="is-flex-grow-1 has-text-sub-04" label="To be rebuilt."
+									   title="Legacy app(To be rebuilt).">
 				</app-section-title-tip>
 			</div>
 			<!-- Title Bar End -->
@@ -70,7 +70,7 @@
 				<!-- Application not imported Start -->
 				<div v-for="(item) in oldAppList" :id="'app-' + item.name" :key="'app-' + item.name"
 					 class="column is-narrow is-3">
-					<app-card :isCasa="false" :item="item" @configApp="showConfigPanel" @importApp="showConfigPanel"
+					<app-card :isCasa="false" :item="item" @configApp="showConfigPanel" @importApp="showContainerPanel"
 							  @updateState="getList"></app-card>
 				</div>
 				<!-- Application not imported End -->
@@ -488,7 +488,7 @@ export default {
 		 */
 		async showConfigPanel(item, isCasa) {
 			let name = item.name;
-			this.$messageBus('appsexsiting_open', name);
+			// this.$messageBus('appsexsiting_open', name);
 			try {
 				if (item.app_type === 'LinkApp') {
 					await this.showExternalLinkPanel(item)
@@ -684,9 +684,9 @@ export default {
 					case MIRCO_APP_ACTION_ENUM.CLOSE:
 						this.hideMircoApp(data.name);
 						break;
-					// case MIRCO_APP_ACTION_ENUM.LOGIN:
-					// 	this.$router.push("/login");
-					// 	break;
+				// case MIRCO_APP_ACTION_ENUM.LOGIN:
+				// 	this.$router.push("/login");
+				// 	break;
 					default:
 						break;
 				}

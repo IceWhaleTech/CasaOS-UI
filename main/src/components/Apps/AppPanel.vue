@@ -44,12 +44,14 @@
 			<!-- Sidebar Start -->
 			<app-side-bar v-model="sidebarOpen" :overlay="true" :right="true" position="absolute">
 				<template slot-scope="{close}">
-					<AppDetail 
-						:appDetailData="appDetailData" 
+					<AppDetail
+						:appDetailData="appDetailData"
 						:arch="arch"
 						:handleBackBtnClick="close" 
+						:cateMenu="cateMenu"
 						:currentInstallId="currentInstallId"
-						:installedList="installedList" 
+						:handleBackBtnClick="close"
+						:installedList="installedList"
 						:showDetailSwiper="showDetailSwiper"
 						@install="quickInstall">
 					</AppDetail>
@@ -101,12 +103,12 @@
 				<template v-if="!isLoadError">
 
 
-					<AppRecommend 
+					<AppRecommend
 						v-if="recommendList.length > 0"
-						:recommendList="recommendList" 
-						:installedList="installedList" 
-						:currentInstallId="currentInstallId"
 						:arch="arch"
+						:currentInstallId="currentInstallId"
+						:installedList="installedList"
+						:recommendList="recommendList"
 						:showDetailSwiper="showDetailSwiper"
 						@quickInstall="quickInstall"
 					>
@@ -381,6 +383,7 @@ import {ice_i18n}                               from "@/mixins/base/common-i18n"
 import {parse}                                  from "yaml";
 import AppStoreSourceManagement                 from "@/components/Apps/AppStoreSourceManagement.vue";
 import {vOnClickOutside}                        from '@vueuse/components'
+
 import { AppDetail, AppRecommend, AppConditionSelector } from "@/components/AppStore";
 const data = [
 	"AUDIT_CONTROL",
@@ -593,6 +596,14 @@ export default {
 
 		// get architecture
 		this.arch = localStorage.getItem('arch')
+		if (!this.arch) {
+			this.$api.sys.hardwareInfo().then(res => {
+				if (res.data.success == 200) {
+					localStorage.setItem('arch', res.data.data.arch || "")
+					this.arch = res.data.data.arch || ""
+				}
+			})
+		}
 	},
 
 	mounted() {
@@ -973,6 +984,7 @@ export default {
 		updateContainer() {
 			this.$refs.containerValida.validate().then((valid) => {
 				if (valid) {
+					this.isLoading = true;
 					this.$api.container.update(this.id, this.settingData).then((res) => {
 						if (res.data.success == 200) {
 							this.isLoading = false;

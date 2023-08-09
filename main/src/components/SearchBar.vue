@@ -74,10 +74,11 @@ export default {
 	input {
 		transition: all 0.2s;
 		appearance: none;
-		border-radius: $backDropBorderRadius;
 		background: $backDropColor;
 		backdrop-filter: $backDropBlur;
-		border: none;
+		border: $backDropBorder;
+		box-shadow: $backDropShadow;
+		border-radius: $backDropBorderRadius;
 		outline: none;
 		font-size: 0.875rem !important;
 		color: rgba(255, 255, 255, 0.6);
@@ -85,7 +86,7 @@ export default {
 
 		&:focus {
 			border: none;
-			box-shadow: none;
+			box-shadow: rgb(255 255 255 / 25%) 0.5px 1px 1px 0px inset;
 		}
 
 		&::placeholder {
