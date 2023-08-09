@@ -12,19 +12,56 @@
 require('jsdom-global')()
 
 global.expect = require('expect').default
-// console.log(global.expect);
-// console.log(expect);
-// global.chai = require('chai')
-// global.jest = require('jest')
 
-// const hooks = require('require-extension-hooks')
-// const Vue = require('vue')
-//
-// Vue.config.productionTip = false
-//
-// // https://vue-test-utils.vuejs.org/zh/guides/common-tips.html#%E5%9C%A8%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%AD%E8%B0%83%E8%AF%95
-// window.Date = Date
-// window.requestAnimationFrame = function (callback) {
-// 	setTimeout(callback, 0)
-// }
+const Vue = require('vue')
+const {
+	Icon,
+	Field,
+	Input,
+	Tooltip,
+	Dropdown,
+	Image,
+	Button,
+	Switch,
+	Select,
+	Checkbox,
+	Modal,
+	Tabs,
+	Toast,
+	Tag,
+	Loading,
+	Progress,
+	Autocomplete,
+	Taginput,
+	Upload,
+	Notification,
+	Dialog,
+	Message
+} = require('buefy')
+// const {glob} = require("mochapack/lib/util/glob");
+
+Vue.use(Icon)
+Vue.use(Field)
+Vue.use(Input)
+Vue.use(Tooltip)
+Vue.use(Dropdown)
+Vue.use(Image)
+Vue.use(Button)
+Vue.use(Switch)
+Vue.use(Select)
+Vue.use(Checkbox)
+Vue.use(Modal)
+Vue.use(Tabs)
+Vue.use(Toast)
+Vue.use(Tag)
+Vue.use(Loading)
+Vue.use(Progress)
+Vue.use(Autocomplete)
+Vue.use(Taginput)
+Vue.use(Upload)
+Vue.use(Notification)
+Vue.use(Dialog)
+Vue.use(Message)
+
+global.localVue = Vue
 
