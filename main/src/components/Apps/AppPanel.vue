@@ -48,9 +48,7 @@
 						:appDetailData="appDetailData"
 						:arch="arch"
 						:handleBackBtnClick="close" 
-						:cateMenu="cateMenu"
 						:currentInstallId="currentInstallId"
-						:handleBackBtnClick="close"
 						:installedList="installedList"
 						:showDetailSwiper="showDetailSwiper"
 						@install="quickInstall">
