@@ -47,7 +47,6 @@
 					<AppDetail
 						:appDetailData="appDetailData"
 						:arch="arch"
-						:cateMenu="cateMenu"
 						:handleBackBtnClick="close"
 						:currentInstallId="currentInstallId"
 						:installedList="installedList"

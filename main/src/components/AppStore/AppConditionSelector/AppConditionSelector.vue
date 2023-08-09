@@ -30,28 +30,28 @@
 
 		<transition name="search-fade">
 			<b-icon v-if="searchAndSourcesStatus === 'showSources'"
-					class="is-flex is-align-self-center" icon="search-outline"
-					pack="casa"
-					@click.native="searchAndSourcesStatusController"></b-icon>
+				class="is-flex is-align-self-center" icon="search-outline"
+				pack="casa"
+				@click.native="searchAndSourcesStatusController"></b-icon>
 		</transition>
 
 		<transition name="search-fade">
 			<b-input v-if="searchAndSourcesStatus !== 'showSources'"
-					 ref="search_app"
-					 :placeholder="$t('Search an app...')"
-					 class="app-search"
-					 type="text"
-					 @input="debounceSearchInput"
-					 @keyup.enter.native="counterPatchGetStoreList++">
+				ref="search_app"
+				:placeholder="$t('Search an app...')"
+				class="app-search"
+				type="text"
+				@input="debounceSearchInput"
+				@keyup.enter.native="counterPatchGetStoreList++">
 			</b-input>
 		</transition>
 
 		<div class="is-flex-grow-1"></div>
 
 		<AppStoreSourceManagement v-show="searchAndSourcesStatus !== 'showSearch'"
-								  :totalApps="pageList.length" class="ml-2"
-								  @refreshAppStore="getStoreList"
-								  @refreshSize="refreshAppStoreSourceManagementSizeStatus">
+			:totalApps="pageList.length" class="ml-2"
+			@refreshAppStore="getStoreList"
+			@refreshSize="refreshAppStoreSourceManagementSizeStatus">
 		</AppStoreSourceManagement>
 	</div>
 </template>

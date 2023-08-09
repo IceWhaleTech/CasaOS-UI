@@ -10,3 +10,10 @@
 
 import {shallowMount}       from '@vue/test-utils'
 import AppConditionSelector from '@/components/AppStore/AppConditionSelector'
+
+// describe('AppConditionSelector.vue', () => {
+// 	it('renders app conditionSelector', () => {
+// 		const wrapper = shallowMount(AppConditionSelector)
+// 		console.log(wrapper.html())
+// 	})
+// })
