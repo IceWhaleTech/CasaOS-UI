@@ -8,12 +8,8 @@
 
  */
 
-import {shallowMount, mount, createLocalVue} from '@vue/test-utils'
-import ListBox                               from '@/kit/ListBox/ListBox.vue'
-import Dropdown                              from 'buefy'
-
-const localVue = createLocalVue();
-localVue.use(Dropdown);
+import {shallowMount, mount} from '@vue/test-utils'
+import ListBox               from '@/kit/ListBox/ListBox.vue'
 
 const fullPropsObj = {
 	activeAppStoreSourceInput: false,
@@ -36,11 +32,6 @@ describe('ListBox.vue', () => {
 		localVue,
 		propsData: fullPropsObj,
 	})
-	// console.log(wrapper.vm);
-	// console.log(wrapper.html())
-	// console.log(wrapper.text())
-	// console.log(wrapper.exists())
-	// console.log(expect)
 
 	it('渲染文件：：', () => {
 		const element = document.getElementsByName('my-element')[0]
@@ -48,7 +39,6 @@ describe('ListBox.vue', () => {
 		expect(element)
 	})
 
-	// 举例子。。。
 	it('传入数据正确：：', () => {
 		expect(wrapper.props().activeAppStoreSourceInput).toEqual(fullPropsObj.activeAppStoreSourceInput)
 		expect(wrapper.props().isMobile).toEqual(fullPropsObj.isMobile)
@@ -65,9 +55,14 @@ describe('ListBox.vue', () => {
 		expect(wrapper.text()).toMatch("community")
 	});
 
-	it('点击事件，成功切换：：', () => {
-		wrapper.findAll('h3')[1].trigger("click")
-
-		expect(wrapper.emitted().click).toBeTruthy()
+	it('测试选中点击事件', () => {
+		const options = wrapper.findAll('.dropdown-item')
+		options.at(1).trigger('click')
+		expect(wrapper.emitted()['update-current-option'][0]).toEqual([{
+			count: 1,
+			font: "author",
+			id: 1,
+			name: "official"
+		}])
 	});
 })
