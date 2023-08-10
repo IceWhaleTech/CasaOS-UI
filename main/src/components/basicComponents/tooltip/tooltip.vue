@@ -7,7 +7,10 @@
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
   -->
 <template>
-	<span :class="rootClass">{{ $t(content) }}</span>
+	<span :class="rootClass">
+		<slot v-if="!!$slots.default"></slot>
+		<template v-else>{{ $t(content) }}</template>
+	</span>
 </template>
 
 <script>

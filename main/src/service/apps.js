@@ -34,6 +34,11 @@ const apps = {
 		return api.get(`${PREFIX2}/apps/${id}`);
 	},
 
+	//v2:: Get app compose info from store。
+	getAppComposeV2(id) {
+		return api.get(`${PREFIX2}/apps/${id}/compose`);
+	},
+
 	//v2:: Get app info about config。
 	getAppConfigV2(id) {
 		return api.get(`${PREFIX2}/container/${id}`);
