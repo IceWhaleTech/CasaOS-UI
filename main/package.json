@@ -74,7 +74,6 @@
     "@vue/cli-plugin-router": "4.5.13",
     "@vue/cli-plugin-vuex": "4.5.13",
     "@vue/cli-service": "4.5.13",
-    "@vue/runtime-dom": "^3.2.45",
     "optimize-css-assets-webpack-plugin": "^6.0.1",
     "patch-package": "^7.0.0",
     "postinstall-postinstall": "^2.1.0",
