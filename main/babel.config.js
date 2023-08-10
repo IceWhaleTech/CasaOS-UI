@@ -1,6 +1,6 @@
 /*
  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
- * @LastEditTime: 2023/4/13 下午3:13
+ * @LastEditTime: 2023-08-10 00:35:55
  * @FilePath: /CasaOS-UI/main/babel.config.js
  * @Description:
  *
@@ -17,5 +17,6 @@ module.exports = {
 				allExtensions: true // 支持所有文件扩展名，否则在vue文件中使用ts会报错
 			}
 		]
-	]
+	],
+	plugins: ["@babel/plugin-proposal-optional-chaining"]
 }

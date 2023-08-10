@@ -171,7 +171,8 @@ onBeforeUnmount(() => {
 <template>
 	<div v-on-click-outside="onClickOutsideHandler">
 		<Transition mode="out-in" name="management-change" @after-enter="activeInput">
-			<div v-if="componentState==='first_add_state'" key="1" class="one-line" @click="changeInputState">+ {{
+			<div v-if="componentState==='first_add_state'" key="1" class="one-line cursor-pointer"
+				 @click="changeInputState">+ {{
 					$t("Add Source")
 				}}
 			</div>
@@ -184,8 +185,8 @@ onBeforeUnmount(() => {
 					</template>
 
 					<b-dropdown-item
-						v-for="item in sourceList" :key="item.id" aria-role="menu-item"
-						custom>
+					v-for="item in sourceList" :key="item.id" aria-role="menu-item"
+					custom>
 						<p :ref="`removeButton${item.id}`" class="is-flex is-align-items-center">
 							<span class="has-text-full-04 is-flex-grow-1 one-line">{{ item.name }}</span>
 							<b-button v-if="operationSourceName !== item.id" class="is-flex-shrink-0 _button-icon"
@@ -219,7 +220,8 @@ onBeforeUnmount(() => {
 			</div>
 			<div v-else-if="componentState === 'active_input_state'" key="3" class="is-flex is-align-items-center">
 				<b-input ref="inputSourceURL" v-model="url" :disabled="addLoadingState"
-						 class="is-flex-grow-1 _sources_input" icon-pack="casa" icon-right="question-outline"
+						 class="is-flex-grow-1 _sources_input cursor-pointer" icon-pack="casa"
+						 icon-right="question-outline"
 						 icon-right-clickable @icon-right-click="redirectURL"></b-input>
 				<b-button :loading="addLoadingState" class="is-flex-shrink-0 _button-icon"
 						  icon-pack="casa" icon-right="plus-outline"

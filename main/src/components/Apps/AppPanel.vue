@@ -47,8 +47,8 @@
 					<AppDetail
 						:appDetailData="appDetailData"
 						:arch="arch"
-						:handleBackBtnClick="close" 
 						:currentInstallId="currentInstallId"
+						:handleBackBtnClick="close"
 						:installedList="installedList"
 						:showDetailSwiper="showDetailSwiper"
 						@install="quickInstall">
@@ -114,18 +114,18 @@
 					<!-- Featured Slider End -->
 
 					<!-- List condition Start -->
-					<AppConditionSelector 
-						:pageList="pageList"
-						:isMobile="isMobile"
+					<AppConditionSelector
 						:installedList="installedList"
 						:isLoading="isLoading"
+						:isMobile="isMobile"
+						:pageList="pageList"
 						@update-pageList="updatePageList"
 						@update-isLoading="updateIsLoading"
 						@update-isLoadError="updateIsLoadError"
 						@update-installed-list="updateInstalledList"
 						@update-searchKey="updateSearchKey"
 					/>
-					
+
 					<!-- List condition End -->
 					<!-- App list Start-->
 					<div class="columns f-list is-multiline is-mobile pb-3 mb-5">
@@ -382,7 +382,8 @@ import {parse}                                  from "yaml";
 import AppStoreSourceManagement                 from "@/components/Apps/AppStoreSourceManagement.vue";
 import {vOnClickOutside}                        from '@vueuse/components'
 
-import { AppDetail, AppRecommend, AppConditionSelector } from "@/components/AppStore";
+import {AppDetail, AppRecommend, AppConditionSelector} from "@/components/AppStore";
+
 const data = [
 	"AUDIT_CONTROL",
 	"AUDIT_READ",
@@ -604,13 +605,6 @@ export default {
 		}
 	},
 
-	mounted() {
-		this.currentSlide === 0 && !this.isMobile && this.$nextTick().then(() => {
-			this.$refs.search_app.$el.children[0].focus();
-		});
-		// this.searchAndSourcesStatusController();
-	},
-
 	computed: {
 		showImportButton() {
 			return this.currentSlide == 1 && this.state == 'install'
@@ -685,19 +679,19 @@ export default {
 		},
 	},
 	methods: {
-		updatePageList(val){
+		updatePageList(val) {
 			this.pageList = val
 		},
-		updateIsLoading(val){
+		updateIsLoading(val) {
 			this.isLoading = val
 		},
-		updateInstalledList(val){
+		updateInstalledList(val) {
 			this.installedList = val
 		},
-		updateIsLoadError(val){
+		updateIsLoadError(val) {
 			this.isLoadError = val
 		},
-		updateSearchKey(val){
+		updateSearchKey(val) {
 			this.searchKey = val
 		},
 
@@ -732,7 +726,7 @@ export default {
 				console.log('load recommend error', error);
 			}
 		},
-		
+
 		/**
 		 * @description: Show the details of app
 		 * @param {id} String

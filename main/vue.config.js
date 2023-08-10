@@ -1,9 +1,9 @@
 /*
  * @Author: Jerryk jerry@icewhale.org
  * @Date: 2022-02-18 10:20:10
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-12 13:18:35
- * @FilePath: \CasaOS-UI-0.4.2\vue.config.js
+ * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ * @LastEditTime: 2023-08-10 00:03:38
+ * @FilePath: /CasaOS-UI/main/vue.config.js
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -29,6 +29,37 @@ module.exports = {
 			ignoreOrder: true
 		}
 	},
+	// configureWebpack: {
+	// 	module: {
+	// 		rules: [
+	// 			{
+	// 				test: /\.esm\.js$/,
+	// 				include: [
+	// 					path.resolve(__dirname, "src"),
+	// 					path.resolve(__dirname, "node_modules/marked")
+	// 				],
+	// 				use: {
+	// 					loader: 'esbuild-loader',
+	// 					options: {
+	// 						target: 'es2020',
+	// 						jsxFactory: 'h',
+	// 						jsxFragment: 'Fragment'
+	// 					}
+	// 				}
+	// 			},
+	// 			{
+	// 				test: /\.css$/,
+	// 				use: [
+	// 					'vue-style-loader',
+	// 					{
+	// 						loader: 'css-loader',
+	// 						options: { importLoaders: 1 }
+	// 					}
+	// 				]
+	// 			}
+	// 		]
+	// 	}
+	// },
 	chainWebpack: config => {
 		config.module
 			.rule("mjs")

@@ -1,7 +1,7 @@
 /*
  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
- * @LastEditTime: 2023/7/31 上午11:03
- * @FilePath: /CasaOS-UI/main/webpack.config.js
+ * @LastEditTime: 2023-08-10 00:33:40
+ * @FilePath: /CasaOS-UI/main/webpack.test.config.js
  * @Description:
  *
  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
@@ -39,7 +39,10 @@ module.exports = {
 				use: {
 					loader: 'babel-loader',
 					options: {
-						presets: ['@babel/preset-env']
+						presets: ['@babel/preset-env'],
+						plugins: [
+							'@babel/plugin-syntax-optional-chaining'
+						]
 					}
 				}
 			},
