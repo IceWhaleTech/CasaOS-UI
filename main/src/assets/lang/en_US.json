@@ -401,9 +401,10 @@
   "Changing internal files may break the structure of the {CasaOS} HD": "Changing internal files may break the structure of the {CasaOS} HD.",
   "All the checked Storage will be merged into {CasaOS} HD.": "All the checked Storage will be merged into {CasaOS} HD.",
   "Rebuilding": "Rebuilding",
+  "Rebuild": "Rebuild",
   "{title} rebulid completed": "{title} rebulid completed",
   "Rebulid error": "Rebulid error",
   "Installing {title}": "Installing {title}",
-  "Merge": "Merge",
+  "Legacy app (To be rebuilt).": "Legacy app (To be rebuilt).",
   "To be rebuilt.": "To be rebuilt."
 }

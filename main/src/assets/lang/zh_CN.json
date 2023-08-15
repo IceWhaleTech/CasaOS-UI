@@ -404,6 +404,6 @@
   "{title} rebulid completed": "{title} rebulid completed",
   "Rebulid error": "重建错误",
   "Installing {title}": "Installing {title}",
-  "Merge": "合并",
+  "Legacy app (To be rebuilt).": "旧应用程序 (待重建)。",
   "To be rebuilt.": "待重建。"
 }

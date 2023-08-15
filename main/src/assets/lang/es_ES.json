@@ -403,7 +403,7 @@
   "Rebuilding": "Reconstruyendo",
   "{title} rebulid completed": "Reconstrución {title} completada",
   "Rebulid error": "Error en la reconstrución",
-  "Installing {title}": "Installing {title}",
-  "Merge": "Merge",
-  "To be rebuilt.": "To be rebuilt."
+  "Installing {title}": "Instalando {title}",
+  "Legacy app (To be rebuilt).": "Aplicación antigua (por reconstruir).",
+  "To be rebuilt.": "Por reconstruir."
 }
