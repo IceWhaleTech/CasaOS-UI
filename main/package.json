@@ -4,19 +4,16 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --mode dev",
-    "postinstall": "npx patch-package",
     "build": "node message_bus.build.js && vue-cli-service build --dest ../build/sysroot/var/lib/casaos/www/ --mode production",
     "test:unit": "vue-cli-service test:unit",
+    "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
     "build:messagebus": "node message_bus.build.js",
+    "inspect:test": "vue-cli-service inspect --mode test:unit",
+    "postinstall": "npx patch-package",
     "test": "mochapack --webpack-config webpack.test.config.js --require tests/unit/setup.js tests/**/*.spec.js",
-    "test:mocha:unit": "vue-cli-service test:unit --watch --grep tests/unit/setup.js tests/**/*.spec.js",
-    "inspect:test": "vue-cli-service inspect --mode test:unit"
+    "test:mocha:unit": "vue-cli-service test:unit --watch --grep tests/unit/setup.js tests/**/*.spec.js"
   },
-  "installConfig": {
-    "hoistingLimits": "workspaces"
-  },
-  "packageManager": "yarn@3.6.1",
   "dependencies": {
     "@fontsource/roboto": "^4.5.7",
     "@icewhale/casaos-appmanagement-openapi": "latest",
@@ -75,16 +72,18 @@
   "devDependencies": {
     "@babel/cli": "^7.22.10",
     "@babel/core": "^7.20.12",
+    "@babel/eslint-parser": "^7.12.16",
     "@babel/plugin-syntax-optional-chaining": "^7.8.3",
     "@babel/preset-env": "^7.22.9",
     "@babel/preset-typescript": "^7.18.6",
     "@vue/cli": "~4.5.19",
-    "@vue/cli-plugin-babel": "~4.5.13",
-    "@vue/cli-plugin-eslint": "~4.5.13",
-    "@vue/cli-plugin-router": "~4.5.13",
-    "@vue/cli-plugin-unit-mocha": "~4.5.19",
-    "@vue/cli-plugin-vuex": "~4.5.13",
-    "@vue/cli-service": "~4.5.18",
+    "@vue/cli-plugin-babel": "5.0.8",
+    "@vue/cli-plugin-e2e-cypress": "^5.0.8",
+    "@vue/cli-plugin-eslint": "5.0.8",
+    "@vue/cli-plugin-router": "5.0.8",
+    "@vue/cli-plugin-unit-mocha": "5.0.8",
+    "@vue/cli-plugin-vuex": "5.0.8",
+    "@vue/cli-service": "5.0.8",
     "@vue/runtime-dom": "^3.2.45",
     "@vue/test-utils": "^1.3.6",
     "autoprefixer": "^10.4.15",
@@ -92,9 +91,13 @@
     "chai": "^4.2.0",
     "core-js": "^3.32.0",
     "css-loader": "^3.6.0",
+    "cypress": "^9.7.0",
     "esbuild-loader": "^4.0.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^8.0.3",
     "expect": "^29.6.2",
     "file-loader": "^6.2.0",
+    "https-browserify": "^1.0.0",
     "jsdom": "^18.0.1",
     "jsdom-global": "^3.0.2",
     "mocha": "^8.3.0",
@@ -110,24 +113,31 @@
     "sass": "^1.51.0",
     "sass-loader": "10.1.1",
     "sass-resources-loader": "^2.2.5",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
     "style-loader": "^2.0.0",
     "style-resources-loader": "^1.5.0",
     "swiper": "^5.2.0",
+    "timers-browserify": "^2.0.12",
+    "url": "^0.11.1",
     "vue-loader": "^15.10.1",
     "vue-server-renderer": "^2.7.14",
     "vue-style-loader": "^4.1.3",
     "vue-template-compiler": "^2.7.14",
-    "webpack": "4.36.0",
+    "webpack": "5",
     "webpack-bundle-analyzer": "^4.5.0",
     "webpack-node-externals": "^3.0.0",
     "yaml": "^1.10.2"
-  },
-  "resolutions": {
-    "vue-loader": "^15.10.1"
   },
   "browserslist": [
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "installConfig": {
+    "hoistingLimits": "workspaces"
+  },
+  "resolutions": {
+    "vue-loader": "^15.10.1"
+  }
 }

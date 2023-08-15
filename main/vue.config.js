@@ -28,9 +28,10 @@ module.exports = {
 	runtimeCompiler: true,
 	lintOnSave: false,
 	productionSourceMap: true,
-	pluginOptions: {},
+	pluginOptions: {
+		// "runtime-plugin": {}
+	},
 	css: {
-		requireModuleExtension: true,
 		extract: {
 			ignoreOrder: true
 		},
@@ -38,7 +39,6 @@ module.exports = {
 			css: {
 				modules: {
 					auto: () => true
-
 				}
 			}
 		},
@@ -49,6 +49,15 @@ module.exports = {
 	},
 	transpileDependencies: ['marked'],
 	configureWebpack: {
+		resolve: {
+			fallback: {
+				timers: require.resolve('timers-browserify'),
+				"url": require.resolve("url"),
+				"https": require.resolve("https-browserify"),
+				"http": require.resolve("stream-http"),
+				"stream": require.resolve("stream-browserify")
+			}
+		},
 		module: {
 			rules: [
 				// {
@@ -105,7 +114,7 @@ module.exports = {
 				.end();
 		})
 		config.plugin('ignore')
-			.use(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
+			.use(new webpack.IgnorePlugin({resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/}));
 		config.plugin('define')
 			.use(require('webpack/lib/DefinePlugin'), [{
 				'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
@@ -171,7 +180,7 @@ module.exports = {
 	devServer: {
 		open: true,
 		port: 8080,
-		inline: false,
+		// inline: false,
 		// before: require('./mock/meta_data.js'),
 		hot: true,
 		// contentBase: publicPath,

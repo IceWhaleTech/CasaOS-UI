@@ -3,22 +3,18 @@
   "version": "v0.4.2",
   "private": true,
   "scripts": {
-    "preinstall": "npx only-allow yarn",
-    "postinstall": "yarn workspaces foreach run postinstall",
+    "preinstall": "npx only-allow pnpm",
     "dev": "turbo run serve",
     "dev:noCache": "turbo run serve --no-cache",
     "build": "turbo run build",
     "test": "turbo run test",
     "lint": "yarn workspaces foreach run lint"
   },
-  "packageManager": "yarn@3.6.1",
+  "packageManager": "pnpm@6.35.1",
   "workspaces": [
     "main",
     "packages/*"
   ],
-  "dependencies": {
-    "turbo": "^1.9.1"
-  },
   "browserslist": [
     "> 1%",
     "last 2 versions",
