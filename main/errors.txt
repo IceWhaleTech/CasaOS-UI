@@ -1,0 +1,14 @@
+ WEBPACK  Compiling...
+
+ WEBPACK  Failed to compile with 2 error(s)
+
+Error in ./src/test/unit/kit/ListBox/ListBox.spec.js
+
+  Module build failed (from ./node_modules/babel-loader/lib/index.js):
+  TypeError: this.getOptions is not a function
+
+Error in ./src/test/unit/components/AppStore/AppConditionSelector/AppConditionSelector.spec.js
+
+  Module build failed (from ./node_modules/babel-loader/lib/index.js):
+  TypeError: this.getOptions is not a function
+

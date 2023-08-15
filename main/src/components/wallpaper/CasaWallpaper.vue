@@ -41,7 +41,8 @@ export default {
 	},
 	watch: {
 		'$store.state.wallpaperObject': {
-			handler(val) {
+			handler(val, v) {
+				if (!val.path) return;
 				this.backgroundStyleObj.backgroundImage = `url(${this.parseUrl(val.path)})`
 			},
 			deep: true

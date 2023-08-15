@@ -207,7 +207,7 @@ export default {
 			return `${this.$protocol}//${this.$baseURL}/v1/users/current/image/${wallpaperConfig}?token=${accessToken}&type=wallpaper`
 		},
 		parseUrl(serverUrl) {
-			const newUrl = serverUrl.replace('SERVER_URL', `${this.$protocol}//${this.$baseURL}`)
+			const newUrl = serverUrl?.replace('SERVER_URL', `${this.$protocol}//${this.$baseURL}`)
 			return newUrl;
 		},
 	}
@@ -226,10 +226,10 @@ export default {
 	background-origin: padding-box, border-box;
 	background-image: linear-gradient(to right, #fff, #fff),
 	linear-gradient(
-			108.27deg,
-			rgba(57, 60, 64, 1) 1.44%,
-			rgba(92, 96, 102, 1) 55.8%,
-			rgba(34, 36, 38, 1) 110.95%
+	108.27deg,
+	rgba(57, 60, 64, 1) 1.44%,
+	rgba(92, 96, 102, 1) 55.8%,
+	rgba(34, 36, 38, 1) 110.95%
 	);
 	box-shadow: 0px 16px 24px rgba(115, 120, 128, 0.4);
 	overflow: hidden;
