@@ -17,6 +17,11 @@ const commitHash = require('child_process')
 	.toString()
 	.trim();
 
+const globalSassFiles = [
+	"./src/assets/scss/common/_variables.scss",
+	"./src/assets/scss/common/_color.scss"
+]
+
 
 module.exports = {
 	publicPath: '/',
@@ -25,41 +30,53 @@ module.exports = {
 	productionSourceMap: true,
 	pluginOptions: {},
 	css: {
+		requireModuleExtension: true,
 		extract: {
 			ignoreOrder: true
+		},
+		loaderOptions: {
+			css: {
+				modules: {
+					auto: () => true
+
+				}
+			}
+		},
+		// modules: {
+		// 	localIdentName: '[name]-[hash]',
+		// 	exportLocalsConvention: 'camelCaseOnly'
+		// }
+	},
+	transpileDependencies: ['marked'],
+	configureWebpack: {
+		module: {
+			rules: [
+				// {
+				// 	test: /\.esm\.js$/,
+				// 	include: [
+				// 		path.resolve(__dirname, "src"),
+				// 		path.resolve(__dirname, "node_modules/marked")
+				// 	],
+				// 	use: {
+				// 		loader: 'esbuild-loader',
+				// 		options: {
+				// 			target: 'es2020',
+				// 			jsxFactory: 'h',
+				// 			jsxFragment: 'Fragment'
+				// 		}
+				// 	}
+				// },
+				// {
+				// 	test: /\.s?css$/,
+				// 	use: ["css-loader", "sass-loader"]
+				// },
+				// {
+				// 	test: /\.css$/,
+				// 	use: ["style-loader", "css-loader"]
+				// }
+			]
 		}
 	},
-	// configureWebpack: {
-	// 	module: {
-	// 		rules: [
-	// 			{
-	// 				test: /\.esm\.js$/,
-	// 				include: [
-	// 					path.resolve(__dirname, "src"),
-	// 					path.resolve(__dirname, "node_modules/marked")
-	// 				],
-	// 				use: {
-	// 					loader: 'esbuild-loader',
-	// 					options: {
-	// 						target: 'es2020',
-	// 						jsxFactory: 'h',
-	// 						jsxFragment: 'Fragment'
-	// 					}
-	// 				}
-	// 			},
-	// 			{
-	// 				test: /\.css$/,
-	// 				use: [
-	// 					'vue-style-loader',
-	// 					{
-	// 						loader: 'css-loader',
-	// 						options: { importLoaders: 1 }
-	// 					}
-	// 				]
-	// 			}
-	// 		]
-	// 	}
-	// },
 	chainWebpack: config => {
 		config.module
 			.rule("mjs")
@@ -70,16 +87,22 @@ module.exports = {
 
 		const oneOfsMap = config.module.rule("scss").oneOfs.store;
 		oneOfsMap.forEach(item => {
-			item
-				.use("style-resources-loader")
-				.loader("style-resources-loader")
+			// item
+			// 	.use("style-resources-loader")
+			// 	.loader("style-resources-loader")
+			// 	.options({
+			// 		patterns: [
+			// 			"./src/assets/scss/common/_variables.scss",
+			// 			"./src/assets/scss/common/_color.scss"
+			// 		]
+			// 	})
+			// 	.end()
+			item.use("sass-resources-loader")
+				.loader("sass-resources-loader")
 				.options({
-					patterns: [
-						"./src/assets/scss/common/_variables.scss",
-						"./src/assets/scss/common/_color.scss"
-					]
+					resources: globalSassFiles
 				})
-				.end()
+				.end();
 		})
 		config.plugin('ignore')
 			.use(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
@@ -104,6 +127,35 @@ module.exports = {
 			config.optimization
 				.minimizer('css')
 				.use(require.resolve('optimize-css-assets-webpack-plugin'), [{cssProcessorOptions: {safe: true}}])
+		} else if (process.env.NODE_ENV === 'test') {
+			// 添加对 Vue 文件中的 CSS 的处理规则
+			config.module
+				.rule('vue')
+				.use('vue-loader')
+				.tap((options) => {
+					options.transformAssetUrls = {
+						// 在 Vue 文件中引用的 CSS 也会被处理
+						'style': ['css-loader', 'sass-loader'],
+					};
+					return options;
+				});
+
+			// 添加对 CSS 的处理规则
+			config.module
+				.rule('css')
+				.oneOf('vue')
+				.use('postcss-loader')
+				.tap((options) => {
+					// 添加 PostCSS 插件的配置
+					options.postcssOptions = {
+						plugins: [
+							require('postcss-preset-env')(),
+							require('autoprefixer')(),
+							// 这里可以添加其他的 PostCSS 插件
+						],
+					};
+					return options;
+				});
 		} else {
 			// Development only
 			// config.plugin('webpack-bundle-analyzer')

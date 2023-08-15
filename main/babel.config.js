@@ -10,6 +10,7 @@
 
 module.exports = {
 	presets: [
+		"@babel/preset-env",
 		'@vue/cli-plugin-babel/preset',
 		[
 			'@babel/preset-typescript', // 引用Typescript插件
@@ -18,5 +19,5 @@ module.exports = {
 			}
 		]
 	],
-	plugins: ["@babel/plugin-proposal-optional-chaining"]
+	plugins: ["@babel/plugin-syntax-optional-chaining"]
 }

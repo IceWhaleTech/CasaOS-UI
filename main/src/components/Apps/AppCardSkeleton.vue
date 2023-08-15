@@ -4,9 +4,9 @@
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2023-02-08 19:16:11
  * @FilePath: /CasaOS-UI/src/components/Apps/AppCardSkeleton.vue
- * @Description: 
- * 
- * Copyright (c) 2023 by IceWhale, All Rights Reserved. 
+ * @Description:
+ *
+ * Copyright (c) 2023 by IceWhale, All Rights Reserved.
 -->
 <template>
 	<div class="common-card is-flex is-align-items-center is-justify-content-center p-55 app-card" :style="animation">

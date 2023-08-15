@@ -4,9 +4,9 @@
  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
  * @LastEditTime: 2023-08-10 00:09:07
  * @FilePath: /CasaOS-UI/main/src/components/settings/UpdateCompleteModal.vue
- * @Description: 
- * 
- * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+ * @Description:
+ *
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
 -->
 <template>
 	<div class="modal-card">

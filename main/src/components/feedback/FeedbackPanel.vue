@@ -1,4 +1,14 @@
 <!--
+  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+  * @LastEditTime: 2023/8/10 上午11:45
+  * @FilePath: /CasaOS-UI/main/src/components/feedback/FeedbackPanel.vue
+  * @Description:
+  *
+  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
+
+  -->
+
+<!--
  * @Author: JerryK
  * @Date: 2022-01-24 11:57:35
  * @LastEditors: Jerryk jerry@icewhale.org
@@ -19,11 +29,14 @@
 
 			<div class="is-flex-grow-1 is-relative">
 				<b-field :label="$t('Title')">
-					<b-input v-model="postTitle" :placeholder="$t('Start with [Issue], [App Request], or [Feature Request]...')"
+					<b-input v-model="postTitle"
+							 :placeholder="$t('Start with [Issue], [App Request], or [Feature Request]...')"
 							 maxlength="100"></b-input>
 				</b-field>
 				<b-field :label="$t('Description')">
-					<b-input v-model="postBody" :placeholder="$t('The more details provided, the easier this feedback or issue gets addressed.')" maxlength="500"
+					<b-input v-model="postBody"
+							 :placeholder="$t('The more details provided, the easier this feedback or issue gets addressed.')"
+							 maxlength="500"
 							 type="textarea"></b-input>
 				</b-field>
 				<b-field :label="$t('System infomation')">

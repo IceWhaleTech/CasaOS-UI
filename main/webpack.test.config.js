@@ -17,6 +17,7 @@ module.exports = {
 	mode: 'development',
 	resolve: {
 		alias: {"@": path.resolve(__dirname, 'src')},
+		extensions: ['.js', '.json', '.css', '.vue']
 	},
 	target: 'node',
 	externals: [nodeExternals()],
@@ -27,14 +28,24 @@ module.exports = {
 		devtoolModuleFilenameTemplate: '[absolute-resource-path]',
 		devtoolFallbackModuleFilenameTemplate: '[absolute-resource-path]?[hash]',
 	},
+	// css: {
+	// 	loaderOptions: {
+	// 		sass: {
+	// 			additionalData: `@import "./src/assets/scss/common/_variables.scss";`
+	// 		},
+	// 		scss: {
+	// 			additionalData: `@import "./src/assets/scss/common/_variables.scss";`
+	// 		}
+	// 	}
+	// },
 	module: {
 		rules: [
 			{
-				test: /\.vue$/,
+				test: /\.vue$/i,
 				loader: 'vue-loader'
 			},
 			{
-				test: /\.spec\.js$/,
+				test: /\.m?js$/,
 				exclude: /node_modules/,
 				use: {
 					loader: 'babel-loader',
@@ -47,19 +58,57 @@ module.exports = {
 				}
 			},
 			{
-				test: /\.css$/,
+				test: /\.css$/i,
 				use: [
 					'vue-style-loader',
-					'css-loader'
+					'css-loader',
+					'postcss-loader'
 				]
 			},
 			{
-				test: /\.(png|jpe?g|gif)$/i,
+				test: /\.(png|jpe?g|gif|svg)$/i,
 				loader: 'file-loader',
 				options: {
 					name: '[name].[ext]',
 					outputPath: 'images/'
 				}
+			},
+			// 普通的 `.scss` 文件和 `*.vue` 文件中的
+			// `<style lang="scss">` 块都应用它
+			{
+				test: /\.s(c|a)ss$/i,
+				use: [
+					'vue-style-loader',
+					'css-loader',
+					{
+						loader: 'postcss-loader',
+						/*options: {
+							sourceMap: true,
+						},*/
+					},
+					{
+						loader: 'sass-loader',
+						options: {
+							// indentedSyntax: true,
+							// sass-loader version >= 8
+							// sassOptions: {
+							// 	indentedSyntax: true
+							// },
+							// additionalData: (content, loaderContext) => {
+							// 	// More information about available properties https://webpack.js.org/api/loaders/
+							// 	const {resourcePath, rootContext} = loaderContext;
+							// 	const relativePath = path.relative(rootContext, resourcePath);
+							//
+							// 	if (relativePath === "styles/foo.scss") {
+							// 		return "$value: 100px;" + content;
+							// 	}
+							//
+							// 	return "$value: 200px;" + content;
+							// },
+							additionalData: `@import "./src/assets/scss/common/_variables.scss";`
+						}
+					}
+				]
 			}
 		]
 	},

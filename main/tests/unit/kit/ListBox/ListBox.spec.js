@@ -10,6 +10,7 @@
 
 import {shallowMount, mount} from '@vue/test-utils'
 import ListBox               from '@/kit/ListBox/ListBox.vue'
+// import '@/assets/scss/app.scss'
 
 const fullPropsObj = {
 	activeAppStoreSourceInput: false,
