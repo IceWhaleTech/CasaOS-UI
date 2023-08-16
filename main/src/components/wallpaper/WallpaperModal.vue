@@ -39,7 +39,7 @@
 					<div :class="{active:checkActiveFrom('Upload')}" class="upload-button-container is-clickable">
 						<div id="upload-wallpaper"
 							 class="upload-button is-flex is-align-items-center is-justify-content-center ">
-							<b-icon icon="picture-upload" pack="casa" size="is-large"></b-icon>
+							<b-icon icon="picture-upload-outline" pack="casa" size="is-large"></b-icon>
 
 						</div>
 						<b-loading v-model="isUpLoading" :can-cancel="false" :is-full-page="false"></b-loading>
