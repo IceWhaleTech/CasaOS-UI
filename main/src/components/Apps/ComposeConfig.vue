@@ -732,17 +732,21 @@ export default {
 			}
 
 			// 判断是否存在
-			const memory = composeServicesItemInput?.deploy?.resources?.limits?.memory;
+			const memory = composeServicesItemInput?.deploy?.resources?.limits?.memory ?? 0;
 			let newMemory = 0
 			if (memory) {
-				// 存在的情况下，检测是否有单位
-				// 检测没有单位的情况
-				if (isNumber(memory - 0) && memory > 0) {
+				// In the presence of a unit, detect whether there is a unit
+				// Detect the absence of units
+				if (isNumber(memory) && memory > 0) {
 					newMemory = memory / 1024 / 1024;
 				} else if (/[Mm]$/.test(memory)) {
 					newMemory = memory.replace(/[Mm]/, "");
 				} else if (/[Gg]$/.test(memory)) {
 					newMemory = memory.replace(/[Gg]/, "") * 1024;
+				}
+				// Detect if the maximum value is exceeded
+				if (newMemory > this.totalMemory) {
+					newMemory = this.totalMemory
 				}
 			}
 			let ob = merge(composeServicesItemInput?.deploy, {resources: {limits: {memory: newMemory || this.totalMemory}}})
@@ -945,10 +949,8 @@ export default {
 	},
 	filters: {
 		duplexDisplay(val) {
-			if (!val) {
-				return 256//this.memory_min
-			}
-			return (isNumber(val) && val) || (val && val.replace(/[Mm]/, ""));
+			// units is M
+			return val < 256 ? 256 : val;
 		},
 	},
 };
