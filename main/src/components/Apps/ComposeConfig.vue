@@ -10,7 +10,7 @@
 
 <template>
 	<section style="height: calc(100vh - 12.8125rem)">
-		<b-tabs class="has-text-full-03" style="height:100%"
+		<b-tabs :value="firstAppName" class="has-text-full-03" style="height:100%"
 				@input="key=> $emit('updateDockerComposeServiceName', key)">
 			<b-tab-item v-for="(service, key) in configData.services" :key="key" :label="key" :value="key">
 				<ValidationObserver :ref="key + 'valida'">
