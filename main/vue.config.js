@@ -25,9 +25,9 @@ module.exports = {
 	productionSourceMap: true,
 	pluginOptions: {},
 	css: {
-		extract: {
+		extract: process.env.NODE_ENV === "prod" ? {
 			ignoreOrder: true
-		}
+		} : false
 	},
 	chainWebpack: config => {
 		config.module

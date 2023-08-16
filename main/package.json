@@ -7,6 +7,7 @@
     "postinstall": "npx patch-package",
     "build": "node message_bus.build.js && vue-cli-service build --dest ../build/sysroot/var/lib/casaos/www/ --mode production",
     "test:unit": "vue-cli-service test:unit",
+    "test:unit：mocha": "vue-cli-service test:unit --require tests/unit/setup.js tests/**/*.spec.js",
     "lint": "vue-cli-service lint",
     "build:messagebus": "node message_bus.build.js",
     "test": "mochapack --webpack-config webpack.test.config.js --require tests/unit/setup.js tests/**/*.spec.js"
