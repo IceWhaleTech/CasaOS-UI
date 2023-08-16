@@ -45,19 +45,19 @@ const props = defineProps({
 		default: () => {
 		}
 	},
-	cateMenu: {
-		type: Array,
-		default: []
-	},
+	// cateMenu: {
+	// 	type: Array,
+	// 	default: []
+	// },
 });
 
-const getCategoryIcon = (name) => {
-	let category = props.cateMenu.find(item => item.name == name) || {font: 'apps'}
-	return category.font;
-};
+// const getCategoryIcon = (name) => {
+// 	let category = props.cateMenu.find(item => item.name == name) || {font: 'apps'}
+// 	return category.font;
+// };
 
 const categoryIcon = computed(() => {
-	return getCategoryIcon(props.appDetailData.category);
+	return props.appDetailData.category;
 });
 
 </script>

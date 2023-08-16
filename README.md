@@ -30,6 +30,10 @@ yarn build
 
 # TODO how to test this project.
 
+```shell
+
+```
+
 # TODO how to deploy this project.
 
 # How to contribute to this project.

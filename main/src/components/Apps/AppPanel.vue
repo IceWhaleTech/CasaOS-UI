@@ -47,9 +47,8 @@
 					<AppDetail
 						:appDetailData="appDetailData"
 						:arch="arch"
-						:cateMenu="cateMenu"
-						:currentInstallId="currentInstallId"
 						:handleBackBtnClick="close"
+						:currentInstallId="currentInstallId"
 						:installedList="installedList"
 						:showDetailSwiper="showDetailSwiper"
 						@install="quickInstall">
@@ -104,10 +103,10 @@
 
 					<AppRecommend
 						v-if="recommendList.length > 0"
-						:arch="arch"
-						:currentInstallId="currentInstallId"
-						:installedList="installedList"
 						:recommendList="recommendList"
+						:installedList="installedList"
+						:currentInstallId="currentInstallId"
+						:arch="arch"
 						:showDetailSwiper="showDetailSwiper"
 						@quickInstall="quickInstall"
 					>
@@ -115,108 +114,17 @@
 					<!-- Featured Slider End -->
 
 					<!-- List condition Start -->
-					<div class="is-flex mt-5 mb-5 is-justify-content-center">
-
-						<!-- Cate Start -->
-						<transition name="slide-fade">
-							<div v-if="!activeAppStoreSourceInput || !isMobile"
-								 class="mr-2 _polymorphic is-flex is-align-items-center _dropdown">
-								<b-dropdown v-model="currentCate" :max-height="240" :mobile-modal="false"
-											animation="fade1"
-											aria-role="list" class="app-select file-dropdown" scrollable>
-									<template #trigger="{ active }">
-										<div
-											class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
-											<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
-													icon="category"
-													pack="casa"></b-icon>
-											<span class="has-text-full-03">{{ currentCate.name }}</span>
-											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'"
-													class="ml-2 _dropdown__stateIcon"
-													custom-size="casa-16px"></b-icon>
-										</div>
-									</template>
-									<b-dropdown-item v-for="menu in cateMenu" :key="menu.id"
-													 :class="menu.id == currentCate.id?'is-active':''"
-													 :data-title="menu.count"
-													 :value="menu" aria-role="listitem"
-													 class="_dropdown__item">
-										<div class="media is-align-items-center is-flex has-text-full-03"
-											 @click="$messageBus('appstore_type', menu.name)">
-											<div class="media-content">
-												<h3>{{ menu.name }}</h3>
-											</div>
-										</div>
-									</b-dropdown-item>
-								</b-dropdown>
-
-							</div>
-						</transition>
-						<!-- Cate End -->
-
-
-						<!-- Author Start -->
-						<transition name="slide-fade">
-							<div v-if="!activeAppStoreSourceInput || !isMobile"
-								 class="_polymorphic is-flex is-align-items-center _dropdown">
-								<b-dropdown v-model="currentAuthor" :max-height="240" :mobile-modal="false"
-											animation="fade1" aria-role="list" class="app-select file-dropdown"
-											position="is-bottom-right" scrollable>
-									<template #trigger="{ active }">
-										<div
-											class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
-											<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
-													icon="posted-by-outline"
-													pack="casa"></b-icon>
-											<span class="has-text-full-03">{{ currentAuthor.name }}</span>
-											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'"
-													class="ml-2 _dropdown__stateIcon"
-													custom-size="casa-16px"></b-icon>
-										</div>
-									</template>
-									<b-dropdown-item v-for="menu in authorMenu" :key="menu.id"
-													 :class="menu.id == currentAuthor.id?'is-active':''"
-													 :data-title="menu.count"
-													 :value="menu" aria-role="listitem"
-													 class="_dropdown__item">
-										<div class="media is-align-items-center is-flex has-text-full-03"
-											 @click="$messageBus('appstore_author', menu.name)">
-											<div class="media-content">
-												<h3>{{ menu.name }}</h3>
-											</div>
-										</div>
-									</b-dropdown-item>
-								</b-dropdown>
-
-							</div>
-						</transition>
-						<!-- Author End -->
-
-						<transition name="search-fade">
-							<b-icon v-if="searchAndSourcesStatus === 'showSources'"
-									class="is-flex is-align-self-center" icon="search-outline"
-									pack="casa"
-									@click.native="searchAndSourcesStatusController"></b-icon>
-						</transition>
-						<transition name="search-fade">
-
-							<b-input v-if="searchAndSourcesStatus !== 'showSources'"
-									 ref="search_app"
-									 v-on-click-outside="resetSearchAndSourcesStatus"
-									 :placeholder="$t('Search an app...')"
-									 class="app-search"
-									 type="text"
-									 @input="debounceSearchInput"
-									 @keyup.enter.native="counterPatchGetStoreList++"></b-input>
-
-						</transition>
-						<div class="is-flex-grow-1"></div>
-						<AppStoreSourceManagement v-show="searchAndSourcesStatus !== 'showSearch'"
-												  :totalApps="pageList.length" class="ml-2"
-												  @refreshAppStore="getStoreList"
-												  @refreshSize="refreshAppStoreSourceManagementSizeStatus"></AppStoreSourceManagement>
-
-					</div>
+					<AppConditionSelector
+						:pageList="pageList"
+						:isMobile="isMobile"
+						:installedList="installedList"
+						:isLoading="isLoading"
+						@update-pageList="updatePageList"
+						@update-isLoading="updateIsLoading"
+						@update-isLoadError="updateIsLoadError"
+						@update-installed-list="updateInstalledList"
+						@update-searchKey="updateSearchKey"
+					/>
 
 					<!-- List condition End -->
 					<!-- App list Start-->
@@ -461,7 +369,6 @@ import "@/plugins/vee-validate";
 import uniq                                     from 'lodash/uniq';
 import isNull                                   from 'lodash/isNull'
 import orderBy                                  from 'lodash/orderBy';
-import debounce                                 from 'lodash/debounce'
 import FileSaver                                from 'file-saver';
 import {Swiper, SwiperSlide}                    from 'vue-awesome-swiper'
 import AppsInstallationLocation                 from "@/components/Apps/AppsInstallationLocation";
@@ -474,8 +381,7 @@ import {ice_i18n}                               from "@/mixins/base/common-i18n"
 import {parse}                                  from "yaml";
 import AppStoreSourceManagement                 from "@/components/Apps/AppStoreSourceManagement.vue";
 import {vOnClickOutside}                        from '@vueuse/components'
-import {AppDetail, AppRecommend}                from "@/components/AppStore";
-
+import { AppDetail, AppRecommend, AppConditionSelector } from "@/components/AppStore";
 const data = [
 	"AUDIT_CONTROL",
 	"AUDIT_READ",
@@ -517,7 +423,7 @@ export default {
 		ComposeConfig,
 		ValidationObserver,
 		ValidationProvider,
-		AppDetail, AppRecommend
+		AppDetail, AppRecommend, AppConditionSelector
 	},
 	mixins: [business_ShowNewAppTag, business_OpenThirdApp],
 	directives: {
@@ -580,7 +486,7 @@ export default {
 			pageIndex: 1,
 			pageSize: 5,
 			listTotal: 0,
-			pageList: {},
+			pageList: [],
 			communityList: {},
 			recommendList: {},
 			currentSlide: 0,
@@ -588,22 +494,13 @@ export default {
 
 			// Featured Swiper
 			searchKey: "",
-			currentCate: {},
-			// currentAuthor: {},
 			currentAuthor: {count: 0, font: "author", id: 0, name: "All"},
 			currentSort: {},
-			cateMenu: [],
-			authorMenu: [
-				{count: 0, font: "author", id: 0, name: "All"},
-				{count: 0, font: "author", id: 1, name: "official"},
-				{count: 0, font: "author", id: 2, name: "by_casaos"},
-				{count: 0, font: "author", id: 3, name: "community"}
-			],
-			sortMenu: [
-				{icon: "", slash: "rank", name: "Popular"},
-				{icon: "", slash: "new", name: "New"},
-				{icon: "", slash: "name", name: "Name"},
-			],
+			// sortMenu: [
+			// 	{icon: "", slash: "rank", name: "Popular"},
+			// 	{icon: "", slash: "new", name: "New"},
+			// 	{icon: "", slash: "name", name: "Name"},
+			// ],
 			storeQueryData: {
 				index: 1,
 				category: "All",
@@ -645,8 +542,6 @@ export default {
 			totalPercentage: 0,
 			installedList: [],
 			counterPatchGetStoreList: 0,
-			searchAndSourcesStatus: "",
-			activeAppStoreSourceInput: false,
 		}
 	},
 
@@ -681,7 +576,7 @@ export default {
 			this.currentSlide = 1
 
 		} else {
-			this.getCategoryList();
+			// this.getCategoryList();
 		}
 
 		// If StoreId is not 0
@@ -712,7 +607,7 @@ export default {
 		this.currentSlide === 0 && !this.isMobile && this.$nextTick().then(() => {
 			this.$refs.search_app.$el.children[0].focus();
 		});
-		this.searchAndSourcesStatusController();
+		// this.searchAndSourcesStatusController();
 	},
 
 	computed: {
@@ -787,101 +682,27 @@ export default {
 				this.isLoading = false;
 			}
 		},
-		currentCate: {
-			handler(val) {
-				if (!this.isFirst) {
-					this.counterPatchGetStoreList++
-				}
-
-			},
-			deep: true
-		},
-		currentAuthor: {
-			handler(val) {
-				if (!this.isFirst) {
-					this.counterPatchGetStoreList++
-				}
-			},
-			deep: true
-		},
-		// Watch if app sort changes
-		currentSort: {
-			handler(val) {
-				if (!this.isFirst) {
-					this.counterPatchGetStoreList++
-				}
-			},
-			deep: true
-		},
-		counterPatchGetStoreList() {
-			this.getStoreList();
-			return 0
-		}
 	},
 	methods: {
-		resetSearchAndSourcesStatus() {
-			switch (this.isMobile) {
-				case true:
-					this.searchAndSourcesStatus = 'showSources'
-					break;
-				case false:
-					this.searchAndSourcesStatus = 'showAll'
-					break;
-			}
+		updatePageList(val){
+			this.pageList = val
 		},
-		searchAndSourcesStatusController() {
-			// Status for three. One of them is "showSearch", "showSources", "showAll"
-			if (this.isMobile && this.searchAndSourcesStatus === "showSources") {
-				this.searchAndSourcesStatus = "showSearch";
-			} else if (this.isMobile) {
-				this.searchAndSourcesStatus = "showSources";
-			} else {
-				this.searchAndSourcesStatus = "showAll";
-			}
+		updateIsLoading(val){
+			this.isLoading = val
 		},
-
-		refreshAppStoreSourceManagementSizeStatus(status) {
-			if (status === "active_input_state") {
-				this.activeAppStoreSourceInput = true
-			} else {
-				this.activeAppStoreSourceInput = false
-			}
+		updateInstalledList(val){
+			this.installedList = val
+		},
+		updateIsLoadError(val){
+			this.isLoadError = val
+		},
+		updateSearchKey(val){
+			this.searchKey = val
 		},
 
 		setCSSVHVar() {
 			const vh = window.innerHeight * 0.01;
 			document.documentElement.style.setProperty('--vh', `${vh}px`);
-		},
-
-		// this.cateMenu : {name: 'appstore', title: 'App Store', icon: 'mdi-apps', component: 'AppStore'}
-		// param : this.cateMenu.name
-		getCateIcon(name) {
-			let tempO = this.cateMenu.find(item => item.name == name) || {font: 'mdi-apps'}
-			return tempO.font;
-		},
-
-		/**
-		 * @description: Get category list
-		 * @param {*}
-		 * @return {*} void
-		 */
-		async getCategoryList() {
-			this.isLoading = true
-			try {
-				this.cateMenu = await this.$openAPI.appManagement.appStore.categoryList().then(res => res.data.data.filter((item) => {
-					return item.count > 0
-				}));
-				this.currentCate = this.cateMenu[0]
-				this.currentSort = this.sortMenu[0]
-				if (this.isFirst) {
-					this.isFirst = false
-				}
-			} catch (error) {
-				this.loadErrorStep = 1
-				this.isLoading = false;
-				this.isLoadError = true;
-			}
-
 		},
 
 		async getStoreRecommend() {
@@ -909,54 +730,6 @@ export default {
 			} catch (error) {
 				console.log('load recommend error', error);
 			}
-		},
-
-		/**
-		 * @description: Get App store list
-		 * @param {*}
-		 * @return {*} void
-		 */
-		async getStoreList() {
-			this.isLoading = true
-
-			try {
-				// let {category, authorType} = this.storeQueryData
-				let category = this.currentCate.name
-				let authorType = this.currentAuthor.name
-				let res;
-				if (authorType !== 'All' && category !== 'All') {
-					res = await this.$openAPI.appManagement.appStore.composeAppStoreInfoList(category, authorType).then(res => res.data.data)
-				} else if (authorType !== 'All') {
-					res = await this.$openAPI.appManagement.appStore.composeAppStoreInfoList(undefined, authorType).then(res => res.data.data)
-				} else if (category !== 'All') {
-					res = await this.$openAPI.appManagement.appStore.composeAppStoreInfoList(category, undefined, false).then(res => res.data.data)
-				} else {
-					res = await this.$openAPI.appManagement.appStore.composeAppStoreInfoList().then(res => res.data.data)
-				}
-
-				let list = res.list
-				let listRes = Object.keys(list).map(id => {
-					let main_app_info = list[id]
-					return {
-						id,
-						category: main_app_info.category,
-						icon: main_app_info.icon,
-						tagline: ice_i18n(main_app_info.tagline),
-						thumbnail: main_app_info.thumbnail || main_app_info.screenshot_link?.[0],
-						title: ice_i18n(main_app_info.title),
-						state: 0,
-						architectures: main_app_info.architectures,
-						// scheme: main_app_info.apps[id].scheme,
-						// port: main_app_info.apps[id].port_map,
-						// index: main_app_info.apps[id].index,
-					}
-				})
-				this.pageList = listRes;
-				this.installedList = res.installed
-			} catch (e) {
-				console.log('load store list error', e)
-			}
-			this.isLoading = false
 		},
 
 		/**
@@ -997,11 +770,12 @@ export default {
 		},
 
 		retry() {
-			if (this.loadErrorStep === 1) {
-				this.getCategoryList()
-			} else if (this.loadErrorStep === 2) {
-				this.getStoreList()
-			}
+			// TODO the function will reImplement in next refactor
+			// if (this.loadErrorStep === 1) {
+			// 	this.getCategoryList()
+			// } else if (this.loadErrorStep === 2) {
+			// 	this.getStoreList()
+			// }
 		},
 
 
@@ -1483,9 +1257,6 @@ export default {
 		updateDockerComposeServiceName(val) {
 			this.dockerComposeServiceName = val
 		},
-		debounceSearchInput: debounce(function (e) {
-			this.searchKey = e;
-		}, 250)
 	},
 
 	destroyed() {
@@ -1774,21 +1545,4 @@ export default {
 	}
 }
 
-.slide-fade-enter-active, .search-fade-enter-active {
-	transition: all 0.3s ease-out;
-}
-
-.slide-fade-leave-active, search-fade-leave-active {
-	transition: opacity 0s;
-}
-
-.search-fade-enter-from {
-	transform: translateY(-20px);
-	opacity: 0;
-}
-
-.slide-fade-enter-from {
-	transform: translateX(20px);
-	opacity: 0;
-}
 </style>
