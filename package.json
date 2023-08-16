@@ -9,6 +9,7 @@
     "dev:noCache": "turbo run serve --no-cache",
     "build": "turbo run build",
     "test": "turbo run test",
+    "test:unit": "turbo run test:unit",
     "lint": "yarn workspaces foreach run lint"
   },
   "packageManager": "yarn@3.6.1",
