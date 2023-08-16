@@ -38,7 +38,7 @@
 						>
 							<b-input
 							:placeholder="$t('e.g.,Your App Name')"
-							:value="ice_i18n(configData['x-casaos'].title)"
+							:value="i18n(configData['x-casaos'].title)"
 							@blur="E=>configData['x-casaos'].title.custom = E.target._value"
 							></b-input>
 						</b-field>
@@ -230,7 +230,7 @@ import isNil                                    from "lodash/isNil";
 import {isNumber, isString}                     from "lodash/lang";
 import cloneDeep                                from "lodash/cloneDeep";
 import merge                                    from "lodash/merge";
-import {ice_i18n}                               from "@/mixins/base/common-i18n";
+import i18n                                     from "@/mixins/base/common-i18n";
 import {nanoid}                                 from "nanoid";
 import find                                     from "lodash/find";
 import isArray                                  from "lodash/isArray";
@@ -277,6 +277,7 @@ export default {
 		CommandsInput,
 		VueSlider,
 	},
+	mixins: [i18n],
 	data() {
 		return {
 			baseUrl: "",
@@ -463,7 +464,6 @@ export default {
 	},
 
 	methods: {
-		ice_i18n,
 		// ****** migration !!! start !!!
 		/**
 		 * @description: Get remote synchronization information
@@ -590,7 +590,7 @@ export default {
 				composeServicesItem.environment = envArray.map((item) => {
 					let ii = typeof item === "object" ? Array.from(item) : item.split("=");
 					return {
-						host: ii[1].replace(/"/g, ""),
+						host: ii[1]?.replace(/"/g, "") ?? "",
 						container: ii[0],
 					};
 				});
