@@ -13,6 +13,7 @@ require('jsdom-global')()
 
 global.expect = require('expect').default
 
+/*
 const Vue = require('vue')
 const {
 	Icon,
@@ -65,3 +66,4 @@ Vue.use(Message)
 
 global.localVue = Vue
 
+*/

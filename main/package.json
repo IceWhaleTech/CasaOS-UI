@@ -6,11 +6,12 @@
     "serve": "vue-cli-service serve --mode dev",
     "postinstall": "npx patch-package",
     "build": "node message_bus.build.js && vue-cli-service build --dest ../build/sysroot/var/lib/casaos/www/ --mode production",
-    "test:unit": "vue-cli-service test:unit",
-    "test:unit：mocha": "vue-cli-service test:unit --require tests/unit/setup.js tests/**/*.spec.js",
+    "test:unit:mocha": "vue-cli-service test:unit --require tests/unit/setup.js tests/**/*.spec.js",
+    "test:e2e": "vue-cli-service test:e2e",
+    "test:e2e:headless": "vue-cli-service test:e2e --headless",
     "lint": "vue-cli-service lint",
     "build:messagebus": "node message_bus.build.js",
-    "test": "mochapack --webpack-config webpack.test.config.js --require tests/unit/setup.js tests/**/*.spec.js"
+    "test:mocha": "mochapack --webpack-config webpack.test.config.js --require tests/unit/setup.js tests/**/*.spec.js"
   },
   "installConfig": {
     "hoistingLimits": "workspaces"
@@ -23,6 +24,7 @@
     "@icewhale/icewhale-files-openapi": "latest",
     "@kangc/v-md-editor": "^1.7.11",
     "@mdi/font": "^6.6.96",
+    "@vue/cli-plugin-e2e-cypress": "^4.5.19",
     "@vueuse/components": "^10.2.0",
     "apexcharts": "^3.33.2",
     "axios": "^0.26.0",
