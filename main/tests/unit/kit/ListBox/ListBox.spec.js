@@ -8,9 +8,12 @@
 
  */
 
-import {shallowMount, mount} from '@vue/test-utils'
-import ListBox               from '@/kit/ListBox/ListBox.vue'
+import {shallowMount, mount, createLocalVue} from '@vue/test-utils'
+import ListBox                               from '@/kit/ListBox/ListBox.vue'
+import Buefy                                 from 'buefy'
 
+const localVue = createLocalVue();
+localVue.use(Buefy);
 const fullPropsObj = {
 	activeAppStoreSourceInput: false,
 	isMobile: false,
@@ -55,7 +58,7 @@ describe('ListBox.vue', () => {
 		expect(wrapper.text()).toMatch("community")
 	});
 
-	it('测试选中点击事件', () => {
+	it('测试选中点击事件：：', () => {
 		const options = wrapper.findAll('.dropdown-item')
 		options.at(1).trigger('click')
 		expect(wrapper.emitted()['update-current-option'][0]).toEqual([{
@@ -63,6 +66,17 @@ describe('ListBox.vue', () => {
 			font: "author",
 			id: 1,
 			name: "official"
+		}])
+	});
+
+	it('点击事件，成功切换：：', async () => {
+
+		await wrapper.findAll('h3').wrappers[2].trigger("click")
+		expect(wrapper.emitted()['update-current-option'][1]).toEqual([{
+			count: 2,
+			font: "author",
+			id: 2,
+			name: "by_casaos"
 		}])
 	});
 })

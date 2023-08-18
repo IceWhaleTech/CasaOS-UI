@@ -16,20 +16,20 @@
 						position="is-bottom-right" scrollable>
 				<template #trigger="{ active }">
 					<div
-					class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
+						class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
 						<b-icon
-						:icon="icon"
-						class="mr-1 _dropdown__typeIcon"
-						custom-size="mdi-18px"
-						pack="casa">
+							:icon="icon"
+							class="mr-1 _dropdown__typeIcon"
+							custom-size="mdi-18px"
+							pack="casa">
 						</b-icon>
 						<span class="has-text-full-03">
 							{{ currentOption.name }}
 						</span>
 						<b-icon
-						:icon="active ? 'chevron-up' : 'chevron-down'"
-						class="ml-2 _dropdown__stateIcon"
-						custom-size="casa-16px">
+							:icon="active ? 'chevron-up' : 'chevron-down'"
+							class="ml-2 _dropdown__stateIcon"
+							custom-size="casa-16px">
 						</b-icon>
 					</div>
 				</template>
@@ -50,7 +50,7 @@
 		</div>
 	</transition>
 </template>
-<script setup>
+<script name="ListBox" setup>
 import {computed, defineProps} from 'vue';
 
 const emit = defineEmits([

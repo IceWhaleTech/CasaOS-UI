@@ -10,10 +10,10 @@
 
 import {shallowMount, mount, createLocalVue} from '@vue/test-utils'
 import ListBox                               from '@/kit/ListBox/ListBox.vue'
-import {Dropdown}                            from 'buefy'
+import Buefy                                 from 'buefy'
 
-// const localVue = createLocalVue();
-// localVue.use(Dropdown);
+const localVue = createLocalVue();
+localVue.use(Buefy);
 // console.log(global)
 // debugger
 const fullPropsObj = {

@@ -63,8 +63,8 @@ module.exports = {
 			}]);
 		// Production only
 		if (process.env.NODE_ENV === "prod") {
-			config.output.filename('[name].[contenthash:8].js').end()
-			config.output.chunkFilename('[name].[contenthash:8].js').end()
+			config.output.filename('[name].[hash:8].js').end()
+			config.output.chunkFilename('[name].[hash:8].js').end()
 			config.optimization.minimize(true);
 			config.optimization.splitChunks({
 				chunks: 'all'
@@ -88,7 +88,7 @@ module.exports = {
 	devServer: {
 		open: true,
 		port: 8080,
-		inline: false,
+		inline: false, // vue-cli 5 not support inline mode.
 		// before: require('./mock/meta_data.js'),
 		hot: true,
 		// contentBase: publicPath,
