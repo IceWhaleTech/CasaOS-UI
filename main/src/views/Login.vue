@@ -31,20 +31,20 @@
 					<b-field :label="$t('Username')" :message="errors"
 							 :type="{ 'is-danger': errors[0], 'is-success': valid }"
 							 class="mt-5">
-						<b-input v-model="username" class="hug" type="text"
+						<b-input id="username" v-model="username" class="hug" type="text"
 								 v-on:keyup.enter.native="handleSubmit(login)"></b-input>
 					</b-field>
 				</ValidationProvider>
 				<ValidationProvider v-slot="{ errors, valid }" name="Password" rules="required|min:5" vid="password">
 					<b-field :label="$t('Password')" :message="$t(errors)"
 							 :type="{ 'is-danger': errors[0], 'is-success': valid }" class="mt-2">
-						<b-input v-model="password" autofocus class="hug"
+						<b-input id="password" v-model="password" autofocus class="hug"
 								 password-reveal type="password"
 								 v-on:keyup.enter.native="handleSubmit(login)"></b-input>
 					</b-field>
 				</ValidationProvider>
 				<div class="is-flex is-justify-content-center mt-4">
-					<b-button class="mt-5" expanded rounded type="is-primary" @click="handleSubmit(login)">
+					<b-button id="login" class="mt-5" expanded rounded type="is-primary" @click="handleSubmit(login)">
 						{{ $t('Login') }}
 					</b-button>
 				</div>

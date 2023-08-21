@@ -77,12 +77,6 @@ module.exports = {
 			// Development only
 			// config.plugin('webpack-bundle-analyzer')
 			// 	.use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
-			config.devServer.proxy({
-				'/': {
-					target: `http://${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}`,
-					changeOrigin: true,
-				}
-			})
 		}
 	},
 	devServer: {
@@ -92,5 +86,11 @@ module.exports = {
 		// before: require('./mock/meta_data.js'),
 		hot: true,
 		// contentBase: publicPath,
+		proxy: {
+			'/': {
+				target: `http://${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}`,
+				changeOrigin: true,
+			}
+		}
 	}
 }
