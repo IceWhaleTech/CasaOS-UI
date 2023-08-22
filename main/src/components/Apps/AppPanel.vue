@@ -305,7 +305,7 @@
 
 			<!-- App Install Process Start -->
 			<section v-if="currentSlide == 2" >
-				<LoadingPanel 
+				<AppInstallLoadingPanel 
 					:isCasa="isCasa"
 					:totalPercentage="totalPercentage"
 					:currentInstallAppText="currentInstallAppText"
@@ -373,7 +373,7 @@ import {parse}                                  from "yaml";
 import AppStoreSourceManagement                 from "@/components/Apps/AppStoreSourceManagement.vue";
 import {vOnClickOutside}                        from '@vueuse/components'
 import { AppDetail, AppRecommend, AppConditionSelector } from "@/components/AppStore";
-import LoadingPanel from "@/components/LoadingPanel/LoadingPanel.vue"
+import AppInstallLoadingPanel from "@/components/LoadingPanel/LoadingPanel.vue"
 
 const data = [
 	"AUDIT_CONTROL",
@@ -416,7 +416,7 @@ export default {
 		ValidationObserver,
 		ValidationProvider,
 		AppDetail, AppRecommend, AppConditionSelector,
-		LoadingPanel
+		AppInstallLoadingPanel
 	},
 	mixins: [business_ShowNewAppTag, business_OpenThirdApp],
 	directives: {
