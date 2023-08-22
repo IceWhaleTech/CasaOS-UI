@@ -107,6 +107,7 @@
 					:currentInstallId="currentInstallId"
 					:installedList="installedList"
 					:recommendList="recommendList"
+					:showAppDetial="showAppDetial"
 					:showDetailSwiper="showDetailSwiper"
 					@quickInstall="quickInstall"
 					>
@@ -361,7 +362,7 @@ import uniq                                            from 'lodash/uniq';
 import isNull                                          from 'lodash/isNull'
 import orderBy                                         from 'lodash/orderBy';
 import FileSaver                                       from 'file-saver';
-import {Swiper, SwiperSlide}                           from 'vue-awesome-swiper'
+// import {Swiper, SwiperSlide}                           from 'vue-awesome-swiper'
 import AppsInstallationLocation                        from "@/components/Apps/AppsInstallationLocation";
 import business_ShowNewAppTag                          from "@/mixins/app/Business_ShowNewAppTag";
 import business_OpenThirdApp                           from "@/mixins/app/Business_OpenThirdApp";
@@ -408,8 +409,8 @@ const data = [
 export default {
 	components: {
 		AppSideBar,
-		Swiper,
-		SwiperSlide,
+		// Swiper,
+		// SwiperSlide,
 		AppsInstallationLocation,
 		ComposeConfig,
 		ValidationObserver,
