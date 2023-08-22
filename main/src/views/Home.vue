@@ -64,7 +64,7 @@ export default {
 	},
 	created() {
 		// 系统信息
-		// this.getHardwareInfo();
+		this.getHardwareInfo();
 		// this.getWallpaperConfig();
 		// this.getConfig();
 		this.$store.commit('SET_ACCESS_ID', nanoid());
@@ -151,15 +151,14 @@ export default {
 		 * @param {*}
 		 * @return {*} void
 		 */
-
-		// getHardwareInfo() {
-		// 	this.$api.sys.getUtilization().then(res => {
-		// 		if (res.data.success === 200) {
-		// 			this.hardwareInfoLoading = false
-		// 			this.$store.commit('SET_HARDWARE_INFO', res.data.data);
-		// 		}
-		// 	})
-		// },
+		getHardwareInfo() {
+			this.$api.sys.getUtilization().then(res => {
+				if (res.data.success === 200) {
+					this.hardwareInfoLoading = false
+					this.$store.commit('SET_HARDWARE_INFO', res.data.data);
+				}
+			})
+		},
 
 
 		// getWallpaperConfig() {

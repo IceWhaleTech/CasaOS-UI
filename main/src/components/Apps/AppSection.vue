@@ -684,9 +684,9 @@ export default {
 					case MIRCO_APP_ACTION_ENUM.CLOSE:
 						this.hideMircoApp(data.name);
 						break;
-					// case MIRCO_APP_ACTION_ENUM.LOGIN:
-					// 	this.$router.push("/login");
-					// 	break;
+				// case MIRCO_APP_ACTION_ENUM.LOGIN:
+				// 	this.$router.push("/login");
+				// 	break;
 					default:
 						break;
 				}
