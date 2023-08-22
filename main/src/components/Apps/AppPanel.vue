@@ -33,9 +33,9 @@
 
 			<section class="modal-card-body is-overlay">
 				<AppsInstallationLocation
-					v-for="(item,index) in storageData" :key="'storage'+index" :item="item"
-					:scence="storage_item_scence"
-					@selection="getSelection">
+				v-for="(item,index) in storageData" :key="'storage'+index" :item="item"
+				:scence="storage_item_scence"
+				@selection="getSelection">
 				</AppsInstallationLocation>
 			</section>
 		</template>
@@ -45,13 +45,13 @@
 			<app-side-bar v-model="sidebarOpen" :overlay="true" :right="true" position="absolute">
 				<template slot-scope="{close}">
 					<AppDetail
-						:appDetailData="appDetailData"
-						:arch="arch"
-						:handleBackBtnClick="close"
-						:currentInstallId="currentInstallId"
-						:installedList="installedList"
-						:showDetailSwiper="showDetailSwiper"
-						@install="quickInstall">
+					:appDetailData="appDetailData"
+					:arch="arch"
+					:currentInstallId="currentInstallId"
+					:handleBackBtnClick="close"
+					:installedList="installedList"
+					:showDetailSwiper="showDetailSwiper"
+					@install="quickInstall">
 					</AppDetail>
 				</template>
 			</app-side-bar>
@@ -102,28 +102,28 @@
 
 
 					<AppRecommend
-						v-if="recommendList.length > 0"
-						:recommendList="recommendList"
-						:installedList="installedList"
-						:currentInstallId="currentInstallId"
-						:arch="arch"
-						:showDetailSwiper="showDetailSwiper"
-						@quickInstall="quickInstall"
+					v-if="recommendList.length > 0"
+					:arch="arch"
+					:currentInstallId="currentInstallId"
+					:installedList="installedList"
+					:recommendList="recommendList"
+					:showDetailSwiper="showDetailSwiper"
+					@quickInstall="quickInstall"
 					>
 					</AppRecommend>
 					<!-- Featured Slider End -->
 
 					<!-- List condition Start -->
 					<AppConditionSelector
-						:pageList="pageList"
-						:isMobile="isMobile"
-						:installedList="installedList"
-						:isLoading="isLoading"
-						@update-pageList="updatePageList"
-						@update-isLoading="updateIsLoading"
-						@update-isLoadError="updateIsLoadError"
-						@update-installed-list="updateInstalledList"
-						@update-searchKey="updateSearchKey"
+					:installedList="installedList"
+					:isLoading="isLoading"
+					:isMobile="isMobile"
+					:pageList="pageList"
+					@update-pageList="updatePageList"
+					@update-isLoading="updateIsLoading"
+					@update-isLoadError="updateIsLoadError"
+					@update-installed-list="updateInstalledList"
+					@update-searchKey="updateSearchKey"
 					/>
 
 					<!-- List condition End -->
@@ -284,15 +284,15 @@
 							<b-input v-model="settingData.host" :placeholder="this.$baseHostname"
 									 expanded></b-input>
 							<b-autocomplete
-								v-model="settingData.port_map"
-								:data="(()=>{
+							v-model="settingData.port_map"
+							:data="(()=>{
 								return (settingData.ports || []).map((item)=>{
 									return item.host
 								})
 							})()"
-								:open-on-focus="true"
-								:placeholder="$t('Port')" class="has-colon" field="hostname"
-								@select="option => (settingData.port_map = option)"></b-autocomplete>
+							:open-on-focus="true"
+							:placeholder="$t('Port')" class="has-colon" field="hostname"
+							@select="option => (settingData.port_map = option)"></b-autocomplete>
 							<b-input v-model="settingData.index"
 									 :placeholder="'/index.html '+ $t('[Optional]')"
 									 expanded></b-input>
@@ -304,17 +304,17 @@
 			<!-- App Install Form End -->
 
 			<!-- App Install Process Start -->
-			<section v-if="currentSlide == 2" >
-				<AppInstallLoadingPanel 
-					:isCasa="isCasa"
-					:totalPercentage="totalPercentage"
-					:currentInstallAppText="currentInstallAppText"
-					:currentInstallAppTextClass="currentInstallAppTextClass"
-					:isLoading="isLoading"
+			<section v-if="currentSlide == 2">
+				<AppInstallLoadingPanel
+				:currentInstallAppText="currentInstallAppText"
+				:currentInstallAppTextClass="currentInstallAppTextClass"
+				:isCasa="isCasa"
+				:isLoading="isLoading"
+				:totalPercentage="totalPercentage"
 				/>
 			</section>
 			<!-- App Install Process End -->
-
+			<b-loading v-model="isLoading" :can-cancel="false" :is-full-page="false"></b-loading>
 			<!-- Modal-Card Body End -->
 
 		</template>
@@ -330,19 +330,19 @@
 				</div>
 				<div>
 					<b-button v-if="currentSlide == 2 && currentInstallAppError " :label="$t('Back')" rounded
-						@click="prevStep"/>
+							  @click="prevStep"/>
 					<b-button v-if="currentSlide == 1 && state == 'install'" :label="$t('Install')" :loading="isLoading"
-						rounded type="is-primary" @click="installApp()"/>
+							  rounded type="is-primary" @click="installApp()"/>
 					<b-button v-if="isCasa && currentSlide == 1 && state == 'update'" :label="$t('Save')"
-						:loading="isLoading"
-						rounded type="is-primary" @click="updateApp()"/>
+							  :loading="isLoading"
+							  rounded type="is-primary" @click="updateApp()"/>
 					<b-button v-if="!isCasa && currentSlide == 1 && state == 'update'" :label="$t('Save')"
-						:loading="isLoading"
-						rounded type="is-primary" @click="updateContainer()"/>
+							  :loading="isLoading"
+							  rounded type="is-primary" @click="updateContainer()"/>
 					<b-button v-if="currentSlide == 2 && !currentInstallAppError" :label="$t(cancelButtonText)"
-						rounded type="is-primary" @click="$emit('close')"/>
+							  rounded type="is-primary" @click="$emit('close')"/>
 					<b-button v-if="isFirstInstall" :label="$t('Submit')" :loading="isLoading" rounded type="is-primary"
-						@click="submitInstallationLocation(installationLocation)"/>
+							  @click="submitInstallationLocation(installationLocation)"/>
 				</div>
 			</template>
 
@@ -353,27 +353,27 @@
 </template>
 
 <script>
-import AppSideBar                               from './AppSideBar.vue'
-import ImportPanel                              from '../forms/ImportPanel.vue'
-import AppTerminalPanel                         from './AppTerminalPanel.vue'
+import AppSideBar                                      from './AppSideBar.vue'
+import ImportPanel                                     from '../forms/ImportPanel.vue'
+import AppTerminalPanel                                from './AppTerminalPanel.vue'
 import "@/plugins/vee-validate";
-import uniq                                     from 'lodash/uniq';
-import isNull                                   from 'lodash/isNull'
-import orderBy                                  from 'lodash/orderBy';
-import FileSaver                                from 'file-saver';
-import {Swiper, SwiperSlide}                    from 'vue-awesome-swiper'
-import AppsInstallationLocation                 from "@/components/Apps/AppsInstallationLocation";
-import business_ShowNewAppTag                   from "@/mixins/app/Business_ShowNewAppTag";
-import business_OpenThirdApp                    from "@/mixins/app/Business_OpenThirdApp";
-import DockerProgress                           from "@/components/Apps/progress.js";
-import ComposeConfig                            from "@/components/Apps/ComposeConfig.vue";
-import {ValidationObserver, ValidationProvider} from "vee-validate";
-import {ice_i18n}                               from "@/mixins/base/common-i18n";
-import {parse}                                  from "yaml";
-import AppStoreSourceManagement                 from "@/components/Apps/AppStoreSourceManagement.vue";
-import {vOnClickOutside}                        from '@vueuse/components'
-import { AppDetail, AppRecommend, AppConditionSelector } from "@/components/AppStore";
-import AppInstallLoadingPanel from "@/components/LoadingPanel/LoadingPanel.vue"
+import uniq                                            from 'lodash/uniq';
+import isNull                                          from 'lodash/isNull'
+import orderBy                                         from 'lodash/orderBy';
+import FileSaver                                       from 'file-saver';
+import {Swiper, SwiperSlide}                           from 'vue-awesome-swiper'
+import AppsInstallationLocation                        from "@/components/Apps/AppsInstallationLocation";
+import business_ShowNewAppTag                          from "@/mixins/app/Business_ShowNewAppTag";
+import business_OpenThirdApp                           from "@/mixins/app/Business_OpenThirdApp";
+import DockerProgress                                  from "@/components/Apps/progress.js";
+import ComposeConfig                                   from "@/components/Apps/ComposeConfig.vue";
+import {ValidationObserver, ValidationProvider}        from "vee-validate";
+import {ice_i18n}                                      from "@/mixins/base/common-i18n";
+import {parse}                                         from "yaml";
+import {vOnClickOutside}                               from '@vueuse/components'
+import {AppDetail, AppRecommend, AppConditionSelector} from "@/components/AppStore";
+import AppInstallLoadingPanel
+													   from "@/components/AppInstallLoadingPanel/AppInstallLoadingPanel.vue";
 
 const data = [
 	"AUDIT_CONTROL",
@@ -407,7 +407,6 @@ const data = [
 
 export default {
 	components: {
-		AppStoreSourceManagement,
 		AppSideBar,
 		Swiper,
 		SwiperSlide,
@@ -677,19 +676,19 @@ export default {
 		},
 	},
 	methods: {
-		updatePageList(val){
+		updatePageList(val) {
 			this.pageList = val
 		},
-		updateIsLoading(val){
+		updateIsLoading(val) {
 			this.isLoading = val
 		},
-		updateInstalledList(val){
+		updateInstalledList(val) {
 			this.installedList = val
 		},
-		updateIsLoadError(val){
+		updateIsLoadError(val) {
 			this.isLoadError = val
 		},
-		updateSearchKey(val){
+		updateSearchKey(val) {
 			this.searchKey = val
 		},
 
@@ -1017,15 +1016,15 @@ export default {
 						this.$buefy.dialog.alert({
 							title: '⚠️ ' + this.$t('Attention'),
 							message: '<div class="nobrk"><h4 class="title is-5">' + this.$t('AutoFill only helps you to complete most of the configuration.') + '</h4>' +
-								'<p class="mb-3">' + this.$t('Some configuration information such as:') + '</p>' +
-								'<ul>' +
-								'<li>1. ' + this.$t('the port and path of the Web UI') + '</li>' +
-								'<li>2. ' + this.$t('the mount location of the volume or file') + '</li>' +
-								'<li>3. ' + this.$t('the port mapping of the Host') + '</li>' +
-								'<li>4. ' + this.$t('optional configuration items') + '</li>' +
-								'</ul>' +
-								'<p class="mt-3">' + this.$t('These include but are not limited to these cases and <b>still need to be confirmed or modified by you.</b>') + '</p>' +
-								'<p class="mt-3">' + this.$t('Feel free to suggest improvements to this feature in Discord Server!') + '</p></div>',
+							'<p class="mb-3">' + this.$t('Some configuration information such as:') + '</p>' +
+							'<ul>' +
+							'<li>1. ' + this.$t('the port and path of the Web UI') + '</li>' +
+							'<li>2. ' + this.$t('the mount location of the volume or file') + '</li>' +
+							'<li>3. ' + this.$t('the port mapping of the Host') + '</li>' +
+							'<li>4. ' + this.$t('optional configuration items') + '</li>' +
+							'</ul>' +
+							'<p class="mt-3">' + this.$t('These include but are not limited to these cases and <b>still need to be confirmed or modified by you.</b>') + '</p>' +
+							'<p class="mt-3">' + this.$t('Feel free to suggest improvements to this feature in Discord Server!') + '</p></div>',
 							type: 'is-dark'
 						})
 					}
