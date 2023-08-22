@@ -304,25 +304,17 @@
 			<!-- App Install Form End -->
 
 			<!-- App Install Process Start -->
-			<section v-if="currentSlide == 2" :class="{'_hideOverflow': !isCasa}"
-					 class="modal-card-body pt-3 _b-line">
-				<div class="installing-warpper mb-5">
-					<div class="is-flex is-align-items-center is-justify-content-center">
-						<lottie-animation :animationData="require('@/assets/ani/loading.json')" :autoPlay="true"
-										  :loop="true"
-										  class="install-animation mt-5 mb-2"></lottie-animation>
-					</div>
-					<b-progress
-						:value="totalPercentage"
-						format="percent"
-						show-value type="is-primary"></b-progress>
-					<h3 :class="currentInstallAppTextClass" class="title is-6 has-text-centered"
-						style="height: 20px"
-						v-html="currentInstallAppText"></h3>
-				</div>
+			<section v-if="currentSlide == 2" >
+				<LoadingPanel 
+					:isCasa="isCasa"
+					:totalPercentage="totalPercentage"
+					:currentInstallAppText="currentInstallAppText"
+					:currentInstallAppTextClass="currentInstallAppTextClass"
+					:isLoading="isLoading"
+				/>
 			</section>
 			<!-- App Install Process End -->
-			<b-loading v-model="isLoading" :can-cancel="false" :is-full-page="false"></b-loading>
+
 			<!-- Modal-Card Body End -->
 
 		</template>
@@ -338,19 +330,19 @@
 				</div>
 				<div>
 					<b-button v-if="currentSlide == 2 && currentInstallAppError " :label="$t('Back')" rounded
-							  @click="prevStep"/>
+						@click="prevStep"/>
 					<b-button v-if="currentSlide == 1 && state == 'install'" :label="$t('Install')" :loading="isLoading"
-							  rounded type="is-primary" @click="installApp()"/>
+						rounded type="is-primary" @click="installApp()"/>
 					<b-button v-if="isCasa && currentSlide == 1 && state == 'update'" :label="$t('Save')"
-							  :loading="isLoading"
-							  rounded type="is-primary" @click="updateApp()"/>
+						:loading="isLoading"
+						rounded type="is-primary" @click="updateApp()"/>
 					<b-button v-if="!isCasa && currentSlide == 1 && state == 'update'" :label="$t('Save')"
-							  :loading="isLoading"
-							  rounded type="is-primary" @click="updateContainer()"/>
+						:loading="isLoading"
+						rounded type="is-primary" @click="updateContainer()"/>
 					<b-button v-if="currentSlide == 2 && !currentInstallAppError" :label="$t(cancelButtonText)"
-							  rounded type="is-primary" @click="$emit('close')"/>
+						rounded type="is-primary" @click="$emit('close')"/>
 					<b-button v-if="isFirstInstall" :label="$t('Submit')" :loading="isLoading" rounded type="is-primary"
-							  @click="submitInstallationLocation(installationLocation)"/>
+						@click="submitInstallationLocation(installationLocation)"/>
 				</div>
 			</template>
 
@@ -364,7 +356,6 @@
 import AppSideBar                               from './AppSideBar.vue'
 import ImportPanel                              from '../forms/ImportPanel.vue'
 import AppTerminalPanel                         from './AppTerminalPanel.vue'
-import LottieAnimation                          from "lottie-web-vue";
 import "@/plugins/vee-validate";
 import uniq                                     from 'lodash/uniq';
 import isNull                                   from 'lodash/isNull'
@@ -382,6 +373,8 @@ import {parse}                                  from "yaml";
 import AppStoreSourceManagement                 from "@/components/Apps/AppStoreSourceManagement.vue";
 import {vOnClickOutside}                        from '@vueuse/components'
 import { AppDetail, AppRecommend, AppConditionSelector } from "@/components/AppStore";
+import LoadingPanel from "@/components/LoadingPanel/LoadingPanel.vue"
+
 const data = [
 	"AUDIT_CONTROL",
 	"AUDIT_READ",
@@ -416,14 +409,14 @@ export default {
 	components: {
 		AppStoreSourceManagement,
 		AppSideBar,
-		LottieAnimation,
 		Swiper,
 		SwiperSlide,
 		AppsInstallationLocation,
 		ComposeConfig,
 		ValidationObserver,
 		ValidationProvider,
-		AppDetail, AppRecommend, AppConditionSelector
+		AppDetail, AppRecommend, AppConditionSelector,
+		LoadingPanel
 	},
 	mixins: [business_ShowNewAppTag, business_OpenThirdApp],
 	directives: {
