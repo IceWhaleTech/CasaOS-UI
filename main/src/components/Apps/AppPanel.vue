@@ -595,14 +595,6 @@ export default {
 			})
 		}
 	},
-
-	mounted() {
-		this.currentSlide === 0 && !this.isMobile && this.$nextTick().then(() => {
-			this.$refs.search_app.$el.children[0].focus();
-		});
-		// this.searchAndSourcesStatusController();
-	},
-
 	computed: {
 		showImportButton() {
 			return this.currentSlide == 1 && this.state == 'install'
