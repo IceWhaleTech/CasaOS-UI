@@ -10,54 +10,54 @@
 <template>
 	<div class="is-flex mt-5 mb-5 is-justify-content-center app-condition-selector">
 		<ListBox
-			:activeAppStoreSourceInput="activeAppStoreSourceInput"
-			:currentOption="currentCategory"
-			:handleOptionClickCallBack="handleCategoryOptionClick"
-			:isMobile="isMobile"
-			:listData="categoryMenu"
-			icon="category"
-			@update-current-option="updateCurrentCategory"
+		:activeAppStoreSourceInput="activeAppStoreSourceInput"
+		:currentOption="currentCategory"
+		:handleOptionClickCallBack="handleCategoryOptionClick"
+		:isMobile="isMobile"
+		:listData="categoryMenu"
+		icon="category"
+		@update-current-option="updateCurrentCategory"
 		></ListBox>
 
 		<ListBox
-			:activeAppStoreSourceInput="activeAppStoreSourceInput"
-			:currentOption="currentAuthor"
-			:isMobile="isMobile"
-			:listData="authorMenu"
-			icon="posted-by-outline"
-			@update-current-option="updateCurrentAuthor"
+		:activeAppStoreSourceInput="activeAppStoreSourceInput"
+		:currentOption="currentAuthor"
+		:isMobile="isMobile"
+		:listData="authorMenu"
+		icon="posted-by-outline"
+		@update-current-option="updateCurrentAuthor"
 		></ListBox>
 
 		<transition name="search-fade">
 			<b-icon v-if="searchAndSourcesStatus === 'showSources'"
-				class="is-flex is-align-self-center" icon="search-outline"
-				pack="casa"
-				@click.native="searchAndSourcesStatusController"></b-icon>
+					class="is-flex is-align-self-center" icon="search-outline"
+					pack="casa"
+					@click.native="searchAndSourcesStatusController"></b-icon>
 		</transition>
 
 		<transition name="search-fade">
 			<b-input v-if="searchAndSourcesStatus !== 'showSources'"
-				ref="search_app"
-				:placeholder="$t('Search an app...')"
-				class="app-search"
-				type="text"
-				@input="debounceSearchInput"
-				@keyup.enter.native="counterPatchGetStoreList++">
+					 ref="appSearchEleHandle"
+					 :placeholder="$t('Search an app...')"
+					 class="app-search"
+					 type="text"
+					 @input="debounceSearchInput"
+					 @keyup.enter.native="counterPatchGetStoreList++">
 			</b-input>
 		</transition>
 
 		<div class="is-flex-grow-1"></div>
 
 		<AppStoreSourceManagement v-show="searchAndSourcesStatus !== 'showSearch'"
-			:totalApps="pageList.length" class="ml-2"
-			@refreshAppStore="getStoreList"
-			@refreshSize="refreshAppStoreSourceManagementSizeStatus">
+								  :totalApps="pageList.length" class="ml-2"
+								  @refreshAppStore="getStoreList"
+								  @refreshSize="refreshAppStoreSourceManagementSizeStatus">
 		</AppStoreSourceManagement>
 	</div>
 </template>
 
 <script setup>
-import {defineEmits, defineProps, onMounted, ref, watch} from 'vue';
+import {defineEmits, defineProps, nextTick, onMounted, ref, watch} from 'vue';
 
 // TODO import ListBox from kit not a file.
 import ListBox                  from "@/kit/ListBox/ListBox.vue";
@@ -97,6 +97,7 @@ const props = defineProps({
 	},
 })
 
+const appSearchEleHandle = ref(null);
 const categoryMenu = ref([]);
 const authorMenu = [
 	{count: 0, font: "author", id: 0, name: "All"},
@@ -160,6 +161,9 @@ onMounted(async () => {
 	await getCategoryList()
 	await getStoreList()
 	searchAndSourcesStatusController()
+	nextTick(() => {
+		appSearchEleHandle.value.focus();
+	})
 })
 
 const getStoreList = async () => {
