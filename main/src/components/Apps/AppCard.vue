@@ -122,7 +122,7 @@
 					   animation="fade1" class="in-card" type="is-white">
 
 				<div
-					class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-5 pb-3px img-c">
+				class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-5 pb-3px img-c">
 					<div class="is-flex is-justify-content-center">
 						<div class="is-relative">
 							<b-image :class="dotClass(item.status, isLoading)" :src="item.icon"
@@ -169,7 +169,7 @@ import business_ShowNewAppTag  from "@/mixins/app/Business_ShowNewAppTag";
 import business_OpenThirdApp   from "@/mixins/app/Business_OpenThirdApp";
 import business_LinkApp        from "@/mixins/app/Business_LinkApp";
 import isNull                  from "lodash/isNull";
-import tipEditorModal          from "@/components/Apps/TipEditorModal.vue";
+import tipEditorModal          from "@/components/AppSetting/AppTipModal.vue";
 import YAML                    from "yaml";
 import commonI18n, {ice_i18n}  from "@/mixins/base/common-i18n";
 import FileSaver               from 'file-saver';
@@ -359,12 +359,12 @@ export default {
 				case "App Store":
 					this.openAppStore();
 					break;
-				// case "Files":
-				// 	this.showMircoApp(item);
-				// 	break;
-				// case "Remote Access":
-				// 	this.showMircoApp(item);
-				// 	break;
+			// case "Files":
+			// 	this.showMircoApp(item);
+			// 	break;
+			// case "Remote Access":
+			// 	this.showMircoApp(item);
+			// 	break;
 				default:
 					break;
 			}

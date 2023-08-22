@@ -61,7 +61,7 @@ import {defineEmits, defineProps, nextTick, onMounted, ref, watch} from 'vue';
 
 // TODO import ListBox from kit not a file.
 import ListBox                  from "@/kit/ListBox/ListBox.vue";
-import AppStoreSourceManagement from "@/components/Apps/AppStoreSourceManagement.vue";
+import AppStoreSourceManagement from "@/components/AppStoreSource/AppStoreSourceManagement.vue";
 import messageBus               from '@/events';
 import openAPI                  from '@/service/index.js'
 import {ice_i18n}               from "@/mixins/base/common-i18n";

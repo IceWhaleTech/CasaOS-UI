@@ -363,11 +363,11 @@ import isNull                                          from 'lodash/isNull'
 import orderBy                                         from 'lodash/orderBy';
 import FileSaver                                       from 'file-saver';
 // import {Swiper, SwiperSlide}                           from 'vue-awesome-swiper'
-import AppsInstallationLocation                        from "@/components/Apps/AppsInstallationLocation";
+import AppsInstallationLocation                        from "@/components/AppSetting/AppInstallationLocation.vue";
 import business_ShowNewAppTag                          from "@/mixins/app/Business_ShowNewAppTag";
 import business_OpenThirdApp                           from "@/mixins/app/Business_OpenThirdApp";
-import DockerProgress                                  from "@/components/Apps/progress.js";
-import ComposeConfig                                   from "@/components/Apps/ComposeConfig.vue";
+import DockerProgress                                  from "@/components/AppInstallLoadingPanel/progress.js";
+import ComposeConfig                                   from "@/components/AppSetting/ComposeConfig.vue";
 import {ValidationObserver, ValidationProvider}        from "vee-validate";
 import {ice_i18n}                                      from "@/mixins/base/common-i18n";
 import {parse}                                         from "yaml";
@@ -513,6 +513,7 @@ export default {
 			architectures: [],
 
 			// APPs Installation Location - requirement document
+			// not be used.
 			storageData: [{
 				name: 12,
 				isSystem: true,
@@ -785,7 +786,7 @@ export default {
 					if (composeJSON["x-casaos"]?.tips?.before_install?.en_us) {
 						this.$buefy.modal.open({
 							parent: this,
-							component: () => import("@/components/Apps/TipEditorModal.vue"),
+							component: () => import("@/components/AppSetting/AppTipModal.vue"),
 							hasModalCard: true,
 							customClass: '',
 							trapFocus: true,

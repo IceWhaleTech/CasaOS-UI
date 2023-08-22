@@ -3,9 +3,9 @@
  * @Date: 2022-09-07 17:35:02
  * @LastEditors: zhanghengxin ezreal.ice@icloud.com
  * @LastEditTime: 2022-09-07 17:57:11
- * @FilePath: /CasaOS-UI/src/components/Apps/AppsInstallationLocation.vue
+ * @FilePath: /CasaOS-UI/src/components/Apps/AppInstallationLocation.vue
  * @Description:
- *
+ *	setting app installation path. on-off switch.
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
 
 -->
@@ -38,12 +38,12 @@
                 </b-tooltip>
               </p>
               <p class="has-text-left is-size-7 ">{{
-                  $t("Available Total", {
-                    name: item.diskName,
-                    avl: renderSize(item.availSize),
-                    total: renderSize(item.size)
-                  })
-                }}</p>
+					  $t("Available Total", {
+						  name: item.diskName,
+						  avl: renderSize(item.availSize),
+						  total: renderSize(item.size)
+					  })
+				  }}</p>
             </div>
 
           </div>

@@ -3,9 +3,9 @@
   * @LastEditTime: 2023/3/17 下午4:43
   * @FilePath: /CasaOS-UI/src/components/Apps/AppDetailInfo.vue
   * @Description:
-  *
+  * not be used.
   * Copyright (c) 2023 by IceWhale, All Rights Reserved.
-  
+
   -->
 <template>
 	<div class="modal-card app-detial">
