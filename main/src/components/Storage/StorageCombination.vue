@@ -20,7 +20,8 @@
 					</div>
 					<div class="ml-3 is-flex-grow-1 is-flex is-align-items-center">
 						<div>
-							<h4 class="title is-size-14px mb-0 has-text-left one-line">{{ item.name || $t('undefined')
+							<h4 class="title is-size-14px mb-0 has-text-left one-line">{{
+									item.name || $t('undefined')
 								}}
 								<b-tag v-if="item.isSystem" class="ml-2">CasaOS</b-tag>
 							</h4>
@@ -35,11 +36,11 @@
 								</b-tooltip>
 							</p>
 							<p class="has-text-left is-size-7 ">{{
-								$t("Available Total", {
-								name: item.diskName || $t('undefined'),
-								avl: renderSize(item.availSize),
-								total: renderSize(item.size)
-								})
+									$t("Available Total", {
+										name: item.diskName || $t('undefined'),
+										avl: renderSize(item.availSize),
+										total: renderSize(item.size)
+									})
 								}}</p>
 						</div>
 
@@ -55,6 +56,12 @@
 				   class="has-text-right is-flex is-flex-direction-row-reverse">
 					<a href="https://wiki.casaos.io/zh/guides" target="_blank">{{ $t("Free up storage") }}</a>
 				</p>
+				<div class="is-flex is-flex-direction-row-reverse">
+					<b-button :type="type" class="width" rounded size="is-small"
+							  @click="showStorageSettingsModal">{{ $t('Merge Storages') }}
+					</b-button>
+					<cToolTip isBlock modal="is-success"></cToolTip>
+				</div>
 			</div>
 		</div>
 		<b-progress :type="usePercent | getProgressType" :value="usePercent" class="ml-5 mr-5"
