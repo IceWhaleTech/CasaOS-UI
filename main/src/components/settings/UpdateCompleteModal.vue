@@ -4,9 +4,9 @@
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2022-08-10 15:37:46
  * @FilePath: /CasaOS-UI/src/components/settings/UpdateCompleteModal.vue
- * @Description: 
- * 
- * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+ * @Description:
+ *
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
 -->
 <template>
 	<div class="modal-card">
@@ -27,8 +27,7 @@
 				<div class="mt-2rem">
 					<h3 class="title is-5 mb-2">{{ $t('Let more friends know') }}</h3>
 					<div class=" is-size-14px">{{
-							$t('Please share to friends who are concerned about family and data
-								privacy to join and use CasaOS.')
+							$t('Please share to friends who are concerned about family and data privacy to join and use CasaOS.')
 						}}
 					</div>
 				</div>

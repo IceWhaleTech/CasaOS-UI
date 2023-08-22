@@ -13,7 +13,7 @@
 		<!-- Action Button Start -->
 		<div v-if="item.app_type !== 'system' && !isMircoApp && !isContainerApp && !isUninstalling" class="action-btn">
 			<b-dropdown ref="dro" :mobile-modal="false" :triggers="['contextmenu', 'click']" animation="fade1"
-						append-to-body aria-role="list" class="app-card-drop" position="is-bottom-left"
+						aria-role="list" class="app-card-drop" position="is-bottom-left"
 						@active-change="setDropState">
 				<template #trigger>
 					<p role="button">
@@ -122,7 +122,7 @@
 					   animation="fade1" class="in-card" type="is-white">
 
 				<div
-				class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-5 pb-3px img-c">
+					class="has-text-centered is-flex is-justify-content-center is-flex-direction-column pt-5 pb-3px img-c">
 					<div class="is-flex is-justify-content-center">
 						<div class="is-relative">
 							<b-image :class="dotClass(item.status, isLoading)" :src="item.icon"
@@ -130,8 +130,10 @@
 									 webp-fallback=".jpg" @click.native="openApp(item)"></b-image>
 							<!-- Unstable-->
 							<cTooltip v-if="newAppIds.includes(item.name)" class="__position" content="NEW"></cTooltip>
-							<cTooltip v-else-if="hasUpdate" class="__position" modal="is-info" :is-block="true">
-								<b-icon icon="alert-decagram" type="is-warning" style="overflow:unset" :title="$t('New version available!')"></b-icon>
+							<cTooltip v-else-if="hasUpdate" :is-block="true" class="__position" modal="is-info">
+								<b-icon :title="$t('New version available!')" icon="alert-decagram"
+										style="overflow:unset"
+										type="is-warning"></b-icon>
 							</cTooltip>
 						</div>
 
@@ -172,7 +174,7 @@ import YAML                    from "yaml";
 import commonI18n, {ice_i18n}  from "@/mixins/base/common-i18n";
 import FileSaver               from 'file-saver';
 import {MIRCO_APP_ACTION_ENUM} from "@/const";
-import apps from "../../service/apps.js";
+import apps                    from "../../service/apps.js";
 
 export default {
 	name: "app-card",
@@ -210,7 +212,7 @@ export default {
 
 		if (!!this.item.store_app_id) {
 			try {
-				const { data: { data: response }} = await apps.getAppComposeV2(this.item.store_app_id);
+				const {data: {data: response}} = await apps.getAppComposeV2(this.item.store_app_id);
 
 				const image = response.compose.services[response.store_info.main].image;
 
@@ -222,8 +224,9 @@ export default {
 					// TO DO: logic for handling images with `latest` tag
 				}
 
-			} catch (e) {}
-			
+			} catch (e) {
+			}
+
 		}
 
 	},
@@ -356,12 +359,12 @@ export default {
 				case "App Store":
 					this.openAppStore();
 					break;
-			// case "Files":
-			// 	this.showMircoApp(item);
-			// 	break;
-			// case "Remote Access":
-			// 	this.showMircoApp(item);
-			// 	break;
+				// case "Files":
+				// 	this.showMircoApp(item);
+				// 	break;
+				// case "Remote Access":
+				// 	this.showMircoApp(item);
+				// 	break;
 				default:
 					break;
 			}

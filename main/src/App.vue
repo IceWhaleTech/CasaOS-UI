@@ -8,31 +8,10 @@
   -->
 
 <template>
-	<div id="app" :class="{'is-dark-bg':$route.meta.showBackground}" class="is-flex is-flex-direction-column">
-		<template v-if="$route.meta.showBackground">
-			<!-- Background Layer Start -->
-			<casa-wallpaper :animate="isWelcome?initAni:noneAni"></casa-wallpaper>
-			<!-- Background Layer End -->
-
-			<div class="base-bar is-flex"
-				 style="background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%);">
-				<!-- BrandBar Start -->
-				<brand-bar v-if="!$store.state.isMobile && $router.currentRoute.path === '/'"
-						   v-animate-css="brandAni"></brand-bar>
-				<!-- BrandBar End -->
-				<!-- ContactBar Start -->
-				<contact-bar v-if="!$store.state.isMobile && $router.currentRoute.path === '/'"
-							 v-animate-css="contactAni"></contact-bar>
-				<!-- ContactBar End -->
-			</div>
-
-		</template>
-
+	<div id="app">
 		<!-- Router View Start -->
 		<router-view/>
 		<!-- Router View End -->
-
-		<!-- <v-tour name="myTour" :steps="steps"></v-tour> -->
 	</div>
 </template>
 

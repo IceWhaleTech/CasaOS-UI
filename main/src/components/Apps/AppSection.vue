@@ -16,7 +16,7 @@
 			<app-section-title-tip id="appTitle1" class="is-flex-grow-1 has-text-sub-04" label="Drag icons to sort."
 								   title="Apps"></app-section-title-tip>
 
-			<b-dropdown animation="fade1" aria-role="menu" class="file-dropdown" position="is-bottom-left">
+			<b-dropdown animation="fade1" aria-role="menu" position="is-bottom-left">
 				<template #trigger>
 					<b-icon class="polymorphic is-clickable has-text-grey-100" icon="plus-outline" pack="casa"
 							size="is-24"></b-icon>
@@ -684,9 +684,9 @@ export default {
 					case MIRCO_APP_ACTION_ENUM.CLOSE:
 						this.hideMircoApp(data.name);
 						break;
-				// case MIRCO_APP_ACTION_ENUM.LOGIN:
-				// 	this.$router.push("/login");
-				// 	break;
+					// case MIRCO_APP_ACTION_ENUM.LOGIN:
+					// 	this.$router.push("/login");
+					// 	break;
 					default:
 						break;
 				}
