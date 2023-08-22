@@ -5,7 +5,7 @@
   * @Description:
   *
   * Copyright (c) 2023 by IceWhale, All Rights Reserved.
-  
+
   -->
 <template>
 	<div class="modal-card">
@@ -25,14 +25,14 @@
 		<!-- Modal-Card Body Start -->
 		<section class="modal-card-body">
 			<VMdEditor
-				v-model="tips" :mode="controlEditorState" :placeholder="$t('Something to remember eg. password')"
-				left-toolbar right-toolbar>
+			v-model="tips" :mode="controlEditorState" :placeholder="$t('Something to remember eg. password')"
+			left-toolbar right-toolbar>
 			</VMdEditor>
 			<div v-if="name" class="is-flex is-flex-direction-row-reverse mt-2">
 				<b-icon
-					:class="{'has-text-grey-800': !isEditing, 'has-text-green-default': isDifferentiation, 'has-text-grey-400': !isDifferentiation && isEditing}"
-					:icon="icon" pack="casa"
-					@click.native="toggle"></b-icon>
+				:class="{'has-text-grey-800': !isEditing, 'has-text-green-default': isDifferentiation, 'has-text-grey-400': !isDifferentiation && isEditing}"
+				:icon="icon" pack="casa"
+				@click.native="toggle"></b-icon>
 			</div>
 		</section>
 		<!-- Modal-Card Body End -->
@@ -177,7 +177,7 @@ export default {
 		getCompleteComposeData() {
 			/*let lines = this.helper.split('\n');
 			let body = [];
-			
+
 			lines.forEach(line => {
 				let splitArray = line.split(':');
 				let value = splitArray.length > 1 ? splitArray[0] : 'user input';
@@ -199,9 +199,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modal-card {
+.modal .animation-content .modal-card {
 	/* v0.4.3 */
 	width: 26.5rem;
+	margin: 0 auto;
 
 	.modal-card-head {
 		padding-top: 1.25rem;
