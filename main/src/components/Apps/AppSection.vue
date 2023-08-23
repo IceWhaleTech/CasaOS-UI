@@ -21,7 +21,7 @@
 					<b-icon class="polymorphic is-clickable has-text-grey-100" icon="plus-outline" pack="casa"
 							size="is-24"></b-icon>
 				</template>
-				<b-dropdown-item aria-role="menuitem" @click="showInstall(0, 'custom')">
+				<b-dropdown-item aria-role="menuitem" @click="showAppSettingPanel(0, 'custom')">
 					{{ $t('Custom Install APP') }}
 				</b-dropdown-item>
 				<b-dropdown-item aria-role="menuitem" @click="showExternalLinkPanel">
@@ -136,6 +136,7 @@ export default {
 			skCount: 0,
 			ListRefreshTimer: null,
 			// prefetched: false,
+			// TODO remove
 			mircoAppInstanceMap: new Map(),
 			mircoAppList: []
 		}
@@ -148,9 +149,9 @@ export default {
 	},
 	provide() {
 		return {
-			openAppStore: this.showInstall,
-			homeShowFiles: this.showMircoApp,
-			showMircoApp: this.showMircoApp,
+			openAppStore: this.showAppSettingPanel,
+			// homeShowFiles: this.showMircoApp,
+			// showMircoApp: this.showMircoApp,
 		};
 	},
 	computed: {
@@ -170,11 +171,13 @@ export default {
 		// }
 	},
 	async created() {
+		// TODO remove
 		await this.initMircoApp();
+
 		this.getList();
 		this.draggable = this.isMobile() ? "" : ".handle";
 		this.$EventBus.$on(events.OPEN_APP_STORE_AND_GOTO_SYNCTHING, () => {
-			this.showInstall(SYNCTHING_STORE_ID)
+			this.showAppSettingPanel(SYNCTHING_STORE_ID)
 		});
 
 		this.$EventBus.$on(events.RELOAD_APP_LIST, () => {
@@ -190,6 +193,7 @@ export default {
 		window.removeEventListener('resize', this.getSkCount);
 
 		clearInterval(this.ListRefreshTimer);
+		// TODO remove
 		this.mircoAppInstanceMap.forEach((v, name) => {
 			this.destroyMircoApp(name);
 		});
@@ -290,6 +294,7 @@ export default {
 			}
 		},
 
+		// TODO remove
 		async initMircoApp() {
 			const mircoAppListRaw = await this.$api.sys.getEntry().then(res => res.data.data || []);
 			const prefetchMircoAppList = [];
@@ -318,6 +323,7 @@ export default {
 			}
 		},
 
+		// TODO remove
 		createMircoApp(app) {
 			const customVNode = this.$createElement('div', {
 				class: "full-screen-container",
@@ -371,6 +377,7 @@ export default {
 			});
 		},
 
+		// TODO remove
 		hideMircoApp(peerType = '') { // NOTICE: hide all mirco app for now
 			if (peerType) {
 				let {modal} = this.mircoAppInstanceMap.get(peerType) || {};
@@ -380,6 +387,7 @@ export default {
 			this.mircoAppInstanceMap.forEach(({modal}) => modal?.close());
 		},
 
+		// TODO remove
 		showMircoApp(appName) {
 			const {instance = null, modal = null} = this.mircoAppInstanceMap.get(appName) || {};
 			if (!instance) {
@@ -438,10 +446,10 @@ export default {
 		},
 
 		/**
-		 * @description: Show Install Panel Programmatic
+		 * @description: Show Setting App Panel Programmatic
 		 * @return {*} void
 		 */
-		async showInstall(storeId = 0, mode) {
+		async showAppSettingPanel(storeId = 0, mode) {
 			if (mode === 'custom') {
 				this.$messageBus('apps_custominstall');
 			}
@@ -673,6 +681,7 @@ export default {
 				})
 			}
 		},
+		// TODO remove
 		"casaos-ui:app:mircoapp_communicate"(res) {
 			const data = res.Properties;
 			if (data.access_id === this.$store.state.access_id) {

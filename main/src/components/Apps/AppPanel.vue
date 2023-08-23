@@ -3,44 +3,44 @@
  * @Date: 2022-03-01 21:10:57
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2023-02-07 21:07:35
- * @FilePath: \CasaOS-UI-0.4.2\src\components\Apps\AppPanel.vue
+ * @FilePath: \CasaOS-UI\src\components\Apps\AppPanel.vue
  * @Description:
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
 
 -->
 <template>
-	<div :class="{'narrow': currentSlide > 0 ,'card-width': isFirstInstall, '_stepStoreList' : currentSlide === 0}"
+	<div :class="{'narrow': currentSlide > 0 ,'_stepStoreList' : currentSlide === 0}"
 		 class="app-card modal-card">
 		<!--    first setting！！ apps installation location-->
-		<template v-if="isFirstInstall">
-			<header class="modal-card-head b-line">
-				<div class="is-flex-grow-1">
-					<h3 class="is-flex-grow-1 title is-3 pri-line-height has-text-black">{{
-							$t('Apps Installation Location')
-						}}
-					</h3>
-				</div>
-				<b-icon class="_polymorphic close" icon="close-outline" pack="casa"
-						@click.native="$emit('close'); $messageBus('appstore_close')"/>
-			</header>
-			<p class="modal-card-body">
-				{{ $t('Please choose a location with enough storage space and stable connection.') }}
-				<span class="has-text-danger">
-		            {{ $t('(Cannot be changed)') }}
-		        </span>
-			</p>
+		<!--		<template v-if="isFirstInstall">
+					<header class="modal-card-head b-line">
+						<div class="is-flex-grow-1">
+							<h3 class="is-flex-grow-1 title is-3 pri-line-height has-text-black">{{
+									$t('Apps Installation Location')
+								}}
+							</h3>
+						</div>
+						<b-icon class="_polymorphic close" icon="close-outline" pack="casa"
+								@click.native="$emit('close'); $messageBus('appstore_close')"/>
+					</header>
+					<p class="modal-card-body">
+						{{ $t('Please choose a location with enough storage space and stable connection.') }}
+						<span class="has-text-danger">
+									{{ $t('(Cannot be changed)') }}
+								</span>
+					</p>
 
-			<section class="modal-card-body is-overlay">
-				<AppsInstallationLocation
-				v-for="(item,index) in storageData" :key="'storage'+index" :item="item"
-				:scence="storage_item_scence"
-				@selection="getSelection">
-				</AppsInstallationLocation>
-			</section>
-		</template>
+					<section class="modal-card-body is-overlay">
+						<AppsInstallationLocation
+						v-for="(item,index) in storageData" :key="'storage'+index" :item="item"
+						:scence="storage_item_scence"
+						@selection="getSelection">
+						</AppsInstallationLocation>
+					</section>
+				</template>-->
 		<!--    first setting have done!!-->
-		<template v-else>
+		<template>
 			<!-- Sidebar Start -->
 			<app-side-bar v-model="sidebarOpen" :overlay="true" :right="true" position="absolute">
 				<template slot-scope="{close}">
@@ -173,54 +173,54 @@
 					<!-- App list End-->
 
 					<!-- Community App List Start -->
-					<template v-if="communityList.length > 0">
-						<h3 class="title is-5 has-text-weight-normal">{{ $t('Community Apps') }}</h3>
-						<h3 class="subtitle is-7 has-text-grey-light">
-							{{
-								$t('From community contributors, not optimized for CasaOS, but provides a basic App experience.')
-							}}
-						</h3>
+					<!--					<template v-if="communityList.length > 0">
+											<h3 class="title is-5 has-text-weight-normal">{{ $t('Community Apps') }}</h3>
+											<h3 class="subtitle is-7 has-text-grey-light">
+												{{
+													$t('From community contributors, not optimized for CasaOS, but provides a basic App experience.')
+												}}
+											</h3>
 
-						<div class="columns f-list is-multiline is-mobile  pb-3 mb-5">
-							<div v-for="(item,index) in communityList " :key="index+item.title+item.id"
-								 class="column is-one-quarter">
-								<div class="is-flex  is-align-items-center">
-									<div class="mr-4 is-clickable" @click="showAppDetial(item.id)">
-										<b-image :src="item.icon"
-												 :src-fallback="require('@/assets/img/app/default.svg')"
-												 class="is-64x64 icon-shadow" webp-fallback=".jpg"></b-image>
-									</div>
-									<div class="is-flex-grow-1 mr-4 is-clickable"
-										 @click="showAppDetial(item.id);$messageBus('appstorecommunity_detail', item.title)">
-										<h6 class="title is-6 mb-2">{{ item.title }}</h6>
-										<p class="is-size-7 two-line">{{ item.tagline }}</p>
-									</div>
+											<div class="columns f-list is-multiline is-mobile  pb-3 mb-5">
+												<div v-for="(item,index) in communityList " :key="index+item.title+item.id"
+													 class="column is-one-quarter">
+													<div class="is-flex  is-align-items-center">
+														<div class="mr-4 is-clickable" @click="showAppDetial(item.id)">
+															<b-image :src="item.icon"
+																	 :src-fallback="require('@/assets/img/app/default.svg')"
+																	 class="is-64x64 icon-shadow" webp-fallback=".jpg"></b-image>
+														</div>
+														<div class="is-flex-grow-1 mr-4 is-clickable"
+															 @click="showAppDetial(item.id);$messageBus('appstorecommunity_detail', item.title)">
+															<h6 class="title is-6 mb-2">{{ item.title }}</h6>
+															<p class="is-size-7 two-line">{{ item.tagline }}</p>
+														</div>
 
-								</div>
-								<div class="mt-1 ml-7 is-flex is-align-items-center">
-									<div class="is-flex-grow-1 is-size-7 has-text-grey-light	">
-										{{ item.category }}
-									</div>
-									<b-button v-if="installedList.includes(item.id)"
-											  :loading="item.id == currentInstallId" rounded
-											  size="is-small"
-											  type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">
-										{{ $t('Open') }}
-									</b-button>
-									<b-button v-else :disabled="!item.architectures?.includes(arch)"
-											  :loading="item.id == currentInstallId"
-											  rounded
-											  size="is-small"
-											  type="is-primary is-light"
-											  @click="quickInstall(item.id);$messageBus('appstorecommunity_install', item.title)">
-										{{
-											$t('Install')
-										}}
-									</b-button>
-								</div>
-							</div>
-						</div>
-					</template>
+													</div>
+													<div class="mt-1 ml-7 is-flex is-align-items-center">
+														<div class="is-flex-grow-1 is-size-7 has-text-grey-light	">
+															{{ item.category }}
+														</div>
+														<b-button v-if="installedList.includes(item.id)"
+																  :loading="item.id == currentInstallId" rounded
+																  size="is-small"
+																  type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">
+															{{ $t('Open') }}
+														</b-button>
+														<b-button v-else :disabled="!item.architectures?.includes(arch)"
+																  :loading="item.id == currentInstallId"
+																  rounded
+																  size="is-small"
+																  type="is-primary is-light"
+																  @click="quickInstall(item.id);$messageBus('appstorecommunity_install', item.title)">
+															{{
+																$t('Install')
+															}}
+														</b-button>
+													</div>
+												</div>
+											</div>
+										</template>-->
 
 					<!-- Community App List End -->
 				</template>
@@ -342,8 +342,8 @@
 							  rounded type="is-primary" @click="updateContainer()"/>
 					<b-button v-if="currentSlide == 2 && !currentInstallAppError" :label="$t(cancelButtonText)"
 							  rounded type="is-primary" @click="$emit('close')"/>
-					<b-button v-if="isFirstInstall" :label="$t('Submit')" :loading="isLoading" rounded type="is-primary"
-							  @click="submitInstallationLocation(installationLocation)"/>
+					<!--					<b-button v-if="isFirstInstall" :label="$t('Submit')" :loading="isLoading" rounded type="is-primary"
+												  @click="submitInstallationLocation(installationLocation)"/>-->
 				</div>
 			</template>
 
@@ -480,8 +480,10 @@ export default {
 			pageSize: 5,
 			listTotal: 0,
 			pageList: [],
-			communityList: {},
+			// communityList: {},
 			recommendList: {},
+			// Q: currentSlide 是什么功能？
+			// A: currentSlide 是一个变量，用于控制页面的显示。0：显示应用商店列表；1：显示应用Setting 界面；2：显示应用安装进度界面。
 			currentSlide: 0,
 			currentInstallId: '',
 
@@ -514,7 +516,7 @@ export default {
 
 			// APPs Installation Location - requirement document
 			// not be used.
-			storageData: [{
+			/*storageData: [{
 				name: 12,
 				isSystem: true,
 				fsType: 'fsType',
@@ -528,9 +530,9 @@ export default {
 				size: 123,
 				health: true,
 				temperature: 100,
-			}],
-			storage_item_scence: 'select installation location',
-			isFirstInstall: false,
+			}],*/
+			/*storage_item_scence: 'select installation location',*/
+			// isFirstInstall: false,
 			installationLocation: '',
 			dockerProgress: null,
 			totalPercentage: 0,
@@ -1110,7 +1112,7 @@ export default {
 			})
 		},
 
-		async getDiskList() {
+		/*async getDiskList() {
 			try {
 				const storageRes = await this.$api.storage.list({system: "show"})
 				const storageArray = []
@@ -1139,29 +1141,29 @@ export default {
 			} catch (error) {
 				console.log(error.response.message);
 			}
-		},
+		},*/
 
 		getSelection(val) {
 			this.installationLocation = val
 		},
 
-		async askInstallationLocation() {
-			try {
-				// get docker info
-				let {data} = await this.$api.container.getInstallationLocation()
-				switch (data.success) {
-					case 200:
-					case 400:
-					default:
-						this.isFirstInstall = !data.data.docker_root_dir
-						break;
+		/*	async askInstallationLocation() {
+				try {
+					// get docker info
+					let {data} = await this.$api.container.getInstallationLocation()
+					switch (data.success) {
+						case 200:
+						case 400:
+						default:
+							this.isFirstInstall = !data.data.docker_root_dir
+							break;
+					}
+				} catch (err) {
+					console.log(`${err} in askInstallationLocation`)
 				}
-			} catch (err) {
-				console.log(`${err} in askInstallationLocation`)
-			}
-		},
+			},*/
 
-		async submitInstallationLocation(val) {
+		/*async submitInstallationLocation(val) {
 			this.isLoading = true
 			let path = ''
 			if (val === '/') {
@@ -1192,7 +1194,7 @@ export default {
 					type: 'is-danger'
 				})
 			})
-		},
+		},*/
 
 		installAppProgress(resData) {
 			if (this.currentInstallAppName != resData.name) {

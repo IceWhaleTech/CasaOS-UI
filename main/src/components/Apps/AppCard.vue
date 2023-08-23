@@ -183,7 +183,7 @@ export default {
 		tipEditorModal,
 	},
 	mixins: [business_ShowNewAppTag, business_OpenThirdApp, business_LinkApp, commonI18n],
-	inject: ["showMircoApp", "openAppStore"],
+	inject: ["openAppStore"],
 	data() {
 		return {
 			hover: false,
