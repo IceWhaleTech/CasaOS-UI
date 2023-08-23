@@ -355,7 +355,7 @@
   "CheckThenUpdate": "Оновити контейнер",
   "Not compatible with {arch} devices.": "Не сумісно з {arch} пристроями.",
   "Connect Dropbox": "Підключити Dropbox",
-  "Connect GoogleDrive": "Підключити Google Drive",
+  "Connect Google Drive": "Підключити Google Drive",
   "FilesDrop": "FilesDrop",
   "You are using the device": "Ви використовуєте пристрій",
   "Click to send the file to the device.": "Натисніть, щоб надіслати файл на пристрій.",
