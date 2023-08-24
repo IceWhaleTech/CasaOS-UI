@@ -13,7 +13,7 @@
  * @Date: 2021-10-14 14:08:40
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2023-02-06 17:45:53
- * @Description: 
+ * @Description:
  * @FilePath: /CasaOS-UI/src/components/fileList/FilePanel.vue
 -->
 <template>
@@ -122,7 +122,7 @@ export default {
 		},
 	},
 	created() {
-		this.path = (this.path == this.rootPath) ? this.path : dropRight(this.path.split("/"), 1).join("/")
+		this.path = (this.path == this.rootPath) ? this.path : this.path.split("/").length <= 2 ? '/' : dropRight(this.path.split("/"), 1).join("/")
 		this.getFileList(this.path, true);
 	},
 
