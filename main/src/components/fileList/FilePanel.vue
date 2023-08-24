@@ -52,7 +52,7 @@
 		<!-- Modal-Card Footer Start-->
 		<footer class="modal-card-foot is-flex is-align-items-center">
 			<div class="is-flex-grow-1">
-				<div v-if="rootPath == '/DATA'">
+				<div v-if="path.startsWith('/DATA')">
 					<b-tooltip :label="$t('Create Folder')" position="is-right" type="is-dark">
 						<a class="add-button" @click="showCreatePanel(true)">
 							<b-icon icon="folder-plus"></b-icon>
@@ -68,8 +68,8 @@
 				</div>
 			</div>
 			<div>
-				<b-button :label="$t('Cancel')" rounded type="is-grey" @click="$emit('close')"/>
-				<b-button :label="$t('Select')" rounded type="is-dark" @click="selectFile()"/>
+				<b-button :label="$t('Cancel')" rounded @click="$emit('close')"/>
+				<b-button :label="$t('Select')" rounded type="is-primary" @click="selectFile()"/>
 			</div>
 		</footer>
 		<!-- Modal-Card Footer End-->
@@ -109,7 +109,6 @@ export default {
 		},
 		// check show breadcrumb
 		showPopUp() {
-			console.log('showItem', this.path, this.rootPath)
 			return this.path != this.rootPath
 		},
 		// check show breadcrumb dots

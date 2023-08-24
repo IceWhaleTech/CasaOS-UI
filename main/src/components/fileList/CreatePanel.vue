@@ -4,9 +4,9 @@
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2022-08-03 12:22:43
  * @FilePath: /CasaOS-UI/src/components/fileList/CreatePanel.vue
- * @Description: 
- * 
- * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+ * @Description:
+ *
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
 -->
 <template>
 	<div class="modal-card">
@@ -29,8 +29,8 @@
 		<footer class="modal-card-foot is-flex is-align-items-center">
 			<div class="is-flex-grow-1"></div>
 			<div>
-				<b-button :label="$t('Cancel')" rounded type="is-grey" @click="$emit('close')"/>
-				<b-button :label="$t('Submit')" rounded type="is-dark" @click="create()"/>
+				<b-button :label="$t('Cancel')" rounded @click="$emit('close')"/>
+				<b-button :label="$t('Submit')" rounded type="is-primary" @click="create()"/>
 			</div>
 		</footer>
 		<!-- Modal-Card Footer End-->
@@ -61,23 +61,16 @@ export default {
 		create() {
 			let path = `${this.initPath}/${this.name}`
 			if (this.isDir) {
-				this.$openAPI.iceFolder.createFolder({path}).then(res => {
-					if (res.status == 200) {
-						this.successCallBack(path);
-					} else {
-						this.errorCallBack(res.data.message);
-					}
-				})
-				/*this.$api.folder.create(path).then(res => {
+				this.$api.folder.create(path).then(res => {
 					if (res.data.success == 200) {
 						this.successCallBack(path);
 					} else {
 						this.errorCallBack(res.data.message);
 					}
-				})*/
+				})
 			} else {
-				this.$openAPI.iceFile.postCreateFile({path}).then(res => {
-					if (res.status == 200) {
+				this.$api.file.create(path).then(res => {
+					if (res.data.success == 200) {
 						this.successCallBack(path);
 					} else {
 						this.errorType = "is-danger"
