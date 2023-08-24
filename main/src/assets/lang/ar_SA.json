@@ -355,7 +355,7 @@
   "CheckThenUpdate": "تحقق من التحديثات ثم حدث",
   "Not compatible with {arch} devices.": "غير متوافق مع أجهزة {arch}.",
   "Connect Dropbox": "ربط Dropbox",
-  "Connect GoogleDrive": "ربط Google Drive",
+  "Connect Google Drive": "ربط Google Drive",
   "FilesDrop": "نقل الملفات",
   "You are using the device": "أنت تستخدم الجهاز",
   "Click to send the file to the device.": "اضغط لإرسال الملف إلى الجهاز.",

@@ -235,4 +235,14 @@ module.exports = {
 	files_open: async (peerid) => {
 		return await intermediateProcessor("casaos-ui:app:apps_open:files", {value: peerid})
 	},
+	// cloud
+	files_addlocation_googledrive: async () => {
+		return await intermediateProcessor("casaos-ui:files:files_addlocation_googledrive")
+	},
+	files_addlocation_onedrive: async () => {
+		return await intermediateProcessor("casaos-ui:files:files_addlocation_onedrive")
+	},
+	files_addlocation_dropbox: async () => {
+		return await intermediateProcessor("casaos-ui:files:files_addlocation_dropbox")
+	},
 }

@@ -30,7 +30,7 @@
 							 @click="auth(driver)">
 				<div class="is-flex is-align-items-center">
 					<div class="img-container mr-1">
-						<b-image :src="getDriverIcon(driver)" class="is-16x16"></b-image>
+						<b-image :src="driver.icon" class="is-16x16"></b-image>
 					</div>
 					{{ $t("Connect " + driver.name) }}
 				</div>
@@ -67,32 +67,23 @@ export default {
 		async getPlatformList() {
 			try {
 				const res = await this.$api.driver.getDriverList()
-				const drivers = res.data.data
-				Object.keys(drivers).forEach((key) => {
-					const driver = drivers[key]
-					driver.name = key
-					this.platforms.push(driver)
-				});
+				this.platforms = res.data.data;
 			} catch (error) {
 				console.error(error)
 			}
 		},
 
-		// get Driver Icon
-		getDriverIcon(driver) {
-			const icon = driver.find(({name}) => name === 'icon')
-			return icon.default
-		},
-
 		// goto auth procress
 		auth(driver) {
-			const newWindowDrivers = ['Dropbox', 'GoogleDrive']
+			const newWindowDrivers = ['Dropbox', 'Google Drive', 'OneDrive']
 			if (newWindowDrivers.includes(driver.name)) {
 				this.openAuthWindow(driver)
 				if (driver.name === 'Dropbox') {
 					this.$messageBus('files_addlocation_dropbox')
-				} else if (driver.name === 'GoogleDrive') {
+				} else if (driver.name === 'Google Drive') {
 					this.$messageBus('files_addlocation_googledrive')
+				} else if (driver.name === 'OneDrive') {
+					this.$messageBus('files_addlocation_onedrive')
 				}
 			} else {
 				console.log("open config modal");
@@ -104,7 +95,7 @@ export default {
 			const customHeight = 700;
 			const iTop = (window.screen.height - 30 - customHeight) / 2;
 			const iLeft = (window.screen.width - 10 - customWidth) / 2;
-			const authUrl = driver.find(({name}) => name === 'auth_url').default.replace("${HOST}", encodeURI(this.$protocol + "//" + this.$baseURL)).replace("redirect_uri=http%", "redirect_uri=https%")
+			const authUrl = driver.auth_url.replace("${HOST}", encodeURI(this.$protocol + "//" + this.$baseURL)).replace("redirect_uri=http%", "redirect_uri=https%")
 			window.open(authUrl, driver.name, 'height=' + customHeight + ',,innerHeight=' + customHeight + ',width=' + customWidth + ',innerWidth=' + customWidth + ',top=' + iTop + ',left=' + iLeft + ',toolbar=no,menubar=no,scrollbars=auto,resizeable=no,location=no,status=no');
 		},
 		// Show Disk Management Panel

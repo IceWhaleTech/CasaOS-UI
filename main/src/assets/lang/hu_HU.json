@@ -355,7 +355,7 @@
   "CheckThenUpdate": "Ellenőrzés, majd frissítés",
   "Not compatible with {arch} devices.": "Nem kompatibilis a(z) {arch} eszközökkel.",
   "Connect Dropbox": "Dropbox csatlakoztatása",
-  "Connect GoogleDrive": "Google Drive csatlakoztatása",
+  "Connect Google Drive": "Google Drive csatlakoztatása",
   "FilesDrop": "FilesDrop",
   "You are using the device": "Az eszköz használatban van",
   "Click to send the file to the device.": "Kattints a fájl másik eszközre történő elküldéséhez.",
