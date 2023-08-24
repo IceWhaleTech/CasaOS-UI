@@ -4,9 +4,9 @@
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2022-06-21 17:08:20
  * @FilePath: \CasaOS-UI\src\components\forms\IconInput.vue
- * @Description: 
- * 
- * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+ * @Description:
+ *
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
 -->
 <template>
 	<b-input v-model="path" :placeholder="placeholder" expanded icon-right="image-filter-center-focus-strong"
@@ -67,8 +67,6 @@ export default {
 			this.showFileModal();
 		},
 		showFileModal() {
-			console.log('initPath', this.initPath)
-			console.log('rootPath', this.rootPath)
 			this.$buefy.modal.open({
 				parent: this,
 				component: FilePanel,
