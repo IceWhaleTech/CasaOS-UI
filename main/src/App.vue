@@ -16,9 +16,6 @@
 </template>
 
 <script>
-import BrandBar             from './components/BrandBar.vue'
-import ContactBar           from './components/ContactBar.vue'
-import CasaWallpaper        from './components/wallpaper/CasaWallpaper.vue'
 import {mixin}              from './mixins/mixin';
 import axios                from "axios";
 import {computed}           from 'vue'
@@ -56,55 +53,27 @@ const customIconConfig = {
 }
 
 export default {
-	components: {
-		BrandBar,
-		ContactBar,
-		CasaWallpaper
-	},
 	mixins: [mixin],
 	data() {
 		return {
-			//isLoading: true,
-			steps: [],
-			noneAni: {
-				classes: 'fadeIn',
-				duration: 500
-			},
-			initAni: {
-				classes: 'zoomOutIn',
-				duration: 2500
-			},
-			brandAni: {
-				classes: "fadeInLeft",
-				duration: 700
-			},
-			contactAni: {
-				classes: "fadeInRight",
-				duration: 700
-			},
-
 			isZIMA: false,
 			TITLE: "NAME",
-			OS: "OS",
-			V_ID: '!@#$%^&*()10',
+			// OS: "OS",
+			// V_ID: '!@#$%^&*()10',
 		}
 	},
-
-
 	computed: {
-		isLoading() {
-			return this.$store.state.siteLoading
-		},
-		isWelcome() {
-			return this.$store.state.needInitialization
-		}
+		// isLoading() {
+		// 	return this.$store.state.siteLoading
+		// },
+		// isWelcome() {
+		// 	return this.$store.state.needInitialization
+		// }
 	},
 	provide() {
 		return {
-			// V_ID: this.V_ID,
 			isZIMA: computed(() => this.isZIMA),
 			TITLE: computed(() => this.TITLE),
-			OS: computed(() => this.OS),
 		}
 	},
 	watch: {
@@ -184,7 +153,6 @@ _____             _____ _____
 		connect() {
 			console.log('socket connected');
 		},
-
 	},
 }
 </script>
