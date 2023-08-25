@@ -61,11 +61,10 @@
 
 					<div v-if="!isGuest" class="mt-5">
 						<b-field :label="$t('Name')" class="mb-5" horizontal>
-							<b-input v-model="username" expanded name="username" @blur="checkout"></b-input>
+							<b-input v-model="username" expanded name="username"></b-input>
 						</b-field>
 						<b-field :label="$t('Password')" class="mb-5" horizontal>
-							<b-input v-model="password" expanded name="password" type="password"
-									 @blur="checkout"></b-input>
+							<b-input v-model="password" expanded name="password" type="password"></b-input>
 						</b-field>
 					</div>
 
@@ -233,19 +232,6 @@ export default {
 				this.$store.commit('SET_NETWORK_STORAGE', oldInfo)
 			}
 		},
-
-		checkout(e) {
-			if (/[^a-zA-Z0-9@#*.]/g.test(e.target.value)) {
-				this.risk = true
-				this.$buefy.toast.open({
-					message: `Special characters may cause security problems`,
-					type: 'is-danger'
-				})
-				console.error(`Special characters may cause security problems`)
-			} else {
-				this.risk = false
-			}
-		}
 	},
 }
 </script>
