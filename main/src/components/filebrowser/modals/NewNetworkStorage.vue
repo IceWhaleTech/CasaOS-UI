@@ -157,9 +157,9 @@ export default {
 			transition: 'height .25s ease, width .75s ease-out'
 		})
 
-		setTimeout(() => {
+		this.$nextTick(() => {
 			this.$refs.inputs.focus()
-		}, 500)
+		})
 
 	},
 	methods: {
