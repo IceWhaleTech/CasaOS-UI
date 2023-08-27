@@ -100,7 +100,6 @@
 
 				<template v-if="!isLoadError">
 
-
 					<AppRecommend
 					v-if="recommendList.length > 0"
 					:arch="arch"
@@ -319,36 +318,28 @@
 			<!-- Modal-Card Body End -->
 
 		</template>
-		<!-- Modal-Card Footer Start-->
-		<footer :class="{'is-justify-content-center':currentSlide == 0}"
-				class="modal-card-foot is-flex is-align-items-center ">
-			<template>
-				<div class="is-flex-grow-1">
-					<!-- <div v-if="currentSlide == 0">
-					  <b-pagination v-if="listTotal > pageSize" :total="listTotal" v-model="pageIndex" range-before=1 range-after=1 order="is-centered" size="is-small" :simple="false" :rounded="true" :per-page="pageSize" icon-prev="chevron-left" icon-next="chevron-right" aria-next-label="Next page" aria-previous-label="Previous page" aria-page-label="Page" aria-current-label="Current page">
-					  </b-pagination>
-					</div> -->
-				</div>
-				<div>
-					<b-button v-if="currentSlide == 2 && currentInstallAppError " :label="$t('Back')" rounded
-							  @click="prevStep"/>
-					<b-button v-if="currentSlide == 1 && state == 'install'" :label="$t('Install')" :loading="isLoading"
-							  rounded type="is-primary" @click="installApp()"/>
-					<b-button v-if="isCasa && currentSlide == 1 && state == 'update'" :label="$t('Save')"
-							  :loading="isLoading"
-							  rounded type="is-primary" @click="updateApp()"/>
-					<b-button v-if="!isCasa && currentSlide == 1 && state == 'update'" :label="$t('Save')"
-							  :loading="isLoading"
-							  rounded type="is-primary" @click="updateContainer()"/>
-					<b-button v-if="currentSlide == 2 && !currentInstallAppError" :label="$t(cancelButtonText)"
-							  rounded type="is-primary" @click="$emit('close')"/>
-					<!--					<b-button v-if="isFirstInstall" :label="$t('Submit')" :loading="isLoading" rounded type="is-primary"
-												  @click="submitInstallationLocation(installationLocation)"/>-->
-				</div>
-			</template>
 
-		</footer>
+		<!-- Modal-Card Footer Start-->
+		<AppInstallLoadingFooter
+			v-if="currentSlide == 2"
+			:currentInstallAppError="currentInstallAppError"
+			:cancelButtonText="cancelButtonText"
+			@close="$emit('close')"
+			@back="prevStep"
+		/>
+
+		<AppSettingPanelFooter
+			v-if="currentSlide == 1 "
+			:state="state"
+			:isCasa="isCasa"
+			:isLoading="isLoading"
+			@install="installApp()"
+			@update="updateApp()"
+			@updateContainer="updateContainer()"
+		/>
 		<!-- Modal-Card Footer End -->
+
+
 
 	</div>
 </template>
@@ -373,8 +364,9 @@ import {ice_i18n}                                      from "@/mixins/base/commo
 import {parse}                                         from "yaml";
 import {vOnClickOutside}                               from '@vueuse/components'
 import {AppDetail, AppRecommend, AppConditionSelector} from "@/components/AppStore";
-import AppInstallLoadingPanel
-													   from "@/components/AppInstallLoadingPanel/AppInstallLoadingPanel.vue";
+import AppInstallLoadingPanel                          from "@/components/AppInstallLoadingPanel/AppInstallLoadingPanel.vue";
+import AppInstallLoadingFooter						   from "@/components/AppInstallLoadingPanel/AppInstallLoadingFooter.vue";
+import AppSettingPanelFooter                           from "@/components/AppSetting/AppSettingPanelFooter.vue";
 
 const data = [
 	"AUDIT_CONTROL",
@@ -416,7 +408,8 @@ export default {
 		ValidationObserver,
 		ValidationProvider,
 		AppDetail, AppRecommend, AppConditionSelector,
-		AppInstallLoadingPanel
+		AppInstallLoadingPanel,AppInstallLoadingFooter,
+		AppSettingPanelFooter
 	},
 	mixins: [business_ShowNewAppTag, business_OpenThirdApp],
 	directives: {
