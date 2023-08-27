@@ -461,7 +461,6 @@ export default {
 				networks: networks.data.data,
 				memory: memory
 			}
-			console.log("app store")
 			this.isShowing = false
 			this.$buefy.modal.open({
 				parent: this,

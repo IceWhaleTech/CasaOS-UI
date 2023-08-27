@@ -364,9 +364,8 @@ import {ice_i18n}                                      from "@/mixins/base/commo
 import {parse}                                         from "yaml";
 import {vOnClickOutside}                               from '@vueuse/components'
 import {AppDetail, AppRecommend, AppConditionSelector} from "@/components/AppStore";
-import AppInstallLoadingPanel                          from "@/components/AppInstallLoadingPanel/AppInstallLoadingPanel.vue";
-import AppInstallLoadingFooter						   from "@/components/AppInstallLoadingPanel/AppInstallLoadingFooter.vue";
-import AppSettingPanelFooter                           from "@/components/AppSetting/AppSettingPanelFooter.vue";
+import {AppInstallLoadingPanel,AppInstallLoadingFooter}from "@/components/AppInstallLoadingPanel";
+import {AppSettingPanelFooter}                         from "@/components/AppSetting";
 
 const data = [
 	"AUDIT_CONTROL",
