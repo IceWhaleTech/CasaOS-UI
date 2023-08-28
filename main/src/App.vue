@@ -6,44 +6,15 @@
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
   -->
-
 <template>
-	<div id="app" :class="{'is-dark-bg':$route.meta.showBackground}" class="is-flex is-flex-direction-column">
-		<template v-if="$route.meta.showBackground">
-			<!-- Background Layer Start -->
-			<casa-wallpaper :animate="isWelcome?initAni:noneAni"></casa-wallpaper>
-			<!-- Background Layer End -->
-
-			<div class="base-bar is-flex"
-				 style="background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%);">
-				<!-- BrandBar Start -->
-				<brand-bar v-if="!$store.state.isMobile && $router.currentRoute.path === '/'"
-						   v-animate-css="brandAni"></brand-bar>
-				<!-- BrandBar End -->
-				<!-- ContactBar Start -->
-				<contact-bar v-if="!$store.state.isMobile && $router.currentRoute.path === '/'"
-							 v-animate-css="contactAni"></contact-bar>
-				<!-- ContactBar End -->
-			</div>
-
-		</template>
-
-		<!-- Router View Start -->
-		<router-view/>
-		<!-- Router View End -->
-
-		<!-- <v-tour name="myTour" :steps="steps"></v-tour> -->
-	</div>
+	<StorageManagerPanel></StorageManagerPanel>
 </template>
 
 <script>
-import BrandBar             from './components/BrandBar.vue'
-import ContactBar           from './components/ContactBar.vue'
-import CasaWallpaper        from './components/wallpaper/CasaWallpaper.vue'
 import {mixin}              from './mixins/mixin';
-import axios                from "axios";
 import {computed}           from 'vue'
 import {ConfigProgrammatic} from 'buefy/src/index.js'
+import StorageManagerPanel  from '@/components/Storage/StorageManagerPanel.vue'
 
 const customIconConfig = {
 	customIconPacks: {
@@ -75,49 +46,19 @@ const customIconConfig = {
 		},
 	}
 }
+// TODO : Prepare toekn\lang\theme\OS\isZIMA\TITLE and other config.
 
 export default {
 	components: {
-		BrandBar,
-		ContactBar,
-		CasaWallpaper
+		StorageManagerPanel
 	},
 	mixins: [mixin],
 	data() {
 		return {
-			//isLoading: true,
-			steps: [],
-			noneAni: {
-				classes: 'fadeIn',
-				duration: 500
-			},
-			initAni: {
-				classes: 'zoomOutIn',
-				duration: 2500
-			},
-			brandAni: {
-				classes: "fadeInLeft",
-				duration: 700
-			},
-			contactAni: {
-				classes: "fadeInRight",
-				duration: 700
-			},
-
 			isZIMA: false,
 			TITLE: "NAME",
 			OS: "OS",
 			V_ID: '!@#$%^&*()10',
-		}
-	},
-
-
-	computed: {
-		isLoading() {
-			return this.$store.state.siteLoading
-		},
-		isWelcome() {
-			return this.$store.state.needInitialization
 		}
 	},
 	provide() {
@@ -128,49 +69,13 @@ export default {
 			OS: computed(() => this.OS),
 		}
 	},
-	watch: {
-		TITLE: {
-			handler(val) {
-				if (this.$router.currentRoute.path !== "/") {
-					let wallpaper = {
-						from: "Built-in",
-						path: require('@/assets/background/default_wallpaper.jpg')
-					};
-					if (this.TITLE.toLowerCase() === 'zimablade') {
-						wallpaper = {
-							path: require('@/assets/background/wallpaper01-ZIMA.jpg'),
-							from: "Built-in" //Built-in, Upload, Files
-						}
-					} else if (this.TITLE.toLowerCase() === 'zimabox') {
-						wallpaper = {
-							path: require('@/assets/background/wallpaper02-ZIMA.jpg'),
-							from: "Built-in" //Built-in, Upload, Files
-						}
-					}
-					this.$store.commit('SET_WALLPAPER', wallpaper)
-				}
-			}
-		}
-	},
-	beforeCreate() {
-		axios.get(`http://${this.$baseHostname}:9527`).then(res => {
-			const {
-				device_model = 'CasaOS',
-				device_name = 'CasaOS'
-			} = res.data
-			this.isZIMA = /^Zima/.test(device_model)
-			this.OS = device_model
-			this.TITLE = device_name
-		}).catch(e => {
-			console.error("GETTING THE CONFIG OF YOUR MACHINE IS EXPERIENCING AN ERROR:", e)
-		})
-	},
 	created() {
-		console.log(`%c
-_____             _____ _____
-|     |___ ___ ___|     |   __|
-|   --| .'|_ -| .'|  |  |__   |
-|_____|__,|___|__,|_____|_____|
+		console.log(`
+
+┌─┐┌─┐┌─┐┌─┐┌─┐┌─┐   ┬  ┌─┐┌─┐┌─┐┬  ┌─┐┌┬┐┌─┐┬─┐┌─┐┌─┐┌─┐  ┬ ┬┬
+│  ├─┤└─┐├─┤│ │└─┐───│  │ ││  ├─┤│  └─┐ │ │ │├┬┘├─┤│ ┬├┤───│ ││
+└─┘┴ ┴└─┘┴ ┴└─┘└─┘   ┴─┘└─┘└─┘┴ ┴┴─┘└─┘ ┴ └─┘┴└─┴ ┴└─┘└─┘  └─┘┴
+
 -- Made by IceWhale with YOU --
 `, `font-family: monospace`);
 
@@ -179,8 +84,6 @@ _____             _____ _____
 	},
 	mounted() {
 		this.setInitLang();
-		window.addEventListener('resize', this.onWindowResize);
-		this.onWindowResize();
 	},
 	methods: {
 		/**
@@ -192,20 +95,14 @@ _____             _____ _____
 			lang = lang.includes("_") ? lang : "en_us";
 			this.setLang(lang);
 		},
-		/**
-		 * @description: Handle on Window reize
-		 * @return {*}
-		 */
-		onWindowResize() {
-			const isMobile = document.body.clientWidth < 480
-			this.$store.commit('SET_IS_MOBILE', isMobile)
-		},
 	},
 	sockets: {
 		connect() {
-			console.log('socket connected');
+			console.log('APP area socket connected');
 		},
-
+		"casaos-ui:topbar:dashboardsetting_language"(res) {
+			this.setLang(res.Properties.casaos_lang)
+		},
 	},
 }
 </script>

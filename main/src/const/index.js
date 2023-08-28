@@ -1,7 +1,10 @@
-export const MIRCO_APP_ACTION_ENUM = {
-  OPEN: 'open',
-  CLOSE: 'close',
-  MOUNT: 'mount', // show storage manager panel from child app
-  LOGIN: 'login', // child app 401 unauth trigger main app login
-  DESTROY: 'destroy', // call child app to release its content and destroy itself
-};
+/*
+ * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ * @LastEditTime: 2023/8/28 下午4:56
+ * @FilePath: /CasaOS-UI/main/src/const/index.js
+ * @Description:
+ *
+ * Copyright (c) 2023 by IceWhale, All Rights Reserved.
+
+ */
+

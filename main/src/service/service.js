@@ -7,9 +7,8 @@
  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
  */
 
-import axios  from 'axios'
-import router from '@/router'
-import store  from '@/store'
+import axios from 'axios'
+import store from '@/store'
 // import { ToastProgrammatic as Toast } from 'buefy'
 
 // const axiosBaseURL1 = (process.env.NODE_ENV === "dev") ? `${document.location.protocol}//${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}` : ``
@@ -59,12 +58,6 @@ instance.interceptors.request.use(
 
 let isRefreshing = false
 let requests = []
-
-function logout() {
-	router.replace({ //Jump to the logout page
-		path: '/logout'
-	})
-}
 
 instance.interceptors.response.use(
 	(response) => {

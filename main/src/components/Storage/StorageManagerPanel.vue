@@ -192,6 +192,7 @@ import smoothReflow                             from 'vue-smooth-reflow'
 import delay                                    from 'lodash/delay';
 import max                                      from 'lodash/max';
 import {ValidationObserver, ValidationProvider} from "vee-validate";
+import "@/plugins/vee-validate";
 import {mixin}                                  from '@/mixins/mixin';
 import DriveItem                                from './DriveItem.vue'
 import StorageItem                              from './StorageItem.vue'
@@ -559,7 +560,6 @@ export default {
 				})
 				console.error(err)
 			})
-
 		},
 		submitCreate(format) {
 			this.isCreating = true
