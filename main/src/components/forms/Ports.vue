@@ -24,29 +24,30 @@
 			<ValidationObserver ref="ob" v-slot="{ invalid }" slim>
 				<template>
 					<b-field grouped>
-						<validation-provider v-if="showHostPost" v-slot="{errors,valid}" 
-							:rules="'yaml_port|not_in_ports:' + invalidPortsInUse(item.published, item.protocol)" slim 
+						<validation-provider v-if="showHostPost" v-slot="{errors,valid}"
+											 :rules="'yaml_port|not_in_ports:' + invalidPortsInUse(item.published, item.protocol)"
+											 slim
 						>
 							<!-- Only show title when the first item. -->
 							<b-field :label=" index<1 ? $t('Host') : '' "
-								:type="{ 'is-danger': errors[0], 'is-success': valid}" expanded
+									 :type="{ 'is-danger': errors[0], 'is-success': valid}" expanded
 							>
 								<b-input :placeholder="$t('Host')"
-									:value="item.host_ip?`${item.host_ip}:${item.published}`:item.published"
-									expanded
-									@blur="(event, val)=> assignPortsItem(event.target._value, item)"
+										 :value="item.host_ip?`${item.host_ip}:${item.published}`:item.published"
+										 expanded
+										 @blur="(event, val)=> assignPortsItem(event.target._value, item)"
 								></b-input>
 							</b-field>
 						</validation-provider>
 
 						<validation-provider v-slot="{errors,valid}" rules="yaml_port" slim>
 							<!-- Only show title when the first item. -->
-							<b-field :label=" index<1 ? $t('Container') : '' " 
-								:type="{ 'is-danger': errors[0], 'is-success': valid }" expanded 
+							<b-field :label=" index<1 ? $t('Container') : '' "
+									 :type="{ 'is-danger': errors[0], 'is-success': valid }" expanded
 							>
-								<b-input v-model.number="item.target"
-									:placeholder="$t('Container')"
-									expanded
+								<b-input v-model="item.target"
+										 :placeholder="$t('Container')"
+										 expanded
 								></b-input>
 							</b-field>
 						</validation-provider>
@@ -134,7 +135,7 @@ export default {
 			});
 		},
 		assignPortsItem(val, item) {
-			const reg = /((^(\d{1,3}\.){3}\d{1,3}):)?(\d{1,5}$)/;
+			const reg = /((^(\d{1,3}\.){3}\d{1,3}):)?(?<host>\d{1,5}(-\d{1,5})?)$/;
 			const partList = val.match(reg);
 			console.log(partList?.[2], partList?.[4], val, "------")
 			item.host_ip = partList?.[2] || '';
@@ -143,17 +144,30 @@ export default {
 
 		/*
 		* type : tcp/udp
+		* in : port
+		* out : true/false
 		* */
-		invalidPortsInUse(port, type) {
-			// The host's port input is String Type.
-			// port = port - 0;
+		// TODO need support range.
+		invalidPortsInUse(port, type = 'both') {
+			const PortArray = port.split('-');
+			// format
+			if (PortArray.length === 1) {
+				PortArray.push(port)
+			}
+			let invalidPortsArray = [];
 			if (type === 'both') {
-				return (this.ports_in_use?.["udp"] || []).includes(port) || (this.ports_in_use?.["tcp"] || []).includes(port)
+				invalidPortsArray = (this.ports_in_use?.["udp"] || []).concat((this.ports_in_use?.["tcp"] || []))
 			}
 			if (type) {
-				return (this.ports_in_use?.[type] || this.ports_in_use?.[type.toUpperCase()] || []).includes(port + "")
+				invalidPortsArray = (this.ports_in_use?.[type] || [])
 			}
-			return false;
+			// verify
+			invalidPortsArray.forEach(item => {
+				if (item >= PortArray[0] && item <= PortArray[1]) {
+					return true;
+				}
+			})
+			return false
 		},
 
 		invalidPortsInUseRule(type) {
