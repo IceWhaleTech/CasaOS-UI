@@ -56,7 +56,7 @@ jobs:
             -   run: yarn install
             -   run: yarn build
             -   run: |
-                    tar -zcvf linux-all-casaos-${{ steps.get_version.outputs.VERSION }}.tar.gz build
+                    tar -zcvf linux-all-casaos-app-ui-${{ steps.get_version.outputs.VERSION }}.tar.gz build
             -   name: '更新 Update release'
                 uses: zhanghengxin/git-release-private@ice
                 with:
@@ -65,7 +65,7 @@ jobs:
                     gzip: false
                     prerelease: true
                     tag: ${{ steps.get_version.outputs.VERSION }}
-                    files: ./linux-all-casaos-${{ steps.get_version.outputs.VERSION }}.tar.gz
+                    files: ./linux-all-casaos-app-ui-${{ steps.get_version.outputs.VERSION }}.tar.gz
 
             -   name: Upload to oss
                 id: upload_to_oss
@@ -76,4 +76,4 @@ jobs:
                     region: oss-cn-shanghai
                     bucket: casaos
                     assets: |
-                        ./linux-all-casaos-${{ steps.get_version.outputs.VERSION }}.tar.gz:/IceWhaleTech/CasaOS-UI/releases/download/${{ steps.get_version.outputs.VERSION }}/linux-all-casaos-${{ steps.get_version.outputs.VERSION }}.tar.gz
+                        ./linux-all-casaos-app-ui-${{ steps.get_version.outputs.VERSION }}.tar.gz:/IceWhaleTech/CasaOS-UI/releases/download/${{ steps.get_version.outputs.VERSION }}/linux-all-casaos-app-ui-${{ steps.get_version.outputs.VERSION }}.tar.gz
