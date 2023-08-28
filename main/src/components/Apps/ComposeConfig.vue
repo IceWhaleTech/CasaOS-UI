@@ -620,7 +620,7 @@ export default {
 					// const target = Number(match.target?.split("-")?.[0]);
 					const target = match.target;
 					const published = match.published;
-					const protocol = match.protocol || "tcp";
+					const protocol = match.protocol;
 
 					return {
 						host_ip,
@@ -632,6 +632,36 @@ export default {
 					return item;
 				}
 			});
+			// merge ports
+			// one protocol. TODO ::need to split composeServicesItem.ports to tcp and udp.
+			let portsTemp = cloneDeep(composeServicesItem.ports);
+			let indexTemp = 0;
+			let ArrayTemp = [];
+			let portsResult = [];
+			if (portsTemp.length > 1) {
+				portsTemp.forEach((item, index) => {
+					if (indexTemp === (item.target - index) && index !== portsTemp.length - 1) {
+						ArrayTemp.push(item.target);
+					} else {
+						indexTemp = item.target - index
+						if (ArrayTemp.length > 2) {
+							portsResult.pop();
+							portsResult.push({
+								target: `${ArrayTemp[0]}-${ArrayTemp[ArrayTemp.length - 1]}`,
+								published: `${ArrayTemp[0]}-${ArrayTemp[ArrayTemp.length - 1]}`,
+								host_ip: item.host_ip,
+								protocol: item.protocol,
+								mode: item.mode,
+							})
+						} else {
+							portsResult.push(item)
+						}
+						ArrayTemp.length = 0;
+					}
+				})
+				composeServicesItem.ports = portsResult
+			}
+
 			isNil(composeServicesItem.ports) && this.$set(composeServicesItem, "ports", []);
 
 			//Volume
@@ -840,7 +870,7 @@ export default {
 			if (this.dockerComposeCommands) {
 				let yaml = YAML.parse(this.dockerComposeCommands);
 				Object.keys(yaml.services).map(key => {
-					// yaml.services[key].ports = [];
+					yaml.services[key].ports = [];
 					yaml.services[key].volumes = [];
 					yaml.services[key].devices = [];
 					yaml.services[key].cap_add = [];
@@ -850,7 +880,7 @@ export default {
 				})
 
 				ConfigData = merge(yaml, ConfigData)
-				Object.keys(ConfigData.services).map(key => {
+				Object.keys(ConfigData.services).forEach(key => {
 					// Convert PORTS long grammar to phrase method
 					ConfigData.services[key].ports = ConfigData.services[key].ports.map((item) => {
 						// - "127.0.0.1:5000-5010:5000-5010/udp"
@@ -860,6 +890,7 @@ export default {
 							return `${item.published}:${item.target}/${item.protocol}`;
 						}
 					});
+					console.log(ConfigData.services[key].ports, '111111')
 				})
 			}
 
@@ -952,7 +983,64 @@ export default {
 				const tempNetworks = merge(this.configData?.networks || {}, {[value]: {name: value}})
 				this.$set(this.configData, 'networks', tempNetworks);
 			}
-		}
+		},
+		/*
+		* input: [
+    {
+        "mode": "ingress",
+        "target": 5244,
+        "published": "5244",
+        "protocol": "tcp"
+    },
+    {
+        "mode": "ingress",
+        "target": 5245,
+        "published": "5245",
+        "protocol": "tcp"
+    },
+    {
+        "mode": "ingress",
+        "target": 5246,
+        "published": "5246",
+        "protocol": "tcp"
+    },
+    {
+        "mode": "ingress",
+        "target": 5248,
+        "published": "5248",
+        "protocol": "tcp"
+    },
+    {
+        "mode": "ingress",
+        "target": 5249,
+        "published": "5249",
+        "protocol": "tcp"
+    },
+    {
+        "mode": "ingress",
+        "target": 5250,
+        "published": "5250",
+        "protocol": "tcp"
+    }
+]
+*
+* output:
+* [{
+        "mode": "ingress",
+        "target": 5244-5246,
+        "published": "5244-5246",
+        "protocol": "tcp"
+    },
+     {
+        "mode": "ingress",
+        "target": 5248-5250,
+        "published": "5248-5250",
+        "protocol": "tcp"
+    }]
+		* */
+		cpmpleteRange() {
+
+		},
 
 	},
 	filters: {
