@@ -70,7 +70,7 @@ export default {
 		}
 	},
 	created() {
-		console.log(`
+		console.log(`MicroApp is created!
 
 ┌─┐┌─┐┌─┐┌─┐┌─┐┌─┐   ┬  ┌─┐┌─┐┌─┐┬  ┌─┐┌┬┐┌─┐┬─┐┌─┐┌─┐┌─┐  ┬ ┬┬
 │  ├─┤└─┐├─┤│ │└─┐───│  │ ││  ├─┤│  └─┐ │ │ │├┬┘├─┤│ ┬├┤───│ ││
