@@ -102,6 +102,15 @@ export default {
 				this.uploader.upload()
 			}
 		},
+		fileErrorHandle(rootFile, file, message) {
+			this.uploader.pause(file)
+			this.$buefy.toast.open({
+				message: JSON.parse(message).message,
+				type: 'is-danger',
+				position: 'is-top',
+				duration: 5000
+			})
+		},
 		allEvent(...args) {
 			const name = args[0]
 			const EVENTSMAP = {
@@ -131,6 +140,7 @@ export default {
 		uploader.on(FILES_ADDED_EVENT, this.filesAdded)
 		uploader.on('fileRemoved', this.fileRemoved)
 		uploader.on('filesSubmitted', this.filesSubmitted)
+		uploader.on('fileError', this.fileErrorHandle)
 	},
 	destroyed() {
 		const uploader = this.uploader
@@ -139,6 +149,7 @@ export default {
 		uploader.off(FILES_ADDED_EVENT, this.filesAdded)
 		uploader.off('fileRemoved', this.fileRemoved)
 		uploader.off('filesSubmitted', this.filesSubmitted)
+		uploader.off('fileError')
 		this.uploader = null
 	},
 	components: {
