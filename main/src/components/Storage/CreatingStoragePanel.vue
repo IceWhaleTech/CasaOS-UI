@@ -8,11 +8,10 @@
 
   -->
 <script setup>
-import LottieAnimation                                                    from "lottie-web-vue";
-import {ref, defineProps, defineComponent, onMounted, getCurrentInstance} from "vue";
-import {mixin}                                                            from '@/mixins/mixin';
-import {renderSize}                                                       from "@/composables/localstorage";
-import {ValidationObserver, ValidationProvider}                           from "vee-validate";
+import LottieAnimation                                   from "lottie-web-vue";
+import {ref, defineProps, onMounted, getCurrentInstance} from "vue";
+import {renderSize}                                      from "@/composables/localstorage";
+import {ValidationObserver, ValidationProvider}          from "vee-validate";
 import "@/plugins/vee-validate";
 // import storage                                                            from "@/service/storage";
 
@@ -31,31 +30,31 @@ const {unDiskData, createStorageNameDefault} = defineProps({
 	}
 })
 const isLoading = ref(false)
-const isValiding = ref(false)
+const isValidity = ref(false)
 const isCreating = ref(false)
 let createStorageName = ref("")
 createStorageName.value = createStorageNameDefault
 let createStoragePath = ref("")
-let createStorageSeiral = ref("")
+let createStorageSerial = ref("")
 let createStorageType = ref("")
 let activeDisk = ref(0)
 
-const $emit = defineEmits(['refesh:DiskList', 'close:CreatingStoragePanel'])
+const $emit = defineEmits(['refresh:DiskList', 'close:CreatingStoragePanel'])
 
 /**
  * @description: Create a new storage
  * @return {void}
  * @param needFormat
  */
-function createStorge(needFormat) {
-	isValiding.value = true
+function createStorage(needFormat) {
+	isValidity.value = true
 	checkStep(ob1.value).then(val => {
-		isValiding.value = false
+		isValidity.value = false
 		if (val) {
 			submitCreate(needFormat)
 		}
 	}).catch(err => {
-		isValiding.value = false
+		isValidity.value = false
 		proxy.$buefy.toast.open({
 			duration: 3000,
 			message: err.response.data.message,
@@ -73,7 +72,7 @@ function submitCreate(format) {
 		format: format
 	}
 	proxy.$api.storage.create(data).then((res) => {
-		if (res.status != 200) {
+		if (res.status !== 200) {
 			isCreating.value = false;
 			proxy.$buefy.toast.open({
 				duration: 3000,
@@ -82,9 +81,7 @@ function submitCreate(format) {
 			})
 			console.error(res.data.message)
 		} else {
-			$emit('refesh:DiskList', true)
-			// $emit('close:CreatingStoragePanel')
-			// proxy.$emit('refesh:DiskList')
+			$emit('refresh:DiskList', true)
 		}
 	}).catch(err => {
 		isCreating.value = false
@@ -113,7 +110,7 @@ function checkStep(ref) {
  */
 function onDiskChoose(index) {
 	createStoragePath.value = unDiskData[index].path
-	createStorageSeiral.value = unDiskData[index].serial
+	createStorageSerial.value = unDiskData[index].serial
 	createStorageType.value = getDiskType(unDiskData[index])
 }
 
@@ -128,82 +125,89 @@ onMounted(() => {
 
 <template>
 	<div>
-		<section v-if="!isCreating"
-				 class="pr-5 pl-5 mt-4 pb-2">
-			<!-- Create Storage Start -->
-			<div class="is-flex-grow-1 is-relative">
-				<ValidationObserver ref="ob1">
-					<ValidationProvider v-slot="{ errors, valid }" name="StorageName" rules="required">
-						<b-field :label="$t('Storage Name')" :message="$t(errors)"
-								 :type="{ 'is-danger': errors[0], 'is-success': valid }">
-							<b-input v-model="createStorageName"
-									 @keyup.native="createStorageName = createStorageName.replace(/[^\w]/g, '')"
-									 @paste.native="createStorageName = createStorageName.replace(/[^\w]/g, '')"></b-input>
+		<template v-if="!isCreating">
+			<header class="pl-5 mt-4 pt-1 b-line">
+				<h3 class="title is-3 mb-3">{{ $t('Create Storage') }}</h3>
+				<div class="close-container">
+					<button class="delete" type="button" @click="$emit('close')"/>
+				</div>
+			</header>
+			<section class="pr-5 pl-5 mt-4 pb-2">
+				<!-- Create Storage Start -->
+				<div class="is-flex-grow-1 is-relative">
+					<ValidationObserver ref="ob1">
+						<ValidationProvider v-slot="{ errors, valid }" name="StorageName" rules="required">
+							<b-field :label="$t('Storage Name')" :message="$t(errors)"
+									 :type="{ 'is-danger': errors[0], 'is-success': valid }">
+								<b-input v-model="createStorageName"
+										 @keyup.native="createStorageName = createStorageName.replace(/[^\w]/g, '')"
+										 @paste.native="createStorageName = createStorageName.replace(/[^\w]/g, '')"></b-input>
+							</b-field>
+						</ValidationProvider>
+
+						<b-field :label="$t('Choose Drive')">
+							<b-select v-model="activeDisk" expanded @input="onDiskChoose">
+								<option v-for="(option, index) in unDiskData" :key="option.path" :value="index">
+									{{ option.name }} ({{ option.model }} - {{ renderSize(option.size) }})
+								</option>
+							</b-select>
 						</b-field>
-					</ValidationProvider>
 
-					<b-field :label="$t('Choose Drive')">
-						<b-select v-model="activeDisk" expanded @input="onDiskChoose">
-							<option v-for="(option, index) in unDiskData" :key="option.path" :value="index">
-								{{ option.name }} ({{ option.model }} - {{ renderSize(option.size) }})
-							</option>
-						</b-select>
-					</b-field>
+					</ValidationObserver>
 
-				</ValidationObserver>
-
-				<article v-if="createStorageType == 'format'" class="message is-danger mt-5">
-					<section class="message-body">
-						<div class="media">
-							<div class="media-left">
+					<article v-if="createStorageType === 'format'" class="message is-danger mt-5">
+						<section class="message-body">
+							<div class="media">
+								<div class="media-left">
 								<span class="icon is-large is-danger"><i
 								class="mdi mdi-alert-circle mdi-48px"></i></span>
-							</div>
-							<div class="media-content">
-								<h3 class="is-size-5">{{ $t('Warning') }}</h3>
-								<p class="is-size-14px">
-									{{ $t("The selected drive will be emptied.") }}<br>
-									{{
-										$t(`Please make sure again that there is no important data on the selected drive
+								</div>
+								<div class="media-content">
+									<h3 class="is-size-5">{{ $t('Warning') }}</h3>
+									<p class="is-size-14px">
+										{{ $t("The selected drive will be emptied.") }}<br>
+										{{
+											$t(`Please make sure again that there is no important data on the selected drive
 										that needs to be
 										backed up.`)
-									}}
-								</p>
+										}}
+									</p>
+								</div>
 							</div>
-						</div>
-					</section>
-				</article>
+						</section>
+					</article>
 
-				<article v-else class="message is-danger mt-5">
-					<section class="message-body">
-						<div class="media">
-							<div class="media-left">
+					<article v-else class="message is-danger mt-5">
+						<section class="message-body">
+							<div class="media">
+								<div class="media-left">
 								<span class="icon is-large is-danger"><i
 								class="mdi mdi-alert-circle mdi-48px"></i></span>
-							</div>
-							<div class="media-content">
-								<h3 class="is-size-5">{{ $t('Attention') }}</h3>
-								<p class="is-size-14px">
-									{{ $t("The drive you select can be used directly as storage.") }}<br>
-									{{
-										$t(`You can also choose to create it after formatting. If formatted, the
+								</div>
+								<div class="media-content">
+									<h3 class="is-size-5">{{ $t('Attention') }}</h3>
+									<p class="is-size-14px">
+										{{ $t("The drive you select can be used directly as storage.") }}<br>
+										{{
+											$t(`You can also choose to create it after formatting. If formatted, the
 										selected drive will be
 										emptied.`)
-									}}<br>
-									{{
-										$t(`Please make sure again that there is no important data on the selected drive
+										}}<br>
+										{{
+											$t(`Please make sure again that there is no important data on the selected drive
 										that needs to be
 										backed up.`)
-									}}
-								</p>
+										}}
+									</p>
+								</div>
 							</div>
-						</div>
-					</section>
-				</article>
+						</section>
+					</article>
 
-			</div>
-			<b-loading v-model="isLoading" :can-cancel="false" :is-full-page="false"></b-loading>
-		</section>
+				</div>
+				<b-loading v-model="isLoading" :can-cancel="false" :is-full-page="false"></b-loading>
+			</section>
+		</template>
 		<!-- Create Storage End -->
 		<section v-else class="modal-card-body ">
 			<div class="installing-warpper mt-6 mb-6">
@@ -220,12 +224,12 @@ onMounted(() => {
 			<div class="is-flex-grow-1"></div>
 			<div>
 				<b-button :label="$t('Cancel')" rounded @click="$emit('close:CreatingStoragePanel')"/>
-				<b-button :label="$t('Format and Create')" :loading="isValiding"
-						  :type="createStorageType == 'format' ? 'is-primary' : ''" rounded
-						  @click="createStorge(true)"/>
-				<b-button v-if="createStorageType == 'mountable'" :label="$t('Create')" :loading="isValiding"
+				<b-button :label="$t('Format and Create')" :loading="isValidity"
+						  :type="createStorageType === 'format' ? 'is-primary' : ''" rounded
+						  @click="createStorage(true)"/>
+				<b-button v-if="createStorageType === 'mountable'" :label="$t('Create')" :loading="isValidity"
 						  rounded
-						  type="is-primary" @click="createStorge(false)"/>
+						  type="is-primary" @click="createStorage(false)"/>
 			</div>
 		</footer>
 		<!-- Modal-Card Footer End -->

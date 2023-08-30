@@ -10,16 +10,16 @@
 	<div class="modal-card">
 
 		<!-- Modal-Card Body Start -->
-		<template v-if="!isCreating">
+		<template v-if="!CreatingStoragePanelIsShow">
 			<header class="pl-5 mt-4 pt-1 b-line">
-				<h3 class="title is-3 mb-3">{{ title }}</h3>
+				<h3 class="title is-3 mb-3">{{ $t('Storage Manager') }}</h3>
 				<div class="close-container">
 					<button class="delete" type="button" @click="$emit('close')"/>
 				</div>
 			</header>
 			<section :class="{ 'b-line': storageData.length > 0 && activeTab === 0}" class="pr-5 pl-5 mt-4 pb-2">
 				<!-- Storage and Disk List Start -->
-				<div v-if="!CreatingStoragePanelIsShow" class="is-flex-grow-1 is-relative">
+				<div class="is-flex-grow-1 is-relative">
 					<div v-if="activeTab == 1" class="create-container">
 						<popper :options="{ placement: 'bottom', modifiers: { offset: { offset: '0,4px' } } }"
 								append-to-body
@@ -40,7 +40,7 @@
 							<MergeStorages @update="()=> {getDiskList(); activeTab = 1;}"></MergeStorages>
 						</b-tab-item>
 						<b-tab-item :label="$t('Storage')" class="scrollbars-light-auto tab-item">
-							<storage-combination :storageData="mergeConbinationsStorageData"
+							<storage-combination :storageData="mergeCombinationsStorageData"
 												 :type="state_mainstorage_operability"
 												 @reload="getDiskList"></storage-combination>
 							<template v-if="storageData.length">
@@ -83,14 +83,13 @@
 				<!-- Storage and Disk List End -->
 
 				<b-loading v-model="isLoading" :can-cancel="false" :is-full-page="false"></b-loading>
-				<b-loading v-model="isLoading" :can-cancel="false" :is-full-page="false"></b-loading>
 			</section>
 		</template>
 
-		<CreatingStoragePanel v-if="CreatingStoragePanelIsShow" :createStorageNameDefault="createStorageNameDefault"
+		<CreatingStoragePanel v-else :createStorageNameDefault="createStorageNameDefault"
 							  :storageData="storageData" :unDiskData="unDiskData"
 							  @close:CreatingStoragePanel="CreatingStoragePanelIsShow = false"
-							  @refesh:DiskList="getDiskList"></CreatingStoragePanel>
+							  @refresh:DiskList="getDiskList"></CreatingStoragePanel>
 
 		<!-- Modal-Card Body End -->
 
@@ -127,22 +126,14 @@ export default {
 	mixins: [smoothReflow, mixin],
 	data() {
 		return {
-			isLoading: true,
+			isLoading: false,
 			CreatingStoragePanelIsShow: false,
-			// Q: what's mean isCreating?
-			// A: isCreating is a flag for creating storage.
-			isCreating: false,
-			isValiding: false,
 			activeTab: 2,
-			// activeDisk: "",
 			createStorageNameDefault: "",
-			// createStoragePath: "",
-			// createStorageSeiral: "",
-			// createStorageType: "",
 			diskData: [],
 			unDiskData: [],
 			storageData: [],
-			mergeConbinationsStorageData: [],
+			mergeCombinationsStorageData: [],
 			hasMergeState: false,
 			mergeStorageList: [],
 		}
@@ -153,23 +144,23 @@ export default {
 			return this.CreatingStoragePanelIsShow ? this.$t('Create Storage') : this.$t('Storage Manager')
 		},
 		state_createstorage_operability() {
-			if (this.unDiskData.length == 0) {
+			if (this.unDiskData.length === 0) {
 				return "is-link is-light"
 			}
 			return "is-link"
 		},
 		state_mainstorage_operability() {
-			if (this.unDiskData.length == 0) {
+			if (this.unDiskData.length === 0) {
 				return "is-link"
 			}
 			return ""
 		},
 		isShowMergeTab() {
-			return this.storageData.length > 1 || this.mergeConbinationsStorageData.length > 0
+			return this.storageData.length > 1 || this.mergeCombinationsStorageData.length > 0
 		},
 		showTipsMergeDisks() {
 			// TODO test localstorage. exit : true.
-			return this.unDiskData === 0 && this.mergeConbinationsStorageData.length === 0 && this.storageData.length > 1
+			return this.unDiskData === 0 && this.mergeCombinationsStorageData.length === 0 && this.storageData.length > 1
 		},
 	},
 
@@ -225,7 +216,7 @@ export default {
 		 * @param showDefault
 		 */
 		async getDiskList(showDefault = false) {
-
+			this.isLoading = true;
 			// get disk list
 			try {
 				const diskRes = await this.$api.disks.getDiskList()
@@ -251,7 +242,7 @@ export default {
 				// get storage list info
 				const storageRes = await this.$api.storage.list({system: "show"}).then(v => v.data.data)
 				let storageArray = []
-				let mergeConbinations = []
+				let mergeCombinations = []
 				let testMergeMiss = mergeStorageList
 				storageRes.forEach(item => {
 					item.children.forEach(part => {
@@ -259,7 +250,7 @@ export default {
 						part.diskName = item.disk_name
 						// storageArray.push(part)
 						if (mergeStorageList.includes(part.uuid) || (mergeStorageList.length > 0 && item.disk_name === 'System')) {
-							mergeConbinations.push(part)
+							mergeCombinations.push(part)
 							testMergeMiss = testMergeMiss.filter(v => v !== part.uuid)
 						} else {
 							storageArray.push(part)
@@ -276,7 +267,7 @@ export default {
 						return 0
 					}
 				})
-				let mergeConbinationsSort = mergeConbinations.sort((a, b) => {
+				let mergeCombinationsSort = mergeCombinations.sort((a, b) => {
 					if (a.diskName === 'System') {
 						return -1
 					} else if (b.diskName === 'System') {
@@ -285,9 +276,9 @@ export default {
 						return 0
 					}
 				});
-				// mergeConbinations.reverse();
+				// mergeCombinations.reverse();
 				testMergeMiss.forEach(item => {
-					mergeConbinationsSort.push({
+					mergeCombinationsSort.push({
 						"uuid": "",
 						"mount_point": "",
 						"size": "",
@@ -306,7 +297,7 @@ export default {
 					return {
 						uuid: storage.uuid,
 						name: storage.label,
-						isSystem: storage.diskName == "System",
+						isSystem: storage.diskName === "System",
 						fsType: storage.type,
 						size: storage.size,
 						availSize: storage.avail,
@@ -317,11 +308,11 @@ export default {
 						disk: storage.disk
 					}
 				})
-				this.mergeConbinationsStorageData = mergeConbinationsSort.map((storage) => {
+				this.mergeCombinationsStorageData = mergeCombinationsSort.map((storage) => {
 					return {
 						uuid: storage.uuid,
 						name: storage.label,
-						isSystem: storage.diskName == "System",
+						isSystem: storage.diskName === "System",
 						fsType: storage.type,
 						size: storage.size,
 						availSize: storage.avail,
@@ -343,12 +334,6 @@ export default {
 				})
 				let nextMaxNum = max(diskNumArray) + 1;
 				this.createStorageNameDefault = "Storage" + nextMaxNum
-				// if (this.unDiskData.length > 0) {
-				// 	this.createStoragePath = this.unDiskData[0].path
-				// 	this.createStorageSeiral = this.unDiskData[0].serial
-				// 	this.createStorageType = this.getDiskType(this.unDiskData[0])
-				// 	this.activeDisk = 0
-				// }
 				if (showDefault) {
 					this.showDefault()
 					this.CreatingStoragePanelIsShow = false
@@ -363,9 +348,9 @@ export default {
 
 		disksSort(array) {
 			array.sort((a, b) => {
-				if (a.diskName == "System") {
+				if (a.diskName === "System") {
 					return -1
-				} else if (b.diskName == "System") {
+				} else if (b.diskName === "System") {
 					return 1
 				} else if (a.label > b.label) {
 					return 1
@@ -430,11 +415,6 @@ export default {
 			})
 
 		},
-
-
-		getDiskType(item) {
-			return item.need_format ? "format" : "mountable"
-		}
 	}
 }
 </script>
