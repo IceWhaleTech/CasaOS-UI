@@ -92,7 +92,7 @@ const socket = io(wsURL, {
 });
 
 Vue.use(VueFullscreen)
-Vue.use(VAnimateCss, {animateCSSPath: '/css/animate.min.css'});
+Vue.use(VAnimateCss, { animateCSSPath: './css/animate.min.css' });
 Vue.use(Vue2TouchEvents)
 Vue.use(VueSocketIOExt, socket);
 Vue.use(VueSocialSharing);

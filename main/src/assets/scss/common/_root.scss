@@ -22,6 +22,8 @@
 body,
 html {
 	overflow: hidden;
+	position: relative;
+	background-color: transparent;
 	font-family: $family-sans-serif;
 }
 
