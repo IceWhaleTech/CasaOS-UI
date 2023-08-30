@@ -159,7 +159,7 @@ _____             _____ _____
 
 <style lang="scss" scoped>
 #app {
-	width: 100vw;
+	width: 100%;
 	height: 100vh;
 	font-weight: 400;
 	font-size: 0.875rem;
