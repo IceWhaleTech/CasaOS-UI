@@ -25,36 +25,36 @@ const state = {
 	},
 	initKey: "", // Initialization key for reg
 
-	sidebarOpen: false,
+	// sidebarOpen: false,
 
 	// System Config
-	searchEngine: '',
-	searchEngineSwitch: true,
+	// searchEngine: '',
+	// searchEngineSwitch: true,
 	// existingAppsSwitch: true,
-	tutorialSwitch: ['Data station', 'Remote Access', 'File Manage'],
-	rssSwitch: false,
+	// tutorialSwitch: ['Data station', 'Remote Access', 'File Manage'],
+	// rssSwitch: false,
 
-	siteLoading: true,
-	needInitialization: false,
-	hardwareInfo: {},
-	isMobile: false,
+	// siteLoading: true,
+	// needInitialization: false,
+	// hardwareInfo: {},
+	// isMobile: false,
 
 	// Files
 	operateObject: null,
-	currentPath: "",
-	isViewGird: true,
+	// currentPath: "",
+	// isViewGird: true,
 
 	// Wallpaper
-	wallpaperObject: {
-		path: null,
-		from: "Built-in" //Built-in, Upload, Files
-	},
+	// wallpaperObject: {
+	// 	path: null,
+	// 	from: "Built-in" //Built-in, Upload, Files
+	// },
 
 	// Samba and nfs data
-	networkStorage: JSON.parse(localStorage.getItem('networkStorage')) || [],
+	// networkStorage: JSON.parse(localStorage.getItem('networkStorage')) || [],
 
 	// shortcut data
-	shortcutData: [],
+	// shortcutData: [],
 
 	// public params
 	device_id: "xxx",

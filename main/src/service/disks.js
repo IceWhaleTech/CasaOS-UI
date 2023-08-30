@@ -1,4 +1,14 @@
 /*
+ * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ * @LastEditTime: 2023/8/30 下午2:38
+ * @FilePath: /CasaOS-UI/main/src/service/disks.js
+ * @Description:
+ *
+ * Copyright (c) 2023 by IceWhale, All Rights Reserved.
+
+ */
+
+/*
  * @Author: JerryK
  * @Date: 2021-09-18 21:32:13
  * @LastEditors: Jerryk jerry@icewhale.org
@@ -18,16 +28,6 @@ const disks = {
 
 	umount(data) {
 		return api.delete(`${PREFIX}`, data);
-	},
-
-	// Get usbs
-	getUsbs() {
-		return api.get(`${PREFIX}/usb`);
-	},
-
-	// Umount usb
-	umountUsb(data) {
-		return api.delete(`${PREFIX}/usb`, data);
 	}
 }
 export default disks;

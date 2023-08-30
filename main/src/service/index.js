@@ -23,7 +23,6 @@ import {
 	FolderApiFactory,
 }                 from "@icewhale/icewhale-files-openapi";
 
-const axiosBaseURL = (process.env.NODE_ENV === "dev") ? `${document.location.protocol}//${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}` : ``
 
 // 初始化 openapi 配置
 const config = new Configuration({});

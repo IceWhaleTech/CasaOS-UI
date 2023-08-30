@@ -20,15 +20,15 @@
 			<section :class="{ 'b-line': storageData.length > 0 && activeTab === 0}" class="pr-5 pl-5 mt-4 pb-2">
 				<!-- Storage and Disk List Start -->
 				<div class="is-flex-grow-1 is-relative">
-					<div v-if="activeTab == 1" class="create-container">
+					<div v-if="activeTab === 1" class="create-container">
 						<popper :options="{ placement: 'bottom', modifiers: { offset: { offset: '0,4px' } } }"
 								append-to-body
 								trigger="hover">
-							<div v-show="unDiskData.length == 0" class="popper  tooltip-content dark">
+							<div v-show="unDiskData.length === 0" class="popper  tooltip-content dark">
 								{{ $t('Please insert a Drive to Create Storage') }}
 							</div>
 							<div slot="reference">
-								<b-button :disabled="unDiskData.length == 0" :type="state_createstorage_operability"
+								<b-button :disabled="unDiskData.length === 0" :type="state_createstorage_operability"
 										  rounded @click="showCreate">{{ $t('Create Storage') }}
 								</b-button>
 							</div>
@@ -344,22 +344,6 @@ export default {
 			}
 
 			this.isLoading = false
-		},
-
-		disksSort(array) {
-			array.sort((a, b) => {
-				if (a.diskName === "System") {
-					return -1
-				} else if (b.diskName === "System") {
-					return 1
-				} else if (a.label > b.label) {
-					return 1
-				} else if (a.label < b.label) {
-					return -1
-				} else {
-					return 0
-				}
-			})
 		},
 
 		showDefault() {

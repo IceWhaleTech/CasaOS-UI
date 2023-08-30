@@ -98,7 +98,7 @@ export default {
 					}
 
 					this.$api.disks.umount(data).then((res) => {
-						if (res.data.success != 200) {
+						if (res.data.success !== 200) {
 							this.isRemoving = false;
 							this.$buefy.toast.open({
 								duration: 3000,
@@ -150,7 +150,7 @@ export default {
 					}
 
 					this.$api.storage.format(data).then((res) => {
-						if (res.data.success != 200) {
+						if (res.data.success !== 200) {
 							this.isFormating = false;
 							this.$buefy.toast.open({
 								duration: 3000,

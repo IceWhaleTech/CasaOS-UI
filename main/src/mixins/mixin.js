@@ -8,9 +8,7 @@
  */
 
 import qs    from 'qs'
-import has   from 'lodash/has'
 import union from 'lodash/union'
-import copy  from 'clipboard-copy'
 import dayjs from 'dayjs'
 
 const typeMap = {
@@ -39,17 +37,8 @@ const typeMap = {
 const hasThumbType = ['png', 'jpg', 'jpeg', 'bmp', 'gif']
 
 // eslint-disable-next-line no-unused-vars
-const filePanelMap = {
-	'code-editor': union(typeMap['text-x-generic'], typeMap['text-css'], typeMap['text-html'], typeMap['text-x-cmake'], typeMap['text-dockerfile']),
-	"video-player": union(typeMap['video-x-generic'], typeMap['audio-x-generic']),
-	"image-viewer": typeMap['image-x-generic'],
-	// "mark-down-editor":typeMap['text-markdown'],
-	// "pdf-viewer": typeMap['application-pdf'],
-}
-export const wallpaperType = ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'svg']
-const wallpaperConfig = "wallpaper"
-
-
+union(typeMap['text-x-generic'], typeMap['text-css'], typeMap['text-html'], typeMap['text-x-cmake'], typeMap['text-dockerfile']);
+union(typeMap['video-x-generic'], typeMap['audio-x-generic']);
 export const mixin = {
 	data() {
 		return {
@@ -57,7 +46,6 @@ export const mixin = {
 		}
 	},
 	mounted() {
-		this.typeMap = typeMap;
 	},
 
 	methods: {
@@ -68,7 +56,7 @@ export const mixin = {
 		 */
 		renderSize(bytes) {
 			const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
-			if (bytes == 0) return '0 Bytes'
+			if (bytes === 0) return '0 Bytes'
 			const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10)
 			if (i === 0) return `${bytes} ${sizes[i]}`
 			return `${parseFloat((bytes / (1024 ** i)).toFixed(2))} ${sizes[i]}`
@@ -97,36 +85,6 @@ export const mixin = {
 			localStorage.setItem('lang', lang)
 			this.$i18n.locale = lang;
 		},
-
-
-		/**
-		 * @description: Get file icon from file name
-		 * @param {Object} item
-		 * @return {Object}
-		 */
-		//
-		getIconFile(item) {
-			let isDir = false
-			if (has(item, 'is_dir') || has(item, "isFolder")) {
-				isDir = item.is_dir
-			}
-			if (isDir) {
-				return require(`@/assets/img/filebrowser/folder-default.svg`)
-			} else {
-				return require(`@/assets/img/filebrowser/unknown.svg`)
-			}
-		},
-		getPanelType(item) {
-			const ext = this.getFileExt(item);
-			let type = null
-			Object.keys(filePanelMap).forEach((_type) => {
-				const extensions = filePanelMap[_type]
-				if (extensions.indexOf(ext.toLowerCase()) > -1) {
-					type = _type
-				}
-			})
-			return type
-		},
 		getFileExt(item) {
 			return item.name.substring(item.name.lastIndexOf('.') + 1);
 		},
@@ -143,12 +101,7 @@ export const mixin = {
 			let url = this.getFileUrl(items)
 			window.open(url, '_blank');
 		},
-		playVideo(item, player) {
-			let url = player + this.getFileUrl(item)
-			window.open(url, '_self');
-		},
-
-		// Get File Download URL
+// Get File Download URL
 		getFileUrl(items) {
 			let apiUrl = ""
 			let path = ""
@@ -203,195 +156,6 @@ export const mixin = {
 			this.$refs.dropDown.toggle()
 			this.downloadFile(this.item)
 		},
-		// Copy Path
-		copyPath() {
-			this.$refs.dropDown.toggle()
-			copy(this.item.path)
-			this.$buefy.toast.open({
-				message: this.$t('Copied to clipboard'),
-				type: 'is-success'
-			})
-		},
-		/**
-		 * @description: Download File
-		 * @param {Object,Object} event item
-		 * @return {void}
-		 */
-		clickItem(event, item) {
-			let bounced = event.target.getAttribute('class').includes('mdi-dots')
-			if (bounced) {
-				return false
-			}
-			if (item.is_dir) {
-				this.$emit('gotoFolder', item.path)
-			} else {
-				this.$emit('showDetailModal', item)
-			}
-		},
-		/**
-		 * @description: Open Context Menu
-		 * @param {Object,Object} event item
-		 * @return {void}
-		 */
-		openContextMenu(e, item) {
-			if (item) {
-				e.cancelBubble = true
-				document.dispatchEvent(new CustomEvent('contextmenu'));
-			}
-			this.$refs.ctxMenu.open(e, item)
-		},
-		/**
-		 * @description: Copy Or Cut File
-		 * @param {String} type
-		 * @param {Object,Array} items
-		 * @return {void}
-		 */
-		operate(type, items) {
-			let operateObject = {
-				type: type,
-			}
-			if (items.constructor === Object) {
-				operateObject.item = [
-					{
-						from: items.path,
-
-					}
-				]
-			} else if (items.constructor === Array) {
-				operateObject.item = items.map(o => {
-					return {
-						from: o.path,
-					}
-				})
-			}
-			this.$store.commit('SET_OPERATE_OBJECT', operateObject)
-			if (this.$refs.dropDown !== undefined) {
-				this.$refs.dropDown.toggle()
-			}
-
-		},
-
-		/**
-		 * @description: Delete File
-		 * @param {Object,Array} items
-		 * @return {void}
-		 */
-		deleteItem(items) {
-			let path = ""
-			if (items.constructor === Object) {
-				path = [items.path]
-			} else if (items.constructor === Array) {
-				path = items.map(o => {
-					return o.path
-				})
-			}
-			let isArray = items.constructor === Array
-			this.$api.batch.delete(JSON.stringify(path)).then(async res => {
-				if (res.data.success === 200) {
-					// update shotcut data
-					let bakData = []
-					let shotcutData = this.$store.state['shortcutData']
-					for (let i = 0; i < shotcutData.length; i++) {
-						let item = shotcutData[i]
-						if (isArray) {
-							// filter delteted item
-							bakData = shotcutData.filter(o => {
-								// has same path
-								if (path.indexOf(o.path) > -1) {
-									try {
-										this.$api.samba.deleteShare(item.extensions.share.id)
-									} catch (e) {
-										console.log(`${e} in delet shortcut`)
-									}
-									return false
-								} else {
-									return true
-								}
-							})
-						} else if (item.path === path[0]) {
-							shotcutData.splice(i, 1)
-							try {
-								this.$api.samba.deleteShare(item.extensions.share.id)
-							} catch (e) {
-								console.log(`${e} in delet shortcut`)
-							}
-						}
-					}
-					if (isArray) {
-						shotcutData = bakData
-					}
-					try {
-						await this.$store.dispatch('SET_SHORTCUT_DATA', shotcutData);
-
-					} catch (e) {
-						console.log(`${e} in deleteItem`)
-					}
-
-					if (this.$refs.dropDown !== undefined) {
-						this.$refs.dropDown.toggle()
-						this.$emit("reload")
-					}
-					try {
-						if (typeof eval(this.reload) === "function") {
-							this.reload()
-						}
-					} catch (e) {
-						console.log("Delete Error");
-					}
-				} else {
-					this.$buefy.toast.open({
-						message: res.data.message,
-						type: 'is-danger'
-					})
-				}
-			})
-		},
-		/**
-		 * @description: Set an image as wallpaper
-		 * @param {*} item
-		 * @return {*}
-		 */
-		setAsWallpaper(item) {
-			const postData = {
-				path: item.path,
-			}
-			this.$api.users.setUserImage(wallpaperConfig, postData).then(res => {
-				if (res.data.success === 200) {
-					const resData = res.data.data
-					let wallpaperData = {
-						path: "SERVER_URL" + resData.online_path + "&time=" + new Date().getTime(),
-						from: "Files"
-					}
-					this.$api.users.setCustomStorage(wallpaperConfig, wallpaperData).then(res => {
-						if (res.data.success === 200) {
-							this.$store.commit('SET_WALLPAPER', {
-								path: res.data.data.path,
-								from: res.data.data.from
-							})
-							this.$buefy.toast.open({
-								message: this.$t('Set wallpaper successfully.'),
-								type: 'is-success'
-							})
-						} else {
-							this.$buefy.toast.open({
-								message: this.$t('Save failed, please try again!'),
-								type: 'is-danger'
-							})
-						}
-
-					})
-				} else {
-					this.$buefy.toast.open({
-						message: this.$t('Save failed, please try again!'),
-						type: 'is-danger'
-					})
-				}
-			})
-			if (this.$refs.dropDown !== undefined) {
-				this.$refs.dropDown.toggle()
-			}
-		},
-
 	},
 
 
@@ -402,7 +166,7 @@ export const mixin = {
 		 * @return {String}
 		 */
 		renderBps(value) {
-			if (null == value || value == '' || value == 0) {
+			if (null == value || value === '' || value === 0) {
 				return "0 bps";
 			}
 			var unitArr = ["bps", "Kbps", "Mbps", "Gbps", "TB", "PB", "EB", "ZB", "YB"];
@@ -417,8 +181,8 @@ export const mixin = {
 
 		/**
 		 * @description: Format size output
-		 * @param {int} value size value
 		 * @return {String}
+		 * @param bytes
 		 */
 		renderSize(bytes) {
 			const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']

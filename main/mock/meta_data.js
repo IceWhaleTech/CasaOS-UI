@@ -11,8 +11,8 @@
  */
 
 // 调用本地文件系统
-const fs = require('fs');
-const path = require('path');
+require('fs');
+require('path');
 const {entry} = require('../config/entry.js')
 
 

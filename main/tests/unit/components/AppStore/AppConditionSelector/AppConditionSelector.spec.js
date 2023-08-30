@@ -8,5 +8,3 @@
 
  */
 
-import {shallowMount}       from '@vue/test-utils'
-import AppConditionSelector from '@/components/AppStore/AppConditionSelector'

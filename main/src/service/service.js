@@ -74,7 +74,7 @@ instance.interceptors.response.use(
 				instance.post("/v1/users/refresh", {
 					refresh_token: refresh_token,
 				}).then(tokenRes => {
-					if (tokenRes.data.success == 200) {
+					if (tokenRes.data.success === 200) {
 						localStorage.setItem("access_token", tokenRes.data.data.access_token);
 						localStorage.setItem("refresh_token", tokenRes.data.data.refresh_token);
 						localStorage.setItem("expires_at", tokenRes.data.data.expires_at);

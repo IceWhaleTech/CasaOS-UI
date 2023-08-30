@@ -20,7 +20,7 @@
 // import appCategories from './appCategories.js';
 // import apps          from './apps.js';
 // import batch         from './batch.js';
-// import container     from './container.js';
+import container     from './container.js';
 import disks         from './disks.js';
 // import file          from './file.js';
 // import folder        from './folder.js';
@@ -39,7 +39,7 @@ export default {
 	// // Apps
 	// appCategories,
 	// apps,
-	// container,
+	container,
 	// // Files
 	// file,
 	// folder,

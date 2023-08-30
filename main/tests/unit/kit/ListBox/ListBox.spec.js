@@ -8,9 +8,9 @@
 
  */
 
-import {shallowMount, mount, createLocalVue} from '@vue/test-utils'
-import ListBox                               from '@/kit/ListBox/ListBox.vue'
-import Buefy                                 from 'buefy'
+import {mount, createLocalVue} from '@vue/test-utils'
+import ListBox                 from '@/kit/ListBox/ListBox.vue'
+import Buefy                   from 'buefy'
 
 const localVue = createLocalVue();
 localVue.use(Buefy);

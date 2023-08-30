@@ -131,50 +131,6 @@ export default {
 
 
 		},
-		async openSyncPanel() {
-			await this.checkSyncStatus()
-			if (!this.isSyncInstalled) {
-				this.$EventBus.$emit(events.OPEN_APP_STORE_AND_GOTO_SYNCTHING);
-			} else {
-				if (this.isSyncRunning) {
-					const arg = `\u003cscript\u003elocation.replace("${this.syncBaseURL}")\u003c/script\u003e`;
-					window.open('javascript:window.name;', arg);
-				} else {
-					this.$buefy.dialog.confirm({
-						title: ' ',
-						message: this.$t('Syncthing is not running, start it?'),
-						hasIcon: true,
-						closeOnConfirm: false,
-						confirmText: this.$t('Start'),
-						cancelText: this.$t('Cancel'),
-						onConfirm: (value, {close}) => {
-							this.$buefy.toast.open({
-								message: this.$t(`Starting Syncthing...`),
-								type: 'is-white'
-							})
-							this.$api.container.updateState(this.syncId, "start").then((res) => {
-								this.isStarting = false
-								if (res.data.success == 200) {
-									this.$EventBus.$emit(events.RELOAD_APP_LIST);
-									const arg = `\u003cscript\u003elocation.replace("${this.syncBaseURL}")\u003c/script\u003e`;
-									setTimeout(() => {
-										close()
-										window.open('javascript:window.name;', arg);
-
-									}, 2000)
-								} else {
-									this.$buefy.toast.open({
-										message: this.$t(`Failed to start, please try again.`),
-										type: 'is-danger'
-									})
-									console.error(`Failed to start, please try again.`)
-								}
-							})
-						}
-					})
-				}
-			}
-		},
 		TODO() {
 
 		}

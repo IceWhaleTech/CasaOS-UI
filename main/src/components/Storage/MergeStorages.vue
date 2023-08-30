@@ -214,9 +214,6 @@ export default {
 		extended() {
 			return this.checkBoxGroup.join(":")
 		},
-		isSplit() {
-			return !this.mergeStorageList.every(item => this.checkBoxGroup.includes(item) || this.storageMissData.includes(item))
-		},
 		disableMergeButton() {
 			// the value is false while checkBox has changed.
 			return isEqual([...this.checkBoxGroup, ...this.checkBoxMissGroup], this.tempCheckBox)
@@ -343,10 +340,7 @@ export default {
 						position: 'is-top',
 						duration: 5000,
 						queue: true,
-						indefinite: false,
-						onDismiss: () => {
-							this.$router.push({name: 'StorageManager'})
-						}
+						indefinite: false
 					})
 					this.$emit("update", true);
 					this.$EventBus.$emit(events.RELOAD_APP_LIST)
@@ -376,15 +370,6 @@ export default {
 		,
 
 		// get the storage list be mounted of mergerfs
-		async getMerageStorage() {
-			try {
-				// business :: merge can't be used
-				this.mergeInfo = await this.$api.local_storage.getMergerfsInfo().then(res => res.data.data[0]["source_volume_uuids"]).catch(() => [])
-				this.checkBoxGroup.push(...this.mergeInfo)
-			} catch (e) {
-				console.log(e)
-			}
-		},
 		cancel() {
 			this.$emit('close')
 		},

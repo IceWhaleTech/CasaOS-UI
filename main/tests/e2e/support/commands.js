@@ -22,7 +22,7 @@
 //
 //
 // -- This is a parent command --
-Cypress.Commands.add("login", (email, password) => {
+Cypress.Commands.add("login", () => {
 	cy.visit('/#/login')
 	cy.get('#username').type('casaos')
 	cy.get('#password').type('casaos')
