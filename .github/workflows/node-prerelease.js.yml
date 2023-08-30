@@ -56,7 +56,7 @@ jobs:
             -   run: yarn add global turbo -W
             -   run: yarn build
             -   run: |
-                    tar -zcvf linux-all-casaos-${{ steps.get_version.outputs.VERSION }}.tar.gz build
+                    tar -zcvf linux-all-icewhale-app-${{ steps.get_version.outputs.VERSION }}.tar.gz build
             -   name: '更新 Update release'
                 uses: zhanghengxin/git-release-private@ice
                 with:
@@ -65,7 +65,7 @@ jobs:
                     gzip: false
                     prerelease: true
                     tag: ${{ steps.get_version.outputs.VERSION }}
-                    files: ./linux-all-casaos-${{ steps.get_version.outputs.VERSION }}.tar.gz
+                    files: ./linux-all-icewhale-app-${{ steps.get_version.outputs.VERSION }}.tar.gz
 
             -   name: Upload to oss
                 id: upload_to_oss
@@ -76,4 +76,4 @@ jobs:
                     region: oss-cn-shanghai
                     bucket: casaos
                     assets: |
-                        ./linux-all-casaos-${{ steps.get_version.outputs.VERSION }}.tar.gz:/IceWhaleTech/CasaOS-UI/releases/download/${{ steps.get_version.outputs.VERSION }}/linux-all-casaos-${{ steps.get_version.outputs.VERSION }}.tar.gz
+                        ./linux-all-icewhale-app-${{ steps.get_version.outputs.VERSION }}.tar.gz:/IceWhaleTech/APP-UI/releases/download/${{ steps.get_version.outputs.VERSION }}/linux-all-icewhale-app-${{ steps.get_version.outputs.VERSION }}.tar.gz
