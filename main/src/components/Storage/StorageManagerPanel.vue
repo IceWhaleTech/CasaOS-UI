@@ -19,7 +19,7 @@
 			</header>
 			<section :class="{ 'b-line': storageData.length > 0 && activeTab === 0}" class="pr-5 pl-5 mt-4 pb-2">
 				<!-- Storage and Disk List Start -->
-				<div v-if="!creatIsShow" class="is-flex-grow-1 is-relative">
+				<div v-if="!CreatingStoragePanelIsShow" class="is-flex-grow-1 is-relative">
 					<div v-if="activeTab == 1" class="create-container">
 						<popper :options="{ placement: 'bottom', modifiers: { offset: { offset: '0,4px' } } }"
 								append-to-body
@@ -82,152 +82,63 @@
 				</div>
 				<!-- Storage and Disk List End -->
 
-				<!-- Create Storage Start -->
-				<div v-if="creatIsShow" class="is-flex-grow-1 is-relative">
-					<ValidationObserver ref="ob1">
-						<ValidationProvider v-slot="{ errors, valid }" name="StorageName" rules="required">
-							<b-field :label="$t('Storage Name')" :message="$t(errors)"
-									 :type="{ 'is-danger': errors[0], 'is-success': valid }">
-								<b-input v-model="createStorageName"
-										 @keyup.native="createStorageName = createStorageName.replace(/[^\w]/g, '')"
-										 @paste.native="createStorageName = createStorageName.replace(/[^\w]/g, '')"></b-input>
-							</b-field>
-						</ValidationProvider>
-
-						<b-field :label="$t('Choose Drive')">
-							<b-select v-model="activeDisk" expanded @input="onDiskChoose">
-								<option v-for="(option, index) in unDiskData" :key="option.path" :value="index">
-									{{ option.name }} ({{ option.model }} - {{ renderSize(option.size) }})
-								</option>
-							</b-select>
-						</b-field>
-
-					</ValidationObserver>
-
-					<article v-if="createStorageType == 'format'" class="message is-danger mt-5">
-						<section class="message-body">
-							<div class="media">
-								<div class="media-left">
-									<span class="icon is-large is-danger"><i class="mdi mdi-alert-circle mdi-48px"></i></span>
-								</div>
-								<div class="media-content">
-									<h3 class="is-size-5">{{ $t('Warning') }}</h3>
-									<p class="is-size-14px">
-										{{ $t("The selected drive will be emptied.") }}<br>
-										{{
-											$t(`Please make sure again that there is no important data on the selected drive
-										that needs to be
-										backed up.`)
-										}}
-									</p>
-								</div>
-							</div>
-						</section>
-					</article>
-
-					<article v-else class="message is-danger mt-5">
-						<section class="message-body">
-							<div class="media">
-								<div class="media-left">
-									<span class="icon is-large is-danger"><i class="mdi mdi-alert-circle mdi-48px"></i></span>
-								</div>
-								<div class="media-content">
-									<h3 class="is-size-5">{{ $t('Attention') }}</h3>
-									<p class="is-size-14px">
-										{{ $t("The drive you select can be used directly as storage.") }}<br>
-										{{
-											$t(`You can also choose to create it after formatting. If formatted, the
-										selected drive will be
-										emptied.`)
-										}}<br>
-										{{
-											$t(`Please make sure again that there is no important data on the selected drive
-										that needs to be
-										backed up.`)
-										}}
-									</p>
-								</div>
-							</div>
-						</section>
-					</article>
-
-				</div>
-				<!-- Create Storage End -->
+				<b-loading v-model="isLoading" :can-cancel="false" :is-full-page="false"></b-loading>
 				<b-loading v-model="isLoading" :can-cancel="false" :is-full-page="false"></b-loading>
 			</section>
 		</template>
-		<section v-if="isCreating" class="modal-card-body ">
-			<div class="installing-warpper mt-6 mb-6">
-				<div class="is-flex is-align-items-center is-justify-content-center mb-5">
-					<lottie-animation :animationData="require('@/assets/ani/creating.json')" :autoPlay="true"
-									  :loop="true"
-									  class="creating-animation"></lottie-animation>
-				</div>
-				<h3 class="title is-4 has-text-centered has-text-weight-light">{{ $t('Creation in progress') }}...</h3>
-			</div>
-		</section>
+
+		<CreatingStoragePanel v-if="CreatingStoragePanelIsShow" :createStorageNameDefault="createStorageNameDefault"
+							  :storageData="storageData" :unDiskData="unDiskData"
+							  @close:CreatingStoragePanel="CreatingStoragePanelIsShow = false"
+							  @refesh:DiskList="getDiskList"></CreatingStoragePanel>
 
 		<!-- Modal-Card Body End -->
-		<!-- Modal-Card Footer Start-->
-		<footer v-if="!isCreating && creatIsShow" class="modal-card-foot is-flex is-align-items-center">
-			<div class="is-flex-grow-1"></div>
-			<div>
-				<b-button :label="$t('Cancel')" rounded @click="showDefault"/>
-				<b-button :label="$t('Format and Create')" :loading="isValiding"
-						  :type="createStorageType == 'format' ? 'is-primary' : ''" rounded
-						  @click="createStorge(true)"/>
-				<b-button v-if="createStorageType == 'mountable'" :label="$t('Create')" :loading="isValiding"
-						  rounded
-						  type="is-primary" @click="createStorge(false)"/>
-			</div>
-		</footer>
-		<!-- Modal-Card Footer End -->
 
 	</div>
 </template>
 
 <script>
-import LottieAnimation                          from "lottie-web-vue";
-import smoothReflow                             from 'vue-smooth-reflow'
-import delay                                    from 'lodash/delay';
-import max                                      from 'lodash/max';
-import {ValidationObserver, ValidationProvider} from "vee-validate";
-import "@/plugins/vee-validate";
-import {mixin}                                  from '@/mixins/mixin';
-import DriveItem                                from './DriveItem.vue'
-import StorageItem                              from './StorageItem.vue'
-import Popper                                   from 'vue-popperjs';
-import StorageCombination                       from "./StorageCombination.vue";
-import cToolTip                                 from '@/components/basicComponents/tooltip/tooltip.vue';
-import events                                   from '@/events/events';
-import MergeStorages                            from '@/components/Storage/MergeStorages.vue';
+import LottieAnimation      from "lottie-web-vue";
+import smoothReflow         from 'vue-smooth-reflow'
+import delay                from 'lodash/delay';
+import max                  from 'lodash/max';
+import {mixin}              from '@/mixins/mixin';
+import DriveItem            from './DriveItem.vue'
+import StorageItem          from './StorageItem.vue'
+import Popper               from 'vue-popperjs';
+import StorageCombination   from "./StorageCombination.vue";
+import cToolTip             from '@/components/basicComponents/tooltip/tooltip.vue';
+import events               from '@/events/events';
+import MergeStorages        from '@/components/Storage/MergeStorages.vue';
+import CreatingStoragePanel from './CreatingStoragePanel.vue';
 
 export default {
 	name: "storage-manager-panel",
 	components: {
 		LottieAnimation,
-		ValidationObserver,
-		ValidationProvider,
 		DriveItem,
 		StorageItem,
 		Popper,
 		StorageCombination,
 		cToolTip: cToolTip,
 		MergeStorages,
+		CreatingStoragePanel,
 	},
 	mixins: [smoothReflow, mixin],
 	data() {
 		return {
 			isLoading: true,
-			creatIsShow: false,
+			CreatingStoragePanelIsShow: false,
+			// Q: what's mean isCreating?
+			// A: isCreating is a flag for creating storage.
 			isCreating: false,
 			isValiding: false,
 			activeTab: 2,
-			activeDisk: "",
-			createStorageName: "",
-			createStoragePath: "",
-			createStorageSeiral: "",
-			createStorageType: "",
+			// activeDisk: "",
+			createStorageNameDefault: "",
+			// createStoragePath: "",
+			// createStorageSeiral: "",
+			// createStorageType: "",
 			diskData: [],
 			unDiskData: [],
 			storageData: [],
@@ -239,7 +150,7 @@ export default {
 
 	computed: {
 		title() {
-			return this.creatIsShow ? this.$t('Create Storage') : this.$t('Storage Manager')
+			return this.CreatingStoragePanelIsShow ? this.$t('Create Storage') : this.$t('Storage Manager')
 		},
 		state_createstorage_operability() {
 			if (this.unDiskData.length == 0) {
@@ -310,8 +221,8 @@ export default {
 	methods: {
 		/**
 		 * @description: Get disk list
-		 * @param {}
 		 * @return {void}
+		 * @param showDefault
 		 */
 		async getDiskList(showDefault = false) {
 
@@ -431,17 +342,17 @@ export default {
 					}
 				})
 				let nextMaxNum = max(diskNumArray) + 1;
-				if (this.unDiskData.length > 0) {
-					this.createStoragePath = this.unDiskData[0].path
-					this.createStorageSeiral = this.unDiskData[0].serial
-					this.createStorageType = this.getDiskType(this.unDiskData[0])
-					this.createStorageName = "Storage" + nextMaxNum
-					this.activeDisk = 0
-				}
+				this.createStorageNameDefault = "Storage" + nextMaxNum
+				// if (this.unDiskData.length > 0) {
+				// 	this.createStoragePath = this.unDiskData[0].path
+				// 	this.createStorageSeiral = this.unDiskData[0].serial
+				// 	this.createStorageType = this.getDiskType(this.unDiskData[0])
+				// 	this.activeDisk = 0
+				// }
 				if (showDefault) {
 					this.showDefault()
-					this.isCreating = false
-					this.createStorageName = ""
+					this.CreatingStoragePanelIsShow = false
+					this.createStorageNameDefault = ""
 				}
 			} catch (error) {
 				console.log(error);
@@ -466,22 +377,12 @@ export default {
 			})
 		},
 
-		/**
-		 * @description: Disk choose handle
-		 * @param {int} evt index of select
-		 * @return {void}
-		 */
-		onDiskChoose(index) {
-			this.createStoragePath = this.unDiskData[index].path
-			this.createStorageSeiral = this.unDiskData[index].serial
-			this.createStorageType = this.getDiskType(this.unDiskData[index])
-		},
 		showDefault() {
-			this.creatIsShow = false
+			this.CreatingStoragePanelIsShow = false
 		},
 		showCreate() {
 			this.$messageBus('storagemanager_createstorage');
-			this.creatIsShow = true
+			this.CreatingStoragePanelIsShow = true
 			let diskNumArray = this.storageData.map(disk => {
 				if (disk.name.includes("Storage")) {
 					let diskNum = disk.name.replace("Storage", "")
@@ -491,7 +392,7 @@ export default {
 				}
 			})
 			let nextMaxNum = max(diskNumArray) + 1;
-			this.createStorageName = "Storage" + nextMaxNum
+			this.createStorageNameDefault = "Storage" + nextMaxNum
 		},
 
 		// show storage settings modal
@@ -530,67 +431,6 @@ export default {
 
 		},
 
-		/**
-		 * @description: Validate form async
-		 * @param {Object} ref ref of component
-		 * @return {Boolean}
-		 */
-		async checkStep(ref) {
-			let isValid = await ref.validate()
-			return isValid
-		},
-		/**
-		 * @description: Create a new storage
-		 * @param {}
-		 * @return {void}
-		 */
-		createStorge(needFormat) {
-			this.isValiding = true
-			this.checkStep(this.$refs.ob1).then(val => {
-				this.isValiding = false
-				if (val) {
-					this.submitCreate(needFormat)
-				}
-			}).catch(err => {
-				this.isValiding = false
-				this.$buefy.toast.open({
-					duration: 3000,
-					message: err.response.data.message,
-					type: 'is-danger'
-				})
-				console.error(err)
-			})
-		},
-		submitCreate(format) {
-			this.isCreating = true
-			let data = {
-				path: this.createStoragePath,
-				name: this.createStorageName,
-				format: format
-			}
-			this.$api.storage.create(data).then((res) => {
-
-				if (res.data.success != 200) {
-					this.isCreating = false;
-					this.$buefy.toast.open({
-						duration: 3000,
-						message: res.data.message,
-						type: 'is-danger'
-					})
-					console.error(res.data.message)
-				} else {
-					this.getDiskList(true);
-				}
-			}).catch(err => {
-				this.isCreating = false
-				this.$buefy.toast.open({
-					duration: 3000,
-					message: err.response.data.message,
-					type: 'is-danger'
-				})
-				console.error(err)
-			})
-		},
 
 		getDiskType(item) {
 			return item.need_format ? "format" : "mountable"
