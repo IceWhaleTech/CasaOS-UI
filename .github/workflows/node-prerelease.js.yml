@@ -52,7 +52,6 @@ jobs:
                     echo github.sha ${{ github.sha }}
                     echo env.VERSION ${{ steps.get_version.outputs.VERSION }}
             - run: yarn
-            -   run: yarn add global turbo -W
             -   run: yarn build
             -   run: |
                     tar -zcvf linux-all-icewhale-app-${{ steps.get_version.outputs.VERSION }}.tar.gz build
