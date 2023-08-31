@@ -1,9 +1,0 @@
-{
-  "configurations": [
-    {
-      "type": "npm",
-      "name": "Npm configuration",
-      "command": "dev"
-    }
-  ]
-}
