@@ -30,6 +30,7 @@ unused-files.json
 .yarn/*
 !.yarn/releases
 !.yarn/plugins
+!.yarn/install-state.gz
 
 # turbo
 .turbo
