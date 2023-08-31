@@ -54,7 +54,7 @@ jobs:
             - run: yarn
             -   run: yarn build
             -   run: |
-                    tar -zcvf linux-all-icewhale-app-${{ steps.get_version.outputs.VERSION }}.tar.gz build
+                    tar -zcvf linux-all-icewhale-app-ui-${{ steps.get_version.outputs.VERSION }}.tar.gz build
             -   name: '更新 Update release'
                 uses: zhanghengxin/git-release-private@ice
                 with:
@@ -63,7 +63,7 @@ jobs:
                     gzip: false
                     prerelease: true
                     tag: ${{ steps.get_version.outputs.VERSION }}
-                    files: ./linux-all-icewhale-app-${{ steps.get_version.outputs.VERSION }}.tar.gz
+                    files: ./linux-all-icewhale-app-ui-${{ steps.get_version.outputs.VERSION }}.tar.gz
 
             -   name: Upload to oss
                 id: upload_to_oss
