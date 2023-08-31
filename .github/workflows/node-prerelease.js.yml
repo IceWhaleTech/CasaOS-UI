@@ -51,8 +51,7 @@ jobs:
                     echo github ${{ github }}
                     echo github.sha ${{ github.sha }}
                     echo env.VERSION ${{ steps.get_version.outputs.VERSION }}
-            -   run: yarn preinstall
-            -   run: yarn install --check-files
+            - run: yarn
             -   run: yarn add global turbo -W
             -   run: yarn build
             -   run: |
