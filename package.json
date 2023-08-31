@@ -18,7 +18,7 @@
     "packages/*"
   ],
   "dependencies": {
-    "turbo": "1.9.1"
+    "turbo": "latest"
   },
   "browserslist": [
     "> 1%",
