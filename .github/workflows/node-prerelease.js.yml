@@ -76,4 +76,4 @@ jobs:
                     region: oss-cn-shanghai
                     bucket: casaos
                     assets: |
-                        ./linux-all-icewhale-app-${{ steps.get_version.outputs.VERSION }}.tar.gz:/IceWhaleTech/APP-UI/releases/download/${{ steps.get_version.outputs.VERSION }}/linux-all-icewhale-app-${{ steps.get_version.outputs.VERSION }}.tar.gz
+                        ./linux-all-icewhale-app-ui-${{ steps.get_version.outputs.VERSION }}.tar.gz:/IceWhaleTech/IceWhale-App-UI/releases/download/${{ steps.get_version.outputs.VERSION }}/linux-all-icewhale-app-ui-${{ steps.get_version.outputs.VERSION }}.tar.gz
