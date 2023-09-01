@@ -88,8 +88,8 @@ module.exports = {
 	devServer: {
 		open: true,
 		port: 8080,
-		inline: false,
-		before: require('./mock/meta_data.js'),
+		// inline: false,
+		// before: require('./mock/meta_data.js'),
 		hot: true,
 		// contentBase: publicPath,
 	}
