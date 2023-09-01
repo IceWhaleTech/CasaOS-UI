@@ -4,9 +4,9 @@
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2022-08-02 12:06:03
  * @FilePath: \CasaOS-UI\src\mixins\IconContainerMixin.js
- * @Description: 
- * 
- * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+ * @Description:
+ *
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
  */
 import has from 'lodash/has'
 
@@ -25,7 +25,7 @@ export default {
 	},
 	computed: {
 		showThumb() {
-			return this.isLoaded && this.hasThumb(this.item)
+			return (this.isLoaded && this.hasThumb(this.item)) || this.isSvg
 		},
 		isShared() {
 			const extensions = this.item.extensions
@@ -38,7 +38,10 @@ export default {
 					return false
 				}
 			}
-		}
+		},
+		isSvg() {
+			return this.getFileExt(this.item) === 'svg'
+		},
 	},
 	watch: {
 		inViewPort(value) {
@@ -63,6 +66,10 @@ export default {
 	},
 	methods: {
 		loadImage() {
+			if (this.isSvg) {
+				this.imageData = this.getFileUrl(this.item)
+				return
+			}
 			var imgUrl = this.getThumbUrl(this.item)
 			var img = new Image();
 			img.crossOrigin = location.host;
