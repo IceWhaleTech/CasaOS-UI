@@ -1,7 +1,7 @@
 <!--
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-28 12:52:02
- * @FilePath: \CasaOS-UI-0.4.2\src\views\Home.vue
+ * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ * @LastEditTime: 2023-09-12 14:33:00
+ * @FilePath: /CasaOS-UI/main/src/views/Home.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -362,6 +362,7 @@ export default {
 .slider-content {
 	min-width: 18rem;
 	position: relative;
+	// height: calc(100vh - 6rem);
 }
 
 @media screen and (max-width: 480px) {

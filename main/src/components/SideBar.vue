@@ -1,7 +1,7 @@
 <!--
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-01-16 17:37:48
- * @FilePath: /CasaOS-UI/src/components/SideBar.vue
+ * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ * @LastEditTime: 2023-09-12 14:33:44
+ * @FilePath: /CasaOS-UI/main/src/components/SideBar.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -183,7 +183,8 @@ export default {
 .side-bar {
 	z-index: 10;
 	margin-right: -15px;
-	height: calc(100vh - 6rem);
+	// height: calc(100vh - 6rem);
+	height: calc(var(--vh, 1vh) * 100 - 6rem);
 	overflow: inherit !important;
 	position: fixed;
 	width: 21.25rem;
