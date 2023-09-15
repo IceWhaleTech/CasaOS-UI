@@ -1,7 +1,7 @@
 <!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/3/17 下午4:43
-  * @FilePath: /CasaOS-UI/src/components/Apps/AppDetailInfo.vue
+ * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ * @LastEditTime: 2023-09-15 11:03:15
+ * @FilePath: /CasaOS-UI/main/src/components/Apps/AppDetailInfo.vue
   * @Description:
   *
   * Copyright (c) 2023 by IceWhale, All Rights Reserved.
@@ -120,9 +120,10 @@
 
 			<!-- App Info  Start -->
 			<div class="app-desc mt-4 mb-6">
-				<p class="is-size-14px mb-2 un-break-word">{{ i18n(appDetailData.tagline) }}</p>
-				<p class="is-size-14px un-break-word">{{ i18n(appDetailData.description) }}</p>
-				<!-- <p class="is-size-14px " v-html="appDetailData.tip"></p> -->
+				<VMdEditor
+					:value="i18n(appDetailData.description)" mode="preview"
+					left-toolbar right-toolbar>
+				</VMdEditor>
 			</div>
 			<!-- App Info  End -->
 
@@ -131,7 +132,7 @@
 </template>
 
 <script>
-
+import VMdEditor   			  from '@kangc/v-md-editor';
 import {Swiper, SwiperSlide}  from 'vue-awesome-swiper'
 import business_OpenThirdApp  from "@/mixins/app/Business_OpenThirdApp";
 import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
@@ -140,7 +141,7 @@ import app                    from "../../App.vue";
 
 export default {
 	name: "AppDetailInfo.vue",
-	components: {Swiper, SwiperSlide},
+	components: {VMdEditor, Swiper, SwiperSlide},
 	mixins: [business_ShowNewAppTag, business_OpenThirdApp, commonI18n],
 	props: {
 		appDetailData: {
@@ -290,5 +291,10 @@ export default {
 		}
 	}
 
+}
+
+.app-detial .modal-card-body .github-markdown-body{
+	padding: 1rem 0 0 0;
+	line-height: 1.25rem;
 }
 </style>
