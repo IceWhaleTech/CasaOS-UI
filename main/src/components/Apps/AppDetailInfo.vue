@@ -1,6 +1,6 @@
 <!--
  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
- * @LastEditTime: 2023-09-15 11:03:15
+ * @LastEditTime: 2023-09-19 18:44:42
  * @FilePath: /CasaOS-UI/main/src/components/Apps/AppDetailInfo.vue
   * @Description:
   *
@@ -279,7 +279,7 @@ export default {
 			max-height: 90vh;
 			border: 3px solid #ccc;
 			border-radius: 1rem;
-			box-shadow: 0 0 40px 0 rgba(255, 255, 255, 0.5);
+			box-shadow: 0 0 40px 0 rgba(255, 255, 255, 0.2);
 		}
 	}
 
