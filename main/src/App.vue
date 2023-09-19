@@ -1,14 +1,14 @@
 <!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2022/12/1 下午7:59
-  * @FilePath: /CasaOS-UI/src/App.vue
+ * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ * @LastEditTime: 2023-09-12 14:34:43
+ * @FilePath: /CasaOS-UI/main/src/App.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
   -->
 
 <template>
-	<div id="app" :class="{'is-dark-bg':$route.meta.showBackground}" class="is-flex is-flex-direction-column">
+	<div id="app" :class="{'is-dark-bg':$route.meta.showBackground}" class="is-flex is-flex-direction-column" :style="{'--vh': vh}" >
 		<template v-if="$route.meta.showBackground">
 			<!-- Background Layer Start -->
 			<casa-wallpaper :animate="isWelcome?initAni:noneAni"></casa-wallpaper>
@@ -100,6 +100,7 @@ export default {
 				classes: "fadeInRight",
 				duration: 700
 			},
+			"vh": "0px"
 		}
 	},
 
@@ -128,6 +129,8 @@ _____             _____ _____
 		this.setInitLang();
 		window.addEventListener('resize', this.onWindowResize);
 		this.onWindowResize();
+		let vh = window.innerHeight * 0.01;
+		this["vh"] = `${vh}px`;
 	},
 	methods: {
 		/**
@@ -160,7 +163,7 @@ _____             _____ _____
 <style lang="scss" scoped>
 #app {
 	width: 100vw;
-	height: 100vh;
+	height: calc(var(--vh,1vh) * 100);
 	font-weight: 400;
 	font-size: 0.875rem;
 	-webkit-font-smoothing: antialiased;

@@ -7,14 +7,6 @@
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
  */
 
-/*
- * @Author: JerryK
- * @Date: 2022-01-20 12:01:07
- * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-09-20 22:46:06
- * @Description:
- * @FilePath: /CasaOS-UI/src/mixins/mixin.js
- */
 import qs    from 'qs'
 import has   from 'lodash/has'
 import union from 'lodash/union'
@@ -44,7 +36,7 @@ const typeMap = {
 	"text-x-cmake": ['makefile', 'cmake', 'dockerfile'],
 	"text-dockerfile": ['dockerfile'],
 }
-const hasThumbType = ['png', 'jpg', 'jpeg', 'bmp', 'gif']
+const hasThumbImageType = ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'svg']
 
 // eslint-disable-next-line no-unused-vars
 const filePanelMap = {
@@ -221,7 +213,7 @@ export const mixin = {
 				return false
 			} else {
 				const ext = this.getFileExt(item);
-				return hasThumbType.indexOf(ext.toLowerCase()) > -1
+				return hasThumbImageType.indexOf(ext.toLowerCase()) > -1
 			}
 
 		},

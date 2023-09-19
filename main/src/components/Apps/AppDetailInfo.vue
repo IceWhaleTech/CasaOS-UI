@@ -1,7 +1,7 @@
 <!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/3/17 下午4:43
-  * @FilePath: /CasaOS-UI/src/components/Apps/AppDetailInfo.vue
+ * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ * @LastEditTime: 2023-09-19 18:44:42
+ * @FilePath: /CasaOS-UI/main/src/components/Apps/AppDetailInfo.vue
   * @Description:
   *
   * Copyright (c) 2023 by IceWhale, All Rights Reserved.
@@ -104,7 +104,8 @@
 						<div class="gap">
 							<b-image :src="item"
 									 :src-fallback="require('@/assets/img/app/swiper_placeholder.png')"
-									 class="border-8" placeholder ratio="16by9"></b-image>
+									 class="border-8"
+									 placeholder ratio="16by9" @click.native="zoomScreenshot(item)"></b-image>
 						</div>
 					</swiper-slide>
 
@@ -119,9 +120,10 @@
 
 			<!-- App Info  Start -->
 			<div class="app-desc mt-4 mb-6">
-				<p class="is-size-14px mb-2 un-break-word">{{ i18n(appDetailData.tagline) }}</p>
-				<p class="is-size-14px un-break-word">{{ i18n(appDetailData.description) }}</p>
-				<!-- <p class="is-size-14px " v-html="appDetailData.tip"></p> -->
+				<VMdEditor
+					:value="i18n(appDetailData.description)" mode="preview"
+					left-toolbar right-toolbar>
+				</VMdEditor>
 			</div>
 			<!-- App Info  End -->
 
@@ -130,7 +132,7 @@
 </template>
 
 <script>
-
+import VMdEditor   			  from '@kangc/v-md-editor';
 import {Swiper, SwiperSlide}  from 'vue-awesome-swiper'
 import business_OpenThirdApp  from "@/mixins/app/Business_OpenThirdApp";
 import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
@@ -139,7 +141,7 @@ import app                    from "../../App.vue";
 
 export default {
 	name: "AppDetailInfo.vue",
-	components: {Swiper, SwiperSlide},
+	components: {VMdEditor, Swiper, SwiperSlide},
 	mixins: [business_ShowNewAppTag, business_OpenThirdApp, commonI18n],
 	props: {
 		appDetailData: {
@@ -237,11 +239,62 @@ export default {
 			let tempO = this.cateMenu.find(item => item.name == name) || {font: 'apps'}
 			return tempO.font;
 		},
+		zoomScreenshot(img) {
+			const customVNode = this.$createElement('div', {
+				class: 'modal-content'
+			}, [
+				this.$createElement('img', {attrs: {src: img}})
+			]);
 
+
+			this.$buefy.modal.open({
+				content: [customVNode],
+				customClass: '_zoom-screenshot',
+				fullScreen: true,
+				hasModalCard: true,
+				destroyOnHide: true,
+				animation: "zoom-in",
+				canCancel: ["escape", "outside", "x"]
+			});
+		}
 	}
 }
 </script>
 
-<style scoped>
+<style lang="scss">
+//The underscore "_" here represents that it is only used in this context and needs to be placed in the modularized CSS later.
+.modal._zoom-screenshot {
 
+	.animation-content {
+		display: flex;
+		align-items: center;
+	}
+
+	.modal-content {
+		width: auto;
+		overflow: unset;
+
+		img {
+			max-width: 90vw;
+			max-height: 90vh;
+			border: 3px solid #ccc;
+			border-radius: 1rem;
+			box-shadow: 0 0 40px 0 rgba(255, 255, 255, 0.2);
+		}
+	}
+
+	.modal-close {
+		position: absolute;
+
+		&::before, &::after {
+			background: #fff;
+		}
+	}
+
+}
+
+.app-detial .modal-card-body .github-markdown-body{
+	padding: 1rem 0 0 0;
+	line-height: 1.25rem;
+}
 </style>

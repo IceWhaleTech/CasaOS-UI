@@ -1,7 +1,7 @@
 <!--
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-01-16 18:59:52
- * @FilePath: /CasaOS-UI/src/components/Storage/StorageManagerPanel.vue
+ * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ * @LastEditTime: 2023-09-19 18:36:09
+ * @FilePath: /CasaOS-UI/main/src/components/Storage/StorageManagerPanel.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -525,26 +525,40 @@ export default {
 				format: format
 			}
 			this.$api.storage.create(data).then((res) => {
-
-				if (res.data.success != 200) {
-					this.isCreating = false;
+				if(res.status === 200){
+					switch(res.data.success){
+						case 200:
+							this.$buefy.toast.open({
+								duration: 3000,
+								message: this.$t("All Storage successed to be created."),
+								type: 'is-success'
+							});
+							break;
+						case 500:
+							this.$buefy.toast.open({
+								duration: 3000,
+								message: this.$t("Some Storage failed to be created."),
+								type: 'is-danger'
+							});
+							break;
+					}
+					this.getDiskList(true);
+				}else{
 					this.$buefy.toast.open({
 						duration: 3000,
-						message: res.data.message,
+						message: this.$t("All Storage failed to be created."),
 						type: 'is-danger'
-					})
-					console.error(res.data.message)
-				} else {
-					this.getDiskList(true);
+					});
 				}
 			}).catch(err => {
-				this.isCreating = false
 				this.$buefy.toast.open({
 					duration: 3000,
 					message: err.response.data.message,
 					type: 'is-danger'
 				})
 				console.error(err)
+			}).finaly(() => {
+				this.isCreating = false
 			})
 		},
 
