@@ -1,7 +1,7 @@
 <!--
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-01-16 18:50:20
- * @FilePath: /CasaOS-UI/src/views/Login.vue
+ * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+ * @LastEditTime: 2023-09-20 16:19:29
+ * @FilePath: /CasaOS-UI/main/src/views/Login.vue
   * @Description:
   *
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
@@ -27,13 +27,13 @@
 					<b-field :label="$t('Username')" :message="errors"
 							 :type="{ 'is-danger': errors[0], 'is-success': valid }"
 							 class="mt-5">
-						<b-input v-model="username" type="text" v-on:keyup.enter.native="handleSubmit(login)"></b-input>
+						<b-input v-model="username" :autofocus="!username" type="text" v-on:keyup.enter.native="handleSubmit(login)"></b-input>
 					</b-field>
 				</ValidationProvider>
 				<ValidationProvider v-slot="{ errors, valid }" name="Password" rules="required|min:5" vid="password">
 					<b-field :label="$t('Password')" :message="$t(errors)"
 							 :type="{ 'is-danger': errors[0], 'is-success': valid }" class="mt-2">
-						<b-input v-model="password" autofocus password-reveal
+						<b-input v-model="password" :autofocus="username" password-reveal
 								 type="password" v-on:keyup.enter.native="handleSubmit(login)"></b-input>
 					</b-field>
 				</ValidationProvider>
@@ -64,12 +64,14 @@ export default {
 		ValidationObserver,
 		ValidationProvider,
 	},
-	mounted() {
+	beforeMount(){
 		let userString = localStorage.getItem('user')
 		if (userString) {
 			let name = JSON.parse(userString).username || '';
 			this.username = name;
 		}
+	},
+	mounted() {
 		document.querySelector('.modal.is-active ')?.remove();
 	},
 
