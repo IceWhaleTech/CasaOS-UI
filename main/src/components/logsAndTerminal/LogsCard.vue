@@ -8,25 +8,16 @@
 
   -->
 
-<!--
- * @Author: JerryK
- * @Date: 2021-10-28 13:56:32
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-15 17:39:01
- * @Description: 
- * @FilePath: /CasaOS-UI/src/components/logsAndTerminal/LogsCard.vue
--->
 <template>
-	<fullscreen :class="{'mt-5':!fullscreen}" :fullscreen.sync="fullscreen" :page-only="true"
-				:teleport="true" class="fullScreen  pl-2 pt-2 pb-2 fdark-bg" @change="onWindowResize">
+	<fullscreen :class="{ 'mt-5': !fullscreen }" :fullscreen.sync="fullscreen" :page-only="true" :teleport="true"
+		class="fullScreen  pl-2 pt-2 pb-2 fdark-bg" @change="onWindowResize">
 		<a class="fullscreen-button" @click="toggleFullScreen">
 			<b-icon :icon="buttonIcon"></b-icon>
 		</a>
-		<div id="logs" :class="[fullscreen ? 'fullheight':'sheight']" class="logs scrollbars">
-			<div contenteditable v-html="data"></div>
+		<div id="logs" :class="[fullscreen ? 'fullheight' : 'sheight']" class="logs scrollbars">
+			<div contenteditable v-html="data" class="content"></div>
 		</div>
 	</fullscreen>
-
 </template>
 
 <script>
@@ -77,7 +68,15 @@ export default {
 			this.state = state;
 			if (state) {
 				this.onWindowResize();
+				this.srcollToBottom();
 			}
+		},
+		srcollToBottom() {
+			let logs = document.getElementById("logs")
+			let logsConetent = document.querySelector("#logs .content");
+			this.$nextTick(() => {
+				logs.scrollTo(0, logsConetent.clientHeight);
+			})
 		}
 	},
 }
@@ -94,7 +93,7 @@ export default {
 	overflow-y: auto;
 	overflow-x: hidden;
 
-	> div {
+	>div {
 		outline: none;
 	}
 
