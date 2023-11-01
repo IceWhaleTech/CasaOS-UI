@@ -16,30 +16,30 @@
 				<ValidationObserver :ref="key + 'valida'">
 					<ValidationProvider v-slot="{ errors, valid }" name="Image" rules="required">
 						<b-field
-							:label="$t('Docker Image') + ' *'"
-							:message="$t(errors)"
-							:type="{ 'is-danger': errors[0], 'is-success': valid }"
-							class="mb-3"
+						:label="$t('Docker Image') + ' *'"
+						:message="$t(errors)"
+						:type="{ 'is-danger': errors[0], 'is-success': valid }"
+						class="mb-3"
 						>
 							<b-input
-								v-model="service.image"
-								:placeholder="$t('e.g.,hello-world:latest')"
-								:readonly="state == 'update'"
-								@input="changeIcon"
+							v-model="service.image"
+							:placeholder="$t('e.g.,hello-world:latest')"
+							:readonly="state == 'update'"
+							@input="changeIcon"
 							></b-input>
 						</b-field>
 					</ValidationProvider>
 
 					<ValidationProvider v-slot="{ errors, valid }" name="composeAppName" rules="required">
 						<b-field
-							:label="$t('App Name') + ' *'"
-							:message="$t(errors)"
-							:type="{ 'is-danger': errors[0], 'is-success': valid }"
+						:label="$t('App Name') + ' *'"
+						:message="$t(errors)"
+						:type="{ 'is-danger': errors[0], 'is-success': valid }"
 						>
 							<b-input
-								:placeholder="$t('e.g.,Your App Name')"
-								:value="ice_i18n(configData['x-casaos'].title)"
-								@blur="E=>configData['x-casaos'].title.custom = E.target._value"
+							:placeholder="$t('e.g.,Your App Name')"
+							:value="ice_i18n(configData['x-casaos'].title)"
+							@blur="E=>configData['x-casaos'].title.custom = E.target._value"
 							></b-input>
 						</b-field>
 					</ValidationProvider>
@@ -48,18 +48,18 @@
 						<p class="control">
 							<span class="button is-static container-icon">
 								<b-image
-									:key="appIcon"
-									:src="appIcon"
-									:src-fallback="require('@/assets/img/app/default.svg')"
-									class="is-32x32"
-									ratio="1by1"
+								:key="appIcon"
+								:src="appIcon"
+								:src-fallback="require('@/assets/img/app/default.svg')"
+								class="is-32x32"
+								ratio="1by1"
 								></b-image>
 							</span>
 						</p>
 						<b-input
-							v-model="configData['x-casaos'].icon"
-							:placeholder="$t('Your custom icon URL')"
-							expanded
+						v-model="configData['x-casaos'].icon"
+						:placeholder="$t('Your custom icon URL')"
+						expanded
 						></b-input>
 					</b-field>
 
@@ -71,18 +71,18 @@
 						<b-input v-model="configData['x-casaos'].hostname" :placeholder="baseUrl"
 								 expanded></b-input>
 						<b-autocomplete
-							v-model="configData['x-casaos'].port_map"
-							:data="bridgePorts(configData.services)"
-							:open-on-focus="true"
-							:placeholder="$t('Port')"
-							class="has-colon"
-							field="hostname"
-							@select="(option) => (portSelected = option)"
+						v-model="configData['x-casaos'].port_map"
+						:data="bridgePorts(configData.services)"
+						:open-on-focus="true"
+						:placeholder="$t('Port')"
+						class="has-colon"
+						field="hostname"
+						@select="(option) => (portSelected = option)"
 						></b-autocomplete>
 						<b-input
-							v-model="configData['x-casaos'].index"
-							:placeholder="'/index.html ' + $t('[Optional]')"
-							expanded
+						v-model="configData['x-casaos'].index"
+						:placeholder="'/index.html ' + $t('[Optional]')"
+						expanded
 						></b-input>
 					</b-field>
 
@@ -92,9 +92,9 @@
 								  @input="v=> patchNetworkValue(v, service)">
 							<optgroup v-for="net in appendNetworks" :key="net.driver" :label="net.driver">
 								<option
-									v-for="(option, index) in net.networks"
-									:key="option.name + index"
-									:value="option.name"
+								v-for="(option, index) in net.networks"
+								:key="option.name + index"
+								:value="option.name"
 								>
 									{{ option.name }}
 								</option>
@@ -103,36 +103,36 @@
 					</b-field>
 
 					<ports
-						v-if="showPorts(service)"
-						v-model="service.ports"
-						:ports_in_use="ports_in_use"
-						:showHostPost="showHostPort(service)"
+					v-if="showPorts(service)"
+					v-model="service.ports"
+					:ports_in_use="ports_in_use"
+					:showHostPost="showHostPort(service)"
 					></ports>
 
 					<volumes-input-group
-						v-model="service.volumes"
-						:label="$t('Volumes')"
-						:message="$t('No volumes now, click “+” to add one.')"
-						type="volume"
+					v-model="service.volumes"
+					:label="$t('Volumes')"
+					:message="$t('No volumes now, click “+” to add one.')"
+					type="volume"
 					>
 					</volumes-input-group>
 					<env-input-group
-						v-model="service.environment"
-						:label="$t('Environment Variables')"
-						:message="$t('No environment variables now, click “+” to add one.')"
+					v-model="service.environment"
+					:label="$t('Environment Variables')"
+					:message="$t('No environment variables now, click “+” to add one.')"
 					>
 					</env-input-group>
 					<input-group
-						:devices="service.devices"
-						:label="$t('Devices')"
-						:message="$t('No devices now, click “+” to add one.')"
-						type="device"
+					:devices="service.devices"
+					:label="$t('Devices')"
+					:message="$t('No devices now, click “+” to add one.')"
+					type="device"
 					>
 					</input-group>
 					<commands-input
-						v-model="service.command"
-						:label="$t('Container Command')"
-						:message="$t('No commands now, click “+” to add one.')"
+					v-model="service.command"
+					:label="$t('Container Command')"
+					:message="$t('No commands now, click “+” to add one.')"
 					>
 					</commands-input>
 
@@ -142,10 +142,10 @@
 
 					<b-field :label="$t('Memory Limit')">
 						<vue-slider
-							:max="totalMemory"
-							:min="memory_min"
-							:value="service.deploy.resources.limits.memory | duplexDisplay"
-							@change="(v) => service.deploy.resources.limits.memory = v"
+						:max="totalMemory"
+						:min="memory_min"
+						:value="service.deploy.resources.limits.memory | duplexDisplay"
+						@change="(v) => service.deploy.resources.limits.memory = v"
 						></vue-slider>
 					</b-field>
 
@@ -167,13 +167,13 @@
 
 					<b-field :label="$t('Container Capabilities (cap-add)')">
 						<b-taginput
-							ref="taginput"
-							v-model="service.cap_add"
-							:allow-new="false"
-							:data="capArray"
-							:open-on-focus="false"
-							autocomplete
-							@typing="getFilteredTags"
+						ref="taginput"
+						v-model="service.cap_add"
+						:allow-new="false"
+						:data="capArray"
+						:open-on-focus="false"
+						autocomplete
+						@typing="getFilteredTags"
 						>
 							<template slot-scope="props">
 								{{ props.option }}
@@ -181,11 +181,11 @@
 							<template #empty> There are no items</template>
 							<template #portSelected="props">
 								<b-tag
-									v-for="(tag, index) in props.tags"
-									:key="index"
-									:tabstop="false"
-									closable
-									@close="$refs.taginput.removeTag(index, $event)"
+								v-for="(tag, index) in props.tags"
+								:key="index"
+								:tabstop="false"
+								closable
+								@close="$refs.taginput.removeTag(index, $event)"
 								>
 									{{ tag }}
 								</b-tag>
@@ -195,14 +195,14 @@
 
 					<ValidationProvider v-slot="{ errors, valid }" name="Name" rules="rfc1123">
 						<b-field
-							:label="$t('Container Hostname')"
-							:message="$t(errors)"
-							:type="{ 'is-danger': errors[0], 'is-success': valid && service.container_name }"
+						:label="$t('Container Hostname')"
+						:message="$t(errors)"
+						:type="{ 'is-danger': errors[0], 'is-success': valid && service.container_name }"
 						>
 							<b-input
-								v-model="service.container_name"
-								:placeholder="$t('Hostname of app container')"
-								value=""
+							v-model="service.container_name"
+							:placeholder="$t('Hostname of app container')"
+							value=""
 							></b-input>
 						</b-field>
 					</ValidationProvider>
@@ -477,20 +477,20 @@ export default {
 			}
 			this.isFetching = true;
 			axios
-				.get(
-					`https://hub.docker.com/api/content/v1/products/search?source=community&q=${name}&page=1&page_size=4`
-				)
-				.then(({data}) => {
-					this.data = [];
-					data.summaries.forEach((item) => this.data.push(item.name));
-				})
-				.catch((error) => {
-					this.data = [];
-					throw error;
-				})
-				.finally(() => {
-					this.isFetching = false;
-				});
+			.get(
+			`https://hub.docker.com/api/content/v1/products/search?source=community&q=${name}&page=1&page_size=4`
+			)
+			.then(({data}) => {
+				this.data = [];
+				data.summaries.forEach((item) => this.data.push(item.name));
+			})
+			.catch((error) => {
+				this.data = [];
+				throw error;
+			})
+			.finally(() => {
+				this.isFetching = false;
+			});
 		}, 500),
 
 		/**
@@ -585,8 +585,8 @@ export default {
 			// Envs
 			if (composeServicesItemInput.environment) {
 				let envArray = Array.isArray(composeServicesItemInput.environment)
-					? composeServicesItemInput.environment
-					: Object.entries(composeServicesItemInput.environment);
+				? composeServicesItemInput.environment
+				: Object.entries(composeServicesItemInput.environment);
 				composeServicesItem.environment = envArray.map((item) => {
 					let ii = typeof item === "object" ? Array.from(item) : item.split("=");
 					return {
@@ -614,12 +614,13 @@ export default {
 			composeServicesItem.ports = this.makeArray(composeServicesItemInput.ports).map((item) => {
 				if (isString(item)) {
 					const regex =
-						/(^(?<host>(\d{1,3}\.){1,3}\d{1,3}):?)?(?<published>(\d{1,5})(-(\d{1,5}))?)(:(?<target>(\d{1,5})(-(\d{1,5}))?))?(\/(?<protocol>.*)$)?/;
+					/(^(?<host>(\d{1,3}\.){3}\d{1,3}):?)?(?<published>(\d{1,5})(-(\d{1,5}))?)(:(?<target>(\d{1,5})(-(\d{1,5}))?))?(\/(?<protocol>.*)$)?/;
 					const match = item.match(regex).groups;
 					const host_ip = match.host;
-					const target = Number(match.target?.split("-")?.[0]);
+					// const target = Number(match.target?.split("-")?.[0]);
+					const target = match.target;
 					const published = match.published;
-					const protocol = match.protocol || "tcp";
+					const protocol = match.protocol;
 
 					return {
 						host_ip,
@@ -631,6 +632,36 @@ export default {
 					return item;
 				}
 			});
+			// merge ports
+			// one protocol. TODO ::need to split composeServicesItem.ports to tcp and udp.
+			let portsTemp = cloneDeep(composeServicesItem.ports);
+			let indexTemp = 0;
+			let ArrayTemp = [];
+			let portsResult = [];
+			if (portsTemp.length > 1) {
+				portsTemp.forEach((item, index) => {
+					if (indexTemp === (item.target - index) && index !== portsTemp.length - 1) {
+						ArrayTemp.push(item.target);
+					} else {
+						indexTemp = item.target - index
+						if (ArrayTemp.length > 2) {
+							portsResult.pop();
+							portsResult.push({
+								target: `${ArrayTemp[0]}-${ArrayTemp[ArrayTemp.length - 1]}`,
+								published: `${ArrayTemp[0]}-${ArrayTemp[ArrayTemp.length - 1]}`,
+								host_ip: item.host_ip,
+								protocol: item.protocol,
+								mode: item.mode,
+							})
+						} else {
+							portsResult.push(item)
+						}
+						ArrayTemp.length = 0;
+					}
+				})
+				composeServicesItem.ports = portsResult
+			}
+
 			isNil(composeServicesItem.ports) && this.$set(composeServicesItem, "ports", []);
 
 			//Volume
@@ -722,9 +753,9 @@ export default {
 			// this.$set(composeServicesItem, "container_name", composeServicesItemInput?.container_name);
 
 			if (
-				composeServicesItemInput.cpu_shares === 0 ||
-				composeServicesItemInput.cpu_shares > 99 ||
-				isNil(composeServicesItemInput.cpu_shares)
+			composeServicesItemInput.cpu_shares === 0 ||
+			composeServicesItemInput.cpu_shares > 99 ||
+			isNil(composeServicesItemInput.cpu_shares)
 			) {
 				this.$set(composeServicesItem, "cpu_shares", 90);
 			} else {
@@ -787,9 +818,9 @@ export default {
 
 			checkArray.forEach((item) => {
 				if (
-					item.keywords.some((keywordsItem) => {
-						return containerPath.includes(keywordsItem);
-					})
+				item.keywords.some((keywordsItem) => {
+					return containerPath.includes(keywordsItem);
+				})
 				) {
 					finalHostPath = rootDir + item.value;
 				}
@@ -849,6 +880,18 @@ export default {
 				})
 
 				ConfigData = merge(yaml, ConfigData)
+				Object.keys(ConfigData.services).forEach(key => {
+					// Convert PORTS long grammar to phrase method
+					ConfigData.services[key].ports = ConfigData.services[key].ports.map((item) => {
+						// - "127.0.0.1:5000-5010:5000-5010/udp"
+						if (item.host_ip) {
+							return `${item.host_ip}:${item.published}:${item.target}/${item.protocol}`;
+						} else {
+							return `${item.published}:${item.target}/${item.protocol}`;
+						}
+					});
+					console.log(ConfigData.services[key].ports, '111111')
+				})
 			}
 
 			// check
@@ -869,8 +912,8 @@ export default {
 			}
 			// 存在
 			if (
-				service.network_mode.toLowerCase().indexOf("macvlan") > -1 ||
-				service.network_mode.indexOf("host") > -1
+			service.network_mode.toLowerCase().indexOf("macvlan") > -1 ||
+			service.network_mode.indexOf("host") > -1
 			) {
 				return false;
 			} else {
@@ -897,7 +940,7 @@ export default {
 			 */
 
 			let published,
-				result = [];
+			result = [];
 			for (let key in services) {
 				let service = services[key]
 				service.ports.map(function (item) {
@@ -940,7 +983,64 @@ export default {
 				const tempNetworks = merge(this.configData?.networks || {}, {[value]: {name: value}})
 				this.$set(this.configData, 'networks', tempNetworks);
 			}
-		}
+		},
+		/*
+		* input: [
+    {
+        "mode": "ingress",
+        "target": 5244,
+        "published": "5244",
+        "protocol": "tcp"
+    },
+    {
+        "mode": "ingress",
+        "target": 5245,
+        "published": "5245",
+        "protocol": "tcp"
+    },
+    {
+        "mode": "ingress",
+        "target": 5246,
+        "published": "5246",
+        "protocol": "tcp"
+    },
+    {
+        "mode": "ingress",
+        "target": 5248,
+        "published": "5248",
+        "protocol": "tcp"
+    },
+    {
+        "mode": "ingress",
+        "target": 5249,
+        "published": "5249",
+        "protocol": "tcp"
+    },
+    {
+        "mode": "ingress",
+        "target": 5250,
+        "published": "5250",
+        "protocol": "tcp"
+    }
+]
+*
+* output:
+* [{
+        "mode": "ingress",
+        "target": 5244-5246,
+        "published": "5244-5246",
+        "protocol": "tcp"
+    },
+     {
+        "mode": "ingress",
+        "target": 5248-5250,
+        "published": "5248-5250",
+        "protocol": "tcp"
+    }]
+		* */
+		cpmpleteRange() {
+
+		},
 
 	},
 	filters: {
