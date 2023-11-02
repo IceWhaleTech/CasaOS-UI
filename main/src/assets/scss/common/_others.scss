@@ -66,9 +66,11 @@
 // Line
 
 .one-line {
+	display: -webkit-box;
+    -webkit-box-orient: vertical;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	white-space: nowrap;
+	// white-space: nowrap;
 	word-break: break-all;
 	-webkit-line-clamp: 1; //行数
 }
