@@ -351,6 +351,12 @@
 				&.video {
 					max-height: calc(100% - 9.875rem);
 				}
+				
+				@media (orientation: landscape) {
+					&.video {
+						max-height: 100%;
+					}
+				}
 			}
 			
 			.v-footer {
