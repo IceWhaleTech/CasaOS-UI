@@ -14,24 +14,22 @@
 			<header class="pl-5 mt-4 pt-1 b-line">
 				<h3 class="title is-3 mb-3">{{ title }}</h3>
 				<div class="close-container">
-					<button class="delete" type="button" @click="$emit('close')"/>
+					<button class="delete" type="button" @click="$emit('close')" />
 				</div>
 			</header>
-			<section :class="{ 'b-line': storageData.length > 0 && activeTab === 0}" class="pr-5 pl-5 mt-4 pb-2 mb-2">
+			<section :class="{ 'b-line': storageData.length > 0 && activeTab === 0 }" class="pr-5 pl-5 mt-4 pb-2 mb-2">
 				<!-- Storage and Disk List Start -->
 				<div v-if="!creatIsShow" class="is-flex-grow-1 is-relative">
 					<div v-if="activeTab == 0" class="create-container">
 
 						<popper :options="{ placement: 'bottom', modifiers: { offset: { offset: '0,4px' } } }"
-								append-to-body
-								trigger="hover">
+							append-to-body trigger="hover">
 							<div v-show="unDiskData.length == 0" class="popper  tooltip-content dark">
 								{{ $t('Please insert a Drive to Create Storage') }}
 							</div>
 							<div slot="reference">
 								<b-button :disabled="unDiskData.length == 0" :type="state_createstorage_operability"
-										  class="o" rounded
-										  size="is-small" @click="showCreate">{{ $t('Create Storage') }}
+									class="o" rounded size="is-small" @click="showCreate">{{ $t('Create Storage') }}
 								</b-button>
 							</div>
 						</popper>
@@ -40,16 +38,22 @@
 					<b-tabs v-model="activeTab" :animated="false">
 						<b-tab-item :label="$t('Storage')" class="scrollbars-light-auto tab-item">
 							<storage-combination :storageData="mergeConbinationsStorageData"
-												 :type="state_mainstorage_operability"
-												 @reload="getDiskList"></storage-combination>
+								:type="state_mainstorage_operability" @reload="getDiskList"></storage-combination>
 							<template v-if="storageData.length">
 								<storage-item v-for="(item, index) in storageData" :key="'storage' + index" :item="item"
-											  @getDiskList="getDiskList"></storage-item>
+									@getDiskList="getDiskList"></storage-item>
+								<storage-item v-for="(item, index) in storageData" :key="'storage1' + index" :item="item"
+									@getDiskList="getDiskList"></storage-item>
+								<storage-item v-for="(item, index) in storageData" :key="'storage2' + index" :item="item"
+									@getDiskList="getDiskList"></storage-item>
+								<storage-item v-for="(item, index) in storageData" :key="'storage3' + index" :item="item"
+									@getDiskList="getDiskList"></storage-item>
+								<storage-item v-for="(item, index) in storageData" :key="'storage4' + index" :item="item"
+									@getDiskList="getDiskList"></storage-item>
 							</template>
 						</b-tab-item>
 						<b-tab-item :label="$t('Drive')" class="scrollbars-light-auto tab-item">
-							<drive-item v-for="(item, index) in diskData" :key="'disk' + index"
-										:item="item"></drive-item>
+							<drive-item v-for="(item, index) in diskData" :key="'disk' + index" :item="item"></drive-item>
 						</b-tab-item>
 					</b-tabs>
 
@@ -61,10 +65,10 @@
 					<ValidationObserver ref="ob1">
 						<ValidationProvider v-slot="{ errors, valid }" name="StorageName" rules="required">
 							<b-field :label="$t('Storage Name')" :message="$t(errors)"
-									 :type="{ 'is-danger': errors[0], 'is-success': valid }">
+								:type="{ 'is-danger': errors[0], 'is-success': valid }">
 								<b-input v-model="createStorageName"
-										 @keyup.native="createStorageName = createStorageName.replace(/[^\w]/g, '')"
-										 @paste.native="createStorageName = createStorageName.replace(/[^\w]/g, '')"></b-input>
+									@keyup.native="createStorageName = createStorageName.replace(/[^\w]/g, '')"
+									@paste.native="createStorageName = createStorageName.replace(/[^\w]/g, '')"></b-input>
 							</b-field>
 						</ValidationProvider>
 
@@ -82,7 +86,8 @@
 						<section class="message-body">
 							<div class="media">
 								<div class="media-left">
-									<span class="icon is-large is-danger"><i class="mdi mdi-alert-circle mdi-48px"></i></span>
+									<span class="icon is-large is-danger"><i
+											class="mdi mdi-alert-circle mdi-48px"></i></span>
 								</div>
 								<div class="media-content">
 									<h3 class="is-size-5">{{ $t('Warning') }}</h3>
@@ -103,7 +108,8 @@
 						<section class="message-body">
 							<div class="media">
 								<div class="media-left">
-									<span class="icon is-large is-danger"><i class="mdi mdi-alert-circle mdi-48px"></i></span>
+									<span class="icon is-large is-danger"><i
+											class="mdi mdi-alert-circle mdi-48px"></i></span>
 								</div>
 								<div class="media-content">
 									<h3 class="is-size-5">{{ $t('Attention') }}</h3>
@@ -133,9 +139,8 @@
 		<section v-if="isCreating" class="modal-card-body ">
 			<div class="installing-warpper mt-6 mb-6">
 				<div class="is-flex is-align-items-center is-justify-content-center mb-5">
-					<lottie-animation :animationData="require('@/assets/ani/creating.json')" :autoPlay="true"
-									  :loop="true"
-									  class="creating-animation"></lottie-animation>
+					<lottie-animation :animationData="require('@/assets/ani/creating.json')" :autoPlay="true" :loop="true"
+						class="creating-animation"></lottie-animation>
 				</div>
 				<h3 class="title is-4 has-text-centered has-text-weight-light">{{ $t('Creation in progress') }}...</h3>
 			</div>
@@ -147,20 +152,18 @@
 			<template v-if="creatIsShow">
 				<div class="is-flex-grow-1"></div>
 				<div>
-					<b-button :label="$t('Cancel')" rounded @click="showDefault"/>
+					<b-button :label="$t('Cancel')" rounded @click="showDefault" />
 					<b-button :label="$t('Format and Create')" :loading="isValiding"
-							  :type="createStorageType == 'format' ? 'is-primary' : ''" rounded
-							  @click="createStorge(true)"/>
-					<b-button v-if="createStorageType == 'mountable'" :label="$t('Create')" :loading="isValiding"
-							  rounded
-							  type="is-primary" @click="createStorge(false)"/>
+						:type="createStorageType == 'format' ? 'is-primary' : ''" rounded @click="createStorge(true)" />
+					<b-button v-if="createStorageType == 'mountable'" :label="$t('Create')" :loading="isValiding" rounded
+						type="is-primary" @click="createStorge(false)" />
 				</div>
 			</template>
 			<template v-else-if="activeTab == 0 && !mergeConbinationsStorageData.length">
 				<div class="is-flex-grow-1"></div>
 				<div class="is-flex is-flex-direction-row-reverse">
 					<b-button :type="state_mainstorage_operability" class="width" rounded size="is-small"
-							  @click="showStorageSettingsModal">{{ $t('Merge Storages') }}
+						@click="showStorageSettingsModal">{{ $t('Merge Storages') }}
 					</b-button>
 					<cToolTip isBlock></cToolTip>
 				</div>
@@ -173,19 +176,19 @@
 </template>
 
 <script>
-import LottieAnimation                          from "lottie-web-vue";
-import smoothReflow                             from 'vue-smooth-reflow'
-import delay                                    from 'lodash/delay';
-import max                                      from 'lodash/max';
-import orderBy                                  from 'lodash/orderBy';
-import {ValidationObserver, ValidationProvider} from "vee-validate";
-import {mixin}                                  from '@/mixins/mixin';
-import DriveItem                                from './DriveItem.vue'
-import StorageItem                              from './StorageItem.vue'
-import Popper                                   from 'vue-popperjs';
-import StorageCombination                       from "./StorageCombination.vue";
-import cToolTip                                 from '@/components/basicComponents/tooltip/tooltip.vue';
-import events                                   from '@/events/events';
+import LottieAnimation from "lottie-web-vue";
+import smoothReflow from 'vue-smooth-reflow'
+import delay from 'lodash/delay';
+import max from 'lodash/max';
+import orderBy from 'lodash/orderBy';
+import { ValidationObserver, ValidationProvider } from "vee-validate";
+import { mixin } from '@/mixins/mixin';
+import DriveItem from './DriveItem.vue'
+import StorageItem from './StorageItem.vue'
+import Popper from 'vue-popperjs';
+import StorageCombination from "./StorageCombination.vue";
+import cToolTip from '@/components/basicComponents/tooltip/tooltip.vue';
+import events from '@/events/events';
 
 export default {
 	name: "storage-manager-panel",
@@ -309,7 +312,7 @@ export default {
 
 			try {
 				// get storage list info
-				const storageRes = await this.$api.storage.list({system: "show"}).then(v => v.data.data)
+				const storageRes = await this.$api.storage.list({ system: "show" }).then(v => v.data.data)
 				let storageArray = []
 				let mergeConbinations = []
 				let testMergeMiss = mergeStorageList
@@ -525,8 +528,8 @@ export default {
 				format: format
 			}
 			this.$api.storage.create(data).then((res) => {
-				if(res.status === 200){
-					switch(res.data.success){
+				if (res.status === 200) {
+					switch (res.data.success) {
 						case 200:
 							this.$buefy.toast.open({
 								duration: 3000,
@@ -543,7 +546,7 @@ export default {
 							break;
 					}
 					this.getDiskList(true);
-				}else{
+				} else {
 					this.$buefy.toast.open({
 						duration: 3000,
 						message: this.$t("All Storage failed to be created."),
@@ -630,5 +633,10 @@ export default {
 <style lang="scss">
 .popper[x-placement^="bottom"].dark .popper__arrow {
 	border-color: transparent transparent #505459 transparent !important;
+}
+
+.modal-card .tab-content {
+	max-height: 60vh;
+	overflow: overlay;
 }
 </style>
