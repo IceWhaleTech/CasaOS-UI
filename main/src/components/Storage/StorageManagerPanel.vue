@@ -11,16 +11,17 @@
 
 		<!-- Modal-Card Body Start -->
 		<template v-if="!isCreating">
-			<header class="pl-5 mt-4 pt-1 b-line">
+			<header class="is-flex-shrink-0 pl-5 mt-4 pt-1 b-line">
 				<h3 class="title is-3 mb-3">{{ title }}</h3>
 				<div class="close-container">
 					<button class="delete" type="button" @click="$emit('close')" />
 				</div>
 			</header>
-			<section :class="{ 'b-line': storageData.length > 0 && activeTab === 0 }" class="pr-5 pl-5 mt-4 pb-2 mb-2">
+			<section :class="{ 'b-line': storageData.length > 0 && activeTab === 0 }"
+				class="is-flex-shrink-1 is-flex pr-5 pl-5 mt-4 pb-2 mb-2" style="overflow-y:hidden">
 				<!-- Storage and Disk List Start -->
-				<div v-if="!creatIsShow" class="is-flex-grow-1 is-relative">
-					<div v-if="activeTab == 0" class="create-container">
+				<div v-if="!creatIsShow" class="is-flex-grow-1 is-flex-shrink-1 is-relative">
+					<div v-if="activeTab == 0" class="create-container" style="overflow-y:hidden">
 
 						<popper :options="{ placement: 'bottom', modifiers: { offset: { offset: '0,4px' } } }"
 							append-to-body trigger="hover">
@@ -148,7 +149,7 @@
 
 		<!-- Modal-Card Body End -->
 		<!-- Modal-Card Footer Start-->
-		<footer v-if="!isCreating" class="modal-card-foot is-flex is-align-items-center">
+		<footer v-if="!isCreating" class="modal-card-foot is-flex-shrink-0 is-flex is-align-items-center">
 			<template v-if="creatIsShow">
 				<div class="is-flex-grow-1"></div>
 				<div>
@@ -574,6 +575,17 @@ export default {
 
 
 <style lang="scss" scoped>
+.modal-card .b-tabs {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	max-height: 100%;
+	::v-deep .tab-content {
+		overflow-y: overlay;
+		max-height: 100%;
+	}
+}
+
 .create-container {
 	height: 2.25rem;
 	position: absolute;
@@ -633,10 +645,5 @@ export default {
 <style lang="scss">
 .popper[x-placement^="bottom"].dark .popper__arrow {
 	border-color: transparent transparent #505459 transparent !important;
-}
-
-.modal-card .tab-content {
-	max-height: 60vh;
-	overflow: overlay;
 }
 </style>
