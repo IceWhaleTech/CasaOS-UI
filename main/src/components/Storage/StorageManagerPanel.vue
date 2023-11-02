@@ -43,14 +43,6 @@
 							<template v-if="storageData.length">
 								<storage-item v-for="(item, index) in storageData" :key="'storage' + index" :item="item"
 									@getDiskList="getDiskList"></storage-item>
-								<storage-item v-for="(item, index) in storageData" :key="'storage1' + index" :item="item"
-									@getDiskList="getDiskList"></storage-item>
-								<storage-item v-for="(item, index) in storageData" :key="'storage2' + index" :item="item"
-									@getDiskList="getDiskList"></storage-item>
-								<storage-item v-for="(item, index) in storageData" :key="'storage3' + index" :item="item"
-									@getDiskList="getDiskList"></storage-item>
-								<storage-item v-for="(item, index) in storageData" :key="'storage4' + index" :item="item"
-									@getDiskList="getDiskList"></storage-item>
 							</template>
 						</b-tab-item>
 						<b-tab-item :label="$t('Drive')" class="scrollbars-light-auto tab-item">
