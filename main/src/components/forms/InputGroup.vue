@@ -73,7 +73,6 @@ const props = defineProps({
 
 const items = computed({
 	get() {
-		console.log(props.devices)
 		return props.devices
 	},
 	set(val) {

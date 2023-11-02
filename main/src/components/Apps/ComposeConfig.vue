@@ -10,57 +10,35 @@
 
 <template>
 	<section style="height: calc(100vh - 12.8125rem)">
-		<b-tabs class="has-text-full-03" style="height:100%"
-				@input="key=> $emit('updateDockerComposeServiceName', key)">
+		<b-tabs class="has-text-full-03" style="height:100%" @input="key => $emit('updateDockerComposeServiceName', key)">
 			<b-tab-item v-for="(service, key) in configData.services" :key="key" :label="key" :value="key">
 				<ValidationObserver :ref="key + 'valida'">
 					<ValidationProvider v-slot="{ errors, valid }" name="Image" rules="required">
-						<b-field
-							:label="$t('Docker Image') + ' *'"
-							:message="$t(errors)"
-							:type="{ 'is-danger': errors[0], 'is-success': valid }"
-							class="mb-3"
-						>
-							<b-input
-								v-model="service.image"
-								:placeholder="$t('e.g.,hello-world:latest')"
-								:readonly="state == 'update'"
-								@input="changeIcon"
-							></b-input>
+						<b-field :label="$t('Docker Image') + ' *'" :message="$t(errors)"
+							:type="{ 'is-danger': errors[0], 'is-success': valid }" class="mb-3">
+							<b-input v-model="service.image" :placeholder="$t('e.g.,hello-world:latest')"
+								:readonly="state == 'update'" @input="changeIcon"></b-input>
 						</b-field>
 					</ValidationProvider>
 
 					<ValidationProvider v-slot="{ errors, valid }" name="composeAppName" rules="required">
-						<b-field
-							:label="$t('App Name') + ' *'"
-							:message="$t(errors)"
-							:type="{ 'is-danger': errors[0], 'is-success': valid }"
-						>
-							<b-input
-								:placeholder="$t('e.g.,Your App Name')"
-								:value="ice_i18n(configData['x-casaos'].title)"
-								@blur="E=>configData['x-casaos'].title.custom = E.target._value"
-							></b-input>
+						<b-field :label="$t('App Name') + ' *'" :message="$t(errors)"
+							:type="{ 'is-danger': errors[0], 'is-success': valid }">
+							<b-input :placeholder="$t('e.g.,Your App Name')" :value="ice_i18n(configData['x-casaos'].title)"
+								@blur="E => configData['x-casaos'].title.custom = E.target._value"></b-input>
 						</b-field>
 					</ValidationProvider>
 
 					<b-field v-if="key === firstAppName" :label="$t('Icon URL')">
 						<p class="control">
 							<span class="button is-static container-icon">
-								<b-image
-									:key="appIcon"
-									:src="appIcon"
-									:src-fallback="require('@/assets/img/app/default.svg')"
-									class="is-32x32"
-									ratio="1by1"
-								></b-image>
+								<b-image :key="appIcon" :src="appIcon"
+									:src-fallback="require('@/assets/img/app/default.svg')" class="is-32x32"
+									ratio="1by1"></b-image>
 							</span>
 						</p>
-						<b-input
-							v-model="configData['x-casaos'].icon"
-							:placeholder="$t('Your custom icon URL')"
-							expanded
-						></b-input>
+						<b-input v-model="configData['x-casaos'].icon" :placeholder="$t('Your custom icon URL')"
+							expanded></b-input>
 					</b-field>
 
 					<b-field v-if="key === firstAppName" label="Web UI">
@@ -68,72 +46,40 @@
 							<option value="http">http://</option>
 							<option value="https">https://</option>
 						</b-select>
-						<b-input v-model="configData['x-casaos'].hostname" :placeholder="baseUrl"
-								 expanded></b-input>
-						<b-autocomplete
-							v-model="configData['x-casaos'].port_map"
-							:data="bridgePorts(configData.services)"
-							:open-on-focus="true"
-							:placeholder="$t('Port')"
-							class="has-colon"
-							field="hostname"
-							@select="(option) => (portSelected = option)"
-						></b-autocomplete>
-						<b-input
-							v-model="configData['x-casaos'].index"
-							:placeholder="'/index.html ' + $t('[Optional]')"
-							expanded
-						></b-input>
+						<b-input v-model="configData['x-casaos'].hostname" :placeholder="baseUrl" expanded></b-input>
+						<b-autocomplete v-model="configData['x-casaos'].port_map" :data="bridgePorts(configData.services)"
+							:open-on-focus="true" :placeholder="$t('Port')" class="has-colon" field="hostname"
+							@select="(option) => (portSelected = option)"></b-autocomplete>
+						<b-input v-model="configData['x-casaos'].index" :placeholder="'/index.html ' + $t('[Optional]')"
+							expanded></b-input>
 					</b-field>
 
 					<b-field :label="$t('Network')">
-						<b-select :value="service.network_mode || service?.networks?.[0]" expanded
-								  placeholder="Select"
-								  @input="v=> patchNetworkValue(v, service)">
+						<b-select :value="service.network_mode || service?.networks?.[0]" expanded placeholder="Select"
+							@input="v => patchNetworkValue(v, service)">
 							<optgroup v-for="net in appendNetworks" :key="net.driver" :label="net.driver">
-								<option
-									v-for="(option, index) in net.networks"
-									:key="option.name + index"
-									:value="option.name"
-								>
+								<option v-for="(option, index) in net.networks" :key="option.name + index"
+									:value="option.name">
 									{{ option.name }}
 								</option>
 							</optgroup>
 						</b-select>
 					</b-field>
 
-					<ports
-						v-if="showPorts(service)"
-						v-model="service.ports"
-						:ports_in_use="ports_in_use"
-						:showHostPost="showHostPort(service)"
-					></ports>
+					<ports v-if="showPorts(service)" v-model="service.ports" :ports_in_use="ports_in_use"
+						:showHostPost="showHostPort(service)"></ports>
 
-					<volumes-input-group
-						v-model="service.volumes"
-						:label="$t('Volumes')"
-						:message="$t('No volumes now, click “+” to add one.')"
-						type="volume"
-					>
+					<volumes-input-group v-model="service.volumes" :label="$t('Volumes')"
+						:message="$t('No volumes now, click “+” to add one.')" type="volume">
 					</volumes-input-group>
-					<env-input-group
-						v-model="service.environment"
-						:label="$t('Environment Variables')"
-						:message="$t('No environment variables now, click “+” to add one.')"
-					>
+					<env-input-group v-model="service.environment" :label="$t('Environment Variables')"
+						:message="$t('No environment variables now, click “+” to add one.')">
 					</env-input-group>
-					<input-group
-						:devices="service.devices"
-						:label="$t('Devices')"
-						:message="$t('No devices now, click “+” to add one.')"
-						type="device"
-					>
+					<input-group :devices="service.devices" :label="$t('Devices')"
+						:message="$t('No devices now, click “+” to add one.')" type="device">
 					</input-group>
-					<commands-input
-						v-model="service.command"
-						:label="$t('Container Command')"
-						:message="$t('No commands now, click “+” to add one.')"
-					>
+					<commands-input v-model="service.command" :label="$t('Container Command')"
+						:message="$t('No commands now, click “+” to add one.')">
 					</commands-input>
 
 					<b-field :label="$t('Privileged')">
@@ -141,12 +87,9 @@
 					</b-field>
 
 					<b-field :label="$t('Memory Limit')">
-						<vue-slider
-							:max="totalMemory"
-							:min="memory_min"
+						<vue-slider :max="totalMemory" :min="memory_min"
 							:value="service.deploy.resources.limits.memory | duplexDisplay"
-							@change="(v) => service.deploy.resources.limits.memory = v"
-						></vue-slider>
+							@change="(v) => service.deploy.resources.limits.memory = v"></vue-slider>
 					</b-field>
 
 					<b-field :label="$t('CPU Shares')">
@@ -166,27 +109,15 @@
 					</b-field>
 
 					<b-field :label="$t('Container Capabilities (cap-add)')">
-						<b-taginput
-							ref="taginput"
-							v-model="service.cap_add"
-							:allow-new="false"
-							:data="capArray"
-							:open-on-focus="false"
-							autocomplete
-							@typing="getFilteredTags"
-						>
+						<b-taginput ref="taginput" v-model="service.cap_add" :allow-new="false" :data="capArray"
+							:open-on-focus="false" autocomplete @typing="getFilteredTags">
 							<template slot-scope="props">
 								{{ props.option }}
 							</template>
 							<template #empty> There are no items</template>
 							<template #portSelected="props">
-								<b-tag
-									v-for="(tag, index) in props.tags"
-									:key="index"
-									:tabstop="false"
-									closable
-									@close="$refs.taginput.removeTag(index, $event)"
-								>
+								<b-tag v-for="(tag, index) in props.tags" :key="index" :tabstop="false" closable
+									@close="$refs.taginput.removeTag(index, $event)">
 									{{ tag }}
 								</b-tag>
 							</template>
@@ -194,16 +125,10 @@
 					</b-field>
 
 					<ValidationProvider v-slot="{ errors, valid }" name="Name" rules="rfc1123">
-						<b-field
-							:label="$t('Container Hostname')"
-							:message="$t(errors)"
-							:type="{ 'is-danger': errors[0], 'is-success': valid && service.container_name }"
-						>
-							<b-input
-								v-model="service.container_name"
-								:placeholder="$t('Hostname of app container')"
-								value=""
-							></b-input>
+						<b-field :label="$t('Container Hostname')" :message="$t(errors)"
+							:type="{ 'is-danger': errors[0], 'is-success': valid && service.container_name }">
+							<b-input v-model="service.container_name" :placeholder="$t('Hostname of app container')"
+								value=""></b-input>
 						</b-field>
 					</ValidationProvider>
 				</ValidationObserver>
@@ -213,27 +138,28 @@
 </template>
 
 <script>
-import debounce                                 from "lodash/debounce";
-import axios                                    from "axios";
-import {ValidationObserver, ValidationProvider} from "vee-validate";
+import debounce from "lodash/debounce";
+import axios from "axios";
+import { ValidationObserver, ValidationProvider } from "vee-validate";
 import "@/plugins/vee-validate";
-import Ports                                    from "../forms/Ports.vue";
-import EnvInputGroup                            from "../forms/EnvInputGroup.vue";
-import CommandsInput                            from "../forms/CommandsInput.vue";
-import InputGroup                               from "../forms/InputGroup.vue";
-import VolumesInputGroup                        from "@/components/forms/VolumesInputGroup.vue";
-import VueSlider                                from "vue-slider-component";
+import Ports from "../forms/Ports.vue";
+import EnvInputGroup from "../forms/EnvInputGroup.vue";
+import CommandsInput from "../forms/CommandsInput.vue";
+import InputGroup from "../forms/InputGroup.vue";
+import VolumesInputGroup from "@/components/forms/VolumesInputGroup.vue";
+import VueSlider from "vue-slider-component";
 import "vue-slider-component/theme/default.css";
-import YAML                                     from "yaml";
-import lowerFirst                               from "lodash/lowerFirst";
-import isNil                                    from "lodash/isNil";
-import {isNumber, isString}                     from "lodash/lang";
-import cloneDeep                                from "lodash/cloneDeep";
-import merge                                    from "lodash/merge";
-import {ice_i18n}                               from "@/mixins/base/common-i18n";
-import {nanoid}                                 from "nanoid";
-import find                                     from "lodash/find";
-import isArray                                  from "lodash/isArray";
+import YAML from "yaml";
+import lowerFirst from "lodash/lowerFirst";
+import isNil from "lodash/isNil";
+import { isNumber, isString } from "lodash/lang";
+import cloneDeep from "lodash/cloneDeep";
+import merge from "lodash/merge";
+import { ice_i18n } from "@/mixins/base/common-i18n";
+import { nanoid } from "nanoid";
+import find from "lodash/find";
+import isArray from "lodash/isArray";
+import isEmpty from "lodash/isEmpty";
 
 const data = [
 	"AUDIT_CONTROL",
@@ -321,7 +247,7 @@ export default {
 				},
 			},
 			// error info
-			ports_in_use: {udp: [], tcp: []},
+			ports_in_use: { udp: [], tcp: [] },
 
 			memory_min: 256,
 			// other level_config
@@ -381,7 +307,7 @@ export default {
 		errInfo: {
 			type: Object,
 			default: {
-				ports_in_use: {udp: [], tcp: []},
+				ports_in_use: { udp: [], tcp: [] },
 			}
 		},
 	},
@@ -480,7 +406,7 @@ export default {
 				.get(
 					`https://hub.docker.com/api/content/v1/products/search?source=community&q=${name}&page=1&page_size=4`
 				)
-				.then(({data}) => {
+				.then(({ data }) => {
 					this.data = [];
 					data.summaries.forEach((item) => this.data.push(item.name));
 				})
@@ -628,7 +554,12 @@ export default {
 						protocol,
 					};
 				} else {
-					return item;
+					return {
+						host_ip: "",
+						target: item+"",
+						published: item+"",
+						protocol: "tcp",
+					};
 				}
 			});
 			isNil(composeServicesItem.ports) && this.$set(composeServicesItem, "ports", []);
@@ -640,6 +571,9 @@ export default {
 					// 1\ replace variable in string for example: ${VOLUME_PATH}:/data
 					// this.volumes 可能为空。
 					Object.keys(this.volumes || {}).map((key) => {
+						if (isEmpty(this.volumes[key])) {
+							return item = item.replace(key, "/");
+						}
 						item = item.replace(key, this.volumes[key] || "");
 					});
 					// 2\ split string
@@ -745,7 +679,7 @@ export default {
 					newMemory = memory.replace(/[Gg]/, "") * 1024;
 				}
 			}
-			let ob = merge(composeServicesItemInput?.deploy, {resources: {limits: {memory: newMemory || this.totalMemory}}})
+			let ob = merge(composeServicesItemInput?.deploy, { resources: { limits: { memory: newMemory || this.totalMemory } } })
 			this.$set(composeServicesItem, "deploy", ob);
 
 			return composeServicesItem;
@@ -902,13 +836,17 @@ export default {
 				let service = services[key]
 				service.ports.map(function (item) {
 					// TODO 需要健壮一下
+					if (isNumber(item)) {
+						result.push(item);
+						return;
+					}
 					const TEMPORARY_PORT_INFORMATION = item.published?.split(":");
 					if (TEMPORARY_PORT_INFORMATION.length > 1) {
 						published = TEMPORARY_PORT_INFORMATION[1];
 					} else {
 						published = TEMPORARY_PORT_INFORMATION[0];
 					}
-					published = published.split("-");
+					published = published?.split("-");
 
 					if (published.length > 1) {
 						let start = published[0];
@@ -937,7 +875,7 @@ export default {
 			} else {
 				this.$delete(service, 'network_mode')
 				this.$set(service, 'networks', [value])
-				const tempNetworks = merge(this.configData?.networks || {}, {[value]: {name: value}})
+				const tempNetworks = merge(this.configData?.networks || {}, { [value]: { name: value } })
 				this.$set(this.configData, 'networks', tempNetworks);
 			}
 		}
@@ -959,7 +897,6 @@ export default {
 }
 </style>
 <style lang="scss" scoped>
-
 .b-tabs {
 	margin-bottom: 0;
 
