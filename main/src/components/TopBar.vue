@@ -8,14 +8,12 @@
   -->
 
 <template>
-
 	<div class="navbar top-bar is-flex is-align-items-center _fixed-height">
 		<div class="navbar-brand ml-4 _fixed-height">
 
 			<!-- SideBar Button Start -->
 			<div id="sidebar-btn" class="is-flex is-align-items-center mr-3 ml-3">
-				<b-tooltip :active="!$store.state.isMobile" :label="sidebarIconLabel" position="is-right"
-						   type="is-dark">
+				<b-tooltip :active="!$store.state.isMobile" :label="sidebarIconLabel" position="is-right" type="is-dark">
 					<div role="button" @click="showSideBar">
 						<b-icon :icon="sidebarIcon" class="picon" size="is-20"></b-icon>
 					</div>
@@ -26,8 +24,8 @@
 			<!-- Account Dropmenu Start -->
 			<b-dropdown animation="fade1" aria-role="list" class="navbar-item" @active-change="getUserInfo">
 				<template #trigger>
-					<b-tooltip :active="!$store.state.isMobile" :label="$t('Account')"
-							   position="is-right" type="is-dark" @click.native="$messageBus('account_setting')">
+					<b-tooltip :active="!$store.state.isMobile" :label="$t('Account')" position="is-right" type="is-dark"
+						@click.native="$messageBus('account_setting')">
 						<p role="button">
 							<b-icon class="picon" icon="account" pack="casa" size="is-20"></b-icon>
 						</p>
@@ -40,7 +38,7 @@
 					<div class="is-flex is-align-items-center item">
 						<div class="is-flex is-align-items-center is-flex-grow-1">
 							<b-image :src="require('@/assets/img/account/default-avatar.svg')" class="is-40x40 mr-3"
-									 rounded></b-image>
+								rounded></b-image>
 							<b>{{ userInfo.username }}</b>
 						</div>
 						<div>
@@ -55,8 +53,8 @@
 						</div>
 						<div>
 							<b-button class="ml-2 " rounded size="is-small" type="is-dark" @click="logout">{{
-									$t('Logout')
-								}}
+								$t('Logout')
+							}}
 							</b-button>
 						</div>
 					</div>
@@ -66,14 +64,13 @@
 			<!-- Account Dropmenu End -->
 
 			<!-- Settings Dropmenu Start -->
-			<b-dropdown ref="settingsDrop" animation="fade1" aria-role="list" class="navbar-item"
-						@active-change="onOpen">
+			<b-dropdown ref="settingsDrop" animation="fade1" aria-role="list" class="navbar-item" @active-change="onOpen">
 				<template #trigger>
-					<b-tooltip :active="!$store.state.isMobile" :label="$t('Settings')" position="is-right"
-							   type="is-dark" @click.native="$messageBus('dashboardsetting')">
+					<b-tooltip :active="!$store.state.isMobile" :label="$t('Settings')" position="is-right" type="is-dark"
+						@click.native="$messageBus('dashboardsetting')">
 						<p role="button">
 							<b-icon :class="{ 'update-icon-dot': updateInfo.need_update }" class="picon" icon="tune"
-									pack="casa" size="is-20"></b-icon>
+								pack="casa" size="is-20"></b-icon>
 						</p>
 					</b-tooltip>
 				</template>
@@ -81,19 +78,17 @@
 				<b-dropdown-item :focusable="false" aria-role="menu-item" class="pr-0 pl-0 pt-0 pb-0" custom>
 					<h2 class="_title mr-2 mt-3 mb-3 ml-2 pr-4 pl-4">{{ $t('Settings') }}</h2>
 
-					<hr class="mt-0 mb-4"/>
+					<hr class="mt-0 mb-4" />
 					<!-- Search Engine Switch Start  -->
-					<div
-						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+					<div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="search-manage" pack="casa" size="is-20"></b-icon>
 							{{ $t('Show Search Bar') }}
 						</div>
 						<div>
 							<b-field>
-								<b-switch v-model="barData.search_switch"
-										  class="is-flex-direction-row-reverse mr-0 _small"
-										  type="is-dark" @input="saveData"></b-switch>
+								<b-switch v-model="barData.search_switch" class="is-flex-direction-row-reverse mr-0 _small"
+									type="is-dark" @input="saveData"></b-switch>
 							</b-field>
 						</div>
 					</div>
@@ -101,7 +96,7 @@
 
 					<!-- Search Engine Start -->
 					<div v-if="barData.search_switch"
-						 class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="magnifier" pack="casa" size="is-20"></b-icon>
 							{{ $t('Search Engine') }}
@@ -109,10 +104,10 @@
 						<div>
 							<b-field>
 								<b-select v-model="barData.search_engine" class="set-select" size="is-small"
-										  @input="saveData">
+									@input="saveData">
 									<option v-for="item in searchEngines" :key="item.name" :value="item.url">{{
-											item.name
-										}}
+										item.name
+									}}
 									</option>
 								</b-select>
 							</b-field>
@@ -121,8 +116,7 @@
 					<!-- Search Engine End -->
 
 					<!-- Language Start -->
-					<div
-						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+					<div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="language" pack="casa" size="is-20"></b-icon>
 							{{ $t('Language') }}
@@ -131,8 +125,8 @@
 							<b-field>
 								<b-select v-model="barData.lang" class="set-select" size="is-small" @input="saveData">
 									<option v-for="lang in languages" :key="lang.lang" :value="lang.lang">{{
-											lang.name
-										}}
+										lang.name
+									}}
 									</option>
 								</b-select>
 							</b-field>
@@ -141,8 +135,7 @@
 					<!-- Language End -->
 
 					<!-- WebUI Port Start -->
-					<div
-						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+					<div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="port" pack="casa" size="is-20"></b-icon>
 							{{ $t('WebUI Port') }}
@@ -152,24 +145,23 @@
 						</div>
 						<div class="ml-2">
 							<b-button rounded size="is-small" type="is-dark" @click="showPortPanel">{{
-									$t('Change')
-								}}
+								$t('Change')
+							}}
 							</b-button>
 						</div>
 					</div>
 					<!-- WebUI Port End -->
 
 					<!-- Background Start -->
-					<div
-						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+					<div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="picture" pack="casa" size="is-20"></b-icon>
 							{{ $t('Wallpaper') }}
 						</div>
 						<div class="ml-2">
 							<b-button rounded size="is-small" type="is-dark" @click="showChangeWallpaperModal">{{
-									$t('Change')
-								}}
+								$t('Change')
+							}}
 							</b-button>
 						</div>
 					</div>
@@ -177,7 +169,7 @@
 
 					<!--  Show other Docker container app(s) Switch Start  -->
 					<div v-if="this.$store.state.notImportList.length > 0"
-						 class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="docker" pack="casa" size="is-20"></b-icon>
 							{{ $t('Show other Docker container app(s)') }}
@@ -185,16 +177,15 @@
 						<div>
 							<b-field>
 								<b-switch v-model="barData.existing_apps_switch"
-										  class="is-flex-direction-row-reverse mr-0 _small" type="is-dark"
-										  @input="saveData"></b-switch>
+									class="is-flex-direction-row-reverse mr-0 _small" type="is-dark"
+									@input="saveData"></b-switch>
 							</b-field>
 						</div>
 					</div>
 					<!--  Show other Docker container app(s) Switch End  -->
 
 					<!--  Show other Docker container app(s) Switch Start  -->
-					<div
-						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+					<div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="news" pack="casa" size="is-20"></b-icon>
 							{{ $t('Show news feed from CasaOS Blog') }}
@@ -202,15 +193,14 @@
 						<div>
 							<b-field>
 								<b-switch v-model="rss_switch" :native-value="barData.rss_switch"
-										  class="is-flex-direction-row-reverse mr-0 _small" type="is-dark"
-										  @input="rssConfirm"></b-switch>
+									class="is-flex-direction-row-reverse mr-0 _small" type="is-dark"
+									@input="rssConfirm"></b-switch>
 							</b-field>
 						</div>
 					</div>
 					<!--  Show other Docker container app(s) Switch End  -->
 					<!--  Recommended modules Switch Start  -->
-					<div
-						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+					<div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="app-switch" pack="casa" size="is-20"></b-icon>
 							{{ $t('Show Recommended Apps') }}
@@ -218,29 +208,28 @@
 						<div>
 							<b-field>
 								<b-switch v-model="barData.recommend_switch"
-										  class="is-flex-direction-row-reverse mr-0 _small"
-										  type="is-dark" @input="saveData"></b-switch>
+									class="is-flex-direction-row-reverse mr-0 _small" type="is-dark"
+									@input="saveData"></b-switch>
 							</b-field>
 						</div>
 					</div>
 					<!-- Recommended modules Switch End  -->
 
 					<!-- Automount USB Drive Start  -->
-					<div
-						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+					<div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="usb" pack="casa" size="is-20"></b-icon>
 							{{ $t('Automount USB Drive') }}
 							<b-tooltip v-if="isRaspberryPi"
-									   :label="$t('Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB')"
-									   multilined type="is-dark">
+								:label="$t('Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB')"
+								multilined type="is-dark">
 								<b-icon class="ml-1" icon="help-circle-outline" size="is-small"></b-icon>
 							</b-tooltip>
 						</div>
 						<div>
 							<b-field>
 								<b-switch v-model="autoUsbMount" class="is-flex-direction-row-reverse mr-0 _small"
-										  type="is-dark" @input="usbAutoMount"></b-switch>
+									type="is-dark" @input="usbAutoMount"></b-switch>
 							</b-field>
 						</div>
 					</div>
@@ -265,27 +254,24 @@
 						<div v-else class="is-flex is-align-items-center is-justify-content-end update-container pl-5 ">
 							<div class="is-flex-grow-1 is-size-7">{{ $t(updateText) }}</div>
 							<b-button class="ml-2" rounded size="is-small" type="is-dark" @click="showUpdateModal">{{
-									$t('Update')
-								}}
+								$t('Update')
+							}}
 							</b-button>
 						</div>
 					</div>
 					<!-- Update End -->
 
-					<hr class="mt-4 mb-2"/>
+					<hr class="mt-4 mb-2" />
 					<!-- Restart or Shutdown Start -->
 					<div class="is-flex is-align-content-center is-justify-content-center _box ml-2 mr-2">
-						<div
-							class="mr-1 column is-half is-flex is-align-items-center is-justify-content-center _polymorphic _is-radius _is-normal"
+						<div class="mr-1 column is-half is-flex is-align-items-center is-justify-content-center _polymorphic _is-radius _is-normal"
 							@click="power('Restart')">
 							<b-icon class="mr-1" icon="restart" pack="casa"></b-icon>
 							{{ $t(restart) }}
 						</div>
-						<div
-							class="ml-1 column is-half is-flex is-align-items-center is-justify-content-center _polymorphic-attention _has-text-attention _is-radius"
+						<div class="ml-1 column is-half is-flex is-align-items-center is-justify-content-center _polymorphic-attention _has-text-attention _is-radius"
 							@click="power('Shutdown')">
-							<b-icon class="mr-1" custom-class="_has-text-attention" icon="shutdown"
-									pack="casa"></b-icon>
+							<b-icon class="mr-1" custom-class="_has-text-attention" icon="shutdown" pack="casa"></b-icon>
 							{{ $t(shutdown) }}
 						</div>
 					</div>
@@ -298,7 +284,7 @@
 			<!-- Terminal  Start -->
 			<div class="is-flex is-align-items-center ml-3 _fixed-height" @click="showTerminalPanel">
 				<b-tooltip :active="!$store.state.isMobile" :label="$t('Terminal & Logs')" position="is-right"
-						   style="height: 1.25rem;" type="is-dark">
+					style="height: 1.25rem;" type="is-dark">
 					<b-icon class="picon" icon="terminal" pack="casa" size="is-20"></b-icon>
 				</b-tooltip>
 			</div>
@@ -315,20 +301,20 @@
 			<b-message @close="resetPower">
 				<template #header>
 					{{ $t(showPowerTitle) }}
-					<img v-if="showPowerTitle === 'Now shutting down'"
-						 :src="require('@/assets/img/loading/waiting.svg')" alt="pending" class="ml-1 is-24x24"/>
+					<img v-if="showPowerTitle === 'Now shutting down'" :src="require('@/assets/img/loading/waiting.svg')"
+						alt="pending" class="ml-1 is-24x24" />
 				</template>
 				<div :class="showPowerTitle === 'Now shutting down' ? 'mb-4' : ''"
-					 class="is-flex is-align-items-center is-justify-content-start _is-normal">
+					class="is-flex is-align-items-center is-justify-content-start _is-normal">
 					{{ $t(showPowerMessage) }}
 				</div>
 			</b-message>
 			<footer v-if="showPowerTitle !== 'Now shutting down'"
-					class="has-background-white is-flex is-flex-direction-row-reverse">
+				class="has-background-white is-flex is-flex-direction-row-reverse">
 				<button
 					class="ml-2 mr-5 mt-3 mb-3 pr-4 pl-4 _is-normal _has-background-blue is-flex is-align-items-center is-justify-content-center">
 					{{ $t('Connecting') }}
-					<img :src="require('@/assets/img/power/waiting-white.svg')" alt="loading" class="ml-1"/>
+					<img :src="require('@/assets/img/power/waiting-white.svg')" alt="loading" class="ml-1" />
 				</button>
 			</footer>
 		</b-modal>
@@ -337,11 +323,11 @@
 </template>
 
 <script>
-import AccountPanel  from './account/AccountPanel.vue'
+import AccountPanel from './account/AccountPanel.vue'
 import TerminalPanel from './logsAndTerminal/TerminalPanel.vue'
-import PortPanel     from './settings/PortPanel.vue'
-import UpdateModal   from './settings/UpdateModal.vue'
-import {mixin}       from '@/mixins/mixin';
+import PortPanel from './settings/PortPanel.vue'
+import UpdateModal from './settings/UpdateModal.vue'
+import { mixin } from '@/mixins/mixin';
 
 import events from '@/events/events';
 
@@ -381,31 +367,38 @@ export default {
 			deviceModel: "",
 			// Language Sets
 			languages: [
-				{lang: "ar-sa", name: "العربية"},
-				{lang: "de_de", name: "Deutsch"},
-				{lang: "en_us", name: "English"},
-				{lang: "es_es", name: "Español"},
-				{lang: "fr_fr", name: "Français"},
-				{lang: "hu_hu", name: "Magyar"},
-				{lang: "it_it", name: "Italiano"},
-				{lang: "ru_ru", name: "Русский"},
-				{lang: "pl_pl", name: "Polska"},
-				{lang: "pt_br", name: "Português (Brasil)"},
-				{lang: "sv_se", name: "Svenska"},
-				{lang: "uk_ua", name: "Українська"},
-				{lang: "zh_cn", name: "简体中文"},
+				{ lang: "ar-sa", name: "العربية" },
+				{ lang: "de_de", name: "Deutsch" },
+				{ lang: "en_us", name: "English" },
+				{ lang: "es_es", name: "Español" },
+				{ lang: "fr_fr", name: "Français" },
+				{ lang: "hu_hu", name: "Magyar" },
+				{ lang: "it_it", name: "Italiano" },
+				{ lang: "ru_ru", name: "Русский" },
+				{ lang: "pl_pl", name: "Polska" },
+				{ lang: "pt_br", name: "Português (Brasil)" },
+				{ lang: "sv_se", name: "Svenska" },
+				{ lang: "uk_ua", name: "Українська" },
+				{ lang: "zh_cn", name: "简体中文" },
 				// {lang: "be_by", name: "Беларуская"},
 				// {lang: "id_id", name: "Bahasa Indonesia"},
 				// {lang: "ja_jp", name: "やまと"},
 				// {lang: "ko_kr", name: "한국어"},
 				// {lang: "nb_no", name: "Norsk"},
+				{ lang: "ja_jp", name: "日本語" },
+				{ lang: "ko_kr", name: "한국어" },
+				{ lang: "no_no", name: "Norsk" },
+				{ lang: "pt_pt", name: "Português" },
+				{ lang: "ro_ro", name: "Română" },
+				{ lang: "tr_tr", name: "Türkçe" },
+				{ lang: "uk_ua", name: "Українська" },
 			],
 			// Search Engine Sets
 			searchEngines: [
-				{url: "https://duckduckgo.com/?q=", name: "DuckDuckGo"},
-				{url: "https://www.google.com/search?q=", name: "Google"},
-				{url: "https://www.bing.com/search?q=", name: "Bing"},
-				{url: "https://www.startpage.com/do/search?cat=web&pl=chrome&query=", name: "StartPage"},
+				{ url: "https://duckduckgo.com/?q=", name: "DuckDuckGo" },
+				{ url: "https://www.google.com/search?q=", name: "Google" },
+				{ url: "https://www.bing.com/search?q=", name: "Bing" },
+				{ url: "https://www.startpage.com/do/search?cat=web&pl=chrome&query=", name: "StartPage" },
 			],
 			restart: 'Restart',
 			shutdown: 'Shutdown',
@@ -629,7 +622,7 @@ export default {
 		usbAutoMount() {
 			if (this.autoUsbMount) {
 				this.$messageBus('dashboardsetting_automountusb', true.toString())
-				this.$api.sys.toggleUsbAutoMount({state: "on"})
+				this.$api.sys.toggleUsbAutoMount({ state: "on" })
 				// Show
 				if (this.isRaspberryPi) {
 					this.$buefy.snackbar.open({
@@ -641,7 +634,7 @@ export default {
 
 			} else {
 				this.$messageBus('dashboardsetting_automountusb', false.toString())
-				this.$api.sys.toggleUsbAutoMount({state: "off"})
+				this.$api.sys.toggleUsbAutoMount({ state: "off" })
 			}
 		},
 		/**
@@ -926,7 +919,7 @@ export default {
 			}
 		}
 
-		.dropdown + .dropdown {
+		.dropdown+.dropdown {
 			margin-left: 0;
 		}
 
@@ -982,7 +975,7 @@ export default {
 
 		// TODO: remove this when the switch to be component.
 		&._small input[type=checkbox] {
-			& + .check {
+			&+.check {
 				width: 2.286em;
 				height: 1.429em;
 				padding: 0;
@@ -995,7 +988,7 @@ export default {
 				}
 			}
 
-			&:checked + .check {
+			&:checked+.check {
 				&::before {
 					transform: translate3d(80%, 0, 0);
 				}
@@ -1103,7 +1096,7 @@ export default {
 				//margin-left: 1.5rem;
 				padding: 1.25rem 1.5rem 0.75rem 1.5rem;
 
-				> div {
+				>div {
 					display: flex;
 					//align-items: center;
 					justify-content: center;
@@ -1125,7 +1118,7 @@ export default {
 					}
 				}
 
-				> button {
+				>button {
 					width: 1.5rem;
 					height: 1.5rem;
 					max-height: 1.5rem;
