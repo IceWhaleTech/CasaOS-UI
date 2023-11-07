@@ -160,6 +160,7 @@ import { nanoid } from "nanoid";
 import find from "lodash/find";
 import isArray from "lodash/isArray";
 import isEmpty from "lodash/isEmpty";
+import isObject from "lodash/isObject";
 
 const data = [
 	"AUDIT_CONTROL",
@@ -553,7 +554,9 @@ export default {
 						published,
 						protocol,
 					};
-				} else {
+				} else if (isObject(item)) {
+					return item;
+				 } else {
 					return {
 						host_ip: "",
 						target: item+"",
