@@ -378,7 +378,6 @@ export default {
 				{ lang: "pl_pl", name: "Polska" },
 				{ lang: "pt_br", name: "Português (Brasil)" },
 				{ lang: "sv_se", name: "Svenska" },
-				{ lang: "uk_ua", name: "Українська" },
 				{ lang: "zh_cn", name: "简体中文" },
 				// {lang: "be_by", name: "Беларуская"},
 				// {lang: "id_id", name: "Bahasa Indonesia"},
