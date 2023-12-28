@@ -827,7 +827,7 @@ export default {
 
 ._title {
 	//styleName: Text 500Medium/Text02;
-	font-family: Roboto;
+	font-family: $family-sans-serif;
 	font-size: 1rem;
 	font-weight: 500;
 	line-height: 1.5rem;
@@ -839,7 +839,7 @@ export default {
 
 ._is-normal {
 	//styleName: Text 400Regular/Text03;
-	font-family: Roboto;
+	font-family: $family-sans-serif;
 	font-size: 0.875rem;
 	font-weight: 400;
 	line-height: 1.25rem;
@@ -1075,7 +1075,7 @@ export default {
 
 					color: hsla(208, 20%, 20%, 1);
 					//styleName: Text 500Medium/Text02;
-					font-family: Roboto;
+					font-family: $family-sans-serif;
 					font-size: 1rem;
 					font-weight: 500;
 					line-height: 1.5rem;
