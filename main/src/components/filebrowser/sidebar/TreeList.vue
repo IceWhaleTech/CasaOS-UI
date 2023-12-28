@@ -1,5 +1,5 @@
 <template>
-	<ul>
+	<div class="ul">
 		<!-- Root List Start -->
 		<tree-list-item v-for="item in rootDataList" :key="item.path" :isActive="isActive" :item="item"
 			iconColor="casa-color-blue"></tree-list-item>
@@ -10,7 +10,7 @@
 			:item="item" iconColor="casa-color-blue"></tree-list-item>
 		<!-- Data List End -->
 
-	</ul>
+	</div>
 </template>
 
 <script>

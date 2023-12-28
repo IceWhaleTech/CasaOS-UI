@@ -115,11 +115,11 @@
                     overflow-y: auto;
                     overflow-x: hidden;
 
-                    ul {
+                    .ul {
                         overflow: hidden;
                         transition: height 0.5s cubic-bezier(0.66, 0, 0.01, 1);
 
-                        li {
+                        .li {
                             .list-item {
                                 padding: 0.625rem 0.75rem 0.625rem 0.75rem;
                                 margin: 0.125rem 0;

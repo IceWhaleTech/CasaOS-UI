@@ -126,7 +126,7 @@ import 'codemirror/mode/shell/shell'
 // Lint libs
 import { CSSLint } from "csslint";
 import { JSHINT } from "jshint";
-import jsonlint from "@/plugins/jsonlint";
+import jsonlint from "jsonlint-mod";
 import jsyaml from "js-yaml";
 
 window.CSSLint = CSSLint;

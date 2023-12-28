@@ -1,5 +1,5 @@
 <template>
-	<li :class="[{ active: state }]" class="ficon is-flex is-align-items-center" @click="activeSelf" @dblclick="expandDir">
+	<div :class="[{ active: state }]" class="ficon is-flex is-align-items-center" @click="activeSelf" @dblclick="expandDir">
 		<div class="cover">
 			<div :class="item | coverType">
 				<img :class="item | iconType" :src="getIconFile(item)" alt="folder" />
@@ -9,7 +9,7 @@
 			{{ name }}
 		</div>
 
-	</li>
+	</div>
 </template>
 
 <script>
@@ -63,11 +63,24 @@ export default {
 	-webkit-touch-callout: none;
 	user-select: none;
 	font-size: 0.875rem;
+	line-height: 1.5em;
+	border-bottom: #e4e4e4 1px solid;
+	border-radius: 4px;
+	transition: background-color 0.2s;
+	cursor: pointer;
 
 	.cover {
 		width: 1.5rem;
 		height: 1.5rem;
 		margin-right: 0.5rem;
+	}
+
+	&:hover {
+		background-color: #e0e0e0;
+	}
+
+	&.active {
+		background-color: #b6e0ff;
 	}
 }
 </style>

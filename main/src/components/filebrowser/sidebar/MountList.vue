@@ -10,9 +10,9 @@
 -->
 <template>
 	<div>
-		<ul>
+		<div class="ul">
 			<!-- merge fs storage item -->
-			<li v-if="hasMergerFunction">
+			<div class="li" v-if="hasMergerFunction">
 				<div
 					:class="{ active: isActived }"
 					class="is-flex list-item new-list-item"
@@ -62,7 +62,7 @@
 						:item="item"
 					></tree-list-item>
 				</ul>
-			</li>
+			</div>
 
 			<!-- Local Storage List Start -->
 			<tree-list-item
@@ -106,7 +106,7 @@
 				@rightIconClick="umountCloud"
 			></tree-list-item>
 			<!-- Cloud List End -->
-		</ul>
+		</div>
 		<b-loading v-model="isLoading" :is-full-page="false"></b-loading>
 	</div>
 </template>

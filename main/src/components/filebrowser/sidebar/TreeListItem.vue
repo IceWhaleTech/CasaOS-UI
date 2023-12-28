@@ -1,5 +1,5 @@
 <template>
-	<li>
+	<div class="li">
 		<div v-if="item.visible" :class="{ 'active': isActived }" class="is-flex list-item new-list-item"
 			@click="open(item.path)">
 			<div class="cover mr-2 is-flex-shrink-0 is-relative is-flex is-align-items-center">
@@ -21,7 +21,7 @@
 				<b-icon :icon="iconName" :pack="item.pack" class="casa-color-gray" custom-size="casa-16px"></b-icon>
 			</div>
 		</div>
-	</li>
+	</div>
 </template>
 
 <script>

@@ -3438,7 +3438,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"JSV@npm:^4.0.x":
+"JSV@npm:^4.0.2, JSV@npm:^4.0.x":
   version: 4.0.2
   resolution: "JSV@npm:4.0.2"
   checksum: 9e2e070b2149d4ffed6c135dedb5f8cebb870dc63c0ca6d3cb647067248c7ca15d1a934ee46e9d2ac0e468436d0f70bc1b63cd5f93e705ee9aa0669430e6e66f
@@ -4836,6 +4836,7 @@ __metadata:
     iconfonts-casaos: ^1.0.4
     intersection-observer: ^0.12.2
     is-valid-hostname: ^1.0.2
+    jsonlint-mod: ^1.7.6
     jwt-decode: ^3.1.2
     lodash: ^4.17.21
     lottie-web-vue: 1.2.1
@@ -10659,6 +10660,19 @@ __metadata:
     graceful-fs:
       optional: true
   checksum: 7af3b8e1ac8fe7f1eccc6263c6ca14e1966fcbc74b618d3c78a0a2075579487547b94f72b7a1114e844a1e15bb00d440e5d1720bfc4612d790a6f285d5ea8354
+  languageName: node
+  linkType: hard
+
+"jsonlint-mod@npm:^1.7.6":
+  version: 1.7.6
+  resolution: "jsonlint-mod@npm:1.7.6"
+  dependencies:
+    JSV: ^4.0.2
+    chalk: ^2.4.2
+    underscore: ^1.9.1
+  bin:
+    jsonlint: lib/cli.js
+  checksum: 5d2bca547fa009f25c15dff448dde730b660fa8239ceea43cf86cce0dfc402448d7bf200c68c26a18b60e8d994e4f7cbdaecd41ff5bcce1441badd6e60eeedb7
   languageName: node
   linkType: hard
 
@@ -16635,6 +16649,13 @@ __metadata:
     has-symbols: ^1.0.3
     which-boxed-primitive: ^1.0.2
   checksum: b7a1cf5862b5e4b5deb091672ffa579aa274f648410009c81cca63fed3b62b610c4f3b773f912ce545bb4e31edc3138975b5bc777fc6e4817dca51affb6380e9
+  languageName: node
+  linkType: hard
+
+"underscore@npm:^1.9.1":
+  version: 1.13.6
+  resolution: "underscore@npm:1.13.6"
+  checksum: d5cedd14a9d0d91dd38c1ce6169e4455bb931f0aaf354108e47bd46d3f2da7464d49b2171a5cf786d61963204a42d01ea1332a903b7342ad428deaafaf70ec36
   languageName: node
   linkType: hard
 

@@ -24,11 +24,11 @@
 					</li>
 				</ul>
 			</nav>
-			<ul class="file-list scrollbars-light">
+			<div class="file-list scrollbars-light">
 				<list-item v-for="(item) in fileList" :id="item.path" :key="item.path" :IsDir="item.is_dir" :item="item"
-						   :name="item.name" :path="item.path" :state="checkActive(item.path)" @active="activeFile"
-						   @expand="getFileList"></list-item>
-			</ul>
+					:name="item.name" :path="item.path" :state="checkActive(item.path)" @active="activeFile"
+					@expand="getFileList"></list-item>
+			</div>
 		</section>
 		<!-- Modal-Card Body End -->
 		<!-- Modal-Card Footer Start-->
@@ -50,8 +50,8 @@
 				</div>
 			</div>
 			<div>
-				<b-button :label="$t('Cancel')" rounded @click="$emit('close')"/>
-				<b-button :label="$t('Select')" rounded type="is-primary" @click="selectFile()"/>
+				<b-button :label="$t('Cancel')" rounded @click="$emit('close')" />
+				<b-button :label="$t('Select')" rounded type="is-primary" @click="selectFile()" />
 			</div>
 		</footer>
 		<!-- Modal-Card Footer End-->
@@ -59,10 +59,10 @@
 </template>
 
 <script>
-import ListItem    from "./ListItem.vue"
+import ListItem from "./ListItem.vue"
 import CreatePanel from './CreatePanel.vue'
-import trimStart   from 'lodash/trimStart'
-import dropRight   from 'lodash/dropRight'
+import trimStart from 'lodash/trimStart'
+import dropRight from 'lodash/dropRight'
 
 export default {
 	name: "file-panel",
@@ -213,6 +213,7 @@ export default {
 				&:first-child {
 					a {
 						padding-right: 0;
+
 						.icon {
 							margin-left: 0;
 						}
@@ -241,22 +242,6 @@ export default {
 		height: 19.6875rem;
 		overflow-x: hidden;
 		overflow-y: auto;
-
-		li {
-			border-bottom: #e4e4e4 1px solid;
-			line-height: 1.5em;
-			border-radius: 4px;
-			transition: background-color 0.2s;
-			cursor: pointer;
-
-			&:hover {
-				background-color: #e0e0e0;
-			}
-
-			&.active {
-				background-color: #b6e0ff;
-			}
-		}
 	}
 }
 </style>

@@ -210,7 +210,6 @@ export default {
 		},
 
 		afterFileEnter() {
-			console.log("afterFileEnter");
 			this.$EventBus.$emit(events.AFTER_FILES_ENTER);
 		},
 

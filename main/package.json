@@ -45,6 +45,7 @@
     "iconfonts-casaos": "^1.0.4",
     "intersection-observer": "^0.12.2",
     "is-valid-hostname": "^1.0.2",
+    "jsonlint-mod": "^1.7.6",
     "lodash": "^4.17.21",
     "lottie-web-vue": "1.2.1",
     "markdown-it": "^13.0.1",

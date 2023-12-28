@@ -56,8 +56,17 @@ extend('url', {
 
 extend('yaml_port', {
 	validate: value => {
-		let regExp = /^((\d{1,3}\.){3}\d{1,3}(:\d{1,5}(-\d{1,5})?)?)|((^\d{1,5}(-\d{1,5})?)$)/;
+		// match 1 to 3 digits, for example "192"
+		let num = "\\d{1,3}";
 
+		// match IP address, for example "
+		let ip = `(${num}\\.){3}${num}`;
+
+		// match 1 to 5 digits, may also contain a hyphen and another 1 to 5 digits, for example "80-8080"
+		let portRange = "\\d{1,5}(-\\d{1,5})?";
+
+		// match IP address and an optional port range, or just match port range
+		let regExp = new RegExp(`^(${ip}(:${portRange})?)|(^${portRange})$`);
 		return regExp.test(value)
 	},
 	message: 'The field mast be a valid docker-compose port',
