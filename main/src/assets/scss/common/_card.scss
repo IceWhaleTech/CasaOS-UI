@@ -40,17 +40,6 @@
             filter: grayscale(100%);
         }
 
-        //&.stop::after {
-        //    position: absolute;
-        //    content: "";
-        //    width: 0.75rem;
-        //    height: 0.75rem;
-        //    background-color: #ff1616;
-        //    border-radius: 50%;
-        //    right: -0.375rem;
-        //    top: -0.375rem;
-        //}
-
         img {
             border-radius: 8px;
             margin: 0 auto;
@@ -66,17 +55,6 @@
         &.stop img {
             filter: grayscale(100%);
         }
-
-        //&.stop::after {
-        //  position: absolute;
-        //  content: "";
-        //  width: 0.75rem;
-        //  height: 0.75rem;
-        //  background-color: #ff1616;
-        //  border-radius: 50%;
-        //  right: -0.375rem;
-        //  top: -0.375rem;
-        //}
 
         img {
             border-radius: 8px;

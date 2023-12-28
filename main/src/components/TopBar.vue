@@ -1039,7 +1039,7 @@ export default {
 // TODO
 ._is-normal {
 	/* Text 400Regular/Text03 */
-	font-family: 'Roboto';
+	font-family: $family-sans-serif;
 	font-style: normal;
 	font-weight: 400;
 	font-size: 0.875rem;

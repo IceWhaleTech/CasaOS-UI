@@ -573,11 +573,12 @@ export default {
 				if (isString(item)) {
 					// 1\ replace variable in string for example: ${VOLUME_PATH}:/data
 					// this.volumes 可能为空。
-					Object.keys(this.volumes || {}).map((key) => {
+					Object.keys(this.volumes || {}).forEach((key) => {
 						if (isEmpty(this.volumes[key])) {
-							return item = item.replace(key, "/");
+							item = item.replace(key, "/");
+						} else {
+							item = item.replace(key, this.volumes[key] || "");
 						}
-						item = item.replace(key, this.volumes[key] || "");
 					});
 					// 2\ split string
 					let ii = item.split(":");
@@ -596,9 +597,9 @@ export default {
 					}
 				} else if (item) {
 					// 1\ replace value in object for example: {type: 'bind', source: '${VOLUME_PATH}', target: '/data'}
-					Object.keys(this.volumes || {}).map((key) => {
+					Object.keys(this.volumes || {}).forEach((key) => {
 						item.source = item?.source.replace(key, this?.volumes[key] || "");
-						item.target = item?.target
+						item.target = item?.target.replace(key, this?.volumes[key] || "");
 					});
 
 					return item;
@@ -775,7 +776,7 @@ export default {
 			}
 			if (this.dockerComposeCommands) {
 				let yaml = YAML.parse(this.dockerComposeCommands);
-				Object.keys(yaml.services).map(key => {
+				Object.keys(yaml.services).forEach(key => {
 					yaml.services[key].ports = [];
 					yaml.services[key].volumes = [];
 					yaml.services[key].devices = [];
@@ -783,7 +784,7 @@ export default {
 					yaml.services[key].command = [];
 					delete yaml.services[key]?.network_mode;
 					delete yaml.services[key]?.networks;
-				})
+				});
 
 				ConfigData = merge(yaml, ConfigData)
 			}

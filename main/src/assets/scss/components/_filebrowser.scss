@@ -94,8 +94,6 @@
             .nav-bar {
                 width: 15rem;
                 height: 100%;
-
-                //   padding: 0.75rem;
                 background: #f8f8f8;
                 flex-grow: 0;
                 flex-shrink: 0;
@@ -644,7 +642,6 @@
     }
 
     .scroll-container {
-        // height: auto;
         overflow-y: auto;
         overflow-x: hidden;
 
@@ -1103,7 +1100,6 @@
                     top: 0;
                     right: 16px;
                     height: 100%;
-                    display: flex;
                     align-items: center;
                     display: none;
 

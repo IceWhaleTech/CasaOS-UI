@@ -32,9 +32,10 @@ $pot: rgb(214, 167, 56) !default;
 
 // Typography
 
-$family-sans-serif: -apple-system,
+$family-sans-serif: 
+$family-sans-serif,
+-apple-system,
 BlinkMacSystemFont,
-Roboto,
 "Segoe UI",
 "Helvetica Neue",
 "Noto Sans",

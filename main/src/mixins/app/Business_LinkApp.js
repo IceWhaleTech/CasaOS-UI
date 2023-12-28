@@ -58,7 +58,6 @@ export default {
 					item.app_type = item.type;
 					item.hostname = item.host;
 					item.status = item.state;
-					item.name = item.name;
 					delete item.type;
 					delete item.host;
 					delete item.state;

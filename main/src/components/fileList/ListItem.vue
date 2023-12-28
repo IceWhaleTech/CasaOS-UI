@@ -1,27 +1,19 @@
-<!--
- * @Author: JerryK
- * @Date: 2021-10-14 16:39:02
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 12:36:07
- * @Description: 
- * @FilePath: \CasaOS-UI\src\components\fileList\ListItem.vue
--->
 <template>
-	<li :class="[{active:state}]" class="ficon is-flex is-align-items-center" @click="activeSelf" @dblclick="expandDir">
+	<li :class="[{ active: state }]" class="ficon is-flex is-align-items-center" @click="activeSelf" @dblclick="expandDir">
 		<div class="cover">
 			<div :class="item | coverType">
-				<img :class="item | iconType" :src="getIconFile(item)" alt="folder"/>
+				<img :class="item | iconType" :src="getIconFile(item)" alt="folder" />
 			</div>
 		</div>
 		<div class="one-line">
-			{{name}}
+			{{ name }}
 		</div>
 
 	</li>
 </template>
 
 <script>
-import {mixin} from '@/mixins/mixin';
+import { mixin } from '@/mixins/mixin';
 
 export default {
 	name: "list-item",

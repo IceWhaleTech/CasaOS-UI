@@ -12,7 +12,7 @@
 				<div class="common-card is-flex is-align-items-center ">
 
 					<figure class="image is-32x32 simg">
-						<img :src="require('@/assets/img/icon.png')">
+						<img alt="icon" :src="require('@/assets/img/icon.png')">
 					</figure>
 					<p class="ml-4 is-flex-grow-1 one-line">Test</p>
 					<div class="action-btn1">

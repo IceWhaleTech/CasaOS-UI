@@ -3,7 +3,7 @@
 	.snackbar {
 		border: 1px solid $grey-300 !important;
 		padding: 0.625rem 1.25rem;
-		
+
 		.text {
 			font-family: $family-sans-serif;
 			font-style: normal;
@@ -13,7 +13,7 @@
 			color: rgba(41, 52, 61, 1);
 			padding: 0;
 		}
-		
+
 		&.is-file {
 			.button {
 				background: $primary;
@@ -23,26 +23,25 @@
 				line-height: 20px;
 				letter-spacing: 0em;
 				color: $white;
-				
+
 				&:hover {
 					background: $primary-dark;
 				}
 			}
-			
+
 			background: $white !important;
 			color: rgba(41, 52, 61, 1);
-			
+
 			&::before {
-				
 				content: "\e946";
-				font-family: 'casaos' !important;
+				font-family: "casaos" !important;
 				speak: never;
 				font-style: normal;
 				font-weight: normal;
 				font-variant: normal;
 				text-transform: none;
 				line-height: 1;
-				
+
 				/* Better Font Rendering =========== */
 				-webkit-font-smoothing: antialiased;
 				-moz-osx-font-smoothing: grayscale;
@@ -51,20 +50,20 @@
 				font-size: 24px;
 			}
 		}
-		
+
 		.action {
 			padding: 0 0.5rem;
 			margin-left: 0.5rem;
-			
+
 			&:last-child {
 				margin-right: 0;
 				padding-right: 0;
 			}
-			
+
 			.button {
 				border-radius: 14px;
 			}
-			
+
 			&.is-cancel {
 				.button {
 					background: $grey-100;
@@ -74,13 +73,13 @@
 					line-height: 20px;
 					letter-spacing: 0em;
 					color: $gray-800;
-					
+
 					&:hover {
 						background: $grey-200;
 					}
 				}
 			}
-			
+
 			&.is-white {
 				.button {
 					background: $primary;
@@ -90,14 +89,12 @@
 					line-height: 20px;
 					letter-spacing: 0em;
 					color: $white;
-					
+
 					&:hover {
 						background: $primary-dark;
 					}
 				}
 			}
-			
-			
 		}
 	}
 }

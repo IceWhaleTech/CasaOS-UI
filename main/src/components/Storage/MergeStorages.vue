@@ -524,7 +524,7 @@ export default {
 ._is-normal {
 	/* Text 400Regular/Text03 */
 
-	font-family: 'Roboto';
+	font-family: $family-sans-serif;
 	font-style: normal;
 	font-weight: 400;
 	font-size: 14px;
@@ -537,7 +537,7 @@ export default {
 ._is-text-emphasis-03 {
 	/* Text 500Medium/Text03 */
 
-	font-family: 'Roboto';
+	font-family: $family-sans-serif;
 	font-style: normal;
 	font-weight: 500;
 	font-size: 14px;
@@ -550,7 +550,7 @@ export default {
 ._is-text-full-03 {
 	/* Text 400Regular/Text03 */
 
-	font-family: 'Roboto';
+	font-family: $family-sans-serif;
 	font-style: normal;
 	font-weight: 400;
 	font-size: 14px;

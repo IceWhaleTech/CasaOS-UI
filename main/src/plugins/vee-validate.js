@@ -8,11 +8,11 @@
 
  */
 
-import {confirmed, email, length, min, required} from "vee-validate/dist/rules";
-import {isURL}                                   from 'validator';
-import {extend}                                  from "vee-validate";
-import isValidHostname                           from 'is-valid-hostname';
-import validate                                  from 'uuid-validate';
+import { confirmed, email, length, min, required } from "vee-validate/dist/rules";
+import { isURL } from 'validator';
+import { extend } from "vee-validate";
+import isValidHostname from 'is-valid-hostname';
+import validate from 'uuid-validate';
 
 extend("required", {
 	...required,
@@ -50,13 +50,13 @@ extend('uuid', {
 });
 
 extend('url', {
-	validate: value => isURL(value, {require_protocol: true}),
+	validate: value => isURL(value, { require_protocol: true }),
 	message: 'The field mast be a valid url',
 })
 
 extend('yaml_port', {
 	validate: value => {
-		let regExp = /^(\d{1,3}\.){3}\d{1,3}(:\d{1,5}(-\d{1,5})?)?|(^\d{1,5}(-\d{1,5})?)$/;
+		let regExp = /^((\d{1,3}\.){3}\d{1,3}(:\d{1,5}(-\d{1,5})?)?)|((^\d{1,5}(-\d{1,5})?)$)/;
 
 		return regExp.test(value)
 	},

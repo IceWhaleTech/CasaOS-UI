@@ -9,7 +9,7 @@
 			<div class="is-flex is-align-items-center is-flex-shrink-0">
 				<!-- Download File Button Start -->
 				<b-button :label="$t('Download')" class="mr-2" icon-left="download" rounded size="is-small"
-						  type="is-primary" @click="download"/>
+					type="is-primary" @click="download" />
 				<!-- Download File Button End -->
 
 				<!-- Close Button Start -->
@@ -23,47 +23,47 @@
 		<!-- Toolbar Start -->
 		<div v-if="isMoving" class="img-toolbar is-flex">
 			<b-tooltip :label="$t('Previous')" type="is-dark">
-				<div :class="{disabled : disablePrev}" class="toolbar-item" @click="prev">
-          <span class="has-text-white block">
-            <b-icon icon="arrow-left-thin" size="is-small"></b-icon>
-          </span>
+				<div :class="{ disabled: disablePrev }" class="toolbar-item" @click="prev">
+					<span class="has-text-white block">
+						<b-icon icon="arrow-left-thin" size="is-small"></b-icon>
+					</span>
 				</div>
 			</b-tooltip>
 
 			<b-tooltip :label="$t('Zoom in')" type="is-dark">
 				<div class="toolbar-item" @click="viewer.zoom(0.1)">
-          <span class="has-text-white block">
-            <b-icon icon="magnify-plus-outline" size="is-small"></b-icon>
-          </span>
+					<span class="has-text-white block">
+						<b-icon icon="magnify-plus-outline" size="is-small"></b-icon>
+					</span>
 				</div>
 			</b-tooltip>
 			<b-tooltip :label="$t('Rotate')" type="is-dark">
 				<div class="toolbar-item" @click="viewer.rotate(90)">
-          <span class="has-text-white block">
-            <b-icon custom-class="mdi-flip-h" icon="format-rotate-90" size="is-small"></b-icon>
-          </span>
+					<span class="has-text-white block">
+						<b-icon custom-class="mdi-flip-h" icon="format-rotate-90" size="is-small"></b-icon>
+					</span>
 				</div>
 			</b-tooltip>
 			<b-tooltip :label="$t('Reset')" type="is-dark">
 				<div class="toolbar-item" @click="viewer.reset()">
-          <span class="has-text-white block">
-            <b-icon icon="restore" size="is-small"></b-icon>
-          </span>
+					<span class="has-text-white block">
+						<b-icon icon="restore" size="is-small"></b-icon>
+					</span>
 				</div>
 			</b-tooltip>
 			<b-tooltip :label="$t('Zoom out')" type="is-dark">
 				<div class="toolbar-item" @click="viewer.zoom(-0.1)">
-          <span class="has-text-white block">
-            <b-icon icon="magnify-minus-outline" size="is-small"></b-icon>
-          </span>
+					<span class="has-text-white block">
+						<b-icon icon="magnify-minus-outline" size="is-small"></b-icon>
+					</span>
 				</div>
 			</b-tooltip>
 
 			<b-tooltip :label="$t('INext')" type="is-dark">
-				<div :class="{disabled : disableNext}" class="toolbar-item" @click="next">
-          <span class="has-text-white block">
-            <b-icon icon="arrow-right-thin" size="is-small"></b-icon>
-          </span>
+				<div :class="{ disabled: disableNext }" class="toolbar-item" @click="next">
+					<span class="has-text-white block">
+						<b-icon icon="arrow-right-thin" size="is-small"></b-icon>
+					</span>
 				</div>
 			</b-tooltip>
 
@@ -74,7 +74,7 @@
 		<div class=" v-container pl-4 pr-4">
 			<viewer ref="viewer" :images="currentItemArray" :options="viewerOptions" class="viewer" @inited="inited">
 				<template #default="scope">
-					<img v-for="src in scope.images" :key="src" :src="src">
+					<img alt="image" v-for="src in scope.images" :key="src" :src="src">
 				</template>
 			</viewer>
 		</div>
@@ -84,9 +84,9 @@
 </template>
 
 <script>
-import {mixin}               from '@/mixins/mixin';
+import { mixin } from '@/mixins/mixin';
 import 'viewerjs/dist/viewer.css'
-import {component as Viewer} from "v-viewer"
+import { component as Viewer } from "v-viewer"
 
 const XIMAGES = ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'svg', 'tiff']
 export default {
@@ -213,8 +213,8 @@ export default {
 
 <style lang="scss" scoped>
 .v-container::v-deep .viewer-canvas {
-  background-image: url("data:image/svg+xml;utf8,%3C?xml version='1.0' encoding='UTF-8'?%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50' viewBox='0 0 16 16'%3E%3Cpath fill='%23ccc' d='M8 6.5A1.5 1.5 0 1 0 8 9.5A1.5 1.5 0 1 0 8 6.5z' fill-opacity='0.1' /%3E%3C/svg%3E");
-  background-color: transparent;
-  background-repeat: repeat;
+	background-image: url("data:image/svg+xml;utf8,%3C?xml version='1.0' encoding='UTF-8'?%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50' viewBox='0 0 16 16'%3E%3Cpath fill='%23ccc' d='M8 6.5A1.5 1.5 0 1 0 8 9.5A1.5 1.5 0 1 0 8 6.5z' fill-opacity='0.1' /%3E%3C/svg%3E");
+	background-color: transparent;
+	background-repeat: repeat;
 }
 </style>

@@ -241,7 +241,7 @@ export default {
 						padding: 0.75rem 1rem;
 						/* Text 400Regular/Text03 */
 
-						font-family: 'Roboto';
+						font-family: $family-sans-serif;
 						font-style: normal;
 						font-weight: 400;
 						font-size: 14px;

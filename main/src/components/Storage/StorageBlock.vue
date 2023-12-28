@@ -7,7 +7,7 @@
 				<!-- Init State Start -->
 				<div class="widget-header is-flex">
 					<div class="image is-24x24">
-						<img :src="require('@/assets/img/logo/casa-white.svg')" />
+						<img alt="CasaOS" :src="require('@/assets/img/logo/casa-white.svg')" />
 					</div>
 					<div class="widget-title pl-2">
 						{{ $t("Find New Drive") }}
@@ -18,7 +18,7 @@
 					<div class="info">
 						<div class="widget-header is-flex scrpe-margin">
 							<div class="image is-24x24">
-								<img :src="require('@/assets/img/logo/casa-white.svg')" />
+								<img alt="CasaOS" :src="require('@/assets/img/logo/casa-white.svg')" />
 							</div>
 							<div class="b-line is-flex is-flex-grow-1 ml-2">
 								<div class="widget-title is-flex-grow-1 nowrap">
@@ -31,7 +31,7 @@
 						</div>
 						<div class="widget-header is-flex scrpe-margin">
 							<div class="image is-24x24">
-								<img :src="require('@/assets/img/logo/casa-white.svg')" />
+								<img alt="CasaOS" :src="require('@/assets/img/logo/casa-white.svg')" />
 							</div>
 							<div class="b-line is-flex is-flex-grow-1 ml-2">
 								<div class="widget-title is-flex-grow-1 nowrap">

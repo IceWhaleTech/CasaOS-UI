@@ -1,11 +1,3 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2022/12/2 下午8:57
-  * @FilePath: /CasaOS-UI/src/components/Storage/DiskLearnMore.vue
-  * @Description:
-  *
-  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
-  -->
 <template>
 	<div class="modal-card">
 		<header class="is-flex is-align-items-center pt-4 pb-3 pl-4 pr-4 _b-line">
@@ -80,11 +72,11 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss"  scoped>
 ._header-title {
 	/* Text 500Medium/Text02 */
 
-	font-family: 'Roboto';
+	font-family: $family-sans-serif;
 	font-style: normal;
 	font-weight: 500;
 	font-size: 16px;
@@ -103,7 +95,7 @@ export default {
 }
 
 ._font {
-	font-family: 'Roboto';
+	font-family: $family-sans-serif;
 	font-style: normal;
 	font-weight: 400;
 	font-size: 14px;
@@ -114,7 +106,7 @@ export default {
 }
 
 ._content-title {
-	font-family: 'Roboto';
+	font-family: $family-sans-serif;
 	font-style: normal;
 	font-weight: 600;
 	font-size: 16px;

@@ -178,7 +178,7 @@ export default {
 
 	.widget-header {
 		.header-title {
-			font-family: 'Roboto';
+			font-family: $family-sans-serif;
 			font-style: normal;
 			font-weight: 500;
 			font-size: 1.125rem;
@@ -192,7 +192,7 @@ export default {
 		position: relative;
 
 		.body-title {
-			font-family: 'Roboto';
+			font-family: $family-sans-serif;
 			font-style: normal;
 			font-weight: 500;
 			font-size: 14px;
@@ -203,7 +203,7 @@ export default {
 
 	.footer-hint {
 		height: 16px;
-		font-family: 'Roboto';
+		font-family: $family-sans-serif;
 		font-style: normal;
 		font-weight: 400;
 		font-size: 0.75rem;

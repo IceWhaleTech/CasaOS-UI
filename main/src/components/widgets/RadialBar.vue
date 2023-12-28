@@ -1,13 +1,3 @@
-<!--
- * @Author: Jerryk jerry@icewhale.org
- * @Date: 2022-08-18 18:28:54
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-12 16:26:19
- * @FilePath: \CasaOS-UI-0.4.2\src\components\widgets\RadialBar.vue
- * @Description: 
- * 
- * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
--->
 <template>
 	<div :style="cssVariables">
 		<div class="container">
@@ -195,7 +185,6 @@ export default {
 	stroke-linecap: round;
 	stroke: url(#gradient);
 	stroke-dasharray: 75 100;
-	stroke-linecap: round;
 	stroke-width: var(--circle-border-width);
 	transition: stroke-dashoffset 1s ease-in-out;
 }

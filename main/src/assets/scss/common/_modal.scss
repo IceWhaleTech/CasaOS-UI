@@ -18,14 +18,14 @@
 
     .modal-close-container {
         padding-left: 1rem;
-        margin-left: 0.5rem;
+        margin-left: .5rem;
         position: relative;
         height: 100%;
     }
 
     .modal-close-container-line {
         &:before {
-            content: "";
+            content: '';
             position: absolute;
             border-left: #363636 2px solid;
             height: 1rem;
@@ -42,8 +42,8 @@
     }
 
     .modal-card-head {
-        padding: 1.25rem 1.25rem 0.5rem 1.5rem;
-		border-bottom: 1px solid rgb(228 233 237);
+        padding: 1.25rem 1.25rem .5rem 1.5rem;
+        border-bottom: 1px solid rgb(228 233 237);
     }
 
     .modal-card-body {
@@ -52,21 +52,19 @@
         .loading-overlay .loading-icon:after {
             -webkit-animation: spinAround 500ms infinite linear;
             animation: spinAround 500ms infinite linear;
-            border: 4px solid #000;
+            border: 4px solid #000000;
             border-radius: 9999px;
+            border-width: .2rem;
             border-right-color: transparent;
             border-top-color: transparent;
-            content: "";
+            content: '';
             display: block;
-            height: 1em;
-            position: relative;
-            width: 1em;
             position: absolute;
             top: calc(50% - 1.25rem);
             left: calc(50% - 1.25rem);
             width: 2.5rem;
             height: 2.5rem;
-            border-width: 0.2rem;
+
         }
 
         .button.is-static,
@@ -79,9 +77,9 @@
         .pagination-next,
         .pagination-link,
         .pagination-ellipsis {
-            font-size: 0.875rem;
+            font-size: .875rem;
             height: 2.714em;
-            border: 1px solid #cfcfcf !important;
+            border: 1px solid #CFCFCF !important;
             border-radius: 4px;
 
             &:focus {
@@ -112,7 +110,7 @@
         }
 
         .field:last-child {
-            margin-bottom: 0.5rem;
+            margin-bottom: .5rem;
         }
 
         .field-body {
@@ -129,20 +127,18 @@
     }
 
     .modal-card-foot {
-        padding: 0.75rem 1.5rem 1.5rem 1.5rem;
-        border-top: 1px solid rgba(133, 149, 163, 0.1215686275);
+        padding: .75rem 1.5rem 1.5rem 1.5rem;
+        border-top: 1px solid rgba(133, 149, 163, .1215686275);
 
         .button {
             border-radius: 9999px;
-            padding-left: calc(1em + 0.25em);
-            padding-right: calc(1em + 0.25em);
+            padding-left: calc(1em + .25em);
+            padding-right: calc(1em + .25em);
         }
     }
 }
 
 .terminal-modal {
-    
-
     .close-container {
         position: absolute;
         right: 2rem;
@@ -159,16 +155,16 @@
 
         &.is-toggle {
             ul {
-                background: rgba(60, 60, 67, 0.05);
-                box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.1);
+                background: rgba(60, 60, 67, .05);
+                box-shadow: inset 0px 0px 4px rgba(0, 0, 0, .1);
                 border-radius: 6px;
 
                 li {
                     flex: none;
 
                     a {
-                        font-size: 0.875rem;
-                        padding: 0.2rem 1.5rem;
+                        font-size: .875rem;
+                        padding: .2rem 1.5rem;
                         min-width: 7rem;
                         border-radius: 6px;
                         border: none;
@@ -180,11 +176,11 @@
 
                     &.is-active {
                         a {
-                            background: #ffffff;
-                            border: 0.5px solid rgba(0, 0, 0, 0.2);
-                            color: #000;
+                            background: #FFFFFF;
+                            border: .5px solid rgba(0, 0, 0, .2);
+                            color: #000000;
                             z-index: 1;
-                            box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.2);
+                            box-shadow: 0px .5px 1px rgba(0, 0, 0, .2);
                         }
                     }
                 }
@@ -194,7 +190,7 @@
 }
 
 .modal-background {
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, .8);
 }
 
 @media screen and (min-width: 769px) {
@@ -212,35 +208,33 @@
 *************************************/
 
 .dialog {
-
     .modal-card {
-        background-color: #fff !important;
+        background-color: #FFFFFF !important;
 
         .modal-card-head {
             height: 3.5rem;
-            padding: 1.25rem 1.25rem 0.5rem 1.5rem;
-            border-bottom: 1px solid rgba(133, 149, 163, 0.1215686275);
+            padding: 1.25rem 1.25rem .5rem 1.5rem;
+            border-bottom: 1px solid rgba(133, 149, 163, .1215686275);
 
             .modal-card-title {
                 font-size: 1rem;
             }
         }
 
-		.modal-card-body{
-			border:none;
-		}
+        .modal-card-body {
+            border: none;
+        }
 
         .media {
             align-items: center;
 
             .media-content {
-                font-size: 0.875rem;
+                font-size: .875rem;
             }
         }
 
         .modal-card-foot {
-            gap: 0.5rem;
+            gap: .5rem;
         }
-
     }
 }

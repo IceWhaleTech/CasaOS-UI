@@ -1,7 +1,7 @@
 <template>
 	<div class="modal-card app-detial">
 		<!-- Header Start -->
-		<header class="modal-card-head" style="background:#ff000">
+		<header class="modal-card-head">
 			<div class="is-flex-grow-1">
 				<div class="button is-ghost auto-height pl-0 pt-0 pb-0" @click="close">
 					<b-icon class="mr-1" icon="left-outline" size="is-20x20" pack="casa"></b-icon>
