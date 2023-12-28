@@ -21,8 +21,7 @@ export default {
 				const url = `${scheme}://${hostIp}${port}${appInfo.index}`
 
 				if (isNewWindows) {
-					var arg = '\u003cscript\u003elocation.replace("' + url + '")\u003c/script\u003e';
-					window.open('javascript:window.name;', arg);
+					window.open(url);
 				} else {
 					let html = document.createElement('a');
 					html.href = url;

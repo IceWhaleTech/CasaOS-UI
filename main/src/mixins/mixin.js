@@ -362,7 +362,7 @@ export const mixin = {
 						this.$emit("reload")
 					}
 					try {
-						if (typeof eval(this.reload) === "function") {
+						if (typeof this.reload === "function") {
 							this.reload()
 						}
 					} catch (e) {

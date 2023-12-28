@@ -1,14 +1,15 @@
 <template>
 	<div class="brand-bar is-flex is-align-items-flex-end has-text-white">
 		<figure class="image _is-136x26 mb-3">
-			<!--			<img alt="logo" :srcset="`${require('@/assets/img/logo/logo.svg')} 2x, ${require('@/assets/img/logo/logo.png')} 1x`">-->
 			<img alt="logo" srcset="../assets/img/logo/logo.svg 2x, ../assets/img/logo/logo.png 1x">
 		</figure>
 		<span v-if="!rssShow || rss.length === 0" class="intro-text ml-4">Made with ❤️ by IceWhale and YOU!</span>
 		<span v-else class="window ml-4">
 			<ul :style="{ '--time': 5 * line + 's', '--perc': perc, '--line': line }" class="scroll">
 				<li v-for="(item, key) in rss" :key="key" class="has-text-left" @click="$messageBus('connect_news')">
-					<a :href="xss(item.link)" class="intro-text" target="_blank">{{ item.title }}</a>
+					<a :href="item.link" class="intro-text" target="_blank" rel="noopener noreferrer">
+						{{ item.title }}
+					</a>
 				</li>
 			</ul>
 		</span>
@@ -18,7 +19,7 @@
 
 <script>
 import Parser from "rss-parser";
-import xss from 'xss'
+import DOMPurify from 'dompurify';
 export default {
 	name: "brand-bar",
 	components: {},
@@ -60,7 +61,13 @@ export default {
 			params.l = localStorage.getItem('lang') ? localStorage.getItem('lang') : navigator.language.toLowerCase().replace("-", "_");
 			let stringify = btoa(encodeURIComponent(JSON.stringify(params)))
 			let feed = await parser.parseURL('https://blog.casaos.io/feed/tag/dashboard/?key=' + stringify);
-			this.rss = feed.items
+			const newFeed = feed.items.map(item => {
+				return {
+					title: item.title,
+					link: DOMPurify.sanitize(item.link, {ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|xmpp):|[^a-z]|[a-z+.1-9]+(?:[^a-z+.1-9]|$))/i})
+				}
+			})
+			this.rss = newFeed
 		}
 	}
 }
@@ -124,7 +131,6 @@ export default {
 	}
 
 	100% {
-		//transform: translate(0, var(--perc)); // slide
 		transform: translate(0, -100%); // Jump upwards
 	}
 }

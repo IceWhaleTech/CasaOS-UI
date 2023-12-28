@@ -4826,6 +4826,7 @@ __metadata:
     compression-webpack-plugin: 5.0.2
     dateformat: ^5.0.3
     dayjs: ^1.11.9
+    dompurify: ^3.0.6
     eslint: 6.8.0
     eslint-plugin-vue: ^8.7.1
     file-saver: ^2.0.5
@@ -4893,7 +4894,6 @@ __metadata:
     webpack: 4.46.0
     webpack-bundle-analyzer: ^4.9.0
     webpack-cli: ^4.10.0
-    xss: ^1.0.14
     xterm: ^4.19.0
     xterm-addon-attach: ^0.6.0
     xterm-addon-fit: ^0.5.0
@@ -7253,6 +7253,13 @@ __metadata:
   version: 2.4.7
   resolution: "dompurify@npm:2.4.7"
   checksum: 13c047e772a1998348191554dda403950d45ef2ec75fa0b9915cc179ccea0a39ef780d283109bd72cf83a2a085af6c77664281d4d0106a737bc5f39906364efe
+  languageName: node
+  linkType: hard
+
+"dompurify@npm:^3.0.6":
+  version: 3.0.6
+  resolution: "dompurify@npm:3.0.6"
+  checksum: e5c6cdc5fe972a9d0859d939f1d86320de275be00bbef7bd5591c80b1e538935f6ce236624459a1b0c84ecd7c6a1e248684aa4637512659fccc0ce7c353828a6
   languageName: node
   linkType: hard
 
@@ -18034,7 +18041,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"xss@npm:^1.0.14, xss@npm:^1.0.9":
+"xss@npm:^1.0.9":
   version: 1.0.14
   resolution: "xss@npm:1.0.14"
   dependencies:
