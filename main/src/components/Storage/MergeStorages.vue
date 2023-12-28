@@ -1,13 +1,3 @@
-<!--
- * @Author: zhanghengxin hengxin.zhang@icewhale.org
- * @Date:  2022-09-13 17:01:37
- * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
- * @LastEditTime: 2023-07-13 12:52:59
- * @FilePath: /CasaOS-UI/main/src/components/Storage/MergeStorages.vue
- * @Description:
- *
- * Copyright (c) 2022 by IceWhale, All Rights Reserved.
--->
 <template>
 	<div :class="{ '_max-width-320': currentStep === 1 || currentStep === 3 || currentStep === 4 }" class="modal-card">
 		<!--    head-->

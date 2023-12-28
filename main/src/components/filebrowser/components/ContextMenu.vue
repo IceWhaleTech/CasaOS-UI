@@ -1,52 +1,42 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2022/12/8 下午3:12
-  * @FilePath: /CasaOS-UI/src/components/filebrowser/components/ContextMenu.vue
-  * @Description:
-  *
-  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
-  -->
 <template>
 	<div>
 
-		<div :style="{top:y + 'px',left:x+'px'}" class="action-btn context-menu">
+		<div :style="{ top: y + 'px', left: x + 'px' }" class="action-btn context-menu">
 			<b-dropdown id="dr1" ref="dropDown" :animation="ani" :close-on-click="false" :mobile-modal="false"
-						:position="'is-'+verticalPos+'-'+horizontalPos" aria-role="list" class="file-dropdown"
-						@active-change="dorpActiveChange($event,'dr1')">
+				:position="'is-' + verticalPos + '-' + horizontalPos" aria-role="list" class="file-dropdown"
+				@active-change="dorpActiveChange($event, 'dr1')">
 				<!-- Blank Start -->
 				<template v-if="!showDetail">
 					<b-dropdown-item key="system-context11" aria-role="menuitem" class="is-flex is-align-items-center"
-									 @click="$refs.dropDown.toggle();filePanel.showNewFileModal()">
+						@click="$refs.dropDown.toggle(); filePanel.showNewFileModal()">
 						<b-icon class="mr-1" custom-size="mdi-18px" icon="file-plus-outline"></b-icon>
 						{{ $t('New File') }}
 					</b-dropdown-item>
 					<b-dropdown-item key="system-context1" aria-role="menuitem" class="is-flex is-align-items-center"
-									 @click="$refs.dropDown.toggle();filePanel.showNewFolderModal()">
+						@click="$refs.dropDown.toggle(); filePanel.showNewFolderModal()">
 						<b-icon class="mr-1" custom-size="mdi-18px" icon="folder-plus-outline"></b-icon>
 						{{ $t('New Folder') }}
 					</b-dropdown-item>
 
 					<hr class="dropdown-divider">
 					<b-dropdown-item id="upfileBtn" key="system-context2" aria-role="menuitem"
-									 class="is-flex is-align-items-center " @click="$refs.dropDown.toggle();">
+						class="is-flex is-align-items-center " @click="uploadFile">
 						<b-icon class="mr-1" custom-size="mdi-18px" icon="file-upload-outline"></b-icon>
 						{{ $t('Upload Files') }}
 					</b-dropdown-item>
 					<b-dropdown-item id="upfolderBtn" key="system-context3" aria-role="menuitem"
-									 class="is-flex is-align-items-center " @click="$refs.dropDown.toggle(); freshPath">
+						class="is-flex is-align-items-center " @click="uploadFile">
 						<b-icon class="mr-1" custom-size="mdi-18px" icon="folder-upload-outline"></b-icon>
 						{{ $t('Upload Folder') }}
 					</b-dropdown-item>
 					<template v-if="hasPasteData">
-						<b-dropdown-item key="system-context4" aria-role="menuitem"
-										 class="is-flex is-align-items-center"
-										 @click="paste('overwrite')">
+						<b-dropdown-item key="system-context4" aria-role="menuitem" class="is-flex is-align-items-center"
+							@click="paste('overwrite')">
 							<b-icon class="mr-1" custom-size="mdi-18px" icon="content-paste"></b-icon>
 							{{ $t('Paste - Overwrite') }}
 						</b-dropdown-item>
-						<b-dropdown-item key="system-context4-1" aria-role="menuitem"
-										 class="is-flex is-align-items-center"
-										 @click="paste('skip')">
+						<b-dropdown-item key="system-context4-1" aria-role="menuitem" class="is-flex is-align-items-center"
+							@click="paste('skip')">
 							<b-icon class="mr-1" custom-size="mdi-18px" icon="content-paste"></b-icon>
 							{{ $t('Paste - Skip') }}
 						</b-dropdown-item>
@@ -54,7 +44,7 @@
 
 					<hr class="dropdown-divider">
 					<b-dropdown-item key="system-context5" aria-role="menuitem" class="is-flex is-align-items-center"
-									 @click="$refs.dropDown.toggle();filePanel.reload()">
+						@click="$refs.dropDown.toggle(); filePanel.reload()">
 						<b-icon class="mr-1" custom-size="mdi-18px" icon="refresh"></b-icon>
 						{{ $t('Refresh') }}
 					</b-dropdown-item>
@@ -71,19 +61,18 @@
 					</b-dropdown-item>
 					<hr class="dropdown-divider">
 					<b-dropdown-item v-if="showSingleEdit && !isShared && !isMounted" key="file-context3"
-									 aria-role="menuitem"
-									 @click="rename">
+						aria-role="menuitem" @click="rename">
 						{{ $t('Rename') }}
 					</b-dropdown-item>
 					<b-dropdown-item v-if="!isShared && !isMounted" key="file-context4" aria-role="menuitem"
-									 @click="operate('move',items)">
+						@click="operate('move', items)">
 						{{ $t('Cut') }}
 					</b-dropdown-item>
-					<b-dropdown-item key="file-context5" aria-role="menuitem" @click="operate('copy',items)">
+					<b-dropdown-item key="file-context5" aria-role="menuitem" @click="operate('copy', items)">
 						{{ $t('Copy') }}
 					</b-dropdown-item>
 					<b-dropdown-item v-if="showSingleEdit && isWallpaperType" aria-role="menuitem"
-									 @click="setAsWallpaper(item)">
+						@click="setAsWallpaper(item)">
 						{{ $t('Set as wallpaper') }}
 					</b-dropdown-item>
 
@@ -100,7 +89,7 @@
 					<template v-if="!isShared && !isMounted">
 						<hr class="dropdown-divider">
 						<b-dropdown-item v-if="!isConfirmed" aria-role="menuitem" class="has-text-danger"
-										 @click="isConfirmed = true">
+							@click="isConfirmed = true">
 							{{ $t('Delete') }}
 						</b-dropdown-item>
 						<b-dropdown-item v-else aria-role="menuitem" class="has-text-danger" @click="deleteItem(items)">
@@ -117,8 +106,8 @@
 </template>
 
 <script>
-import {mixin, wallpaperType} from '@/mixins/mixin';
-import has                    from 'lodash/has'
+import { mixin, wallpaperType } from '@/mixins/mixin';
+import has from 'lodash/has'
 
 export default {
 	mixins: [mixin],
@@ -202,8 +191,11 @@ export default {
 				this.$nextTick(() => {
 					this.x = event.clientX
 					this.y = event.clientY
-					const rightOffset = window.innerWidth - event.clientX - 184
+
+					const rightOffset = window.innerWidth - event.clientX - 128
 					this.horizontalPos = rightOffset > 0 ? "right" : "left"
+					const bottomOffset = window.innerHeight - event.clientY - 270
+					this.verticalPos = bottomOffset > 0 ? "bottom" : "top"
 					this.$refs.dropDown.isActive = true;
 				})
 			}
@@ -218,9 +210,6 @@ export default {
 			if ($event) {
 				this.isConfirmed = false
 			}
-			const trigger = document.getElementById(el);
-			const bottomOffset = window.innerHeight - trigger.getBoundingClientRect().y - 216
-			this.verticalPos = bottomOffset > 0 ? "bottom" : "top"
 		},
 		rename() {
 			this.$refs.dropDown.toggle()
@@ -264,7 +253,8 @@ export default {
 			this.filePanel.handleUnShare(data)
 		},
 
-		freshPath() {
+		uploadFile() {
+			this.$refs.dropDown.toggle()
 			this.filePanel.uploaderInstance.opts.query.path = this.filePanel.currentPath
 		}
 
@@ -272,5 +262,4 @@ export default {
 }
 </script>
 
-<style>
-</style>
+<style></style>

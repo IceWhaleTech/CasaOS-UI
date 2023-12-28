@@ -1,28 +1,18 @@
-/*!
- *  @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
- *  @LastEditTime: 2023/2/10 下午5:17
- *  @FilePath: /CasaOS-UI/src/assets/scss/common/_root.scss
- *  @Description:
- *
- *  Copyright (c) 2023 by IceWhale, All Rights Reserved.
- */
-
 // Root Style
 
 :root {
-	--swiper-navigation-size: 24px !important;
-	// Video Player
-	--plyr-color-main: $primary;
+    --swiper-navigation-size: 24px !important;
+    --background: $main-background-color;
 }
 
 * {
-	-webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body,
 html {
-	overflow: hidden;
-	font-family: $family-sans-serif;
+    overflow: hidden;
+    font-family: $family-sans-serif;
 }
 
 
@@ -37,27 +27,27 @@ html {
 .pagination-next,
 .pagination-link,
 .pagination-ellipsis {
-	&:focus {
-		box-shadow: none;
-	}
+    &:focus {
+        box-shadow: none;
+    }
 }
 
 @media screen and (max-width: 1024px) {
-	.container {
-		margin: 0 1rem;
-	}
+    .container {
+        margin: 0 1rem;
+    }
 }
 
 @media screen and (max-width: 480px) {
-	.b-group {
-		align-items: initial !important;
-		display: block !important;
-		width: 5rem;
-		margin-left: 0.5rem;
-		
-		.ml-2 {
-			margin-left: 0 !important;
-			margin-top: 0.5rem !important;
-		}
-	}
+    .b-group {
+        align-items: initial !important;
+        display: block !important;
+        width: 5rem;
+        margin-left: 0.5rem;
+
+        .ml-2 {
+            margin-left: 0 !important;
+            margin-top: 0.5rem !important;
+        }
+    }
 }

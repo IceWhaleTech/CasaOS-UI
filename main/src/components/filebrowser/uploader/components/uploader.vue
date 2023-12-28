@@ -7,7 +7,7 @@
   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
   -->
 <template>
-	<div class="uploader">
+	<div class="uploader is-flex is-flex-direction-column">
 		<slot :file-list="fileList" :files="files" :started="started">
 			<uploader-unsupport></uploader-unsupport>
 			<uploader-drop>
@@ -165,6 +165,7 @@ export default {
 
 <style>
 .uploader {
+	height: 100%;
 	position: relative;
 }
 </style>

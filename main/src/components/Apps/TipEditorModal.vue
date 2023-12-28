@@ -1,12 +1,3 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/3/22 上午11:17
-  * @FilePath: /CasaOS-UI/src/components/Apps/TipEditorModal
-  * @Description:
-  *
-  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
-
-  -->
 <template>
 	<div class="modal-card">
 		<!-- Modal-Card Header Start -->
@@ -16,7 +7,7 @@
 			</div>
 			<div>
 				<div class="is-flex is-align-items-center">
-					<b-icon class="_polymorphic close" icon="close" pack="casa" @click.native="$emit('close')"/>
+					<b-icon class="close-button" icon="close-outline" pack="casa" @click.native="$emit('close');" />
 				</div>
 			</div>
 		</header>
@@ -24,15 +15,13 @@
 
 		<!-- Modal-Card Body Start -->
 		<section class="modal-card-body">
-			<VMdEditor
-				v-model="tips" :mode="controlEditorState" :placeholder="$t('Something to remember eg. password')"
+			<VMdEditor v-model="tips" :mode="controlEditorState" :placeholder="$t('Something to remember eg. password')"
 				left-toolbar right-toolbar>
 			</VMdEditor>
 			<div v-if="name" class="is-flex is-flex-direction-row-reverse mt-2">
 				<b-icon
-					:class="{'has-text-grey-800': !isEditing, 'has-text-green-default': isDifferentiation, 'has-text-grey-400': !isDifferentiation && isEditing}"
-					:icon="icon" pack="casa"
-					@click.native="toggle"></b-icon>
+					:class="{ 'has-text-grey-800': !isEditing, 'has-text-green-default': isDifferentiation, 'has-text-grey-400': !isDifferentiation && isEditing }"
+					:icon="icon" pack="casa" @click.native="toggle"></b-icon>
 			</div>
 		</section>
 		<!-- Modal-Card Body End -->
@@ -41,8 +30,7 @@
 		<footer v-if="!name" class="modal-card-foot is-flex is-align-items-center">
 			<div class="is-flex-grow-1"></div>
 			<div class="is-flex is-flex-direction-row-reverse">
-				<b-button rounded size="is-small" type="is-primary"
-						  @click="$emit('submit') && $emit('close')">{{ $t('Next Steps') }}
+				<b-button rounded size="is-small" type="is-primary" @click="$emit('submit') && $emit('close')">{{ $t('Next Steps') }}
 				</b-button>
 			</div>
 		</footer>
@@ -51,14 +39,14 @@
 </template>
 
 <script>
-import YAML        from "yaml";
-import merge       from "lodash/merge";
-import VMdEditor   from '@kangc/v-md-editor';
+import YAML from "yaml";
+import merge from "lodash/merge";
+import VMdEditor from '@kangc/v-md-editor';
 import '@kangc/v-md-editor/lib/style/base-editor.css';
 import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
 import '@kangc/v-md-editor/lib/theme/style/github.css';
-import hljs        from 'highlight.js';
-import {ice_i18n}  from "@/mixins/base/common-i18n";
+import hljs from 'highlight.js';
+import { ice_i18n } from "@/mixins/base/common-i18n";
 
 VMdEditor.use(githubTheme, {
 	Hljs: hljs,
@@ -272,14 +260,5 @@ export default {
 				height: 5.25rem;
 		}*/
 	}
-}
-
-._polymorphic:hover {
-	cursor: pointer;
-	background: hsla(208, 16%, 96%, 1);
-}
-
-._polymorphic:active {
-	background: hsla(208, 16%, 94%, 1);
 }
 </style>

@@ -1,35 +1,17 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/1/11 下午1:37
-  * @FilePath: /CasaOS-UI/src/components/settings/PortPanel.vue
-  * @Description:
-  *
-  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
-  -->
-
-<!--
- * @Author: JerryK
- * @Date: 2021-12-06 18:29:48
- * @LastEditTime: 2022-08-18 10:48:41
- * @Description:
- * @FilePath: \CasaOS-UI-dev\src\components\settings\PortPanel.vue
--->
 <template>
 	<div class="modal-card">
 		<!-- Modal-Card Header Start -->
 		<header class="modal-card-head">
 			<div class="is-flex-grow-1">
-				<h3 class="title is-3">{{ $t('Edit Web UI port') }}</h3>
+				<h3 class="title is-header">{{ $t('Edit Web UI port') }}</h3>
 			</div>
-			<div>
-				<button class="delete" type="button" @click="$emit('close')"/>
-			</div>
+			<b-icon class="close-button" icon="close-outline" pack="casa" @click.native="$emit('close');" />
 		</header>
 		<!-- Modal-Card Header End -->
 		<!-- Modal-Card Body Start -->
 		<section class="modal-card-body ">
-			<b-field :message="errors" :type="errorType" class="mb-5 mt-5 has-text-light" expanded>
-				<b-input v-model="port" type="number" v-on:keyup.enter.native="savePort"></b-input>
+			<b-field :message="errors" :type="errorType" class="has-text-light mb-0" expanded>
+				<b-input ref="finput" v-model="port" type="number" v-on:keyup.enter.native="savePort"></b-input>
 			</b-field>
 		</section>
 		<!-- Modal-Card Body End -->
@@ -37,8 +19,8 @@
 		<footer class="modal-card-foot is-flex is-align-items-center">
 			<div class="is-flex-grow-1"></div>
 			<div>
-				<b-button :label="$t('Cancel')" rounded @click="$emit('close')"/>
-				<b-button :label="$t('Submit')" expaned rounded type="is-primary" @click="savePort"/>
+				<b-button :label="$t('Cancel')" rounded @click="$emit('close')" />
+				<b-button :label="$t('Submit')" expaned rounded type="is-primary" @click="savePort" />
 			</div>
 		</footer>
 		<!-- Modal-Card Footer End -->
@@ -69,11 +51,17 @@ export default {
 		},
 	},
 
+	mounted() {
+		this.$nextTick(() => {
+			this.$refs.finput.getElement().select();
+		})
+	},
+
 	methods: {
 		savePort() {
 			this.$messageBus('dashboardsetting_webuiport', this.port.toString())
 			this.isLoading = true;
-			this.$api.sys.editServerPort({port: this.port}).then(res => {
+			this.$api.sys.editServerPort({ port: this.port }).then(res => {
 
 				if (res.data.success == 200) {
 					this.errorType = "is-success";
@@ -110,6 +98,3 @@ export default {
 	},
 }
 </script>
-
-<style>
-</style>

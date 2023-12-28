@@ -1,27 +1,9 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/4/6 下午6:50
-  * @FilePath: /CasaOS-UI/src/components/fileList/FilePanel.vue
-  * @Description:
-  *
-  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
-
-  -->
-
-<!--
- * @Author: JerryK
- * @Date: 2021-10-14 14:08:40
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-06 17:45:53
- * @Description:
- * @FilePath: /CasaOS-UI/src/components/fileList/FilePanel.vue
--->
 <template>
 	<div class="modal-card">
 		<!-- Modal-Card Header Start -->
 		<header class="modal-card-head">
 			<div class="is-flex-grow-1">
-				<h3 class="title is-4 has-text-weight-normal">{{ $t('Select') }}</h3>
+				<h3 class="title is-header">{{ $t('Select') }}</h3>
 			</div>
 		</header>
 		<!-- Modal-Card Header End -->
@@ -183,7 +165,7 @@ export default {
 				hasModalCard: true,
 				customClass: 'file-sel-modal',
 				trapFocus: true,
-				canCancel: ['escape'],
+				canCancel: [],
 				scroll: "keep",
 				animation: "zoom-in",
 				events: {
@@ -231,7 +213,6 @@ export default {
 				&:first-child {
 					a {
 						padding-right: 0;
-
 						.icon {
 							margin-left: 0;
 						}

@@ -1,45 +1,25 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/4/24 上午11:20
-  * @FilePath: /CasaOS-UI/src/components/filebrowser/modals/NewFileModal.vue
-  * @Description:
-  *
-  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
-
-  -->
-
-<!--
- * @Author: JerryK
- * @Date: 2022-02-25 14:26:30
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-22 19:24:13
- * @Description: 
- * @FilePath: /CasaOS-UI/src/components/filebrowser/modals/NewFileModal.vue
--->
 <template>
 	<div class="modal-card">
 		<!-- Modal-Card Header Start -->
 		<header class="modal-card-head">
 			<div class="is-flex-grow-1">
-				<h3 class="title is-3">{{ $t('New File') }}</h3>
+				<h3 class="title is-header">{{ $t('New File') }}</h3>
 			</div>
-			<div>
-				<button class="delete" type="button" @click="$emit('close')"/>
-			</div>
+			<b-icon class="close-button" icon="close-outline" pack="casa" @click.native="$emit('close');" />
 		</header>
 		<!-- Modal-Card Header End -->
 		<!-- Modal-Card Body Start -->
 		<section class="modal-card-body ">
 			<div class="node-card">
-				<div class="cover">
+				<div class="cover is-flex is-justify-content-center is-align-items-center">
 					<div class="folder-cover">
 						<img :src="require('@/assets/img/filebrowser/text-x-generic.svg')" alt="folder"
-							 class="folder-icon"/>
+							class="folder-icon" />
 					</div>
 				</div>
-				<b-field :message="errors" :type="errorType" class="mb-3 mt-5 has-text-light" expanded>
-					<b-input v-model="fileName" v-on:keyup.enter.native="createFolder"
-							 @input.native="fileName = fileName.replace(/\//g,'')"></b-input>
+				<b-field :message="errors" :type="errorType" class="mb-0 mt-5 has-text-light" expanded>
+					<b-input v-model="fileName" v-on:keyup.enter.native="createFolder" ref="inputs"
+						@input.native="fileName = fileName.replace(/\//g, '')"></b-input>
 				</b-field>
 			</div>
 
@@ -49,7 +29,7 @@
 		<footer class="modal-card-foot is-flex is-align-items-center">
 			<div class="is-flex-grow-1"></div>
 			<div>
-				<b-button :label="$t('Submit')" expaned rounded type="is-primary" @click="createFolder"/>
+				<b-button :label="$t('Submit')" expaned rounded type="is-primary" @click="createFolder" />
 			</div>
 		</footer>
 		<!-- Modal-Card Footer End -->
@@ -57,8 +37,8 @@
 </template>
 
 <script>
-import {mixin} from '@/mixins/mixin';
-import path    from 'path'
+import { mixin } from '@/mixins/mixin';
+import path from 'path'
 
 export default {
 	mixins: [mixin],
@@ -71,6 +51,11 @@ export default {
 			errorType: "is-success",
 			errors: ""
 		}
+	},
+	mounted() {
+		this.$nextTick(() => {
+			this.$refs.inputs.getElement().select();
+		})
 	},
 	methods: {
 
@@ -91,5 +76,4 @@ export default {
 }
 </script>
 
-<style>
-</style>
+<style></style>

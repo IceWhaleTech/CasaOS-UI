@@ -1,13 +1,4 @@
-<!--
- * @Author: JerryK
- * @Date: 2021-10-09 18:41:15
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-20 16:17:09
- * @Description:
- * @FilePath: /CasaOS-UI/src/components/widgets/Settings.vue
--->
 <template>
-
 	<div class="widget has-text-white clock is-relative ">
 		<div class="blur-background"></div>
 
@@ -21,7 +12,7 @@
 								{{ $t('Widgets Settings') }}
 							</div>
 							<div class="widget-icon-button is-flex-shrink-0">
-								<b-icon icon="right" pack="casa" size="is-20"></b-icon>
+								<b-icon icon="right-outline" pack="casa" size="is-20"></b-icon>
 							</div>
 						</div>
 						<!-- Header End -->
@@ -29,16 +20,15 @@
 				</template>
 				<b-dropdown-item :focusable="false" aria-role="menu-item" class="has-text-white has-text-left" custom>
 					<h2 class="title is-5 has-text-white">{{ $t('Widgets Settings') }}</h2>
-					<div v-for="(item,index) in settingsData" :key="`setting_${index}`"
-						 class="is-flex is-align-items-center item">
+					<div v-for="(item, index) in settingsData" :key="`setting_${index}`"
+						class="is-flex is-align-items-center item">
 						<div class="is-flex is-align-items-center is-flex-grow-1">
-							<b-icon :icon="getIcon(item.name)" class="mr-2"></b-icon>
+							<b-icon :icon="getIcon(item.name)" pack="casa" class="mr-2"></b-icon>
 							<b>{{ $t(getTitle(item.name)) }}</b>
 						</div>
 						<b-field>
 							<b-switch v-model="item.show" class="is-flex-direction-row-reverse mr-0" size="is-small"
-									  type="is-dark"
-									  @input="handleInput"></b-switch>
+								type="is-dark" @input="handleInput"></b-switch>
 						</b-field>
 					</div>
 				</b-dropdown-item>
@@ -46,16 +36,15 @@
 		</div>
 
 	</div>
-
 </template>
 
 <script>
 import find from 'lodash/find';
 
 const widgetsComponents = require.context(
-'@/widgets',
-false,
-/.vue$/
+	'@/widgets',
+	false,
+	/.vue$/
 )
 
 
@@ -96,7 +85,7 @@ export default {
 		this.settingsData = JSON.parse(JSON.stringify(this.widgetsSettings))
 		widgetsComponents.keys().forEach(fileName => {
 			const componentConfig = widgetsComponents(fileName)
-			this.apps.push({app: componentConfig})
+			this.apps.push({ app: componentConfig })
 		});
 	},
 	mounted() {
@@ -177,7 +166,7 @@ export default {
 				padding: 1rem 1.5rem 0 1.5rem;
 			}
 
-			.switch input[type="checkbox"] + .check {
+			.switch input[type="checkbox"]+.check {
 				background: transparent;
 				border: #fff 1px solid;
 			}

@@ -1,30 +1,19 @@
-<!--
- * @Author: Jerryk jerry@icewhale.org
- * @Date: 2022-08-03 15:28:43
- * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
- * @LastEditTime: 2023-07-13 17:02:12
- * @FilePath: /CasaOS-UI/main/src/components/filebrowser/modals/NewNetworkStorage.vue
- * @Description:
- *
- * Copyright (c) 2022 by IceWhale, All Rights Reserved.
--->
+
 <template>
 	<div class="modal-card">
 		<!-- Modal-Card Header Start -->
 		<header class="modal-card-head">
 			<div class="is-flex-grow-1">
-				<h3 class="title is-3">{{ $t('Connect Network Storage') }}</h3>
+				<h3 class="title is-header">{{ $t('Connect Network Storage') }}</h3>
 			</div>
-			<div>
-				<button class="delete" type="button" @click="$emit('close')"/>
-			</div>
+			<b-icon class="close-button" icon="close-outline" pack="casa" @click.native="$emit('close');" />
 		</header>
 		<!-- Modal-Card Header End -->
 
 		<!-- Modal-Card Body Start -->
 		<section class="modal-card-body ">
 			<div class="node-card">
-				<div class=" mt-5 mb-5">
+				<div >
 					<b-field :label="$t('Server Address')">
 						<b-autocomplete ref="inputs" v-model="host" :data="filteredDataObj"
 										:placeholder="$t('eg : smb://192.168.1.1')"

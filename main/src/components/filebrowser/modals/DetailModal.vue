@@ -1,40 +1,16 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/4/24 上午11:20
-  * @FilePath: /CasaOS-UI/src/components/filebrowser/modals/DetailModal.vue
-  * @Description:
-  *
-  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
-
-  -->
-
-<!--
- * @Author: JerryK
- * @Date: 2022-02-24 14:20:01
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 11:27:16
- * @Description: 
- * @FilePath: \CasaOS-UI\src\components\filebrowser\modals\DetailModal.vue
--->
-
 <template>
 	<div class="modal-card">
 		<!-- Header Start -->
 		<header class="modal-card-head">
 			<div class="is-flex-grow-1 is-flex ">
 			</div>
-			<div class="is-flex is-align-items-center">
-				<div class="is-flex is-align-items-center modal-close-container ">
-					<button class="delete" type="button" @click="$emit('close')"/>
-				</div>
-
-			</div>
+			<b-icon class="close-button" icon="close-outline" pack="casa" @click.native="$emit('close');" />
 		</header>
 		<!-- Header End -->
 		<!-- Modal-Card Body Start -->
-		<section class="modal-card-body is-flex is-justify-content-center is-align-items-center">
+		<section class="modal-card-body is-flex is-justify-content-center is-align-items-center mb-5">
 			<div class="node-card ">
-				<div class="cover is-unselectable">
+				<div class="cover is-unselectable is-flex is-justify-content-center is-align-items-center">
 					<div :class="item | coverType">
 						<img :class="item | iconType" :src="getIconFile(item)" alt="folder"/>
 					</div>
@@ -50,11 +26,6 @@
 			</div>
 		</section>
 		<!-- Modal-Card Body End -->
-		<!-- Modal-Card Footer Start-->
-		<footer class="modal-card-foot is-flex is-align-items-center ">
-
-		</footer>
-		<!-- Modal-Card Footer End -->
 	</div>
 </template>
 

@@ -1,15 +1,3 @@
-<!--
- * @Author: zhanghengxin ezreal.ice@icloud.com
- * @Date: 2022-09-06 14:42:24
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-06 16:28:47
- * @FilePath: /CasaOS-UI/src/components/Storage/StorageBlock.vue
- * @Description:
- *
- * Copyright (c) 2022 by IceWhale, All Rights Reserved.
- *
--->
-
 <template>
 	<div class="column">
 		<div class="common-card">
@@ -19,7 +7,7 @@
 				<!-- Init State Start -->
 				<div class="widget-header is-flex">
 					<div class="image is-24x24">
-						<img :src="require('@/assets/img/logo/casa-white.svg')"/>
+						<img :src="require('@/assets/img/logo/casa-white.svg')" />
 					</div>
 					<div class="widget-title pl-2">
 						{{ $t("Find New Drive") }}
@@ -30,7 +18,7 @@
 					<div class="info">
 						<div class="widget-header is-flex scrpe-margin">
 							<div class="image is-24x24">
-								<img :src="require('@/assets/img/logo/casa-white.svg')"/>
+								<img :src="require('@/assets/img/logo/casa-white.svg')" />
 							</div>
 							<div class="b-line is-flex is-flex-grow-1 ml-2">
 								<div class="widget-title is-flex-grow-1 nowrap">
@@ -43,7 +31,7 @@
 						</div>
 						<div class="widget-header is-flex scrpe-margin">
 							<div class="image is-24x24">
-								<img :src="require('@/assets/img/logo/casa-white.svg')"/>
+								<img :src="require('@/assets/img/logo/casa-white.svg')" />
 							</div>
 							<div class="b-line is-flex is-flex-grow-1 ml-2">
 								<div class="widget-title is-flex-grow-1 nowrap">
@@ -147,7 +135,7 @@ export default {
 						closeOnConfirm: false,
 						confirmText: this.$t('Start'),
 						cancelText: this.$t('Cancel'),
-						onConfirm: (value, {close}) => {
+						onConfirm: (value, { close }) => {
 							this.$buefy.toast.open({
 								message: this.$t(`Starting Syncthing...`),
 								type: 'is-white'
@@ -207,6 +195,7 @@ export default {
 		margin-bottom: 0.75rem;
 		margin-left: 2rem;
 		margin-right: 0rem;
+		line-height: 1.5em;
 
 		.scrpe-margin {
 			margin: 0.75rem;

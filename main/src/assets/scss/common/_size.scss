@@ -1,11 +1,3 @@
-/*!
- *  @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
- *  @LastEditTime: 2023/2/1 下午4:35
- *  @FilePath: /CasaOS-UI/src/assets/scss/common/_size.scss
- *  @Description:
- *
- *  Copyright (c) 2023 by IceWhale, All Rights Reserved.
- */
 .is-size-20px {
 	font-size: 1.25rem !important;
 	line-height: 1.25rem;
@@ -54,4 +46,74 @@
 .is-64x64 {
 	width: 64px;
 	height: 64px;
+}
+
+// Size
+.casa-28px {
+	font-size: 28px !important;
+}
+
+.casa-24px {
+	font-size: 24px !important;
+}
+
+.casa-22px {
+	font-size: 22px !important;
+}
+
+.casa-20px {
+	font-size: 20px !important;
+}
+
+.casa-19px {
+	font-size: 19px !important;
+}
+
+.casa-16px {
+	font-size: 16px !important;
+}
+
+.casa-14px {
+	font-size: 12px !important;
+}
+
+.casa-10px {
+	font-size: 10px !important;
+}
+
+// Color
+.casa-color-blue {
+	color: #3388FF !important;
+}
+
+.casa-color-green {
+	color: #28CC87 !important;
+}
+
+.casa-color-gray {
+	color: #999999 !important;
+}
+
+
+// Shape
+
+.casa-shape-rounded {
+	background-color: #fff;
+	border-radius: 50%;
+}
+
+.casa-shape-12px {
+	width: 12px !important;
+	height: 12px !important;
+}
+
+
+.casa-shape-16px {
+	width: 16px !important;
+	height: 16px !important;
+}
+
+.casa-shape-32px {
+	width: 32px !important;
+	height: 32px !important;
 }

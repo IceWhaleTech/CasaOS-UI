@@ -1,23 +1,11 @@
-<!--
- * @Author: Jerryk jerry@icewhale.org
- * @Date: 2022-05-02 17:44:02
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-08 17:53:20
- * @FilePath: /CasaOS-UI/src/components/settings/UpdateModal.vue
- * @Description:
- *
- * Copyright (c) 2022 by IceWhale, All Rights Reserved.
--->
 <template>
 	<div class="modal-card">
 		<!-- Modal-Card Header Start -->
 		<header class="modal-card-head">
 			<div class="is-flex-grow-1">
-				<h3 class="title is-3">{{ $t('Update') }}</h3>
+				<h3 class="title is-header">{{ $t('Update') }}</h3>
 			</div>
-			<div>
-				<button v-if="!isUpdating" class="delete" type="button" @click="$emit('close')"/>
-			</div>
+			<b-icon class="close-button" icon="close-outline" pack="casa" @click.native="$emit('close');" />
 		</header>
 		<!-- Modal-Card Header End -->
 		<!-- Modal-Card Body Start -->

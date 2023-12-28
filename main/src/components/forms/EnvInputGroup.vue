@@ -1,11 +1,3 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/2/16 下午4:26
-  * @FilePath: /CasaOS-UI/src/components/forms/EnvInputGroup.vue
-  * @Description:
-  *
-  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
-  -->
 <template>
 	<div class="mb-5">
 		<div class="field is-flex is-align-items-center mb-2">
@@ -13,14 +5,15 @@
 			<b-button icon-left="plus" rounded size="is-small" @click="addItem">{{ $t('Add') }}</b-button>
 		</div>
 		<div v-if="items.length == 0" class="is-flex is-align-items-center mb-5 info">
-			<b-icon class="mr-2 " icon="information" size="is-small"></b-icon>
+			<b-icon icon="warning-solid" size="is-small" pack="casa" class="mr-2 "></b-icon>
 			<span>
-		        {{ message }}
+				{{ message }}
 			</span>
 
 		</div>
-		<div v-for="(item,index) in items" :key="'port'+index" class="port-item">
-			<b-icon class="is-clickable" icon="close" size="is-small" @click.native="removeItem(index)"></b-icon>
+		<div v-for="(item, index) in items" :key="'port' + index" class="port-item  mr-4">
+			<b-icon class="is-clickable" icon="close-outline" pack="casa" size="is-small"
+				@click.native="removeItem(index)"></b-icon>
 			<template v-if="index < 1">
 				<b-field grouped>
 					<b-field :label="$t(name1)" expanded>

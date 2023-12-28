@@ -1,15 +1,6 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/4/25 下午7:10
-  * @FilePath: /CasaOS-UI/main/src/components/logsAndTerminal/TerminalCard.vue
-  * @Description:
-  *
-  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
-
-  -->
 <template>
-	<fullscreen :class="[{ 'mt-5': !fullscreen }, isVaild ? 'fdark-bg' : 'flight-bg']" :fullscreen.sync="fullscreen"
-				:page-only="true" :teleport="true" class="fullScreen  pl-2 pt-2 pb-2" @change="onWindowResize">
+	<fullscreen :class="[{ 'mt-4': !fullscreen }, isVaild ? 'fdark-bg' : 'flight-bg']" :fullscreen.sync="fullscreen"
+		:page-only="true" :teleport="true" class="fullScreen  pl-2 pt-2 pb-2" @change="onWindowResize">
 		<a v-if="isVaild" class="fullscreen-button" @click="toggleFullScreen">
 			<b-icon :icon="buttonIcon"></b-icon>
 		</a>
@@ -17,9 +8,8 @@
 			<div v-if="!isVaild" class="card card-shadow mb-6">
 				<div class="card-content">
 					<div class="content">
-						<b-notification v-model="notificationShow" :closable="false"
-										aria-close-label="Close notification"
-										auto-close role="alert" type="is-danger">
+						<b-notification v-model="notificationShow" :closable="false" aria-close-label="Close notification"
+							auto-close role="alert" type="is-danger">
 							{{ $t(message) }}
 						</b-notification>
 						<b-field :label="$t('Username')">
@@ -28,18 +18,18 @@
 
 						<b-field :label="$t('Password')">
 							<b-input v-model="sshPassword" name="password" password-reveal type="password"
-									 v-on:keyup.enter.native="checkLogin">
+								v-on:keyup.enter.native="checkLogin">
 							</b-input>
 						</b-field>
 
 						<b-field :label="$t('Port')">
 							<b-input v-model="sshPort" name="port" type="number"
-									 v-on:keyup.enter.native="checkLogin"></b-input>
+								v-on:keyup.enter.native="checkLogin"></b-input>
 						</b-field>
 						<div class="buttons mt-5">
 							<b-button :loading="isConnecting" expanded rounded type="is-primary" @click="checkLogin">{{
-									$t('Connect')
-								}}
+								$t('Connect')
+							}}
 							</b-button>
 						</div>
 					</div>
@@ -52,11 +42,11 @@
 </template>
 
 <script>
-import qs            from 'qs'
+import qs from 'qs'
 import 'xterm/css/xterm.css'
-import {Terminal}    from 'xterm'
-import {FitAddon}    from 'xterm-addon-fit'
-import {AttachAddon} from 'xterm-addon-attach'
+import { Terminal } from 'xterm'
+import { FitAddon } from 'xterm-addon-fit'
+import { AttachAddon } from 'xterm-addon-attach'
 
 const fitAddon = new FitAddon();
 export default {
@@ -142,7 +132,7 @@ export default {
 				fontSize: 13,
 				cursorStyle: 'underline', //光标样式
 				cursorBlink: true, //光标闪烁
-				theme: {background: '#1E1E1E'},
+				theme: { background: '#1E1E1E' },
 				rows: parseInt(this.rows), //行数
 				cols: parseInt(this.cols), // 不指定行数，自动回车后光标从下一行开始
 				fontFamily: "Consolas, Monaco, monospace",

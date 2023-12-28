@@ -1,33 +1,22 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/1/6 下午3:03
-  * @FilePath: /CasaOS-UI/src/components/account/AccountPanel.vue
-  * @Description:
-  *
-  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
-  -->
-
 <template>
 	<div class="modal-card">
 		<ValidationObserver ref="observer" v-slot="{ handleSubmit }">
 			<!-- Modal-Card Header Start -->
-			<header :class="{'modal-card-head1':state == 1}" class="modal-card-head">
+			<header :class="{ 'modal-card-head1': state == 1 }" class="modal-card-head">
 				<div class="is-flex-grow-1">
-					<h3 class="title is-3">{{ title }}</h3>
+					<h3 class="title is-header">{{ title }}</h3>
 				</div>
-				<div>
-					<button class="delete" type="button" @click="$emit('close')"/>
-				</div>
+				<b-icon class="close-button" icon="close-outline" pack="casa" @click.native="$emit('close');" />
 			</header>
 			<!-- Modal-Card Header End -->
 			<!-- Modal-Card Body Start -->
-			<section :class="{'is-flex':state == 1}" class="modal-card-body ">
+			<section :class="{ 'is-flex': state == 1 }" class="modal-card-body ">
 				<template v-if="state == 1">
 					<div>
 						<b-image :src="require('@/assets/img/account/default-avatar.svg')" class="is-128x128"
-								 rounded></b-image>
+							rounded></b-image>
 					</div>
-					<div class="ml-5">
+					<div class="ml-5 mb-5">
 						<h2 class="title is-4">{{ $t('Name') }}</h2>
 						<h2 class="title is-6">{{ userInfo.username }}</h2>
 						<h2 class="title is-6 has-text-weight-normal"><a @click="goto(2)">{{ $t('Change name') }}</a>
@@ -35,64 +24,62 @@
 
 						<h2 class="title is-4 mt-6">{{ $t('Password') }}</h2>
 						<h2 class="title is-6 has-text-weight-normal"><a @click="goto(3)">{{
-								$t('Change Password')
-							}}</a></h2>
+							$t('Change Password')
+						}}</a></h2>
 					</div>
 				</template>
 
 				<template v-if="state == 2">
 					<ValidationProvider v-slot="{ errors, valid }" name="User" rules="required">
 						<b-field :message="$t(errors)" :type="{ 'is-danger': errors[0], 'is-success': valid }"
-								 class="mb-5 mt-5 has-text-light">
+							class="mb-0 has-text-light">
 							<b-input v-model="user.username" type="text"
-									 v-on:keyup.enter.native="handleSubmit(saveUser)"></b-input>
+								v-on:keyup.enter.native="handleSubmit(saveUser)"></b-input>
 						</b-field>
 					</ValidationProvider>
 				</template>
 
 				<template v-if="state == 3">
-					<b-notification v-model="notificationShow" aria-close-label="Close notification" auto-close
-									role="alert"
-									type="is-danger">
+					<b-notification v-model="notificationShow" aria-close-label="Close notification" auto-close role="alert"
+						type="is-danger">
 						{{ message }}
 					</b-notification>
 					<ValidationProvider v-slot="{ errors, valid }" name="oriPassword" rules="required|min:5"
-										vid="oriPassword">
+						vid="oriPassword">
 						<b-field :message="$t(errors)" :type="{ 'is-danger': errors[0], 'is-success': valid }"
-								 class="mb-5 mt-5 has-text-light">
+							class="mb-5 has-text-light">
 							<b-input v-model="oriPassword" :placeholder="$t('Original password')" password-reveal
-									 type="password"></b-input>
+								type="password"></b-input>
 						</b-field>
 					</ValidationProvider>
-					<ValidationProvider v-slot="{ errors, valid }" name="Password" rules="required|min:5"
-										vid="password">
+					<ValidationProvider v-slot="{ errors, valid }" name="Password" rules="required|min:5" vid="password">
 						<b-field :message="$t(errors)" :type="{ 'is-danger': errors[0], 'is-success': valid }"
-								 class="mb-5 mt-5 has-text-light">
+							class="mb-5 has-text-light">
 							<b-input v-model="password" :placeholder="$t('New password')" password-reveal
-									 type="password"></b-input>
+								type="password"></b-input>
 						</b-field>
 					</ValidationProvider>
 					<ValidationProvider v-slot="{ errors, valid }" name="Password Confirmation"
-										rules="required|confirmed:password">
+						rules="required|confirmed:password">
 						<b-field :message="$t(errors)" :type="{ 'is-danger': errors[0], 'is-success': valid }"
-								 class="mt-4 mb-5">
+							class="mb-0">
 							<b-input v-model="confirmation" :placeholder="$t('Confirm the new password again')"
-									 password-reveal
-									 type="password" v-on:keyup.enter.native="savePassword(savePassword)"></b-input>
+								password-reveal type="password"
+								v-on:keyup.enter.native="savePassword(savePassword)"></b-input>
 						</b-field>
 					</ValidationProvider>
 				</template>
 			</section>
 			<!-- Modal-Card Body End -->
 			<!-- Modal-Card Footer Start-->
-			<footer class="modal-card-foot is-flex is-align-items-center">
+			<footer class="modal-card-foot is-flex is-align-items-center" v-if="state > 1">
 				<div class="is-flex-grow-1"></div>
 				<div>
-					<b-button v-if="state >= 2" :label="$t('Back')" rounded @click="goto(1)"/>
+					<b-button v-if="state >= 2" :label="$t('Back')" rounded @click="goto(1)" />
 					<b-button v-if="state == 2" :label="$t('Submit')" expaned rounded type="is-primary"
-							  @click="handleSubmit(saveUser)"/>
+						@click="handleSubmit(saveUser)" />
 					<b-button v-if="state == 3" :label="$t('Submit')" expaned rounded type="is-primary"
-							  @click="handleSubmit(savePassword)"/>
+						@click="handleSubmit(savePassword)" />
 				</div>
 			</footer>
 			<!-- Modal-Card Footer End -->
@@ -102,7 +89,7 @@
 </template>
 
 <script>
-import {ValidationObserver, ValidationProvider} from "vee-validate";
+import { ValidationObserver, ValidationProvider } from "vee-validate";
 import "@/plugins/vee-validate";
 
 export default {

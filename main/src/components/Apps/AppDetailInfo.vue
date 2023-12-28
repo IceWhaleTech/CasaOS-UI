@@ -1,19 +1,10 @@
-<!--
- * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
- * @LastEditTime: 2023-09-19 18:44:42
- * @FilePath: /CasaOS-UI/main/src/components/Apps/AppDetailInfo.vue
-  * @Description:
-  *
-  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
-  
-  -->
 <template>
 	<div class="modal-card app-detial">
 		<!-- Header Start -->
 		<header class="modal-card-head" style="background:#ff000">
 			<div class="is-flex-grow-1">
 				<div class="button is-ghost auto-height pl-0 pt-0 pb-0" @click="close">
-					<b-icon class="mr-1" icon="chevron-left" size="is-medium"></b-icon>
+					<b-icon class="mr-1" icon="left-outline" size="is-20x20" pack="casa"></b-icon>
 					{{ $t('Back') }}
 				</div>
 			</div>
@@ -53,7 +44,7 @@
 						   class="has-background-red-tertiary has-text-red has-text-full-04 _is-normal is-flex is-align-items-center font pr-2"
 						   style="width: fit-content;height: 1.5rem;border-radius: 0.25rem">
 							<label class="is-flex ml-2 mr-1">
-								<b-icon class="is-16x16" custom-size="casa-19px" icon="close"
+								<b-icon class="is-16x16" custom-size="casa-19px" icon="close-outline"
 										pack="casa"></b-icon>
 							</label>
 							{{ $t('Not compatible with {arch} devices.', {arch: archTitle}) }}
@@ -254,7 +245,7 @@ export default {
 				hasModalCard: true,
 				destroyOnHide: true,
 				animation: "zoom-in",
-				canCancel: ["escape", "outside", "x"]
+				canCancel: ["outside", "x"]
 			});
 		}
 	}

@@ -1,26 +1,20 @@
-<!--
- * @Author: JerryK
- * @Date: 2022-02-11 14:53:46
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-20 18:05:17
- * @Description: 
- * @FilePath: /CasaOS-UI/src/components/forms/CommandsInput.vue
--->
 <template>
 	<div class="mb-5">
 		<div class="field is-flex is-align-items-center mb-2">
-			<label class="label mb-0 is-flex-grow-1">{{label}}</label>
-			<b-button icon-left="plus" size="is-small" rounded @click="addItem">{{$t('Add')}}</b-button>
+			<label class="label mb-0 is-flex-grow-1">{{ label }}</label>
+			<b-button icon-left="plus-outline" icon-pack="casa" size="is-small" rounded @click="addItem">{{ $t('Add')
+			}}</b-button>
 		</div>
-		<div class="is-flex is-align-items-center mb-5 info" v-if="items.length == 0">
-			<b-icon icon="information" size="is-small" class="mr-2 "></b-icon>
+		<div class="is-flex is-align-items-center mb-5 info " v-if="items.length == 0">
+			<b-icon icon="warning-solid" size="is-small" pack="casa" class="mr-2 "></b-icon>
 			<span>
-        {{message}}
-      </span>
+				{{ message }}
+			</span>
 		</div>
 
-		<div class="port-item" v-for="(item,index) in items" :key="'port'+index">
-			<b-icon icon="close" size="is-small" class="is-clickable" @click.native="removeItem(index)"></b-icon>
+		<div class="port-item  mr-4" v-for="(item, index) in items" :key="'port' + index">
+			<b-icon icon="close-outline" pack="casa" size="is-small" class="is-clickable"
+				@click.native="removeItem(index)"></b-icon>
 			<b-field expanded>
 				<b-input placeholder="Commands" v-model="items[index]" expanded @input="handleInput"></b-input>
 			</b-field>

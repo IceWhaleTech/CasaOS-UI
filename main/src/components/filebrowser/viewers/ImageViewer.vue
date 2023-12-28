@@ -1,14 +1,3 @@
-<!--
- * @Author: Jerryk jerry@icewhale.org
- * @Date: 2022-03-07 13:47:45
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-10 17:21:23
- * @FilePath: /CasaOS-UI/src/components/filebrowser/viewers/ImageViewer.vue
- * @Description: 
- * 
- * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
--->
-
 <template>
 	<div id="image_viewer" class="overlay" @mousemove="onMouseMove" @touchmove="onMouseMove">
 		<header class="modal-card-head">
@@ -25,7 +14,7 @@
 
 				<!-- Close Button Start -->
 				<div class="close-button" @click="close">
-					<b-icon icon="close" pack="casa"></b-icon>
+					<b-icon icon="close-outline" pack="casa"></b-icon>
 				</div>
 				<!-- Close File Button End -->
 			</div>
@@ -222,5 +211,10 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.v-container::v-deep .viewer-canvas {
+  background-image: url("data:image/svg+xml;utf8,%3C?xml version='1.0' encoding='UTF-8'?%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50' viewBox='0 0 16 16'%3E%3Cpath fill='%23ccc' d='M8 6.5A1.5 1.5 0 1 0 8 9.5A1.5 1.5 0 1 0 8 6.5z' fill-opacity='0.1' /%3E%3C/svg%3E");
+  background-color: transparent;
+  background-repeat: repeat;
+}
 </style>

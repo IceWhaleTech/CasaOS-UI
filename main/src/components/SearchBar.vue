@@ -1,26 +1,8 @@
-<!--
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-12 17:42:11
- * @FilePath: \CasaOS-UI-0.4.2\src\components\SearchBar.vue
-  * @Description:
-  *
-  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
-  -->
-
-<!--
- * @Author: JerryK
- * @Date: 2021-09-18 21:32:13
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-08 11:27:19
- * @Description: Top Search bar
- * @FilePath: /CasaOS-UI/src/components/SearchBar.vue
--->
-
 <template>
 	<b-field class="search-bar has-text-white mb-4" position="is-centered ">
 		<b-input v-model="keyText" :class="['ovh', isFocus ? 'fo' : '']" :placeholder="$t('Search...')" expanded
-				 icon="magnifier" icon-pack="casa" icon-right="magnifier" icon-right-clickable size="is-medium"
-				 @blur="onBlur" @focus="onFocus" @icon-right-click="gotoSearch" @keyup.enter.native="gotoSearch">
+			icon="search-outline" icon-pack="casa" icon-right="search-outline" icon-right-clickable size="is-medium"
+			@blur="onBlur" @focus="onFocus" @icon-right-click="gotoSearch" @keyup.enter.native="gotoSearch">
 		</b-input>
 	</b-field>
 </template>

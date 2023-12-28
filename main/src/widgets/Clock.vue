@@ -24,7 +24,7 @@ import dateFormat from "dateformat";
 export default {
 	// eslint-disable-next-line vue/multi-word-component-names
 	name: "clock",
-	icon: "clock-outline",
+	icon: "time-outline",
 	title: "Time",
 	initShow: true,
 	data() {

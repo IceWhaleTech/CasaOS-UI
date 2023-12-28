@@ -1,11 +1,3 @@
-<!--
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-12 16:30:37
- * @FilePath: \CasaOS-UI-0.4.2\src\widgets\Cpu.vue
-  * @Description:
-  *
-  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
-  -->
 <template>
 	<div class="widget has-text-grey-100 cpu">
 		<div class="blur-background"></div>
@@ -16,7 +8,7 @@
 					{{ $t("System Status") }}
 				</div>
 				<div class="widget-icon-button is-flex-shrink-0" @click="showMoreInfo">
-					<b-icon :class="{ open: showMore }" class="arrow-btn" icon="right" pack="casa"></b-icon>
+					<b-icon :class="{ open: showMore }" class="arrow-btn" icon="right-outline" pack="casa"></b-icon>
 				</div>
 			</div>
 			<!-- Header End -->
@@ -97,7 +89,7 @@ import RadialBar    from "@/components/widgets/RadialBar.vue";
 export default {
 	// eslint-disable-next-line vue/multi-word-component-names
 	name: "cpu",
-	icon: "cog",
+	icon: "system-outline",
 	title: "System Status",
 	initShow: true,
 	mixins: [smoothReflow, mixin],

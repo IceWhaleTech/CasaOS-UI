@@ -1,15 +1,5 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/4/25 下午6:54
-  * @FilePath: /CasaOS-UI/main/src/components/logsAndTerminal/LogsCard.vue
-  * @Description:
-  *
-  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
-
-  -->
-
 <template>
-	<fullscreen :class="{ 'mt-5': !fullscreen }" :fullscreen.sync="fullscreen" :page-only="true" :teleport="true"
+	<fullscreen :class="{ 'mt-4': !fullscreen }" :fullscreen.sync="fullscreen" :page-only="true" :teleport="true"
 		class="fullScreen  pl-2 pt-2 pb-2 fdark-bg" @change="onWindowResize">
 		<a class="fullscreen-button" @click="toggleFullScreen">
 			<b-icon :icon="buttonIcon"></b-icon>

@@ -1,11 +1,4 @@
-<!--
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-06 16:29:36
- * @FilePath: /CasaOS-UI/src/components/syncthing/SyncBlock.vue
-  * @Description:
-  *
-  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
-  -->
+
 <template>
 	<div class="common-card">
 
@@ -171,5 +164,8 @@ export default {
 		margin-right: 2rem;
 		margin-left: 2rem;
 	}
+}
+.des{
+	line-height: 1.5em;
 }
 </style>

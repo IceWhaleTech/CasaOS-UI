@@ -42,7 +42,7 @@
 				<div class="action">
 
           <span v-if="status != 'success'" class="action-icon icon" data-role="icon" @click="remove">
-            <b-icon icon="close" size="is-small"></b-icon>
+            <b-icon icon="close-outline" size="is-small"></b-icon>
           </span>
 
 					<span v-if="status == 'error' " class="action-icon icon" data-role="icon" @click="retry">

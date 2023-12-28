@@ -1,29 +1,11 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/2/10 下午9:44
-  * @FilePath: /CasaOS-UI/src/components/filebrowser/sidebar/TreeListItem.vue
-  * @Description:
-  *
-  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
-  -->
-
-<!--
- * @Author: JerryK
- * @Date: 2022-03-03 13:27:35
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-06 17:54:51
- * @Description: 
- * @FilePath: /CasaOS-UI/src/components/filebrowser/sidebar/TreeListItem.vue
--->
 <template>
-	
 	<li>
 		<div v-if="item.visible" :class="{ 'active': isActived }" class="is-flex list-item new-list-item"
-		     @click="open(item.path)">
+			@click="open(item.path)">
 			<div class="cover mr-2 is-flex-shrink-0 is-relative is-flex is-align-items-center">
 				<template v-if="item.icon !== 'danger'">
 					<b-icon v-if="isIconFont" :class="iconColor" :icon="item.icon" :pack="item.pack"
-					        custom-size="casa-28px"></b-icon>
+						custom-size="casa-24px"></b-icon>
 					<div v-else class="img-container">
 						<b-image :src="item.icon" class="is-24x24"></b-image>
 					</div>
@@ -31,17 +13,15 @@
 				<b-icon v-else class="warn" custom-size="casa-16px" icon="danger" pack="casa"></b-icon>
 				<div v-if="isShare" class="overlay-layer">
 					<b-icon :pack="item.pack" class="casa-color-green casa-shape-rounded casa-shape-12px"
-					        custom-size="casa-10px"
-					        icon="share"></b-icon>
+						custom-size="casa-10px" icon="share"></b-icon>
 				</div>
 			</div>
 			<div class=" is-flex-grow-1 one-line">{{ item.name }}</div>
 			<div v-if="iconName != ''" class=" is-flex-shrink-0 is-flex" @click.stop="rightIconClick">
-				<b-icon :icon="iconName" :pack="item.pack" class="casa-color-gray" custom-size="casa-24px"></b-icon>
+				<b-icon :icon="iconName" :pack="item.pack" class="casa-color-gray" custom-size="casa-16px"></b-icon>
 			</div>
 		</div>
 	</li>
-
 </template>
 
 <script>
@@ -98,18 +78,18 @@ export default {
 			} else {
 				return false
 			}
-			
+
 		},
 		isIconFont() {
 			return this.iconType == 'font'
 		}
 	},
-	
+
 	methods: {
 		open() {
 			this.filePanel.getFileList(this.item.path);
 		},
-		
+
 		rightIconClick() {
 			this.$emit('rightIconClick', this.item);
 		},
@@ -124,14 +104,14 @@ export default {
 	height: 100%;
 	left: 0;
 	top: 0;
-	
+
 	.icon {
 		position: absolute;
 		right: -0.15rem;
 		bottom: -0.1rem;
 	}
-	
-	
+
+
 }
 
 .img-container {

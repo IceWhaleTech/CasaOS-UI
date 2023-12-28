@@ -1,28 +1,20 @@
-<!--
- * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
- * @LastEditTime: 2023-09-19 18:36:09
- * @FilePath: /CasaOS-UI/main/src/components/Storage/StorageManagerPanel.vue
-  * @Description:
-  *
-  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
-  -->
 <template>
 	<div class="modal-card">
 
-		<!-- Modal-Card Body Start -->
 		<template v-if="!isCreating">
-			<header class="is-flex-shrink-0 pl-5 mt-4 pt-1 b-line">
-				<h3 class="title is-3 mb-3">{{ title }}</h3>
-				<div class="close-container">
-					<button class="delete" type="button" @click="$emit('close')" />
+
+			<header class="modal-card-head">
+				<div class="is-flex-grow-1">
+					<h3 class="title is-header">{{ title }}</h3>
 				</div>
+				<b-icon class="close-button" icon="close-outline" pack="casa" @click.native="$emit('close');" />
 			</header>
-			<section :class="{ 'b-line': storageData.length > 0 && activeTab === 0 }"
-				class="is-flex-shrink-1 is-flex pr-5 pl-5 mt-4 pb-2 mb-2" style="overflow-y:hidden">
+
+			<!-- Modal-Card Body Start -->
+			<section class="modal-card-body" style="overflow-y:hidden">
 				<!-- Storage and Disk List Start -->
 				<div v-if="!creatIsShow" class="is-flex-grow-1 is-flex-shrink-1 is-relative">
 					<div v-if="activeTab == 0" class="create-container" style="overflow-y:hidden">
-
 						<popper :options="{ placement: 'bottom', modifiers: { offset: { offset: '0,4px' } } }"
 							append-to-body trigger="hover">
 							<div v-show="unDiskData.length == 0" class="popper  tooltip-content dark">
@@ -59,7 +51,7 @@
 						<ValidationProvider v-slot="{ errors, valid }" name="StorageName" rules="required">
 							<b-field :label="$t('Storage Name')" :message="$t(errors)"
 								:type="{ 'is-danger': errors[0], 'is-success': valid }">
-								<b-input v-model="createStorageName"
+								<b-input v-model="createStorageName" ref="inputs"
 									@keyup.native="createStorageName = createStorageName.replace(/[^\w]/g, '')"
 									@paste.native="createStorageName = createStorageName.replace(/[^\w]/g, '')"></b-input>
 							</b-field>
@@ -141,7 +133,7 @@
 
 		<!-- Modal-Card Body End -->
 		<!-- Modal-Card Footer Start-->
-		<footer v-if="!isCreating" class="modal-card-foot is-flex-shrink-0 is-flex is-align-items-center">
+		<footer v-if="!isCreating && activeTab == 0" class="modal-card-foot is-flex-shrink-0 is-flex is-align-items-center">
 			<template v-if="creatIsShow">
 				<div class="is-flex-grow-1"></div>
 				<div>
@@ -152,10 +144,10 @@
 						type="is-primary" @click="createStorge(false)" />
 				</div>
 			</template>
-			<template v-else-if="activeTab == 0 && !mergeConbinationsStorageData.length">
+			<template v-else-if="!mergeConbinationsStorageData.length">
 				<div class="is-flex-grow-1"></div>
 				<div class="is-flex is-flex-direction-row-reverse">
-					<b-button :type="state_mainstorage_operability" class="width" rounded size="is-small"
+					<b-button :type="state_mainstorage_operability" class="width" rounded
 						@click="showStorageSettingsModal">{{ $t('Merge Storages') }}
 					</b-button>
 					<cToolTip isBlock></cToolTip>
@@ -248,6 +240,13 @@ export default {
 						this.$messageBus('storagemanager_drive');
 						break;
 				}
+			}
+		},
+		creatIsShow(val) {
+			if (val) {
+				this.$nextTick(() => {
+					this.$refs.inputs.getElement().select()
+				})
 			}
 		}
 	},
@@ -572,6 +571,7 @@ export default {
 	flex-direction: column;
 	overflow: hidden;
 	max-height: 100%;
+
 	::v-deep .tab-content {
 		overflow-y: overlay;
 		max-height: 100%;
@@ -588,19 +588,10 @@ export default {
 
 .storage-modal {
 	.modal-card-body {
-		overflow-y: hidden;
-		transition: height 0.3s;
-		padding: 2rem 2rem 2rem 2rem;
-		position: relative;
-
 		.tab-item {
 			max-height: calc(100vh - 15rem);
 			overflow-y: overlay;
 		}
-	}
-
-	.modal-card-foot {
-		padding-top: 0;
 	}
 
 	.close-container {
@@ -627,10 +618,6 @@ export default {
 	border-radius: 6px;
 	font-size: 0.85rem;
 	font-weight: 400;
-}
-
-.b-line {
-	border-bottom: 1px solid hsla(208, 16%, 94%, 1);
 }
 </style>
 

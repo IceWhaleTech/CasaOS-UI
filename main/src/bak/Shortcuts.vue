@@ -1,11 +1,3 @@
-<!--
- * @Author: JerryK
- * @Date: 2021-09-18 21:32:13
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 11:42:00
- * @Description: 
- * @FilePath: \CasaOS-UI\src\bak\Shortcuts.vue
--->
 <template>
 	<div class="has-text-left mt-6">
 		<div class="is-flex is-align-items-center mb-5">

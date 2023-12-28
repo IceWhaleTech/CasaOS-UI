@@ -1,19 +1,9 @@
-<!--
- * @Author: Jerryk jerry@icewhale.org
- * @Date: 2022-06-22 22:20:20
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-18 10:49:19
- * @FilePath: \CasaOS-UI-dev\src\components\wallpaper\WallpaperModal.vue
- * @Description:
- *
- * Copyright (c) 2022 by IceWhale, All Rights Reserved.
--->
 <template>
 	<div class="modal-card">
 		<!-- Modal-Card Header Start -->
 		<header class="modal-card-head">
 			<div class="is-flex-grow-1">
-				<h3 class="title is-3">{{ $t('Change wallpaper') }}</h3>
+				<h3 class="title is-header">{{ $t('Change wallpaper') }}</h3>
 			</div>
 
 		</header>

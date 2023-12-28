@@ -16,6 +16,7 @@
   "dependencies": {
     "csslint": "^1.0.5",
     "htmlhint": "^1.1.4",
+    "js-yaml": "^4.1.0",
     "jshint": "^2.13.6",
     "jsonlint": "^1.6.3"
   },

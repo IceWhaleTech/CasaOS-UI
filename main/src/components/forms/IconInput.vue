@@ -1,17 +1,7 @@
-<!--
- * @Author: Jerryk jerry@icewhale.org
- * @Date: 2021-12-11 11:39:46
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 17:08:20
- * @FilePath: \CasaOS-UI\src\components\forms\IconInput.vue
- * @Description:
- *
- * Copyright (c) 2022 by IceWhale, All Rights Reserved.
--->
+
 <template>
 	<b-input v-model="path" :placeholder="placeholder" expanded icon-right="image-filter-center-focus-strong"
-			 icon-right-clickable @input="handleInput"
-			 @icon-right-click="selectFile"></b-input>
+		icon-right-clickable @input="handleInput" @icon-right-click="selectFile"></b-input>
 </template>
 
 <script>
@@ -73,7 +63,7 @@ export default {
 				hasModalCard: true,
 				customClass: 'file-sel-modal',
 				trapFocus: true,
-				canCancel: ['escape'],
+				canCancel: [],
 				scroll: "keep",
 				animation: "zoom-in",
 				events: {
@@ -93,5 +83,4 @@ export default {
 }
 </script>
 
-<style>
-</style>
+<style></style>

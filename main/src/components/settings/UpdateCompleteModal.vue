@@ -1,23 +1,12 @@
-<!--
- * @Author: Jerryk jerry@icewhale.org
- * @Date: 2022-08-05 15:13:41
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-10 15:37:46
- * @FilePath: /CasaOS-UI/src/components/settings/UpdateCompleteModal.vue
- * @Description: 
- * 
- * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
--->
+
 <template>
 	<div class="modal-card">
 		<!-- Modal-Card Header Start -->
 		<header class="modal-card-head">
 			<div class="is-flex-grow-1">
-				<h3 class="title is-3">{{$t('Update completed')}}</h3>
+				<h3 class="title is-header">{{ panelTitle }}</h3>
 			</div>
-			<div>
-				<button type="button" class="delete" @click="$emit('close')"/>
-			</div>
+			<b-icon class="close-button" icon="close-outline" pack="casa" @click.native="$emit('close');" />
 		</header>
 		<!-- Modal-Card Header End -->
 		<!-- Modal-Card Body Start -->
@@ -26,14 +15,13 @@
 				<div class="update-info-container  is-size-14px " v-html="markdownToHtml"></div>
 				<div class="mt-2rem">
 					<h3 class="title is-5 mb-2">{{ $t('Let more friends know') }}</h3>
-					<div class=" is-size-14px">{{ $t('Please share to friends who are concerned about family and data
-						privacy to join and use CasaOS.') }}
+					<div class=" is-size-14px">{{ $t('Please share to friends who are concerned about family and data privacy to join and use CasaOS.') }}
 					</div>
 				</div>
 
 				<div class="buttons is-justify-content-center mb-6 mt-4">
 					<ShareNetwork v-for="site in shareSites" :network="site" :key="site" :url="githubUrl"
-								  :title="shareTitle" hashtags="homecloud,opensource">
+						:title="shareTitle" hashtags="homecloud,opensource">
 						<b-button icon-pack="casa" :icon-left="site" :type="`is-${site}`" class="ml-3 mr-3">
 							Share
 						</b-button>
@@ -47,7 +35,7 @@
 </template>
 
 <script>
-import {marked} from 'marked'
+import { marked } from 'marked'
 
 export default {
 	props: {

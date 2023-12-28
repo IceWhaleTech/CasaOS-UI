@@ -1,11 +1,3 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2022/12/1 下午1:57
-  * @FilePath: /CasaOS-UI/src/components/smartHome/SmartBlock.vue
-  * @Description:
-  *
-  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
-  -->
 <template>
 	<div class="common-card">
 		<div class="blur-background"></div>
@@ -15,8 +7,7 @@
 				<div class="info ">
 					<div class="des two-line  is-size-14px">
 						{{
-						$t('We want to give you a smart home experience with privacy, high speed, and localized
-						storage.')
+						$t('We want to give you a smart home experience with privacy, high speed, and localized storage.')
 						}}
 					</div>
 				</div>
@@ -65,5 +56,8 @@ export default {
 		margin-right: 2rem;
 		margin-left: 2rem;
 	}
+}
+.des{
+	line-height: 1.5em;
 }
 </style>

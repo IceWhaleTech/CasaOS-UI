@@ -1,11 +1,3 @@
-<!--
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-12 17:07:39
- * @FilePath: \CasaOS-UI-0.4.2\src\widgets\Disks.vue
-  * @Description:
-  *
-  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
-  -->
 <template>
 	<div>
 		<!-- Disk Info Start -->
@@ -18,7 +10,7 @@
 						{{ $t('Storage') }}
 					</div>
 					<div class="widget-icon-button is-flex-shrink-0" @click="showDiskManagement">
-						<b-icon icon="setting" pack="casa" size="is-20"></b-icon>
+						<b-icon icon="settings-outline" pack="casa" size="is-20"></b-icon>
 					</div>
 				</div>
 				<!-- Header End -->
@@ -40,7 +32,7 @@
 							</div>
 						</div>
 						<b-progress :type="totalPercent | getProgressType" :value="totalPercent" class="mt-2"
-									size="is-small"></b-progress>
+							size="is-small"></b-progress>
 					</div>
 				</div>
 			</div>
@@ -67,8 +59,8 @@
 							</div>
 						</div>
 						<b-progress :type="(Math.floor((item.size - item.avail) * 100 / item.size)) | getProgressType"
-									:value="Math.floor((item.size - item.avail) * 100 / item.size)" class="mt-2"
-									size="is-small"></b-progress>
+							:value="Math.floor((item.size - item.avail) * 100 / item.size)" class="mt-2"
+							size="is-small"></b-progress>
 					</div>
 				</div>
 			</div>
@@ -76,17 +68,16 @@
 
 		<!-- Usb Disk List End -->
 	</div>
-
 </template>
 
 <script>
 import StorageManagerPanel from '@/components/Storage/StorageManagerPanel.vue'
-import {mixin}             from '@/mixins/mixin';
+import { mixin } from '@/mixins/mixin';
 
 export default {
 	// eslint-disable-next-line vue/multi-word-component-names
 	name: 'disks',
-	icon: "harddisk",
+	icon: "storage-outline",
 	title: "Storage Status",
 	initShow: true,
 	mixins: [mixin],

@@ -1,24 +1,22 @@
-<!--
- * @Author: Jerryk jerry@icewhale.org
- * @Date: 2022-02-18 10:20:10
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-15 17:58:36
- * @FilePath: /CasaOS-UI/src/components/logsAndTerminal/TerminalPanel.vue
- * @Description:
- *
- * Copyright (c) 2022 by IceWhale, All Rights Reserved.
--->
+
 <template>
 	<div class="modal-card">
+		<!-- Modal-Card Header Start -->
+		<header class="modal-card-head">
+			<div class="is-flex-grow-1">
+				<h3 class="title is-header">CasaOS</h3>
+			</div>
+			<b-tooltip label="Download logs" position="is-bottom" size="is-small" type="is-black">
+				<b-icon v-show="showTabName === 'logs'" class="close-button" icon="downloads-outline" pack="casa"
+					@click.native="downloadSystemLog" />
+			</b-tooltip>
+			<b-icon class="close-button ml-2" icon="close-outline" pack="casa" @click.native="$emit('close');" />
+
+		</header>
+		<!-- Modal-Card Header End -->
 
 		<!-- Modal-Card Body Start -->
 		<section class="modal-card-body " style="overflow:hidden">
-			<h3 class="title is-3">CasaOS</h3>
-			<div class="close-container">
-				<span v-show="showTabName === 'logs'" class="mdi mdi-tray-arrow-down is-size-20px mr-4 cursor-pointer"
-					  @click="downloadSystemLog"></span>
-				<button class="delete" type="button" @click="$emit('close')"/>
-			</div>
 			<div class="is-flex-grow-1">
 				<b-tabs :animated="false" @input="onInput">
 					<b-tab-item :label="$t('Terminal')" value="terminal">
@@ -40,8 +38,8 @@
 
 <script>
 import TerminalCard from './TerminalCard.vue';
-import LogsCard     from './LogsCard.vue';
-import qs           from "qs";
+import LogsCard from './LogsCard.vue';
+import qs from "qs";
 
 export default {
 	name: 'terminal-panel',

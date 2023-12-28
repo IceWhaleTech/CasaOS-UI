@@ -1,26 +1,8 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/4/24 上午11:20
-  * @FilePath: /CasaOS-UI/src/components/filebrowser/components/GirdView.vue
-  * @Description:
-  *
-  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
-
-  -->
-
-<!--
- * @Author: JerryK
- * @Date: 2022-02-21 11:06:18
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-14 16:28:54
- * @Description:
- * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\components\GirdView.vue
--->
 <template>
 	<div
 		id="select-container"
 		:class="containerHeight"
-		class="scroll-container scrollbars-light is-relative"
+		class="scroll-container scrollbars-light is-relative w-full"
 		@contextmenu.prevent="openContextMenu"
 		@mousedown.left.prevent="onDragSelectionStart"
 	>

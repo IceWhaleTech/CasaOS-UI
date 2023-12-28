@@ -13,7 +13,7 @@
 				<h3 class="_header-title">{{ $t('Build data station') }}</h3>
 			</div>
 			<!--			<img alt="" src="@/assets/img/learn/learnmore.svg" @click="close">-->
-			<b-icon custom-class="mr-1" icon="close" size="is-medium" @click.native="close"></b-icon>
+			<b-icon custom-class="mr-1" icon="close-outline" size="is-medium" @click.native="close"></b-icon>
 		</header>
 		<section>
 			<div class="pl-4 pr-4 pt-4 pb-4 _b-line _font">

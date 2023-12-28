@@ -36,7 +36,7 @@
       <b-dropdown-item aria-role="menu-item" custom paddingless>
         <div class="p-3">
           <div class="close-button is-absolute" @click="closeDrop">
-            <b-icon class="is-16x16" custom-class="is-size-6" icon="close" pack="casa"></b-icon>
+            <b-icon class="is-16x16" custom-class="is-size-6" icon="close-outline" pack="casa"></b-icon>
           </div>
           <span class="has-text-title-06 mr-5 mb-3">
             {{ $t("Access the following address with another device") }}

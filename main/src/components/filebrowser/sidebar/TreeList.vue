@@ -1,41 +1,22 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/4/24 上午11:20
-  * @FilePath: /CasaOS-UI/src/components/filebrowser/sidebar/TreeList.vue
-  * @Description:
-  *
-  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
-
-  -->
-
-<!--
- * @Author: JerryK
- * @Date: 2022-03-03 13:10:35
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-06 17:54:39
- * @Description:
- * @FilePath: /CasaOS-UI/src/components/filebrowser/sidebar/TreeList.vue
--->
 <template>
 	<ul>
 		<!-- Root List Start -->
 		<tree-list-item v-for="item in rootDataList" :key="item.path" :isActive="isActive" :item="item"
-						iconColor="casa-color-blue"></tree-list-item>
+			iconColor="casa-color-blue"></tree-list-item>
 		<!-- Root List End -->
 
 		<!-- Data List Start -->
-		<tree-list-item v-for="item in dataList" :key="item.path" :isActive="isActive"
-						:isShare="checkSharevisibility(item)"
-						:item="item" iconColor="casa-color-blue"></tree-list-item>
+		<tree-list-item v-for="item in dataList" :key="item.path" :isActive="isActive" :isShare="checkSharevisibility(item)"
+			:item="item" iconColor="casa-color-blue"></tree-list-item>
 		<!-- Data List End -->
 
 	</ul>
 </template>
 
 <script>
-import {mixin} from '@/mixins/mixin';
-import events  from '@/events/events';
-import has     from 'lodash/has'
+import { mixin } from '@/mixins/mixin';
+import events from '@/events/events';
+import has from 'lodash/has'
 
 import TreeListItem from './TreeListItem.vue';
 
@@ -64,7 +45,7 @@ export default {
 			rootDataList: [
 				{
 					name: 'Root',
-					icon: 'folder-root',
+					icon: 'root-outline',
 					pack: 'casa',
 					path: '/',
 					visible: true,
@@ -76,7 +57,7 @@ export default {
 			initFolders: [
 				{
 					name: 'DATA',
-					icon: 'folder-data',
+					icon: 'data-outline',
 					pack: 'casa',
 					path: '/DATA',
 					visible: true,
@@ -85,7 +66,7 @@ export default {
 				},
 				{
 					name: 'Documents',
-					icon: 'folder-documents',
+					icon: 'files-outline',
 					pack: 'casa',
 					path: '/DATA/Documents',
 					visible: true,
@@ -94,7 +75,7 @@ export default {
 				},
 				{
 					name: 'Downloads',
-					icon: 'folder-downloads',
+					icon: 'downloads-outline',
 					pack: 'casa',
 					path: '/DATA/Downloads',
 					visible: true,
@@ -103,7 +84,7 @@ export default {
 				},
 				{
 					name: 'Gallery',
-					icon: 'folder-gallery',
+					icon: 'gallery-outline',
 					pack: 'casa',
 					path: '/DATA/Gallery',
 					visible: true,
@@ -112,7 +93,7 @@ export default {
 				},
 				{
 					name: 'Media',
-					icon: 'folder-media',
+					icon: 'media-outline',
 					pack: 'casa',
 					path: '/DATA/Media',
 					visible: true,

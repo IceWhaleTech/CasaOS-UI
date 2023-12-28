@@ -1,14 +1,3 @@
-<!--
- * @Author: Jerryk jerry@icewhale.org
- * @Date: 2022-02-18 10:20:10
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-12 18:13:52
- * @FilePath: \CasaOS-UI-0.4.2\src\components\Apps\AppSection.vue
- * @Description:
- *
- * Copyright (c) 2022 by IceWhale, All Rights Reserved.
--->
-
 <template>
 	<div class="home-section has-text-left">
 		<!-- Title Bar Start -->
@@ -19,7 +8,7 @@
 
 			<b-dropdown animation="fade1" aria-role="menu" class="file-dropdown" position="is-bottom-left">
 				<template #trigger>
-					<b-icon class="polymorphic is-clickable has-text-grey-100" icon="plus" pack="casa"
+					<b-icon class="polymorphic is-clickable has-text-grey-100" icon="plus-outline" pack="casa"
 							size="is-24"></b-icon>
 				</template>
 				<b-dropdown-item aria-role="menuitem" @click="showInstall(0, 'custom')">

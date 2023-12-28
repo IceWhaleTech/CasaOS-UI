@@ -1,21 +1,13 @@
-<!--
- * @Author: JerryK
- * @Date: 2022-02-23 17:08:21
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 12:01:15
- * @Description: 
- * @FilePath: \CasaOS-UI\src\components\wallpaper\ContextMenu.vue
--->
 <template>
 	<div>
 		<div class="home-context-menu" :style="{top:y + 'px',left:x+'px'}">
-			<b-dropdown aria-role="list" close-on-click ref="dropDown" id="dr1" class="file-dropdown"
+			<b-dropdown aria-role="list" close-on-click ref="dropDown" id="dr2" class="file-dropdown"
 						:position="'is-'+verticalPos+'-'+horizontalPos" :animation="ani" :mobile-modal="false">
 				<!-- Blank Start -->
 				<template>
 					<b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center" key="system-context11"
 									 @click="showChangeWallpaperModal">
-						<b-icon pack="casa" icon="picture" class="mr-1"></b-icon>
+						<b-icon pack="casa" icon="wallpaper-outline" class="mr-1"></b-icon>
 						{{ $t('Change wallpaper') }}
 					</b-dropdown-item>
 				</template>

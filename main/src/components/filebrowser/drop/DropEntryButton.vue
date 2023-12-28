@@ -19,7 +19,7 @@
         slot="reference"
         class="cover mr-2 is-flex-shrink-0 is-flex is-align-items-center none-click"
       >
-        <b-icon custom-size="casa-24px" icon="drop" pack="casa"></b-icon>
+        <b-icon  icon="drop" pack="casa"></b-icon>
       </div>
       <div>
         <span>{{ title }}</span>

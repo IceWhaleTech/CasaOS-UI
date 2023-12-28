@@ -87,7 +87,7 @@
 					</b-field>
 
 					<b-field :label="$t('Memory Limit')">
-						<vue-slider :max="totalMemory" :min="memory_min"
+						<vue-slider :max="totalMemory" :min="memory_min" class="mx-2"
 							:value="service.deploy.resources.limits.memory | duplexDisplay"
 							@change="(v) => service.deploy.resources.limits.memory = v"></vue-slider>
 					</b-field>
@@ -923,10 +923,10 @@ export default {
 
 	/* 设置滚动条样式 */
 	::v-deep .tab-content {
-		padding-right: 2.25rem;
+		padding-right: 1.5rem;
 		padding-left: 1.5rem;
 		height: calc(100% - 2.75rem);
-		overflow-y: auto;
+		overflow-y: overlay;
 		overflow-x: hidden;
 
 		.container-icon {

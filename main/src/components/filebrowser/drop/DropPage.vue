@@ -1,96 +1,51 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/4/24 上午11:20
-  * @FilePath: /CasaOS-UI/src/components/filebrowser/drop/DropPage.vue
-  * @Description:
-  *
-  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
-
-  -->
 <template>
-	<div
-		id="drop-page"
-		class="content is-flex is-flex-direction-column is-flex-grow-1"
-	>
+	<div id="drop-page" class="content is-flex is-flex-direction-column is-flex-grow-1">
 		<!-- Header Start -->
 		<header class="modal-card-head is-flex-shrink-0">
 			<!-- SideBar Button Start -->
 			<sidebar-menu-button></sidebar-menu-button>
 			<!-- SideBar Button End -->
-			<div
-				id="bread-container"
-				class="is-flex-grow-1 is-flex breadcrumb-container"
-			>
-				<h3 class="title is-3 mb-0">{{ $t("FilesDrop") }}</h3>
+			<div id="bread-container" class="is-flex-grow-1 is-flex breadcrumb-container">
+				<h3 class="title is-header mb-0">{{ $t("FilesDrop") }}</h3>
 			</div>
-			<div class="is-flex is-align-items-center">
-				<!--  Close Button Start -->
-				<div class="close-button" @click="$emit('close')">
-					<b-icon icon="close" pack="casa"></b-icon>
-				</div>
-				<!--  Close Button End -->
-			</div>
+			<b-icon class="close-button" icon="close-outline" pack="casa" @click.native="$emit('close');" />
 		</header>
 		<!-- Header End -->
 		<!-- Contents Start -->
-		<div
-			:class="areaClass"
-			:style="cssVariables"
-			class="action-area is-flex-grow-1 is-relative"
-		>
+		<div :class="areaClass" :style="cssVariables" class="action-area is-flex-grow-1 is-relative">
 			<div class="contents">
 				<!-- Cricle BG Start -->
-				<drop-bg v-if="isDesktop"/>
+				<drop-bg v-if="isDesktop" />
 				<!-- Circle Bg End -->
 				<transition-group class="contents" name="list-complete" tag="div">
-					<drop-item
-						v-for="(item, index) in peersArray"
-						:key="item.id"
-						:center="centerPos"
-						:customClass="areaClass"
-						:device="item"
-						:index="initIndexArray[index]"
-						:isFloat="isDesktop"
-						:radius="bigRadius"
-						:showIndex="initIndexArray[index]"
-						class="list-complete-item"
-						@showed="
-              isFirstIn = false;
-              showAddButton = true;
-            "
-					/>
+					<drop-item v-for="(item, index) in peersArray" :key="item.id" :center="centerPos"
+						:customClass="areaClass" :device="item" :index="initIndexArray[index]" :isFloat="isDesktop"
+						:radius="bigRadius" :showIndex="initIndexArray[index]" class="list-complete-item" @showed="
+							isFirstIn = false;
+						showAddButton = true;
+						" />
 				</transition-group>
-				<drop-add-button
-					v-if="showAddButton && peersArray.length == 1 && isDesktop"
-					:center="centerPos"
-					:index="peersArray.length"
-					:isFloat="isDesktop"
-					:radius="bigRadius"
-					:showIndex="initIndexArray[peersArray.length]"
-				/>
+				<drop-add-button v-if="showAddButton && peersArray.length == 1 && isDesktop" :center="centerPos"
+					:index="peersArray.length" :isFloat="isDesktop" :radius="bigRadius"
+					:showIndex="initIndexArray[peersArray.length]" />
 			</div>
 			<!-- Bottom Center Icons Start -->
-			<drop-center-icon v-if="!isMobile"/>
+			<drop-center-icon v-if="!isMobile" />
 			<!-- Bottom Center Icons End -->
 
-			<drop-add-button
-				v-if="isDesktop ? showAddButton && peersArray.length > 1 : true"
-				:center="centerPos"
-				:index="isDesktop ? peersArray.length : peersArray.length + 1"
-				:isFloat="false"
-				:radius="bigRadius"
-				:showIndex="initIndexArray[peersArray.length]"
-			/>
+			<drop-add-button v-if="isDesktop ? showAddButton && peersArray.length > 1 : true" :center="centerPos"
+				:index="isDesktop ? peersArray.length : peersArray.length + 1" :isFloat="false" :radius="bigRadius"
+				:showIndex="initIndexArray[peersArray.length]" />
 		</div>
 		<!-- Contents End -->
-		<drop-context-menu/>
+		<drop-context-menu />
 	</div>
 </template>
 
 <script>
-import {PeersManager, ServerConnection} from "./Network.js";
-import {saveAs}                         from "file-saver";
-import VueBreakpointMixin               from "vue-breakpoint-mixin";
+import { PeersManager, ServerConnection } from "./Network.js";
+import { saveAs } from "file-saver";
+import VueBreakpointMixin from "vue-breakpoint-mixin";
 // import { v4 as uuidv4 } from "uuid";
 
 export default {

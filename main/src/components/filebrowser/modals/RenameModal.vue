@@ -1,44 +1,24 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/4/24 上午11:20
-  * @FilePath: /CasaOS-UI/src/components/filebrowser/modals/RenameModal.vue
-  * @Description:
-  *
-  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
-
-  -->
-
-<!--
- * @Author: JerryK
- * @Date: 2022-02-25 11:03:08
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 12:16:21
- * @Description: 
- * @FilePath: \CasaOS-UI\src\components\filebrowser\modals\RenameModal.vue
--->
 <template>
 	<div class="modal-card">
 		<!-- Modal-Card Header Start -->
 		<header class="modal-card-head">
 			<div class="is-flex-grow-1">
-				<h3 class="title is-3">{{ $t('Rename') }}</h3>
+				<h3 class="title is-header">{{ $t('Rename') }}</h3>
 			</div>
-			<div>
-				<button class="delete" type="button" @click="$emit('close')"/>
-			</div>
+			<b-icon class="close-button" icon="close-outline" pack="casa" @click.native="$emit('close');" />
 		</header>
 		<!-- Modal-Card Header End -->
 		<!-- Modal-Card Body Start -->
 		<section class="modal-card-body ">
 			<div class="node-card">
-				<div class="cover">
+				<div class="cover is-flex is-justify-content-center is-align-items-center">
 					<div :class="item | coverType">
-						<img :class="item | iconType" :src="getIconFile(item)" alt="folder"/>
+						<img :class="item | iconType" :src="getIconFile(item)" alt="folder" />
 					</div>
 				</div>
 				<b-field :message="errors" :type="errorType" class="mb-3 mt-5 has-text-light" expanded>
 					<b-input ref="rinput" v-model="fileName" v-on:keyup.enter.native="saveNewName"
-							 @input.native="fileName = fileName.replace(/\//g,'')"></b-input>
+						@input.native="fileName = fileName.replace(/\//g, '')"></b-input>
 				</b-field>
 			</div>
 
@@ -48,7 +28,7 @@
 		<footer class="modal-card-foot is-flex is-align-items-center">
 			<div class="is-flex-grow-1"></div>
 			<div>
-				<b-button :label="$t('Submit')" expaned rounded type="is-primary" @click="saveNewName"/>
+				<b-button :label="$t('Submit')" expaned rounded type="is-primary" @click="saveNewName" />
 			</div>
 		</footer>
 		<!-- Modal-Card Footer End -->
@@ -56,8 +36,8 @@
 </template>
 
 <script>
-import {mixin} from '@/mixins/mixin';
-import path    from 'path'
+import { mixin } from '@/mixins/mixin';
+import path from 'path'
 
 export default {
 	mixins: [mixin],
@@ -72,7 +52,9 @@ export default {
 		}
 	},
 	mounted() {
-		this.$refs.rinput.focus();
+		this.$nextTick(() => {
+			this.$refs.rinput.getElement().select();
+		})
 	},
 
 	methods: {
@@ -97,5 +79,4 @@ export default {
 }
 </script>
 
-<style>
-</style>
+<style></style>

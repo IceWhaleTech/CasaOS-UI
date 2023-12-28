@@ -1,20 +1,3 @@
-<!--
- * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
- * @LastEditTime: 2023-09-12 14:33:44
- * @FilePath: /CasaOS-UI/main/src/components/SideBar.vue
-  * @Description:
-  *
-  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
-  -->
-
-<!--
- * @Author: JerryK
- * @Date: 2021-09-18 21:32:13
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-20 16:35:03
- * @Description:
- * @FilePath: /CasaOS-UI/src/components/SideBar.vue
--->
 <template>
 	<div v-if="!isLoading" :class="{ 'open': sidebarOpen }" class="side-bar contextmenu-canvas">
 		<vue-custom-scrollbar :settings="scrollSettings" class="scroll-area contextmenu-canvas">
@@ -22,18 +5,17 @@
 				<component :is="item.app" :class="{ 'last-block': index === activeApps.length - 1 }"></component>
 			</div>
 		</vue-custom-scrollbar>
-		<settings v-model="widgetsSettings" :class="{ 'mt-4': activeApps.length > 0 }" class="mr-4"
-				  @change="handleChange">
+		<settings v-model="widgetsSettings" :class="{ 'mt-4': activeApps.length > 0 }" class="mr-4" @change="handleChange">
 		</settings>
 	</div>
 </template>
 
 <script>
-import lowerFirst         from 'lodash/lowerFirst'
-import camelCase          from 'lodash/camelCase'
-import find               from 'lodash/find';
-import isEqual            from 'lodash/isEqual';
-import Settings           from '@/components/widgets/Settings.vue'
+import lowerFirst from 'lodash/lowerFirst'
+import camelCase from 'lodash/camelCase'
+import find from 'lodash/find';
+import isEqual from 'lodash/isEqual';
+import Settings from '@/components/widgets/Settings.vue'
 import vueCustomScrollbar from 'vue-custom-scrollbar'
 import "vue-custom-scrollbar/dist/vueScrollbar.css"
 
@@ -98,7 +80,7 @@ export default {
 				)
 			)
 			this.comps.push(componentName);
-			this.apps.push({app: require(`@/widgets/${fileName.replace("./", "")}`).default})
+			this.apps.push({ app: require(`@/widgets/${fileName.replace("./", "")}`).default })
 		});
 	},
 	mounted() {
@@ -214,12 +196,12 @@ export default {
 	right: 5px;
 }
 
-.ps:hover > .ps__rail-x,
-.ps:hover > .ps__rail-y,
-.ps--focus > .ps__rail-x,
-.ps--focus > .ps__rail-y,
-.ps--scrolling-x > .ps__rail-x,
-.ps--scrolling-y > .ps__rail-y {
+.ps:hover>.ps__rail-x,
+.ps:hover>.ps__rail-y,
+.ps--focus>.ps__rail-x,
+.ps--focus>.ps__rail-y,
+.ps--scrolling-x>.ps__rail-x,
+.ps--scrolling-y>.ps__rail-y {
 	opacity: 0.6;
 	width: 8px;
 }
@@ -234,14 +216,14 @@ export default {
 	opacity: 0.6;
 }
 
-.ps__rail-x:hover > .ps__thumb-x,
-.ps__rail-x:focus > .ps__thumb-x,
+.ps__rail-x:hover>.ps__thumb-x,
+.ps__rail-x:focus>.ps__thumb-x,
 .ps__rail-x.ps--clicking .ps__thumb-x {
 	height: 8px;
 }
 
-.ps__rail-y:hover > .ps__thumb-y,
-.ps__rail-y:focus > .ps__thumb-y,
+.ps__rail-y:hover>.ps__thumb-y,
+.ps__rail-y:focus>.ps__thumb-y,
 .ps__rail-y.ps--clicking .ps__thumb-y {
 	width: 8px;
 }

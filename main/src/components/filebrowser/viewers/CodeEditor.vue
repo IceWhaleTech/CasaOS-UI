@@ -1,21 +1,4 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/4/24 上午11:20
-  * @FilePath: /CasaOS-UI/src/components/filebrowser/viewers/CodeEditor.vue
-  * @Description:
-  *
-  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
 
-  -->
-
-<!--
- * @Author: JerryK
- * @Date: 2022-03-03 21:48:17
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-10 17:21:18
- * @Description: 
- * @FilePath: /CasaOS-UI/src/components/filebrowser/viewers/CodeEditor.vue
--->
 <template>
 	<div class="overlay">
 		<header class="modal-card-head">
@@ -26,18 +9,18 @@
 			</div>
 			<div class="is-flex is-align-items-center">
 				<!-- Save File Button Start -->
-				<b-button :label="$t('Save')" class="mr-3" icon-left="content-save" rounded size="is-small"
-						  type="is-dark" @click="saveFile(false)"/>
+				<b-button :label="$t('Save')" class="mr-3" icon-left="content-save" rounded size="is-small" type="is-dark"
+					@click="saveFile(false)" />
 				<!-- Save File Button Start -->
 
 				<!-- Download File Button Start -->
 				<b-button :label="$t('Download')" class="mr-2" icon-left="download" rounded size="is-small"
-						  type="is-primary" @click="download"/>
+					type="is-primary" @click="download" />
 				<!-- Download File Button End -->
 
 				<!-- Close Button Start -->
 				<div class="close-button" @click="close">
-					<b-icon icon="close" pack="casa"></b-icon>
+					<b-icon icon="close-outline" pack="casa"></b-icon>
 				</div>
 				<!-- Close File Button End -->
 
@@ -47,15 +30,15 @@
 		<!-- Editor Breadcrumb Start -->
 		<div class="file-path-bread">
 			<b-breadcrumb size="is-small">
-				<b-breadcrumb-item v-for="(item,index) in pathArray" :key="'f-'+index" active>{{ item }}
+				<b-breadcrumb-item v-for="(item, index) in pathArray" :key="'f-' + index" active>{{ item }}
 				</b-breadcrumb-item>
 			</b-breadcrumb>
 		</div>
 		<!-- Editor Breadcrumb End -->
 
 		<!-- Editor Start -->
-		<div class="is-flex is-justify-content-center is-align-items-center is-flex-grow-1 v-container code">
-			<codemirror ref="cmEditor" v-model="code" :options="cmOptions" @input="onCmCodeChange" @ready="onCmReady"/>
+		<div class="is-flex is-justify-content-center is-align-items-center is-flex-grow-1 v-container pb-5">
+			<codemirror ref="cmEditor" v-model="code" :options="cmOptions" @input="onCmCodeChange" @ready="onCmReady" />
 		</div>
 		<!-- Editor End -->
 	</div>
@@ -63,11 +46,11 @@
 
 <script>
 
-import {mixin} from '@/mixins/mixin';
+import { mixin } from '@/mixins/mixin';
 
-import mime         from 'mime'
+import mime from 'mime'
 // Core
-import {codemirror} from 'vue-codemirror'
+import { codemirror } from 'vue-codemirror'
 import 'codemirror/lib/codemirror.css'
 // theme css
 import 'codemirror/theme/monokai.css'
@@ -180,7 +163,7 @@ export default {
 				lint: true,
 				foldGutter: true,
 				gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-lint-markers"],
-				highlightSelectionMatches: {showToken: /\w/, annotateScrollbar: true},
+				highlightSelectionMatches: { showToken: /\w/, annotateScrollbar: true },
 				mode: "text/javascript",
 				// hint.js options
 				hintOptions: {
@@ -238,24 +221,17 @@ export default {
 				mode = 'text/x-vue'
 			}
 			this.codemirror.setOption("mode", mode);
-
 			this.$api.file.download(this.item.path).then(res => {
-				if (this.getFileExt(this.item) == 'json') {
-					this.code = typeof res.data === 'string'
-            ? res.data
-            : JSON.stringify(res.data, null, 2)
-				} else {
-					this.code = String(res.data)
-				}
+				this.code = typeof res.data === 'object'
+					? JSON.stringify(res.data, null, 2)
+					: res.data
 				this.$nextTick(() => {
 					this.isChange = false
 				})
 			})
 		},
 		saveFile(leave = false) {
-			const content = this.getFileExt(this.item) == 'json'
-						? JSON.stringify(this.codemirror.getValue())
-						: this.codemirror.getValue()
+			const content = this.codemirror.getValue()
 			this.$api.file.update(this.item.path, content).then(res => {
 				if (res.data.success == 200) {
 					// this.readFile();
@@ -304,5 +280,4 @@ export default {
 }
 </script>
 
-<style>
-</style>
+<style></style>

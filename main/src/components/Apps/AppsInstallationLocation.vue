@@ -34,7 +34,7 @@
 			  class="is-uppercase">{{ item.fsType }}</span>
                 <b-tooltip :label="$t('CasaOS reserves 1% of file space when creating storage in EXT4 format.')"
 						   append-to-body>
-                  <b-icon class="mr-2 " icon="help-circle-outline" size="is-small"></b-icon>
+                  <b-icon class="mr-2 " icon="question-outline" pack="casa" size="is-small"></b-icon>
                 </b-tooltip>
               </p>
               <p class="has-text-left is-size-7 ">{{

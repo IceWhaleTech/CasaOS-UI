@@ -11,52 +11,52 @@
 	<div class="contact-bar is-flex is-align-items-center has-text-white">
 
 		<popper :options="{
-      placement: 'top',
-      modifiers: { offset: { offset: '0,4px' } }
-    }" enter-active-class="fade-enter-active" leave-active-class="" transition='fade' trigger="hover">
+			placement: 'top',
+			modifiers: { offset: { offset: '0,4px' } }
+		}" enter-active-class="fade-enter-active" leave-active-class="" transition='fade' trigger="hover">
 			<div class="popper  tooltip-content">
 				{{ $t('Submit a feedback or report an issue') }}
 			</div>
 			<a slot="reference" @click="showFeedback">
-				<b-icon icon="feedback" pack="casa"></b-icon>
+				<b-icon icon="eedback" pack="casa"></b-icon>
 			</a>
 		</popper>
 
 		<popper :options="{
-      placement: 'top',
-      modifiers: { offset: { offset: '0,4px' } }
-    }" enter-active-class="fade-enter-active" leave-active-class="" transition='fade' trigger="hover">
+			placement: 'top',
+			modifiers: { offset: { offset: '0,4px' } }
+		}" enter-active-class="fade-enter-active" leave-active-class="" transition='fade' trigger="hover">
 			<div class="popper  tooltip-content">
 				{{ $t('Join Discord') }}
 			</div>
 			<a slot="reference" href="https://discord.gg/knqAbbBbeX" target="_blank"
-			   @click="$messageBus('connect_discord')">
+				@click="$messageBus('connect_discord')">
 				<b-icon icon="discord" pack="casa"></b-icon>
 			</a>
 		</popper>
 
 		<popper :options="{
-      placement: 'top',
-      modifiers: { offset: { offset: '0,4px' } }
-    }" enter-active-class="fade-enter-active" leave-active-class="" transition='fade' trigger="hover">
+			placement: 'top',
+			modifiers: { offset: { offset: '0,4px' } }
+		}" enter-active-class="fade-enter-active" leave-active-class="" transition='fade' trigger="hover">
 			<div class="popper  tooltip-content">
 				{{ $t('Visit our Github') }}
 			</div>
 			<a slot="reference" href="https://github.com/IceWhaleTech/CasaOS" target="_blank"
-			   @click="$messageBus('connect_github')">
+				@click="$messageBus('connect_github')">
 				<b-icon icon="github" pack="casa"></b-icon>
 			</a>
 		</popper>
 
 		<popper :options="{
-      placement: 'top',
-      modifiers: { offset: { offset: '0,4px' } }
-    }" enter-active-class="fade-enter-active" leave-active-class="" transition='fade' trigger="hover">
+			placement: 'top',
+			modifiers: { offset: { offset: '0,4px' } }
+		}" enter-active-class="fade-enter-active" leave-active-class="" transition='fade' trigger="hover">
 			<div class="popper  tooltip-content">
 				{{ $t('Share CasaOS') }}
 			</div>
 			<a slot="reference" @click="showShareModal">
-				<b-icon icon="social-share" pack="casa"></b-icon>
+				<b-icon icon="chat" pack="casa"></b-icon>
 			</a>
 		</popper>
 
@@ -65,8 +65,8 @@
 
 <script>
 import FeedbackPanel from './feedback/FeedbackPanel.vue'
-import ShareModal    from '@/components/share/ShareModal.vue'
-import Popper        from 'vue-popperjs';
+import ShareModal from '@/components/share/ShareModal.vue'
+import Popper from 'vue-popperjs';
 
 
 export default {

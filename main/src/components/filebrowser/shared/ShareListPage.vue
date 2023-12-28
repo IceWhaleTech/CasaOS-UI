@@ -1,13 +1,3 @@
-<!--
- * @Author: Jerryk jerry@icewhale.org
- * @Date: 2022-07-28 15:48:34
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-10 17:05:19
- * @FilePath: /CasaOS-UI/src/components/filebrowser/shared/ShareListPage.vue
- * @Description: 
- * 
- * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
--->
 <template>
 	<div class="content is-flex-grow-1">
 		<!-- Header Start -->
@@ -19,15 +9,9 @@
 				id="bread-container"
 				class="is-flex-grow-1 is-flex breadcrumb-container"
 			>
-				<h3 class="title is-3 mb-0">{{ $t("Shared Folders") }}</h3>
+				<h3 class="title is-header mb-0">{{ $t("Shared Folders") }}</h3>
 			</div>
-			<div class="is-flex is-align-items-center">
-				<!--  Close Button Start -->
-				<div class="close-button" @click="$emit('close')">
-					<b-icon icon="close" pack="casa"></b-icon>
-				</div>
-				<!--  Close Button End -->
-			</div>
+			<b-icon class="close-button" icon="close-outline" pack="casa" @click.native="$emit('close');" />
 		</header>
 		<!-- Header End -->
 
@@ -108,9 +92,3 @@ export default {
 	},
 };
 </script>
-
-<style lang="scss" scoped>
-.modal-card-head {
-	height: 4.5rem;
-}
-</style>

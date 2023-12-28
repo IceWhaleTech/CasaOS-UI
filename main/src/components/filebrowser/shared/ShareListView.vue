@@ -1,13 +1,3 @@
-<!--
- * @Author: Jerryk jerry@icewhale.org
- * @Date: 2022-07-29 14:53:46
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-12 16:41:56
- * @FilePath: /CasaOS-UI/src/components/filebrowser/shared/ShareListView.vue
- * @Description: 
- * 
- * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
--->
 <template>
 	<div class="node-list fliebroswer">
 
@@ -16,15 +6,15 @@
 			<div id="select-container" class="scroll-container scrollbars-light is-relative ">
 				<!-- Empty Content Slot Start -->
 				<div v-if="listData.length == 0 && !isLoading"
-					 class="is-flex is-align-items-center is-justify-content-center empty-container">
+					class="is-flex is-align-items-center is-justify-content-center empty-container">
 					<slot></slot>
 				</div>
 				<!-- Empty Content Slot End -->
 				<div class="select-parent">
 					<div class="card-container">
-						<div v-for="(item,index) in listData" :key="'list-'+index+item.path" :data-rel="index"
-							 class="tr-wrapper rdata" @contextmenu.prevent="openContextMenu($event,item)">
-							<div :class="{'active':item.isSelected}" class="tr is-unselectable">
+						<div v-for="(item, index) in listData" :key="'list-' + index + item.path" :data-rel="index"
+							class="tr-wrapper rdata" @contextmenu.prevent="openContextMenu($event, item)">
+							<div :class="{ 'active': item.isSelected }" class="tr is-unselectable">
 
 								<div class="td">
 									<!-- CheckBox Start -->
@@ -64,9 +54,9 @@
 </template>
 
 <script>
-import {mixin}           from '@/mixins/mixin';
-import ActionButton      from './ActionButton.vue';
-import ContextMenu       from './ContextMenu.vue';
+import { mixin } from '@/mixins/mixin';
+import ActionButton from './ActionButton.vue';
+import ContextMenu from './ContextMenu.vue';
 import ListIconContainer from "../components/ListIconContainer.vue"
 
 export default {
@@ -115,5 +105,4 @@ export default {
 }
 </script>
 
-<style>
-</style>
+<style></style>

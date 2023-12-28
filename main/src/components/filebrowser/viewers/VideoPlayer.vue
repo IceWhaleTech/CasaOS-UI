@@ -1,106 +1,53 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/4/24 上午11:20
-  * @FilePath: /CasaOS-UI/src/components/filebrowser/viewers/VideoPlayer.vue
-  * @Description:
-  *
-  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
-
-  -->
-
-<!--
- * @Author: JerryK
- * @Date: 2022-03-04 18:55:13
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-10 17:21:48
- * @Description: 
- * @FilePath: /CasaOS-UI/src/components/filebrowser/viewers/VideoPlayer.vue
--->
 <template>
-	<div class="overlay">
+	<div class="overlay common-modal-background">
 		<header class="modal-card-head">
 			<div class="is-flex-grow-1 is-flex">
 				<!-- Title Start -->
-				<h3 class="title is-5 one-line">{{ item.name }}</h3>
+				<h3 class="title is-5 one-line mr-4">{{ item.name }}</h3>
 				<!-- Title End -->
 			</div>
 			<div class="is-flex is-align-items-center">
 				<!-- Download File Button Start -->
-				<b-button
-					:label="$t('Download')"
-					class="mr-2"
-					icon-left="download"
-					rounded
-					size="is-small"
-					type="is-primary"
-					@click="download"
-				/>
+				<b-button icon-left="downloads-outline" icon-pack="casa" type="is-primary" size="is-small" :label="$t('Download')"
+					class="mr-2" rounded @click="download" />
 				<!-- Download File Button End -->
 
 				<!-- Close Button Start -->
 				<div class="close-button" @click="close">
-					<b-icon icon="close" pack="casa"></b-icon>
+					<b-icon icon="close-outline" pack="casa"></b-icon>
 				</div>
 				<!-- Close File Button End -->
 			</div>
 		</header>
 
 		<!-- Player Start -->
-		<div
-			class="is-flex is-justify-content-center is-align-items-center is-flex-grow-1 v-container video"
-		>
-			<div
-				:class="{ 'is-align-items-center': isAudio }"
-				class="video-container"
-			>
-				<vue-plyr
-					v-if="isVideo"
-					key="video-player"
-					ref="plyr"
-					:options="options"
-				>
-					<video controls crossorigin playsinline>
-						<source :src="getFileUrl(item)" type="video/mp4"/>
-					</video>
-				</vue-plyr>
-				<vue-plyr
-					v-if="isAudio"
-					key="audio-player"
-					ref="plyr"
-					class="plyr-audio"
-				>
-					<audio controls crossorigin playsinline>
-						<source :src="getFileUrl(item)" :type="'audio/' + ext"/>
-					</audio>
-				</vue-plyr>
+		<div class="is-flex is-justify-content-center is-align-items-center is-flex-grow-1 v-container video pt-4 pb-5">
+			<div class="video-container" :class="{ 'is-align-items-center': isAudio }">
+				<div key="video-player" ref="artRef" v-if="isVideo" class="player">
+				</div>
+				<aplayer autoplay v-if="isAudio" class="player-audio" theme="#007AE5" :music="{
+					title: audioTitle,
+					artist: audioArtist,
+					src: this.getFileUrl(this.item),
+					pic: poster
+				}" />
 			</div>
 		</div>
 		<!-- Player Start -->
 
 		<!-- Player Footer Start -->
 		<div class="v-footer is-flex is-justify-content-center">
-			<!-- <div class="buttons video-footer" v-if="isVideo">
-			  <b-tooltip :label="$t('Play in IINA')" type="is-dark">
-				<b-button type="is-iina" class="mr-1" rounded @click="playVideo(item,'iina://weblink?url=')">IINA</b-button>
-			  </b-tooltip>
-					  <b-tooltip :label="$t('Play in PotPlayer')" type="is-dark">
-						<b-button type="is-potplayer" class="mr-1 ml-1" rounded @click="playVideo(item,'potplayer://')">PotPlayer
-						</b-button>
-					  </b-tooltip>
-					  <b-tooltip :label="$t('Play in VLC')" type="is-dark">
-						<b-button type="is-vlc" class=" ml-1" rounded @click="playVideo(item,'vlc://')">VLC</b-button>
-					  </b-tooltip>
-					</div> -->
 		</div>
 		<!-- Player Footer End -->
 	</div>
 </template>
-
+  
 <script>
-import {mixin} from "@/mixins/mixin";
-// import VuePlyr from 'vue-plyr'
-import "vue-plyr/dist/vue-plyr.css";
-
+import { mixin } from "@/mixins/mixin";
+import Aplayer from 'vue-aplayer'
+import Artplayer from 'artplayer';
+import * as mm from 'music-metadata-browser';
+Aplayer.disableVersionBadge = true
 export default {
 	mixins: [mixin],
 	props: {
@@ -108,8 +55,8 @@ export default {
 			type: Object,
 			default: () => {
 				return {
-					path: "/DATA/5 Seconds Of Summer - Amnesia.mp4",
-					name: "5 Seconds Of Summer - Amnesia.mp4",
+					path: "",
+					name: "",
 				};
 			},
 		},
@@ -121,33 +68,16 @@ export default {
 		},
 	},
 	components: {
-		VuePlyr: () => import("vue-plyr"),
+		Aplayer,
 	},
 	data() {
 		return {
 			type: "",
 			ext: "",
-			player: null,
-			options: {
-				controls: [
-					"play-large", // The large play button in the center
-					"restart", // Restart playback
-					"rewind", // Rewind by the seek time (default 10 seconds)
-					"play", // Play/pause playback
-					"fast-forward", // Fast forward by the seek time (default 10 seconds)
-					"progress", // The progress bar and scrubber for playback and buffering
-					"current-time", // The current time of playback
-					"duration", // The full duration of the media
-					"mute", // Toggle mute
-					"volume", // Volume control
-					"captions", // Toggle captions
-					"settings", // Settings menu
-					"pip", // Picture-in-picture (currently Safari only)
-					"airplay", // Airplay (currently Safari only)
-					"download", // Show a download button with a link to either the current source or a custom URL you specify in your options
-					"fullscreen", // Toggle fullscreen
-				],
-			},
+			instance: null,
+			poster: "",
+			audioTitle: this.item.name,
+			audioArtist: "...",
 		};
 	},
 	computed: {
@@ -158,14 +88,63 @@ export default {
 			return this.type == "audio-x-generic";
 		},
 	},
+
 	mounted() {
-		this.ext = this.getFileExt(this.item);
+
+		this.ext = this.getFileExt(this.item, true);
 		Object.keys(this.typeMap).forEach((_type) => {
 			const extensions = this.typeMap[_type];
-			if (extensions.indexOf(this.ext.toLowerCase()) > -1) {
+			if (extensions.indexOf(this.ext) > -1) {
 				this.type = _type;
 			}
 		});
+		this.$nextTick(() => {
+			if (this.isAudio) {
+				var imgUrl = this.getThumbUrl(this.item)
+				var img = new Image();
+				img.crossOrigin = location.host;
+				img.src = imgUrl;
+				img.onload = () => {
+					var canvas = document.createElement('canvas');
+					canvas.width = img.width;
+					canvas.height = img.height;
+					var ctx = canvas.getContext('2d');
+					ctx.drawImage(img, 0, 0, img.width, img.height);
+					this.poster = canvas.toDataURL('image/png');
+				};
+
+				(async () => {
+					const fileUrl = this.getFileUrl(this.item);
+					const metadata = await mm.fetchFromUrl(fileUrl);
+					this.audioTitle = metadata.common.title;
+					this.audioArtist = metadata.common.artist;
+				})();
+
+				return false;
+			}
+
+			this.instance = new Artplayer({
+				url: this.getFileUrl(this.item),
+				container: this.$refs.artRef,
+				setting: true,
+				flip: true,
+				playbackRate: true,
+				aspectRatio: true,
+				subtitleOffset: true,
+				fullscreenWeb: true,
+				fullscreen: true,
+				autoplay: true,
+				pip: true,
+				theme: '#007AE5',
+				playsInline: true,
+				screenshot: true,
+				airplay: true,
+				playsinline: true,
+				lang: this.$i18n.locale.replace('_', '-'),
+			});
+		});
+
+
 	},
 	methods: {
 		download() {
@@ -173,30 +152,25 @@ export default {
 		},
 		close() {
 			this.$emit("close");
-		},
+		}
 	},
 	beforeDestroy() {
-		this.$refs.plyr.player.destroy();
+		if (this.instance && this.instance.destroy) {
+			this.instance.destroy(false);
+		}
 	},
 };
 </script>
-
-<style>
-.plyr {
+<style lang="scss" scoped>
+.player {
 	height: 100%;
 	width: 100%;
 }
 
-.plyr--audio {
-	height: auto !important;
-}
-
-.plyr__video-wrapper {
-	height: 100%;
-}
-
-.plyr__video-wrapper iframe {
+.player-audio {
 	width: 100%;
-	height: 100%;
+	max-width: 80rem;
+	max-height: 4.125rem;
 }
 </style>
+  

@@ -1,22 +1,9 @@
-/*
- * @Author: Jerryk jerry@icewhale.org
- * @Date: 2022-02-18 10:20:10
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-12 13:18:35
- * @FilePath: \CasaOS-UI-0.4.2\vue.config.js
- * @Description:
- *
- * Copyright (c) 2022 by IceWhale, All Rights Reserved.
- */
-
 const webpack = require('webpack')
 const path = require("path")
-
 const commitHash = require('child_process')
 	.execSync('git describe --always')
 	.toString()
 	.trim();
-
 
 module.exports = {
 	publicPath: '/',
@@ -25,11 +12,10 @@ module.exports = {
 	productionSourceMap: true,
 	pluginOptions: {},
 	css: {
-		extract: {
-			ignoreOrder: true
-		}
+		extract: false,
 	},
 	chainWebpack: config => {
+
 		config.module
 			.rule("mjs")
 			.test(/\.mjs$/)
@@ -52,6 +38,7 @@ module.exports = {
 		})
 		config.plugin('ignore')
 			.use(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
+
 		config.plugin('define')
 			.use(require('webpack/lib/DefinePlugin'), [{
 				'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
@@ -72,7 +59,7 @@ module.exports = {
 
 			config.optimization
 				.minimizer('css')
-				.use(require.resolve('optimize-css-assets-webpack-plugin'), [{cssProcessorOptions: {safe: true}}])
+				.use(require.resolve('optimize-css-assets-webpack-plugin'), [{ cssProcessorOptions: { safe: true } }]);
 		} else {
 			// Development only
 			// config.plugin('webpack-bundle-analyzer')

@@ -1,41 +1,28 @@
-<!--
- * @Author: Jerryk jerry@icewhale.org
- * @Date: 2022-03-01 21:10:57
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-07 21:07:35
- * @FilePath: \CasaOS-UI-0.4.2\src\components\Apps\AppPanel.vue
- * @Description:
- *
- * Copyright (c) 2022 by IceWhale, All Rights Reserved.
-
--->
 <template>
-	<div :class="{'narrow': currentSlide > 0 ,'card-width': isFirstInstall, '_stepStoreList' : currentSlide === 0}"
-		 class="app-card modal-card">
+	<div :class="{ 'narrow': currentSlide > 0, 'card-width': isFirstInstall, '_stepStoreList': currentSlide === 0 }"
+		class="app-card modal-card">
 		<!--    first setting！！ apps installation location-->
 		<template v-if="isFirstInstall">
 			<header class="modal-card-head b-line">
 				<div class="is-flex-grow-1">
 					<h3 class="is-flex-grow-1 title is-3 pri-line-height has-text-black">{{
-							$t('Apps Installation Location')
-						}}
+						$t('Apps Installation Location')
+					}}
 					</h3>
 				</div>
-				<b-icon class="_polymorphic close" icon="close" pack="casa"
-						@click.native="$emit('close'); $messageBus('appstore_close')"/>
+				<b-icon class="close-button" icon="close-outline" pack="casa"
+					@click.native="$emit('close'); $messageBus('appstore_close')" />
 			</header>
 			<p class="modal-card-body">
 				{{ $t('Please choose a location with enough storage space and stable connection.') }}
 				<span class="has-text-danger">
-		            {{ $t('(Cannot be changed)') }}
-		        </span>
+					{{ $t('(Cannot be changed)') }}
+				</span>
 			</p>
 
 			<section class="modal-card-body is-overlay">
-				<AppsInstallationLocation
-					v-for="(item,index) in storageData" :key="'storage'+index" :item="item"
-					:scence="storage_item_scence"
-					@selection="getSelection">
+				<AppsInstallationLocation v-for="(item, index) in storageData" :key="'storage' + index" :item="item"
+					:scence="storage_item_scence" @selection="getSelection">
 				</AppsInstallationLocation>
 			</section>
 		</template>
@@ -44,47 +31,41 @@
 			<!-- Sidebar Start -->
 			<app-side-bar v-model="sidebarOpen" :overlay="true" :right="true" position="absolute">
 				<template slot-scope="{close}">
-					<AppDetailInfo :appDetailData="appDetailData" :arch="arch"
-								   :cateMenu="cateMenu"
-								   :close="close" :currentInstallId="currentInstallId"
-								   :installedList="installedList" :showDetailSwiper="showDetailSwiper"
-								   @install="quickInstall">
+					<AppDetailInfo :appDetailData="appDetailData" :arch="arch" :cateMenu="cateMenu" :close="close"
+						:currentInstallId="currentInstallId" :installedList="installedList"
+						:showDetailSwiper="showDetailSwiper" @install="quickInstall">
 					</AppDetailInfo>
 				</template>
 			</app-side-bar>
 			<!-- Sidebar End -->
 
 			<!-- Modal-Card Header Start -->
-			<header :class="{'setting-compose-panel' : currentSlide == 1 && isCasa}" class="modal-card-head _b-line">
+			<header :class="{ 'setting-compose-panel': currentSlide == 1 && isCasa }" class="modal-card-head _b-line">
 				<div class="is-flex-grow-1">
-					<h3 class="_title is-5">{{ panelTitle }}</h3>
+					<h3 class="setting_title is-5">{{ panelTitle }}</h3>
 				</div>
 				<div class="is-flex is-align-items-center">
-					<b-button v-if="currentSlide == 0" :label="$t('Custom Install')" class="mr-2"
-							  icon-left="view-grid-plus"
-							  rounded size="is-small" type="is-primary" @click="currentSlide = 1"/>
+					<b-button v-if="currentSlide == 0" :label="$t('Custom Install')" class="mr-2" icon-left="view-grid-plus"
+						rounded size="is-small" type="is-primary" @click="currentSlide = 1" />
 
 					<b-tooltip v-if="showImportButton" :label="$t('Import')" position="is-bottom" type="is-dark">
-						<button class="icon-button mdi mdi-import" type="button" @click="showImportPanel"/>
+						<button class="icon-button mdi mdi-import" type="button" @click="showImportPanel" />
 					</b-tooltip>
 
-					<b-tooltip v-if="showTerminalButton" :label="$t('Terminal & Logs')" position="is-bottom"
-							   type="is-dark">
-						<button class="icon-button mdi mdi-console" type="button" @click="showTerminalPanel"/>
+					<b-tooltip v-if="showTerminalButton" :label="$t('Terminal & Logs')" position="is-bottom" type="is-dark">
+						<button class="icon-button mdi mdi-console" type="button" @click="showTerminalPanel" />
 					</b-tooltip>
 
 					<b-tooltip v-if="showExportButton" :label="$t('Export ComposeFile')" position="is-bottom"
-							   type="is-dark">
-						<button class="icon-button mdi mdi-export-variant" type="button" @click="exportYAML"/>
+						type="is-dark">
+						<button class="icon-button mdi mdi-export-variant" type="button" @click="exportYAML" />
 					</b-tooltip>
 					<div v-if="currentSlide < 2"
-						 class="is-flex is-align-items-center modal-close-container modal-close-container-line ">
-						<b-icon class="_polymorphic close" icon="close" pack="casa"
-								@click.native="$emit('close')"/>
+						class="is-flex is-align-items-center modal-close-container modal-close-container-line ">
+						<b-icon class="close-button" icon="close-outline" pack="casa" @click.native="$emit('close')" />
 					</div>
 					<div v-else-if="currentSlide === 2" class="is-flex is-align-items-center">
-						<b-icon class="_polymorphic close" icon="close" pack="casa"
-								@click.native="$emit('close')"/>
+						<b-icon class="close-button" icon="close-outline" pack="casa" @click.native="$emit('close')" />
 					</div>
 
 				</div>
@@ -93,7 +74,7 @@
 			<!-- Modal-Card Header End -->
 			<!-- Modal-Card Body Start -->
 			<!-- App Store List Start -->
-			<section v-if="currentSlide == 0" :class="{'_hideOverflow': !isCasa}" class="modal-card-body pt-3 _pl">
+			<section v-if="currentSlide == 0" :class="{ '_hideOverflow': !isCasa }" class="modal-card-body pt-3 _pl">
 
 				<template v-if="!isLoadError">
 
@@ -102,39 +83,35 @@
 						<!-- Featured Slider Start -->
 						<div class="is-relative featured-app b-line">
 							<swiper ref="featureSwiper" :options="featureSwiperOptions" class="swiper ">
-								<swiper-slide v-for="(item,index) in recommendList " :key="index+item.title+item.id"
-											  class="pb-5">
+								<swiper-slide v-for="(item, index) in recommendList " :key="index + item.title + item.id"
+									class="pb-5">
 									<div class="gap" @click="showAppDetial(item.id)">
 										<b-image :placeholder="require('@/assets/img/app/swiper_placeholder.png')"
-												 :src="item.thumbnail"
-												 :src-fallback="require('@/assets/img/app/swiper_placeholder.png')"
-												 class="border-8 is-clickable"
-												 ratio="16by9"></b-image>
+											:src="item.thumbnail"
+											:src-fallback="require('@/assets/img/app/swiper_placeholder.png')"
+											class="border-8 is-clickable" ratio="16by9"></b-image>
 									</div>
 									<div class="is-flex pt-5 is-align-items-center">
 										<div class=" mr-3" @click="showAppDetial(item.id)">
-											<b-image :placeholder="require('@/assets/img/app/default.svg')"
-													 :src="item.icon"
-													 :src-fallback="require('@/assets/img/app/default.svg')"
-													 class="is-64x64 is-clickable icon-shadow"></b-image>
+											<b-image :placeholder="require('@/assets/img/app/default.svg')" :src="item.icon"
+												:src-fallback="require('@/assets/img/app/default.svg')"
+												class="is-64x64 is-clickable icon-shadow"></b-image>
 										</div>
 										<div class="is-flex-grow-1 mr-4 is-clickable"
-											 @click="showAppDetial(item.id);$messageBus('appstore_detail', item.title)">
+											@click="showAppDetial(item.id); $messageBus('appstore_detail', item.title)">
 											<h6 class="title is-6 mb-2 ">{{ item.title }}</h6>
 											<p class="is-size-7 two-line">{{ item.tagline }}</p>
 										</div>
 										<div>
 											<b-button v-if="installedList.includes(item.id)"
-													  :loading="item.id == currentInstallId"
-													  rounded size="is-small"
-													  type="is-primary is-light"
-													  @click="openThirdContainerByAppInfo(item)">{{ $t('Open') }}
+												:loading="item.id == currentInstallId" rounded size="is-small"
+												type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">{{
+													$t('Open') }}
 											</b-button>
 											<b-button v-else :disabled="!item.architectures?.includes(arch)"
-													  :loading="item.id == currentInstallId"
-													  rounded size="is-small"
-													  type="is-primary is-light"
-													  @click="quickInstall(item.id);$messageBus('appstore_install', item.title)">
+												:loading="item.id == currentInstallId" rounded size="is-small"
+												type="is-primary is-light"
+												@click="quickInstall(item.id); $messageBus('appstore_install', item.title)">
 												{{ $t('Install') }}
 											</b-button>
 										</div>
@@ -142,10 +119,10 @@
 								</swiper-slide>
 
 							</swiper>
-							<div :class="{'swiper-button-disabled':disFeaturedPrev}" class="swiper-button-prev"
-								 @click="$refs.featureSwiper.$swiper.slidePrev();$messageBus('appstore_slide')"></div>
-							<div :class="{'swiper-button-disabled':disFeaturedNext}" class="swiper-button-next"
-								 @click="$refs.featureSwiper.$swiper.slideNext();$messageBus('appstore_slide')"></div>
+							<div :class="{ 'swiper-button-disabled': disFeaturedPrev }" class="swiper-button-prev"
+								@click="$refs.featureSwiper.$swiper.slidePrev(); $messageBus('appstore_slide')"></div>
+							<div :class="{ 'swiper-button-disabled': disFeaturedNext }" class="swiper-button-next"
+								@click="$refs.featureSwiper.$swiper.slideNext(); $messageBus('appstore_slide')"></div>
 						</div>
 					</template>
 					<!-- Featured Slider End -->
@@ -156,29 +133,18 @@
 						<!-- Cate Start -->
 						<transition name="slide-fade">
 							<div v-if="!activeAppStoreSourceInput || !isMobile"
-								 class="mr-2 _polymorphic is-flex is-align-items-center _dropdown">
-								<b-dropdown v-model="currentCate" :max-height="240" :mobile-modal="false"
-											animation="fade1"
-											aria-role="list" class="app-select file-dropdown" scrollable>
+								class="mr-2 hover-effect is-flex is-align-items-center _dropdown is-clickable">
+								<b-dropdown v-model="currentCate" :max-height="240" :mobile-modal="false" animation="fade1"
+									aria-role="list" class="app-select file-dropdown" scrollable>
 									<template #trigger="{ active }">
-										<div
-											class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
-											<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
-													icon="category"
-													pack="casa"></b-icon>
-											<span class="has-text-full-03">{{ currentCate.name }}</span>
-											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'"
-													class="ml-2 _dropdown__stateIcon"
-													custom-size="casa-16px"></b-icon>
-										</div>
+										<b-button :label="currentCate.name" type="is-text" icon-left="category" icon-pack="casa"
+											:icon-right="active ? 'up-outline' : 'down-outline'" />
 									</template>
 									<b-dropdown-item v-for="menu in cateMenu" :key="menu.id"
-													 :class="menu.id == currentCate.id?'is-active':''"
-													 :data-title="menu.count"
-													 :value="menu" aria-role="listitem"
-													 class="_dropdown__item">
+										:class="menu.id == currentCate.id ? 'is-active' : ''" :data-title="menu.count"
+										:value="menu" aria-role="listitem" class="_dropdown__item">
 										<div class="media is-align-items-center is-flex has-text-full-03"
-											 @click="$messageBus('appstore_type', menu.name)">
+											@click="$messageBus('appstore_type', menu.name)">
 											<div class="media-content">
 												<h3>{{ menu.name }}</h3>
 											</div>
@@ -194,29 +160,19 @@
 						<!-- Author Start -->
 						<transition name="slide-fade">
 							<div v-if="!activeAppStoreSourceInput || !isMobile"
-								 class="_polymorphic is-flex is-align-items-center _dropdown">
+								class="hover-effect is-flex is-align-items-center _dropdown is-clickable">
 								<b-dropdown v-model="currentAuthor" :max-height="240" :mobile-modal="false"
-											animation="fade1" aria-role="list" class="app-select file-dropdown"
-											position="is-bottom-right" scrollable>
+									animation="fade1" aria-role="list" class="app-select file-dropdown"
+									position="is-bottom-right" scrollable>
 									<template #trigger="{ active }">
-										<div
-											class="is-text auto-height pl-0 pt-0 pb-0 is-flex is-align-items-center">
-											<b-icon class="mr-1 _dropdown__typeIcon" custom-size="mdi-18px"
-													icon="author"
-													pack="casa"></b-icon>
-											<span class="has-text-full-03">{{ currentAuthor.name }}</span>
-											<b-icon :icon="active ? 'chevron-up' : 'chevron-down'"
-													class="ml-2 _dropdown__stateIcon"
-													custom-size="casa-16px"></b-icon>
-										</div>
+										<b-button :label="currentAuthor.name" type="is-text" icon-left="posted-by" icon-pack="casa"
+											:icon-right="active ? 'up-outline' : 'down-outline'" />
 									</template>
 									<b-dropdown-item v-for="menu in authorMenu" :key="menu.id"
-													 :class="menu.id == currentAuthor.id?'is-active':''"
-													 :data-title="menu.count"
-													 :value="menu" aria-role="listitem"
-													 class="_dropdown__item">
+										:class="menu.id == currentAuthor.id ? 'is-active' : ''" :data-title="menu.count"
+										:value="menu" aria-role="listitem" class="_dropdown__item">
 										<div class="media is-align-items-center is-flex has-text-full-03"
-											 @click="$messageBus('appstore_author', menu.name)">
+											@click="$messageBus('appstore_author', menu.name)">
 											<div class="media-content">
 												<h3>{{ menu.name }}</h3>
 											</div>
@@ -229,45 +185,35 @@
 						<!-- Author End -->
 
 						<transition name="search-fade">
-							<b-icon v-if="searchAndSourcesStatus === 'showSources'"
-									class="is-flex is-align-self-center" icon="search-outline"
-									pack="casa"
-									@click.native="searchAndSourcesStatusController"></b-icon>
+							<b-icon v-if="searchAndSourcesStatus === 'showSources'" class="is-flex is-align-self-center ml-2 is-clickable"
+								icon="search-outline" pack="casa" @click.native="searchAndSourcesStatusController"></b-icon>
 						</transition>
 						<transition name="search-fade">
-
-							<b-input v-if="searchAndSourcesStatus !== 'showSources'"
-									 ref="search_app"
-									 v-on-click-outside="resetSearchAndSourcesStatus"
-									 :placeholder="$t('Search an app...')"
-									 class="app-search"
-									 type="text"
-									 @input="debounceSearchInput"
-									 @keyup.enter.native="counterPatchGetStoreList++"></b-input>
-
+							<b-input v-if="searchAndSourcesStatus !== 'showSources'" ref="search_app"
+								v-on-click-outside="resetSearchAndSourcesStatus" :placeholder="$t('Search an app...')"
+								class="app-search ml-2"  @input="debounceSearchInput"
+								@keyup.enter.native="counterPatchGetStoreList++"></b-input>
 						</transition>
 						<div class="is-flex-grow-1"></div>
 						<AppStoreSourceManagement v-show="searchAndSourcesStatus !== 'showSearch'"
-												  :totalApps="pageList.length" class="ml-2"
-												  @refreshAppStore="getStoreList"
-												  @refreshSize="refreshAppStoreSourceManagementSizeStatus"></AppStoreSourceManagement>
+							:totalApps="pageList.length" class="ml-2" @refreshAppStore="getStoreList"
+							@refreshSize="refreshAppStoreSourceManagementSizeStatus"></AppStoreSourceManagement>
 
 					</div>
 
 					<!-- List condition End -->
 					<!-- App list Start-->
 					<div class="columns f-list is-multiline is-mobile pb-3 mb-5">
-						<div v-for="(item,index) in filteredPageList" :key="index+item.title+item.id"
-							 class="column app-item is-one-quarter">
+						<div v-for="(item, index) in filteredPageList" :key="index + item.title + item.id"
+							class="column app-item is-one-quarter">
 							<div class="is-flex  is-align-items-center">
 								<div class="mr-4 is-clickable" @click="showAppDetial(item.id)">
-									<b-image :src="item.icon"
-											 :src-fallback="require('@/assets/img/app/default.svg')"
-											 class="is-64x64 icon-shadow" style="display: flex;align-items: center;"
-											 webp-fallback=".jpg"></b-image>
+									<b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.svg')"
+										class="is-64x64 icon-shadow" style="display: flex;align-items: center;"
+										webp-fallback=".jpg"></b-image>
 								</div>
 								<div class="is-flex-grow-1 mr-4 is-clickable"
-									 @click="showAppDetial(item.id);$messageBus('appstore_detail', item.title)">
+									@click="showAppDetial(item.id); $messageBus('appstore_detail', item.title)">
 									<h6 class="title is-6 mb-2">{{ item.title }}</h6>
 									<p class="is-size-7 two-line">{{ item.tagline }}</p>
 								</div>
@@ -275,21 +221,18 @@
 							</div>
 							<div class="mt-1 ml-7 is-flex is-align-items-center">
 								<div class="is-flex-grow-1 is-size-7 has-text-grey-light">{{
-										item.category
-									}}
+									item.category
+								}}
 								</div>
-								<b-button v-if="installedList.includes(item.id)"
-										  :loading="item.id == currentInstallId" rounded
-										  size="is-small"
-										  type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">
+								<b-button v-if="installedList.includes(item.id)" :loading="item.id == currentInstallId"
+									rounded size="is-small" type="is-primary is-light"
+									@click="openThirdContainerByAppInfo(item)">
 									{{ $t('Open') }}
 								</b-button>
 								<b-button v-else :disabled="!item.architectures?.includes(arch)"
-										  :loading="item.id == currentInstallId"
-										  rounded
-										  size="is-small"
-										  type="is-primary is-light"
-										  @click="quickInstall(item.id);$messageBus('appstore_install', item.title)">
+									:loading="item.id == currentInstallId" rounded size="is-small"
+									type="is-primary is-light"
+									@click="quickInstall(item.id); $messageBus('appstore_install', item.title)">
 									{{ $t('Install') }}
 								</b-button>
 
@@ -309,16 +252,15 @@
 						</h3>
 
 						<div class="columns f-list is-multiline is-mobile  pb-3 mb-5">
-							<div v-for="(item,index) in communityList " :key="index+item.title+item.id"
-								 class="column is-one-quarter">
+							<div v-for="(item, index) in communityList " :key="index + item.title + item.id"
+								class="column is-one-quarter">
 								<div class="is-flex  is-align-items-center">
 									<div class="mr-4 is-clickable" @click="showAppDetial(item.id)">
-										<b-image :src="item.icon"
-												 :src-fallback="require('@/assets/img/app/default.svg')"
-												 class="is-64x64 icon-shadow" webp-fallback=".jpg"></b-image>
+										<b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.svg')"
+											class="is-64x64 icon-shadow" webp-fallback=".jpg"></b-image>
 									</div>
 									<div class="is-flex-grow-1 mr-4 is-clickable"
-										 @click="showAppDetial(item.id);$messageBus('appstorecommunity_detail', item.title)">
+										@click="showAppDetial(item.id); $messageBus('appstorecommunity_detail', item.title)">
 										<h6 class="title is-6 mb-2">{{ item.title }}</h6>
 										<p class="is-size-7 two-line">{{ item.tagline }}</p>
 									</div>
@@ -328,18 +270,15 @@
 									<div class="is-flex-grow-1 is-size-7 has-text-grey-light	">
 										{{ item.category }}
 									</div>
-									<b-button v-if="installedList.includes(item.id)"
-											  :loading="item.id == currentInstallId" rounded
-											  size="is-small"
-											  type="is-primary is-light" @click="openThirdContainerByAppInfo(item)">
+									<b-button v-if="installedList.includes(item.id)" :loading="item.id == currentInstallId"
+										rounded size="is-small" type="is-primary is-light"
+										@click="openThirdContainerByAppInfo(item)">
 										{{ $t('Open') }}
 									</b-button>
 									<b-button v-else :disabled="!item.architectures?.includes(arch)"
-											  :loading="item.id == currentInstallId"
-											  rounded
-											  size="is-small"
-											  type="is-primary is-light"
-											  @click="quickInstall(item.id);$messageBus('appstorecommunity_install', item.title)">
+										:loading="item.id == currentInstallId" rounded size="is-small"
+										type="is-primary is-light"
+										@click="quickInstall(item.id); $messageBus('appstorecommunity_install', item.title)">
 										{{
 											$t('Install')
 										}}
@@ -355,7 +294,7 @@
 					<div class="is-flex is-align-items-center is-justify-content-center mt-6 mb-6">
 						<div class=" has-text-centered mt-6 mb-6">
 							<div class="is-flex is-align-items-center mb-5">
-								<b-icon class="mr-2" icon="alert-circle" type="is-danger"></b-icon>
+								<b-icon class="mr-2" icon="alert-circle-outline" pack="casa" type="is-danger"></b-icon>
 								{{ $t('There was an error loading the data, please try again!') }}
 							</div>
 
@@ -372,23 +311,20 @@
 			<!-- App Install Form Start -->
 			<template v-if="currentSlide == 1">
 				<!--:config-data="initConfigData"-->
-				<ComposeConfig v-if="isCasa" ref="compose"
-							   :cap-array="capArray"
-							   :docker-compose-commands="dockerComposeConfig" :errInfo="errInfo" :networks="networks"
-							   :state="state"
-							   :total-memory="totalMemory"
-							   @updateDockerComposeCommands="updateDockerComposeCommands"
-							   @updateDockerComposeServiceName="updateDockerComposeServiceName"
-							   @updateMainName="name=> currentInstallId = name"></ComposeConfig>
+				<ComposeConfig v-if="isCasa" ref="compose" :cap-array="capArray"
+					:docker-compose-commands="dockerComposeConfig" :errInfo="errInfo" :networks="networks" :state="state"
+					:total-memory="totalMemory" @updateDockerComposeCommands="updateDockerComposeCommands"
+					@updateDockerComposeServiceName="updateDockerComposeServiceName"
+					@updateMainName="name => currentInstallId = name"></ComposeConfig>
 
-				<section v-else :class="{'_hideOverflow': !isCasa}" class="modal-card-body pt-3">
+				<section v-else :class="{ '_hideOverflow': !isCasa }" class="modal-card-body pt-3">
 					<!--	导入"已存在的容器"，进行初始化操作	-->
 					<ValidationObserver ref="containerValida">
 						<ValidationProvider v-slot="{ errors, valid }" name="appName" rules="required">
-							<b-field :label="$t('App name')+' *'" :message="$t(errors)"
-									 :type="{ 'is-danger': errors[0], 'is-success': valid }">
+							<b-field :label="$t('App name') + ' *'" :message="$t(errors)"
+								:type="{ 'is-danger': errors[0], 'is-success': valid }">
 								<b-input v-model="settingData.label" :placeholder="$t('Your custom App Name')"
-										 maxlength="40"></b-input>
+									maxlength="40"></b-input>
 							</b-field>
 						</ValidationProvider>
 
@@ -396,12 +332,12 @@
 							<p class="control">
 								<span class="button is-static container-icon">
 									<b-image :key="settingData.icon" :src="settingData.icon"
-											 :src-fallback="require('@/assets/img/app/default.svg')"
-											 class="is-32x32" ratio="1by1"></b-image>
+										:src-fallback="require('@/assets/img/app/default.svg')" class="is-32x32"
+										ratio="1by1"></b-image>
 								</span>
 							</p>
 							<b-input v-model="settingData.icon" :placeholder="$t('Your custom icon URL')"
-									 expanded></b-input>
+								expanded></b-input>
 						</b-field>
 
 						<b-field label="Web UI">
@@ -409,21 +345,15 @@
 								<option value="http">http://</option>
 								<option value="https">https://</option>
 							</b-select>
-							<b-input v-model="settingData.host" :placeholder="this.$baseHostname"
-									 expanded></b-input>
-							<b-autocomplete
-								v-model="settingData.port_map"
-								:data="(()=>{
-								return (settingData.ports || []).map((item)=>{
+							<b-input v-model="settingData.host" :placeholder="this.$baseHostname" expanded></b-input>
+							<b-autocomplete v-model="settingData.port_map" :data="(() => {
+								return (settingData.ports || []).map((item) => {
 									return item.host
 								})
-							})()"
-								:open-on-focus="true"
-								:placeholder="$t('Port')" class="has-colon" field="hostname"
+							})()" :open-on-focus="true" :placeholder="$t('Port')" class="has-colon" field="hostname"
 								@select="option => (settingData.port_map = option)"></b-autocomplete>
-							<b-input v-model="settingData.index"
-									 :placeholder="'/index.html '+ $t('[Optional]')"
-									 expanded></b-input>
+							<b-input v-model="settingData.index" :placeholder="'/index.html ' + $t('[Optional]')"
+								expanded></b-input>
 						</b-field>
 					</ValidationObserver>
 
@@ -432,20 +362,14 @@
 			<!-- App Install Form End -->
 
 			<!-- App Install Process Start -->
-			<section v-if="currentSlide == 2" :class="{'_hideOverflow': !isCasa}"
-					 class="modal-card-body pt-3 _b-line">
+			<section v-if="currentSlide == 2" :class="{ '_hideOverflow': !isCasa }" class="modal-card-body pt-3 _b-line">
 				<div class="installing-warpper mb-5">
 					<div class="is-flex is-align-items-center is-justify-content-center">
 						<lottie-animation :animationData="require('@/assets/ani/loading.json')" :autoPlay="true"
-										  :loop="true"
-										  class="install-animation mt-5 mb-2"></lottie-animation>
+							:loop="true" class="install-animation mt-5 mb-2"></lottie-animation>
 					</div>
-					<b-progress
-						:value="totalPercentage"
-						format="percent"
-						show-value type="is-primary"></b-progress>
-					<h3 :class="currentInstallAppTextClass" class="title is-6 has-text-centered"
-						style="height: 20px"
+					<b-progress :value="totalPercentage" format="percent" show-value type="is-primary"></b-progress>
+					<h3 :class="currentInstallAppTextClass" class="title is-6 has-text-centered" style="height: 20px"
 						v-html="currentInstallAppText"></h3>
 				</div>
 			</section>
@@ -455,8 +379,8 @@
 
 		</template>
 		<!-- Modal-Card Footer Start-->
-		<footer :class="{'is-justify-content-center':currentSlide == 0}"
-				class="modal-card-foot is-flex is-align-items-center ">
+		<footer :class="{ 'is-justify-content-center': currentSlide == 0 }"
+			class="modal-card-foot is-flex is-align-items-center ">
 			<template>
 				<div class="is-flex-grow-1">
 					<!-- <div v-if="currentSlide == 0">
@@ -465,20 +389,18 @@
 					</div> -->
 				</div>
 				<div>
-					<b-button v-if="currentSlide == 2 && currentInstallAppError " :label="$t('Back')" rounded
-							  @click="prevStep"/>
+					<b-button v-if="currentSlide == 2 && currentInstallAppError" :label="$t('Back')" rounded
+						@click="prevStep" />
 					<b-button v-if="currentSlide == 1 && state == 'install'" :label="$t('Install')" :loading="isLoading"
-							  rounded type="is-primary" @click="installApp()"/>
+						rounded type="is-primary" @click="installApp()" />
 					<b-button v-if="isCasa && currentSlide == 1 && state == 'update'" :label="$t('Save')"
-							  :loading="isLoading"
-							  rounded type="is-primary" @click="updateApp()"/>
+						:loading="isLoading" rounded type="is-primary" @click="updateApp()" />
 					<b-button v-if="!isCasa && currentSlide == 1 && state == 'update'" :label="$t('Save')"
-							  :loading="isLoading"
-							  rounded type="is-primary" @click="updateContainer()"/>
-					<b-button v-if="currentSlide == 2 && !currentInstallAppError" :label="$t(cancelButtonText)"
-							  rounded type="is-primary" @click="$emit('close')"/>
+						:loading="isLoading" rounded type="is-primary" @click="updateContainer()" />
+					<b-button v-if="currentSlide == 2 && !currentInstallAppError" :label="$t(cancelButtonText)" rounded
+						type="is-primary" @click="$emit('close')" />
 					<b-button v-if="isFirstInstall" :label="$t('Submit')" :loading="isLoading" rounded type="is-primary"
-							  @click="submitInstallationLocation(installationLocation)"/>
+						@click="submitInstallationLocation(installationLocation)" />
 				</div>
 			</template>
 
@@ -489,28 +411,28 @@
 </template>
 
 <script>
-import AppSideBar                               from './AppSideBar.vue'
-import ImportPanel                              from '../forms/ImportPanel.vue'
-import AppTerminalPanel                         from './AppTerminalPanel.vue'
-import LottieAnimation                          from "lottie-web-vue";
+import AppSideBar from './AppSideBar.vue'
+import ImportPanel from '../forms/ImportPanel.vue'
+import AppTerminalPanel from './AppTerminalPanel.vue'
+import LottieAnimation from "lottie-web-vue";
 import "@/plugins/vee-validate";
-import uniq                                     from 'lodash/uniq';
-import isNull                                   from 'lodash/isNull'
-import orderBy                                  from 'lodash/orderBy';
-import debounce                                 from 'lodash/debounce'
-import FileSaver                                from 'file-saver';
-import {Swiper, SwiperSlide}                    from 'vue-awesome-swiper'
-import AppsInstallationLocation                 from "@/components/Apps/AppsInstallationLocation";
-import business_ShowNewAppTag                   from "@/mixins/app/Business_ShowNewAppTag";
-import business_OpenThirdApp                    from "@/mixins/app/Business_OpenThirdApp";
-import DockerProgress                           from "@/components/Apps/progress.js";
-import ComposeConfig                            from "@/components/Apps/ComposeConfig.vue";
-import AppDetailInfo                            from '@/components/Apps/AppDetailInfo.vue'
-import {ValidationObserver, ValidationProvider} from "vee-validate";
-import {ice_i18n}                               from "@/mixins/base/common-i18n";
-import {parse}                                  from "yaml";
-import AppStoreSourceManagement                 from "@/components/Apps/AppStoreSourceManagement.vue";
-import {vOnClickOutside}                        from '@vueuse/components'
+import uniq from 'lodash/uniq';
+import isNull from 'lodash/isNull'
+import orderBy from 'lodash/orderBy';
+import debounce from 'lodash/debounce'
+import FileSaver from 'file-saver';
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
+import AppsInstallationLocation from "@/components/Apps/AppsInstallationLocation";
+import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
+import business_OpenThirdApp from "@/mixins/app/Business_OpenThirdApp";
+import DockerProgress from "@/components/Apps/progress.js";
+import ComposeConfig from "@/components/Apps/ComposeConfig.vue";
+import AppDetailInfo from '@/components/Apps/AppDetailInfo.vue'
+import { ValidationObserver, ValidationProvider } from "vee-validate";
+import { ice_i18n } from "@/mixins/base/common-i18n";
+import { parse } from "yaml";
+import AppStoreSourceManagement from "@/components/Apps/AppStoreSourceManagement.vue";
+import { vOnClickOutside } from '@vueuse/components'
 
 const data = [
 	"AUDIT_CONTROL",
@@ -647,19 +569,19 @@ export default {
 			searchKey: "",
 			currentCate: {},
 			// currentAuthor: {},
-			currentAuthor: {count: 0, font: "author", id: 0, name: "All"},
+			currentAuthor: { count: 0, font: "author", id: 0, name: "All" },
 			currentSort: {},
 			cateMenu: [],
 			authorMenu: [
-				{count: 0, font: "author", id: 0, name: "All"},
-				{count: 0, font: "author", id: 1, name: "official"},
-				{count: 0, font: "author", id: 2, name: "by_casaos"},
-				{count: 0, font: "author", id: 3, name: "community"}
+				{ count: 0, font: "author", id: 0, name: "All" },
+				{ count: 0, font: "author", id: 1, name: "official" },
+				{ count: 0, font: "author", id: 2, name: "by_casaos" },
+				{ count: 0, font: "author", id: 3, name: "community" }
 			],
 			sortMenu: [
-				{icon: "", slash: "rank", name: "Popular"},
-				{icon: "", slash: "new", name: "New"},
-				{icon: "", slash: "name", name: "Name"},
+				{ icon: "", slash: "rank", name: "Popular" },
+				{ icon: "", slash: "new", name: "New" },
+				{ icon: "", slash: "name", name: "Name" },
 			],
 			storeQueryData: {
 				index: 1,
@@ -671,9 +593,9 @@ export default {
 			},
 			//  App Detail info
 			appDetailData: {
-				title: {en_us: "",},
-				tagline: {en_us: "",},
-				description: {en_us: "",},
+				title: { en_us: "", },
+				tagline: { en_us: "", },
+				description: { en_us: "", },
 			},
 			arch: "",
 			// unusable: false, // computer unusable
@@ -913,7 +835,7 @@ export default {
 		// this.cateMenu : {name: 'appstore', title: 'App Store', icon: 'mdi-apps', component: 'AppStore'}
 		// param : this.cateMenu.name
 		getCateIcon(name) {
-			let tempO = this.cateMenu.find(item => item.name == name) || {font: 'mdi-apps'}
+			let tempO = this.cateMenu.find(item => item.name == name) || { font: 'mdi-apps' }
 			return tempO.font;
 		},
 
@@ -1340,7 +1262,7 @@ export default {
 			} else {
 				title = this.currentInstallId
 			}
-			const blob = new Blob([this.dockerComposeCommands], {type: ''});
+			const blob = new Blob([this.dockerComposeCommands], { type: '' });
 			FileSaver.saveAs(blob, `${title}.yaml`);
 		},
 
@@ -1409,7 +1331,7 @@ export default {
 
 		async getDiskList() {
 			try {
-				const storageRes = await this.$api.storage.list({system: "show"})
+				const storageRes = await this.$api.storage.list({ system: "show" })
 				const storageArray = []
 				storageRes.data.data.forEach(item => {
 					item.children.forEach(part => {
@@ -1445,7 +1367,7 @@ export default {
 		async askInstallationLocation() {
 			try {
 				// get docker info
-				let {data} = await this.$api.container.getInstallationLocation()
+				let { data } = await this.$api.container.getInstallationLocation()
 				switch (data.success) {
 					case 200:
 					case 400:
@@ -1663,6 +1585,7 @@ export default {
 }
 
 .featured-app {
+
 	.swiper-button-next,
 	.swiper-rtl .swiper-button-prev {
 		right: -20px;
@@ -1813,6 +1736,7 @@ export default {
 		}
 
 		.level {
+
 			.mdi-36px.mdi-set,
 			.mdi-36px.mdi:before {
 				font-size: 24px;
@@ -1869,25 +1793,10 @@ export default {
 }
 
 .button[disabled] {
-	opactiy: 0.3;
+	opacity: 0.3;
 }
 
-._title {
-	/* Text 500Medium/Text02 */
 
-	font-family: 'Roboto';
-	font-style: normal;
-	font-weight: 500;
-	font-size: 1rem;
-	line-height: 1.5rem;
-	/* identical to box height, or 150% */
-
-	font-feature-settings: 'pnum' on, 'lnum' on;
-
-	/* Gary/800 */
-
-	color: #29343D;
-}
 
 ._hideOverflow {
 	overflow: unset;
@@ -1910,25 +1819,6 @@ export default {
 	}
 }
 
-// 0.4.4
-._polymorphic:hover {
-	cursor: pointer;
-	background: hsla(208, 16%, 96%, 1);
-}
-
-._polymorphic:active {
-	background: hsla(208, 16%, 94%, 1);
-}
-
-._polymorphic-attention:hover {
-	cursor: pointer;
-	background: hsla(18, 98%, 94%, 1);
-}
-
-._polymorphic-attention:active {
-	background: hsla(18, 100%, 80%, 1);
-}
-
 ._dropdown {
 	height: 2rem;
 	border-radius: 0.25rem;
@@ -1946,17 +1836,17 @@ export default {
 	}
 
 	._dropdown__item {
-		width: 112px;
-		margin-right: 6px;
 		margin-bottom: 2px;
 	}
 }
 
-.slide-fade-enter-active, .search-fade-enter-active {
+.slide-fade-enter-active,
+.search-fade-enter-active {
 	transition: all 0.3s ease-out;
 }
 
-.slide-fade-leave-active, search-fade-leave-active {
+.slide-fade-leave-active,
+search-fade-leave-active {
 	transition: opacity 0s;
 }
 

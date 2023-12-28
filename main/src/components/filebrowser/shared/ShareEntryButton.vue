@@ -1,22 +1,12 @@
-<!--
- * @Author: Jerryk jerry@icewhale.org
- * @Date: 2022-07-28 15:29:40
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-25 10:25:40
- * @FilePath: \CasaOS-UI-dev\src\components\filebrowser\shared\ShareEntryButton.vue
- * @Description:
- *
- * Copyright (c) 2022 by IceWhale, All Rights Reserved.
--->
 <template>
 	<div>
 
-		<div :class="{'active':active}" class="is-flex list-item new-list-item" @click.prevent="$emit('open')">
+		<div :class="{ 'active': active }" class="is-flex list-item new-list-item" @click.prevent="$emit('open')">
 
 			<popper ref="tip" :options="{
-      placement: 'top',
-      modifiers: { offset: { offset: '0,10px' } }
-    }" enter-active-class="fade-enter-active" transition='fade' trigger="click">
+				placement: 'top',
+				modifiers: { offset: { offset: '0,10px' } }
+			}" enter-active-class="fade-enter-active" transition='fade' trigger="click">
 				<div class="popper  tooltip-content dark">
 					<div class="is-flex ">
 						{{ $t('Start sharing your files on the local network.') }}
@@ -26,7 +16,7 @@
 					</div>
 				</div>
 				<div slot="reference" class="cover mr-2 is-flex-shrink-0 is-flex is-align-items-center none-click" s>
-					<b-icon custom-size="casa-24px" icon="share" pack="casa"></b-icon>
+					<b-icon icon="share" pack="casa"></b-icon>
 				</div>
 			</popper>
 			<div><span>{{ $t('Shared') }}</span></div>
@@ -34,7 +24,6 @@
 		</div>
 
 	</div>
-
 </template>
 
 <script>

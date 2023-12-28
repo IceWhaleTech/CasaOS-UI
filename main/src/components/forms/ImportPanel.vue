@@ -1,18 +1,9 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/2/27 下午2:33
-  * @FilePath: /CasaOS-UI/src/components/forms/ImportPanel.vue
-  * @Description:
-  *
-  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
-  
-  -->
 <template>
 	<div class="modal-card">
 		<!-- Modal-Card Header Start -->
 		<header class="modal-card-head">
 			<div class="is-flex-grow-1">
-				<h3 class="title is-3">{{ $t('Import') }}</h3>
+				<h3 class="title is-header">{{ $t('Import') }}</h3>
 			</div>
 		</header>
 		<!-- Modal-Card Header End -->
@@ -41,8 +32,8 @@
 
 				</b-tab-item>
 				<b-tab-item label="Docker CLI">
-					<b-field :message="errors" :type="{ 'is-danger': !!errors}">
-						<b-input v-model="dockerCliCommands" class="import-area" type="textarea"></b-input>
+					<b-field :message="errors" :type="{ 'is-danger': !!errors}" class="mb-0">
+						<b-input v-model="dockerCliCommands" class="import-area-cli" type="textarea"></b-input>
 					</b-field>
 				</b-tab-item>
 
@@ -380,10 +371,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.import-area {
-	.textarea {
-		max-height: 40em;
-		min-height: 173px;
+.import-area-cli {
+	::v-deep .textarea {
+		height: 244px;
 	}
 }
 

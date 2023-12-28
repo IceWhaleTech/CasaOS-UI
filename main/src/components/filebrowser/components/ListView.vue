@@ -1,115 +1,82 @@
-<!--
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-14 16:38:46
- * @FilePath: \CasaOS-UI-0.4.2\src\components\filebrowser\components\ListView.vue
-  * @Description:
-  *
-  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
-  -->
 <template>
-	<div class="node-list fliebroswer">
-		<!-- Table header Start -->
-		<div class="table-thead">
-			<div v-if="listData.length > 0" class="tr-wrapper">
-				<div class="tr">
-					<div class="th"></div>
-					<div class="th one-line">{{ $t("File name") }}</div>
-					<div v-if="!isMobile" class="th one-line">
-						<div class="one-line">{{ $t("Date Modified") }}</div>
-					</div>
-					<div v-if="!isMobile" class="th one-line">
-						<div class="one-line">{{ $t("Size") }}</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- Table header End -->
-		<!-- Table body Start -->
-		<div class="tbody">
-			<div
-				id="select-container"
-				:class="containerHeight"
-				class="scroll-container scrollbars-light is-relative"
-				@contextmenu.prevent="openContextMenu"
-				@mousedown.stop="onDragSelectionStart"
-			>
+	<div id="select-container" class="node-list fliebroswer is-flex is-flex-direction-column w-full scroll-container scrollbars-light ">
+
+
+		<div class=" is-flex-grow-1 is-flex">
+			<div  class="is-relative is-grow-1 w-full" :class="containerHeight"
+				@contextmenu.prevent="openContextMenu" @mousedown.stop="onDragSelectionStart">
 				<!-- Empty Content Slot Start -->
-				<div
-					v-if="listData.length == 0 && !isLoading"
-					class="is-flex is-align-items-center is-justify-content-center empty-container"
-				>
+				<div v-if="listData.length == 0 && !isLoading"
+					class="is-flex is-align-items-center is-justify-content-center empty-container">
 					<slot></slot>
 				</div>
 				<!-- Empty Content Slot End -->
-				<div class="select-parent">
-					<div class="card-container">
-						<div
-							v-for="(item, index) in listData"
-							:key="'list-' + index + item.name"
-							:data-rel="index"
-							class="tr-wrapper rdata"
-						>
-							<div
-								:class="{
-                  isCutting: getCardState(item),
-                  active: item.isSelected,
-                }"
-								class="tr is-unselectable"
-								@click="onCardClick($event, item, index)"
-								@contextmenu.prevent="openContextMenu($event, item)"
-								@mousedown.stop=""
-							>
-								<div class="td">
+				<div class="select-parent"  >
+					<!-- Table header Start -->
+					<div class="table-thead is-unselectable" >
+						<div class="tr-wrapper">
+							<div class="tr">
+								<div class="th"></div>
+								<div v-for="header in headerList" class="th" v-if="isMobile ? header.showOnMobile : true"
+									@click="onHeaderClick(header)">
+									<div class="one-line">{{ $t(header.text) }}</div>
+									<b-icon v-show="sort === header.sort" icon="expand-down" class="is-18 ml-1"
+										custom-size="casa-18px" :class="{ asc: order === 'asc' }">
+									</b-icon>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Table header End -->
+					<!-- Table body Start -->
+					<div class="tbody card-container">
+						<div v-for="(item, index) in listData" :key="'list-' + index + item.name" :data-rel="index"
+							class="tr-wrapper rdata">
+							<div :class="{
+								isCutting: getCardState(item),
+								active: item.isSelected,
+							}" class="tr is-unselectable" @click="onCardClick($event, item, index)"
+								@contextmenu.prevent="openContextMenu($event, item)" @mousedown.stop="">
+								<div class="td is-flex is-flex-direction-column justify-content-center">
 									<!-- CheckBox Start -->
-									<b-field
-										:class="{ show: isMobile || item.isSelected }"
-										class="checkbox-container is-flex mr-0 ml-2 mb-0"
-									>
-										<b-checkbox
-											v-model="item.isSelected"
-											size="is-small"
-											@input="handleCheckboxInput($event, index)"
-										></b-checkbox>
+									<b-field :class="{ show: isMobile || item.isSelected }"
+										class="checkbox-container is-flex mr-0 mb-0 is-flex-grow-1">
+										<b-checkbox v-model="item.isSelected" size="is-small" class="mr-0"
+											@input="handleCheckboxInput($event, index)"></b-checkbox>
 									</b-field>
 									<!-- CheckBox End -->
 								</div>
-								<div class="td">
-									<div class="cover">
+								<div class="td is-flex-grow-1 mr-2">
+									<div class="cover is-flex-shrink-0">
 										<list-icon-container :item="item"></list-icon-container>
 									</div>
-									<p class="text">
+									<div class="text is-flex-grow-1">
 										{{ item.name }}
-										<span
-											v-if="isMobile"
-											class="is-size-7 is-block has-text-grey-light"
-										>{{ item.date | dateFmt }}</span
-										>
-									</p>
-									<div class="action-wrapper">
+										<span v-if="isMobile" class="is-size-7 is-block has-text-grey-light">{{ item.date |
+											dateFmt }}</span>
+									</div>
+									<div class="action-wrapper is-flex-shrink-0">
 										<!-- Action Button Start -->
-										<action-button
-											:class="{ show: isMobile }"
-											:cols="cols"
-											:index="index"
-											:item="item"
-											@reload="$emit('reload')"
-											@showDetailModal="$emit('showDetailModal', item)"
-										></action-button>
+										<action-button :class="{ show: isMobile }" :cols="cols" :index="index" :item="item"
+											@reload="$emit('reload')"></action-button>
 										<!-- Action Button End -->
 									</div>
 								</div>
 								<div v-if="!isMobile" class="td">
-									<div class="one-line">{{ item.date | dateFmt }}</div>
+									<div v-show="!item.is_dir" class="one-line is-size-7">{{ getFileExt(item) }}</div>
 								</div>
 								<div v-if="!isMobile" class="td">
-									<div v-if="!item.is_dir" class="one-line">
+									<div class="one-line is-size-7">{{ item.date | dateFmt }}</div>
+								</div>
+								<div v-if="!isMobile" class="td">
+									<div v-if="!item.is_dir" class="one-line is-size-7">
 										{{ item.size | renderSize }}
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-
+					<!-- Table body End -->
 					<!-- SelectDivLayer Start -->
 					<div v-show="isShowSeBox" id="selection"></div>
 					<!-- SelectDivLayer End -->
@@ -120,17 +87,17 @@
 			<!-- Context Menu End -->
 		</div>
 
-		<!-- Table body End -->
+
 	</div>
 </template>
-
+  
 <script>
-import {mixin}            from "@/mixins/mixin";
-import ListViewMixin      from "@/mixins/ListViewMixin";
-import VueBreakpointMixin from "vue-breakpoint-mixin";
-import ActionButton       from "./ActionButton.vue";
-import ContextMenu        from "./ContextMenu.vue";
-import ListIconContainer  from "./ListIconContainer.vue";
+import { mixin } from "@/mixins/mixin";
+import ListViewMixin from "@/mixins/ListViewMixin";
+import BreakpointMixin from "vue-breakpoint-mixin";
+import ActionButton from "./ActionButton.vue";
+import ContextMenu from "./ContextMenu.vue";
+import ListIconContainer from "./ListIconContainer.vue";
 
 export default {
 	name: "list-view",
@@ -139,14 +106,32 @@ export default {
 		ContextMenu,
 		ListIconContainer,
 	},
-	mixins: [mixin, ListViewMixin, VueBreakpointMixin],
+	mixins: [mixin, ListViewMixin, BreakpointMixin],
 	data() {
 		return {
 			cols: 1000,
 			colStyle: {
 				width: "",
 			},
-			isGird: false,
+			headerList: [
+				{
+					text: 'File name',
+					sort: 'name',
+					showOnMobile: true,
+				},
+				{
+					text: 'Type',
+					sort: 'format',
+				},
+				{
+					text: 'Date Modified',
+					sort: 'date',
+				},
+				{
+					text: 'Size',
+					sort: 'size',
+				},
+			],
 		};
 	},
 
@@ -160,6 +145,22 @@ export default {
 		containerHeight() {
 			return this.isMobile ? "mobile-list-height" : "";
 		},
+		sort() {
+			return this.$store.state.sort;
+		},
+		order() {
+			return this.$store.state.order;
+		},
+	},
+	methods: {
+		onHeaderClick(header) {
+			if (this.sort === header.sort) {
+				this.$emit('reorder', { sort: header.sort, order: this.order === 'asc' ? 'desc' : 'asc' });
+			} else {
+				this.$emit('reorder', { sort: header.sort, order: 'asc' });
+			}
+		}
 	},
 };
 </script>
+  

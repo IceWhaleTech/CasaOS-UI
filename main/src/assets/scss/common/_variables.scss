@@ -1,12 +1,3 @@
-/*!
- *  @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
- *  @LastEditTime: 2023/1/9 下午10:15
- *  @FilePath: /CasaOS-UI/src/assets/scss/common/_variables.scss
- *  @Description:
- *
- *  Copyright (c) 2022 by IceWhale, All Rights Reserved.
- */
-
 // Included below are all the defined variables from Bulma
 // Modify as needed, removing the !default attribute.
 // Bulma Variables
@@ -54,6 +45,7 @@ Roboto,
 sans-serif;
 $family-monospace: monospace !default;
 $render-mode: optimizeLegibility !default;
+$main-background-color: $white !default;
 
 $size-1: 3rem !default;
 $size-2: 2.5rem !default;

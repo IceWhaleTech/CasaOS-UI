@@ -1,12 +1,3 @@
-<!--
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-12 15:32:40
- * @FilePath: \CasaOS-UI-0.4.2\src\components\TopBar.vue
-  * @Description:
-  *
-  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
-  -->
-
 <template>
 	<div class="navbar top-bar is-flex is-align-items-center _fixed-height">
 		<div class="navbar-brand ml-4 _fixed-height">
@@ -27,15 +18,15 @@
 					<b-tooltip :active="!$store.state.isMobile" :label="$t('Account')" position="is-right" type="is-dark"
 						@click.native="$messageBus('account_setting')">
 						<p role="button">
-							<b-icon class="picon" icon="account" pack="casa" size="is-20"></b-icon>
+							<b-icon class="picon" icon="account-outline" pack="casa" size="is-20"></b-icon>
 						</p>
 					</b-tooltip>
 				</template>
 
-				<b-dropdown-item :focusable="false" aria-role="menu-item" custom>
-					<h2 class="title is-4">{{ $t('Account') }}</h2>
+				<b-dropdown-item :focusable="false" aria-role="menu-item" class="p-0" custom>
+					<h2 class="_title mb-4">{{ $t('Account') }}</h2>
 
-					<div class="is-flex is-align-items-center item">
+					<div class="is-flex is-align-items-center item mx-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1">
 							<b-image :src="require('@/assets/img/account/default-avatar.svg')" class="is-40x40 mr-3"
 								rounded></b-image>
@@ -43,12 +34,12 @@
 						</div>
 						<div>
 							<a aria-role="button" @click="showAccountPanel">
-								<b-icon icon="account-edit" pack="casa"></b-icon>
+								<b-icon icon="user-edit-outline" pack="casa"></b-icon>
 							</a>
 						</div>
 					</div>
 
-					<div class="is-flex is-align-items-center item mt-2">
+					<div class="is-flex is-align-items-center item mt-2 mx-4 mb-4">
 						<div class="is-flex is-align-items-center  is-flex-grow-1">
 						</div>
 						<div>
@@ -69,20 +60,18 @@
 					<b-tooltip :active="!$store.state.isMobile" :label="$t('Settings')" position="is-right" type="is-dark"
 						@click.native="$messageBus('dashboardsetting')">
 						<p role="button">
-							<b-icon :class="{ 'update-icon-dot': updateInfo.need_update }" class="picon" icon="tune"
-								pack="casa" size="is-20"></b-icon>
+							<b-icon :class="{ 'update-icon-dot': updateInfo.need_update }" class="picon"
+								icon="control-outline" pack="casa" size="is-20"></b-icon>
 						</p>
 					</b-tooltip>
 				</template>
 
-				<b-dropdown-item :focusable="false" aria-role="menu-item" class="pr-0 pl-0 pt-0 pb-0" custom>
-					<h2 class="_title mr-2 mt-3 mb-3 ml-2 pr-4 pl-4">{{ $t('Settings') }}</h2>
-
-					<hr class="mt-0 mb-4" />
+				<b-dropdown-item :focusable="false" aria-role="menu-item" class="p-0" custom>
+					<h2 class="_title mb-4">{{ $t('Settings') }}</h2>
 					<!-- Search Engine Switch Start  -->
-					<div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+					<div class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-							<b-icon class="mr-1 ml-2" icon="search-manage" pack="casa" size="is-20"></b-icon>
+							<b-icon class="mr-1 ml-2" icon="show-search-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('Show Search Bar') }}
 						</div>
 						<div>
@@ -96,9 +85,9 @@
 
 					<!-- Search Engine Start -->
 					<div v-if="barData.search_switch"
-						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+						class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-							<b-icon class="mr-1 ml-2" icon="magnifier" pack="casa" size="is-20"></b-icon>
+							<b-icon class="mr-1 ml-2" icon="search-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('Search Engine') }}
 						</div>
 						<div>
@@ -116,9 +105,9 @@
 					<!-- Search Engine End -->
 
 					<!-- Language Start -->
-					<div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+					<div class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-							<b-icon class="mr-1 ml-2" icon="language" pack="casa" size="is-20"></b-icon>
+							<b-icon class="mr-1 ml-2" icon="language-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('Language') }}
 						</div>
 						<div>
@@ -135,9 +124,9 @@
 					<!-- Language End -->
 
 					<!-- WebUI Port Start -->
-					<div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+					<div class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-							<b-icon class="mr-1 ml-2" icon="port" pack="casa" size="is-20"></b-icon>
+							<b-icon class="mr-1 ml-2" icon="port-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('WebUI Port') }}
 						</div>
 						<div>
@@ -153,9 +142,9 @@
 					<!-- WebUI Port End -->
 
 					<!-- Background Start -->
-					<div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+					<div class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-							<b-icon class="mr-1 ml-2" icon="picture" pack="casa" size="is-20"></b-icon>
+							<b-icon class="mr-1 ml-2" icon="wallpaper-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('Wallpaper') }}
 						</div>
 						<div class="ml-2">
@@ -169,9 +158,9 @@
 
 					<!--  Show other Docker container app(s) Switch Start  -->
 					<div v-if="this.$store.state.notImportList.length > 0"
-						class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+						class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-							<b-icon class="mr-1 ml-2" icon="docker" pack="casa" size="is-20"></b-icon>
+							<b-icon class="mr-1 ml-2" icon="docker-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('Show other Docker container app(s)') }}
 						</div>
 						<div>
@@ -185,9 +174,9 @@
 					<!--  Show other Docker container app(s) Switch End  -->
 
 					<!--  Show other Docker container app(s) Switch Start  -->
-					<div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+					<div class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-							<b-icon class="mr-1 ml-2" icon="news" pack="casa" size="is-20"></b-icon>
+							<b-icon class="mr-1 ml-2" icon="news-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('Show news feed from CasaOS Blog') }}
 						</div>
 						<div>
@@ -200,9 +189,9 @@
 					</div>
 					<!--  Show other Docker container app(s) Switch End  -->
 					<!--  Recommended modules Switch Start  -->
-					<div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+					<div class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-							<b-icon class="mr-1 ml-2" icon="app-switch" pack="casa" size="is-20"></b-icon>
+							<b-icon class="mr-1 ml-2" icon="display-applications-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('Show Recommended Apps') }}
 						</div>
 						<div>
@@ -216,14 +205,14 @@
 					<!-- Recommended modules Switch End  -->
 
 					<!-- Automount USB Drive Start  -->
-					<div class="is-flex is-align-items-center mb-1 _is-large _box _polymorphic _is-radius pr-2 mr-4 ml-4">
+					<div class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-							<b-icon class="mr-1 ml-2" icon="usb" pack="casa" size="is-20"></b-icon>
+							<b-icon class="mr-1 ml-2" icon="usb-outline" pack="casa" size="is-20"></b-icon>
 							{{ $t('Automount USB Drive') }}
 							<b-tooltip v-if="isRaspberryPi"
 								:label="$t('Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB')"
 								multilined type="is-dark">
-								<b-icon class="ml-1" icon="help-circle-outline" size="is-small"></b-icon>
+								<b-icon class="ml-1" icon="question-outline" pack="casa" size="is-small"></b-icon>
 							</b-tooltip>
 						</div>
 						<div>
@@ -236,10 +225,10 @@
 					<!-- Automount USB Drive End  -->
 
 					<!-- Update Start -->
-					<div class="_is-large _polymorphic _is-radius pr-2 mr-4 ml-4">
+					<div class="_is-large hover-effect _is-radius pr-2 mr-4 ml-4">
 						<div class="is-flex is-align-items-center">
 							<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-								<b-icon class="mr-1 ml-2" icon="upgrade" pack="casa" size="is-20"></b-icon>
+								<b-icon class="mr-1 ml-2" icon="update-outline" pack="casa" size="is-20"></b-icon>
 								<div :class="{ 'update-text-dot': updateInfo.need_update }">{{ $t('Update') }}</div>
 							</div>
 							<div class="_has-text-gray">
@@ -260,18 +249,17 @@
 						</div>
 					</div>
 					<!-- Update End -->
-
-					<hr class="mt-4 mb-2" />
 					<!-- Restart or Shutdown Start -->
-					<div class="is-flex is-align-content-center is-justify-content-center _box ml-2 mr-2">
-						<div class="mr-1 column is-half is-flex is-align-items-center is-justify-content-center _polymorphic _is-radius _is-normal"
+					<div class="is-flex is-align-content-center is-justify-content-center _footer mt-4 pl-3 pr-3 pt-2 pb-2">
+						<div class="mr-1 column is-half is-flex is-align-items-center is-justify-content-center hover-effect is-clickable _is-radius _is-normal"
 							@click="power('Restart')">
-							<b-icon class="mr-1" icon="restart" pack="casa"></b-icon>
+							<b-icon class="mr-1" icon="restart-outline" pack="casa"></b-icon>
 							{{ $t(restart) }}
 						</div>
-						<div class="ml-1 column is-half is-flex is-align-items-center is-justify-content-center _polymorphic-attention _has-text-attention _is-radius"
+						<div class="ml-1 column is-half is-flex is-align-items-center is-justify-content-center is-clickable hover-effect-attention _has-text-attention _is-radius"
 							@click="power('Shutdown')">
-							<b-icon class="mr-1" custom-class="_has-text-attention" icon="shutdown" pack="casa"></b-icon>
+							<b-icon class="mr-1" custom-class="_has-text-attention" icon="shutdown-outline"
+								pack="casa"></b-icon>
 							{{ $t(shutdown) }}
 						</div>
 					</div>
@@ -285,7 +273,7 @@
 			<div class="is-flex is-align-items-center ml-3 _fixed-height" @click="showTerminalPanel">
 				<b-tooltip :active="!$store.state.isMobile" :label="$t('Terminal & Logs')" position="is-right"
 					style="height: 1.25rem;" type="is-dark">
-					<b-icon class="picon" icon="terminal" pack="casa" size="is-20"></b-icon>
+					<b-icon class="picon" icon="terminal-outline" pack="casa" size="is-20"></b-icon>
 				</b-tooltip>
 			</div>
 			<!-- Terminal  End -->
@@ -367,30 +355,25 @@ export default {
 			deviceModel: "",
 			// Language Sets
 			languages: [
-				{ lang: "ar-sa", name: "العربية" },
+				{ lang: "ar_sa", name: "العربية" },
 				{ lang: "de_de", name: "Deutsch" },
 				{ lang: "en_us", name: "English" },
 				{ lang: "es_es", name: "Español" },
 				{ lang: "fr_fr", name: "Français" },
+				{ lang: "hr_hr", name: "Hrvatski" },
 				{ lang: "hu_hu", name: "Magyar" },
 				{ lang: "it_it", name: "Italiano" },
-				{ lang: "ru_ru", name: "Русский" },
-				{ lang: "pl_pl", name: "Polska" },
-				{ lang: "pt_br", name: "Português (Brasil)" },
-				{ lang: "sv_se", name: "Svenska" },
-				{ lang: "zh_cn", name: "简体中文" },
-				// {lang: "be_by", name: "Беларуская"},
-				// {lang: "id_id", name: "Bahasa Indonesia"},
-				// {lang: "ja_jp", name: "やまと"},
-				// {lang: "ko_kr", name: "한국어"},
-				// {lang: "nb_no", name: "Norsk"},
 				{ lang: "ja_jp", name: "日本語" },
 				{ lang: "ko_kr", name: "한국어" },
-				{ lang: "no_no", name: "Norsk" },
+				{ lang: "no_no", name: "Norsk Bokmål" },
+				{ lang: "pl_pl", name: "Polska" },
+				{ lang: "pt_br", name: "Português (Brasileiro)" },
 				{ lang: "pt_pt", name: "Português" },
 				{ lang: "ro_ro", name: "Română" },
+				{ lang: "sl_si", name: "Slovenščina" },
 				{ lang: "tr_tr", name: "Türkçe" },
 				{ lang: "uk_ua", name: "Українська" },
+				{ lang: "zh_cn", name: "简体中文" },
 			],
 			// Search Engine Sets
 			searchEngines: [
@@ -413,7 +396,7 @@ export default {
 	},
 	computed: {
 		sidebarIcon() {
-			return this.$store.state.sidebarOpen ? "close" : "menu"
+			return this.$store.state.sidebarOpen ? "close-outline" : "menu-outline"
 		},
 		sidebarIconLabel() {
 			return this.$store.state.sidebarOpen ? "Hide Sidebar" : "Show SideBar"
@@ -837,6 +820,11 @@ export default {
 	height: 2.5rem;
 }
 
+._footer {
+	height: 3.5rem;
+	border-top: 1px solid rgb(228 233 237);
+}
+
 ._title {
 	//styleName: Text 500Medium/Text02;
 	font-family: Roboto;
@@ -845,6 +833,8 @@ export default {
 	line-height: 1.5rem;
 	letter-spacing: 0em;
 	text-align: left;
+	padding: 1.25rem 1.25rem 0.5rem 1.5rem;
+	border-bottom: 1px solid rgb(228 233 237);
 }
 
 ._is-normal {
@@ -859,24 +849,6 @@ export default {
 
 ._is-radius {
 	border-radius: 0.375rem;
-}
-
-._polymorphic:hover {
-	cursor: pointer;
-	background: hsla(208, 16%, 96%, 1);
-}
-
-._polymorphic:active {
-	background: hsla(208, 16%, 94%, 1);
-}
-
-._polymorphic-attention:hover {
-	cursor: pointer;
-	background: hsla(18, 98%, 94%, 1);
-}
-
-._polymorphic-attention:active {
-	background: hsla(18, 100%, 80%, 1);
 }
 
 ._has-text-attention {

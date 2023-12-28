@@ -1,13 +1,3 @@
-<!--
- * @Author: Jerryk jerry@icewhale.org
- * @Date: 2023-03-10 17:18:38
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-10 17:19:36
- * @FilePath: /CasaOS-UI/src/components/filebrowser/sidebar/SideBar.vue
- * @Description: 
- * 
- * Copyright (c) 2023 by IceWhale, All Rights Reserved. 
--->
 <template>
   <div class="nav-bar is-flex is-flex-direction-column">
     <div class="is-flex-grow-1 is-flex-shrink-1 nav-bar-top scrollbars-light">
@@ -87,4 +77,3 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>

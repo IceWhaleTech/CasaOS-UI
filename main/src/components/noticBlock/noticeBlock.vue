@@ -1,15 +1,3 @@
-<!--
- * @Author: zhanghengxin ezreal.ice@icloud.com
- * @Date: 2022-09-06 14:42:24
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-12 18:31:45
- * @FilePath: \CasaOS-UI-0.4.2\src\components\noticBlock\noticeBlock.vue
- * @Description:
- *
- * Copyright (c) 2022 by IceWhale, All Rights Reserved.
- *
--->
-
 <template>
 	<div class="common-card">
 		<div class="blur-background"></div>
@@ -232,7 +220,7 @@ export default {
 
 	.info {
 		margin: 1.5rem 2rem;
-
+		line-height: 1.5em;
 		._ml-2rem {
 			margin-left: 2rem;
 		}

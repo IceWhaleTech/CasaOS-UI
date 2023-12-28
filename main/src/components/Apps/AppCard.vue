@@ -1,11 +1,3 @@
-<!--
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-01 10:54:46
- * @FilePath: /CasaOS-UI/src/components/Apps/AppCard.vue
-  * @Description:
-  *
-  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
-  -->
 <template>
 	<div class="common-card is-flex is-align-items-center is-justify-content-center p-55 app-card"
 		 @mouseleave="hover = true" @mouseover="hover = true">
@@ -17,13 +9,13 @@
 						@active-change="setDropState">
 				<template #trigger>
 					<p role="button">
-						<b-icon class="is-clickable" icon="dots-vertical"></b-icon>
+						<b-icon class="is-clickable" icon="dots-vertical-outline" pack="casa"></b-icon>
 					</p>
 				</template>
 
 				<b-dropdown-item :focusable="false" aria-role="menu-item" custom>
 					<b-button expanded tag="a" type="is-text" @click="openApp(item)">{{ $t('Open') }}</b-button>
-					<b-button v-if="isV2App" expanded icon-pack="casa" icon-right="question" size="is-16"
+					<b-button v-if="isV2App" expanded icon-pack="casa" icon-right="question-outline" size="is-16"
 							  type="is-text" @click="openTips(item.name)">
 						{{ $t('Tips') }}
 					</b-button>
@@ -98,13 +90,13 @@
 						<div class="columns is-gapless _b-bor is-flex">
 							<div class="column is-flex is-justify-content-center is-align-items-center">
 								<b-button :loading="isRestarting" expanded type="is-text" @click="restartApp">
-									<b-icon custom-size="is-size-20px" icon="sync" size="is-20x20"></b-icon>
+									<b-icon custom-size="is-size-20px" icon="restart-outline" pack="casa" size="is-20x20"></b-icon>
 								</b-button>
 							</div>
 							<div class="column is-flex is-justify-content-center is-align-items-center">
 								<b-button :class="item.status" :loading="isStarting" class="has-text-red" expanded
 										  type="is-text" @click="toggle(item)">
-									<b-icon custom-size="is-size-20px" icon="power-standby" size="is-20"></b-icon>
+									<b-icon custom-size="is-size-20px" icon="shutdown-outline" pack="casa" size="is-20"></b-icon>
 								</b-button>
 							</div>
 						</div>
