@@ -11,8 +11,8 @@
 		<!-- Modal-Card Body Start -->
 		<section class="modal-card-body ">
 			<div class="node-card fixed-height">
-				<div v-if="!isUpdating" class="update-info-container  is-size-14px" v-html="markdownToHtml"></div>
-				<div v-else class="update-info-container  is-size-14px" v-html="updateMarkdownHtml"></div>
+				<div v-if="!isUpdating" class="update-info-container  is-size-14px" v-dompurify-html="markdownToHtml"></div>
+				<div v-else class="update-info-container  is-size-14px" v-dompurify-html="updateMarkdownHtml"></div>
 			</div>
 		</section>
 		<!-- Modal-Card Body End -->

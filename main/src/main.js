@@ -1,23 +1,23 @@
 import 'intersection-observer'
-import Vue              from 'vue'
-import App              from '@/App.vue'
-import router           from '@/router'
-import store            from '@/store'
-import i18n             from '@/plugins/i18n'
-import api              from '@/service/api.js'
-import openAPI          from '@/service/index.js'
-import Buefy            from 'buefy'
-import VueFullscreen    from 'vue-fullscreen'
-import Vue2TouchEvents  from 'vue2-touch-events'
+import Vue from 'vue'
+import App from '@/App.vue'
+import router from '@/router'
+import store from '@/store'
+import i18n from '@/plugins/i18n'
+import api from '@/service/api.js'
+import openAPI from '@/service/index.js'
+import Buefy from 'buefy'
+import VueFullscreen from 'vue-fullscreen'
+import Vue2TouchEvents from 'vue2-touch-events'
 import VueSocialSharing from 'vue-social-sharing'
-import VueSocketIOExt   from 'vue-socket.io-extended';
-import messageBus       from '@/events/index.js'
-import xss from 'xss'; 
+import VueSocketIOExt from 'vue-socket.io-extended';
+import messageBus from '@/events/index.js'
+import VueDOMPurifyHTML from 'vue-dompurify-html'
 
 
 // Import Styles
 import '@/assets/scss/app.scss'
-import VAnimateCss      from 'v-animate-css';
+import VAnimateCss from 'v-animate-css';
 
 const io = require("socket.io-client");
 
@@ -39,10 +39,15 @@ const socket = io(wsURL, {
 
 Vue.use(Buefy)
 Vue.use(VueFullscreen)
-Vue.use(VAnimateCss, {animateCSSPath: '/css/animate.min.css'});
+Vue.use(VAnimateCss, { animateCSSPath: '/css/animate.min.css' });
 Vue.use(Vue2TouchEvents)
 Vue.use(VueSocketIOExt, socket);
 Vue.use(VueSocialSharing);
+Vue.use(VueDOMPurifyHTML, {
+	default: {
+		ALLOWED_ATTR: ['target', 'href']
+	}
+});
 
 Vue.config.productionTip = false
 Vue.prototype.$api = api;
@@ -51,7 +56,7 @@ Vue.prototype.$baseIp = baseIp;
 Vue.prototype.$baseURL = baseURL;
 Vue.prototype.$protocol = protocol;
 Vue.prototype.$wsProtocol = wsProtocol;
-Vue.prototype.xss = xss;
+
 
 // Create an EventBus
 Vue.prototype.$EventBus = new Vue();

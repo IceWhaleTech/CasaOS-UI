@@ -5,7 +5,7 @@
 			<b-icon :icon="buttonIcon"></b-icon>
 		</a>
 		<div id="logs" :class="[fullscreen ? 'fullheight' : 'sheight']" class="logs scrollbars">
-			<div contenteditable v-html="data" class="content"></div>
+			<div contenteditable v-dompurify-html="data" class="content"></div>
 		</div>
 	</fullscreen>
 </template>

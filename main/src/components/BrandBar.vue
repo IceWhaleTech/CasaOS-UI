@@ -1,11 +1,3 @@
-<!--
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-27 23:35:25
- * @FilePath: \CasaOS-UI-0.4.2\src\components\BrandBar.vue
-  * @Description:
-  *
-  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
-  -->
 <template>
 	<div class="brand-bar is-flex is-align-items-flex-end has-text-white">
 		<figure class="image _is-136x26 mb-3">
@@ -16,7 +8,7 @@
 		<span v-else class="window ml-4">
 			<ul :style="{ '--time': 5 * line + 's', '--perc': perc, '--line': line }" class="scroll">
 				<li v-for="(item, key) in rss" :key="key" class="has-text-left" @click="$messageBus('connect_news')">
-					<a :href="item.link" class="intro-text" target="_blank">{{ item.title }}</a>
+					<a :href="xss(item.link)" class="intro-text" target="_blank">{{ item.title }}</a>
 				</li>
 			</ul>
 		</span>
@@ -26,7 +18,7 @@
 
 <script>
 import Parser from "rss-parser";
-
+import xss from 'xss'
 export default {
 	name: "brand-bar",
 	components: {},

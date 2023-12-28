@@ -19,7 +19,7 @@
 							 type="textarea"></b-input>
 				</b-field>
 				<b-field :label="$t('System infomation')">
-					<div class="feedback-info-container is-size-14px" v-html="markdownToHtml"></div>
+					<div class="feedback-info-container is-size-14px" v-dompurify-html="markdownToHtml"></div>
 				</b-field>
 			</div>
 		</section>
