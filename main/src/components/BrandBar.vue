@@ -7,7 +7,8 @@
 		<span v-else class="window ml-4">
 			<ul :style="{ '--time': 5 * line + 's', '--perc': perc, '--line': line }" class="scroll">
 				<li v-for="(item, key) in rss" :key="key" class="has-text-left" @click="$messageBus('connect_news')">
-					<a :href="item.link" class="intro-text" target="_blank" rel="noopener noreferrer">
+					<a @click="gotoLink(item.link)" class="intro-text is-clickable" target="_blank"
+						rel="noopener noreferrer">
 						{{ item.title }}
 					</a>
 				</li>
@@ -64,10 +65,14 @@ export default {
 			const newFeed = feed.items.map(item => {
 				return {
 					title: item.title,
-					link: DOMPurify.sanitize(item.link, {ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|xmpp):|[^a-z]|[a-z+.1-9]+(?:[^a-z+.1-9]|$))/i})
+					link: DOMPurify.sanitize(item.link, { ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|xmpp):|[^a-z]|[a-z+.1-9]+(?:[^a-z+.1-9]|$))/i })
 				}
 			})
 			this.rss = newFeed
+		},
+
+		gotoLink(link) {
+			window.open(link, '_blank')
 		}
 	}
 }

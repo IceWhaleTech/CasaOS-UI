@@ -1,9 +1,5 @@
-const webpack = require('webpack')
-const path = require("path")
-const commitHash = require('child_process')
-	.execSync('git describe --always')
-	.toString()
-	.trim();
+const webpack = require('webpack');
+const path = require("path");
 
 module.exports = {
 	publicPath: '/',
@@ -44,7 +40,6 @@ module.exports = {
 				'process.env.VUE_APP_DEV_IP': JSON.stringify(process.env.VUE_APP_DEV_IP),
 				'process.env.VUE_APP_DEV_PORT': JSON.stringify(process.env.VUE_APP_DEV_PORT),
 				'process.env.VUE_APP_BASE_URL': JSON.stringify(process.env.VUE_APP_BASE_URL),
-				MAIN_APP_VERSION_ID: JSON.stringify(commitHash),
 				BUILT_TIME: JSON.stringify(Date()),
 			}]);
 		// Production only
