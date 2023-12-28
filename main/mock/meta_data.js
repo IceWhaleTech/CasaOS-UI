@@ -73,7 +73,7 @@ module.exports = function mock(app) {
 		fs.readFile(filePath, (err, file) => {
 			// res.headers["Access-Control-Allow-Origin"] = "*"
 			// 允许跨域
-			res.header("Access-Control-Allow-Origin", "*");
+			// res.header("Access-Control-Allow-Origin", "*");
 			res.render(file)
 		})
 	})

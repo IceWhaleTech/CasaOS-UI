@@ -1,11 +1,3 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2022/12/19 下午12:50
-  * @FilePath: /CasaOS-UI/src/components/Storage/StorageCombination.vue
-  * @Description:
-  *
-  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
-  -->
 <template>
 	<div v-show="showCombination" class="mb-5 mt-2 pt-5 pb-5 border-1 combination-box">
 		<div class="is-relative is-flex is-justify-content-center top--2rem">
@@ -54,7 +46,7 @@
 				</div>
 				<p v-if="usePercent >= 80"
 				   class="has-text-right is-flex is-flex-direction-row-reverse">
-					<a href="https://wiki.casaos.io/zh/guides" target="_blank">{{ $t("Free up storage") }}</a>
+					<a rel="noopener" href="https://wiki.casaos.io/zh/guides" target="_blank">{{ $t("Free up storage") }}</a>
 				</p>
 				<div class="is-flex is-flex-direction-row-reverse">
 					<b-button :type="type" class="width" rounded size="is-small"

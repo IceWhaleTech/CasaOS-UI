@@ -37,7 +37,7 @@ export default {
 				confirmText: this.$t('Go'),
 				cancelText: this.$t('Cancel'),
 				onConfirm: () => {
-					window.open('https://discord.gg/Gx4BCEtHjx', '_blank');
+					window.open('https://discord.gg/Gx4BCEtHjx', '_blank', 'noopener');
 				}
 			})
 		}

@@ -1,11 +1,3 @@
-<!--
- * @Author: JerryK
- * @Date: 2022-01-24 11:57:35
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 08:37:45
- * @Description:
- * @FilePath: \CasaOS-UI\src\components\feedback\FeedbackPanel.vue
--->
 <template>
 	<div class="modal-card">
 
@@ -36,7 +28,7 @@
 		<!-- Modal-Card Footer Start-->
 		<footer class="modal-card-foot is-flex is-align-items-center ">
 			<div class="is-flex-grow-1">
-				<a class="is-size-14px"
+				<a class="is-size-14px" rel="noopener"
 				   href="https://github.com/IceWhaleTech/CasaOS/issues/new/choose"
 				   target="_blank">{{ $t('For more feedback options, visit CasaOS project on GitHub...') }}</a>
 			</div>

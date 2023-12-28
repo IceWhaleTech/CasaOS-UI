@@ -13,12 +13,11 @@
 		<!-- Modal-Card Body Start -->
 		<section class="modal-card-body ">
 			<div class="node-card">
-				<div >
+				<div>
 					<b-field :label="$t('Server Address')">
 						<b-autocomplete ref="inputs" v-model="host" :data="filteredDataObj"
-										:placeholder="$t('eg : smb://192.168.1.1')"
-										append-to-body field="host" max-height="120px" open-on-focus
-										@select="option => selected = option">
+							:placeholder="$t('eg : smb://192.168.1.1')" append-to-body field="host" max-height="120px"
+							open-on-focus @select="option => selected = option">
 							<template slot-scope="props">
 								<div class="media is-align-items-center smb-media">
 									<div class="media-left is-flex is-align-items-center">
@@ -67,9 +66,8 @@
 		<footer class="modal-card-foot is-flex is-align-items-center">
 			<div class="is-flex-grow-1"></div>
 			<div>
-				<b-button :disabled="risk" :label="$t('Connect')" :loading="isConnecting" expaned rounded
-						  type="is-primary"
-						  @click="connect"/>
+				<b-button :disabled="risk" :label="$t('Connect')" :loading="isConnecting" expaned rounded type="is-primary"
+					@click="connect" />
 			</div>
 		</footer>
 		<!-- Modal-Card Footer End -->
@@ -78,7 +76,7 @@
 
 <script>
 import smoothReflow from 'vue-smooth-reflow'
-import events       from '@/events/events';
+import events from '@/events/events';
 
 export default {
 	mixins: [smoothReflow],
@@ -97,28 +95,9 @@ export default {
 			password: "",
 			selected: null,
 			risk: false,
-			data: [
-				{
-					host: 'smb://192.168.1.1',
-					username: '',
-					password: '',
-				},
-				{
-					host: 'smb://192.168.1.2',
-					username: 'root',
-					password: 'password',
-				},
-				{
-					host: 'smb://192.168.1.3',
-					username: '',
-					password: '',
-				},
-				{
-					host: 'smb://192.168.1.4',
-					username: '',
-					password: '',
-				}
-			]
+			data: [],
+			guestName: "guest",
+			guestPass: "guest"
 		}
 	},
 	computed: {
@@ -165,8 +144,8 @@ export default {
 					const host = this.host.replace("smb://", "").replace("nfs://", "")
 					const data = this.isGuest ? {
 						host: host,
-						username: "guest",
-						password: "guest"
+						username: this.guestName,
+						password: this.guestPass
 					} : {
 						host: host,
 						username: this.username,

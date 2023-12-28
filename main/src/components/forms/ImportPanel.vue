@@ -60,7 +60,7 @@
 		<!-- Modal-Card Footer Start-->
 		<footer class="modal-card-foot is-flex is-align-items-center">
 			<div class="is-flex-grow-1 has-text-full-04">
-				<a href="https://www.composerize.com/" target="_blank">{{ $t('cli to compose...') }}</a>
+				<a rel="noopener" href="https://www.composerize.com/" target="_blank">{{ $t('cli to compose...') }}</a>
 			</div>
 			<div>
 				<b-button :label="$t('Cancel')" rounded @click="$emit('close')"/>

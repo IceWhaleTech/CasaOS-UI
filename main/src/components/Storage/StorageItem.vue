@@ -1,12 +1,3 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/1/6 下午3:05
-  * @FilePath: /CasaOS-UI/src/components/Storage/StorageItem.vue
-  * @Description:
-  *
-  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
-  -->
-
 <template>
 	<div class="mb-4 pb-3 background-item is-flex is-flex-direction-column">
 		<div class="is-flex mt-3 mr-3 mb-3 ml-3">
@@ -48,7 +39,7 @@
 				</b-button>
 			</div>
 			<p v-else-if="item.usePercent >= 80" class="has-text-right is-flex is-flex-direction-column-reverse">
-				<a href="https://wiki.casaos.io/zh/guides" target="_blank">{{ $t("Free up storage") }}</a>
+				<a rel="noopener" href="https://wiki.casaos.io/zh/guides" target="_blank">{{ $t("Free up storage") }}</a>
 			</p>
 		</div>
 		<b-progress :type="item.usePercent | getProgressType" :value="item.usePercent || 0"
