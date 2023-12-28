@@ -1,12 +1,3 @@
-/*
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-06 17:40:54
- * @FilePath: /CasaOS-UI/src/main.js
- * @Description:
- *
- * Copyright (c) 2022 by IceWhale, All Rights Reserved.
- */
-
 import 'intersection-observer'
 import Vue              from 'vue'
 import App              from '@/App.vue'
@@ -21,7 +12,8 @@ import Vue2TouchEvents  from 'vue2-touch-events'
 import VueSocialSharing from 'vue-social-sharing'
 import VueSocketIOExt   from 'vue-socket.io-extended';
 import messageBus       from '@/events/index.js'
-// import {registerMicroApps, start} from "qiankun";
+import xss from 'xss'; 
+
 
 // Import Styles
 import '@/assets/scss/app.scss'
@@ -59,12 +51,7 @@ Vue.prototype.$baseIp = baseIp;
 Vue.prototype.$baseURL = baseURL;
 Vue.prototype.$protocol = protocol;
 Vue.prototype.$wsProtocol = wsProtocol;
-
-// Vue.prototype.$microApp = (microApp) => {
-// 	registerMicroApps(microApp);
-// 	console.log('microApp', microApp)
-// 	start();
-// }
+Vue.prototype.xss = xss;
 
 // Create an EventBus
 Vue.prototype.$EventBus = new Vue();

@@ -1,13 +1,3 @@
-<!--
- * @Author: Jerryk jerry@icewhale.org
- * @Date: 2022-08-05 15:13:41
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-08-10 15:27:39
- * @FilePath: /CasaOS-UI/src/components/share/ShareModal.vue
- * @Description:
- *
- * Copyright (c) 2022 by IceWhale, All Rights Reserved.
--->
 <template>
 	<div class="modal-card">
 		<!-- Modal-Card Header Start -->
@@ -26,8 +16,7 @@
 
 				<div>
 					<div class=" is-size-14px">{{
-						$t('Please invite more friends who are concerned about family and data privacy to join and use
-						CasaOS.')
+						$t('Please invite more friends who are concerned about family and data privacy to join and use CasaOS.')
 						}}
 					</div>
 
@@ -87,7 +76,6 @@ export default {
 		async updateSystem() {
 			this.isUpdating = true;
 			await this.$api.sys.updateCasaOS();
-			// this.checkUpdateState();
 			this.getUpdateLogs()
 		},
 

@@ -4,117 +4,112 @@
 *
 *************************************/
 
-
 .common-card {
-    border-radius: $backDropBorderRadius;
+	border-radius: $backDropBorderRadius;
 
-    color: $white;
-    position: relative;
+	color: $white;
+	position: relative;
 
-    transition: all 0.3s;
+	transition: all 0.3s;
 
-    .buttons {
-        min-height: 2.375rem;
-    }
+	.buttons {
+		min-height: 2.375rem;
+	}
 
-    &:hover {
-        box-shadow: 0px 0px 17px 0px rgba(0, 0, 0, 0.2);
-    }
+	&:hover {
+		box-shadow: 0px 0px 17px 0px rgba(0, 0, 0, 0.2);
+		.action-btn {
+			visibility: visible;
+			opacity: 1;
+		}
+	}
 
-    .info {
-        flex: 1;
-        margin-right: 1rem;
-        color: white;
-    }
+	.info {
+		flex: 1;
+		margin-right: 1rem;
+		color: white;
+	}
 
-    .simg {
-        img {
-            border-radius: 4px;
-        }
-    }
+	.simg {
+		img {
+			border-radius: 4px;
+		}
+	}
 
-    .icon-img {
-        position: relative;
+	.icon-img {
+		position: relative;
 
-        &.stop img {
-            filter: grayscale(100%);
-        }
+		&.stop img {
+			filter: grayscale(100%);
+		}
 
-        img {
-            border-radius: 8px;
-            margin: 0 auto;
-        }
-    }
+		img {
+			border-radius: 8px;
+			margin: 0 auto;
+		}
+	}
 
-    .b-image-wrapper {
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+	.b-image-wrapper {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 
-        &.stop img {
-            filter: grayscale(100%);
-        }
+		&.stop img {
+			filter: grayscale(100%);
+		}
 
-        img {
-            border-radius: 8px;
-            margin: 0 auto;
-        }
-    }
+		img {
+			border-radius: 8px;
+			margin: 0 auto;
+		}
+	}
 
-    .action-btn {
-        position: absolute;
-        right: 0.5rem;
-        top: 1rem;
-        visibility: hidden;
-        opacity: 0;
-        transition: all 0.2s;
-        outline: none;
-        z-index: 20;
-    }
+	.action-btn {
+		position: absolute;
+		right: 0.5rem;
+		top: 1rem;
+		visibility: hidden;
+		opacity: 0;
+		transition: all 0.2s;
+		outline: none;
+		z-index: 20;
+	}
 
+	.one-line {
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 1;
+		overflow: hidden;
+	}
 
-    .one-line {
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 1;
-        overflow: hidden;
-    }
+	.two-line {
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		overflow: hidden;
+	}
 
-    .two-line {
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
-        overflow: hidden;
-    }
+	a {
+		color: white;
 
-    &:hover {
-        .action-btn {
-            visibility: visible;
-            opacity: 1;
-        }
-    }
-
-    a {
-        color: white;
-
-        p {
-            color: white;
-        }
-    }
+		p {
+			color: white;
+		}
+	}
 }
 
 .app-card {
-    .loading-background {
-        background: none !important;
-        border-radius: $backDropBorderRadius;
-        transform: translate3d(0, 0, 0);
-    }
+	.loading-background {
+		background: none !important;
+		border-radius: $backDropBorderRadius;
+		transform: translate3d(0, 0, 0);
+	}
 }
 
 .is-noscroll,
 .is-clipped {
-    .common-card {
-        backdrop-filter: none !important;
-    }
+	.common-card {
+		backdrop-filter: none !important;
+	}
 }

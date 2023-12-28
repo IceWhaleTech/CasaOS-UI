@@ -1,12 +1,3 @@
-<!--
- * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
- * @LastEditTime: 2023-09-12 14:34:43
- * @FilePath: /CasaOS-UI/main/src/App.vue
-  * @Description:
-  *
-  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
-  -->
-
 <template>
 	<div id="app" :class="{'is-dark-bg':$route.meta.showBackground}" class="is-flex is-flex-direction-column" :style="{'--vh': vh}" >
 		<template v-if="$route.meta.showBackground">
@@ -32,7 +23,6 @@
 		<router-view/>
 		<!-- Router View End -->
 
-		<!-- <v-tour name="myTour" :steps="steps"></v-tour> -->
 	</div>
 </template>
 

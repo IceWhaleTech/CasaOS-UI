@@ -17,7 +17,6 @@
 		&.is-file {
 			.button {
 				background: $primary;
-				//styleName: Text 400Regular/Text03;
 				font-size: 14px;
 				font-weight: 400;
 				line-height: 20px;
@@ -67,7 +66,6 @@
 			&.is-cancel {
 				.button {
 					background: $grey-100;
-					//styleName: Text 400Regular/Text03;
 					font-size: 14px;
 					font-weight: 400;
 					line-height: 20px;
@@ -83,7 +81,6 @@
 			&.is-white {
 				.button {
 					background: $primary;
-					//styleName: Text 400Regular/Text03;
 					font-size: 14px;
 					font-weight: 400;
 					line-height: 20px;

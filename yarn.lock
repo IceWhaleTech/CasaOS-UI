@@ -4686,6 +4686,7 @@ __metadata:
     webpack: 4.46.0
     webpack-bundle-analyzer: ^4.9.0
     webpack-cli: ^4.10.0
+    xss: ^1.0.14
     xterm: ^4.19.0
     xterm-addon-attach: ^0.6.0
     xterm-addon-fit: ^0.5.0
@@ -17429,7 +17430,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"xss@npm:^1.0.9":
+"xss@npm:^1.0.14, xss@npm:^1.0.9":
   version: 1.0.14
   resolution: "xss@npm:1.0.14"
   dependencies:

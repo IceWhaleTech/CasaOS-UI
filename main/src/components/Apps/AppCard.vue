@@ -151,7 +151,6 @@ import tipEditorModal from "@/components/Apps/TipEditorModal.vue";
 import YAML from "yaml";
 import commonI18n, { ice_i18n } from "@/mixins/base/common-i18n";
 import FileSaver from 'file-saver';
-import { query } from "vue/src/platforms/web/util";
 
 export default {
 	name: "app-card",
