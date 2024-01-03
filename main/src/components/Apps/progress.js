@@ -1,14 +1,3 @@
-/*
- * @Author: Jerryk jerry@icewhale.org
- * @Date: 2022-12-24 15:06:48
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-06 18:34:40
- * @FilePath: /CasaOS-UI/src/components/Apps/progress.js
- * @Description: 
- * 
- * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
- */
-
 import filter from 'lodash/filter';
 import meanBy from 'lodash/meanBy';
 
@@ -19,7 +8,7 @@ class ProgressTracker {
 	}
 
 	addLayer(id) {
-		this.layers[id] = {progress: null, coalesced: false};
+		this.layers[id] = { progress: null, coalesced: false };
 	}
 
 	linkLayer(id, tracker) {
@@ -40,11 +29,11 @@ class ProgressTracker {
 	}
 
 	finishLayer(id) {
-		this.updateLayer(id, {current: 1, total: 1});
+		this.updateLayer(id, { current: 1, total: 1 });
 	}
 
 	getProgress() {
-		const layers = filter(this.layers, {coalesced: false});
+		const layers = filter(this.layers, { coalesced: false });
 		const avgProgress = meanBy(layers, 'progress') || 0;
 		return Math.round(100 * avgProgress);
 	}
@@ -71,29 +60,39 @@ class DockerProgress {
 		try {
 			let downloadedPercentage;
 			let extractedPercentage;
-			({id, status} = evt);
+			({ id, status } = evt);
 			if (id == null) {
 				id = '';
 			}
 			if (status == null) {
 				status = '';
 			}
-			if (status === 'Pulling fs layer') {
-				this.downloadProgressTracker.addLayer(id);
-				this.extractionProgressTracker.addLayer(id);
-			} else if (status === 'Ready to download') {
-				this.downloadProgressTracker.linkLayer(id, evt.extractionProgressTracker);
-			} else if (status === 'Downloading') {
-				this.downloadProgressTracker.updateLayer(id, evt.progressDetail);
-			} else if (status === 'Extracting') {
-				this.extractionProgressTracker.updateLayer(id, evt.progressDetail);
-			} else if (status === 'Download complete') {
-				this.downloadProgressTracker.finishLayer(id);
-			} else if (status === 'Pull complete') {
-				this.extractionProgressTracker.finishLayer(id);
-			} else if (status === 'Already exists') {
-				this.downloadProgressTracker.finishLayer(id);
-				this.extractionProgressTracker.finishLayer(id);
+			switch (status) {
+				case 'Pulling fs layer':
+					this.downloadProgressTracker.addLayer(id);
+					this.extractionProgressTracker.addLayer(id);
+					break;
+				case 'Ready to download':
+					this.downloadProgressTracker.linkLayer(id, evt.extractionProgressTracker);
+					break;
+				case 'Downloading':
+					this.downloadProgressTracker.updateLayer(id, evt.progressDetail);
+					break;
+				case 'Extracting':
+					this.extractionProgressTracker.updateLayer(id, evt.progressDetail);
+					break;
+				case 'Download complete':
+					this.downloadProgressTracker.finishLayer(id);
+					break;
+				case 'Pull complete':
+					this.extractionProgressTracker.finishLayer(id);
+					break;
+				case 'Already exists':
+					this.downloadProgressTracker.finishLayer(id);
+					this.extractionProgressTracker.finishLayer(id);
+					break;
+				default:
+					break;
 			}
 			if (status.startsWith('Status: Image is up to date for ') ||
 				status.startsWith('Status: Downloaded newer image for ')) {

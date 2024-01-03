@@ -224,7 +224,6 @@ export class Peer {
 		if (!chunk.byteLength) return;
 
 		this._digester.unchunk(chunk);
-		// console.log(this._digester);
 		const progress = this._digester.progress;
 		this._onDownloadProgress(progress);
 

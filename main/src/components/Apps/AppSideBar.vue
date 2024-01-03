@@ -1,11 +1,3 @@
-<!--
- * @Author: JerryK
- * @Date: 2021-12-14 11:52:36
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-21 12:29:44
- * @Description: 
- * @FilePath: \CasaOS-UI\src\components\Apps\AppSideBar.vue
--->
 <template>
 	<div class="app-sidebar" :class="{'no-event':isOpen}">
 		<transition :name="transitionName" @before-enter="beforeEnter" @after-enter="afterEnter" @enter="enter">

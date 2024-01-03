@@ -158,7 +158,7 @@
 	}
 
 	.container-icon {
-		padding: 0 0.5rem;
+		padding: 0 0.25rem;
 	}
 }
 
@@ -240,3 +240,11 @@ button.dropdown-item.is-active {
 .w-full {
 	width: 100% !important;
 }
+
+.swiper-button-next, .swiper-button-prev{
+	transition: opacity 0.3s;
+	&.swiper-button-disabled{
+		opacity: 0 !important;
+	}
+}
+

@@ -1,17 +1,8 @@
-<!--
- * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
- * @LastEditTime: 2023-07-13 13:31:07
- * @FilePath: /CasaOS-UI/main/src/components/Apps/AppStoreSourceManagement.vue
-  * @Description:
-  *
-  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
-
-  -->
 <script setup>
-import {defineEmits, defineProps, getCurrentInstance, onBeforeUnmount, onMounted, ref} from "vue";
-import {vOnClickOutside}                                                               from '@vueuse/components'
+import { defineEmits, defineProps, getCurrentInstance, onBeforeUnmount, onMounted, ref } from "vue";
+import { vOnClickOutside } from '@vueuse/components'
 
-const emit = defineEmits(["refreshAppStore", "refreshSize"]);
+const emit = defineEmits(["refreshAppStore", "refreshSize","close"]);
 const props = defineProps(['totalApps']);
 /*
 const stateBox = {
@@ -44,11 +35,12 @@ const subscribe = app.$socket.$subscribe
 const unsubscribe = app.$socket.$unsubscribe
 const componentState = ref("init")
 const ignoreElRef = ref(null)
+const sourceDorpRef = ref(null)
 const onClickOutsideHandler = [
 	(ev) => {
 		changeInputState(true)
 	},
-	{ignore: [ignoreElRef]}
+	{ ignore: [ignoreElRef] }
 ]
 
 const addLoadingState = ref(false)
@@ -94,6 +86,7 @@ function unregisterAppStore(id) {
 }
 
 function redirectURL() {
+	sourceDorpRef.value.toggle();
 	window.open("https://awesome.casaos.io/content/3rd-party-app-stores/list.html", "_blank", "noopener");
 }
 
@@ -171,67 +164,86 @@ onBeforeUnmount(() => {
 <template>
 	<div v-on-click-outside="onClickOutsideHandler">
 		<Transition mode="out-in" name="management-change" @after-enter="activeInput">
-			<div v-if="componentState==='first_add_state'" key="1" class="one-line" @click="changeInputState">+ {{
-					$t("Add Source")
-				}}
-			</div>
+			<b-button v-if="componentState === 'first_add_state'" @click="changeInputState" icon-pack="casa"
+				icon-left="plus-outline">
+				{{ $t("Add Source") }}
+			</b-button>
 			<div v-else-if="componentState === 'second_list_state'" key="2">
-				<b-dropdown aria-role="menu" position="is-bottom-left" style="height: 2rem;">
-					<template #trigger>
-						<b-button icon-pack="casa" icon-right="down">
-							{{ props.totalApps }} APPS
+				<b-dropdown aria-role="menu" position="is-bottom-left" class="file-dropdown source-dropdown"
+					animation="fade1" :close-on-click="false" ref="sourceDorpRef">
+					<template #trigger="{ active }">
+						<b-button icon-pack="casa" :icon-right="active ? 'up-outline' : 'down-outline'">
+							{{ props.totalApps }} apps
 						</b-button>
 					</template>
 
-					<b-dropdown-item
-						v-for="item in sourceList" :key="item.id" aria-role="menu-item"
-						custom>
+					<b-dropdown-item v-for="item in sourceList" :key="item.id" aria-role="menu-item" custom>
 						<p :ref="`removeButton${item.id}`" class="is-flex is-align-items-center">
 							<span class="has-text-full-04 is-flex-grow-1 one-line">{{ item.name }}</span>
-							<b-button v-if="operationSourceName !== item.id" class="is-flex-shrink-0 _button-icon"
-									  icon-pack="mdi" icon-right="trash-can-outline"
-									  type="is-text" @click.native="operationSourceName = item.id"></b-button>
+							<template v-if="operationSourceName !== item.id">
+								<b-icon class="close-button" custom-size="casa-16px" icon="trash-outline" pack="casa"
+									@click.native="operationSourceName = item.id" />
+							</template>
 							<template v-else>
-								<b-button class="is-flex-shrink-0 _button-icon" icon-pack="casa"
-										  icon-right="close"
-										  type="is-text" @click.native="operationSourceName = -1"></b-button>
-								<b-button :loading="removeLoadingState" class="is-flex-shrink-0 _button-icon"
-										  icon-pack="casa"
-										  icon-right="matching" type="is-text"
-										  @click.native="unregisterAppStore(item.id)"></b-button>
+								<b-icon class="close-button" custom-size="casa-16px" icon="close-outline" pack="casa"
+									@click.native="operationSourceName = -1" />
+								<b-icon class="close-button" custom-size="casa-16px" icon="check-outline" pack="casa"
+									@click.native="unregisterAppStore(item.id)" />
 							</template>
 						</p>
 					</b-dropdown-item>
-					<hr class="mt-1 mb-1"/>
+					<hr class="dropdown-divider">
 					<b-dropdown-item @click="changeInputState">
-						<a :ref="ignoreElRef" class="one-line"> {{
-								$t("Add Source")
-							}}
-						</a>
+						<span :ref="ignoreElRef" class="one-line"> {{
+							$t("Add Source")
+						}}
+						</span>
 					</b-dropdown-item>
 					<b-dropdown-item @click="redirectURL">
-						<a class="one-line"> {{
-								$t("More")
-							}}
-						</a>
+						<span class="one-line"> {{
+							$t("More")
+						}}
+						</span>
 					</b-dropdown-item>
 				</b-dropdown>
 			</div>
 			<div v-else-if="componentState === 'active_input_state'" key="3" class="is-flex is-align-items-center">
-				<b-input ref="inputSourceURL" v-model="url" :disabled="addLoadingState"
-						 class="is-flex-grow-1 _sources_input" icon-pack="casa" icon-right="question"
-						 icon-right-clickable @icon-right-click="redirectURL"></b-input>
-				<b-button :loading="addLoadingState" class="is-flex-shrink-0 _button-icon"
-						  icon-pack="casa" icon-right="plus"
-						  @click="registerAppStore(url)">{{ $t("Add") }}
-				</b-button>
+				<b-field class="mb-0">
+					<b-input class="_sources_input" ref="inputSourceURL" v-model="url"
+						:disabled="addLoadingState"></b-input>
+					<b-tooltip label="Get more apps" position="is-bottom" class="add-tooltip" type="is-dark"
+						:class="{ disabled: addLoadingState }">
+						<b-icon class="is-clickable" icon="question-outline" pack="casa" size="is-small"
+							@click.native="redirectURL" />
+					</b-tooltip>
+					<p class="control">
+						<b-button class="_sources_input" @click="registerAppStore(url)" :loading="addLoadingState">{{
+							$t("Add") }}</b-button>
+					</p>
+				</b-field>
 			</div>
 		</Transition>
 	</div>
-
 </template>
 
 <style lang="scss" scoped>
+.source-dropdown {
+	::v-deep .dropdown-menu {
+		min-width: 11rem !important;
+	}
+}
+
+.add-tooltip {
+	border-top: 1px solid #CFCFCF !important;
+	border-bottom: 1px solid #CFCFCF !important;
+	align-items: center !important;
+	padding-right: 0.25rem;
+
+	&.disabled {
+		background-color: hsl(0, 0%, 96%) !important;
+	}
+}
+
 ._button-icon {
 	border: 0;
 	box-shadow: none;
@@ -244,23 +256,26 @@ onBeforeUnmount(() => {
 }
 
 ._sources_input {
+	height: 2rem !important;
+
 	::v-deep .input {
 		height: 2rem !important;
+		border-right: 0 !important;
 	}
 
 	::v-deep span.icon {
 		height: 2rem !important;
 		width: 2rem !important;
+
+		i {
+			font-size: 1rem !important;
+		}
 	}
 }
 
 .management-change-enter-active {
 	transition: all .3s ease;
 }
-
-//.slide-fade-leave-active {
-//	transition: opacity 0;
-//}
 
 .management-change-enter {
 	transform: translateX(-10px);

@@ -83,8 +83,7 @@ export default {
 		},
 	},
 	watch: {
-		isEditing(val, a) {
-			console.log('isEditing', val, a)
+		isEditing(val) {
 			if (val) {
 				// editor is editable
 				this.controlEditorState = 'edit'
@@ -97,24 +96,8 @@ export default {
 			return this.isEditing
 		},
 		composeData: {
-			handler(val) {
+			handler() {
 				//Get tips in compose.
-				console.log('watch tips', val)
-
-				/*let getValueByPath = this.composeData['services'][this.name]
-				if (getValueByPath && getValueByPath['tips'] && getValueByPath['tips']['before_install']) {
-					let multiLine = getValueByPath['tips']['before_install'].forEach(item => {
-						let value = item.content['default'] && item.content['en_US']
-						return `${item.value}:${value}\n`
-					})
-					console.log('multiLine', multiLine)
-					// return multiLine
-					this.tips = multiLine;
-				} else {
-					this.tips = '';
-					// return ''
-				}*/
-
 				let getValueByPath = this.composeData['x-casaos']
 				if (getValueByPath?.['tips']?.['custom'] || getValueByPath?.['tips']?.['before_install']) {
 					this.tips = getValueByPath['tips']['custom'] || ice_i18n(getValueByPath['tips']['before_install'])

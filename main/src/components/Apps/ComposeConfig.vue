@@ -1,13 +1,3 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/2/22 下午12:18
-  * @FilePath: /CasaOS-UI/src/components/Apps/ComposeConfig.vue
-  * @Description:
-  *
-  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
-
-  -->
-
 <template>
 	<section style="height: calc(100vh - 12.8125rem)">
 		<b-tabs class="has-text-full-03" style="height:100%" @input="key => $emit('updateDockerComposeServiceName', key)">
@@ -86,8 +76,8 @@
 						<b-switch v-model="service.privileged"></b-switch>
 					</b-field>
 
-					<b-field :label="$t('Memory Limit')">
-						<vue-slider :max="totalMemory" :min="memory_min" class="mx-2"
+					<b-field :label="$t('Memory Limit')" class="mb-5">
+						<vue-slider :max="totalMemory" :min="memory_min" class="mx-2" :marks="true" :data="markData"
 							:value="service.deploy.resources.limits.memory | duplexDisplay"
 							@change="(v) => service.deploy.resources.limits.memory = v"></vue-slider>
 					</b-field>
@@ -262,38 +252,6 @@ export default {
 			type: Number,
 			required: true,
 		},
-		/*networks STRUCTURE [
-			{
-				"driver": "host",
-				"networks": [
-					{
-						"driver": "host",
-						"id": "3014e1842267eb8aabea9e83b21ff95f36d988c519a51b107d86db9906501ba0",
-						"name": "host"
-					}
-				]
-			},
-			{
-				"driver": "bridge",
-				"networks": [
-					{
-						"driver": "bridge",
-						"id": "AAA",
-						"name": "AAA"
-					},
-					{
-						"driver": "bridge",
-						"id": "BBB",
-						"name": "BBB"
-					},
-					{
-						"driver": "bridge",
-						"id": "CCC",
-						"name": "bridge"
-					}
-				]
-			}
-		]*/
 		networks: {
 			type: Array,
 			required: true,
@@ -328,12 +286,6 @@ export default {
 			handler(val) {
 				if (val != null) {
 					this.parseComposeYaml(val);
-				} else {
-					// let gg =
-					// 	find(this.networks, (o) => {
-					// 		return o.driver == "bridge";
-					// 	}) || [];
-					// this.configData.network_mode = gg.length > 0 ? gg[0].name : "bridge";
 				}
 			},
 			immediate: true,
@@ -380,6 +332,21 @@ export default {
 					return item
 				}
 			});
+		},
+		markData() {
+			const data = [];
+			let markData = 256
+			let i = 0
+			while (markData < this.totalMemory) {
+				markData = 256 * Math.pow(2, i)
+				if (markData < this.totalMemory) {
+					data.push(markData);
+				} else {
+					data.push(this.totalMemory);
+				}
+				i++
+			}
+			return data;
 		},
 	},
 	created() {
@@ -556,11 +523,11 @@ export default {
 					};
 				} else if (isObject(item)) {
 					return item;
-				 } else {
+				} else {
 					return {
 						host_ip: "",
-						target: item+"",
-						published: item+"",
+						target: item + "",
+						published: item + "",
 						protocol: "tcp",
 					};
 				}
@@ -788,13 +755,6 @@ export default {
 
 				ConfigData = merge(yaml, ConfigData)
 			}
-
-			// check
-			// let DockerComposeCommands = YAML.stringify(ConfigData)
-			// this.$api.apps.checkPort().then(res => {
-			// 	this.ports_in_use = res.data?.data || {}
-			// })
-
 			this.$emit("updateDockerComposeCommands", YAML.stringify(ConfigData));
 		},
 
@@ -934,5 +894,22 @@ export default {
 			height: 2.5rem;
 		}
 	}
+}
+
+::v-deep .vue-slider-mark-step {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    -webkit-box-shadow: 0 0 0 2px #ccc;
+    box-shadow: 0 0 0 2px #ccc;
+    background-color: #fff;
+}
+
+::v-deep .vue-slider-mark-label{
+	font-size: 0.75rem;
+}
+
+::v-deep .vue-slider-dot-tooltip-text{
+	font-size: 0.75rem;
 }
 </style>

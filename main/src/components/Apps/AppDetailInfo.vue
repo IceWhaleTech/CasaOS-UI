@@ -15,39 +15,35 @@
 			<div class="app-header is-flex pb-4 b-line">
 				<div class="header-icon mr-5">
 					<b-image :key="appDetailData.icon" :src="appDetailData.icon"
-							 :src-fallback="require('@/assets/img/app/default.svg')"
-							 class="is-128x128 icon-shadow"
-							 webp-fallback=".jpg"></b-image>
+						:src-fallback="require('@/assets/img/app/default.svg')" class="is-128x128 icon-shadow"
+						webp-fallback=".jpg"></b-image>
 				</div>
 				<div class="is-flex-grow-1 is-flex is-align-items-center">
 					<div>
 						<h4 class="title store-title is-4 ">{{ i18n(appDetailData.title) }}</h4>
 						<p class="subtitle is-size-14px two-line mb-3">{{
-								i18n(appDetailData.tagline)
-							}}</p>
+							i18n(appDetailData.tagline)
+						}}</p>
 						<p class="description mb-2">
 							<b-button v-if="installedList.includes(appDetailData.id)"
-									  :loading="appDetailData.id == currentInstallId" rounded
-									  size="is-normal" type="is-primary"
-									  @click="openThirdContainerByAppInfo(appDetailData)">
+								:loading="appDetailData.id == currentInstallId" rounded size="is-normal" type="is-primary"
+								@click="openThirdContainerByAppInfo(appDetailData)">
 								{{ $t('Open') }}
 							</b-button>
-							<b-button v-else :disabled="unusable"
-									  :loading="appDetailData.id == currentInstallId"
-									  rounded size="is-normal" type="is-primary"
-									  @click="$emit('install', appDetailData.id, appDetailData);$messageBus('appstore_install', i18n(appDetailData.title) )">
+							<b-button v-else :disabled="unusable" :loading="appDetailData.id == currentInstallId" rounded
+								size="is-normal" type="is-primary"
+								@click="$emit('install', appDetailData.id, appDetailData); $messageBus('appstore_install', i18n(appDetailData.title))">
 								{{ $t('Install') }}
 							</b-button>
 						</p>
 
 						<p v-if="unusable"
-						   class="has-background-red-tertiary has-text-red has-text-full-04 _is-normal is-flex is-align-items-center font pr-2"
-						   style="width: fit-content;height: 1.5rem;border-radius: 0.25rem">
+							class="has-background-red-tertiary has-text-red has-text-full-04 _is-normal is-flex is-align-items-center font pr-2"
+							style="width: fit-content;height: 1.5rem;border-radius: 0.25rem">
 							<label class="is-flex ml-2 mr-1">
-								<b-icon class="is-16x16" custom-size="casa-19px" icon="close-outline"
-										pack="casa"></b-icon>
+								<b-icon class="is-16x16" custom-size="casa-19px" icon="close-outline" pack="casa"></b-icon>
 							</label>
-							{{ $t('Not compatible with {arch} devices.', {arch: archTitle}) }}
+							{{ $t('Not compatible with {arch} devices.', { arch: archTitle }) }}
 						</p>
 
 					</div>
@@ -60,8 +56,7 @@
 					<div>
 						<p class="heading">{{ $t('CATEGORY') }}</p>
 						<p class="title">
-							<b-icon :icon="getCateIcon(appDetailData.category)"
-									custom-size="mdi-36px"></b-icon>
+							<b-icon :icon="getCateIcon(appDetailData.category)" custom-size="mdi-36px"></b-icon>
 						</p>
 						<p class="footing is-size-14px">{{ appDetailData.category }}</p>
 					</div>
@@ -78,8 +73,8 @@
 				<div class="level-item has-text-centered">
 					<div>
 						<p class="heading "><span class="is-hidden-mobile">{{
-								$t('REQUIRE')
-							}} </span>{{ $t('MEMORY') }}</p>
+							$t('REQUIRE')
+						}} </span>{{ $t('MEMORY') }}</p>
 						<p class="title has-text-weight-normal">{{ appDetailData.min_memory }}</p>
 						<p class="footing is-size-14px">MB</p>
 					</div>
@@ -89,31 +84,25 @@
 
 			<!-- App Info Slider Start -->
 			<div v-if="showDetailSwiper" class="is-relative">
-				<swiper ref="infoSwiper" :options="swiperOptions"
-						class="swiper swiper-responsive-breakpoints">
-					<swiper-slide v-for="item in appDetailData.screenshot_link" :key="'sc'+item">
+				<swiper ref="infoSwiper" :options="swiperOptions" class="swiper swiper-responsive-breakpoints"
+					@observer-update="updateSwiper" @ready="handleSwiperReadied">
+					<swiper-slide v-for="item in appDetailData.screenshot_link" :key="'sc' + item">
 						<div class="gap">
-							<b-image :src="item"
-									 :src-fallback="require('@/assets/img/app/swiper_placeholder.png')"
-									 class="border-8"
-									 placeholder ratio="16by9" @click.native="zoomScreenshot(item)"></b-image>
+							<b-image :src="item" :src-fallback="require('@/assets/img/app/swiper_placeholder.png')"
+								class="border-8 is-clickable " placeholder ratio="16by9"
+								@click.native="zoomScreenshot(item)"></b-image>
 						</div>
 					</swiper-slide>
-
 				</swiper>
-				<div :class="{'swiper-button-disabled':disPrev}" class="swiper-button-prev"
-					 @click="$refs.infoSwiper.$swiper.slidePrev()"></div>
-				<div :class="{'swiper-button-disabled':disNext}" class="swiper-button-next"
-					 @click="$refs.infoSwiper.$swiper.slideNext()"></div>
+				<div class="swiper-button-prev"></div>
+				<div class="swiper-button-next"></div>
 			</div>
 
 			<!-- App Info Slider End -->
 
 			<!-- App Info  Start -->
-			<div class="app-desc mt-4 mb-6">
-				<VMdEditor
-					:value="i18n(appDetailData.description)" mode="preview"
-					left-toolbar right-toolbar>
+			<div class="app-desc mt-4 mb-6 is-size-14px">
+				<VMdEditor :value="i18n(appDetailData.description)" mode="preview" left-toolbar right-toolbar>
 				</VMdEditor>
 			</div>
 			<!-- App Info  End -->
@@ -123,16 +112,16 @@
 </template>
 
 <script>
-import VMdEditor   			  from '@kangc/v-md-editor';
-import {Swiper, SwiperSlide}  from 'vue-awesome-swiper'
-import business_OpenThirdApp  from "@/mixins/app/Business_OpenThirdApp";
+import VMdEditor from '@kangc/v-md-editor';
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
+import business_OpenThirdApp from "@/mixins/app/Business_OpenThirdApp";
 import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
-import commonI18n             from "@/mixins/base/common-i18n";
-import app                    from "../../App.vue";
+import commonI18n from "@/mixins/base/common-i18n";
+import app from "@/App.vue";
 
 export default {
 	name: "AppDetailInfo.vue",
-	components: {VMdEditor, Swiper, SwiperSlide},
+	components: { VMdEditor, Swiper, SwiperSlide },
 	mixins: [business_ShowNewAppTag, business_OpenThirdApp, commonI18n],
 	props: {
 		appDetailData: {
@@ -181,17 +170,25 @@ export default {
 		},
 		unusable() {
 			return !this.appDetailData.architectures?.includes(this.arch);
-		},
+		}
 	},
 	data() {
 		return {
 			//Image List Swiper
 			disPrev: false,
 			disNext: false,
+			slidesPerView: 3,
+			swiper: null,
 			swiperOptions: {
 				loop: false,
 				autoplay: true,
+				observer: true,
 				spaceBetween: 24,
+				navigation: {
+					nextEl: '.swiper-button-next',
+					prevEl: '.swiper-button-prev',
+					disabledClass: 'swiper-button-disabled',
+				},
 				breakpoints: {
 					640: {
 						slidesPerView: 1
@@ -203,40 +200,31 @@ export default {
 						slidesPerView: 3
 					}
 				},
-				// on: {
-				// 	slideChangeTransitionStart: this.handleInfoSlide
-				// },
+				on: {
+					breakpoint: (swiper) => {
+						this.slidesPerView = swiper.slidesPerView;
+					}
+				}
 			},
 		}
 	},
 	methods: {
-		// migrate START ======
-		// TODO remove the deprecate code.
-		/**
-		 * @description:
-		 * @param {*} swiper
-		 * @return {*}
-		 */
-		/*handleInfoSlide(swiper) {
-		  this.disPrev = (swiper.activeIndex == 0) ? true : false;
-		  this.disNext = swiper.isEnd;
-		},*/
-
-		// migrate END ======
-
-		// this.cateMenu : {name: 'appstore', title: 'App Store', icon: 'mdi-apps', component: 'AppStore'}
-		// param : this.cateMenu.name
+		updateSwiper() {
+			this.swiper.slideTo(0, 0, false);
+		},
+		handleSwiperReadied(swiper) {
+			this.swiper = swiper;
+		},
 		getCateIcon(name) {
-			let tempO = this.cateMenu.find(item => item.name == name) || {font: 'apps'}
+			let tempO = this.cateMenu.find(item => item.name == name) || { font: 'apps' }
 			return tempO.font;
 		},
 		zoomScreenshot(img) {
 			const customVNode = this.$createElement('div', {
 				class: 'modal-content'
 			}, [
-				this.$createElement('img', {attrs: {src: img}})
+				this.$createElement('img', { attrs: { src: img } })
 			]);
-
 
 			this.$buefy.modal.open({
 				content: [customVNode],
@@ -277,15 +265,17 @@ export default {
 	.modal-close {
 		position: absolute;
 
-		&::before, &::after {
+		&::before,
+		&::after {
 			background: #fff;
 		}
 	}
 
 }
 
-.app-detial .modal-card-body .github-markdown-body{
+.app-detial .modal-card-body .github-markdown-body {
 	padding: 1rem 0 0 0;
+	font-size: 0.875rem;
 	line-height: 1.25rem;
 }
 </style>

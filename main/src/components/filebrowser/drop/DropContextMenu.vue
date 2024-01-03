@@ -1,13 +1,3 @@
-<!--
- * @Author: Jerryk jerry@icewhale.org
- * @Date: 2023-02-28 17:07:15
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-17 16:42:58
- * @FilePath: /CasaOS-UI/src/components/filebrowser/drop/DropContextMenu.vue
- * @Description: 
- * 
- * Copyright (c) 2023 by IceWhale, All Rights Reserved. 
--->
 <template>
 	<div>
 		<div :style="{ top: y + 'px', left: x + 'px' }" class="drop-context-menu">
@@ -16,11 +6,6 @@
 						aria-role="list" class="file-dropdown" close-on-click>
 				<!-- Blank Start -->
 				<template>
-					<!-- <b-dropdown-item aria-role="menuitem" class="is-flex is-align-items-center has-text-danger"
-						key="drop-context2" @click="cancel" v-if="showCancel">
-						<b-icon pack="casa" icon="close-outline" class="mr-1 is-16x16" custom-size="casa-16px" /> {{ $t(cancelText)
-						}}
-					</b-dropdown-item> -->
 					<b-dropdown-item key="drop-context1" aria-role="menuitem" class="is-flex is-align-items-center">
 						<b-upload v-model="files" class="is-clickable has-text-full-03 is-flex is-align-items-center"
 								  multiple @input="activeDropUpload">

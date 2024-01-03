@@ -2,7 +2,7 @@
 	<div class="mb-5">
 		<div class="field is-flex is-align-items-center mb-2">
 			<label class="label mb-0 is-flex-grow-1">{{ $t('Ports') }}</label>
-			<b-button icon-left="plus" rounded size="is-small" @click="addItem">{{ $t('Add') }}</b-button>
+			<b-button  icon-left="plus-outline" icon-pack="casa" rounded size="is-small" @click="addItem">{{ $t('Add') }}</b-button>
 		</div>
 		<div v-if="items.length == 0" class="is-flex is-align-items-center mb-5 info">
 			<b-icon icon="warning-solid" size="is-small" pack="casa" class="mr-2 "></b-icon>

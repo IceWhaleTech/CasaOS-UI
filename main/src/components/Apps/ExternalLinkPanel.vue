@@ -100,11 +100,7 @@ export default {
 		linkIcon: {
 			type: String,
 			default: "",
-		},
-		// linkId: {
-		// 	type: String,
-		// 	default: "",
-		// },
+		}
 	},
 	data() {
 		return {

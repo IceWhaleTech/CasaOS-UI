@@ -5,16 +5,17 @@
 		<!-- Action Button Start -->
 		<div v-if="item.app_type !== 'system' && !isContainerApp && !isUninstalling" class="action-btn">
 			<b-dropdown ref="dro" :mobile-modal="false" :triggers="['contextmenu', 'click']" animation="fade1"
-				append-to-body aria-role="list" class="app-card-drop" position="is-bottom-left"
+				append-to-body aria-role="list" class="app-card-drop" :position="dropdownPosition"
 				@active-change="setDropState">
 				<template #trigger>
-					<p role="button">
+					<p role="button" @click="handleDorpdownPosition">
 						<b-icon class="is-clickable" icon="dots-vertical-outline" pack="casa"></b-icon>
 					</p>
 				</template>
 
 				<b-dropdown-item :focusable="false" aria-role="menu-item" custom>
-					<b-button expanded tag="a" type="is-text" @click="openApp(item)">{{ $t('Open') }}</b-button>
+					<b-button expanded tag="a" type="is-text" @click="openApp(item)" :disabled="item.status != 'running'">{{
+						$t('Open') }}</b-button>
 					<b-button v-if="isV2App" expanded icon-pack="casa" icon-right="question-outline" size="is-16"
 						type="is-text" @click="openTips(item.name)">
 						{{ $t('Tips') }}
@@ -22,11 +23,6 @@
 					<b-button v-if="isV2App || isLinkApp" expanded type="is-text" @click="configApp()">{{
 						$t('Setting')
 					}}
-					</b-button>
-					<b-button v-if="false" :loading="isCloning" expanded type="is-text"
-						@click="appClone(item.appstore_id)">{{
-							$t('Clone')
-						}}
 					</b-button>
 
 					<b-button v-if="isV2App" expanded type="is-text" @click="checkAppVersion(item.name)">{{
@@ -47,25 +43,6 @@
 					}}
 					</b-button>
 
-					<b-dropdown v-if="false" :triggers="['click']" aria-role="list" class="is-right" expanded>
-						<template #trigger>
-							<b-button :label="$t('Advanced')" expanded type="is-text" />
-						</template>
-						<b-dropdown-item :focusable="false" aria-role="menu-item" custom>
-							<b-button expanded type="is-text">{{ $t('Open') }}</b-button>
-							<b-button expanded type="is-text">{{ $t('Open') }}</b-button>
-							<b-dropdown id="box" aria-role="list" class="is-right" expanded>
-								<template #trigger>
-									<b-button :label="$t('Advanced')" expanded type="is-text" />
-								</template>
-								<b-dropdown-item id="item" :focusable="false" aria-role="menu-item" custom>
-									<b-button expanded type="is-text">{{ $t('Open') }}</b-button>
-									<b-button expanded type="is-text">{{ $t('Open') }}</b-button>
-								</b-dropdown-item>
-							</b-dropdown>
-						</b-dropdown-item>
-					</b-dropdown>
-
 					<b-button v-if="isLinkApp" class="mb-1" expanded type="is-text" @click="uninstallApp(true)">
 						{{ $t('Delete') }}
 						<b-loading v-model="isUninstalling" :is-full-page="false">
@@ -82,16 +59,16 @@
 					<div v-if="!isLinkApp" class="gap">
 						<div class="columns is-gapless _b-bor is-flex">
 							<div class="column is-flex is-justify-content-center is-align-items-center">
-								<b-button :loading="isRestarting" expanded type="is-text" @click="restartApp">
-									<b-icon custom-size="is-size-20px" icon="restart-outline" pack="casa"
-										size="is-20x20"></b-icon>
+								<b-button :loading="isRestarting" expanded type="is-text" @click="restartApp"
+									:disabled="item.status != 'running'">
+									<b-icon custom-size="is-size-20px" icon="restart-outline" pack="casa"></b-icon>
 								</b-button>
 							</div>
 							<div class="column is-flex is-justify-content-center is-align-items-center">
 								<b-button :class="item.status" :loading="isStarting" class="has-text-red" expanded
 									type="is-text" @click="toggle(item)">
 									<b-icon custom-size="is-size-20px" icon="shutdown-outline" pack="casa"
-										size="is-20"></b-icon>
+										:custom-class="shutDownClass"></b-icon>
 								</b-button>
 							</div>
 						</div>
@@ -175,6 +152,7 @@ export default {
 			// Public. Only changes the state of the card, not the state of the button.
 			isSaving: false,
 			isActiveTooltip: false,
+			dropdownPosition: "is-bottom-right",
 		}
 	},
 	props: {
@@ -245,6 +223,9 @@ export default {
 		isLinkApp() {
 			return this.item.app_type === "LinkApp"
 		},
+		shutDownClass() {
+			return this.item.status !== 'running'? "shutdown-rounded": ""
+		},
 
 	},
 
@@ -271,6 +252,15 @@ export default {
 	},
 
 	methods: {
+		handleDorpdownPosition(event) {
+			this.$nextTick(() => {
+				const rightOffset = window.innerWidth - event.clientX - 160
+				const horizontalPos = rightOffset > 0 ? "right" : "left"
+				const bottomOffset = window.innerHeight - event.clientY - 212
+				const verticalPos = bottomOffset > 0 ? "bottom" : "top"
+				this.dropdownPosition = `is-${verticalPos}-${horizontalPos}`
+			})
+		},
 		/**
 		 * @description: Open app in new windows
 		 * @param {String} status App status
@@ -825,6 +815,12 @@ export default {
 	padding-bottom: 3px;
 }
 
+.shutdown-rounded {
+	border-radius: 50%;
+	background-color: #000;
+	color: #fff;
+}
+
 .app-card-drop {
 	.dropdown-menu {
 		min-width: 10rem;
@@ -1026,7 +1022,7 @@ export default {
 		padding-bottom: 1.5rem;
 		padding-right: 1.5rem;
 
-		//styleName: Text 400Regular/Text03;
+
 		font-size: 14px;
 		font-weight: 400;
 		line-height: 20px;

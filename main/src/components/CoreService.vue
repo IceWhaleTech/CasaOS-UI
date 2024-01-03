@@ -426,7 +426,6 @@ export default {
 			// 2. update noticesData
 			if (this.noticesData[res.name]) {
 				if (res.message !== "") {
-					console.log(res.message)
 					const messageArray = res.message?.split(/[(\r\n)\r\n]+/) || [];
 					messageArray.forEach((item, index) => {
 						if (!item) {

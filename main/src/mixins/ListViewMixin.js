@@ -63,7 +63,6 @@ export default {
 				this.cols = Math.floor(cw / this.CARD_WIDTH)
 				this.colStyle.width = (100 / this.cols).toString() + "%"
 			}
-			const ww = document.body.clientWidth
 		},
 
 		/*************************************************

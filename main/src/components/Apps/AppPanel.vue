@@ -119,10 +119,8 @@
 								</swiper-slide>
 
 							</swiper>
-							<div :class="{ 'swiper-button-disabled': disFeaturedPrev }" class="swiper-button-prev"
-								@click="$refs.featureSwiper.$swiper.slidePrev(); $messageBus('appstore_slide')"></div>
-							<div :class="{ 'swiper-button-disabled': disFeaturedNext }" class="swiper-button-next"
-								@click="$refs.featureSwiper.$swiper.slideNext(); $messageBus('appstore_slide')"></div>
+							<div class="swiper-button-prev" @click="$messageBus('appstore_slide')"></div>
+							<div class="swiper-button-next" @click="$messageBus('appstore_slide')"></div>
 						</div>
 					</template>
 					<!-- Featured Slider End -->
@@ -137,8 +135,8 @@
 								<b-dropdown v-model="currentCate" :max-height="240" :mobile-modal="false" animation="fade1"
 									aria-role="list" class="app-select file-dropdown" scrollable>
 									<template #trigger="{ active }">
-										<b-button :label="currentCate.name" type="is-text" icon-left="category" icon-pack="casa"
-											:icon-right="active ? 'up-outline' : 'down-outline'" />
+										<b-button :label="currentCate.name" type="is-text" icon-left="category"
+											icon-pack="casa" :icon-right="active ? 'up-outline' : 'down-outline'" />
 									</template>
 									<b-dropdown-item v-for="menu in cateMenu" :key="menu.id"
 										:class="menu.id == currentCate.id ? 'is-active' : ''" :data-title="menu.count"
@@ -165,8 +163,8 @@
 									animation="fade1" aria-role="list" class="app-select file-dropdown"
 									position="is-bottom-right" scrollable>
 									<template #trigger="{ active }">
-										<b-button :label="currentAuthor.name" type="is-text" icon-left="posted-by" icon-pack="casa"
-											:icon-right="active ? 'up-outline' : 'down-outline'" />
+										<b-button :label="currentAuthor.name" type="is-text" icon-left="posted-by"
+											icon-pack="casa" :icon-right="active ? 'up-outline' : 'down-outline'" />
 									</template>
 									<b-dropdown-item v-for="menu in authorMenu" :key="menu.id"
 										:class="menu.id == currentAuthor.id ? 'is-active' : ''" :data-title="menu.count"
@@ -185,13 +183,14 @@
 						<!-- Author End -->
 
 						<transition name="search-fade">
-							<b-icon v-if="searchAndSourcesStatus === 'showSources'" class="is-flex is-align-self-center ml-2 is-clickable"
-								icon="search-outline" pack="casa" @click.native="searchAndSourcesStatusController"></b-icon>
+							<b-icon v-if="searchAndSourcesStatus === 'showSources'"
+								class="is-flex is-align-self-center ml-2 is-clickable" icon="search-outline" pack="casa"
+								@click.native="searchAndSourcesStatusController"></b-icon>
 						</transition>
 						<transition name="search-fade">
 							<b-input v-if="searchAndSourcesStatus !== 'showSources'" ref="search_app"
 								v-on-click-outside="resetSearchAndSourcesStatus" :placeholder="$t('Search an app...')"
-								class="app-search ml-2"  @input="debounceSearchInput"
+								class="app-search ml-2" @input="debounceSearchInput"
 								@keyup.enter.native="counterPatchGetStoreList++"></b-input>
 						</transition>
 						<div class="is-flex-grow-1"></div>
@@ -370,7 +369,7 @@
 					</div>
 					<b-progress :value="totalPercentage" format="percent" show-value type="is-primary"></b-progress>
 					<h3 :class="currentInstallAppTextClass" class="title is-6 has-text-centered" style="height: 20px"
-					v-dompurify-html="currentInstallAppText"></h3>
+						v-dompurify-html="currentInstallAppText"></h3>
 				</div>
 			</section>
 			<!-- App Install Process End -->
@@ -545,12 +544,15 @@ export default {
 			currentInstallId: '',
 
 			// Featured Swiper
-			disFeaturedPrev: false,
-			disFeaturedNext: false,
 			featureSwiperOptions: {
 				loop: false,
 				autoplay: true,
 				spaceBetween: 24,
+				navigation: {
+					nextEl: '.swiper-button-next',
+					prevEl: '.swiper-button-prev',
+					disabledClass: 'swiper-button-disabled',
+				},
 				breakpoints: {
 					640: {
 						slidesPerView: 1
@@ -1589,14 +1591,14 @@ export default {
 	.swiper-button-next,
 	.swiper-rtl .swiper-button-prev {
 		right: -20px;
-		top: calc(50% - 2.25rem);
+		top: calc(50% - 3.625rem);
 		left: auto;
 	}
 
 	.swiper-button-prev,
 	.swiper-rtl .swiper-button-next {
 		left: -20px;
-		top: calc(50% - 2.25rem);
+		top: calc(50% - 3.625rem);
 		right: auto;
 	}
 
