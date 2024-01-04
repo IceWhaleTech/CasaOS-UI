@@ -17,7 +17,7 @@ const instance = axios.create({
 });
 
 const getLangFromBrowser = () => {
-	const lang = navigator.language || navigator.userLanguage;
+	let lang = navigator.language || navigator.userLanguage;
 	lang = lang.toLowerCase().replace("-", "_");
 	return lang
 }

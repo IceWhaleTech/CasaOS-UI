@@ -71,7 +71,7 @@ export const mixin = {
 		 * @return {String} lang
 		 */
 		getLangFromBrowser() {
-			var lang = navigator.language || navigator.userLanguage;
+			let lang = navigator.language || navigator.userLanguage;
 			lang = lang.toLowerCase().replace("-", "_");
 			return lang
 		},
@@ -413,7 +413,7 @@ export const mixin = {
 			let index = 0,
 				srcsize = parseFloat(value);
 			index = Math.floor(Math.log(srcsize) / Math.log(1024));
-			const size = srcsize / Math.pow(1024, index);
+			let size = srcsize / Math.pow(1024, index);
 			size = size.toFixed(2);
 			return size + unitArr[index];
 		},
