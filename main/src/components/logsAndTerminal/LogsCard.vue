@@ -50,7 +50,7 @@ export default {
 
 		},
 		getTop(e) {
-			var offset = e.offsetTop;
+			let offset = e.offsetTop;
 			if (e.offsetParent != null) offset += this.getTop(e.offsetParent);
 			return offset;
 		},

@@ -51,29 +51,24 @@ const needInit = async () => {
 
 
 router.beforeEach(async (to, from, next) => {
-
 	const accessToken = localStorage.getItem("access_token");
 	const version = localStorage.getItem("version");
-	const requireAuth = to.matched.some(record => {
-		return record.meta.requireAuth
-	});
+	const requireAuth = to.matched.some(record => record.meta.requireAuth);
 
 	// 判断是否需要初始化
 	let needInitRes = await needInit();
+
 	if (to.path !== '/welcome') {
 		if (needInitRes) {
-			next('/welcome')
+			next('/welcome');
 		} else {
-
-			if (requireAuth) {
-				if (!accessToken) {
-					next('/login')
-				}
+			if (requireAuth && !accessToken) {
+				next('/login');
 			} else {
 				switch (to.path) {
 					case "/login":
 						if (accessToken) {
-							next('/')
+							next('/');
 						}
 						break;
 
@@ -91,10 +86,9 @@ router.beforeEach(async (to, from, next) => {
 						}
 						break;
 				}
+				next();
 			}
-			next()
 		}
-
 	} else {
 		if (needInitRes) {
 			next();
@@ -102,9 +96,7 @@ router.beforeEach(async (to, from, next) => {
 			next("/login");
 		}
 	}
-
-
-})
+});
 
 
 export default router

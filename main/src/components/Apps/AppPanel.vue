@@ -246,7 +246,8 @@
 						<h3 class="title is-5 has-text-weight-normal">{{ $t('Community Apps') }}</h3>
 						<h3 class="subtitle is-7 has-text-grey-light">
 							{{
-								$t('From community contributors, not optimized for CasaOS, but provides a basic App experience.')
+								$t('From community contributors, not optimized for CasaOS, but provides a basic App
+														experience.')
 							}}
 						</h3>
 
@@ -1415,44 +1416,43 @@ export default {
 		},
 
 		installAppProgress(resData) {
-			if (this.currentInstallAppName != resData.name) {
-				return false
+			if (this.currentInstallAppName !== resData.name) {
+				return false;
 			}
+
 			if (!resData.finished) {
 				this.currentInstallAppError = !resData.success;
+
 				if (resData.success) {
 					this.currentInstallAppType = resData.type;
+
 					if (resData.message !== "") {
-						const messageArray = resData.message.split(/[(\r\n)\r\n]+/);
-						messageArray.forEach((item, index) => {
-							if (!item) {
-								messageArray.splice(index, 1);
-							}
-						})
+						const messageArray = resData.message.split(/[(\r\n)\r\n]+/).filter(item => item);
+
 						messageArray.forEach(item => {
-							const evt = JSON.parse(item)
-							this.totalPercentage = this.dockerProgress.getProgress(evt)
-						})
+							const evt = JSON.parse(item);
+							this.totalPercentage = this.dockerProgress.getProgress(evt);
+						});
+
 						if (this.totalPercentage === 0) {
-							this.currentInstallAppText = 'Starting installation'
+							this.currentInstallAppText = 'Starting installation';
 						} else if (this.totalPercentage === 100) {
-							this.currentInstallAppText = 'Installation completed'
+							this.currentInstallAppText = 'Installation completed';
 						} else {
-							this.currentInstallAppText = 'Installing'
+							this.currentInstallAppText = 'Installing';
 						}
 					}
 				} else {
-					this.currentInstallAppText = resData.message
+					this.currentInstallAppText = resData.message;
 				}
 			} else {
-				localStorage.removeItem("app_data")
-				// business :: Tagging of new app / scrollIntoView
-				this.addIdToSessionStorage(resData.name)
+				localStorage.removeItem("app_data");
+				this.addIdToSessionStorage(resData.name);
 
 				setTimeout(() => {
-					this.$emit('updateState')
-					this.$emit('close')
-				}, 500)
+					this.$emit('updateState');
+					this.$emit('close');
+				}, 500);
 			}
 		},
 

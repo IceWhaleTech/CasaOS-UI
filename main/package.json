@@ -67,6 +67,7 @@
     "validator": "^13.9.0",
     "vee-validate": "^3.4.15",
     "vue": "^2.7.14",
+    "vue-advanced-cropper": "1.11.6",
     "vue-apexcharts": "^1.6.2",
     "vue-aplayer": "^1.6.1",
     "vue-awesome-swiper": "^4.1.1",

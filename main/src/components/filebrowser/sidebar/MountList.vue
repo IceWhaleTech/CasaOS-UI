@@ -1,110 +1,54 @@
-<!--
- * @Author: Jerryk jerry@icewhale.org
- * @Date: 2022-08-03 14:08:02
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-15 14:15:41
- * @FilePath: /CasaOS-UI/src/components/filebrowser/sidebar/MountList.vue
- * @Description:
- *
- * Copyright (c) 2022 by IceWhale, All Rights Reserved.
--->
 <template>
 	<div>
 		<div class="ul">
 			<!-- merge fs storage item -->
 			<div class="li" v-if="hasMergerFunction">
-				<div
-					:class="{ active: isActived }"
-					class="is-flex list-item new-list-item"
-					@click="filePanel.getFileList('/DATA')"
-				>
+				<div :class="{ active: isActived }" class="is-flex list-item new-list-item"
+					@click="filePanel.getFileList('/DATA')">
 					<div class="cover mr-2 is-flex-shrink-0 is-relative">
-						<div
-							class="icon"
-							@click="warning"
-							@mouseleave="hover = false"
-							@mouseover="hover = true"
-						>
-							<i
-								:class="{
-                  'casa-storage-merger':
-                    (!dorpdown && !hover) || mergeStorageList.length === 0,
-                  'casa-expand':
-                    hover && !dorpdown && mergeStorageList.length !== 0,
-                  'casa-expand-down': dorpdown && mergeStorageList.length !== 0,
-                }"
-								class="casa casa-28px"
-							>
+						<div class="icon" @click="warning" @mouseleave="hover = false" @mouseover="hover = true">
+							<i :class="{
+								'casa-storage-merger':
+									(!dorpdown && !hover) || mergeStorageList.length === 0,
+								'casa-expand':
+									hover && !dorpdown && mergeStorageList.length !== 0,
+								'casa-expand-down': dorpdown && mergeStorageList.length !== 0,
+							}" class="casa casa-28px">
 							</i>
 						</div>
-						<div
-							v-show="!dorpdown && !hover && mergeStorageList.length !== 0"
-							class="hint"
-						>
+						<div v-show="!dorpdown && !hover && mergeStorageList.length !== 0" class="hint">
 							{{ mergeStorageList.length }}
 						</div>
 					</div>
 					<div class="is-flex-grow-1 one-line">CasaOS HD</div>
 					<div v-if="testMergeMiss > 0" class="is-flex is-align-items-center">
-						<b-icon
-							class="warn"
-							custom-size="casa-16px"
-							icon="danger-outline"
-							pack="casa"
-						></b-icon>
+						<b-icon class="warn" custom-size="casa-16px" icon="danger-outline" pack="casa"></b-icon>
 					</div>
 				</div>
 				<ul v-show="dorpdown && mergeStorageList.length > 0">
-					<tree-list-item
-						v-for="item in mergeStorageList"
-						:key="item.path"
-						:isActive="isActive"
-						:item="item"
-					></tree-list-item>
+					<tree-list-item v-for="item in mergeStorageList" :key="item.path" :isActive="isActive"
+						:item="item"></tree-list-item>
 				</ul>
 			</div>
 
 			<!-- Local Storage List Start -->
-			<tree-list-item
-				v-for="item in localStorageList"
-				:key="item.path"
-				:isActive="isActive"
-				:item="item"
-			></tree-list-item>
+			<tree-list-item v-for="item in localStorageList" :key="item.path" :isActive="isActive"
+				:item="item"></tree-list-item>
 			<!-- Local Storage List End -->
 
 			<!-- Network Storage List Start -->
-			<tree-list-item
-				v-for="item in networkStorageList"
-				:key="item.path"
-				:isActive="isActive"
-				:item="item"
-				iconName="eject"
-				@rightIconClick="umountNetwork"
-			></tree-list-item>
+			<tree-list-item v-for="item in networkStorageList" :key="item.path" :isActive="isActive" :item="item"
+				iconName="eject" @rightIconClick="umountNetwork"></tree-list-item>
 			<!-- Network Storage List End -->
 
 			<!-- USB List Start -->
-			<tree-list-item
-				v-for="item in usbStorageList"
-				:key="item.path"
-				:isActive="isActive"
-				:item="item"
-				iconName="eject"
-				@rightIconClick="umountUsb"
-			></tree-list-item>
+			<tree-list-item v-for="item in usbStorageList" :key="item.path" :isActive="isActive" :item="item"
+				iconName="eject" @rightIconClick="umountUsb"></tree-list-item>
 			<!-- USB List End -->
 
 			<!-- Cloud List Start -->
-			<tree-list-item
-				v-for="item in cloudStorageList"
-				:key="item.path"
-				:iconType="item.icon_type"
-				:isActive="isActive"
-				:item="item"
-				iconName="eject"
-				@rightIconClick="umountCloud"
-			></tree-list-item>
+			<tree-list-item v-for="item in cloudStorageList" :key="item.path" :iconType="item.icon_type"
+				:isActive="isActive" :item="item" iconName="eject" @rightIconClick="umountCloud"></tree-list-item>
 			<!-- Cloud List End -->
 		</div>
 		<b-loading v-model="isLoading" :is-full-page="false"></b-loading>
@@ -112,12 +56,12 @@
 </template>
 
 <script>
-import {mixin}      from "@/mixins/mixin";
-import events       from "@/events/events";
+import { mixin } from "@/mixins/mixin";
+import events from "@/events/events";
 import TreeListItem from "./TreeListItem.vue";
 
 export default {
-	components: {TreeListItem},
+	components: { TreeListItem },
 	mixins: [mixin],
 	inject: ["filePanel"],
 
@@ -343,7 +287,7 @@ export default {
 		// umount cloud storage
 		umountCloud(item) {
 			this.$api.cloud
-				.umount({mount_point: item.path})
+				.umount({ mount_point: item.path })
 				.then(() => {
 					this.getStorageList();
 					this.goToDataFolder(item);
@@ -363,7 +307,7 @@ export default {
 		// umount usb storage
 		umountUsb(item) {
 			this.$api.disks
-				.umountUsb({mount_point: item.path})
+				.umountUsb({ mount_point: item.path })
 				.then(() => {
 					this.getStorageList();
 					this.goToDataFolder(item);
@@ -480,8 +424,8 @@ export default {
 		},
 		"casaos:file:recover"(data) {
 			data = data.Properties;
-			var toastType;
-			var reg = /^["|'](.*)["|']$/g;
+			let toastType;
+			const reg = /^["|'](.*)["|']$/g;
 			const status = data.status.replace(reg, "$1");
 			const driver = data.driver.replace(reg, "$1");
 			switch (status) {

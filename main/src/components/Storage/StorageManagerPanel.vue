@@ -341,7 +341,7 @@ export default {
 					})
 				})
 
-				this.storageData = storageArraySort.map((storage) => {
+				const remapStorage = (storage) => {
 					return {
 						uuid: storage.uuid,
 						name: storage.label,
@@ -355,22 +355,9 @@ export default {
 						mount_point: storage.mount_point,
 						disk: storage.disk
 					}
-				})
-				this.mergeConbinationsStorageData = mergeConbinationsSort.map((storage) => {
-					return {
-						uuid: storage.uuid,
-						name: storage.label,
-						isSystem: storage.diskName == "System",
-						fsType: storage.type,
-						size: storage.size,
-						availSize: storage.avail,
-						usePercent: 100 - Math.floor(storage.avail * 100 / storage.size),
-						diskName: storage.drive_name,
-						path: storage.path,
-						mount_point: storage.mount_point,
-						disk: storage.disk
-					}
-				})
+				}
+				this.storageData = storageArraySort.map(remapStorage);
+				this.mergeConbinationsStorageData = mergeConbinationsSort.map(remapStorage);
 
 				let diskNumArray = this.storageData.map(storage => {
 					if (storage.name.includes("Storage")) {

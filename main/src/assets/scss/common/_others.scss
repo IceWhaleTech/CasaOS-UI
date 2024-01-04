@@ -241,6 +241,27 @@ button.dropdown-item.is-active {
 	width: 100% !important;
 }
 
+.w-424 {
+	width: 424px !important;
+}
+
+.px-40{
+	padding-left: 40px !important;
+	padding-right: 40px !important;
+}
+
+.py-24{
+	padding-top: 24px !important;
+	padding-bottom: 24px !important;
+}
+.mb-55{
+	margin-bottom: 32px !important;
+}
+._is-radius {
+	border-radius: 0.375rem;
+}
+
+
 .swiper-button-next, .swiper-button-prev{
 	transition: opacity 0.3s;
 	&.swiper-button-disabled{

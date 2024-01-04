@@ -100,15 +100,15 @@ export default {
 		});
 		this.$nextTick(() => {
 			if (this.isAudio) {
-				var imgUrl = this.getThumbUrl(this.item)
-				var img = new Image();
+				const imgUrl = this.getThumbUrl(this.item)
+				const img = new Image();
 				img.crossOrigin = location.host;
 				img.src = imgUrl;
 				img.onload = () => {
-					var canvas = document.createElement('canvas');
+					const canvas = document.createElement('canvas');
 					canvas.width = img.width;
 					canvas.height = img.height;
-					var ctx = canvas.getContext('2d');
+					const ctx = canvas.getContext('2d');
 					ctx.drawImage(img, 0, 0, img.width, img.height);
 					this.poster = canvas.toDataURL('image/png');
 				};

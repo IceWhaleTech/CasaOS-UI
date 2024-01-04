@@ -13,7 +13,7 @@
 			<!-- SideBar Button Start -->
 
 			<!-- Account Dropmenu Start -->
-			<b-dropdown animation="fade1" aria-role="list" class="navbar-item" @active-change="getUserInfo">
+			<b-dropdown animation="fade1" aria-role="list" class="navbar-item" @active-change="getUserInfo"  :close-on-click="true">
 				<template #trigger>
 					<b-tooltip :active="!$store.state.isMobile" :label="$t('Account')" position="is-right" type="is-dark"
 						@click.native="$messageBus('account_setting')">
@@ -24,32 +24,7 @@
 				</template>
 
 				<b-dropdown-item :focusable="false" aria-role="menu-item" class="p-0" custom>
-					<h2 class="_title mb-4">{{ $t('Account') }}</h2>
-
-					<div class="is-flex is-align-items-center item mx-4">
-						<div class="is-flex is-align-items-center is-flex-grow-1">
-							<b-image :src="require('@/assets/img/account/default-avatar.svg')" class="is-40x40 mr-3"
-								rounded></b-image>
-							<b>{{ userInfo.username }}</b>
-						</div>
-						<div>
-							<a aria-role="button" @click="showAccountPanel">
-								<b-icon icon="user-edit-outline" pack="casa"></b-icon>
-							</a>
-						</div>
-					</div>
-
-					<div class="is-flex is-align-items-center item mt-2 mx-4 mb-4">
-						<div class="is-flex is-align-items-center  is-flex-grow-1">
-						</div>
-						<div>
-							<b-button class="ml-2 " rounded size="is-small" type="is-dark" @click="logout">{{
-								$t('Logout')
-							}}
-							</b-button>
-						</div>
-					</div>
-
+					<account-panel></account-panel>
 				</b-dropdown-item>
 			</b-dropdown>
 			<!-- Account Dropmenu End -->
@@ -323,6 +298,9 @@ const systemConfigName = "system"
 
 export default {
 	name: "top-bar",
+	components: {
+		AccountPanel
+	},
 	mixins: [mixin],
 	data() {
 		return {
@@ -692,31 +670,6 @@ export default {
 				}
 			}
 		},
-
-		/**
-		 * @description: Show Account panel
-		 * @return {*} void
-		 */
-		showAccountPanel() {
-			this.$buefy.modal.open({
-				parent: this,
-				component: AccountPanel,
-				hasModalCard: true,
-				customClass: 'account-modal',
-				trapFocus: true,
-				canCancel: ['escape'],
-				scroll: "keep",
-				animation: "zoom-in",
-			})
-		},
-
-		logout() {
-			this.$messageBus('account_setting_logout')
-			this.$store.commit('SET_DEFAULT_WALLPAPER')
-			this.$router.push("/logout");
-		},
-
-
 		/*************************************************
 		 * PART 3  Terminal
 		 **************************************************/
@@ -847,9 +800,6 @@ export default {
 	text-align: left;
 }
 
-._is-radius {
-	border-radius: 0.375rem;
-}
 
 ._has-text-attention {
 	color: hsla(18, 98%, 55%, 1);

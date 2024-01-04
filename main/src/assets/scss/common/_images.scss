@@ -44,6 +44,11 @@
 	&.is-80x80 {
 		height: 80px;
 		width: 80px;
+		img {
+			height: 80px;
+			width: 80px !important;
+			max-height: 80px !important;
+		}
 	}
 	
 	&.is-100x100 {

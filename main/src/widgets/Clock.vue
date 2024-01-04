@@ -1,13 +1,3 @@
-<!--
- * @Author: Jerryk jerry@icewhale.org
- * @Date: 2022-03-01 21:10:57
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-12 15:53:20
- * @FilePath: \CasaOS-UI-0.4.2\src\widgets\Clock.vue
- * @Description: 
- * 
- * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
--->
 <template>
 	<div class="widget has-text-white clock">
 		<div class="blur-background"></div>
@@ -56,7 +46,7 @@ export default {
 
 	methods: {
 		updateClock() {
-			var today = new Date();
+			const today = new Date();
 
 			this.timeText = dateFormat(today, this.timeFormat);
 			this.dateText = today.toLocaleDateString(this.lang, {

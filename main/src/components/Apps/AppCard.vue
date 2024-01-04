@@ -164,31 +164,27 @@ export default {
 	computed: {
 		tooltipLabel() {
 			if (this.isContainerApp) {
-				return this.$t('Import to CasaOS')
+				return this.$t('Import to CasaOS');
+			} else if (this.item.app_type === "system") {
+				return this.$t('Open');
+			} else if (this.isUpdating) {
+				return this.$t('Updating');
+			} else if (this.isUninstalling) {
+				return this.$t('Uninstalling');
+			} else if (this.isCloning) {
+				return this.$t('Cloning');
+			} else if (this.isRestarting) {
+				return this.$t('Restarting');
+			} else if (this.isStarting) {
+				return this.$t('updateState');
+			} else if (this.isRebuilding) {
+				return this.$t('Rebuilding');
+			} else if (this.isCheckThenUpdate) {
+				return this.$t('CheckThenUpdate');
+			} else if (this.item.status === 'running') {
+				return this.$t('Open');
 			} else {
-				if (this.item.app_type === "system") {
-					return this.$t('Open')
-				} else {
-					if (this.isUpdating) {
-						return this.$t('Updating')
-					} else if (this.isUninstalling) {
-						return this.$t('Uninstalling')
-					} else if (this.isCloning) {
-						return this.$t('Cloning')
-					} else if (this.isRestarting) {
-						return this.$t('Restarting')
-					} else if (this.isStarting) {
-						return this.$t('updateState')
-					} else if (this.isRebuilding) {
-						return this.$t('Rebuilding')
-					} else if (this.isCheckThenUpdate) { // this.isCheckThenUpdate !!!
-						return this.$t('CheckThenUpdate')
-					} else if (this.item.status === 'running') {
-						return this.$t('Open')
-					} else {
-						return ''
-					}
-				}
+				return '';
 			}
 		},
 		tooltipTriger() {

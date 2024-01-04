@@ -1,16 +1,7 @@
-/*
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-15 10:42:50
- * @FilePath: /CasaOS-UI/src/mixins/mixin.js
- * @Description:
- *
- * Copyright (c) 2022 by IceWhale, All Rights Reserved.
- */
-
-import qs    from 'qs'
-import has   from 'lodash/has'
+import qs from 'qs'
+import has from 'lodash/has'
 import union from 'lodash/union'
-import copy  from 'clipboard-copy'
+import copy from 'clipboard-copy'
 import dayjs from 'dayjs'
 
 const typeMap = {
@@ -106,45 +97,40 @@ export const mixin = {
 		 */
 		//
 		getIconFile(item) {
-			let isDir = false
-			if (has(item, 'is_dir') || has(item, "isFolder")) {
-				isDir = item.is_dir
-			}
+			const isDir = (has(item, 'is_dir') || has(item, "isFolder")) ? item.is_dir : false;
+			let icon = "unknown";
 			if (isDir) {
-				let folder = "folder-default"
 				if (item.type == "application") {
-					folder = "folder-application"
+					icon = "folder-application"
 				} else if (item.type == "usb") {
-					folder = "folder-usb"
+					icon = "folder-usb"
 				} else if (["sata", "nvme", "spi", "sas"].includes(item.type)) {
-					folder = "folder-hdd"
+					icon = "folder-hdd"
 				} else if (item.type == "home") {
-					folder = "folder-root"
+					icon = "folder-root"
 				} else if (item.name == "Media") {
-					folder = "folder-video"
+					icon = "folder-video"
 				} else if (item.name == "Downloads") {
-					folder = "folder-download"
+					icon = "folder-download"
 				} else if (item.name == "Documents") {
-					folder = "folder-documents"
+					icon = "folder-documents"
 				} else if (item.name == "Gallery") {
-					folder = "folder-pictures"
+					icon = "folder-pictures"
 				} else if (item.name == "AppData") {
-					folder = "folder-application"
+					icon = "folder-application"
 				} else {
-					folder = "folder-default"
+					icon = "folder-default"
 				}
-				return require(`@/assets/img/filebrowser/${folder}.svg`)
 			} else {
 				const ext = this.getFileExt(item);
-				let type = "unknown"
 				Object.keys(typeMap).forEach((_type) => {
 					const extensions = typeMap[_type]
 					if (extensions.indexOf(ext.toLowerCase()) > -1) {
-						type = _type
+						icon = _type
 					}
 				})
-				return require(`@/assets/img/filebrowser/${type}.svg`)
 			}
+			return require(`@/assets/img/filebrowser/${icon}.svg`)
 		},
 		getPanelType(item) {
 			const ext = this.getFileExt(item);
@@ -307,74 +293,62 @@ export const mixin = {
 		 * @return {void}
 		 */
 		deleteItem(items) {
-			let path = ""
-			if (items.constructor === Object) {
-				path = [items.path]
-			} else if (items.constructor === Array) {
-				path = items.map(o => {
-					return o.path
-				})
-			}
-			let isArray = items.constructor === Array
-			this.$api.batch.delete(JSON.stringify(path)).then(async res => {
-				if (res.data.success === 200) {
-					// update shotcut data
-					let bakData = []
-					let shotcutData = this.$store.state['shortcutData']
-					for (let i = 0; i < shotcutData.length; i++) {
-						let item = shotcutData[i]
-						if (isArray) {
-							// filter delteted item
-							bakData = shotcutData.filter(o => {
-								// has same path
-								if (path.indexOf(o.path) > -1) {
-									try {
-										this.$api.samba.deleteShare(item.extensions.share.id)
-									} catch (e) {
-										console.log(`${e} in delet shortcut`)
-									}
-									return false
-								} else {
-									return true
-								}
-							})
-						} else if (item.path === path[0]) {
-							shotcutData.splice(i, 1)
-							try {
-								this.$api.samba.deleteShare(item.extensions.share.id)
-							} catch (e) {
-								console.log(`${e} in delet shortcut`)
-							}
-						}
-					}
-					if (isArray) {
-						shotcutData = bakData
-					}
-					try {
-						await this.$store.dispatch('SET_SHORTCUT_DATA', shotcutData);
-
-					} catch (e) {
-						console.log(`${e} in deleteItem`)
-					}
-
-					if (this.$refs.dropDown !== undefined) {
-						this.$refs.dropDown.toggle()
-						this.$emit("reload")
-					}
-					try {
-						if (typeof this.reload === "function") {
-							this.reload()
-						}
-					} catch (e) {
-						console.log("Delete Error");
-					}
-				} else {
-					this.$buefy.toast.open({
-						message: res.data.message,
-						type: 'is-danger'
-					})
+			const deleteShare = async (shareId) => {
+				try {
+					await this.$api.samba.deleteShare(shareId);
+				} catch (e) {
+					console.log(`${e} in delete shortcut`);
 				}
-			})
+			};
+
+			const deleteShortcut = async (item) => {
+				try {
+					await deleteShare(item.extensions.share.id);
+					this.$store.commit('REMOVE_SHORTCUT', item.path);
+				} catch (e) {
+					console.log(`${e} in delete shortcut`);
+				}
+			};
+
+			const deleteItems = async (paths) => {
+				try {
+					const res = await this.$api.batch.delete(JSON.stringify(paths));
+					if (res.data.success === 200) {
+						const shotcutData = this.$store.state['shortcutData'];
+						const updatedShotcutData = shotcutData.filter((item) => {
+							if (paths.includes(item.path)) {
+								deleteShortcut(item);
+								return false;
+							}
+							return true;
+						});
+						await this.$store.dispatch('SET_SHORTCUT_DATA', updatedShotcutData);
+						if (this.$refs.dropDown !== undefined) {
+							this.$refs.dropDown.toggle();
+							this.$emit("reload");
+						}
+						if (typeof this.reload === "function") {
+							this.reload();
+						}
+					} else {
+						this.$buefy.toast.open({
+							message: res.data.message,
+							type: 'is-danger'
+						});
+					}
+				} catch (e) {
+					console.log(`${e} in deleteItem`);
+				}
+			};
+
+			let paths = [];
+			if (items.constructor === Object) {
+				paths = [items.path];
+			} else if (items.constructor === Array) {
+				paths = items.map((o) => o.path);
+			}
+
+			deleteItems(paths);
 		},
 		/**
 		 * @description: Set an image as wallpaper
@@ -435,11 +409,11 @@ export const mixin = {
 			if (null == value || value == '' || value == 0) {
 				return "0 bps";
 			}
-			var unitArr = ["bps", "Kbps", "Mbps", "Gbps", "TB", "PB", "EB", "ZB", "YB"];
-			var index = 0,
+			const unitArr = ["bps", "Kbps", "Mbps", "Gbps", "TB", "PB", "EB", "ZB", "YB"];
+			let index = 0,
 				srcsize = parseFloat(value);
 			index = Math.floor(Math.log(srcsize) / Math.log(1024));
-			var size = srcsize / Math.pow(1024, index);
+			const size = srcsize / Math.pow(1024, index);
 			size = size.toFixed(2);
 			return size + unitArr[index];
 		},

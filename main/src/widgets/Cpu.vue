@@ -15,20 +15,12 @@
 
 			<div class="columns is-mobile mt-0 mb-1">
 				<div class="column is-half has-text-centered">
-					<radial-bar
-						:extendContent="power + temperature"
-						:extendContentClickable="true"
-						:percent="parseInt(cpuSeries)"
-						label="CPU"
-						@extendContentClick="changeFormat"
-					></radial-bar>
+					<radial-bar :extendContent="power + temperature" :extendContentClickable="true"
+						:percent="parseInt(cpuSeries)" label="CPU" @extendContentClick="changeFormat"></radial-bar>
 				</div>
 				<div class="column is-half has-text-centered">
-					<radial-bar
-						:extendContent="renderSize(totalMemory)"
-						:percent="parseInt(ramSeries)"
-						label="RAM"
-					></radial-bar>
+					<radial-bar :extendContent="renderSize(totalMemory)" :percent="parseInt(ramSeries)"
+						label="RAM"></radial-bar>
 				</div>
 			</div>
 			<div v-if="showMore">
@@ -38,12 +30,9 @@
 							<div v-for="(item, index) in containerCpuList" :key="item.title + index + '-cpu'">
 								<div v-if="!isNaN(item.usage)" class="is-flex is-size-7 is-align-items-center mb-2">
 									<div class="is-flex-grow-1 is-flex is-align-items-center is-clipped">
-										<b-image
-											:lazy="false"
-											:src="item.icon"
+										<b-image :lazy="false" :src="item.icon"
 											:src-fallback="require('@/assets/img/app/default.svg')"
-											class="is-16x16 mr-2 is-flex-shrink-0"
-										></b-image>
+											class="is-16x16 mr-2 is-flex-shrink-0"></b-image>
 										<span class="one-line">{{ item.title }}</span>
 									</div>
 									<div class="is-flex-shrink-0">{{ item.usage }}%</div>
@@ -53,17 +42,11 @@
 
 						<b-tab-item label="RAM">
 							<div v-for="(item, index) in containerRamList" :key="item.title + index + '-rem'">
-								<div
-									v-if="!isNaN(item.usage) && renderSize(item.usage).split(' ')[0] != 0"
-									class="is-flex is-size-7 is-align-items-center mb-2"
-								>
-									<div
-										class="is-flex-grow-1 is-flex-shrink-1 is-flex is-align-items-center is-clipped">
-										<b-image
-											:src="item.icon"
-											:src-fallback="require('@/assets/img/app/default.svg')"
-											class="is-16x16 mr-2 is-flex-shrink-0"
-										></b-image>
+								<div v-if="!isNaN(item.usage) && renderSize(item.usage).split(' ')[0] != 0"
+									class="is-flex is-size-7 is-align-items-center mb-2">
+									<div class="is-flex-grow-1 is-flex-shrink-1 is-flex is-align-items-center is-clipped">
+										<b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.svg')"
+											class="is-16x16 mr-2 is-flex-shrink-0"></b-image>
 										<span class="one-line">{{ item.title }}</span>
 									</div>
 									<div class="is-flex-shrink-0">{{ item.usage | renderSize }}</div>
@@ -80,11 +63,11 @@
 <script>
 // import VueApexCharts from 'vue-apexcharts'
 import smoothReflow from "vue-smooth-reflow";
-import orderBy      from "lodash/orderBy";
-import has          from "lodash/has";
-import slice        from "lodash/slice";
-import {mixin}      from "@/mixins/mixin";
-import RadialBar    from "@/components/widgets/RadialBar.vue";
+import orderBy from "lodash/orderBy";
+import has from "lodash/has";
+import slice from "lodash/slice";
+import { mixin } from "@/mixins/mixin";
+import RadialBar from "@/components/widgets/RadialBar.vue";
 
 export default {
 	// eslint-disable-next-line vue/multi-word-component-names
@@ -211,16 +194,12 @@ export default {
 				let id = 0;
 				this.containerCpuList = res.data.data.map((item) => {
 					let usage = 0;
-					if (item.previous == null) {
-						usage = 0;
-					} else {
+					if (item.previous != null) {
 						// Look at here  https://docs.docker.com/engine/api/v1.41/#operation/ContainerStats
-
 						const cpu_delta =
 							item.data.cpu_stats.cpu_usage.total_usage - item.previous.cpu_stats.cpu_usage.total_usage;
 						const system_cpu_delta =
 							item.data.cpu_stats.system_cpu_usage - item.previous.cpu_stats.system_cpu_usage + 1;
-						// const number_cpus = item.data.cpu_stats.online_cpus
 						usage = Math.floor((cpu_delta / system_cpu_delta) * 1000) / 10;
 					}
 					id++;
@@ -233,18 +212,19 @@ export default {
 				});
 
 				this.containerRamList = res.data.data.map((item) => {
-					let cache = 0;
 					let id = 0;
-					if (has(item.data.memory_stats.stats, "inactive_file")) {
-						cache = item.data.memory_stats.stats.inactive_file;
-					} else {
-						if (has(item.data.memory_stats.stats, "cache")) {
-							cache = item.data.memory_stats.stats.cache;
+					const getCacheValue = (item) => {
+						if (has(item.data.memory_stats.stats, "inactive_file")) {
+							return item.data.memory_stats.stats.inactive_file;
+						} else if (has(item.data.memory_stats.stats, "cache")) {
+							return item.data.memory_stats.stats.cache;
 						} else if (has(item.data.memory_stats.stats, "total_inactive_file")) {
-							cache = item.data.memory_stats.stats.total_inactive_file;
+							return item.data.memory_stats.stats.total_inactive_file;
+						} else {
+							return 0;
 						}
-					}
-					const used_memory = "stats" in item.data.memory_stats ? item.data.memory_stats.usage - cache : NaN;
+					};
+					const used_memory = "stats" in item.data.memory_stats ? item.data.memory_stats.usage - getCacheValue(item) : NaN;
 					id++;
 					return {
 						id: id,

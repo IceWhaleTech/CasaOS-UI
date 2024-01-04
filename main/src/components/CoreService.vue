@@ -409,21 +409,17 @@ export default {
 		},
 
 		transformAppInstallationProgress(res) {
-			// 4. delete the old one
-			// 5. Accidents skip ::When the end occurs more than once, it will be skipped.
 			if (res.finished) {
 				if (this.noticesData[res.name]) {
 					this.removeNotice(res.name);
 				}
 				this.$EventBus.$emit(events.RELOAD_APP_LIST);
 				if (res.isNewTag) {
-					// business :: Tagging of new app / scrollIntoView
-					this.addIdToSessionStorage(res.name)
+					this.addIdToSessionStorage(res.name);
 				}
 				return;
 			}
 
-			// 2. update noticesData
 			if (this.noticesData[res.name]) {
 				if (res.message !== "") {
 					const messageArray = res.message?.split(/[(\r\n)\r\n]+/) || [];
@@ -431,53 +427,45 @@ export default {
 						if (!item) {
 							messageArray.splice(index, 1);
 						}
-					})
-					let totalPercentage = undefined;
-					const lastMessage = last(messageArray)
-					if (!lastMessage) {
-						return;
-					}
-					if (/Err/.test(lastMessage)) {
-						console.error(lastMessage)
+					});
+					const lastMessage = last(messageArray);
+					if (!lastMessage || /Err/.test(lastMessage)) {
 						return;
 					}
 					try {
-						const info = JSON.parse(lastMessage)
-						const id = (info.id != undefined) ? info.id : "";
-						let progress = ""
+						const info = JSON.parse(lastMessage);
+						const id = info.id != undefined ? info.id : "";
+						let progress = "";
 						if (info.progressDetail != undefined) {
-							let progressDetail = info.progressDetail
+							const progressDetail = info.progressDetail;
 							if (!isNaN(progressDetail.current / progressDetail.total)) {
-								progress = `[ ${String(Math.floor((progressDetail.current / progressDetail.total) * 100))}% ]`
+								progress = `[ ${String(Math.floor((progressDetail.current / progressDetail.total) * 100))}% ]`;
 							}
 						}
-						let status = info.status
-						let currentInstallAppText = status + ":" + id + " " + progress
+						const status = info.status;
+						const currentInstallAppText = `${status}:${id} ${progress}`;
 						this.$set(this.noticesData[res.name], 'content', {
 							text: currentInstallAppText,
-							value: totalPercentage
-						})
+							value: undefined
+						});
 					} catch (e) {
-						console.log(e)
+						console.log(e);
 					}
 				}
-				return
+				return;
 			}
 
-			// 1. add notice::add new app_install notice
 			const data = {
-				title: this.$t('Installing {title}', {title: res.title}),
+				title: this.$t('Installing {title}', { title: res.title }),
 				icon: res.icon,
 				content: {
 					text: res?.message,
 					value: 0
 				},
-				// show progress
 				contentType: 'progress',
-				// show Cancel button
-				operate: false,
-			}
-			this.addNotice(data, res.name)
+				operate: false
+			};
+			this.addNotice(data, res.name);
 		},
 
 	},

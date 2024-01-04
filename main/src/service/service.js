@@ -1,12 +1,3 @@
-/*
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-02-13 02:06:42
- * @FilePath: \CasaOS-UI-0.4.2\src\service\service.js
- * @Description:
- *
- * Copyright (c) 2023 by IceWhale, All Rights Reserved.
- */
-
 import axios  from 'axios'
 import router from '@/router'
 import store  from '@/store'
@@ -26,13 +17,13 @@ const instance = axios.create({
 });
 
 const getLangFromBrowser = () => {
-	var lang = navigator.language || navigator.userLanguage;
+	const lang = navigator.language || navigator.userLanguage;
 	lang = lang.toLowerCase().replace("-", "_");
 	return lang
 }
 
 const getInitLang = () => {
-	let lang = localStorage.getItem('lang') || getLangFromBrowser()
+	const lang = localStorage.getItem('lang') || getLangFromBrowser()
 	return lang
 }
 
