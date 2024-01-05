@@ -246,8 +246,7 @@
 						<h3 class="title is-5 has-text-weight-normal">{{ $t('Community Apps') }}</h3>
 						<h3 class="subtitle is-7 has-text-grey-light">
 							{{
-								$t('From community contributors, not optimized for CasaOS, but provides a basic App
-														experience.')
+								$t('From community contributors, not optimized for CasaOS, but provides a basic App experience.')
 							}}
 						</h3>
 

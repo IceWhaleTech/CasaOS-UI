@@ -359,6 +359,7 @@ export default {
 				{ url: "https://www.google.com/search?q=", name: "Google" },
 				{ url: "https://www.bing.com/search?q=", name: "Bing" },
 				{ url: "https://www.startpage.com/do/search?cat=web&pl=chrome&query=", name: "StartPage" },
+				{ url: "https://search.brave.com/search?source=web&q=", name: "Brave" },
 			],
 			restart: 'Restart',
 			shutdown: 'Shutdown',
