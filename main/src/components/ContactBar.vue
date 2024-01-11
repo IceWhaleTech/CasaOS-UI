@@ -1,12 +1,3 @@
-<!--
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-01 11:38:47
- * @FilePath: /CasaOS-UI/src/components/ContactBar.vue
-  * @Description:
-  *
-  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
-  -->
-
 <template>
 	<div class="contact-bar is-flex is-align-items-center has-text-white">
 
@@ -138,15 +129,6 @@ export default {
 	font-weight: 400;
 }
 
-.fade-enter-active,
-.fade-leave-active {
-	transition: opacity 1s;
-}
-
-.fade-enter,
-.fade-leave-to {
-	opacity: 0;
-}
 
 @media screen and (max-width: 480px) {
 	.contact-bar {

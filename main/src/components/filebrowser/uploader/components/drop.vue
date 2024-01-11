@@ -1,12 +1,3 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/4/24 上午11:20
-  * @FilePath: /CasaOS-UI/src/components/filebrowser/uploader/components/drop.vue
-  * @Description:
-  *
-  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
-
-  -->
 <template>
 	<div v-show="support" ref="drop" :class="dropClass" class="uploader-drop">
 		<slot></slot>

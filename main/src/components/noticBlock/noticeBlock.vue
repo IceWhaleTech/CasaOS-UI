@@ -60,7 +60,7 @@
 					 class="has-text-grey-200 _is-normal mb-2 is-flex-wrap-nowrap _nowrap">
 					{{ noticeData.content.text }}
 				</div>
-				<b-progress :value="noticeData.content.value" size="c-is-small" type="is-primary"></b-progress>
+				<b-progress :value="noticeData.content.value" format="percent" size="c-is-small" type="is-primary"></b-progress>
 			</div>
 			<!-- end of section body-->
 
@@ -96,41 +96,7 @@ export default {
 	name: "notice-block",
 	props: {
 		noticeData: {
-			type: Object,
-			// default: () => {
-			// 	return {
-			// 		prelude: {
-			// 			title: 'Found a New USB Drive',
-			// 			icon: '',
-			// 		},
-			// 		content: {
-			// 			123: {
-			// 				title: 'Found a new drive',
-			// 				icon: 'mdi-usb',
-			// 				color: 'is-primary',
-			// 				path: '/storage',
-			// 				uuid: '123',
-			// 				value: '100G/1000G'
-			// 			},
-			// 			345: {
-			// 				title: 'Found a new drive',
-			// 				icon: 'mdi-usb',
-			// 				color: 'is-primary',
-			// 				path: '/storage',
-			// 				uuid: '456',
-			// 				value: '100G/1001G'
-			// 			},
-			// 		},
-			// 		contentType: 'list',
-			// 		operate: {
-			// 			type: 'casaUI:eventBus',
-			// 			event: 'openFile',
-			// 			title: 'More',
-			// 			path: '/storage',
-			// 			icon: 'mdi-arrow-right',
-			// 		},
-			// 	};
-			// },
+			type: Object
 		},
 		noticeType: {
 			type: String,

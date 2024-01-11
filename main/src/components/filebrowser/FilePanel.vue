@@ -25,7 +25,7 @@
 												{{ $t("Files") }}
 											</h3>
 										</div>
-										<div v-show="hasMergerFunction" class="is-flex-shrink-0 mr-5"
+										<div v-show="hasMergerFunction" class="is-flex-shrink-0 mr-5 is-clickable"
 											@click="showStorageSettingsModal">
 											<b-icon custom-size="mdi-18px" icon="cog-outline"></b-icon>
 										</div>
@@ -285,6 +285,9 @@ export default {
 		VideoPlayer: () => import("./viewers/VideoPlayer.vue"),
 		ImageViewer: () => import("./viewers/ImageViewer.vue"),
 		MarkDownEditor: () => import("./viewers/MarkdownEditor.vue"),
+		DocViewer: () => import("./viewers/DocViewer.vue"),
+		ExcelViewer: () => import("./viewers/ExcelViewer.vue"),
+		PdfViewer: () => import("./viewers/PdfViewer.vue"),
 		EmptyHolder,
 		ErrorHolder,
 		OperationToolbar,

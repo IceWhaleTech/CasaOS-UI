@@ -8,7 +8,7 @@ const typeMap = {
 	"image-x-generic": ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'svg', 'tiff'],
 	"video-x-generic": ['mkv', 'mp4', '3gp', 'avi', 'm2ts', 'webm', 'flv', 'vob', 'ts', 'mts', 'mov', 'wmv', 'rm', 'rmvb', 'asf', 'wmv', 'mpg', 'm4v', 'mpeg', 'f4v'],
 	"audio-x-generic": ['aac', 'aiff', 'alac', 'amr', 'ape', 'flac', 'm4a', 'mp3', 'ogg', 'opus', 'wma', 'wav'],
-	"text-x-generic": ['txt', 'log', 'pages', 'md', 'conf', 'list', 'ini'],
+	"text-x-generic": ['txt', 'log', 'pages', 'conf', 'list', 'ini', 'toml', 'cfg'],
 	"text-markdown": ['md'],
 	"text-css": ['php', 'css', 'less', 'scss', 'sass', 'aspx', 'lua', 'vue', 'js', 'go', 'asp', 'bat', 'c', 'cpp', 'cs', 'json', 'py', 'perl', 'sh', 'xml', 'yaml', 'vb', 'vbs', 'sql', 'swift', 'rust', 'rs', 'jsp', 'yml'],
 	"text-html": ['html', 'htm', 'shtml', 'shtm'],
@@ -34,8 +34,10 @@ const filePanelMap = {
 	'code-editor': union(typeMap['text-x-generic'], typeMap['text-css'], typeMap['text-html'], typeMap['text-x-cmake'], typeMap['text-dockerfile']),
 	"video-player": union(typeMap['video-x-generic'], typeMap['audio-x-generic']),
 	"image-viewer": typeMap['image-x-generic'],
+	"doc-viewer": union(typeMap['application-vnd.ms-word']),
+	"excel-viewer": union(typeMap['application-vnd.ms-excel']),
 	// "mark-down-editor":typeMap['text-markdown'],
-	// "pdf-viewer": typeMap['application-pdf'],
+	"pdf-viewer": typeMap['application-pdf'],
 }
 export const wallpaperType = ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'svg']
 const wallpaperConfig = "wallpaper"
@@ -44,7 +46,8 @@ const wallpaperConfig = "wallpaper"
 export const mixin = {
 	data() {
 		return {
-			baseUrl: `${this.$protocol}//${this.$baseURL}/v1/`
+			baseUrl: `${this.$protocol}//${this.$baseURL}/v1/`,
+			downloadIframe: null,
 		}
 	},
 	mounted() {
@@ -157,7 +160,18 @@ export const mixin = {
 				type: 'is-white'
 			})
 			let url = this.getFileUrl(items)
-			window.open(url, '_blank');
+			if (!this.downloadIframe) {
+				this.downloadIframe = document.createElement('iframe');
+				this.downloadIframe.style.display = 'none';
+				document.body.appendChild(this.downloadIframe);
+			}
+			this.downloadIframe.src = url;
+			// window.open(url, '_blank');
+		},
+		// Download Button Action
+		download() {
+			this.$refs.dropDown?.toggle()
+			this.downloadFile(this.item)
 		},
 		playVideo(item, player) {
 			let url = player + this.getFileUrl(item)
@@ -214,11 +228,7 @@ export const mixin = {
 			}
 			return apiUrl + qs.stringify(parameters)
 		},
-		// Download Button Action
-		download() {
-			this.$refs.dropDown.toggle()
-			this.downloadFile(this.item)
-		},
+
 		// Copy Path
 		copyPath() {
 			this.$refs.dropDown.toggle()

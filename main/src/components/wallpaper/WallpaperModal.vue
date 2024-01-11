@@ -18,18 +18,18 @@
 			</div>
 
 			<div class="columns mt-5 mb-5 is-variable is-2">
-				<div v-for="(item,index) in wallpaperItems" :key="'wallpaper'+index" class="column">
-					<div :class="{active:checkActive(item.path)}" class="image-list-item is-clickable"
-						 @click="changeWallpaper(item.path)">
+				<div v-for="(item, index) in wallpaperItems" :key="'wallpaper' + index" class="column">
+					<div :class="{ active: checkActive(item.path) }" class="image-list-item is-clickable"
+						@click="changeWallpaper(item.path)">
 						<b-image :src="item.path"></b-image>
 					</div>
 				</div>
 
 				<div class="column is-relative is-one-quarter">
-					<div :class="{active:checkActiveFrom('Upload')}" class="upload-button-container is-clickable">
+					<div :class="{ active: checkActiveFrom('Upload') }" class="upload-button-container is-clickable">
 						<div id="upload-wallpaper"
-							 class="upload-button is-flex is-align-items-center is-justify-content-center ">
-							<b-icon icon="picture-upload" pack="casa" size="is-large"></b-icon>
+							class="upload-button is-flex is-align-items-center is-justify-content-center ">
+							<b-icon icon="picture-upload-outline" pack="casa" size="is-large"></b-icon>
 
 						</div>
 						<b-loading v-model="isUpLoading" :can-cancel="false" :is-full-page="false"></b-loading>
@@ -43,9 +43,8 @@
 		<footer class="modal-card-foot is-flex is-align-items-center">
 			<div class="is-flex-grow-1"></div>
 			<div>
-				<b-button :label="$t('Cancel')" rounded @click="$emit('close')"/>
-				<b-button :label="$t('Apply')" :loading="isLoading" expaned rounded type="is-primary"
-						  @click="saveChange"/>
+				<b-button :label="$t('Cancel')" rounded @click="$emit('close')" />
+				<b-button :label="$t('Apply')" :loading="isLoading" expaned rounded type="is-primary" @click="saveChange" />
 			</div>
 		</footer>
 		<!-- Modal-Card Footer End -->
@@ -98,7 +97,12 @@ export default {
 		this.uploader.assignBrowse(document.getElementById('upload-wallpaper'), false, true, this.attributes)
 		this.uploader.on('filesSubmitted', () => {
 			this.isUpLoading = true
-			this.uploader.upload()
+			this.$api.sys.getVersion().then(res => {
+				if (this.autoStart && res.status === 200) {
+					this.uploadder.options.headers.Authorization = this.$store.state.access_token || localStorage.getItem("access_token")
+					this.uploader.upload()
+				}
+			})
 		})
 		this.uploader.on('fileError', () => {
 			this.isUpLoading = false
@@ -189,12 +193,10 @@ export default {
 	background-clip: padding-box, border-box;
 	background-origin: padding-box, border-box;
 	background-image: linear-gradient(to right, #fff, #fff),
-	linear-gradient(
-	108.27deg,
-	rgba(57, 60, 64, 1) 1.44%,
-	rgba(92, 96, 102, 1) 55.8%,
-	rgba(34, 36, 38, 1) 110.95%
-	);
+		linear-gradient(108.27deg,
+			rgba(57, 60, 64, 1) 1.44%,
+			rgba(92, 96, 102, 1) 55.8%,
+			rgba(34, 36, 38, 1) 110.95%);
 	box-shadow: 0px 16px 24px rgba(115, 120, 128, 0.4);
 	overflow: hidden;
 

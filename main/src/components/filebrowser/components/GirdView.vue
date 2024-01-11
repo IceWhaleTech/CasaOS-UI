@@ -37,7 +37,7 @@
 											<icon-container :item="item"></icon-container>
 										</div>
 										<div class="info">
-											<p class="title">{{ item.name }}</p>
+											<p class="title" >{{ item.name }}</p>
 											<p class="desc">{{ item.date | dateFmt }}</p>
 										</div>
 									</div>

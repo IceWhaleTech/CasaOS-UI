@@ -3,13 +3,13 @@
 		<!-- Title Bar Start -->
 		<div class="is-flex is-align-items-center mb-4">
 			<app-section-title-tip id="appTitle1" class="is-flex-grow-1 has-text-sub-04" label="Drag icons to sort."
-								   title="Apps">
+				title="Apps">
 			</app-section-title-tip>
 
 			<b-dropdown animation="fade1" aria-role="menu" class="file-dropdown" position="is-bottom-left">
 				<template #trigger>
 					<b-icon class="polymorphic is-clickable has-text-grey-100" icon="plus-outline" pack="casa"
-							size="is-24"></b-icon>
+						size="is-24"></b-icon>
 				</template>
 				<b-dropdown-item aria-role="menuitem" @click="showInstall(0, 'custom')">
 					{{ $t('Custom Install APP') }}
@@ -22,22 +22,18 @@
 		<!-- Title Bar End -->
 
 		<!-- App List Start -->
-		<draggable v-model="appList" :draggable="draggable"
-				   class="columns is-variable is-2 is-multiline app-list contextmenu-canvas" tag="div"
-				   v-bind="dragOptions"
-				   @end="onSortEnd" @start="drag = true">
+		<draggable v-model="appList" :draggable="draggable" class="app-list contextmenu-canvas" tag="div"
+			v-bind="dragOptions" @end="onSortEnd" @start="drag = true">
 
 			<!-- App Icon Card Start -->
 			<template v-if="!isLoading">
-				<div v-for="(item) in appList" :id="'app-' + item.name" :key="'app-' + item.name"
-					 class="column is-narrow is-3 handle">
+				<div v-for="(item) in appList" :id="'app-' + item.name" :key="'app-' + item.name" class="handle">
 					<app-card :item="item" @configApp="showConfigPanel" @importApp="showContainerPanel"
-							  @updateState="getList"></app-card>
+						@updateState="getList"></app-card>
 				</div>
 			</template>
 			<template v-else>
-				<div v-for="(index) in skCount" :id="'app-' + index" :key="'app-' + index"
-					 class="column is-narrow is-3 handle">
+				<div v-for="(index) in skCount" :id="'app-' + index" :key="'app-' + index" class="handle">
 					<app-card-skeleton :index="index"></app-card-skeleton>
 				</div>
 			</template>
@@ -50,7 +46,7 @@
 			<!-- Title Bar Start -->
 			<div class="title-bar is-flex is-align-items-center mt-2rem  mb-5">
 				<app-section-title-tip id="appTitle2" class="is-flex-grow-1 has-text-sub-04" label="To be rebuilt."
-									   title="Legacy app (To be rebuilt).">
+					title="Legacy app (To be rebuilt).">
 				</app-section-title-tip>
 			</div>
 			<!-- Title Bar End -->
@@ -58,10 +54,9 @@
 			<!-- App List Start -->
 			<div class="columns is-variable is-2 is-multiline app-list contextmenu-canvas">
 				<!-- Application not imported Start -->
-				<div v-for="(item) in oldAppList" :id="'app-' + item.name" :key="'app-' + item.name"
-					 class="column is-narrow is-3">
+				<div v-for="(item) in oldAppList" :id="'app-' + item.name" :key="'app-' + item.name" class="handle">
 					<app-card :isCasa="false" :item="item" @configApp="showConfigPanel" @importApp="showContainerPanel"
-							  @updateState="getList"></app-card>
+						@updateState="getList"></app-card>
 				</div>
 				<!-- Application not imported End -->
 			</div>
@@ -72,20 +67,20 @@
 </template>
 
 <script>
-import AppCard                from './AppCard.vue'
-import AppCardSkeleton        from './AppCardSkeleton.vue';
-import AppPanel               from './AppPanel.vue'
-import ExternalLinkPanel      from "@/components/Apps/ExternalLinkPanel";
-import AppSectionTitleTip     from './AppSectionTitleTip.vue'
-import draggable              from 'vuedraggable'
-import xor                    from 'lodash/xor'
-import concat                 from 'lodash/concat'
-import events                 from '@/events/events';
-import last                   from 'lodash/last';
+import AppCard from './AppCard.vue'
+import AppCardSkeleton from './AppCardSkeleton.vue';
+import AppPanel from './AppPanel.vue'
+import ExternalLinkPanel from "@/components/Apps/ExternalLinkPanel";
+import AppSectionTitleTip from './AppSectionTitleTip.vue'
+import draggable from 'vuedraggable'
+import xor from 'lodash/xor'
+import concat from 'lodash/concat'
+import events from '@/events/events';
+import last from 'lodash/last';
 import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
-import business_LinkApp       from "@/mixins/app/Business_LinkApp";
-import isEqual                from "lodash/isEqual";
-import {ice_i18n}             from "@/mixins/base/common-i18n";
+import business_LinkApp from "@/mixins/app/Business_LinkApp";
+import isEqual from "lodash/isEqual";
+import { ice_i18n } from "@/mixins/base/common-i18n";
 
 const SYNCTHING_STORE_ID = 74
 
@@ -480,7 +475,7 @@ export default {
 			// business :: scroll to last position
 			let name = last(this.newAppIds);
 			let showEl = document.getElementById("app-" + name)
-			showEl && showEl.scrollIntoView({behavior: "smooth", block: 'end'});
+			showEl && showEl.scrollIntoView({ behavior: "smooth", block: 'end' });
 		},
 
 		messageBusToast(message, type) {
@@ -561,63 +556,19 @@ export default {
 <style lang="scss" scoped>
 .app-list {
 	position: relative;
-}
+	display: grid;
+	gap: 1rem;
 
-@media screen and (max-width: 480px) {
-	.app-list {
-		display: flex;
-
-		.column {
-			flex: none;
-			width: 50%;
-		}
+	@include touch {
+		grid-template-columns: repeat(2, minmax(0, 1fr))
 	}
-}
 
-@media screen and (max-width: $tablet) {
-	.app-list {
-		display: flex;
-
-		.column {
-			flex: none;
-			width: 50%;
-		}
+	@include desktop {
+		grid-template-columns: repeat(4, minmax(0, 1fr))
 	}
-}
 
-@media screen and (min-width: $tablet) {
-	.app-list {
-		.column {
-			flex: none;
-			width: 50%;
-		}
-	}
-}
-
-@media screen and (min-width: $desktop) {
-	.app-list {
-		.column {
-			flex: none;
-			width: 33.333333%;
-		}
-	}
-}
-
-@media screen and (min-width: $widescreen) {
-	.app-list {
-		.column {
-			flex: none;
-			width: 25%;
-		}
-	}
-}
-
-@media screen and (min-width: $fullhd) {
-	.app-list {
-		.column {
-			flex: none;
-			width: 20%;
-		}
+	@include fullhd {
+		grid-template-columns: repeat(5, minmax(0, 1fr))
 	}
 }
 </style>

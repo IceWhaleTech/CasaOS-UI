@@ -127,15 +127,20 @@ export default {
 		async getNewList() {
 			const newList = await this.$api.folder.getList(this.rootDataList[0].path)
 			const dataList = await this.$api.folder.getList(this.initFolders[0].path)
+
 			this.shortcutList = this.$store.state.shortcutData
+
 			this.dataList = [...this.initFolders, ...this.shortcutList]
 			let contactList = [];
 			contactList.push(...newList.data.data.content, ...dataList.data.data.content, ...this.shortcutList);
 			this.dataList.forEach(dir => {
+				dir.icon = dir.icon == 'folder' ? 'folder-outline' : dir.icon;
 				dir.visible = contactList.some(item => item.path == dir.path && item.is_dir);
 				const isInArray = contactList.find(item => item.path == dir.path && item.is_dir)
 				dir.extensions = isInArray ? isInArray.extensions : null;
 			})
+
+
 		},
 
 		checkSharevisibility(item) {

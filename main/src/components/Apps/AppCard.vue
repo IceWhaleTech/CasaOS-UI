@@ -1,5 +1,5 @@
 <template>
-	<div class="common-card is-flex is-align-items-center is-justify-content-center p-55 app-card"
+	<div class="common-card is-flex is-align-items-center is-justify-content-center  app-card"
 		@mouseleave="hover = true" @mouseover="hover = true">
 
 		<!-- Action Button Start -->

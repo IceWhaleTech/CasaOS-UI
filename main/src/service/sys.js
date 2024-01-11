@@ -1,12 +1,4 @@
-/*
- * @Author: JerryK
- * @Date: 2021-09-18 21:32:13
- * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-09-21 00:55:42
- * @Description: System HardWare Info API
- * @FilePath: /CasaOS-UI/src/service/sys.js
- */
-import {api} from "./service.js";
+import { api } from "./service.js";
 
 const PREFIX = "/sys"
 

@@ -246,7 +246,7 @@
 						<h3 class="title is-5 has-text-weight-normal">{{ $t('Community Apps') }}</h3>
 						<h3 class="subtitle is-7 has-text-grey-light">
 							{{
-								$t('From community contributors, not optimized for CasaOS, but provides a basic App experience.')
+								$t('From community contributors, not optimized for CasaOS, but provides a basic App nexperience.')
 							}}
 						</h3>
 
@@ -424,7 +424,6 @@ import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 import AppsInstallationLocation from "@/components/Apps/AppsInstallationLocation";
 import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
 import business_OpenThirdApp from "@/mixins/app/Business_OpenThirdApp";
-import DockerProgress from "@/components/Apps/progress.js";
 import ComposeConfig from "@/components/Apps/ComposeConfig.vue";
 import AppDetailInfo from '@/components/Apps/AppDetailInfo.vue'
 import { ValidationObserver, ValidationProvider } from "vee-validate";
@@ -622,7 +621,6 @@ export default {
 			storage_item_scence: 'select installation location',
 			isFirstInstall: false,
 			installationLocation: '',
-			dockerProgress: null,
 			totalPercentage: 0,
 			installedList: [],
 			counterPatchGetStoreList: 0,
@@ -1421,17 +1419,11 @@ export default {
 
 			if (!resData.finished) {
 				this.currentInstallAppError = !resData.success;
-
 				if (resData.success) {
 					this.currentInstallAppType = resData.type;
 
 					if (resData.message !== "") {
-						const messageArray = resData.message.split(/[(\r\n)\r\n]+/).filter(item => item);
-
-						messageArray.forEach(item => {
-							const evt = JSON.parse(item);
-							this.totalPercentage = this.dockerProgress.getProgress(evt);
-						});
+						this.totalPercentage = Number(resData.message);
 
 						if (this.totalPercentage === 0) {
 							this.currentInstallAppText = 'Starting installation';
@@ -1478,7 +1470,6 @@ export default {
 			this.currentSlide = 2;
 			this.currentInstallAppText = "Start Installation..."
 			this.cancelButtonText = 'Continue in background'
-			this.dockerProgress = new DockerProgress();
 		},
 		"app:install-end"(res) {
 			this.installAppProgress({
@@ -1494,6 +1485,16 @@ export default {
 				id: res.Properties["docker:container:id"],
 				success: false,
 				message: res.Properties["message"]
+			});
+		},
+		"app:install-progress"(res) {
+			this.installAppProgress({
+				finished: false,
+				name: res.Properties["app:name"],
+				id: res.Properties["docker:container:id"],
+				success: true,
+				type: "pull",
+				message: res.Properties["app:progress"]
 			});
 		},
 		"docker:image:pull-progress"(res) {

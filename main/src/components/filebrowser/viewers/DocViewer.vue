@@ -23,7 +23,7 @@
 		<!-- Player Start -->
 		<div class="is-flex is-justify-content-center is-align-items-center is-flex-grow-1 v-container video">
 			<div class="scrollbars-light doc-container">
-				<vue-office-pdf :src="src" @rendered="rendered" />
+				<vue-office-docx :src="docx" @rendered="rendered" />
 			</div>
 		</div>
 		<!-- Player Start -->
@@ -38,7 +38,8 @@
 
 <script>
 import { mixin } from '@/mixins/mixin';
-import VueOfficePdf from '@vue-office/pdf'
+import VueOfficeDocx from '@vue-office/docx'
+import '@vue-office/docx/lib/index.css'
 
 export default {
 	mixins: [mixin],
@@ -54,14 +55,14 @@ export default {
 		},
 	},
 	components: {
-		VueOfficePdf
+		VueOfficeDocx
 	},
 	data() {
 		return {
 			type: "",
 			ext: "",
 			isLoading: true,
-			src: this.getFileUrl(this.item),
+			docx: this.getFileUrl(this.item),
 		}
 	},
 	methods: {

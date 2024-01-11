@@ -3,7 +3,7 @@
 		<!-- Modal-Card Header Start -->
 		<header class="modal-card-head">
 			<div class="is-flex-grow-1">
-				<h3 class="title is-3">{{ $t('Tips') }}</h3>
+				<h3 class="title is-header">{{ $t('Tips') }}</h3>
 			</div>
 			<div>
 				<div class="is-flex is-align-items-center">

@@ -14,8 +14,8 @@
 			<section class="modal-card-body" style="overflow-y:hidden">
 				<!-- Storage and Disk List Start -->
 				<div v-if="!creatIsShow" class="is-flex-grow-1 is-flex-shrink-1 is-relative">
-					<div v-if="activeTab == 0" class="create-container" style="overflow-y:hidden">
-						<popper :options="{ placement: 'bottom', modifiers: { offset: { offset: '0,4px' } } }"
+					<div v-if="activeTab == 0" class="create-container" >
+						<popper :options="{ placement: 'bottom',  }"
 							append-to-body trigger="hover">
 							<div v-show="unDiskData.length == 0" class="popper  tooltip-content dark">
 								{{ $t('Please insert a Drive to Create Storage') }}

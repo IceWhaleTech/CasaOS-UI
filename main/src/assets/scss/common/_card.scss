@@ -100,6 +100,7 @@
 }
 
 .app-card {
+	aspect-ratio: 1 / 1;
 	.loading-background {
 		background: none !important;
 		border-radius: $backDropBorderRadius;

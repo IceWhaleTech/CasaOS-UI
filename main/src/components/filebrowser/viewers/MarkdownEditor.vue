@@ -1,19 +1,9 @@
-<!--
- * @Author: Jerryk jerry@icewhale.org
- * @Date: 2023-02-23 18:44:03
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-03-10 17:21:34
- * @FilePath: /CasaOS-UI/src/components/filebrowser/viewers/MarkdownEditor.vue
- * @Description: 
- * 
- * Copyright (c) 2023 by IceWhale, All Rights Reserved. 
--->
 <template>
 	<div class="overlay">
 		<header class="modal-card-head">
 			<div class="is-flex-grow-1 is-flex">
 				<!-- Title Start -->
-				<h3 class="title is-5">{{ $t("Richtext Editor") }}</h3>
+				<h3 class="title is-5 one-line mr-4">{{ $t("Richtext Editor") }}</h3>
 				<!-- Title End -->
 			</div>
 			<div class="is-flex is-align-items-center">
@@ -141,9 +131,6 @@ export default {
 					this.isChange = false;
 				});
 			});
-		},
-		download() {
-			this.downloadFile(this.item);
 		},
 		close() {
 			if (this.isChange) {

@@ -34,6 +34,7 @@ export default {
 		this.hitboxCheck();
 		window.addEventListener('keydown', this.onKeydown)
 		window.addEventListener('keyup', this.onKeyup)
+		window.addEventListener('blur', this.blur)
 		this.$nextTick(() => {
 			this.onResize();
 		})
@@ -100,6 +101,11 @@ export default {
 					this.isCtrl = true;
 					break;
 			}
+		},
+		blur(evnet) {
+			// make sure release shift and ctrl
+			this.isShift = false;
+			this.isCtrl = false;
 		},
 
 		/**
@@ -287,5 +293,6 @@ export default {
 		window.removeEventListener('keydown', this.onKeydown)
 		window.removeEventListener('keyup', this.onKeyup)
 		window.removeEventListener('resize', this.onResize);
+		window.removeEventListener('blur', this.blur);
 	},
 }

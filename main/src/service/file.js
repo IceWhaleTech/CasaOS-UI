@@ -1,11 +1,3 @@
-/*
- * @Author: JerryK
- * @Date: 2021-09-18 21:32:13
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-07-14 12:24:01
- * @Description: File API
- * @FilePath: \CasaOS-UI\src\service\file.js
- */
 import {api} from "./service.js";
 
 const PREFIX = "/file"

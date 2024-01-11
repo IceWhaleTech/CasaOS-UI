@@ -4,7 +4,7 @@
 		<header class="modal-card-head">
 			<div class="is-flex-grow-1 is-flex ">
 				<!-- Title Start -->
-				<h3 class="title is-5">{{ $t('Code Editor') }}</h3>
+				<h3 class="title is-5 one-line mr-4">{{ $t('Code Editor') }}</h3>
 				<!-- Title End -->
 			</div>
 			<div class="is-flex is-align-items-center">

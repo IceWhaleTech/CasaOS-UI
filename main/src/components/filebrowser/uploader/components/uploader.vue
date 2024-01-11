@@ -1,11 +1,3 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2022/12/12 下午3:29
-  * @FilePath: /CasaOS-UI/src/components/filebrowser/uploader/components/uploader.vue
-  * @Description:
-  *
-  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
-  -->
 <template>
 	<div class="uploader is-flex is-flex-direction-column">
 		<slot :file-list="fileList" :files="files" :started="started">
@@ -21,12 +13,12 @@
 </template>
 
 <script>
-import Uploader          from 'simple-uploader.js'
-import {kebabCase}       from '../common/utils'
-import UploaderBtn       from './btn.vue'
-import UploaderDrop      from './drop.vue'
+import Uploader from 'simple-uploader.js'
+import { kebabCase } from '../common/utils'
+import UploaderBtn from './btn.vue'
+import UploaderDrop from './drop.vue'
 import UploaderUnsupport from './unsupport.vue'
-import UploaderList      from './list.vue'
+import UploaderList from './list.vue'
 // import UploaderFiles from './files.vue'
 // import UploaderFile from './file.vue'
 
@@ -98,9 +90,13 @@ export default {
 		filesSubmitted() {
 			this.files = this.uploader.files
 			this.fileList = this.uploader.fileList
-			if (this.autoStart) {
-				this.uploader.upload()
-			}
+			this.$api.sys.getVersion().then(res => {
+				if (this.autoStart && res.status === 200) {
+					console.log(this.uploader);
+					this.uploader.opts.headers.Authorization = this.$store.state.access_token || localStorage.getItem("access_token")
+					this.uploader.upload()
+				}
+			})
 		},
 		fileErrorHandle(rootFile, file, message) {
 			this.uploader.pause(file)

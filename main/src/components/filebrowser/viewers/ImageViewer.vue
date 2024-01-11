@@ -3,7 +3,7 @@
 		<header class="modal-card-head">
 			<div class="is-flex  is-flex-grow-1 is-flex-shrink-1">
 				<!-- Title Start -->
-				<h3 class="title is-6 one-line">{{ currentItem.name }}</h3>
+				<h3 class="title is-5 one-line mr-4">{{ currentItem.name }}</h3>
 				<!-- Title End -->
 			</div>
 			<div class="is-flex is-align-items-center is-flex-shrink-0">
@@ -156,9 +156,6 @@ export default {
 	},
 
 	methods: {
-		download() {
-			this.downloadFile(this.currentItem);
-		},
 		close() {
 			this.$emit("close");
 		},
