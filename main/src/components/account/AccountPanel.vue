@@ -339,6 +339,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.modal-card {
+	@include mobile {
+		margin: 0 !important;
+
+		&.w-424 {
+			width: auto !important;
+		}
+	}
+}
+
 .account-item {
 	cursor: pointer;
 
