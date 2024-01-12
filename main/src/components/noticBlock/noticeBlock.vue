@@ -54,6 +54,7 @@
 					</p>
 				</div>
 			</div>
+			<!-- progress -->
 			<div v-else-if="noticeData.contentType === 'progress'"
 				 class="info is-flex is-flex-direction-column is-justify-content-center is-flex-grow-1">
 				<div :title="noticeData.content.text"
