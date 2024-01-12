@@ -625,6 +625,7 @@ export default {
 
 			// container_name
 			composeServicesItem.container_name = composeServicesItemInput?.container_name || ""
+			composeServicesItem.hostname = composeServicesItemInput?.container_name || ""
 			// this.$set(composeServicesItem, "container_name", composeServicesItemInput?.container_name);
 
 			if (
