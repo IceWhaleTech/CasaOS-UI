@@ -1,19 +1,19 @@
 <template>
 	<div ref="dropdown" :class="rootClasses" class="dropdown dropdown-menu-animation" @mouseleave="isHoverable = false">
 		<div v-if="!inline" ref="trigger" :tabindex="disabled ? false : triggerTabindex" aria-haspopup="true"
-			 class="dropdown-trigger" @click="onClick" @mouseenter="onHover" @contextmenu.prevent="onContextMenu"
-			 @focus.capture="onFocus">
-			<slot :active="isActive" name="trigger"/>
+			class="dropdown-trigger" @click="onClick" @mouseenter="onHover" @contextmenu.prevent="onContextMenu"
+			@focus.capture="onFocus">
+			<slot :active="isActive" name="trigger" />
 		</div>
 
 		<transition :name="animation">
-			<div v-if="isMobileModal" v-show="isActive" :aria-hidden="!isActive" class="background"/>
+			<div v-if="isMobileModal" v-show="isActive" :aria-hidden="!isActive" class="background" />
 		</transition>
 		<transition :name="animation">
 			<div v-show="(!disabled && (isActive || isHoverable)) || inline" ref="dropdownMenu" v-trap-focus="trapFocus"
-				 :aria-hidden="!isActive" :style="style" class="dropdown-menu">
+				:aria-hidden="!isActive" :style="style" class="dropdown-menu">
 				<div :aria-modal="!inline" :role="ariaRole" :style="contentStyle" class="dropdown-content">
-					<slot/>
+					<slot />
 				</div>
 			</div>
 		</transition>
@@ -21,10 +21,10 @@
 </template>
 
 <script>
-import trapFocus                                                           from 'buefy/src/directives/trapFocus'
-import config                                                              from 'buefy/src/utils/config'
-import {createAbsoluteElement, isCustomElement, removeElement, toCssWidth} from 'buefy/src/utils/helpers'
-import ProviderParentMixin                                                 from 'buefy/src//utils/ProviderParentMixin'
+import trapFocus from 'buefy/src/directives/trapFocus'
+import config from 'buefy/src/utils/config'
+import { createAbsoluteElement, isCustomElement, removeElement, toCssWidth } from 'buefy/src/utils/helpers'
+import ProviderParentMixin from 'buefy/src//utils/ProviderParentMixin'
 
 const DEFAULT_CLOSE_OPTIONS = ['escape', 'outside']
 
@@ -135,10 +135,10 @@ export default {
 		},
 		cancelOptions() {
 			return typeof this.canClose === 'boolean'
-			? this.canClose
-			? DEFAULT_CLOSE_OPTIONS
-			: []
-			: this.canClose
+				? this.canClose
+					? DEFAULT_CLOSE_OPTIONS
+					: []
+				: this.canClose
 		},
 		contentStyle() {
 			return {
@@ -266,7 +266,7 @@ export default {
 		/**
 		 * Keypress event that is bound to the document
 		 */
-		keyPress({key}) {
+		keyPress({ key }) {
 			if (this.isActive && (key === 'Escape' || key === 'Esc')) {
 				if (this.cancelOptions.indexOf('escape') < 0) return
 				this.isActive = false
@@ -310,63 +310,54 @@ export default {
 			}
 		},
 
-		updateAppendToBody() {
-			const dropdown = this.$refs.dropdown
-			const dropdownMenu = this.$refs.dropdownMenu
-			const trigger = this.$refs.trigger
-			if (dropdownMenu && trigger) {
-				// update wrapper dropdown
-				const dropdownWrapper = this.$data._bodyEl.children[0]
-				dropdownWrapper.classList.forEach((item) => dropdownWrapper.classList.remove(item))
-				dropdownWrapper.classList.add('dropdown')
-				dropdownWrapper.classList.add('dropdown-menu-animation')
-				if (this.$vnode && this.$vnode.data && this.$vnode.data.staticClass) {
-					dropdownWrapper.classList.add(this.$vnode.data.staticClass)
-				}
-				this.rootClasses.forEach((item) => {
-					// skip position prop
-					if (item && typeof item === 'object') {
-						for (let key in item) {
-							if (item[key]) {
-								dropdownWrapper.classList.add(key)
+		methods: {
+			updateAppendToBody() {
+				const dropdown = this.$refs.dropdown
+				const dropdownMenu = this.$refs.dropdownMenu
+				const trigger = this.$refs.trigger
+				if (dropdownMenu && trigger) {
+					const dropdownWrapper = this.$data._bodyEl.children[0]
+					dropdownWrapper.classList = ['dropdown', 'dropdown-menu-animation', ...(this.$vnode && this.$vnode.data && this.$vnode.data.staticClass ? [this.$vnode.data.staticClass] : [])]
+					this.rootClasses.forEach((item) => {
+						if (item && typeof item === 'object') {
+							for (let key in item) {
+								if (item[key]) {
+									dropdownWrapper.classList.add(key)
+								}
 							}
 						}
-					}
-				})
-				if (this.appendToBodyCopyParent) {
-					const parentNode = this.$refs.dropdown.parentNode
-					const parent = this.$data._bodyEl
-					parent.classList.forEach((item) => parent.classList.remove(item))
-					parentNode.classList.forEach((item) => {
-						parent.classList.add(item)
 					})
-				}
-				const rect = trigger.getBoundingClientRect()
-				let top = rect.top + window.scrollY
-				let left = rect.left + window.scrollX
-				if (!this.position || this.position.indexOf('bottom') >= 0) {
-					top += trigger.clientHeight
-				} else {
-					top -= dropdownMenu.clientHeight
-				}
-				if (this.position && this.position.indexOf('left') >= 0) {
-					left -= (dropdownMenu.clientWidth - trigger.clientWidth)
-				}
-				if (this.position && this.position.indexOf('is-right') >= 0) {
-					console.log('is-right');
-					top += 0
-					left -= 0
-				}
-
-				this.style = {
-					position: 'absolute',
-					top: `${top}px`,
-					left: `${left}px`,
-					zIndex: '99',
-					width: this.expanded ? `${dropdown.offsetWidth}px` : undefined
+					if (this.appendToBodyCopyParent) {
+						const parentNode = this.$refs.dropdown.parentNode
+						const parent = this.$data._bodyEl
+						parent.classList = [...parentNode.classList]
+					}
+					const rect = trigger.getBoundingClientRect()
+					let top = rect.top + window.scrollY
+					let left = rect.left + window.scrollX
+					if (!this.position || this.position.includes('bottom')) {
+						top += trigger.clientHeight
+					} else {
+						top -= dropdownMenu.clientHeight
+					}
+					if (this.position && this.position.includes('left')) {
+						left -= dropdownMenu.clientWidth - trigger.clientWidth
+					}
+					if (this.position && this.position.includes('is-right')) {
+						console.log('is-right')
+						top += 0
+						left -= 0
+					}
+					this.style = {
+						position: 'absolute',
+						top: `${top}px`,
+						left: `${left}px`,
+						zIndex: '99',
+						width: this.expanded ? `${dropdown.offsetWidth}px` : undefined
+					}
 				}
 			}
-		}
+		},
 	},
 	mounted() {
 		if (this.appendToBody) {

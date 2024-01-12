@@ -1,12 +1,3 @@
-<!--
- * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
- * @LastEditTime: 2023-09-12 14:33:00
- * @FilePath: /CasaOS-UI/main/src/views/Home.vue
-  * @Description:
-  *
-  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
-  -->
-
 <template>
 	<div v-if="!isLoading" class="out-container">
 		<!-- NavBar Start -->

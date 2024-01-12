@@ -1,6 +1,6 @@
 <template>
 	<div :class="{ 'narrow': currentSlide > 0, 'card-width': isFirstInstall, '_stepStoreList': currentSlide === 0 }"
-		class="app-card modal-card">
+		class=" modal-card">
 		<!--    first setting！！ apps installation location-->
 		<template v-if="isFirstInstall">
 			<header class="modal-card-head b-line">
@@ -1515,14 +1515,17 @@ export default {
 <style lang="scss">
 // appPanel global style
 .app-panel {
+	.modal-card-head {
+		background-color: hsla(208, 16%, 94%, 1);
+	}
 	._stepStoreList {
 		min-height: calc(100vh - 2.5rem);
-
 		.modal-card-body {
 			overflow-y: scroll;
 			overflow-x: clip;
 		}
 	}
+
 }
 
 .app-search {

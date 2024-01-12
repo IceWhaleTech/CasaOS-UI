@@ -153,7 +153,7 @@ _____             _____ _____
 <style lang="scss" scoped>
 #app {
 	width: 100vw;
-	height: calc(var(--vh,1vh) * 100);
+	height: 100dvh;
 	font-weight: 400;
 	font-size: 0.875rem;
 	-webkit-font-smoothing: antialiased;

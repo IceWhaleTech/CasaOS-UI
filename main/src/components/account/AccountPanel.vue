@@ -17,8 +17,7 @@
 								<b-icon icon="edit-outline" pack="casa" />
 								<input type="file" class="file-input" accept="image/*" @change="loadImage($event)" />
 							</div>
-							<b-image :src="require('@/assets/img/account/default-avatar.svg')" class="is-80x80"
-								rounded></b-image>
+							<b-image :src="avatarUrl" class="is-80x80" rounded></b-image>
 						</div>
 
 					</div>
@@ -98,24 +97,20 @@
 
 						</div>
 					</div>
-
-
 				</template>
 			</section>
 			<!-- Modal-Card Body End -->
 			<!-- Modal-Card Footer Start-->
-			<footer class="modal-card-foot is-flex is-align-items-center">
-				<div class="is-flex-grow-1"></div>
-				<div>
-					<b-button v-if="state != 1" :label="$t('Back')" rounded @click.stop="goto(1)" />
-					<b-button v-if="state == 1" :label="$t('Logout')" rounded @click="logout" type="is-dark" />
-					<b-button v-else-if="state == 2" :label="$t('Submit')" expaned rounded type="is-dark"
-						@click="handleSubmit(saveUser)" />
-					<b-button v-else-if="state == 3" :label="$t('Submit')" expaned rounded type="is-dark"
-						@click="handleSubmit(savePassword)" />
-					<b-button v-else-if="state == 4" :label="$t('Submit')" expaned rounded type="is-dark"
-						@click="handleSubmit(saveAvatar)" />
-				</div>
+			<footer class="modal-card-foot is-flex is-align-items-center" :class="buttonAlign">
+				<b-button v-if="state != 1" :label="$t('Back')" rounded @click.stop="goto(1)" />
+				<b-button v-if="state == 1" :label="$t('Logout')" rounded @click="logout" type="is-dark" />
+				<b-button v-else-if="state == 2" :label="$t('Submit')" expaned rounded type="is-dark"
+					@click="handleSubmit(saveUser)" />
+				<b-button v-else-if="state == 3" :label="$t('Submit')" expaned rounded type="is-dark"
+					@click="handleSubmit(savePassword)" />
+				<b-button v-else-if="state == 4" :label="$t('Submit')" expaned rounded type="is-dark"
+					@click="handleSubmit(saveAvatar)" />
+
 			</footer>
 			<!-- Modal-Card Footer End -->
 		</ValidationObserver>
@@ -151,6 +146,7 @@ function getMimeType(file, fallback = null) {
 	}
 }
 
+const avatarUrlPrefix = "v1/users/avatar?token=";
 
 export default {
 	name: "account-panel",
@@ -160,6 +156,7 @@ export default {
 			state: 1,
 			user: this.$store.state.user,
 			username: this.$store.state.user.username,
+			avatarUrl: `${avatarUrlPrefix}${this.$store.state.token || localStorage.getItem("access_token")}`,
 			oriPassword: "",
 			password: '',
 			confirmation: "",
@@ -217,6 +214,9 @@ export default {
 		},
 		bodyPadding() {
 			return this.state == 1 || this.state == 4 ? "px-40 py-24" : ""
+		},
+		buttonAlign() {
+			return this.state == 1 ? "is-justify-content-center" : "is-justify-content-end"
 		}
 	},
 
@@ -307,7 +307,22 @@ export default {
 		},
 
 		async saveAvatar() {
-			console.log(this.result.canvas.toDataURL());
+			this.isLoading = true;
+			const imageData = this.result.canvas.toDataURL();
+			this.$api.users.saveAvatar({ file: imageData }).then(() => {
+				this.$buefy.toast.open({
+					message: this.$t(`Update successful`),
+					type: 'is-success'
+				})
+				this.isLoading = false;
+				this.state = 1;
+			}).catch(() => {
+				this.$buefy.toast.open({
+					message: this.$t(`Update failure`),
+					type: 'is-danger'
+				})
+				this.isLoading = false;
+			})
 		},
 		logout() {
 			this.$messageBus('account_setting_logout')

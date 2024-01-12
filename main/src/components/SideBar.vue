@@ -1,11 +1,11 @@
 <template>
-	<div v-if="!isLoading" :class="{ 'open': sidebarOpen }" class="side-bar contextmenu-canvas">
+	<div v-if="!isLoading" :class="{ 'open': sidebarOpen }" class="side-bar contextmenu-canvas" ref="sidebar">
 		<vue-custom-scrollbar :settings="scrollSettings" class="scroll-area contextmenu-canvas">
 			<div v-for="(item, index) in activeApps" :key="`widgets_${index}`">
 				<component :is="item.app" :class="{ 'last-block': index === activeApps.length - 1 }"></component>
 			</div>
 		</vue-custom-scrollbar>
-		<settings v-model="widgetsSettings" :class="{ 'mt-4': activeApps.length > 0 }" class="mr-4" @change="handleChange">
+		<settings v-model="widgetsSettings" :class="{ 'mt-4': activeApps.length > 0 }" @change="handleChange">
 		</settings>
 	</div>
 </template>
@@ -85,6 +85,9 @@ export default {
 	},
 	mounted() {
 		this.getConfig();
+
+		window.addEventListener('resize', this.handleResize);
+
 	},
 
 	methods: {
@@ -100,6 +103,7 @@ export default {
 						this.saveData(initData);
 						this.widgetsSettings = initData;
 						this.isLoading = false;
+						this.handleResize();
 					} else {
 						this.diffAndCombineData(initData, res.data.data);
 					}
@@ -126,6 +130,7 @@ export default {
 				this.saveData(newData);
 			}
 			this.isLoading = false;
+			this.handleResize();
 		},
 		/**
 		 * @description: Get Local widgets datas
@@ -157,6 +162,16 @@ export default {
 			this.saveData(this.widgetsSettings)
 		},
 
+		handleResize() {
+			const ww = window.innerWidth;
+			if (this.isLoading) return false;
+			const parentWidth = document.querySelector('.slider-content').offsetWidth;
+			this.$nextTick(() => {
+				const padding = ww <= 480 ? 0 : -16;
+				this.$refs.sidebar.style.width = parentWidth + padding + 'px'
+			})
+		}
+
 	},
 }
 </script>
@@ -164,29 +179,37 @@ export default {
 <style lang="scss">
 .side-bar {
 	z-index: 10;
-	margin-right: -15px;
 	// height: calc(100vh - 6rem);
 	height: calc(var(--vh, 1vh) * 100 - 6rem);
 	overflow: inherit !important;
 	position: fixed;
-	width: 21.25rem;
 
-	@include until-fullhd {
-		width: 18.25rem;
+	@include until(480px) {
+		z-index: 20;
+		left: 0rem;
+		width: auto;
+		margin: 0 0 0 1rem !important;
+		transform: translateX(-100vw);
+		transition: all 0.3s ease-in-out;
+
+		&.open {
+			transform: translateX(0);
+		}
 	}
-
-	@include until-widescreen {
-		width: 18rem;
-	}
-
 }
 
 .scroll-area {
 	position: relative;
-	padding: 0 1rem 0 0;
+	padding: 0 16px 0 0;
+	margin-right: -16px;
 	max-height: calc(100% - 7.5rem);
 	overflow-x: inherit !important;
 	overflow-y: hidden !important;
+
+	@include until(480px) {
+		max-height: calc(100% - 7rem);
+		height: 100% !important;
+	}
 }
 
 .ps__thumb-x,
@@ -226,27 +249,5 @@ export default {
 .ps__rail-y:focus>.ps__thumb-y,
 .ps__rail-y.ps--clicking .ps__thumb-y {
 	width: 8px;
-}
-
-@media screen and (max-width: 480px) {
-	.side-bar {
-		z-index: 20;
-		left: 0rem;
-		width: auto;
-		margin: 0 0 0 1rem !important;
-		transform: translateX(-100vw);
-		transition: all 0.3s ease-in-out;
-
-		&.open {
-			width: calc(100% - 2rem);
-			transform: translateX(0);
-		}
-	}
-
-	.scroll-area {
-		max-height: calc(100% - 7rem);
-		height: 100% !important;
-		margin-right: -1rem;
-	}
 }
 </style>

@@ -3,10 +3,10 @@
 		<div class="navbar-brand ml-4 _fixed-height">
 
 			<!-- SideBar Button Start -->
-			<div id="sidebar-btn" class="is-flex is-align-items-center mr-3 ml-3">
+			<div id="sidebar-btn" class="is-flex is-align-items-center navbar-item">
 				<b-tooltip :active="!$store.state.isMobile" :label="sidebarIconLabel" position="is-right" type="is-dark">
 					<div role="button" @click="showSideBar">
-						<b-icon :icon="sidebarIcon" class="picon" size="is-20"></b-icon>
+						<b-icon :icon="sidebarIcon" class="picon" pack="casa" size="is-20"></b-icon>
 					</div>
 				</b-tooltip>
 			</div>

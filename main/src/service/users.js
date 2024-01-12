@@ -1,14 +1,4 @@
-/*
- * @Author: Jerryk jerry@icewhale.org
- * @Date: 2022-07-12 21:57:26
- * @LastEditors: zhanghengxin ezreal.ice@icloud.com
- * @LastEditTime: 2022-09-20 23:44:51
- * @FilePath: /CasaOS-UI/src/service/users.js
- * @Description:
- *
- * Copyright (c) 2022 by IceWhale, All Rights Reserved.
- */
-import {api} from "./service.js";
+import { api } from "./service.js";
 
 const PREFIX = "/users"
 const PREFIX2 = "/v2/users"
@@ -140,6 +130,11 @@ const users = {
 	// delete letter [OK]
 	delLetter(uuid) {
 		return api.delete(`${PREFIX2}/event/${uuid}`);
+	},
+
+	// save user avatar 
+	saveAvatar(data) {
+		return api.put(`${PREFIX}/avatar`, data);
 	},
 
 }

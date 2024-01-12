@@ -787,39 +787,25 @@ export default {
 			}
 		},
 		bridgePorts(services) {
-			/*
-			 - "3000"
-			 - "3000-3005"
-			 - "127.0.0.1:8001"
-			 - "127.0.0.1:5000-5010"
-			 */
-
-			let published,
-				result = [];
-			for (let key in services) {
-				let service = services[key]
-				service.ports.map(function (item) {
-					// TODO 需要健壮一下
+			let result = [];
+			for (const key in services) {
+				const service = services[key];
+				service.ports.forEach((item) => {
 					if (isNumber(item)) {
 						result.push(item);
-						return;
-					}
-					const TEMPORARY_PORT_INFORMATION = item.published?.split(":");
-					if (TEMPORARY_PORT_INFORMATION.length > 1) {
-						published = TEMPORARY_PORT_INFORMATION[1];
 					} else {
-						published = TEMPORARY_PORT_INFORMATION[0];
-					}
-					published = published?.split("-");
-
-					if (published.length > 1) {
-						let start = published[0];
-						let end = published[1];
-						for (let i = start; i <= end; i++) {
-							result.push(i);
+						const TEMPORARY_PORT_INFORMATION = item.published?.split(":");
+						const published = TEMPORARY_PORT_INFORMATION?.length > 1 ? TEMPORARY_PORT_INFORMATION[1] : TEMPORARY_PORT_INFORMATION[0];
+						const publishedRange = published?.split("-");
+						if (publishedRange?.length > 1) {
+							const start = parseInt(publishedRange[0]);
+							const end = parseInt(publishedRange[1]);
+							for (let i = start; i <= end; i++) {
+								result.push(i);
+							}
+						} else {
+							result.push(parseInt(publishedRange[0]));
 						}
-					} else {
-						result.push(published[0]);
 					}
 				});
 			}
@@ -855,11 +841,6 @@ export default {
 	},
 };
 </script>
-<style lang="scss">
-.app-card .modal-card-head.setting-compose-panel {
-	background-color: hsla(208, 16%, 94%, 1);
-}
-</style>
 <style lang="scss" scoped>
 .b-tabs {
 	margin-bottom: 0;
@@ -897,19 +878,19 @@ export default {
 }
 
 ::v-deep .vue-slider-mark-step {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    -webkit-box-shadow: 0 0 0 2px #ccc;
-    box-shadow: 0 0 0 2px #ccc;
-    background-color: #fff;
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	-webkit-box-shadow: 0 0 0 2px #ccc;
+	box-shadow: 0 0 0 2px #ccc;
+	background-color: #fff;
 }
 
-::v-deep .vue-slider-mark-label{
+::v-deep .vue-slider-mark-label {
 	font-size: 0.75rem;
 }
 
-::v-deep .vue-slider-dot-tooltip-text{
+::v-deep .vue-slider-dot-tooltip-text {
 	font-size: 0.75rem;
 }
 </style>
