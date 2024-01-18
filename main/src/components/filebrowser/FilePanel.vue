@@ -348,7 +348,7 @@ export default {
 	async created() {
 		this.options = {
 			target: this.getTargetUrl(),
-			testChunks: true,
+			testChunks: false,
 			uploadMethod: "POST",
 			successStatuses: [200, 201, 202, 2002],
 			permanentErrors: [404, 409, 415, 500, 501],
