@@ -1,14 +1,3 @@
-<!--
-   *
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2023-01-16 18:31:24
- * @FilePath: /CasaOS-UI/src/components/CoreService.vue
-   * @Description:
-   *
-   * Copyright (c) 2022 by IceWhale, All Rights Reserved.
-   *
-  -->
-
 <template>
 	<swiper ref="mySwiper" :options="swiperOptions">
 		<swiper-slide v-for="(noticeCard, key) in noticesData" :key="key" :class="{ _singleWidth: showFullCard }">
@@ -41,8 +30,7 @@ import Business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
 import DiskLearnMore from "@/components/Storage/DiskLearnMore.vue";
 import last from "lodash/last";
 import { ice_i18n } from "@/mixins/base/common-i18n";
-// import DockerProgress from "@/components/Apps/progress.js";
-// import StorageManagerPanel from "@/components/Storage/StorageManagerPanel.vue";
+
 
 export default {
 	components: { SmartBlock, SyncBlock, noticeBlock, Swiper, SwiperSlide },

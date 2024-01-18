@@ -1,8 +1,7 @@
 <script setup>
 import { defineEmits, defineProps, getCurrentInstance, onBeforeUnmount, onMounted, ref } from "vue";
-import { vOnClickOutside } from '@vueuse/components'
 
-const emit = defineEmits(["refreshAppStore", "refreshSize","close"]);
+const emit = defineEmits(["refreshAppStore", "refreshSize", "close"]);
 const props = defineProps(['totalApps']);
 /*
 const stateBox = {
@@ -86,7 +85,7 @@ function unregisterAppStore(id) {
 }
 
 function redirectURL() {
-	if(sourceDorpRef.value) {
+	if (sourceDorpRef.value) {
 		sourceDorpRef.value.toggle();
 	}
 	window.open("https://awesome.casaos.io/content/3rd-party-app-stores/list.html", "_blank", "noopener");
@@ -104,7 +103,7 @@ function getSourceList() {
 			const storeList = res.data.data.filter(item => {
 				const pathname = new URL(item.url).pathname;
 				const pathnameList = pathname.split("/");
-				const sourceName = pathnameList[1]// + "/" + pathnameList[2];
+				const sourceName = pathnameList[1];
 
 				if (pathnameList[1] === "IceWhaleTech") {
 					return false
@@ -120,14 +119,7 @@ function getSourceList() {
 					name: item.name
 				}
 			})
-			switch (storeList.length) {
-				case 0:
-					componentState.value = 'first_add_state';
-					break;
-				default:
-					componentState.value = 'second_list_state';
-					break;
-			}
+			componentState.value = storeList.length === 0 ? 'first_add_state' : 'second_list_state';
 		}
 	})
 }
@@ -210,8 +202,8 @@ onBeforeUnmount(() => {
 			</div>
 			<div v-else-if="componentState === 'active_input_state'" key="3" class="is-flex is-align-items-center">
 				<b-field class="mb-0">
-					<b-input class="_sources_input" ref="inputSourceURL" v-model="url"
-						:disabled="addLoadingState" v-on:keyup.enter.native="registerAppStore(url)"></b-input>
+					<b-input class="_sources_input" ref="inputSourceURL" v-model="url" :disabled="addLoadingState"
+						v-on:keyup.enter.native="registerAppStore(url)"></b-input>
 					<b-tooltip label="Get more apps" position="is-bottom" class="add-tooltip" type="is-dark"
 						:class="{ disabled: addLoadingState }">
 						<b-icon class="is-clickable" icon="question-outline" pack="casa" size="is-small"

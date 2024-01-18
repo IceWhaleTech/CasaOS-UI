@@ -1,5 +1,5 @@
 <template>
-	<div class="app-sidebar" :class="{'no-event':isOpen}">
+	<div class="app-sidebar" :class="{ 'no-event': isOpen }">
 		<transition :name="transitionName" @before-enter="beforeEnter" @after-enter="afterEnter" @enter="enter">
 			<div v-show="isOpen" ref="sidebarContent" class="sidebar-content" :class="rootClasses">
 				<slot :close="close"></slot>
@@ -83,11 +83,13 @@ export default {
 			}]
 		},
 		cancelOptions() {
-			return typeof this.canCancel === 'boolean'
-			? this.canCancel
-			? ['escape', 'outside']
-			: []
-			: this.canCancel
+			let options;
+			if (typeof this.canCancel === 'boolean') {
+				options = this.canCancel ? ['escape', 'outside'] : [];
+			} else {
+				options = this.canCancel;
+			}
+			return options;
 		},
 		isStatic() {
 			return this.position === 'static'

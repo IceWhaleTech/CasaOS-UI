@@ -1,61 +1,50 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2022/12/12 下午3:29
-  * @FilePath: /CasaOS-UI/src/components/filebrowser/uploader/components/file.vue
-  * @Description:
-  *
-  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
-  -->
 <template>
 	<div :status="status" class="uploader-file">
-		<slot :average-speed="averageSpeed" :current-speed="currentSpeed" :error="error" :extension="extension"
-			  :file="file" :file-category="fileCategory"
-			  :formated-average-speed="formatedAverageSpeed" :formated-size="formatedSize"
-			  :formated-time-remaining="formatedTimeRemaining"
-			  :is-complete="isComplete" :is-uploading="isUploading" :list="list" :paused="paused"
-			  :progress="progress" :progress-style="progressStyle" :progressing-class="progressingClass"
-			  :response="response" :size="size"
-			  :status="status" :time-remaining="timeRemaining" :type="type"
-			  :uploaded-size="uploadedSize">
+		<slot :average-speed="averageSpeed" :current-speed="currentSpeed" :error="error" :extension="extension" :file="file"
+			:file-category="fileCategory" :formated-average-speed="formatedAverageSpeed" :formated-size="formatedSize"
+			:formated-time-remaining="formatedTimeRemaining" :is-complete="isComplete" :is-uploading="isUploading"
+			:list="list" :paused="paused" :progress="progress" :progress-style="progressStyle"
+			:progressing-class="progressingClass" :response="response" :size="size" :status="status"
+			:time-remaining="timeRemaining" :type="type" :uploaded-size="uploadedSize">
 			<div class="task is-flex">
 				<div v-if="status != 'success'" :class="progressingClass" :style="progressStyle"
-					 class="task-progress normal"></div>
+					class="task-progress normal"></div>
 				<div class="task-info">
 					<div class="cover">
 						<div class="folder-cover">
-							<img :src="getIconFile(file)" alt="folder" class="folder-icon"/>
+							<img :src="getIconFile(file)" alt="folder" class="folder-icon" />
 						</div>
 					</div>
 					<div class="task-info-wrapper">
 						<span class="task-file-name">{{ file.name }}</span>
 						<div class="task-desc-wrapper">
-							<span v-if="status != 'success'"
-								  class="task-desc">{{ size * progress | renderSize }}/{{ formatedSize }}</span>
+							<span v-if="status != 'success'" class="task-desc">{{ size * progress | renderSize }}/{{
+								formatedSize }}</span>
 							<span v-else class="task-desc">{{ formatedSize }}</span>
 							<span class="task-dot"></span>
 							<span class="task-desc">
-                {{ $t(statusText) }}
-              </span>
+								{{ $t(statusText) }}
+							</span>
 						</div>
 					</div>
 				</div>
 				<div class="action">
 
-          <span v-if="status != 'success'" class="action-icon icon" data-role="icon" @click="remove">
-            <b-icon icon="close-outline" size="is-small"></b-icon>
-          </span>
+					<span v-if="status != 'success'" class="action-icon icon" data-role="icon" @click="remove">
+						<b-icon icon="close-outline" pack="casa" size="is-small"></b-icon>
+					</span>
 
-					<span v-if="status == 'error' " class="action-icon icon" data-role="icon" @click="retry">
-            <b-icon icon="replay" size="is-small"></b-icon>
-          </span>
+					<span v-if="status == 'error'" class="action-icon icon" data-role="icon" @click="retry">
+						<b-icon icon="replay" size="is-small"></b-icon>
+					</span>
 
 					<span v-if="status == 'paused'" class="action-icon icon" data-role="icon" @click="resume">
-            <b-icon icon="play" size="is-small"></b-icon>
-          </span>
+						<b-icon icon="play" size="is-small"></b-icon>
+					</span>
 
 					<span v-if="status == 'Uploading'" class="action-icon icon" data-role="icon" @click="pause">
-            <b-icon icon="pause" size="is-small"></b-icon>
-          </span>
+						<b-icon icon="pause" size="is-small"></b-icon>
+					</span>
 
 				</div>
 			</div>
@@ -64,10 +53,10 @@
 </template>
 
 <script>
-import {mixin}        from '@/mixins/mixin';
-import Uploader       from 'simple-uploader.js'
-import events         from '../common/file-events'
-import {secondsToStr} from '../common/utils'
+import { mixin } from '@/mixins/mixin';
+import Uploader from 'simple-uploader.js'
+import events from '../common/file-events'
+import { secondsToStr } from '../common/utils'
 
 const COMPONENT_NAME = 'uploader-file'
 
@@ -227,7 +216,7 @@ export default {
 			}
 			if (message == "") {
 
-				res = {success: 200, message: "ok"}
+				res = { success: 200, message: "ok" }
 			}
 			this.response = res
 		},

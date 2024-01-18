@@ -31,7 +31,7 @@ export default {
 	},
 	data() {
 		return {
-			active: localStorage.getItem(this.id) ? false : true,
+			active: !localStorage.getItem(this.id),
 		}
 	},
 	methods: {

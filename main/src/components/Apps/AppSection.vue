@@ -186,8 +186,10 @@ export default {
 	methods: {
 
 		isMobile() {
-			let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
-			return flag
+			const userAgent = navigator.userAgent;
+			const mobileRegex = /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i;
+			const isMobile = mobileRegex.exec(userAgent);
+			return isMobile !== null;
 		},
 
 		getSkCount() {
@@ -316,7 +318,7 @@ export default {
 		 * @description: Show Install Panel Programmatic
 		 * @return {*} void
 		 */
-		async showInstall(storeId = 0, mode) {
+		async showInstall(storeId = 0, mode='') {
 			if (mode === 'custom') {
 				this.$messageBus('apps_custominstall');
 			}
@@ -348,7 +350,6 @@ export default {
 					state: "install",
 					configData: configData,
 					storeId: storeId,
-					// TODO transfer to yaml string.
 					settingData: mode !== 'custom' ? undefined : {},
 				}
 			})
@@ -475,7 +476,7 @@ export default {
 			// business :: scroll to last position
 			let name = last(this.newAppIds);
 			let showEl = document.getElementById("app-" + name)
-			showEl && showEl.scrollIntoView({ behavior: "smooth", block: 'end' });
+			showEl?.scrollIntoView({ behavior: "smooth", block: 'end' });
 		},
 
 		messageBusToast(message, type) {

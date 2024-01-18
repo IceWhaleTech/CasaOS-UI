@@ -724,8 +724,7 @@ export default {
 		 * @return {*}
 		 */
 		getTargetUrl() {
-			return `${this.$protocol}//${this.$baseURL}/v1/file/upload`;
-			// return `${this.$protocol}//192.168.2.243/v1/file/upload`;
+			return `${this.$protocol}//${this.$baseURL}/v2/casaos/file/upload`;
 		},
 
 		/**

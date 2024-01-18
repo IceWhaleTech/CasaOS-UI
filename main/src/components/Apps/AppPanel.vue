@@ -309,7 +309,6 @@
 
 			<!-- App Install Form Start -->
 			<template v-if="currentSlide == 1">
-				<!--:config-data="initConfigData"-->
 				<ComposeConfig v-if="isCasa" ref="compose" :cap-array="capArray"
 					:docker-compose-commands="dockerComposeConfig" :errInfo="errInfo" :networks="networks" :state="state"
 					:total-memory="totalMemory" @updateDockerComposeCommands="updateDockerComposeCommands"
@@ -381,12 +380,7 @@
 		<footer :class="{ 'is-justify-content-center': currentSlide == 0 }"
 			class="modal-card-foot is-flex is-align-items-center ">
 			<template>
-				<div class="is-flex-grow-1">
-					<!-- <div v-if="currentSlide == 0">
-					  <b-pagination v-if="listTotal > pageSize" :total="listTotal" v-model="pageIndex" range-before=1 range-after=1 order="is-centered" size="is-small" :simple="false" :rounded="true" :per-page="pageSize" icon-prev="chevron-left" icon-next="chevron-right" aria-next-label="Next page" aria-previous-label="Previous page" aria-page-label="Page" aria-current-label="Current page">
-					  </b-pagination>
-					</div> -->
-				</div>
+				<div class="is-flex-grow-1"></div>
 				<div>
 					<b-button v-if="currentSlide == 2 && currentInstallAppError" :label="$t('Back')" rounded
 						@click="prevStep" />
@@ -720,7 +714,7 @@ export default {
 			}
 		},
 		showDetailSwiper() {
-			return (!this.appDetailData.screenshot_link) ? false : true;
+			return this.appDetailData.screenshot_link?.length > 0;
 		},
 		currentInstallAppTextClass() {
 			return this.currentInstallAppError ? 'has-text-danger' : 'has-text-black'
@@ -865,8 +859,6 @@ export default {
 
 		async getStoreRecommend() {
 			try {
-				// this.isLoading = true;
-
 				let res = await this.$openAPI.appManagement.appStore.composeAppStoreInfoList(undefined, undefined, true).then(res => res.data.data.list);
 
 				this.recommendList = Object.keys(res).map(id => {
@@ -899,7 +891,6 @@ export default {
 			this.isLoading = true
 
 			try {
-				// let {category, authorType} = this.storeQueryData
 				let category = this.currentCate.name
 				let authorType = this.currentAuthor.name
 				let res;
@@ -998,9 +989,6 @@ export default {
 				}
 			}).then(res => {
 				if (res.status == 200) {
-					// if (!this.checkComposeApp(res.data, id)) {
-					// 	return
-					// }
 					let composeJSON = parse(res.data)
 					if (composeJSON["x-casaos"]?.tips?.before_install?.en_us) {
 						this.$buefy.modal.open({
@@ -1114,8 +1102,7 @@ export default {
 		},
 		installComposeApp(dockerComposeCommands, appName) {
 			return this.$openAPI.appManagement.compose.installComposeApp(dockerComposeCommands, false, true).then(res => {
-				if (res.status === 200) {
-				} else {
+				if (res.status !== 200) {
 					this.dockerComposeConfig = dockerComposeCommands;
 					this.currentSlide = 1;
 					this.errInfo = res.data
@@ -1150,8 +1137,6 @@ export default {
 						if (res.status == 200) {
 							this.$emit('updateState')
 						} else {
-							// this.dockerComposeConfig = dockerComposeCommands;
-							// this.currentSlide = 1;
 							this.errInfo = res.data
 
 							this.$buefy.toast.open({
@@ -1306,7 +1291,6 @@ export default {
 			this.$openAPI.appManagement.compose.composeAppContainers(this.id).then((res) => {
 				if (res.status == 200) {
 					const containers = res.data.data.containers;
-					const main = res.data.data.main
 					const containerId = containers[this.dockerComposeServiceName].ID;
 					this.$buefy.modal.open({
 						parent: this,
@@ -1769,9 +1753,7 @@ export default {
 }
 
 .pri-message-alert {
-	//padding: 0.4rem 1rem;
 	height: 2rem;
-	//text-align: center;
 	margin-top: 0.5rem;
 	margin-bottom: 1rem;
 	background: #FFF6E5;
