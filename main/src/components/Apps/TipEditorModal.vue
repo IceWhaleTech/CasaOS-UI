@@ -19,7 +19,7 @@
 				left-toolbar right-toolbar>
 			</VMdEditor>
 			<div v-if="name" class="is-flex is-flex-direction-row-reverse mt-2">
-				<b-icon
+				<b-icon class="is-clickable"
 					:class="{ 'has-text-grey-800': !isEditing, 'has-text-green-default': isDifferentiation, 'has-text-grey-400': !isDifferentiation && isEditing }"
 					:icon="icon" pack="casa" @click.native="toggle"></b-icon>
 			</div>
@@ -64,7 +64,7 @@ export default {
 			tips: '',
 			tempTips: '',
 			controlEditorState: 'preview',
-			icon: 'edit'
+			icon: 'edit-outline'
 		}
 	},
 	props: {
@@ -87,11 +87,11 @@ export default {
 			if (val) {
 				// editor is editable
 				this.controlEditorState = 'edit'
-				this.icon = 'matching'
+				this.icon = 'check-outline'
 			} else {
 				// editor is not editable
 				this.controlEditorState = 'preview'
-				this.icon = 'edit'
+				this.icon = 'edit-outline'
 			}
 			return this.isEditing
 		},

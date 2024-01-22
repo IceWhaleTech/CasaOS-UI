@@ -3,6 +3,7 @@ import ar_sa from './ar_SA.json' // Arabic: العربية :阿拉伯语
 import de_de from './de_DE.json' // German: Deutsch :德语
 import en_us from './en_US.json' // English: English :英语
 import es_es from './es_ES.json' // Spanish: Español :西班牙语
+import el_gr from './el_GR.json' // Greek: Ελληνικά :希腊语
 import fr_fr from './fr_FR.json' // French: Français :法语
 import hr_hr from './hr_HR.json' // Croatian: Hrvatski :克罗地亚语
 import hu_hu from './hu_HU.json' // Hungarian: Magyar :匈牙利语
@@ -17,7 +18,7 @@ import pl_pl from './pl_PL.json' // Polish: Polski :波兰语
 import pt_br from './pt_BR.json' // Portuguese, Brazilian: Português(Brasileiro) :葡萄牙语 巴西
 import pt_pt from './pt_PT.json' // Portuguese: Português :葡萄牙语
 import ro_ro from './ro_RO.json' // Romanian: Română :罗马尼亚语
-// import ru_ru from './ru_RU.json' // Russian: Русский :俄语 *
+import ru_ru from './ru_RU.json' // Russian: Русский :俄语
 import sl_si from './sl_SI.json' // Slovenian: Slovenščina :斯洛文尼亚语 
 // import sv_se from './sv_SE.json' // Swedish: Svenska :瑞典语 *
 import tr_tr from './tr_TR.json' // Turkish: Türkçe :土耳其语
@@ -30,6 +31,7 @@ export default {
 	ar_sa,
 	// be_by,
 	de_de,
+	el_gr,
 	en_us,
 	es_es,
 	fr_fr,
@@ -46,7 +48,7 @@ export default {
 	pt_br,
 	pt_pt,
 	ro_ro,
-	// ru_ru,
+	ru_ru,
 	sl_si,
 	// sv_se,
 	tr_tr,

@@ -98,10 +98,8 @@ export default {
 		this.uploader.on('filesSubmitted', () => {
 			this.isUpLoading = true
 			this.$api.sys.getVersion().then(res => {
-				if (this.autoStart && res.status === 200) {
-					this.uploadder.options.headers.Authorization = this.$store.state.access_token || localStorage.getItem("access_token")
-					this.uploader.upload()
-				}
+				this.uploader.opts.headers.Authorization = this.$store.state.access_token || localStorage.getItem("access_token")
+				this.uploader.upload()
 			})
 		})
 		this.uploader.on('fileError', () => {

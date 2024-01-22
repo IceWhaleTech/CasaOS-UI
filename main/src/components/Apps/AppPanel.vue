@@ -205,7 +205,7 @@
 					<div class="columns f-list is-multiline is-mobile pb-3 mb-5">
 						<div v-for="(item, index) in filteredPageList" :key="index + item.title + item.id"
 							class="column app-item is-one-quarter">
-							<div class="is-flex  is-align-items-center">
+							<div class="is-flex ">
 								<div class="mr-4 is-clickable" @click="showAppDetial(item.id)">
 									<b-image :src="item.icon" :src-fallback="require('@/assets/img/app/default.svg')"
 										class="is-64x64 icon-shadow" style="display: flex;align-items: center;"

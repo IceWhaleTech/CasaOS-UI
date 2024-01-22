@@ -335,6 +335,7 @@ export default {
 			languages: [
 				{ lang: "ar_sa", name: "العربية" },
 				{ lang: "de_de", name: "Deutsch" },
+				{ lang: "el_gr", name: "Ελληνικά"},
 				{ lang: "en_us", name: "English" },
 				{ lang: "es_es", name: "Español" },
 				{ lang: "fr_fr", name: "Français" },
@@ -348,6 +349,7 @@ export default {
 				{ lang: "pt_br", name: "Português (Brasileiro)" },
 				{ lang: "pt_pt", name: "Português" },
 				{ lang: "ro_ro", name: "Română" },
+				{ lang: "ru_ru", name: "Русский" },
 				{ lang: "sl_si", name: "Slovenščina" },
 				{ lang: "tr_tr", name: "Türkçe" },
 				{ lang: "uk_ua", name: "Українська" },
