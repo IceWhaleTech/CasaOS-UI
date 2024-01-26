@@ -522,7 +522,7 @@ export default {
 						protocol,
 					};
 				} else if (isObject(item)) {
-					item.published.toString();
+					item.published = item.published.toString();
 					return item;
 				} else {
 					return {
