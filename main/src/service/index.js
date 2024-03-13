@@ -8,17 +8,17 @@
 
  */
 
-import axios      from 'axios';
-import {instance} from "@/service/service";
+import axios from 'axios';
+import { instance } from "@/service/service";
 // app_management
 import {
 	Configuration,
 	ComposeMethodsApiFactory,
 	InternalMethodsApiFactory,
 	AppStoreMethodsApiFactory, AppStoreMethodsApiFp, AppStoreMethodsApi
-}                 from "@icewhale/casaos-appmanagement-openapi";
+} from "@icewhale/casaos-appmanagement-openapi";
 
-import store  from "@/store";
+import store from "@/store";
 import router from "@/router";
 
 const axiosBaseURL = (process.env.NODE_ENV === "dev") ? `${document.location.protocol}//${process.env.VUE_APP_DEV_IP}:${process.env.VUE_APP_DEV_PORT}` : ``
@@ -34,4 +34,4 @@ const appGrid = new InternalMethodsApiFactory(config, '/v2/app_management', inst
 const appCompose = new ComposeMethodsApiFactory(config, '/v2/app_management', instance);
 
 // apiClient.axios = instance;
-export default {appManagement, appGrid, appCompose};
+export default { appManagement, appGrid, appCompose };

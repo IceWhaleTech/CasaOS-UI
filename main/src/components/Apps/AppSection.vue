@@ -2,14 +2,22 @@
 	<div class="home-section has-text-left">
 		<!-- Title Bar Start -->
 		<div class="is-flex is-align-items-center mb-4">
-			<app-section-title-tip id="appTitle1" class="is-flex-grow-1 has-text-sub-04" label="Drag icons to sort."
-				title="Apps">
+			<app-section-title-tip
+				id="appTitle1"
+				class="is-flex-grow-1 has-text-sub-04"
+				label="Drag icons to sort."
+				title="Apps"
+			>
 			</app-section-title-tip>
 
 			<b-dropdown animation="fade1" aria-role="menu" class="file-dropdown" position="is-bottom-left">
 				<template #trigger>
-					<b-icon class="polymorphic is-clickable has-text-grey-100" icon="plus-outline" pack="casa"
-						size="is-24"></b-icon>
+					<b-icon
+						class="polymorphic is-clickable has-text-grey-100"
+						icon="plus-outline"
+						pack="casa"
+						size="is-24"
+					></b-icon>
 				</template>
 				<b-dropdown-item aria-role="menuitem" @click="showInstall(0, 'custom')">
 					{{ $t('Custom Install APP') }}
@@ -22,18 +30,28 @@
 		<!-- Title Bar End -->
 
 		<!-- App List Start -->
-		<draggable v-model="appList" :draggable="draggable" class="app-list contextmenu-canvas" tag="div"
-			v-bind="dragOptions" @end="onSortEnd" @start="drag = true">
-
+		<draggable
+			v-model="appList"
+			:draggable="draggable"
+			class="app-list contextmenu-canvas"
+			tag="div"
+			v-bind="dragOptions"
+			@end="onSortEnd"
+			@start="drag = true"
+		>
 			<!-- App Icon Card Start -->
 			<template v-if="!isLoading">
-				<div v-for="(item) in appList" :id="'app-' + item.name" :key="'app-' + item.name" class="handle">
-					<app-card :item="item" @configApp="showConfigPanel" @importApp="showContainerPanel"
-						@updateState="getList"></app-card>
+				<div v-for="item in appList" :id="'app-' + item.name" :key="'app-' + item.name" class="handle">
+					<app-card
+						:item="item"
+						@configApp="showConfigPanel"
+						@importApp="showContainerPanel"
+						@updateState="getList"
+					></app-card>
 				</div>
 			</template>
 			<template v-else>
-				<div v-for="(index) in skCount" :id="'app-' + index" :key="'app-' + index" class="handle">
+				<div v-for="index in skCount" :id="'app-' + index" :key="'app-' + index" class="handle">
 					<app-card-skeleton :index="index"></app-card-skeleton>
 				</div>
 			</template>
@@ -44,9 +62,13 @@
 
 		<template v-if="oldAppList.length > 0">
 			<!-- Title Bar Start -->
-			<div class="title-bar is-flex is-align-items-center mt-2rem  mb-5">
-				<app-section-title-tip id="appTitle2" class="is-flex-grow-1 has-text-sub-04" label="To be rebuilt."
-					title="Legacy app (To be rebuilt).">
+			<div class="title-bar is-flex is-align-items-center mt-2rem mb-5">
+				<app-section-title-tip
+					id="appTitle2"
+					class="is-flex-grow-1 has-text-sub-04"
+					label="To be rebuilt."
+					title="Legacy app (To be rebuilt)."
+				>
 				</app-section-title-tip>
 			</div>
 			<!-- Title Bar End -->
@@ -54,80 +76,85 @@
 			<!-- App List Start -->
 			<div class="columns is-variable is-2 is-multiline app-list contextmenu-canvas">
 				<!-- Application not imported Start -->
-				<div v-for="(item) in oldAppList" :id="'app-' + item.name" :key="'app-' + item.name" class="handle">
-					<app-card :isCasa="false" :item="item" @configApp="showConfigPanel" @importApp="showContainerPanel"
-						@updateState="getList"></app-card>
+				<div v-for="item in oldAppList" :id="'app-' + item.name" :key="'app-' + item.name" class="handle">
+					<app-card
+						:isCasa="false"
+						:item="item"
+						@configApp="showConfigPanel"
+						@importApp="showContainerPanel"
+						@updateState="getList"
+					></app-card>
 				</div>
 				<!-- Application not imported End -->
 			</div>
 			<!-- App List End -->
 		</template>
-
 	</div>
 </template>
 
 <script>
 import AppCard from './AppCard.vue'
-import AppCardSkeleton from './AppCardSkeleton.vue';
+import AppCardSkeleton from './AppCardSkeleton.vue'
 import AppPanel from './AppPanel.vue'
-import ExternalLinkPanel from "@/components/Apps/ExternalLinkPanel";
+import ExternalLinkPanel from '@/components/Apps/ExternalLinkPanel'
 import AppSectionTitleTip from './AppSectionTitleTip.vue'
 import draggable from 'vuedraggable'
 import xor from 'lodash/xor'
 import concat from 'lodash/concat'
-import events from '@/events/events';
-import last from 'lodash/last';
-import business_ShowNewAppTag from "@/mixins/app/Business_ShowNewAppTag";
-import business_LinkApp from "@/mixins/app/Business_LinkApp";
-import isEqual from "lodash/isEqual";
-import { ice_i18n } from "@/mixins/base/common-i18n";
+import events from '@/events/events'
+import last from 'lodash/last'
+import business_ShowNewAppTag from '@/mixins/app/Business_ShowNewAppTag'
+import business_LinkApp from '@/mixins/app/Business_LinkApp'
+import isEqual from 'lodash/isEqual'
+import { ice_i18n } from '@/mixins/base/common-i18n'
+import YAML from 'yamljs'
 
 const SYNCTHING_STORE_ID = 74
 
 // meta_data :: build-in app
 const builtInApplications = [
 	{
-		id: "1",
-		name: "App Store",
+		id: '1',
+		name: 'App Store',
 		title: {
-			en_us: "App Store",
+			en_us: 'App Store'
 		},
 		icon: require(`@/assets/img/app/appstore.svg`),
-		status: "running",
-		app_type: "system"
+		status: 'running',
+		app_type: 'system'
 	},
 	{
-		id: "2",
-		name: "Files",
+		id: '2',
+		name: 'Files',
 		title: {
-			en_us: "Files",
+			en_us: 'Files'
 		},
 		icon: require(`@/assets/img/app/files.svg`),
-		status: "running",
-		app_type: "system"
-	},
+		status: 'running',
+		app_type: 'system'
+	}
 ]
 
-const orderConfig = "app_order"
+const orderConfig = 'app_order'
 
 export default {
 	mixins: [business_ShowNewAppTag, business_LinkApp],
-	data() {
+	data () {
 		return {
-			user_id: localStorage.getItem("user_id"),
+			user_id: localStorage.getItem('user_id'),
 			appList: [],
 			oldAppList: [],
 			appConfig: {},
 			drag: false,
 			isLoading: false,
 			isShowing: false,
-			importHelpText: "Click icon to import.",
+			importHelpText: 'Click icon to import.',
 			appHelpText: 'Drag icons to sort.',
-			draggable: ".handle",
+			draggable: '.handle',
 			retryCount: 0,
-			appListErrorMessage: "",
+			appListErrorMessage: '',
 			skCount: 0,
-			ListRefreshTimer: null,
+			ListRefreshTimer: null
 		}
 	},
 	components: {
@@ -136,63 +163,62 @@ export default {
 		AppSectionTitleTip,
 		AppCardSkeleton
 	},
-	provide() {
+	provide () {
 		return {
-			openAppStore: this.showInstall,
-		};
+			openAppStore: this.showInstall
+		}
 	},
 	computed: {
-		dragOptions() {
+		dragOptions () {
 			return {
 				animation: 300,
-				group: "description",
+				group: 'description',
 				disabled: false,
-				ghostClass: "ghost",
-
-			};
+				ghostClass: 'ghost'
+			}
 		},
-		showDragTip() {
-			return this.draggable === ".handle"
+		showDragTip () {
+			return this.draggable === '.handle'
 		},
-		exsitingAppsShow() {
+		exsitingAppsShow () {
 			return this.$store.state.existingAppsSwitch
 		}
 	},
-	created() {
-		this.getList();
-		this.draggable = this.isMobile() ? "" : ".handle";
+	created () {
+		this.getList()
+		this.draggable = this.isMobile() ? '' : '.handle'
 		this.$EventBus.$on(events.OPEN_APP_STORE_AND_GOTO_SYNCTHING, () => {
 			this.showInstall(SYNCTHING_STORE_ID)
-		});
+		})
 
 		this.$EventBus.$on(events.RELOAD_APP_LIST, () => {
-			this.getList();
-		});
+			this.getList()
+		})
 
 		this.ListRefreshTimer = setInterval(() => {
-			this.getList();
+			this.getList()
 		}, 5000)
 	},
-	beforeDestroy() {
-		this.$EventBus.$off(events.OPEN_APP_STORE_AND_GOTO_SYNCTHING);
-		window.removeEventListener('resize', this.getSkCount);
+	beforeDestroy () {
+		this.$EventBus.$off(events.OPEN_APP_STORE_AND_GOTO_SYNCTHING)
+		window.removeEventListener('resize', this.getSkCount)
 
-		clearInterval(this.ListRefreshTimer);
+		clearInterval(this.ListRefreshTimer)
 	},
-	mounted() {
-		window.addEventListener('resize', this.getSkCount);
+	mounted () {
+		window.addEventListener('resize', this.getSkCount)
 		this.getSkCount()
 	},
 	methods: {
-
-		isMobile() {
-			const userAgent = navigator.userAgent;
-			const mobileRegex = /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i;
-			const isMobile = mobileRegex.exec(userAgent);
-			return isMobile !== null;
+		isMobile () {
+			const userAgent = navigator.userAgent
+			const mobileRegex =
+				/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+			const isMobile = mobileRegex.exec(userAgent)
+			return isMobile !== null
 		},
 
-		getSkCount() {
+		getSkCount () {
 			const windowWidth = window.innerWidth
 			if (windowWidth < 1024) {
 				this.skCount = 4
@@ -209,25 +235,25 @@ export default {
 		 * @description: Fetch the list of installed apps
 		 * @return {*} void
 		 */
-		async getList() {
-
+		async getList () {
 			try {
-				const orgAppList = await this.$openAPI.appGrid.getAppGrid().then(res => res.data.data || []);
-				let orgOldAppList = [], orgNewAppList = [];
-				orgAppList.forEach((item) => {
-					item.hostname = item.hostname || this.$baseIp;
+				const orgAppList = await this.$openAPI.appGrid.getAppGrid().then(res => res.data.data || [])
+				let orgOldAppList = [],
+					orgNewAppList = []
+				orgAppList.forEach(item => {
+					item.hostname = item.hostname || this.$baseIp
 					// Container app does not have icon.
-					item.icon = item.icon || require(`@/assets/img/app/default.svg`);
-					if (item.app_type === "v1app" || item.app_type === "container") {
-						orgOldAppList.push(item);
+					item.icon = item.icon || require(`@/assets/img/app/default.svg`)
+					if (item.app_type === 'v1app' || item.app_type === 'container') {
+						orgOldAppList.push(item)
 					} else {
-						orgNewAppList.push(item);
+						orgNewAppList.push(item)
 					}
 				})
-				this.oldAppList = orgOldAppList;
+				this.oldAppList = orgOldAppList
 
-				let listLinkApp = await this.getLinkAppList();
-				listLinkApp.forEach((item) => {
+				let listLinkApp = await this.getLinkAppList()
+				listLinkApp.forEach(item => {
 					// linkApp does not have title.
 					item.title = {
 						en_us: item.name
@@ -236,39 +262,40 @@ export default {
 				// all app list
 				let casaAppList = concat(builtInApplications, orgNewAppList, listLinkApp)
 				// get app sort info.
-				let lateSortList = await this.$api.users.getCustomStorage(orderConfig).then(res => res.data.data.data || []);
+				let lateSortList = await this.$api.users
+					.getCustomStorage(orderConfig)
+					.then(res => res.data.data.data || [])
 
 				// filter anything not in casaAppList.
-				const propList = casaAppList.map((obj) => obj.name);
-				const existingList = lateSortList.filter((item) => propList.includes(item));
-				const futureList = propList.filter((item) => !lateSortList.includes(item));
-				const newSortList = existingList.concat(futureList);
+				const propList = casaAppList.map(obj => obj.name)
+				const existingList = lateSortList.filter(item => propList.includes(item))
+				const futureList = propList.filter(item => !lateSortList.includes(item))
+				const newSortList = existingList.concat(futureList)
 
 				// then sort.
 				const sortedAppList = casaAppList.sort((obj1, obj2) => {
-					return newSortList.indexOf(obj1.name) - newSortList.indexOf(obj2.name);
-				});
+					return newSortList.indexOf(obj1.name) - newSortList.indexOf(obj2.name)
+				})
 
-				const sortedList = sortedAppList.map((obj) => obj.name);
-				this.appList = sortedAppList;
+				const sortedList = sortedAppList.map(obj => obj.name)
+				this.appList = sortedAppList
 				if (!isEqual(lateSortList, sortedList)) {
 					this.saveSortData()
 				}
 
-				this.isLoading = false;
-				this.retryCount = 0;
-				this.appListErrorMessage = ""
+				this.isLoading = false
+				this.retryCount = 0
+				this.appListErrorMessage = ''
 			} catch (error) {
-				console.error(error);
-				this.isLoading = true;
+				console.error(error)
+				this.isLoading = true
 				if (this.retryCount < 5) {
 					setTimeout(() => {
 						this.retryCount++
-						this.getList();
+						this.getList()
 					}, 2000)
 				} else {
-
-					this.appListErrorMessage = "Failed to get app list."
+					this.appListErrorMessage = 'Failed to get app list.'
 					this.$buefy.toast.open({
 						message: this.$t(`Failed to load apps, please refresh later.`),
 						type: 'is-danger'
@@ -283,7 +310,7 @@ export default {
 		 * @param {Array} newList
 		 * @return {*}
 		 */
-		getNewSortList(oriList, newList) {
+		getNewSortList (oriList, newList) {
 			let xorList = xor(oriList, newList)
 			// xorList.reverse()
 			return concat(oriList, xorList)
@@ -294,8 +321,8 @@ export default {
 		 * @param {*}
 		 * @return {*}
 		 */
-		saveSortData() {
-			let newList = this.appList.map((item) => {
+		saveSortData () {
+			let newList = this.appList.map(item => {
 				// compose milestone :: name is unique, global index.
 				return item.name
 			})
@@ -309,7 +336,7 @@ export default {
 		 * @param {*}
 		 * @return {*}
 		 */
-		onSortEnd() {
+		onSortEnd () {
 			this.drag = false
 			this.saveSortData()
 		},
@@ -318,14 +345,14 @@ export default {
 		 * @description: Show Install Panel Programmatic
 		 * @return {*} void
 		 */
-		async showInstall(storeId = 0, mode='') {
+		async showInstall (storeId = 0, mode = '') {
 			if (mode === 'custom') {
-				this.$messageBus('apps_custominstall');
+				this.$messageBus('apps_custominstall')
 			}
 			this.isShowing = true
 
-			const networks = await this.$api.container.getNetworks();
-			const memory = this.$store.state.hardwareInfo.mem;
+			const networks = await this.$api.container.getNetworks()
+			const memory = this.$store.state.hardwareInfo.mem
 			const configData = {
 				networks: networks.data.data,
 				memory: memory
@@ -338,19 +365,19 @@ export default {
 				customClass: 'app-panel',
 				trapFocus: true,
 				canCancel: ['escape'],
-				scroll: "keep",
-				animation: "zoom-in",
+				scroll: 'keep',
+				animation: 'zoom-in',
 				events: {
-					'updateState': () => {
+					updateState: () => {
 						this.getList()
 					}
 				},
 				props: {
-					id: "0",
-					state: "install",
+					id: '0',
+					state: 'install',
 					configData: configData,
 					storeId: storeId,
-					settingData: mode !== 'custom' ? undefined : {},
+					settingData: mode !== 'custom' ? undefined : {}
 				}
 			})
 		},
@@ -361,16 +388,16 @@ export default {
 		 * @param {Boolean} isCasa
 		 * @return {*}
 		 */
-		async showConfigPanel(item, isCasa) {
-			let name = item.name;
-			this.$messageBus('appsexsiting_open', name);
+		async showConfigPanel (item, isCasa) {
+			let name = item.name
+			this.$messageBus('appsexsiting_open', name)
 			try {
-				if (item.app_type === 'LinkApp') {
+				if (item?.app_type === 'LinkApp') {
 					await this.showExternalLinkPanel(item)
 					return
 				}
-				const networks = await this.$api.container.getNetworks();
-				const memory = this.$store.state.hardwareInfo.mem;
+				const networks = await this.$api.container.getNetworks()
+				const memory = this.$store.state.hardwareInfo.mem
 				const configData = {
 					networks: networks.data.data,
 					memory: memory
@@ -378,9 +405,9 @@ export default {
 				const ret = await this.$openAPI.appManagement.compose.myComposeApp(name, {
 					headers: {
 						'content-type': 'application/yaml',
-						'accept': 'application/yaml'
+						accept: 'application/yaml'
 					}
-				});
+				})
 				this.$buefy.modal.open({
 					parent: this,
 					component: AppPanel,
@@ -388,22 +415,22 @@ export default {
 					customClass: '',
 					trapFocus: true,
 					canCancel: [''],
-					scroll: "keep",
-					animation: "zoom-in",
+					scroll: 'keep',
+					animation: 'zoom-in',
 					events: {
-						'updateState': () => {
+						updateState: () => {
 							this.getList()
 						}
 					},
 					props: {
 						id: name,
-						state: "update",
+						state: 'update',
 						isCasa: isCasa,
 						// 区分 terminal
 						runningStatus: item.status,
 						configData: configData,
 						// settingData: ret.data,
-						settingComposeData: ret.data,
+						settingComposeData: ret.data
 					}
 				})
 			} catch (e) {
@@ -411,16 +438,16 @@ export default {
 			}
 		},
 
-		async showContainerPanel(item) {
-			this.$messageBus('appsexsiting_open', item.name);
+		async showContainerPanel (item) {
+			this.$messageBus('appsexsiting_open', item.name)
 			let id = item.name
-			const networks = await this.$api.container.getNetworks();
-			const memory = this.$store.state.hardwareInfo.mem;
+			const networks = await this.$api.container.getNetworks()
+			const memory = this.$store.state.hardwareInfo.mem
 			const configData = {
 				networks: networks.data.data,
 				memory: memory
 			}
-			const ret = await this.$api.container.getInfo(id);
+			const ret = await this.$api.container.getInfo(id)
 			this.$buefy.modal.open({
 				parent: this,
 				component: AppPanel,
@@ -428,16 +455,16 @@ export default {
 				customClass: '',
 				trapFocus: true,
 				canCancel: [''],
-				scroll: "keep",
-				animation: "zoom-in",
+				scroll: 'keep',
+				animation: 'zoom-in',
 				events: {
-					'updateState': () => {
+					updateState: () => {
 						this.getList()
 					}
 				},
 				props: {
 					id: id,
-					state: "update",
+					state: 'update',
 					isCasa: false,
 					runningStatus: item.status,
 					configData: configData,
@@ -446,7 +473,7 @@ export default {
 			})
 		},
 
-		async showExternalLinkPanel(item = {}) {
+		async showExternalLinkPanel (item = {}) {
 			this.$buefy.modal.open({
 				parent: this,
 				component: ExternalLinkPanel,
@@ -454,78 +481,78 @@ export default {
 				customClass: '',
 				trapFocus: true,
 				canCancel: [''],
-				scroll: "keep",
-				animation: "zoom-in",
+				scroll: 'keep',
+				animation: 'zoom-in',
 				events: {
-					'updateState': () => {
-						this.$messageBus('apps_external');
+					updateState: () => {
+						this.$messageBus('apps_external')
 						this.getList().then(() => {
-							this.scrollToNewApp();
+							this.scrollToNewApp()
 						})
 					}
 				},
 				props: {
 					linkName: item.name,
 					linkHost: item.hostname,
-					linkIcon: item.icon,
+					linkIcon: item.icon
 				}
 			})
 		},
 
-		scrollToNewApp() {
+		scrollToNewApp () {
 			// business :: scroll to last position
-			let name = last(this.newAppIds);
-			let showEl = document.getElementById("app-" + name)
-			showEl?.scrollIntoView({ behavior: "smooth", block: 'end' });
+			let name = last(this.newAppIds)
+			let showEl = document.getElementById('app-' + name)
+			showEl?.scrollIntoView({ behavior: 'smooth', block: 'end' })
 		},
 
-		messageBusToast(message, type) {
+		messageBusToast (message, type) {
 			let duration = 5000
 			this.$buefy.toast.open({
 				message: message,
 				duration,
-				type,
+				type
 			})
 		}
 	},
 	sockets: {
-		"app:install-end"() {
+		'app:install-end' () {
 			this.getList().then(() => {
-				this.scrollToNewApp();
-			});
+				this.scrollToNewApp()
+			})
 		},
-		"app:install-error"() {
+		'app:install-error' () {
 			this.getList().then(() => {
-				this.scrollToNewApp();
-			});
+				this.scrollToNewApp()
+			})
 		},
-		"app:uninstall-end"() {
-			this.getList();
+		'app:uninstall-end' () {
+			this.getList()
 		},
-		"app:apply-changes-error"(res) {
+		'app:apply-changes-error' (res) {
 			// toast info
-			this.messageBusToast(res.Properties.message, 'is-danger');
+			this.messageBusToast(res.Properties.message, 'is-danger')
 		},
-		"app:apply-changes-end"(res) {
-			let languages = JSON.parse(res.Properties["app:title"])
+		'app:apply-changes-end' (res) {
+			let languages = JSON.parse(res.Properties['app:title'])
 			const title = ice_i18n(languages)
 			// toast info
-			this.messageBusToast(title + ' is OK', 'is-success');
+			this.messageBusToast(title + ' is OK', 'is-success')
 
 			// business :: Tagging of new app / scrollIntoView
 			this.addIdToSessionStorage(res.Properties['app:name'])
 
 			this.getList().then(() => {
-				this.scrollToNewApp();
-			});
+				this.scrollToNewApp()
+			})
 		},
 		/**
 		 * @description: Update App Version
 		 * @param {Object} data
 		 * @return {void}
 		 */
-		'app:update-end'(data) {
-			if (data.Properties['docker:image:updated'] === "true") {
+		'app:update-end' (data) {
+			if (data.Properties['docker:image:updated'] === 'true') {
 				// business :: Tagging of new app / scrollIntoView
 				this.addIdToSessionStorage(data.Properties['app:name'])
 
@@ -536,20 +563,19 @@ export default {
 					type: 'is-success'
 				})
 				this.getList().then(() => {
-					this.scrollToNewApp();
-				});
+					this.scrollToNewApp()
+				})
 			}
 		},
-		'app:update-error'(data) {
+		'app:update-error' (data) {
 			if (data.Properties.cid === this.item.id) {
-				this.isUpdating = false;
+				this.isUpdating = false
 				this.$buefy.toast.open({
 					message: this.$t(data.Properties['error']),
 					type: 'is-danger'
 				})
 			}
-		},
-
+		}
 	}
 }
 </script>
@@ -561,15 +587,15 @@ export default {
 	gap: 1rem;
 
 	@include touch {
-		grid-template-columns: repeat(2, minmax(0, 1fr))
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 
 	@include desktop {
-		grid-template-columns: repeat(4, minmax(0, 1fr))
+		grid-template-columns: repeat(4, minmax(0, 1fr));
 	}
 
 	@include fullhd {
-		grid-template-columns: repeat(5, minmax(0, 1fr))
+		grid-template-columns: repeat(5, minmax(0, 1fr));
 	}
 }
 </style>
