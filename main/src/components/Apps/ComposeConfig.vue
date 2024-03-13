@@ -7,7 +7,8 @@
 		>
 			<b-tab-item v-for="(service, key) in configData.services" :key="key" :label="key" :value="key">
 				<ValidationObserver :ref="key + 'valida'">
-					<ValidationProvider v-slot="{ errors, valid }" name="Image" rules="required">
+					<ValidationProvider v-slot="{ errors, valid }" name="Image" rules="required" mode="aggressive">
+						<input type="text" v-model="service.image" v-show="false">
 						<b-field
 							:label="$t('Docker Image') + ' *'"
 							:message="$t(errors)"
@@ -32,7 +33,7 @@
 								</b-dropdown-item>
 								<b-dropdown-item
 									key="stable"
-									v-show="state === 'install' && true"
+									v-show="state === 'install' && mainStableVersion !== ''"
 									@click="service.image = service.image.split(':')[0] + ':' + mainStableVersion"
 								>
 									stable({{ mainStableVersion }})
@@ -567,7 +568,11 @@ export default {
 				this.mainStableVersion = await this.$openAPI.appManagement.appStore
 					.composeAppStableTag(yaml.name)
 					.then(res => {
-						return res.data.tag
+						return res.data.data.tag
+					})
+					.catch(e => {
+						console.error(e)
+						return ''
 					})
 			} catch (error) {
 				console.log(error)
