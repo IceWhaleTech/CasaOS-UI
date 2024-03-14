@@ -105,7 +105,7 @@
   "Privileged": "الصلاحيات",
   "Container Command": "أمر الحاوية",
   "Container Capabilities (cap-add)": "قدرات الحاوية (إضافة حد)",
-  "Container Hostname": "اسم النطاق للحاوية",
+  "Container Name": "اسم النطاق للحاوية",
   "Hostname of app container": "اسم المضيف لحاوية التطبيق",
   "Ports": "منفذ",
   "Volumes": "احجام التخزين",

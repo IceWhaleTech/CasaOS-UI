@@ -212,7 +212,7 @@
 
 					<ValidationProvider v-slot="{ errors, valid }" name="Name" rules="rfc1123">
 						<b-field
-							:label="$t('Container Hostname')"
+							:label="$t('Container Name')"
 							:message="$t(errors)"
 							:type="{ 'is-danger': errors[0], 'is-success': valid && service.container_name }"
 						>

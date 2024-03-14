@@ -105,7 +105,7 @@
   "Privileged": "特权",
   "Container Command": "容器命令",
   "Container Capabilities (cap-add)": "容器能力 (cap-add)",
-  "Container Hostname": "容器主机名",
+  "Container Name": "容器名",
   "Hostname of app container": "App容器的主机名",
   "Ports": "端口",
   "Volumes": "卷",

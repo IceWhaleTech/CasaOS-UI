@@ -105,7 +105,7 @@
   "Privileged": "Przywileje",
   "Container Command": "Polecenie Kontenera",
   "Container Capabilities (cap-add)": "Możliwości Kontenera (cap-add)",
-  "Container Hostname": "Nazwa Hosta Kontenera",
+  "Container Name": "Nazwa Hosta Kontenera",
   "Hostname of app container": "Nazwa hosta kontenera aplikacji",
   "Ports": "Port",
   "Volumes": "Woluminy",

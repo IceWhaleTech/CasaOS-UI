@@ -105,7 +105,7 @@
   "Privileged": "Privilegii",
   "Container Command": "Comanda containerului",
   "Container Capabilities (cap-add)": "Capabilități container (cap adăugat)",
-  "Container Hostname": "Denumire container",
+  "Container Name": "Denumire container",
   "Hostname of app container": "Numele containerului aplicației",
   "Ports": "Port",
   "Volumes": "Volume",

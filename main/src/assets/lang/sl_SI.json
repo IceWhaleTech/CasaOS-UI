@@ -105,7 +105,7 @@
   "Privileged": "Dovoljenja",
   "Container Command": "Container komande",
   "Container Capabilities (cap-add)": "Zmogljivos konteinerja(cap-add)",
-  "Container Hostname": "Ime Containerja",
+  "Container Name": "Ime Containerja",
   "Hostname of app container": "Ime aplikacije containerja",
   "Ports": "Vrata",
   "Volumes": "Količina",

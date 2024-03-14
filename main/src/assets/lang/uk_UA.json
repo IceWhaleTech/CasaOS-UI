@@ -105,7 +105,7 @@
   "Privileged": "Привілеї",
   "Container Command": "Команда контейнера",
   "Container Capabilities (cap-add)": "Container Capabilities (cap-add)",
-  "Container Hostname": "Hostname контейнера",
+  "Container Name": "Hostname контейнера",
   "Hostname of app container": "Hostname of app container",
   "Ports": "Порт",
   "Volumes": "Volumes",

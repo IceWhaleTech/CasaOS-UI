@@ -105,7 +105,7 @@
   "Privileged": "Jogosultságok",
   "Container Command": "Tároló parancs",
   "Container Capabilities (cap-add)": "Tároló képességek (cap-add)",
-  "Container Hostname": "Tároló hostneve",
+  "Container Name": "Tároló hostneve",
   "Hostname of app container": "Alkalmazás tárolójának hostneve",
   "Ports": "Port",
   "Volumes": "Kötetek",

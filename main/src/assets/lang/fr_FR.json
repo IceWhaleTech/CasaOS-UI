@@ -105,7 +105,7 @@
   "Privileged": "Privilégié",
   "Container Command": "Commande du conteneur",
   "Container Capabilities (cap-add)": "Capacités du conteneur (cap-add)",
-  "Container Hostname": "Nom d'hôte du conteneur",
+  "Container Name": "Nom d'hôte du conteneur",
   "Hostname of app container": "Nom d'hôte du conteneur d'application",
   "Ports": "Ports",
   "Volumes": "Volumes",

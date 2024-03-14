@@ -105,7 +105,7 @@
   "Privileged": "Rettigheter",
   "Container Command": "Container Command",
   "Container Capabilities (cap-add)": "Container Kapabiliteter (cap-add)",
-  "Container Hostname": "Container Vertsnavn",
+  "Container Name": "Container Vertsnavn",
   "Hostname of app container": "Vertsnavn for app container",
   "Ports": "Port",
   "Volumes": "Volumer",

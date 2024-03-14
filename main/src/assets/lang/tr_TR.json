@@ -105,7 +105,7 @@
   "Privileged": "Yetkiler",
   "Container Command": "Container Komutu",
   "Container Capabilities (cap-add)": "Container Yetenekleri (cap-add)",
-  "Container Hostname": "Container Makine Adı",
+  "Container Name": "Container Makine Adı",
   "Hostname of app container": "Container makine adı",
   "Ports": "Port",
   "Volumes": "Hacimler",
