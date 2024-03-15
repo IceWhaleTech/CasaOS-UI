@@ -81,7 +81,9 @@ export default {
 						localStorage.setItem('is_update', 'true')
 						clearInterval(this.updateTimer);
 						setTimeout(() => {
-							location.reload();
+							this.$router.replace({
+								path: '/logout'
+							})
 						}, 1000);
 					} else if (this.updateLogs.includes(`CasaOS upgrade failed`)) {
 						this.$buefy.toast.open({
