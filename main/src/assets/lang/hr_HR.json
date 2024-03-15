@@ -106,7 +106,7 @@
   "Container Command": "Kontejnerske naredbe",
   "Container Capabilities (cap-add)": "Mogućnosti spremnika (cap-add)",
   "Container Name": "Naziv hosta spremnika",
-  "Hostname of app container": "Naziv hosta spremnika aplikacije",
+  "Name of app container": "Naziv hosta spremnika aplikacije",
   "Ports": "Port",
   "Volumes": "Glasnoća",
   "Environment Variables": "Varijable okruženja",

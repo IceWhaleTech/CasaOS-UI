@@ -106,7 +106,7 @@
   "Container Command": "Tároló parancs",
   "Container Capabilities (cap-add)": "Tároló képességek (cap-add)",
   "Container Name": "Tároló hostneve",
-  "Hostname of app container": "Alkalmazás tárolójának hostneve",
+  "Name of app container": "Alkalmazás tárolójának hostneve",
   "Ports": "Port",
   "Volumes": "Kötetek",
   "Environment Variables": "Környezeti változók",

@@ -106,7 +106,7 @@
   "Container Command": "Polecenie Kontenera",
   "Container Capabilities (cap-add)": "Możliwości Kontenera (cap-add)",
   "Container Name": "Nazwa Hosta Kontenera",
-  "Hostname of app container": "Nazwa hosta kontenera aplikacji",
+  "Name of app container": "Nazwa hosta kontenera aplikacji",
   "Ports": "Port",
   "Volumes": "Woluminy",
   "Environment Variables": "Zmienne Środowiskowe",

@@ -106,7 +106,7 @@
   "Container Command": "コンテナコマンド",
   "Container Capabilities (cap-add)": "コンテナの機能(cap-add)",
   "Container Name": "コンテナのホスト名",
-  "Hostname of app container": "アプリのコンテナのホスト名",
+  "Name of app container": "アプリのコンテナのホスト名",
   "Ports": "ポート",
   "Volumes": "ボリューム",
   "Environment Variables": "環境変数",

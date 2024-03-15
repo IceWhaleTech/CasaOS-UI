@@ -106,7 +106,7 @@
   "Container Command": "Comanda containerului",
   "Container Capabilities (cap-add)": "Capabilități container (cap adăugat)",
   "Container Name": "Denumire container",
-  "Hostname of app container": "Numele containerului aplicației",
+  "Name of app container": "Numele containerului aplicației",
   "Ports": "Port",
   "Volumes": "Volume",
   "Environment Variables": "Variabile de mediu",

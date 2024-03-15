@@ -106,7 +106,7 @@
   "Container Command": "Container Command",
   "Container Capabilities (cap-add)": "Container Kapabiliteter (cap-add)",
   "Container Name": "Container Vertsnavn",
-  "Hostname of app container": "Vertsnavn for app container",
+  "Name of app container": "Vertsnavn for app container",
   "Ports": "Port",
   "Volumes": "Volumer",
   "Environment Variables": "Miljøvariabel",

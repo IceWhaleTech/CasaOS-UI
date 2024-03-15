@@ -106,7 +106,7 @@
   "Container Command": "컨테이너 명령어",
   "Container Capabilities (cap-add)": "컨테이너 캐퍼빌리티 (cap-add)",
   "Container Name": "컨테이너 호스트네임",
-  "Hostname of app container": "앱 컨테이너의 호스트네임",
+  "Name of app container": "앱 컨테이너의 호스트네임",
   "Ports": "포트",
   "Volumes": "볼륨",
   "Environment Variables": "환경 변수",

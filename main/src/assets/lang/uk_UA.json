@@ -106,7 +106,7 @@
   "Container Command": "Команда контейнера",
   "Container Capabilities (cap-add)": "Container Capabilities (cap-add)",
   "Container Name": "Hostname контейнера",
-  "Hostname of app container": "Hostname of app container",
+  "Name of app container": "Name of app container",
   "Ports": "Порт",
   "Volumes": "Volumes",
   "Environment Variables": "Змінних середовища",

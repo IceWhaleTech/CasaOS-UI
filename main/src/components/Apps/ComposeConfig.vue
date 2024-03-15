@@ -218,7 +218,7 @@
 						>
 							<b-input
 								v-model="service.container_name"
-								:placeholder="$t('Hostname of app container')"
+								:placeholder="$t('Name of app container')"
 								value=""
 							></b-input>
 						</b-field>

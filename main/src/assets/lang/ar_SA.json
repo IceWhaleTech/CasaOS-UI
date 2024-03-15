@@ -106,7 +106,7 @@
   "Container Command": "أمر الحاوية",
   "Container Capabilities (cap-add)": "قدرات الحاوية (إضافة حد)",
   "Container Name": "اسم النطاق للحاوية",
-  "Hostname of app container": "اسم المضيف لحاوية التطبيق",
+  "Name of app container": "اسم المضيف لحاوية التطبيق",
   "Ports": "منفذ",
   "Volumes": "احجام التخزين",
   "Environment Variables": "متغيرات البيئة",

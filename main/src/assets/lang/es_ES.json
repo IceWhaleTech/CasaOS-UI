@@ -106,7 +106,7 @@
   "Container Command": "Comando del contenedor",
   "Container Capabilities (cap-add)": "Capacidades del contenedor (cap-add)",
   "Container Name": "Nombre host del contenedor",
-  "Hostname of app container": "Nombre host del contenedor de la aplicación",
+  "Name of app container": "Nombre host del contenedor de la aplicación",
   "Ports": "Puerto",
   "Volumes": "Volúmenes",
   "Environment Variables": "Variables de entorno",

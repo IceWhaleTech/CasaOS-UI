@@ -106,7 +106,7 @@
   "Container Command": "容器命令",
   "Container Capabilities (cap-add)": "容器能力 (cap-add)",
   "Container Name": "容器名",
-  "Hostname of app container": "App容器的主机名",
+  "Name of app container": "App容器的主机名",
   "Ports": "端口",
   "Volumes": "卷",
   "Environment Variables": "环境变量",

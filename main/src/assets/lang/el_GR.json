@@ -106,7 +106,7 @@
   "Container Command": "Εντολή Container",
   "Container Capabilities (cap-add)": "Δυνατότητες Conainer (cap-add)",
   "Container Name": "Όνομα Κεντρικού Υπολογιστή Container",
-  "Hostname of app container": "Όνομα κεντρικού υπολογιστή του Container εφαρμογής",
+  "Name of app container": "Όνομα κεντρικού υπολογιστή του Container εφαρμογής",
   "Ports": "Θύρα",
   "Volumes": "Τόμοι",
   "Environment Variables": "Μεταβλητές Περιβάλλοντος",
