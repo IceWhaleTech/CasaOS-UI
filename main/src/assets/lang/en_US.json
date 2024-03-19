@@ -406,5 +406,6 @@
   "Rebulid error": "Rebulid error",
   "Installing {title}": "Installing {title}",
   "Legacy app (To be rebuilt).": "Legacy app (To be rebuilt).",
-  "To be rebuilt.": "To be rebuilt."
+  "To be rebuilt.": "To be rebuilt.",
+  "launch-and-open": "Launch and open"
 }

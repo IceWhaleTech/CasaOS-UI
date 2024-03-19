@@ -404,5 +404,6 @@
   "Rebulid error": "重建错误",
   "Installing {title}": "Installing {title}",
   "Legacy app (To be rebuilt).": "旧应用程序 (待重建)。",
-  "To be rebuilt.": "待重建。"
+  "To be rebuilt.": "待重建。",
+  "launch-and-open": "启动并打开"
 }

@@ -14,8 +14,10 @@
 				</template>
 
 				<b-dropdown-item :focusable="false" aria-role="menu-item" custom>
-					<b-button expanded tag="a" type="is-text" @click="openApp(item)" :disabled="item.status != 'running'">{{
+					<b-button v-if="item.status === 'running'" expanded tag="a" type="is-text" @click="openApp(item)">{{
 						$t('Open') }}</b-button>
+					<b-button v-else expanded tag="a" type="is-text" @click="openApp(item)">{{
+						$t('launch-and-open') }}</b-button>
 					<b-button v-if="isV2App" expanded icon-pack="casa" icon-right="question-outline" size="is-16"
 						type="is-text" @click="openTips(item.name)">
 						{{ $t('Tips') }}
@@ -25,7 +27,7 @@
 					}}
 					</b-button>
 
-					<b-button v-if="isV2App" expanded type="is-text" @click="checkAppVersion(item.name)">{{
+					<b-button v-if="isV2App && !item.is_uncontrolled" expanded type="is-text" @click="checkAppVersion(item.name)">{{
 						$t('Check then update')
 					}}
 						<b-loading :active="isCheckThenUpdate || isUpdating" :is-full-page="false">
@@ -184,15 +186,16 @@ export default {
 			} else if (this.item.status === 'running') {
 				return this.$t('Open');
 			} else {
-				return '';
+				return this.$t('launch-and-open');
 			}
 		},
 		tooltipTriger() {
-			if (this.isContainerApp || this.item.app_type === "system" || this.item.status === 'running') {
-				return ['hover'];
-			} else {
-				return [];
-			}
+			return ['hover'];
+			// if (this.isContainerApp || this.item.app_type === "system" || this.item.status === 'running') {
+			// 	return ['hover'];
+			// } else {
+			// 	return [];
+			// }
 		},
 		isLoading() {
 			let active = this.isUninstalling || this.isUpdating || this.isRestarting || this.isStarting || this.isSaving || this.isRebuilding // || this.isStoping || this.isSaving
@@ -270,6 +273,9 @@ export default {
 				this.$refs.dro.isActive = false
 				if (item.status === 'running') {
 					this.openAppToNewWindow(item)
+				} else {
+					this.toggle(item)
+					this.firstOpenThirdApp(item)
 				}
 			}
 		},
