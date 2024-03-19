@@ -310,7 +310,8 @@
 							class="ml-2"
 							@refreshAppStore="getStoreList"
 							@refreshSize="refreshAppStoreSourceManagementSizeStatus"
-						></AppStoreSourceManagement>
+						>
+						</AppStoreSourceManagement>
 					</div>
 
 					<!-- List condition End -->
@@ -465,7 +466,7 @@
 			<template v-if="currentSlide == 1">
 				<ComposeConfig
 					v-if="isCasa"
-					ref="compose"
+					ref="ComposeConfig"
 					:cap-array="capArray"
 					:docker-compose-commands="dockerComposeConfig"
 					:errInfo="errInfo"
@@ -475,6 +476,7 @@
 					@updateDockerComposeCommands="updateDockerComposeCommands"
 					@updateDockerComposeServiceName="updateDockerComposeServiceName"
 					@updateMainName="name => (currentInstallId = name)"
+					@updateIsUncontrolledInstallParams="updateIsUncontrolledInstallParams"
 				></ComposeConfig>
 
 				<section v-else :class="{ _hideOverflow: !isCasa }" class="modal-card-body pt-3">
@@ -589,7 +591,7 @@
 						:loading="isLoading"
 						rounded
 						type="is-primary"
-						@click="installApp()"
+						@click="installComposeApp(dockerComposeCommands, currentInstallId)"
 					/>
 					<b-button
 						v-if="isCasa && currentSlide == 1 && state == 'update'"
@@ -847,7 +849,8 @@ export default {
 			installedList: [],
 			counterPatchGetStoreList: 0,
 			searchAndSourcesStatus: '',
-			activeAppStoreSourceInput: false
+			activeAppStoreSourceInput: false,
+			is_uncontrolled_install_params: false,
 		}
 	},
 
@@ -1332,13 +1335,38 @@ export default {
 		 * @param {*}
 		 * @return {*} void
 		 */
-		installApp () {
-			this.$refs.compose.checkStep().then(valid => {
+		installComposeApp (dockerComposeCommands, appName) {
+			this.$refs.ComposeConfig.checkStep().then(valid => {
 				if (valid.every(v => v === true)) {
 					this.isLoading = true
-					this.installComposeApp(this.dockerComposeCommands, this.currentInstallId).finally(() => {
-						this.isLoading = false
-					})
+					this.$openAPI.appManagement.compose
+						.installComposeApp(dockerComposeCommands, false, true, this.is_uncontrolled_install_params)
+						.then(res => {
+							if (res.status !== 200) {
+								this.dockerComposeConfig = dockerComposeCommands
+								this.currentSlide = 1
+								this.errInfo = res.data
+
+								this.$buefy.toast.open({
+									message: this.$t('The information filled in needs to be corrected'),
+									type: 'is-warning'
+								})
+							}
+						})
+						.catch(e => {
+							if (e.response.status === 400) {
+								this.dockerComposeConfig = dockerComposeCommands
+								this.currentSlide = 1
+								this.errInfo = e.response.data.data
+							}
+							this.$buefy.toast.open({
+								message: e.response.data || e.response.status,
+								type: 'is-danger'
+							})
+						})
+						.finally(() => {
+							this.isLoading = false
+						})
 				} else {
 					// toast info error.
 					this.$buefy.toast.open({
@@ -1350,32 +1378,8 @@ export default {
 			})
 		},
 
-		installComposeApp (dockerComposeCommands, appName) {
-			return this.$openAPI.appManagement.compose
-				.installComposeApp(dockerComposeCommands, false, true)
-				.then(res => {
-					if (res.status !== 200) {
-						this.dockerComposeConfig = dockerComposeCommands
-						this.currentSlide = 1
-						this.errInfo = res.data
-
-						this.$buefy.toast.open({
-							message: this.$t('The information filled in needs to be corrected'),
-							type: 'is-warning'
-						})
-					}
-				})
-				.catch(e => {
-					if (e.response.status === 400) {
-						this.dockerComposeConfig = dockerComposeCommands
-						this.currentSlide = 1
-						this.errInfo = e.response.data.data
-					}
-					this.$buefy.toast.open({
-						message: e.response.data || e.response.status,
-						type: 'is-danger'
-					})
-				})
+		updateIsUncontrolledInstallParams (is_uncontrolled_install_params) {
+			this.is_uncontrolled_install_params = is_uncontrolled_install_params
 		},
 
 		switchAppConfigContent (composeCommands) {
@@ -1389,7 +1393,7 @@ export default {
 		 * @return {*} void
 		 */
 		updateApp () {
-			this.$refs.compose.checkStep().then(valid => {
+			this.$refs.ComposeConfig.checkStep().then(valid => {
 				if (valid.every(v => v === true)) {
 					this.$openAPI.appManagement.compose
 						.applyComposeAppSettings(this.id, this.dockerComposeCommands, false, true)
@@ -1788,8 +1792,10 @@ export default {
 	.modal-card-head {
 		background-color: hsla(208, 16%, 94%, 1);
 	}
+
 	._stepStoreList {
 		min-height: calc(100vh - 2.5rem);
+
 		.modal-card-body {
 			overflow-y: scroll;
 			overflow-x: clip;

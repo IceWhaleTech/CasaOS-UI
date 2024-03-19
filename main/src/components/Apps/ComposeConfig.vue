@@ -27,14 +27,20 @@
 								<b-dropdown-item
 									key="latest"
 									v-show="state === 'install'"
-									@click="service.image = service.image.split(':')[0] + ':latest'"
+									@click="() => {
+	service.image = service.image.split(':')[0] + ':latest';
+				$emit('updateIsUncontrolledInstallParams', false);
+			}"
 								>
 									latest
 								</b-dropdown-item>
 								<b-dropdown-item
 									key="stable"
 									v-show="state === 'install' && mainStableVersion !== ''"
-									@click="service.image = service.image.split(':')[0] + ':' + mainStableVersion"
+									@click="() => {
+	service.image = service.image.split(':')[0] + ':' + mainStableVersion;
+				$emit('updateIsUncontrolledInstallParams', false);
+			}"
 								>
 									stable({{ mainStableVersion }})
 								</b-dropdown-item>
@@ -493,8 +499,11 @@ export default {
 		 * @param {String} image
 		 * @return {*} void
 		 */
-		changeIcon (image) {
+		changeIcon(image) {
+			// 1、set this.configData['x-casaos'].icon
 			this.configData['x-casaos'].icon = this.getIconFromImage(image)
+			// 2、emit updateIsUncontrolledInstallParams for is_uncontrolled
+			this.$emit('updateIsUncontrolledInstallParams', true)
 		},
 
 		/**
@@ -547,7 +556,6 @@ export default {
 		async parseComposeYaml (val) {
 			try {
 				const yaml = YAML.parse(val)
-				console.log('传入的 yaml 文件', yaml)
 
 				// 其他配置
 				this.volumes = yaml.volumes || {}
