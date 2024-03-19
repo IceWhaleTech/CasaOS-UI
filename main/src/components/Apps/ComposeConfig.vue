@@ -20,13 +20,11 @@
 									<b-input
 										v-model="service.image"
 										:placeholder="$t('e.g.,hello-world:latest')"
-										:readonly="state == 'update'"
 										@input="changeIcon"
 									></b-input>
 								</template>
 								<b-dropdown-item
 									key="latest"
-									v-show="state === 'install'"
 									@click="() => {
 	service.image = service.image.split(':')[0] + ':latest';
 				$emit('updateIsUncontrolledInstallParams', false);
@@ -36,7 +34,7 @@
 								</b-dropdown-item>
 								<b-dropdown-item
 									key="stable"
-									v-show="state === 'install' && mainStableVersion !== ''"
+									v-show="mainStableVersion !== ''"
 									@click="() => {
 	service.image = service.image.split(':')[0] + ':' + mainStableVersion;
 				$emit('updateIsUncontrolledInstallParams', false);
