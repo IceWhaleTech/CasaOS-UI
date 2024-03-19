@@ -8,7 +8,7 @@
 			<b-tab-item v-for="(service, key) in configData.services" :key="key" :label="key" :value="key">
 				<ValidationObserver :ref="key + 'valida'">
 					<ValidationProvider v-slot="{ errors, valid }" name="Image" rules="required" mode="aggressive">
-						<input type="text" v-model="service.image" v-show="false">
+						<input type="text" v-model="service.image" v-show="false" />
 						<b-field
 							:label="$t('Docker Image') + ' *'"
 							:message="$t(errors)"
@@ -25,20 +25,24 @@
 								</template>
 								<b-dropdown-item
 									key="latest"
-									@click="() => {
-	service.image = service.image.split(':')[0] + ':latest';
-				$emit('updateIsUncontrolledInstallParams', false);
-			}"
+									@click="
+										() => {
+											service.image = service.image.split(':')[0] + ':latest'
+											$emit('updateIsUncontrolledInstallParams', false)
+										}
+									"
 								>
 									latest
 								</b-dropdown-item>
 								<b-dropdown-item
 									key="stable"
 									v-show="mainStableVersion !== ''"
-									@click="() => {
-	service.image = service.image.split(':')[0] + ':' + mainStableVersion;
-				$emit('updateIsUncontrolledInstallParams', false);
-			}"
+									@click="
+										() => {
+											service.image = service.image.split(':')[0] + ':' + mainStableVersion
+											$emit('updateIsUncontrolledInstallParams', false)
+										}
+									"
 								>
 									stable({{ mainStableVersion }})
 								</b-dropdown-item>
@@ -497,7 +501,7 @@ export default {
 		 * @param {String} image
 		 * @return {*} void
 		 */
-		changeIcon(image) {
+		changeIcon (image) {
 			// 1、set this.configData['x-casaos'].icon
 			this.configData['x-casaos'].icon = this.getIconFromImage(image)
 			// 2、emit updateIsUncontrolledInstallParams for is_uncontrolled
