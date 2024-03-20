@@ -37,33 +37,35 @@
 							>
 								{{ $t('Open') }}
 							</b-button>
-							<b-dropdown v-else :triggers="['hover', 'click']">
-								<template #trigger>
+							<b-button 
+								v-else
+								class="pr-0"
+								:disabled="unusable"
+								:loading="appDetailData.id == currentInstallId"
+								rounded
+								size="is-normal"
+								type="is-primary"
+								@click.self="
+									$emit('install', appDetailData.id, appDetailData)
+									$messageBus('appstore_install', i18n(appDetailData.title))
+								">
+								{{ $t('Install') }}
+								<b-dropdown :triggers="['hover', 'click']">
+									<template #trigger>
+										<div class="casa-down-outline custom-install-dropdown-trigger"></div>
+									</template>
 									<b-button
 										:disabled="unusable"
 										:loading="appDetailData.id == currentInstallId"
 										rounded
 										size="is-normal"
 										type="is-primary"
-										@click="
-											$emit('install', appDetailData.id, appDetailData)
-											$messageBus('appstore_install', i18n(appDetailData.title))
-										"
+										@click="openConfigPanle"
 									>
-										{{ $t('Install') }}
+										{{ $t('Custom Install') }}
 									</b-button>
-								</template>
-								<b-button
-									:disabled="unusable"
-									:loading="appDetailData.id == currentInstallId"
-									rounded
-									size="is-normal"
-									type="is-primary"
-									@click="openConfigPanle"
-								>
-									{{ $t('Custom Install') }}
-								</b-button>
-							</b-dropdown>
+								</b-dropdown>
+							</b-button>
 						</p>
 
 						<p
@@ -321,5 +323,23 @@ export default {
 	padding: 1rem 0 0 0;
 	font-size: 0.875rem;
 	line-height: 1.25rem;
+}
+
+// version dropdown css
+.dropdown.is-hoverable:hover .dropdown-menu{
+	display: block;
+}
+.dropdown-menu,.dropdown-content{
+	box-shadow: none;
+}
+.dropdown-content .button{
+	display: flex;
+}
+.custom-install-dropdown-trigger{
+	width: 3rem;
+	height: 1.5rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 </style>
