@@ -591,7 +591,7 @@
 						:loading="isLoading"
 						rounded
 						type="is-primary"
-						@click="installComposeApp(dockerComposeCommands, currentInstallId)"
+						@click="checkComposeAppAndInstallComposeApp(dockerComposeCommands, currentInstallId)"
 					/>
 					<b-button
 						v-if="isCasa && currentSlide == 1 && state == 'update'"
@@ -1336,34 +1336,38 @@ export default {
 		 * @return {*} void
 		 */
 		installComposeApp (dockerComposeCommands, appName) {
+			return this.$openAPI.appManagement.compose
+				.installComposeApp(dockerComposeCommands, false, true, this.is_uncontrolled_install_params)
+				.then(res => {
+					if (res.status !== 200) {
+						this.dockerComposeConfig = dockerComposeCommands
+						this.currentSlide = 1
+						this.errInfo = res.data
+
+						this.$buefy.toast.open({
+							message: this.$t('The information filled in needs to be corrected'),
+							type: 'is-warning'
+						})
+					}
+				})
+				.catch(e => {
+					if (e.response.status === 400) {
+						this.dockerComposeConfig = dockerComposeCommands
+						this.currentSlide = 1
+						this.errInfo = e.response.data.data
+					}
+					this.$buefy.toast.open({
+						message: e.response.data || e.response.status,
+						type: 'is-danger'
+					})
+				})
+		},
+
+		checkComposeAppAndInstallComposeApp (dockerComposeCommands, appName) {
 			this.$refs.ComposeConfig.checkStep().then(valid => {
 				if (valid.every(v => v === true)) {
 					this.isLoading = true
-					this.$openAPI.appManagement.compose
-						.installComposeApp(dockerComposeCommands, false, true, this.is_uncontrolled_install_params)
-						.then(res => {
-							if (res.status !== 200) {
-								this.dockerComposeConfig = dockerComposeCommands
-								this.currentSlide = 1
-								this.errInfo = res.data
-
-								this.$buefy.toast.open({
-									message: this.$t('The information filled in needs to be corrected'),
-									type: 'is-warning'
-								})
-							}
-						})
-						.catch(e => {
-							if (e.response.status === 400) {
-								this.dockerComposeConfig = dockerComposeCommands
-								this.currentSlide = 1
-								this.errInfo = e.response.data.data
-							}
-							this.$buefy.toast.open({
-								message: e.response.data || e.response.status,
-								type: 'is-danger'
-							})
-						})
+					this.installComposeApp(dockerComposeCommands, appName)
 						.finally(() => {
 							this.isLoading = false
 						})
