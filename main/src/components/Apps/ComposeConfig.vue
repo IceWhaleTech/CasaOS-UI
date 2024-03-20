@@ -945,7 +945,7 @@ export default {
 				const service = services[key]
 				service.ports.forEach(item => {
 					if (isNumber(item)) {
-						result.push(item)
+						result.push(`${item}`)
 					} else {
 						const TEMPORARY_PORT_INFORMATION = item.published?.split(':')
 						const published =
@@ -957,10 +957,10 @@ export default {
 							const start = parseInt(publishedRange[0])
 							const end = parseInt(publishedRange[1])
 							for (let i = start; i <= end; i++) {
-								result.push(i)
+								result.push(`${i}`)
 							}
 						} else {
-							result.push(parseInt(publishedRange[0]))
+							result.push(`${parseInt(publishedRange[0])}`)
 						}
 					}
 				})
