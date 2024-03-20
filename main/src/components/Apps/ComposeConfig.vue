@@ -7,70 +7,91 @@
 		>
 			<b-tab-item v-for="(service, key) in configData.services" :key="key" :label="key" :value="key">
 				<ValidationObserver :ref="key + 'valida'">
-					<ValidationProvider v-slot="{ errors, valid }" name="Image" rules="required" mode="aggressive">
-						<!-- <input type="text" v-model="service.image" v-show="false" /> -->
-						<b-field
-							:label="$t('Docker Image') + ' *'"
-							:message="$t(errors)"
-							:type="{ 'is-danger': errors[0], 'is-success': valid }"
-							class="mb-3"
+					<b-field grouped>
+						<ValidationProvider
+							class="is-flex-grow-1"
+							v-slot="{ errors, valid }"
+							name="Image0"
+							rules="required"
 						>
-							<b-input
-								:key="service.image"
-								:readonly="state == 'update'"
-								:value="getFirstField(service.image)"
-								:placeholder="$t('e.g.,hello-world:latest')"
-								@input="
-									V => {
-										changeIcon(V)
-									}
-								"
-								@blur="
-									E =>
-										(service.image = E.target._value.split(':')[1]
-											? E.target._value
-											: service.image)
-								"
-							></b-input>
-						</b-field>
-					</ValidationProvider>
-					<ValidationProvider>
-						<b-dropdown class="is-flex flex-1" aria-role="menu" expanded trap-focus>
-							<template #trigger>
+							<b-field
+								:label="$t('Docker Image') + ' *'"
+								:message="$t(errors)"
+								:type="{ 'is-danger': errors[0], 'is-success': valid }"
+								class="mb-3"
+							>
 								<b-input
-									:value="getLateField(service.image)"
+									:key="service.image"
+									:readonly="state == 'update' || mainStableVersion"
+									:value="getFirstField(service.image)"
+									:placeholder="$t('e.g.,hello-world:latest')"
 									@input="
 										V => {
-											service.image = service.image.split(':')[0] + ':' + V
+											changeIcon(V)
 										}
 									"
+									@blur="
+										E =>
+											(service.image = E.target._value.split(':')[1]
+												? E.target._value
+												: service.image)
+									"
 								></b-input>
-							</template>
-							<b-dropdown-item
-								key="latest"
-								@click="
-									() => {
-										service.image = service.image.split(':')[0] + ':latest'
-										$emit('updateIsUncontrolledInstallParams', false)
-									}
-								"
-							>
-								latest
-							</b-dropdown-item>
-							<b-dropdown-item
-								key="stable"
-								v-show="mainStableVersion !== ''"
-								@click="
-									() => {
-										service.image = service.image.split(':')[0] + ':' + mainStableVersion
-										$emit('updateIsUncontrolledInstallParams', false)
-									}
-								"
-							>
-								stable({{ mainStableVersion }})
-							</b-dropdown-item>
-						</b-dropdown>
-					</ValidationProvider>
+							</b-field>
+						</ValidationProvider>
+						<ValidationProvider
+							v-slot="{ errors, valid }"
+							name="Image1"
+							rules="required"
+						>
+							<input type="text" :value="service.image.split(':')?.[1]" v-show="false" />
+							<b-dropdown aria-role="menu" expanded trap-focus>
+								<template #trigger>
+									<b-field
+										:label="$t('Tag')"
+										:message="$t(errors)"
+										:type="{ 'is-danger': errors[0], 'is-success': valid }"
+									>
+										<b-input
+											icon-pack="casa"
+											icon-right="down-outline"
+											class="is-flex-grow-1"
+											:value="getLateField(service.image)"
+											@input="
+												V => {
+													service.image = service.image.split(':')[0] + ':' + V
+												}
+											"
+										>
+										</b-input>
+									</b-field>
+								</template>
+								<b-dropdown-item
+									key="latest"
+									@click="
+										() => {
+											service.image = service.image.split(':')[0] + ':latest'
+											$emit('updateIsUncontrolledInstallParams', false)
+										}
+									"
+								>
+									latest
+								</b-dropdown-item>
+								<b-dropdown-item
+									key="stable"
+									v-show="mainStableVersion !== ''"
+									@click="
+										() => {
+											service.image = service.image.split(':')[0] + ':' + mainStableVersion
+											$emit('updateIsUncontrolledInstallParams', false)
+										}
+									"
+								>
+									stable({{ mainStableVersion }})
+								</b-dropdown-item>
+							</b-dropdown>
+						</ValidationProvider>
+					</b-field>
 
 					<ValidationProvider v-slot="{ errors, valid }" name="composeAppName" rules="required">
 						<b-field
@@ -987,12 +1008,10 @@ export default {
 		},
 
 		getFirstField (image) {
-			console.log(image?.split(':')[0], 'image?.split(:)[0]')
 			return image?.split(':')[0]
 		},
 
 		getLateField (image) {
-			console.log(image?.split(':')[1], 'image?.split(:)[1]')
 			return image?.split(':')[1]
 		}
 	},
