@@ -4,7 +4,7 @@
 		<!-- Modal-Card Header Start -->
 		<header class="modal-card-head">
 			<div class="is-flex-grow-1">
-				<h3 class="title is-header">{{ panelTitle }}</h3>
+				<h3 class="title is-header">{{$t('Update completed')}}</h3>
 			</div>
 			<b-icon class="close-button" icon="close-outline" pack="casa" @click.native="$emit('close');" />
 		</header>

@@ -76,6 +76,7 @@ router.beforeEach(async (to, from, next) => {
 						localStorage.removeItem("access_token");
 						localStorage.removeItem("refresh_token");
 						localStorage.removeItem("wallpaper");
+						localStorage.removeItem("user");
 						next('/login');
 						break;
 

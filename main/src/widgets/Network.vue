@@ -171,10 +171,9 @@ export default {
 
 	methods: {
 		buildDatas(data) {
-			if (data.length === 0) {
-				return;
+			if (data.length == 0) {
+				return
 			}
-
 			data.forEach((el, index) => {
 				if (this.networks[index] === undefined) {
 					this.networks[index] = [
@@ -190,33 +189,37 @@ export default {
 							cacheData: 0,
 							cacheTime: 0
 						}
-					];
+					]
 				}
+				// Send Data
+				if (this.networks[index][0].data.length >= 60) {
+					this.networks[index][0].data.shift()
+				}
+				if (this.networks[index][0].cacheData > 0) {
+					const timeGap = this.networks[index][0].cacheTime == 0 ? 2 : el.time - this.networks[index][0].cacheTime
+					this.networks[index][0].data.push(this.covertToKB((el.bytesSent - this.networks[index][0].cacheData) / timeGap))
+				}
+				this.networks[index][0].cacheData = el.bytesSent;
+				this.networks[index][0].cacheTime = el.time;
 
-				const updateData = (networkIndex, dataIndex, bytes, cacheData, cacheTime) => {
-					if (this.networks[networkIndex][dataIndex].data.length >= 60) {
-						this.networks[networkIndex][dataIndex].data.shift();
-					}
-					if (this.networks[networkIndex][dataIndex].cacheData > 0) {
-						const timeGap = this.networks[networkIndex][dataIndex].cacheTime === 0 ? 2 : el.time - this.networks[networkIndex][dataIndex].cacheTime;
-						this.networks[networkIndex][dataIndex].data.push(this.covertToKB((bytes - cacheData) / timeGap));
-					}
-					this.networks[networkIndex][dataIndex].cacheData = bytes;
-					this.networks[networkIndex][dataIndex].cacheTime = cacheTime;
-				};
-
-				updateData(index, 0, el.bytesSent, this.networks[index][0].cacheData, this.networks[index][0].cacheTime);
-				updateData(index, 1, el.bytesRecv, this.networks[index][1].cacheData, this.networks[index][1].cacheTime);
+				// RecvData
+				if (this.networks[index][1].data.length >= 60) {
+					this.networks[index][1].data.shift()
+				}
+				if (this.networks[index][1].cacheData > 0) {
+					const timeGap = this.networks[index][1].cacheTime == 0 ? 2 : el.time - this.networks[index][1].cacheTime
+					this.networks[index][1].data.push(this.covertToKB((el.bytesRecv - this.networks[index][1].cacheData) / timeGap))
+				}
+				this.networks[index][1].cacheData = el.bytesRecv;
+				this.networks[index][1].cacheTime = el.time;
 			});
-
-			this.networkId = this.networkId > this.networks.length - 1 ? 0 : this.networkId;
-			this.$refs.chart?.updateSeries(this.networks[this.networkId]);
-
+			this.networkId = this.networkId > this.networks.length - 1 ? 0 : this.networkId
+			this.$refs.chart?.updateSeries(this.networks[this.networkId])
 			if (this.networks) {
-				const upSpeed = this.networks[this.networkId][0].data[this.networks[this.networkId][0].data.length - 1];
-				const downSpeed = this.networks[this.networkId][1].data[this.networks[this.networkId][1].data.length - 1];
-				this.currentUpSpeed = isNaN(upSpeed) ? 0 : upSpeed;
-				this.currentDownSpeed = isNaN(downSpeed) ? 0 : downSpeed;
+				const upSpeed = this.networks[this.networkId][0].data[this.networks[this.networkId][0].data.length - 1]
+				const downSpeed = this.networks[this.networkId][1].data[this.networks[this.networkId][1].data.length - 1]
+				this.currentUpSpeed = isNaN(upSpeed) ? 0 : upSpeed
+				this.currentDownSpeed = isNaN(downSpeed) ? 0 : downSpeed
 			}
 		},
 		covertToKB(bytes) {

@@ -247,6 +247,7 @@ export default {
 		},
 
 		async showUpdateCompleteModal() {
+			await this.$api.users.getLinkAppDetail();
 			const versionRes = await this.$api.sys.getVersion();
 			if (versionRes.data.success == 200) {
 				this.$buefy.modal.open({
