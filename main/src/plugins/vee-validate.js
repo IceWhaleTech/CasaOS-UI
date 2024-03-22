@@ -11,8 +11,13 @@
 import { confirmed, email, length, min, required } from "vee-validate/dist/rules";
 import { isURL } from 'validator';
 import { extend } from "vee-validate";
-import isValidHostname from 'is-valid-hostname';
+// import isValidHostname from 'is-valid-hostname';
 import validate from 'uuid-validate';
+
+function isValidContainerName(value) {
+	let reg = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?$/;
+	return reg.test(value) && value.length <= 32;
+}
 
 extend("required", {
 	...required,
@@ -40,7 +45,7 @@ extend("min", {
 });
 
 extend('rfc1123', {
-	validate: (value) => isValidHostname(value),
+	validate: (value) => isValidContainerName(value),
 	message: 'You entered an invalid RFC1123 hostname',
 });
 
