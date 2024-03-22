@@ -11,7 +11,7 @@
 		<!-- Modal-Card Body Start -->
 		<section class="modal-card-body ">
 			<b-field :message="errors" :type="errorType" class="has-text-light mb-0" expanded>
-				<b-input ref="finput" v-model="port" type="number" v-on:keyup.enter.native="savePort"></b-input>
+				<b-input ref="finput" v-model="port" type="number" v-on:keyup.enter.native="savePort" @input="checkPort"></b-input>
 			</b-field>
 		</section>
 		<!-- Modal-Card Body End -->
@@ -58,9 +58,23 @@ export default {
 	},
 
 	methods: {
+		checkPort() { 
+			if(this.port < 80 || this.port > 65535) {
+				this.errorType = "is-danger"
+				this.errors = this.$t('Port range is 80-65535')
+				return false;
+			}
+			this.errorType = "is-success";
+			this.errors = "";
+			return true;
+		},
 		savePort() {
-			this.$messageBus('dashboardsetting_webuiport', this.port.toString())
 			this.isLoading = true;
+			if (!this.checkPort()) {
+				this.isLoading = false;
+				return
+			}
+			this.$messageBus('dashboardsetting_webuiport', this.port.toString())
 			this.$api.sys.editServerPort({ port: this.port }).then(res => {
 
 				if (res.data.success == 200) {
