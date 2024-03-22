@@ -476,7 +476,6 @@
 					@updateDockerComposeCommands="updateDockerComposeCommands"
 					@updateDockerComposeServiceName="updateDockerComposeServiceName"
 					@updateMainName="name => (currentInstallId = name)"
-					@updateIsUncontrolledInstallParams="updateIsUncontrolledInstallParams"
 				></ComposeConfig>
 
 				<section v-else :class="{ _hideOverflow: !isCasa }" class="modal-card-body pt-3">
@@ -850,7 +849,6 @@ export default {
 			counterPatchGetStoreList: 0,
 			searchAndSourcesStatus: '',
 			activeAppStoreSourceInput: false,
-			is_uncontrolled_install_params: false,
 		}
 	},
 
@@ -1337,7 +1335,7 @@ export default {
 		 */
 		installComposeApp (dockerComposeCommands, appName) {
 			return this.$openAPI.appManagement.compose
-				.installComposeApp(dockerComposeCommands, false, true, this.is_uncontrolled_install_params)
+				.installComposeApp(dockerComposeCommands, false, true)
 				.then(res => {
 					if (res.status !== 200) {
 						this.dockerComposeConfig = dockerComposeCommands
@@ -1380,10 +1378,6 @@ export default {
 					})
 				}
 			})
-		},
-
-		updateIsUncontrolledInstallParams (is_uncontrolled_install_params) {
-			this.is_uncontrolled_install_params = is_uncontrolled_install_params
 		},
 
 		switchAppConfigContent (composeCommands) {
