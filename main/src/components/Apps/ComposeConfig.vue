@@ -22,7 +22,7 @@
 							>
 								<b-input
 									:key="service.image"
-									:readonly="state == 'update' || mainStableVersion"
+									:readonly="state == 'update' || mainStableVersion !== ''"
 									:value="getFirstField(service.image)"
 									:placeholder="$t('e.g.,hello-world:latest')"
 									@input="
