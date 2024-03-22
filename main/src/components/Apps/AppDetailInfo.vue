@@ -45,14 +45,14 @@
 								rounded
 								size="is-normal"
 								type="is-primary"
-								@click.self="
+								@click="
 									$emit('install', appDetailData.id, appDetailData)
 									$messageBus('appstore_install', i18n(appDetailData.title))
 								">
 								{{ $t('Install') }}
 								<b-dropdown :triggers="['hover', 'click']">
 									<template #trigger>
-										<div class="casa-down-outline custom-install-dropdown-trigger"></div>
+										<div class="casa-down-outline custom-install-dropdown-trigger" @click.stop></div>
 									</template>
 									<b-button
 										:disabled="unusable"
