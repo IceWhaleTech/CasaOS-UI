@@ -15,7 +15,7 @@ import { extend } from "vee-validate";
 import validate from 'uuid-validate';
 
 function isValidContainerName(value) {
-	let reg = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?$/;
+	let reg = /^[a-z0-9A-Z\-_]+$/;
 	return reg.test(value) && value.length <= 32;
 }
 
@@ -44,9 +44,9 @@ extend("min", {
 	message: "This field must have more than {length} characters"
 });
 
-extend('rfc1123', {
+extend('ContainerName', {
 	validate: (value) => isValidContainerName(value),
-	message: 'You entered an invalid RFC1123 hostname',
+	message: 'Name must be a string of numbers, letters, underscores, or hyphens(0~9,a~zA~Z,_,-).',
 });
 
 extend('uuid', {

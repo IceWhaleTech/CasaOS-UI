@@ -261,7 +261,7 @@
 						</b-taginput>
 					</b-field>
 
-					<ValidationProvider v-slot="{ errors, valid }" name="Name" rules="rfc1123">
+					<ValidationProvider v-slot="{ errors, valid }" name="Name" rules="ContainerName">
 						<b-field
 							:label="$t('Container Name')"
 							:message="$t(errors)"
