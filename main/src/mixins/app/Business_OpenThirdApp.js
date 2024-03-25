@@ -33,11 +33,17 @@ export default {
 		},
 		async openThirdContainerByAppInfo(appInfo) {
 			try {
+				await this.$openAPI.appManagement.compose.setComposeAppStatus(appInfo.id, 'start')
+
 				let allinfo = await this.$openAPI.appManagement.compose.myComposeApp(appInfo.id).then(res => {
 					return res.data.data
 				})
+				if (allinfo.status.indexOf('running') === -1) { 
+					await this.$openAPI.appManagement.compose.setComposeAppStatus(allinfo.compose.name, 'start')
+					return this.firstOpenThirdApp(appInfo)
+				}
+				console.log(allinfo, 'allinfo');
 				let containerInfoV2 = allinfo.store_info
-				console.log(containerInfoV2, 'containerInfoV2');
 				let app = {
 					"id": appInfo.id,
 					"name": appInfo.id,
