@@ -1,5 +1,5 @@
 import ar_sa from './ar_SA.json' // Arabic: العربية :阿拉伯语
-// import be_by from './be_BY.json' // Belarusian: Беларуская :白俄罗斯语 *
+import be_by from './be_BY.json' // Belarusian: Беларуская :白俄罗斯语 *
 import de_de from './de_DE.json' // German: Deutsch :德语
 import en_us from './en_US.json' // English: English :英语
 import es_es from './es_ES.json' // Spanish: Español :西班牙语
@@ -29,7 +29,7 @@ import zh_cn from './zh_CN.json' // Chinese: 简体中文
 
 export default {
 	ar_sa,
-	// be_by,
+	be_by,
 	de_de,
 	el_gr,
 	en_us,

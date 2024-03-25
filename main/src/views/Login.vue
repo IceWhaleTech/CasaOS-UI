@@ -1,11 +1,9 @@
 <template>
 	<div id="login-page" class="is-flex is-justify-content-center is-align-items-center ">
 		<div v-if="!isLoading" class="login-panel step4 is-shadow">
-			<div class="is-flex is-justify-content-center ">
+			<div class="is-flex is-justify-content-center pb-3 ">
 				<div class="has-text-centered">
-					<b-image :src-fallback="require('@/assets/img/account/default-avatar.svg')" src="/v1/users/image?path=/var/lib/casaos/1/avatar.png" class="is-128x128"
-							 rounded></b-image>
-					<!--					<p class="is-size-5 has-text-weight-bold mt-3">{{ username }}</p>-->
+					<b-image :src-fallback="require('@/assets/img/account/default-avatar.svg')" src="/v1/users/image?path=/var/lib/casaos/1/avatar.png" class="is-128x128" rounded></b-image>
 				</div>
 
 			</div>
@@ -17,7 +15,7 @@
 				<ValidationProvider v-slot="{ errors, valid }" name="User" rules="required">
 					<b-field :label="$t('Username')" :message="errors"
 							 :type="{ 'is-danger': errors[0], 'is-success': valid }"
-							 class="mt-5">
+							 class="mt-3">
 						<b-input v-model="username" :autofocus="!username" type="text" v-on:keyup.enter.native="handleSubmit(login)"></b-input>
 					</b-field>
 				</ValidationProvider>
@@ -85,7 +83,7 @@ export default {
 				}
 				this.$router.push("/");
 			} catch (err) {
-				this.message = this.$t("Username or Password error!")
+				this.message = this.$t(err.response.data.message)
 				this.notificationShow = true
 			}
 		}

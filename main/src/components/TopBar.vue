@@ -334,6 +334,7 @@ export default {
 			// Language Sets
 			languages: [
 				{ lang: "ar_sa", name: "العربية" },
+				{ lang: "be_by", name: "Беларуская" },
 				{ lang: "de_de", name: "Deutsch" },
 				{ lang: "el_gr", name: "Ελληνικά"},
 				{ lang: "en_us", name: "English" },
