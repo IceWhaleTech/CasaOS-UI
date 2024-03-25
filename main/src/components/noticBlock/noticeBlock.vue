@@ -12,7 +12,7 @@
 					{{ $t(noticeData.prelude.title) }}
 				</div>
 				<div class="is-flex-shrink-0 _close-polymorphic" style="height: 1.5rem" @click="close">
-					<b-icon custom-size="casa-24px" icon="close-xs" pack="casa"></b-icon>
+					<b-icon custom-size="casa-24px" icon="close-outline" pack="casa"></b-icon>
 				</div>
 			</div>
 			<!-- end of section head-->
