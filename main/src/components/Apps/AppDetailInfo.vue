@@ -37,19 +37,24 @@
 							>
 								{{ $t('launch-and-open') }}
 							</b-button>
-							<b-button 
+							<b-button
 								v-else
-								class="pr-0"
+								class="p-0 custom-install-button"
 								:disabled="unusable"
 								:loading="appDetailData.id == currentInstallId"
 								rounded
 								size="is-normal"
 								type="is-primary"
-								@click.self="
-									$emit('install', appDetailData.id, appDetailData)
-									$messageBus('appstore_install', i18n(appDetailData.title))
-								">
-								{{ $t('Install') }}
+							>
+								<div
+									@click.self="
+										$emit('install', appDetailData.id, appDetailData)
+										$messageBus('appstore_install', i18n(appDetailData.title))
+									"
+									class="custom-install-button-content"
+								>
+									{{ $t('Install') }}
+								</div>
 								<b-dropdown :triggers="['hover', 'click']" @click.stop>
 									<template #trigger>
 										<div class="casa-down-outline custom-install-dropdown-trigger"></div>
@@ -283,7 +288,7 @@ export default {
 		},
 		openConfigPanle () {
 			this.$emit('switchAppConfigContent', YAML.stringify(this.appDetailData.compose))
-		}
+		},
 	}
 }
 </script>
@@ -326,20 +331,33 @@ export default {
 }
 
 // version dropdown css
-.dropdown.is-hoverable:hover .dropdown-menu{
+.dropdown.is-hoverable:hover .dropdown-menu {
 	display: block;
 }
-.dropdown-menu,.dropdown-content{
+.dropdown-menu,
+.dropdown-content {
 	box-shadow: none;
 }
-.dropdown-content .button{
+.dropdown-content .button {
 	display: flex;
 }
-.custom-install-dropdown-trigger{
-	width: 3rem;
-	height: 1.5rem;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+.custom-install-button {
+	span {
+		display: flex;
+		.custom-install-button-content {
+			display: flex;
+			flex-shrink: 0;
+			padding-left: 1.25rem;
+			padding-top: 0.25rem;
+			padding-bottom: 0.25rem;
+		}
+		.custom-install-dropdown-trigger {
+			width: 3rem;
+			height: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+	}
 }
 </style>
