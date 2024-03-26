@@ -38,11 +38,7 @@ export default {
 				let allinfo = await this.$openAPI.appManagement.compose.myComposeApp(appInfo.id).then(res => {
 					return res.data.data
 				})
-				if (allinfo.status.indexOf('running') === -1) { 
-					await this.$openAPI.appManagement.compose.setComposeAppStatus(allinfo.compose.name, 'start')
-					return this.firstOpenThirdApp(appInfo)
-				}
-				console.log(allinfo, 'allinfo');
+				
 				let containerInfoV2 = allinfo.store_info
 				let app = {
 					"id": appInfo.id,
@@ -53,7 +49,13 @@ export default {
 					index: containerInfoV2.index,
 					image: allinfo.compose.services[appInfo.id].image,
 				}
-				this.openAppToNewWindow(app)
+
+				if (allinfo.status.indexOf('running') === -1) { 
+					await this.$openAPI.appManagement.compose.setComposeAppStatus(allinfo.compose.name, 'start')
+					this.firstOpenThirdApp(app)
+				}else{
+					this.openAppToNewWindow(app)
+				}
 			} catch (e) {
 				console.error(e);
 			}
