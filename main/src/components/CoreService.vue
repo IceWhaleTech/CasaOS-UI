@@ -407,7 +407,7 @@ export default {
 				}
 				return;
 			}
-
+			
 			if (this.noticesData[res.name]) {
 				if (res.message !== "") {
 					try {
@@ -435,7 +435,7 @@ export default {
 				title: this.$t('Installing {title}', { title: res.title }),
 				icon: res.icon,
 				content: {
-					text: res?.message,
+					text: 'Starting installation',
 					value: 0
 				},
 				contentType: 'progress',
