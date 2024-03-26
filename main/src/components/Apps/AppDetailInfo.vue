@@ -35,7 +35,7 @@
 								type="is-primary"
 								@click="openThirdContainerByAppInfo(appDetailData)"
 							>
-								{{ $t('Open') }}
+								{{ $t('launch-and-open') }}
 							</b-button>
 							<b-button 
 								v-else

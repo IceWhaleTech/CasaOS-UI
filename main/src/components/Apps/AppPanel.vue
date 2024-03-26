@@ -160,7 +160,7 @@
 												size="is-small"
 												type="is-primary is-light"
 												@click="openThirdContainerByAppInfo(item)"
-												>{{ $t('Open') }}
+												>{{ $t('launch-and-open') }}
 											</b-button>
 											<b-button
 												v-else
@@ -353,7 +353,7 @@
 									type="is-primary is-light"
 									@click="openThirdContainerByAppInfo(item)"
 								>
-									{{ $t('Open') }}
+									{{ $t('launch-and-open') }}
 								</b-button>
 								<b-button
 									v-else
@@ -424,7 +424,7 @@
 										type="is-primary is-light"
 										@click="openThirdContainerByAppInfo(item)"
 									>
-										{{ $t('Open') }}
+										{{ $t('launch-and-open') }}
 									</b-button>
 									<b-button
 										v-else
