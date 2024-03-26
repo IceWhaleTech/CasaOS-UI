@@ -407,7 +407,7 @@ export default {
 				}
 				return;
 			}
-			
+
 			if (this.noticesData[res.name]) {
 				if (res.message !== "") {
 					try {
@@ -435,7 +435,7 @@ export default {
 				title: this.$t('Installing {title}', { title: res.title }),
 				icon: res.icon,
 				content: {
-					text: 'Starting installation',
+					text: res?.message,
 					value: 0
 				},
 				contentType: 'progress',
@@ -446,6 +446,18 @@ export default {
 
 	},
 	sockets: {
+		"app:apply-changes-begin"(res) { 
+			const title = ice_i18n(JSON.parse(res.Properties["app:title"]));
+			this.transformAppInstallationProgress({
+				finished: false,
+				name: res.Properties["app:name"],
+				title,
+				id: res.Properties["app:name"],
+				success: true,
+				message: "Starting pulling image info",
+				icon: res.Properties["app:icon"]
+			});
+		},
 		"app:apply-changes-end"(res) {
 			this.$buefy.toast.open({
 				message: "The setting of " + res.Properties["app:name"] + " is complete",
