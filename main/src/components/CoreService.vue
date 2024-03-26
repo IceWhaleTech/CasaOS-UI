@@ -413,9 +413,9 @@ export default {
 					try {
 						let progress = Number(res.message);
 						let currentInstallAppText = '';
-						if (progress === 0) {
+						if (progress?.toString() === '0') {
 							currentInstallAppText = 'Starting installation';
-						} else if (progress === 100) {
+						} else if (progress?.toString() === '100') {
 							currentInstallAppText = 'Installation completed';
 						} else {
 							currentInstallAppText = 'Installing ' + progress + '%';
