@@ -78,7 +78,7 @@
 								</b-dropdown-item>
 								<b-dropdown-item
 									key="stable"
-									v-show="mainStableVersion !== ''"
+									v-show="mainStableVersion !== '' && firstAppName === key"
 									@click="
 										() => {
 											service.image = service.image.split(':')[0] + ':' + mainStableVersion
