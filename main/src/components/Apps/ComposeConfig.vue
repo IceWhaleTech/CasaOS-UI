@@ -3,7 +3,7 @@
 		<b-tabs
 			class="has-text-full-03"
 			style="height: 100%"
-			@input="(key) => $emit('updateDockerComposeServiceName', key)"
+			v-model="current_service"
 		>
 			<b-tab-item v-for="(service, key) in configData.services" :key="key" :label="key" :value="key">
 				<ValidationObserver :ref="key + 'valida'">
@@ -22,7 +22,7 @@
 							>
 								<b-input
 									:key="service.image"
-									:readonly="state == 'update' || mainStableVersion !== ''"
+									:readonly="state == 'update' || serviceStableVersion !== ''"
 									:value="getFirstField(service.image)"
 									:placeholder="$t('e.g.,hello-world:latest')"
 									@input="(V) => changeIcon(V)"
@@ -72,14 +72,14 @@
 							</b-dropdown-item>
 							<b-dropdown-item
 								key="stable"
-								v-show="mainStableVersion !== '' && firstAppName === key"
+								v-show="serviceStableVersion !== '' && firstAppName === key"
 								@click="
 									() => {
-										service.image = service.image.split(':')[0] + ':' + mainStableVersion;
+										service.image = service.image.split(':')[0] + ':' + serviceStableVersion;
 									}
 								"
 							>
-								stable({{ mainStableVersion }})
+								stable({{ serviceStableVersion }})
 							</b-dropdown-item>
 						</b-dropdown>
 					</b-field>
@@ -342,9 +342,10 @@ export default {
 	},
 	data() {
 		return {
+			current_service: "",
 			baseUrl: "",
 			portSelected: null,
-			mainStableVersion: "",
+			serviceStableVersion: "",
 			configData: {
 				services: {
 					main_app: {
@@ -416,6 +417,21 @@ export default {
 		},
 	},
 	watch: {
+		current_service: {
+			async handler(val) {
+				this.$emit("updateDockerComposeServiceName", val);
+				this.serviceStableVersion = await this.$openAPI.appManagement.appStore
+					.composeAppStableTag(yaml.name, this.current_service)
+					.then((res) => {
+						return res.data.data.tag;
+					})
+					.catch((e) => {
+						console.error(e);
+						return "";
+					});
+			},
+			immediate: true,
+		},
 		// Watch if configData changes
 		configData: {
 			handler(val, newVal) {
@@ -601,6 +617,8 @@ export default {
 				this.configData.services = {};
 				// 删除掉原默认主应用。
 				this.$delete(this.configData.services, "main_app");
+				// this.current_service = yaml["x-casaos"].main;
+				this.current_service = Object.keys(yaml.services)[0];
 				// 解析 services，并将其赋值到 configData.services中。
 				for (const serviceKey in yaml.services) {
 					this.$set(this.configData.services, serviceKey, this.parseComposeItem(yaml.services[serviceKey]));
@@ -608,16 +626,6 @@ export default {
 
 				// set top level x-casaos data
 				this.configData["x-casaos"] = merge(this.configData["x-casaos"], yaml["x-casaos"]);
-
-				this.mainStableVersion = await this.$openAPI.appManagement.appStore
-					.composeAppStableTag(yaml.name)
-					.then((res) => {
-						return res.data.data.tag;
-					})
-					.catch((e) => {
-						console.error(e);
-						return "";
-					});
 			} catch (error) {
 				console.log(error);
 			}

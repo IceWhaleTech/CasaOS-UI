@@ -1673,11 +1673,11 @@ __metadata:
   linkType: hard
 
 "@icewhale/casaos-appmanagement-openapi@npm:latest":
-  version: 0.4.7-alpha4
-  resolution: "@icewhale/casaos-appmanagement-openapi@npm:0.4.7-alpha4"
+  version: 0.4.8-alpha1
+  resolution: "@icewhale/casaos-appmanagement-openapi@npm:0.4.8-alpha1"
   dependencies:
     axios: ^1.1.0
-  checksum: 3d28cacea22b26d77179388cf19b56e57552a4abcb5e499d829a24f9d0579acd709720cae47a93f93df1c59f35ca882f96534137dfaaf4d1f05a424a70a469cc
+  checksum: 8a7ae5e99352e97e76597969019d40f77e04c8509a1d81c1eac1949b431249f590bde6432c42d1dc257d730c109a136c7734293dee2039ee15f97e42c7607dee
   languageName: node
   linkType: hard
 
