@@ -427,7 +427,6 @@ export default {
 						this.serviceStableVersion = res.data.data.tag;
 					})
 					.catch((e) => {
-						console.error(e);
 						this.serviceStableVersion = "";
 					});
 				}else{
