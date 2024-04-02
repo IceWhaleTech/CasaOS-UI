@@ -37,17 +37,12 @@
 								</b-input>
 							</b-field>
 						</ValidationProvider>
-						<ValidationProvider v-slot="{ errors, valid }" name="Image1" rules="required">
-							<input
-								type="text"
-								:value="getLateField(service.image)"
-								v-show="false"
-							/>
-							<b-dropdown aria-role="menu" expanded trap-focus>
-								<template #trigger>
+						<b-dropdown aria-role="menu" trap-focus>
+							<template #trigger>
+								<ValidationProvider v-slot="{ errors, valid }" name="Image1" rules="required">
 									<b-field
 										:label="$t('Tag')"
-										:message="$t(errors)"
+										:message="$t(errors) || '123'"
 										:type="{ 'is-danger': errors[0], 'is-success': valid }"
 									>
 										<b-input
@@ -63,30 +58,30 @@
 										>
 										</b-input>
 									</b-field>
-								</template>
-								<b-dropdown-item
-									key="latest"
-									@click="
-										() => {
-											service.image = service.image.split(':')[0] + ':latest';
-										}
-									"
-								>
-									latest
-								</b-dropdown-item>
-								<b-dropdown-item
-									key="stable"
-									v-show="mainStableVersion !== '' && firstAppName === key"
-									@click="
-										() => {
-											service.image = service.image.split(':')[0] + ':' + mainStableVersion;
-										}
-									"
-								>
-									stable({{ mainStableVersion }})
-								</b-dropdown-item>
-							</b-dropdown>
-						</ValidationProvider>
+								</ValidationProvider>
+							</template>
+							<b-dropdown-item
+								key="latest"
+								@click="
+									() => {
+										service.image = service.image.split(':')[0] + ':latest';
+									}
+								"
+							>
+								latest
+							</b-dropdown-item>
+							<b-dropdown-item
+								key="stable"
+								v-show="mainStableVersion !== '' && firstAppName === key"
+								@click="
+									() => {
+										service.image = service.image.split(':')[0] + ':' + mainStableVersion;
+									}
+								"
+							>
+								stable({{ mainStableVersion }})
+							</b-dropdown-item>
+						</b-dropdown>
 					</b-field>
 
 					<ValidationProvider v-slot="{ errors, valid }" name="composeAppName" rules="required">
