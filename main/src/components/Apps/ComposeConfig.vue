@@ -418,17 +418,22 @@ export default {
 	},
 	watch: {
 		current_service: {
-			async handler(val) {
+			handler(val) {
 				this.$emit("updateDockerComposeServiceName", val);
-				this.serviceStableVersion = await this.$openAPI.appManagement.appStore
-					.composeAppStableTag(yaml.name, this.current_service)
+				if (this.configData.name) {
+					this.$openAPI.appManagement.appStore
+					.composeAppServiceStableTag(this.configData.name, this.current_service)
 					.then((res) => {
-						return res.data.data.tag;
+						this.serviceStableVersion = res.data.data.tag;
 					})
 					.catch((e) => {
 						console.error(e);
-						return "";
+						this.serviceStableVersion = "";
 					});
+				}else{
+					this.serviceStableVersion = "";
+				}
+				
 			},
 			immediate: true,
 		},
