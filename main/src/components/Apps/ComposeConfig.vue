@@ -3,9 +3,9 @@
 		<b-tabs
 			class="has-text-full-03"
 			style="height: 100%"
-			v-model="current_service"
+			:value="firstAppName"
 		>
-			<b-tab-item v-for="(service, key) in configData.services" :key="key" :label="key" :value="key">
+			<b-tab-item v-for="(service, key) in configData.services" :key="key" :label="key" :value="key" @click="current_service = key">
 				<ValidationObserver :ref="key + 'valida'">
 					<b-field grouped>
 						<ValidationProvider
