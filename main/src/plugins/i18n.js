@@ -1,12 +1,3 @@
-/*
- * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
- * @LastEditTime: 2023/4/6 下午3:47
- * @FilePath: /CasaOS-UI/src/plugins/i18n.js
- * @Description:
- *
- * Copyright (c) 2023 by IceWhale, All Rights Reserved.
-
- */
 
 import Vue      from 'vue'
 import VueI18n  from 'vue-i18n'
@@ -21,5 +12,4 @@ const i18n = new VueI18n({
 	silentTranslationWarn: true,
 	messages
 })
-
 export default i18n
