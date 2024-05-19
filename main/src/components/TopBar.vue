@@ -1,10 +1,14 @@
 <template>
 	<div class="navbar top-bar is-flex is-align-items-center _fixed-height">
 		<div class="navbar-brand ml-4 _fixed-height">
-
 			<!-- SideBar Button Start -->
 			<div id="sidebar-btn" class="is-flex is-align-items-center navbar-item">
-				<b-tooltip :active="!$store.state.isMobile" :label="sidebarIconLabel" position="is-right" type="is-dark">
+				<b-tooltip
+					:active="!$store.state.isMobile"
+					:label="sidebarIconLabel"
+					position="is-right"
+					type="is-dark"
+				>
 					<div role="button" @click="showSideBar">
 						<b-icon :icon="sidebarIcon" class="picon" pack="casa" size="is-20"></b-icon>
 					</div>
@@ -13,10 +17,21 @@
 			<!-- SideBar Button Start -->
 
 			<!-- Account Dropmenu Start -->
-			<b-dropdown animation="fade1" aria-role="list" class="navbar-item" @active-change="getUserInfo"  :close-on-click="true">
+			<b-dropdown
+				animation="fade1"
+				aria-role="list"
+				class="navbar-item"
+				@active-change="getUserInfo"
+				:close-on-click="true"
+			>
 				<template #trigger>
-					<b-tooltip :active="!$store.state.isMobile" :label="$t('Account')" position="is-right" type="is-dark"
-						@click.native="$messageBus('account_setting')">
+					<b-tooltip
+						:active="!$store.state.isMobile"
+						:label="$t('Account')"
+						position="is-right"
+						type="is-dark"
+						@click.native="$messageBus('account_setting')"
+					>
 						<p role="button">
 							<b-icon class="picon" icon="account-outline" pack="casa" size="is-20"></b-icon>
 						</p>
@@ -30,48 +45,75 @@
 			<!-- Account Dropmenu End -->
 
 			<!-- Settings Dropmenu Start -->
-			<b-dropdown ref="settingsDrop" animation="fade1" aria-role="list" class="navbar-item" @active-change="onOpen">
+			<b-dropdown
+				ref="settingsDrop"
+				animation="fade1"
+				aria-role="list"
+				class="navbar-item"
+				@active-change="onOpen"
+			>
 				<template #trigger>
-					<b-tooltip :active="!$store.state.isMobile" :label="$t('Settings')" position="is-right" type="is-dark"
-						@click.native="$messageBus('dashboardsetting')">
+					<b-tooltip
+						:active="!$store.state.isMobile"
+						:label="$t('Settings')"
+						position="is-right"
+						type="is-dark"
+						@click.native="$messageBus('dashboardsetting')"
+					>
 						<p role="button">
-							<b-icon :class="{ 'update-icon-dot': updateInfo.need_update }" class="picon"
-								icon="control-outline" pack="casa" size="is-20"></b-icon>
+							<b-icon
+								:class="{ 'update-icon-dot': updateInfo.need_update }"
+								class="picon"
+								icon="control-outline"
+								pack="casa"
+								size="is-20"
+							></b-icon>
 						</p>
 					</b-tooltip>
 				</template>
 
 				<b-dropdown-item :focusable="false" aria-role="menu-item" class="p-0" custom>
-					<h2 class="_title mb-4">{{ $t('Settings') }}</h2>
+					<h2 class="_title mb-4">{{ $t("Settings") }}</h2>
 					<!-- Search Engine Switch Start  -->
-					<div class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4">
+					<div
+						class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4"
+					>
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="show-search-outline" pack="casa" size="is-20"></b-icon>
-							{{ $t('Show Search Bar') }}
+							{{ $t("Show Search Bar") }}
 						</div>
 						<div>
 							<b-field>
-								<b-switch v-model="barData.search_switch" class="is-flex-direction-row-reverse mr-0 _small"
-									type="is-dark" @input="saveData"></b-switch>
+								<b-switch
+									v-model="barData.search_switch"
+									class="is-flex-direction-row-reverse mr-0 _small"
+									type="is-dark"
+									@input="saveData"
+								></b-switch>
 							</b-field>
 						</div>
 					</div>
 					<!-- Search Engine Switch End  -->
 
 					<!-- Search Engine Start -->
-					<div v-if="barData.search_switch"
-						class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4">
+					<div
+						v-if="barData.search_switch"
+						class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4"
+					>
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="search-outline" pack="casa" size="is-20"></b-icon>
-							{{ $t('Search Engine') }}
+							{{ $t("Search Engine") }}
 						</div>
 						<div>
 							<b-field>
-								<b-select v-model="barData.search_engine" class="set-select" size="is-small"
-									@input="saveData">
-									<option v-for="item in searchEngines" :key="item.name" :value="item.url">{{
-										item.name
-									}}
+								<b-select
+									v-model="barData.search_engine"
+									class="set-select"
+									size="is-small"
+									@input="saveData"
+								>
+									<option v-for="item in searchEngines" :key="item.name" :value="item.url">
+										{{ item.name }}
 									</option>
 								</b-select>
 							</b-field>
@@ -80,17 +122,18 @@
 					<!-- Search Engine End -->
 
 					<!-- Language Start -->
-					<div class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4">
+					<div
+						class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4"
+					>
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="language-outline" pack="casa" size="is-20"></b-icon>
-							{{ $t('Language') }}
+							{{ $t("Language") }}
 						</div>
 						<div>
 							<b-field>
 								<b-select v-model="barData.lang" class="set-select" size="is-small" @input="saveData">
-									<option v-for="lang in languages" :key="lang.lang" :value="lang.lang">{{
-										lang.name
-									}}
+									<option v-for="lang in languages" :key="lang.lang" :value="lang.lang">
+										{{ lang.name }}
 									</option>
 								</b-select>
 							</b-field>
@@ -99,101 +142,137 @@
 					<!-- Language End -->
 
 					<!-- WebUI Port Start -->
-					<div class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4">
+					<div
+						class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4"
+					>
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="port-outline" pack="casa" size="is-20"></b-icon>
-							{{ $t('WebUI Port') }}
+							{{ $t("WebUI Port") }}
 						</div>
 						<div>
 							{{ port }}
 						</div>
 						<div class="ml-2">
-							<b-button rounded size="is-small" type="is-dark" @click="showPortPanel">{{
-								$t('Change')
-							}}
+							<b-button rounded size="is-small" type="is-dark" @click="showPortPanel"
+								>{{ $t("Change") }}
 							</b-button>
 						</div>
 					</div>
 					<!-- WebUI Port End -->
 
 					<!-- Background Start -->
-					<div class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4">
+					<div
+						class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4"
+					>
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="wallpaper-outline" pack="casa" size="is-20"></b-icon>
-							{{ $t('Wallpaper') }}
+							{{ $t("Wallpaper") }}
 						</div>
 						<div class="ml-2">
-							<b-button rounded size="is-small" type="is-dark" @click="showChangeWallpaperModal">{{
-								$t('Change')
-							}}
+							<b-button rounded size="is-small" type="is-dark" @click="showChangeWallpaperModal"
+								>{{ $t("Change") }}
 							</b-button>
 						</div>
 					</div>
 					<!-- Background End -->
 
 					<!--  Show other Docker container app(s) Switch Start  -->
-					<div v-if="this.$store.state.notImportList.length > 0"
-						class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4">
+					<div
+						v-if="this.$store.state.notImportList.length > 0"
+						class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4"
+					>
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="docker-outline" pack="casa" size="is-20"></b-icon>
-							{{ $t('Show other Docker container app(s)') }}
+							{{ $t("Show other Docker container app(s)") }}
 						</div>
 						<div>
 							<b-field>
-								<b-switch v-model="barData.existing_apps_switch"
-									class="is-flex-direction-row-reverse mr-0 _small" type="is-dark"
-									@input="saveData"></b-switch>
+								<b-switch
+									v-model="barData.existing_apps_switch"
+									class="is-flex-direction-row-reverse mr-0 _small"
+									type="is-dark"
+									@input="saveData"
+								></b-switch>
 							</b-field>
 						</div>
 					</div>
 					<!--  Show other Docker container app(s) Switch End  -->
 
 					<!--  Show other Docker container app(s) Switch Start  -->
-					<div class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4">
+					<div
+						class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4"
+					>
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="news-outline" pack="casa" size="is-20"></b-icon>
-							{{ $t('Show news feed from CasaOS Blog') }}
+							{{ $t("Show news feed from CasaOS Blog") }}
 						</div>
 						<div>
 							<b-field>
-								<b-switch v-model="rss_switch" :native-value="barData.rss_switch"
-									class="is-flex-direction-row-reverse mr-0 _small" type="is-dark"
-									@input="rssConfirm"></b-switch>
+								<b-switch
+									v-model="rss_switch"
+									:native-value="barData.rss_switch"
+									class="is-flex-direction-row-reverse mr-0 _small"
+									type="is-dark"
+									@input="rssConfirm"
+								></b-switch>
 							</b-field>
 						</div>
 					</div>
 					<!--  Show other Docker container app(s) Switch End  -->
 					<!--  Recommended modules Switch Start  -->
-					<div class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4">
+					<div
+						class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4"
+					>
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
-							<b-icon class="mr-1 ml-2" icon="display-applications-outline" pack="casa" size="is-20"></b-icon>
-							{{ $t('Show Recommended Apps') }}
+							<b-icon
+								class="mr-1 ml-2"
+								icon="display-applications-outline"
+								pack="casa"
+								size="is-20"
+							></b-icon>
+							{{ $t("Show Recommended Apps") }}
 						</div>
 						<div>
 							<b-field>
-								<b-switch v-model="barData.recommend_switch"
-									class="is-flex-direction-row-reverse mr-0 _small" type="is-dark"
-									@input="saveData"></b-switch>
+								<b-switch
+									v-model="barData.recommend_switch"
+									class="is-flex-direction-row-reverse mr-0 _small"
+									type="is-dark"
+									@input="saveData"
+								></b-switch>
 							</b-field>
 						</div>
 					</div>
 					<!-- Recommended modules Switch End  -->
 
 					<!-- Automount USB Drive Start  -->
-					<div class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4">
+					<div
+						class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4"
+					>
 						<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 							<b-icon class="mr-1 ml-2" icon="usb-outline" pack="casa" size="is-20"></b-icon>
-							{{ $t('Automount USB Drive') }}
-							<b-tooltip v-if="isRaspberryPi"
-								:label="$t('Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB')"
-								multilined type="is-dark">
+							{{ $t("Automount USB Drive") }}
+							<b-tooltip
+								v-if="isRaspberryPi"
+								:label="
+									$t(
+										'Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB'
+									)
+								"
+								multilined
+								type="is-dark"
+							>
 								<b-icon class="ml-1" icon="question-outline" pack="casa" size="is-small"></b-icon>
 							</b-tooltip>
 						</div>
 						<div>
 							<b-field>
-								<b-switch v-model="autoUsbMount" class="is-flex-direction-row-reverse mr-0 _small"
-									type="is-dark" @input="usbAutoMount"></b-switch>
+								<b-switch
+									v-model="autoUsbMount"
+									class="is-flex-direction-row-reverse mr-0 _small"
+									type="is-dark"
+									@input="usbAutoMount"
+								></b-switch>
 							</b-field>
 						</div>
 					</div>
@@ -204,50 +283,61 @@
 						<div class="is-flex is-align-items-center">
 							<div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
 								<b-icon class="mr-1 ml-2" icon="update-outline" pack="casa" size="is-20"></b-icon>
-								<div :class="{ 'update-text-dot': updateInfo.need_update }">{{ $t('Update') }}</div>
+								<div :class="{ 'update-text-dot': updateInfo.need_update }">{{ $t("Update") }}</div>
 							</div>
-							<div class="_has-text-gray">
-								v{{ updateInfo.current_version }}
-							</div>
+							<div class="_has-text-gray">v{{ updateInfo.current_version }}</div>
 						</div>
 
 						<div v-if="!updateInfo.need_update" class="is-flex is-align-items-center pl-55 ml-1 is-size-7">
 							{{ $t(latestText) }}
 							<b-icon class="ml-1" custom-size="mdi-18px" icon="check" type="is-success"></b-icon>
 						</div>
-						<div v-else class="is-flex is-align-items-center is-justify-content-end update-container pl-5 ">
+						<div v-else class="is-flex is-align-items-center is-justify-content-end update-container pl-5">
 							<div class="is-flex-grow-1 is-size-7">{{ $t(updateText) }}</div>
-							<b-button class="ml-2" rounded size="is-small" type="is-dark" @click="showUpdateModal">{{
-								$t('Update')
-							}}
+							<b-button class="ml-2" rounded size="is-small" type="is-dark" @click="showUpdateModal"
+								>{{ $t("Update") }}
 							</b-button>
 						</div>
 					</div>
 					<!-- Update End -->
 					<!-- Restart or Shutdown Start -->
-					<div class="is-flex is-align-content-center is-justify-content-center _footer mt-4 pl-3 pr-3 pt-2 pb-2">
-						<div class="mr-1 column is-half is-flex is-align-items-center is-justify-content-center hover-effect is-clickable _is-radius _is-normal"
-							@click="power('Restart')">
+					<div
+						class="is-flex is-align-content-center is-justify-content-center _footer mt-4 pl-3 pr-3 pt-2 pb-2"
+					>
+						<div
+							class="mr-1 column is-half is-flex is-align-items-center is-justify-content-center hover-effect is-clickable _is-radius _is-normal"
+							@click="power('Restart')"
+						>
 							<b-icon class="mr-1" icon="restart-outline" pack="casa"></b-icon>
 							{{ $t(restart) }}
 						</div>
-						<div class="ml-1 column is-half is-flex is-align-items-center is-justify-content-center is-clickable hover-effect-attention _has-text-attention _is-radius"
-							@click="power('Shutdown')">
-							<b-icon class="mr-1" custom-class="_has-text-attention" icon="shutdown-outline"
-								pack="casa"></b-icon>
+						<div
+							class="ml-1 column is-half is-flex is-align-items-center is-justify-content-center is-clickable hover-effect-attention _has-text-attention _is-radius"
+							@click="power('Shutdown')"
+						>
+							<b-icon
+								class="mr-1"
+								custom-class="_has-text-attention"
+								icon="shutdown-outline"
+								pack="casa"
+							></b-icon>
 							{{ $t(shutdown) }}
 						</div>
 					</div>
 					<!-- Restart or Shutdown End -->
-
 				</b-dropdown-item>
 			</b-dropdown>
 			<!-- Settings Dropmenu End -->
 
 			<!-- Terminal  Start -->
 			<div class="is-flex is-align-items-center ml-3 _fixed-height" @click="showTerminalPanel">
-				<b-tooltip :active="!$store.state.isMobile" :label="$t('Terminal & Logs')" position="is-right"
-					style="height: 1.25rem;" type="is-dark">
+				<b-tooltip
+					:active="!$store.state.isMobile"
+					:label="$t('Terminal & Logs')"
+					position="is-right"
+					style="height: 1.25rem"
+					type="is-dark"
+				>
 					<b-icon class="picon" icon="terminal-outline" pack="casa" size="is-20"></b-icon>
 				</b-tooltip>
 			</div>
@@ -264,42 +354,51 @@
 			<b-message @close="resetPower">
 				<template #header>
 					{{ $t(showPowerTitle) }}
-					<img v-if="showPowerTitle === 'Now shutting down'" :src="require('@/assets/img/loading/waiting.svg')"
-						alt="pending" class="ml-1 is-24x24" />
+					<img
+						v-if="showPowerTitle === 'Now shutting down'"
+						:src="require('@/assets/img/loading/waiting.svg')"
+						alt="pending"
+						class="ml-1 is-24x24"
+					/>
 				</template>
-				<div :class="showPowerTitle === 'Now shutting down' ? 'mb-4' : ''"
-					class="is-flex is-align-items-center is-justify-content-start _is-normal">
+				<div
+					:class="showPowerTitle === 'Now shutting down' ? 'mb-4' : ''"
+					class="is-flex is-align-items-center is-justify-content-start _is-normal"
+				>
 					{{ $t(showPowerMessage) }}
 				</div>
 			</b-message>
-			<footer v-if="showPowerTitle !== 'Now shutting down'"
-				class="has-background-white is-flex is-flex-direction-row-reverse">
+			<footer
+				v-if="showPowerTitle !== 'Now shutting down'"
+				class="has-background-white is-flex is-flex-direction-row-reverse"
+			>
 				<button
-					class="ml-2 mr-5 mt-3 mb-3 pr-4 pl-4 _is-normal _has-background-blue is-flex is-align-items-center is-justify-content-center">
-					{{ $t('Connecting') }}
+					class="ml-2 mr-5 mt-3 mb-3 pr-4 pl-4 _is-normal _has-background-blue is-flex is-align-items-center is-justify-content-center"
+				>
+					{{ $t("Connecting") }}
 					<img :src="require('@/assets/img/power/waiting-white.svg')" alt="loading" class="ml-1" />
 				</button>
 			</footer>
 		</b-modal>
-
 	</div>
 </template>
 
 <script>
-import AccountPanel from './account/AccountPanel.vue'
-import TerminalPanel from './logsAndTerminal/TerminalPanel.vue'
-import PortPanel from './settings/PortPanel.vue'
-import UpdateModal from './settings/UpdateModal.vue'
-import { mixin } from '@/mixins/mixin';
+import AccountPanel from "./account/AccountPanel.vue";
+import TerminalPanel from "./logsAndTerminal/TerminalPanel.vue";
+import PortPanel from "./settings/PortPanel.vue";
+import UpdateModal from "./settings/UpdateModal.vue";
+import { mixin } from "@/mixins/mixin";
+import messages from "@/assets/lang";
 
-import events from '@/events/events';
+import events from "@/events/events";
 
-const systemConfigName = "system"
+const systemConfigName = "system";
 
 export default {
 	name: "top-bar",
 	components: {
-		AccountPanel
+		AccountPanel,
 	},
 	mixins: [mixin],
 	data() {
@@ -320,9 +419,9 @@ export default {
 			},
 			rss_switch: false,
 			updateInfo: {
-				current_version: '0',
+				current_version: "0",
 				need_update: false,
-				version: Object
+				version: Object,
 			},
 			isUpdating: false,
 			latestText: "Currently at the latest version",
@@ -332,30 +431,10 @@ export default {
 			autoUsbMount: false,
 			deviceModel: "",
 			// Language Sets
-			languages: [
-				{ lang: "ar_sa", name: "العربية" },
-				{ lang: "be_by", name: "Беларуская" },
-				{ lang: "de_de", name: "Deutsch" },
-				{ lang: "el_gr", name: "Ελληνικά"},
-				{ lang: "en_us", name: "English" },
-				{ lang: "es_es", name: "Español" },
-				{ lang: "fr_fr", name: "Français" },
-				{ lang: "hr_hr", name: "Hrvatski" },
-				{ lang: "hu_hu", name: "Magyar" },
-				{ lang: "it_it", name: "Italiano" },
-				{ lang: "ja_jp", name: "日本語" },
-				{ lang: "ko_kr", name: "한국어" },
-				{ lang: "no_no", name: "Norsk Bokmål" },
-				{ lang: "pl_pl", name: "Polska" },
-				{ lang: "pt_br", name: "Português (Brasileiro)" },
-				{ lang: "pt_pt", name: "Português" },
-				{ lang: "ro_ro", name: "Română" },
-				{ lang: "ru_ru", name: "Русский" },
-				{ lang: "sl_si", name: "Slovenščina" },
-				{ lang: "tr_tr", name: "Türkçe" },
-				{ lang: "uk_ua", name: "Українська" },
-				{ lang: "zh_cn", name: "简体中文" },
-			],
+			languages: Object.entries(messages).map(([key, value]) => ({
+				lang: key,
+				name: value.lang_name,
+			})),
 			// Search Engine Sets
 			searchEngines: [
 				{ url: "https://duckduckgo.com/?q=", name: "DuckDuckGo" },
@@ -364,60 +443,60 @@ export default {
 				{ url: "https://www.startpage.com/do/search?cat=web&pl=chrome&query=", name: "StartPage" },
 				{ url: "https://search.brave.com/search?source=web&q=", name: "Brave" },
 			],
-			restart: 'Restart',
-			shutdown: 'Shutdown',
+			restart: "Restart",
+			shutdown: "Shutdown",
 			showPower: false,
-			showPowerTitle: '',
-			showPowerMessage: '',
-		}
+			showPowerTitle: "",
+			showPowerMessage: "",
+		};
 	},
 	props: {
 		initBarData: {
-			type: Object
+			type: Object,
 		},
 	},
 	computed: {
 		sidebarIcon() {
-			return this.$store.state.sidebarOpen ? "close-outline" : "menu-outline"
+			return this.$store.state.sidebarOpen ? "close-outline" : "menu-outline";
 		},
 		sidebarIconLabel() {
-			return this.$store.state.sidebarOpen ? "Hide Sidebar" : "Show SideBar"
+			return this.$store.state.sidebarOpen ? "Hide Sidebar" : "Show SideBar";
 		},
 		isRaspberryPi() {
-			return this.deviceModel.toLowerCase().indexOf("raspberry") >= 0
-		}
+			return this.deviceModel.toLowerCase().indexOf("raspberry") >= 0;
+		},
 	},
 	watch: {
-		'barData.lang': {
+		"barData.lang": {
 			handler(val, oldValue) {
 				if (val === oldValue) {
-					return
+					return;
 				}
 				const lang = val.includes("_") ? val : "en_us";
-				this.$messageBus('dashboardsetting_language', lang);
-				this.setLang(lang)
+				this.$messageBus("dashboardsetting_language", lang);
+				this.setLang(lang);
 			},
-			deep: true
+			deep: true,
 		},
-		'barData.search_engine': {
+		"barData.search_engine": {
 			handler(val, oldValue) {
 				if (val === oldValue) {
-					return
+					return;
 				}
-				this.$messageBus('dashboardsetting_searchengine', val.toString());
-				this.$store.commit('SET_SEARCH_ENGINE', val);
+				this.$messageBus("dashboardsetting_searchengine", val.toString());
+				this.$store.commit("SET_SEARCH_ENGINE", val);
 			},
-			deep: true
+			deep: true,
 		},
-		'barData.search_switch': {
+		"barData.search_switch": {
 			handler(val, oldValue) {
 				if (val === oldValue) {
-					return
+					return;
 				}
-				this.$messageBus('dashboardsetting_showsearchbar', val.toString());
-				this.$store.commit('SET_SEARCH_ENGINE_SWITCH', val);
+				this.$messageBus("dashboardsetting_showsearchbar", val.toString());
+				this.$store.commit("SET_SEARCH_ENGINE_SWITCH", val);
 			},
-			deep: true
+			deep: true,
 		},
 		// "barData.existing_apps_switch": {
 		// 	handler(val, oldValue) {
@@ -429,30 +508,29 @@ export default {
 		// 	},
 		// 	deep: true
 		// },
-		'barData.recommend_switch': {
+		"barData.recommend_switch": {
 			handler(val) {
-				this.$store.commit('SET_RECOMMEND_SWITCH', val);
+				this.$store.commit("SET_RECOMMEND_SWITCH", val);
 			},
-			deep: true
+			deep: true,
 		},
-		'barData.rss_switch': {
+		"barData.rss_switch": {
 			handler(val, oldValue) {
 				this.rss_switch = val;
-				this.$store.commit('SET_RSS_SWITCH', val);
+				this.$store.commit("SET_RSS_SWITCH", val);
 				if (val === oldValue || val === undefined) {
-					return
+					return;
 				}
-				this.$messageBus('dashboardsetting_news', val.toString());
+				this.$messageBus("dashboardsetting_news", val.toString());
 			},
-			deep: true
+			deep: true,
 		},
 		initBarData(val) {
-			this.barData = val
+			this.barData = val;
 		},
-
 	},
 	created() {
-		this.barData = this.initBarData
+		this.barData = this.initBarData;
 		// this.getConfig();
 		this.getPort();
 	},
@@ -473,9 +551,9 @@ export default {
 		 * @return {*}
 		 */
 		async saveData() {
-			const saveRes = await this.$api.users.setCustomStorage(systemConfigName, this.barData)
+			const saveRes = await this.$api.users.setCustomStorage(systemConfigName, this.barData);
 			if (saveRes.data.success === 200) {
-				this.barData = saveRes.data.data
+				this.barData = saveRes.data.data;
 			}
 		},
 
@@ -486,13 +564,13 @@ export default {
 		 */
 		onOpen(isOpen) {
 			if (isOpen) {
-				this.$store.commit('SET_SIDEBAR_CLOSE')
-				this.checkVersion()
+				this.$store.commit("SET_SIDEBAR_CLOSE");
+				this.checkVersion();
 			} else {
 				// Reset the text when the Settings layer closes
 				// this.resetPower(true)
-				this.restart = "Restart"
-				this.shutdown = "Shutdown"
+				this.restart = "Restart";
+				this.shutdown = "Shutdown";
 			}
 		},
 
@@ -502,9 +580,8 @@ export default {
 		 * @return {*}
 		 */
 		showSideBar() {
-			this.$store.commit('TOOGLE_SIDEBAR_STATE')
+			this.$store.commit("TOOGLE_SIDEBAR_STATE");
 		},
-
 
 		/*************************************************
 		 * PART 1-2  Dashboard Setting - Language
@@ -516,9 +593,9 @@ export default {
 		 * @return {String} lang
 		 */
 		getInitLang() {
-			let lang = localStorage.getItem('lang') ? localStorage.getItem('lang') : this.getLangFromBrowser()
+			let lang = localStorage.getItem("lang") ? localStorage.getItem("lang") : this.getLangFromBrowser();
 			lang = lang.includes("_") ? lang : "en_us";
-			return lang
+			return lang;
 		},
 
 		/*************************************************
@@ -530,11 +607,11 @@ export default {
 		 * @return {*}
 		 */
 		getPort() {
-			this.$api.sys.getServerPort().then(res => {
+			this.$api.sys.getServerPort().then((res) => {
 				if (res.data.success == 200) {
-					this.port = res.data.data
+					this.port = res.data.data;
 				}
-			})
+			});
 		},
 
 		/**
@@ -542,26 +619,25 @@ export default {
 		 * @return {*}
 		 */
 		showPortPanel() {
-			this.$refs.settingsDrop.toggle()
+			this.$refs.settingsDrop.toggle();
 			this.$buefy.modal.open({
 				parent: this,
 				component: PortPanel,
 				hasModalCard: true,
-				customClass: 'account-modal',
+				customClass: "account-modal",
 				trapFocus: true,
-				canCancel: ['escape'],
+				canCancel: ["escape"],
 				scroll: "keep",
 				animation: "zoom-in",
 				props: {
-					initPort: this.port
-				}
-			})
+					initPort: this.port,
+				},
+			});
 		},
 		showChangeWallpaperModal() {
 			this.$EventBus.$emit(events.SHOW_CHANGE_WALLPAPER_MODAL);
-			this.$refs.settingsDrop.toggle()
+			this.$refs.settingsDrop.toggle();
 		},
-
 
 		/*************************************************
 		 * PART 1-4  Dashboard Setting - Auto USB Mount Switch
@@ -571,11 +647,11 @@ export default {
 		 * @return {*}
 		 */
 		getUsbStatus() {
-			this.$api.sys.getUsbStatus().then(res => {
+			this.$api.sys.getUsbStatus().then((res) => {
 				if (res.data.success == 200) {
-					this.autoUsbMount = res.data.data === "True"
+					this.autoUsbMount = res.data.data === "True";
 				}
-			})
+			});
 		},
 
 		/**
@@ -585,20 +661,21 @@ export default {
 		 */
 		usbAutoMount() {
 			if (this.autoUsbMount) {
-				this.$messageBus('dashboardsetting_automountusb', true.toString())
-				this.$api.sys.toggleUsbAutoMount({ state: "on" })
+				this.$messageBus("dashboardsetting_automountusb", true.toString());
+				this.$api.sys.toggleUsbAutoMount({ state: "on" });
 				// Show
 				if (this.isRaspberryPi) {
 					this.$buefy.snackbar.open({
-						message: this.$t('Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB'),
-						type: 'is-warning',
-						position: 'is-top',
-					})
+						message: this.$t(
+							"Enabling this function may cause boot failures when the Raspberry Pi device is booted from USB"
+						),
+						type: "is-warning",
+						position: "is-top",
+					});
 				}
-
 			} else {
-				this.$messageBus('dashboardsetting_automountusb', false.toString())
-				this.$api.sys.toggleUsbAutoMount({ state: "off" })
+				this.$messageBus("dashboardsetting_automountusb", false.toString());
+				this.$api.sys.toggleUsbAutoMount({ state: "off" });
 			}
 		},
 		/**
@@ -607,12 +684,12 @@ export default {
 		 * @return {*}
 		 */
 		getHardwareInfo() {
-			this.$api.sys.hardwareInfo().then(res => {
+			this.$api.sys.hardwareInfo().then((res) => {
 				if (res.data.success == 200) {
-					this.deviceModel = res.data.data.drive_model
-					localStorage.setItem('arch', res.data.data.arch || "")
+					this.deviceModel = res.data.data.drive_model;
+					localStorage.setItem("arch", res.data.data.arch || "");
 				}
-			})
+			});
 		},
 
 		/*************************************************
@@ -624,14 +701,14 @@ export default {
 		 * @return {*} void
 		 */
 		checkVersion() {
-			this.$api.sys.getVersion().then(res => {
+			this.$api.sys.getVersion().then((res) => {
 				if (res.data.success === 200) {
-					this.updateInfo = res.data.data
+					this.updateInfo = res.data.data;
 					if (res.data.data.need_update) {
-						this.$messageBus('dashboardsetting_versionavailable_show', true.toString())
+						this.$messageBus("dashboardsetting_versionavailable_show", true.toString());
 					}
 				}
-			})
+			});
 		},
 
 		/**
@@ -639,19 +716,19 @@ export default {
 		 * @return {*} void
 		 */
 		showUpdateModal() {
-			this.$messageBus('dashboardsetting_versionupdate', true.toString());
+			this.$messageBus("dashboardsetting_versionupdate", true.toString());
 			this.$buefy.modal.open({
 				parent: this,
 				component: UpdateModal,
 				hasModalCard: true,
 				trapFocus: true,
-				canCancel: ['escape'],
-				scroll: 'keep',
-				animation: 'zoom-in',
+				canCancel: ["escape"],
+				scroll: "keep",
+				animation: "zoom-in",
 				props: {
-					changeLog: this.updateInfo.version.change_log
-				}
-			})
+					changeLog: this.updateInfo.version.change_log,
+				},
+			});
 		},
 
 		/*************************************************
@@ -662,15 +739,15 @@ export default {
 		 * @return {*} void
 		 */
 		async getUserInfo() {
-			this.userInfo = this.$store.state.user
-			this.$store.commit('SET_SIDEBAR_CLOSE')
+			this.userInfo = this.$store.state.user;
+			this.$store.commit("SET_SIDEBAR_CLOSE");
 			if (this.$store.state.user.id == 0) {
 				try {
-					const userRes = await this.$api.users.getUserInfo()
-					this.userInfo = userRes.data.data
-					this.$store.commit('SET_USER', this.userInfo)
+					const userRes = await this.$api.users.getUserInfo();
+					this.userInfo = userRes.data.data;
+					this.$store.commit("SET_USER", this.userInfo);
 				} catch (error) {
-					console.error(error)
+					console.error(error);
 				}
 			}
 		},
@@ -683,18 +760,18 @@ export default {
 		 * @return {*} void
 		 */
 		showTerminalPanel() {
-			this.$messageBus('terminallogs')
-			this.$store.commit('SET_SIDEBAR_CLOSE')
+			this.$messageBus("terminallogs");
+			this.$store.commit("SET_SIDEBAR_CLOSE");
 			this.$buefy.modal.open({
 				parent: this,
 				component: TerminalPanel,
 				hasModalCard: true,
-				customClass: 'terminal-modal',
+				customClass: "terminal-modal",
 				trapFocus: true,
 				canCancel: [],
 				scroll: "keep",
 				animation: "zoom-in",
-			})
+			});
 		},
 
 		rssConfirm() {
@@ -703,66 +780,67 @@ export default {
 				return this.saveData();
 			}
 			this.$buefy.dialog.confirm({
-				title: this.$t('Show news feed from CasaOS Blog'),
-				message: this.$t('CasaOS dashboard will get the the latest news feed of https://blog.casaos.io via Internet, which might leave your visit records to the site. Do you accept?'),
-				type: 'is-dark',
-				confirmText: this.$t('Accept'),
-				cancelText: this.$t('Cancel'),
+				title: this.$t("Show news feed from CasaOS Blog"),
+				message: this.$t(
+					"CasaOS dashboard will get the the latest news feed of https://blog.casaos.io via Internet, which might leave your visit records to the site. Do you accept?"
+				),
+				type: "is-dark",
+				confirmText: this.$t("Accept"),
+				cancelText: this.$t("Cancel"),
 				onConfirm: () => {
-					this.barData.rss_switch = true
-					this.saveData()
+					this.barData.rss_switch = true;
+					this.saveData();
 				},
 				onCancel: () => {
-					this.barData.rss_switch = false
-					this.rss_switch = false
-				}
-			})
+					this.barData.rss_switch = false;
+					this.rss_switch = false;
+				},
+			});
 		},
 		power(key) {
 			if (this[key.toLowerCase()] !== "Are you sure?") {
-				this[key.toLowerCase()] = "Are you sure?"
-				return
+				this[key.toLowerCase()] = "Are you sure?";
+				return;
 			}
-			this.$refs.settingsDrop.toggle()
-			this.showPower = true
+			this.$refs.settingsDrop.toggle();
+			this.showPower = true;
 			switch (key) {
 				case "Restart":
-					this.$messageBus('dashboardsetting_reboot');
-					this[key.toLowerCase()] = key
-					this.showPowerTitle = 'Restarting now'
-					this.showPowerMessage = 'Please wait for about 90 seconds.'
+					this.$messageBus("dashboardsetting_reboot");
+					this[key.toLowerCase()] = key;
+					this.showPowerTitle = "Restarting now";
+					this.showPowerMessage = "Please wait for about 90 seconds.";
 					break;
 				case "Shutdown":
-					this.$messageBus('dashboardsetting_shutdown');
-					this[key.toLowerCase()] = key
-					this.showPowerTitle = 'Now shutting down'
-					this.showPowerMessage = 'Please wait for about 30 seconds before cutting off the power.'
+					this.$messageBus("dashboardsetting_shutdown");
+					this[key.toLowerCase()] = key;
+					this.showPowerTitle = "Now shutting down";
+					this.showPowerMessage = "Please wait for about 30 seconds before cutting off the power.";
 					break;
 			}
 			let timer;
-			let path = key === 'Shutdown' ? 'off' : 'restart'
-			this.$api.sys.power(path).then(res => {
+			let path = key === "Shutdown" ? "off" : "restart";
+			this.$api.sys.power(path).then((res) => {
 				if (res.data.success === 200) {
-					this.showPowerMessage = res.data.data
+					this.showPowerMessage = res.data.data;
 					timer = setInterval(() => {
-						this.$api.users.getUserStatus().then(res => {
+						this.$api.users.getUserStatus().then((res) => {
 							if (res.data.data.initialized) {
 								clearInterval(timer);
 								location.reload();
 							}
-						})
-					}, 30000)
+						});
+					}, 30000);
 				}
-			})
+			});
 		},
 		resetPower() {
-			this.showPower = false
-			this.restart = "Restart"
-			this.shutdown = "Shutdown"
+			this.showPower = false;
+			this.restart = "Restart";
+			this.shutdown = "Shutdown";
 		},
 	},
-
-}
+};
 </script>
 
 <style lang="scss">
@@ -783,7 +861,6 @@ export default {
 }
 
 ._title {
-	
 	font-family: $family-sans-serif;
 	font-size: 1rem;
 	font-weight: 500;
@@ -795,7 +872,6 @@ export default {
 }
 
 ._is-normal {
-	
 	font-family: $family-sans-serif;
 	font-size: 0.875rem;
 	font-weight: 400;
@@ -804,14 +880,12 @@ export default {
 	text-align: left;
 }
 
-
 ._has-text-attention {
 	color: hsla(18, 98%, 55%, 1);
 }
 
 ._has-text-gray {
 	color: hsla(208, 14%, 58%, 1);
-
 }
 
 ._fixed-height {
@@ -844,7 +918,7 @@ export default {
 			}
 		}
 
-		.dropdown+.dropdown {
+		.dropdown + .dropdown {
 			margin-left: 0;
 		}
 
@@ -899,8 +973,8 @@ export default {
 		}
 
 		// TODO: remove this when the switch to be component.
-		&._small input[type=checkbox] {
-			&+.check {
+		&._small input[type="checkbox"] {
+			& + .check {
 				width: 2.286em;
 				height: 1.429em;
 				padding: 0;
@@ -913,7 +987,7 @@ export default {
 				}
 			}
 
-			&:checked+.check {
+			&:checked + .check {
 				&::before {
 					transform: translate3d(80%, 0, 0);
 				}
@@ -999,7 +1073,7 @@ export default {
 	font-size: 0.875rem;
 	line-height: 1.25rem;
 	/* or 143% */
-	font-feature-settings: 'pnum' on, 'lnum' on;
+	font-feature-settings: "pnum" on, "lnum" on;
 }
 
 ._has-background-blue {
@@ -1021,21 +1095,21 @@ export default {
 				//margin-left: 1.5rem;
 				padding: 1.25rem 1.5rem 0.75rem 1.5rem;
 
-				>div {
+				> div {
 					display: flex;
 					//align-items: center;
 					justify-content: center;
 					vertical-align: middle;
 
 					color: hsla(208, 20%, 20%, 1);
-					
+
 					font-family: $family-sans-serif;
 					font-size: 1rem;
 					font-weight: 500;
 					line-height: 1.5rem;
 					letter-spacing: 0em;
 					text-align: left;
-					font-feature-settings: 'pnum' on, 'lnum' on;
+					font-feature-settings: "pnum" on, "lnum" on;
 
 					.is-24x24 {
 						width: 1.5rem;
@@ -1043,7 +1117,7 @@ export default {
 					}
 				}
 
-				>button {
+				> button {
 					width: 1.5rem;
 					height: 1.5rem;
 					max-height: 1.5rem;
@@ -1077,7 +1151,5 @@ export default {
 			}
 		}
 	}
-
-
 }
 </style>

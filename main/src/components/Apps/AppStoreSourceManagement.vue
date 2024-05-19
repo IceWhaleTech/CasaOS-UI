@@ -1,5 +1,5 @@
 <script setup>
-import { defineEmits, defineProps, getCurrentInstance, onBeforeUnmount, onMounted, ref } from "vue";
+import { getCurrentInstance, onBeforeUnmount, onMounted, ref } from "vue";
 
 const emit = defineEmits(["refreshAppStore", "refreshSize", "close"]);
 const props = defineProps(['totalApps']);
