@@ -16,7 +16,6 @@ If you want to connect dev UI version to your local CasaOS server, you will need
 2. Set `VUE_APP_DEV_IP` to IP address of your local CasaOS server
 
 ## Set up dev server
-
 ```shell
 # install tool
 yarn global add turbo
