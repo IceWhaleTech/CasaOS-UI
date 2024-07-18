@@ -6,6 +6,17 @@
 
 # How to develop this project
 
+## Prerequisites
+1. Node 16 ([installation instructions](https://github.com/nvm-sh/nvm?tab=readme-ov-file#usage))
+2. Yarn@3.6.0 ([installation instructions](https://yarnpkg.com/getting-started/install))
+
+## Environment variables
+If you want to connect dev UI version to your local CasaOS server, you will need to set up a couple of env variables:
+1. Copy `.env.dev` to `.env.dev.local` (this file is git-ignored)
+2. Set `VUE_APP_DEV_IP` to IP address of your local CasaOS server
+
+## Set up dev server
+
 ```shell
 # install tool
 yarn global add turbo
