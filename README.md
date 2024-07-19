@@ -30,7 +30,13 @@ yarn install
 yarn build 
 ```
 
-# TODO how to test this project
+# How to test this project
+
+```shell
+yarn test
+```
+
+This project uses `vitest` for unit tests. 
 
 # TODO how to deploy this project
 

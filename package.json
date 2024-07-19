@@ -6,7 +6,8 @@
     "preinstall": "npx only-allow yarn",
     "dev": "turbo run serve",
     "dev:noCache": "turbo run serve --force --cache-dir ./.turbo/cache",
-    "build": "turbo run build"
+    "build": "turbo run build",
+    "test": "turbo run test"
   },
   "packageManager": "yarn@3.6.0",
   "workspaces": [

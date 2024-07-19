@@ -7,7 +7,8 @@
     "postinstall": "patch-package",
     "build": "node message_bus.build.js && vue-cli-service build --dest ../build/sysroot/var/lib/casaos/www/ --mode production",
     "lint": "vue-cli-service lint",
-    "build:messagebus": "node message_bus.build.js"
+    "build:messagebus": "node message_bus.build.js",
+    "test": "vitest"
   },
   "installConfig": {
     "hoistingLimits": "workspaces"
@@ -71,6 +72,8 @@
     "v-viewer": "^1.7.1",
     "validator": "^13.9.0",
     "vee-validate": "^3.4.15",
+    "vite": "^5.3.4",
+    "vitest": "^2.0.3",
     "vue": "2.7.16",
     "vue-advanced-cropper": "1.11.6",
     "vue-apexcharts": "^1.6.2",
