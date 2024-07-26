@@ -17,7 +17,7 @@
  * @FilePath: /CasaOS-UI/src/components/filebrowser/components/ActionButton.vue
 -->
 <template>
-	<div class="action-btn">
+	<div class="action-btn" @click.stop>
 		<b-dropdown :id="'dr-'+index" ref="dropDown" :close-on-click="false"
 					:position="'is-'+verticalPos+'-'+horizontalPos" animation="fade1"
 					append-to-body aria-role="list" class="file-dropdown"
