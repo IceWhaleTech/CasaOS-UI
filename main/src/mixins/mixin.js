@@ -3,6 +3,7 @@ import has from 'lodash/has'
 import union from 'lodash/union'
 import copy from 'clipboard-copy'
 import dayjs from 'dayjs'
+import { renderSize } from './file_utils'
 
 const typeMap = {
 	"image-x-generic": ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'svg', 'tiff'],
@@ -54,20 +55,8 @@ export const mixin = {
 		this.typeMap = typeMap;
 	},
 
-	methods: {
-		/**
-		 * @description: Format size output
-		 * @param {int} bytes size value
-		 * @return {String}
-		 */
-		renderSize(bytes) {
-			const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
-			if (bytes == 0) return '0 Bytes'
-			const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10)
-			if (i === 0) return `${bytes} ${sizes[i]}`
-			return `${parseFloat((bytes / (1024 ** i)).toFixed(2))} ${sizes[i]}`
-		},
-
+	methods: {		
+		renderSize,
 
 		/**
 		 * @description: Get Default Lang from browser
@@ -428,20 +417,7 @@ export const mixin = {
 			return size + unitArr[index];
 		},
 
-
-		/**
-		 * @description: Format size output
-		 * @param {int} value size value
-		 * @return {String}
-		 */
-		renderSize(bytes) {
-			const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-			if (bytes === 0) return '0 Bytes'
-			const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10)
-			if (i === 0) return `${bytes} ${sizes[i]}`
-			return `${parseFloat((bytes / (1024 ** i)).toFixed(2))} ${sizes[i]}`
-		},
-
+		renderSize,
 
 		toFahrenheit: function (value) {
 			return (32 + value * 1.8).toFixed(1);

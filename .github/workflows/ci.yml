@@ -1,0 +1,32 @@
+name: push_test_server
+
+on:
+    pull_request:
+
+jobs:
+    test:
+        if: github.repository == 'IceWhaleTech/CasaOS-UI'
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node-version: [ 16.x ]
+            # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+        steps:
+            -   uses: actions/checkout@v3
+            -   name: '使用 Use Node.js ${{ matrix.node-version }}'
+                uses: actions/setup-node@v3
+                with:
+                    node-version: ${{ matrix.node-version }}
+                    cache: 'npm'
+            -   name: '缓存 Cache'
+                uses: actions/cache@v3
+                id: cache-dependencies
+                with:
+                    path: node_modules
+                    key: ${{runner.OS}}-${{hashFiles('**/yarn.lock')}}
+
+            -   run: yarn install
+
+            -   name: 'Unit tests'
+                run: yarn test
