@@ -55,16 +55,7 @@
 									</b-field>
 									<!-- CheckBox End -->
 
-									<!-- Action Button Start -->
-									<action-button
-										:class="{ show: isMobile }"
-										:cols="cols"
-										:index="index"
-										:item="item"
-										@reload="$emit('reload')"
-										@showDetailModal="$emit('showDetailModal', item)"
-									></action-button>
-									<!-- Action Button End -->
+									<action-button :class="{ show: isMobile }" @click.stop="openContextMenu($event, item)" />
 								</div>
 							</div>
 						</div>

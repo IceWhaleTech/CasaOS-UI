@@ -56,10 +56,7 @@
 											dateFmt }}</span>
 									</div>
 									<div class="action-wrapper is-flex-shrink-0">
-										<!-- Action Button Start -->
-										<action-button :class="{ show: isMobile }" :cols="cols" :index="index" :item="item"
-											@reload="$emit('reload')"></action-button>
-										<!-- Action Button End -->
+										<action-button :class="{ show: isMobile }" @click.stop="openContextMenu($event, item)" />
 									</div>
 								</div>
 								<div v-if="!isMobile" class="td">
