@@ -812,7 +812,6 @@ export default {
 
 		.dropdown-content {
 			padding: 4px !important;
-			width: 160px;
 			background: none;
 			background: hsla(0, 0%, 100%, 1);
 			border-radius: 10px;
