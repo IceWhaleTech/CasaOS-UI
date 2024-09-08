@@ -149,6 +149,11 @@ export default {
 			this.instance.destroy(false);
 		}
 	},
+	methods: {
+		close() {
+			this.$emit("close");
+		}
+	}
 };
 </script>
 <style lang="scss" scoped>
