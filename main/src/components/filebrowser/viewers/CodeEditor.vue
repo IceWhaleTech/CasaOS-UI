@@ -224,7 +224,7 @@ export default {
 			this.$api.file.download(this.item.path).then(res => {
 				this.code = typeof res.data === 'object'
 					? JSON.stringify(res.data, null, 2)
-					: res.data
+					: String(res.data)
 				this.$nextTick(() => {
 					this.isChange = false
 				})
