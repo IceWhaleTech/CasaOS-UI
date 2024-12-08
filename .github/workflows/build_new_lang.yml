@@ -8,7 +8,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                node-version: [16.x]
+                node-version: [18.x]
             # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
         steps:
@@ -19,8 +19,14 @@ jobs:
                   node-version: ${{ matrix.node-version }}
                   cache: "npm"
 
-            - run: yarn install
-            - run: yarn build
+            - name: Install pnpm
+              uses: pnpm/action-setup@v2
+              with:
+                  version: 9.12.2
+                  run_install: false
+
+            - run: pnpm install
+            - run: pnpm build
             - run: |
                   tar -zcvf linux-all-casaos-lang-build.tar.gz build
 
