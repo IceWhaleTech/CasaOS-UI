@@ -27,7 +27,7 @@ jobs:
               uses: actions/setup-node@v3
               with:
                   node-version: ${{ matrix.node-version }}
-                  cache: "npm"
+                  cache: "pnpm"
             - name: "缓存 Cache"
               uses: actions/cache@v3
               id: cache-dependencies
