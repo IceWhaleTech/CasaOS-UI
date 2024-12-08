@@ -1,0 +1,58 @@
+// Root Style
+
+:root {
+    --swiper-navigation-size: 24px !important;
+    --background: $main-background-color;
+}
+
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+body,
+html {
+    overflow: hidden;
+    font-family: $family-sans-serif;
+}
+
+
+.button,
+.input,
+.textarea,
+.taginput .taginput-container.is-focusable,
+.select select,
+.file-cta,
+.file-name,
+.pagination-previous,
+.pagination-next,
+.pagination-link,
+.pagination-ellipsis {
+    &:focus {
+        box-shadow: none;
+    }
+}
+
+@font-face {
+	font-family: 'BrittiSans';
+	src: url('../fonts/britti-sans-regular.woff') format('woff');
+  }
+
+@media screen and (max-width: 1024px) {
+    .container {
+        margin: 0 1rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .b-group {
+        align-items: initial !important;
+        display: block !important;
+        width: 5rem;
+        margin-left: 0.5rem;
+
+        .ml-2 {
+            margin-left: 0 !important;
+            margin-top: 0.5rem !important;
+        }
+    }
+}

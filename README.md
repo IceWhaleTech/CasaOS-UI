@@ -7,8 +7,8 @@
 # How to develop this project
 
 ## Prerequisites
-1. Node 16 ([installation instructions](https://github.com/nvm-sh/nvm?tab=readme-ov-file#usage))
-2. Yarn@3.6.0 ([installation instructions](https://yarnpkg.com/getting-started/install))
+1. Node 18 ([installation instructions](https://github.com/nvm-sh/nvm?tab=readme-ov-file#usage))
+2. pnpm@9.0.6 ([installation instructions](https://pnpm.io/installation))
 
 ## Environment variables
 If you want to connect dev UI version to your local CasaOS server, you will need to set up a couple of env variables:
@@ -17,38 +17,28 @@ If you want to connect dev UI version to your local CasaOS server, you will need
 
 ## Set up dev server
 ```shell
-# install tool
-yarn global add turbo
-
 # install dependencies
-yarn install
+pnpm install
 
 # build
-yarn dev 
+pnpm dev 
 ```
 
 # How to build this project
 
 ```shell
-# install tool
-yarn global add turbo
-
 # install dependencies
-yarn install
+pnpm install
 
 # build
-yarn build 
+pnpm build 
 ```
 
 # How to test this project
 
 ```shell
-yarn test
+pnpm test
 ```
-
-This project uses `vitest` for unit tests. 
-
-# TODO how to deploy this project
 
 # How to contribute to this project
 
@@ -58,7 +48,6 @@ need contributions from community members just like you!
 - See <https://wiki.casaos.io/en/contribute> for ways of contribution to CasaOS
 - See <https://wiki.casaos.io/en/contribute/development> if you want to be involved in code contribution specificially
 
-# TODO how to license this project
 
 # How to contact this project
 
