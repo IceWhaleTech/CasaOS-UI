@@ -1,0 +1,279 @@
+// Position
+
+.is-absolute {
+	position: absolute;
+}
+
+// Box Width and Height
+.auto-height {
+	height: auto !important;
+}
+
+.h-30 {
+	height: 30px;
+}
+
+// Index
+
+// Borders
+.border-8 {
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.b-line {
+	border-bottom: #cfcfcf 1px solid;
+}
+
+// Shadow
+
+.is-shadow {
+	-webkit-box-shadow: 0px 0px 17px -2px rgba(0, 0, 0, 0.47);
+	box-shadow: 0px 0px 17px -2px rgba(0, 0, 0, 0.47);
+}
+
+.fullScreen {
+	z-index: 1000;
+	border-radius: 4px;
+	position: relative;
+}
+
+.fdark-bg {
+	background-color: #1e1e1e !important;
+}
+
+.flight-bg {
+	background-color: #fff !important;
+}
+
+.nobrk {
+	word-break: normal;
+}
+
+// Line
+
+.one-line {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	word-break: break-all;
+	-webkit-line-clamp: 1;
+}
+
+.two-line {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	word-break: normal;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+}
+
+// opacity
+.op65 {
+	opacity: 0.65;
+}
+
+.ghost {
+	opacity: 0;
+}
+
+// Blur background
+.blur-background {
+	width: 100%;
+	height: 100%;
+	background-size: cover;
+	background-position: bottom center;
+	background-attachment: fixed;
+	background-color: $backDropColor;
+	backdrop-filter: $backDropBlur;
+	border-radius: $backDropBorderRadius;
+	box-shadow: $backDropShadow;
+	border: $backDropBorder;
+	position: absolute;
+	z-index: 0;
+	overflow: hidden;
+}
+
+.wuji-content {
+	position: relative;
+	z-index: 10;
+	padding: 1.5rem;
+}
+
+.cards-content {
+	position: relative;
+	z-index: 10;
+}
+
+.un-break-word {
+	word-break: keep-all;
+}
+
+.b-checkbox.checkbox input[type="checkbox"]:focus:checked + .check,
+.b-checkbox.checkbox input[type="checkbox"]:focus + .check {
+	box-shadow: none !important;
+}
+
+.autocomplete {
+	&.has-colon {
+		.control {
+			&::before {
+				position: absolute;
+				content: ":";
+				height: 2.714em;
+				font-size: 0.875rem;
+				line-height: 2.714em;
+				left: 0.5rem;
+				z-index: 10;
+				color: hsl(0deg, 0%, 21%);
+			}
+
+			.input {
+				padding-left: 0.75rem;
+			}
+		}
+	}
+}
+
+.label {
+	font-size: 0.875rem;
+	margin-bottom: 0.5rem;
+}
+
+.tabs li.is-active a {
+	color: #2276f3;
+	border-bottom-color: #2276f3;
+
+	&:focus {
+		border-bottom-color: #2276f3;
+	}
+}
+
+.control {
+	.button {
+		font-size: 0.875rem;
+		height: 2.714em;
+	}
+
+	.container-icon {
+		padding: 0 0.25rem;
+	}
+}
+
+.taginput .taginput-container .autocomplete input {
+	border: none !important;
+}
+
+.pagination-link.is-current {
+	background-color: $primary;
+	border-color: $primary;
+	color: #fff;
+}
+
+a.dropdown-item.is-active,
+.dropdown .dropdown-menu .has-link a.is-active,
+button.dropdown-item.is-active {
+	background-color: $primary;
+	color: #fff;
+}
+
+// Tooltip
+.b-tooltip {
+	&.is-multiline {
+		.tooltip-content {
+			text-align: left;
+			word-break: keep-all;
+		}
+	}
+
+	.tooltip-content {
+		box-shadow: none;
+	}
+}
+
+// Tours
+.v-step {
+	border-radius: 10px !important;
+	box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02) !important;
+	background-color: $primary !important;
+
+	.v-step__header {
+		border-top-left-radius: 10px !important;
+		border-top-right-radius: 10px !important;
+		background-color: $primary-dark !important;
+	}
+
+	.v-step__content {
+		font-size: 1rem;
+		text-align: left;
+	}
+}
+
+// cpu title
+.margin-\[-10px\] {
+	margin: -0.625rem;
+}
+
+// Polymorphic
+.polymorphic {
+	transition: background-color 0.2s;
+
+	// Icon size height X width - 32px, radius - 6px
+	&.icon {
+		height: 2rem;
+		width: 2rem;
+		border-radius: 0.375rem;
+	}
+
+	&:hover {
+		cursor: pointer;
+		background: hsla(208, 16%, 96%, 0.12);
+	}
+
+	&:active {
+		background: hsla(208, 16%, 94%, 0.2);
+	}
+}
+
+.w-full {
+	width: 100% !important;
+}
+
+.w-424 {
+	width: 424px !important;
+}
+
+.px-40{
+	padding-left: 40px !important;
+	padding-right: 40px !important;
+}
+
+.py-24{
+	padding-top: 24px !important;
+	padding-bottom: 24px !important;
+}
+.mb-55{
+	margin-bottom: 32px !important;
+}
+._is-radius {
+	border-radius: 0.375rem;
+}
+
+
+.swiper-button-next, .swiper-button-prev{
+	transition: opacity 0.3s;
+	&.swiper-button-disabled{
+		opacity: 0 !important;
+	}
+}
+
+.vue-slider-process{
+	background-color: $primary !important;
+}
+
+.vue-slider-dot-tooltip-inner{
+	background-color: $primary !important;
+	border-color: $primary !important;
+}

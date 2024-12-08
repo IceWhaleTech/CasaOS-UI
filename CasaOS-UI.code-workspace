@@ -1,0 +1,61 @@
+{
+	"folders": [
+		{
+			"path": ".",
+		},
+	],
+	"settings": {
+		"files.associations": {
+			"*.css": "tailwindcss",
+		},
+		"editor.quickSuggestions": {
+			"strings": "on",
+		},
+		// Disable the default formatter, use eslint instead
+		"editor.formatOnSave": false,
+		"editor.codeActionsOnSave": {
+			"source.fixAll.eslint": "explicit",
+			"source.organizeImports": "never"
+		},
+		"tailwindCSS.classAttributes": [
+			"class",
+			"className",
+			"ngClass",
+			".*Styles*"
+		],
+		"tailwindCSS.experimental.classRegex": [
+			// class: "" / class: ''
+			"\\bclass:\\s*[\"']([^\"']*)[\"']",
+			// class: []
+			"\\bclass:\\s*\\[[^\\]]*\\]",
+			// class: {}
+			"\\bclass:\\s*\\{[^}]*\\}",
+		],
+		// Silent the stylistic rules in you IDE, but still auto fix them
+		// For i18n-ally
+		"i18n-ally.localesPaths": [
+			"src/assets/lang"
+		],
+		// Enable eslint for all supported languages
+		"i18n-ally.keystyle": "nested",
+		"[vue]": {
+			"editor.defaultFormatter": "octref.vetur"
+		}
+	},
+	"extensions": {
+		"recommendations": [
+			// For vue2 development experience
+			"octref.vetur",
+			// For lint and format
+			"dbaeumer.vscode-eslint",
+			// For npm packages management
+			"idered.npm",
+			// For i18n support
+			"lokalise.i18n-ally",
+			// For better development experience
+			"christian-kohler.path-intellisense",
+			"formulahendry.auto-close-tag",
+			"formulahendry.auto-rename-tag",
+		],
+	},
+}
