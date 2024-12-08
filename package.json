@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve --mode dev",
-    "build": "node message_bus.build.js && vue-cli-service build --dest ../build/sysroot/var/lib/casaos/www/ --mode production",
+    "build": "node message_bus.build.js && vue-cli-service build --dest ./build/sysroot/var/lib/casaos/www/ --mode production",
     "lint": "vue-cli-service lint",
     "build:messagebus": "node message_bus.build.js",
     "test": "vitest"
