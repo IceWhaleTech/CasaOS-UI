@@ -1526,7 +1526,7 @@ export default {
 		 * @return {*} void
 		 */
 		exportYAML () {
-			let title = YAML.parse(this.dockerComposeCommands)?.['x-casaos']?.['title']
+			let title = parse(this.dockerComposeCommands)?.['x-casaos']?.['title']
 			if (title) {
 				title = ice_i18n(title)
 			} else {
