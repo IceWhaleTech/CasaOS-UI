@@ -286,7 +286,7 @@
   "Add External Link/APP": "Ajouter un lien externe",
   "Local URL,Public URL": "Une URL locale ou une URL publique",
   "Eg: //192.168.1.1:5000 or https://www.google.com": "Ex: //192.168.1.1:5000 ou https://www.google.com",
-  "App Name": "Titre",
+  "App Name": "Titre de l'Application",
   "Customize your APP name": "Titre du lien externe",
   "Local URL": "URL locale",
   "Custom Install APP": "Installer une application personnalisée",

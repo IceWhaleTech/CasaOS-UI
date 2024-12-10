@@ -1,6 +1,6 @@
 {
   "lang_name": "简体中文",
-  "OK": "好",
+  "OK": "好的",
   "Cancel": "取消",
   "Submit": "提交",
   "Back": "返回",
@@ -24,7 +24,7 @@
   "This field is required": "此字段是必填项.",
   "This field must be a valid email": "请输入一个有效的电子邮件地址。",
   "This field confirmation does not match": "此字段确认不匹配",
-  "This field must have 2 options": "此字段必须有 2 个选项",
+  "This field must have 2 options": "此字段必须有两个选项",
   "This field must have more than 5 characters": "此字段不少于 5 个字符.",
   "You entered an invalid RFC1123 hostname": "您输入的时间无效。请使用 RFC1123 格式。",
   "Welcome to CasaOS": "欢迎进入CasaOS",

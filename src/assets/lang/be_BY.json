@@ -1,5 +1,5 @@
 {
-  "lang_name": "Беларуская",
+  "lang_name": "беларуская мова",
   "OK": "ОК",
   "Cancel": "Скасаваць",
   "Submit": "Адправіць",
@@ -409,5 +409,5 @@
   "Installing {title}": "Усталяванне {title}",
   "Legacy app (To be rebuilt).": "Састарэлыя праграмы (Патрабуецца перазборка).",
   "To be rebuilt.": "Будзе перасабрана.",
-  "launch-and-open": "Запусціць і адкрыць"
+  "launch-and-open": "Адкрыць"
 }
