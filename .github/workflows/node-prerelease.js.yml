@@ -23,11 +23,10 @@ jobs:
 
         steps:
             - uses: actions/checkout@v4
-            - name: "使用 Use Node.js ${{ matrix.node-version }}"
+            - name: "Use Node.js ${{ matrix.node-version }}"
               uses: actions/setup-node@v4
               with:
                   node-version: ${{ matrix.node-version }}
-                  cache: "pnpm"
             - name: "缓存 Cache"
               uses: actions/cache@v3
               id: cache-dependencies
