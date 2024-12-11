@@ -74,7 +74,7 @@
 			<!-- Title Bar End -->
 
 			<!-- App List Start -->
-			<div class="columns is-variable is-2 is-multiline app-list contextmenu-canvas">
+			<div class="app-list contextmenu-canvas">
 				<!-- Application not imported Start -->
 				<div v-for="item in oldAppList" :id="'app-' + item.name" :key="'app-' + item.name" class="handle">
 					<app-card
