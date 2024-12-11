@@ -1696,7 +1696,8 @@ export default {
 					this.currentInstallAppType = resData.type
 
 					if (resData.message !== '') {
-						this.totalPercentage = Number(resData.message)
+						const progress = Number(resData.message)
+						this.totalPercentage = progress < 0 ? 0 : progress
 
 						if (this.totalPercentage === 0) {
 							this.currentInstallAppText = 'Starting installation'
