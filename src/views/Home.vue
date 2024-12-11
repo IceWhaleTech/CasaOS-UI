@@ -1,48 +1,50 @@
 <template>
-	<div v-if="!isLoading" class="relative h-full flex flex-col">
+	<div v-if="!isLoading" class="out-container">
 		<!-- NavBar Start -->
 		<top-bar v-animate-css="topBarAni" :initBarData="barData" @showSideBar="showSideBar"></top-bar>
 		<!-- NavBar End -->
 
 		<!-- Content Start -->
-		<div class=" overflow-y-auto overflow-x-hidden flex-1 contextmenu-canvas" @contextmenu.prevent="openHomeContaxtMenu">
-			<div class="container pt-4">
-				<div class="flex items-center justify-center">
-					<div class="columns is-variable is-2">
-						<div class="column is-one-quarter slider-content">
-							<!-- SideBar Start -->
-							<side-bar v-if="!hardwareInfoLoading"></side-bar>
-							<!-- SideBar End -->
+		<div class="contents  pt-55 contextmenu-canvas" @contextmenu.prevent="openHomeContaxtMenu">
+			<div class="container">
+				<div class="columns is-variable is-2">
+					<div class="column is-one-quarter slider-content">
+						<!-- SideBar Start -->
+						<side-bar v-if="!hardwareInfoLoading"></side-bar>
+						<!-- SideBar End -->
+					</div>
+					<div :class="{ 'open': sidebarOpen }" class="column is-three-quarters main-content">
+						<!-- MainContent Start -->
+						<div class=" contextmenu-canvas">
+							<!-- SearchBar Start -->
+							<section>
+								<transition name="fade">
+									<search-bar v-if="searchbarShow"></search-bar>
+								</transition>
+							</section>
+							<!-- SearchBar End -->
+
+							<!-- core-service Start -->
+							<section>
+								<transition name="fade">
+									<core-service></core-service>
+								</transition>
+							</section>
+							<!-- core-service End -->
+
+							<!-- Apps Start -->
+							<section>
+								<app-section ref="apps"></app-section>
+							</section>
+							<!-- Apps End -->
+
+							<!-- Shortcuts Start -->
+							<!-- <section>
+								<shortcuts></shortcuts>
+							</section> -->
+							<!-- Shortcuts End -->
 						</div>
-						<div :class="{ 'open': sidebarOpen }" class="column is-three-quarters main-content">
-							<!-- MainContent Start -->
-							<div class=" contextmenu-canvas">
-								<!-- SearchBar Start -->
-								<section>
-									<transition name="fade">
-										<search-bar v-if="searchbarShow"></search-bar>
-									</transition>
-								</section>
-								<!-- SearchBar End -->
-
-								<!-- core-service Start -->
-								<section>
-									<transition name="fade">
-										<core-service></core-service>
-									</transition>
-								</section>
-								<!-- core-service End -->
-
-								<!-- Apps Start -->
-								<section>
-									<app-section ref="apps"></app-section>
-								</section>
-								<!-- Apps End -->
-
-
-							</div>
-							<!-- MainContent End -->
-						</div>
+						<!-- MainContent End -->
 					</div>
 				</div>
 			</div>
