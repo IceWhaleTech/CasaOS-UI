@@ -64,6 +64,14 @@ export default {
     CommandsInput,
     VueSlider,
   },
+  filters: {
+    duplexDisplay(val) {
+      if (!val) {
+        return 256
+      }
+      return (isNumber(val) && val) || (val && val.replace(/m/i, ''))
+    },
+  },
   props: {
     state: String,
     totalMemory: {
@@ -244,6 +252,7 @@ export default {
       immediate: true,
     },
   },
+
   created() {
     // Set Front-end base url
     this.baseUrl = `${document.domain}`
@@ -325,7 +334,6 @@ export default {
 
     /**
      * @description: Validate form async
-     * @param {object} ref ref of component
      * @return {boolean}
      */
     async checkStep() {
@@ -346,7 +354,6 @@ export default {
         if (!yaml) {
           return
         }
-
         // 其他配置
         this.volumes = yaml.volumes || {}
 
@@ -624,7 +631,7 @@ export default {
 
     makeArray(foo) {
       const newArray = typeof foo == 'string' ? [foo] : foo
-      return newArray == undefined ? [] : newArray
+      return newArray === undefined ? [] : newArray
     },
 
     // ****** migration !!! end !!!
@@ -741,12 +748,6 @@ export default {
       }
       return result
     },
-    duplexDisplay(val) {
-      if (!val) {
-        return 256 // this.memory_min
-      }
-      return (isNumber(val) && val) || (val && val.replace(/M/i, ''))
-    },
     // unused
     filteredBeidgePort(service) {
       return this.bridgePorts(service).filter((port) => {
@@ -787,7 +788,7 @@ export default {
             <ValidationProvider v-slot="{ errors, valid }" class="is-flex-grow-1 mr-3" name="Image0" rules="required">
               <b-field :label="`${$t('Docker Image')} *`" :message="$t(errors)" :type="{ 'is-danger': errors[0], 'is-success': valid }" class="mb-3">
                 <b-input
-                  :key="service.image" :readonly="state == 'update' || serviceStableVersion !== ''" :value="getFirstField(service.image)" :placeholder="$t('e.g.,hello-world:latest')" @input="(V) => changeIcon(V)" @blur="
+                  :key="service.image" :readonly="state === 'update' || serviceStableVersion !== ''" :value="getFirstField(service.image)" :placeholder="$t('e.g.,hello-world:latest')" @input="(V) => changeIcon(V)" @blur="
                     (E) => {
                       return (service.image = service.image.split(':')[1]
                         ? `${E.target._value}:${service.image.split(':')[1]}`
@@ -895,7 +896,7 @@ export default {
           </b-field>
 
           <b-field :label="$t('Memory Limit')" class="mb-5">
-            <VueSlider :max="totalMemory" :min="memory_min" class="mx-2" :marks="true" :data="markData" :value="duplexDisplay(service.deploy.resources.limits.memory)" @change="(v) => (service.deploy.resources.limits.memory = v)" />
+            <VueSlider :max="totalMemory" :min="memory_min" class="mx-2" :marks="true" :data="markData" :value="service.deploy.resources.limits.memory | duplexDisplay" @change="(v) => (service.deploy.resources.limits.memory = v)" />
           </b-field>
 
           <b-field :label="$t('CPU Shares')">
