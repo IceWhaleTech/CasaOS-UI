@@ -40,7 +40,10 @@
 		"i18n-ally.keystyle": "nested",
 		"[vue]": {
 			"editor.defaultFormatter": "octref.vetur"
-		}
+		},
+		"cSpell.words": [
+			"casaos"
+		]
 	},
 	"extensions": {
 		"recommendations": [

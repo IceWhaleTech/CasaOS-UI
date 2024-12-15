@@ -8,29 +8,9 @@
  *
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
 -->
-<template>
-  <div>
-    <div
-      :class="{ active: active }"
-      class="is-flex list-item new-list-item"
-      @click.prevent="$emit('open');$messageBus('files_filesdrop_tab')"
-    >
-      <div
-        slot="reference"
-        class="cover mr-2 is-flex-shrink-0 is-flex is-align-items-center none-click"
-      >
-        <b-icon  icon="drop" pack="casa"></b-icon>
-      </div>
-      <div>
-        <span>{{ title }}</span>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script>
 export default {
-  name: "drop-entry-button",
+  name: 'DropEntryButton',
   props: {
     active: {
       type: Boolean,
@@ -38,8 +18,29 @@ export default {
     },
     title: {
       type: String,
-      default: "",
+      default: '',
     },
   },
-};
+  emits: ['open'],
+}
 </script>
+
+<template>
+  <div>
+    <div
+      :class="{ active }"
+      class="is-flex list-item new-list-item"
+      @click.prevent="$emit('open');$messageBus('files_filesdrop_tab')"
+    >
+      <div
+        slot="reference"
+        class="cover mr-2 is-flex-shrink-0 is-flex is-align-items-center none-click"
+      >
+        <b-icon icon="drop" pack="casa" />
+      </div>
+      <div>
+        <span>{{ title }}</span>
+      </div>
+    </div>
+  </div>
+</template>

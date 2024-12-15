@@ -4,49 +4,49 @@
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2022-07-14 12:15:14
  * @FilePath: \CasaOS-UI\src\service\folder.js
- * @Description: 
- * 
- * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+ * @Description:
+ *
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
  */
-import {api} from "./service.js";
+import { api } from './service.js'
 
-const PREFIX = "/folder"
+const PREFIX = '/folder'
 
 const folder = {
-	// get folder list
-	getList(path) {
-		return api.get(`${PREFIX}`, {
-			path: path
-		});
-	},
-	// create folder
-	create(path) {
-		return api.post(`${PREFIX}`, {
-			path: path,
-		});
-	},
+  // get folder list
+  getList(path) {
+    return api.get(`${PREFIX}`, {
+      path,
+    })
+  },
+  // create folder
+  create(path) {
+    return api.post(`${PREFIX}`, {
+      path,
+    })
+  },
 
-	// rename folder
-	rename(old_path, new_path) {
-		return api.put(`${PREFIX}/name`, {
-			old_path: old_path,
-			new_path: new_path
-		});
-	},
+  // rename folder
+  rename(old_path, new_path) {
+    return api.put(`${PREFIX}/name`, {
+      old_path,
+      new_path,
+    })
+  },
 
-	// get folder size
-	getFolderSize(path) {
-		return api.get(`${PREFIX}/size`, {
-			path: path
-		});
-	},
+  // get folder size
+  getFolderSize(path) {
+    return api.get(`${PREFIX}/size`, {
+      path,
+    })
+  },
 
-	// count folder
-	getFolderCount(path) {
-		return api.get(`${PREFIX}/count`, {
-			path: path
-		});
-	},
+  // count folder
+  getFolderCount(path) {
+    return api.get(`${PREFIX}/count`, {
+      path,
+    })
+  },
 }
 
-export default folder;
+export default folder

@@ -1,3 +1,9 @@
+<script>
+export default {
+  name: 'SideBar',
+}
+</script>
+
 <template>
   <div class="nav-bar is-flex is-flex-direction-column">
     <div class="is-flex-grow-1 is-flex-shrink-1 nav-bar-top scrollbars-light">
@@ -15,16 +21,15 @@
             class="is-flex-shrink-0 mr-5"
             @click="showStorageSettingsModal"
           >
-            <b-icon custom-size="mdi-18px" icon="cog-outline"></b-icon>
+            <b-icon custom-size="mdi-18px" icon="cog-outline" />
           </div>
         </div>
         <div class="list-container scrollbars-light pt-0 is-flex-grow-1">
           <tree-list
-            ref="navBar"
-            :autoLoad="true"
-            :isActive="pageType == `file`"
+            :auto-load="true"
+            :is-active="pageType === `file`"
             :path="rootPath"
-          ></tree-list>
+          />
         </div>
       </div>
       <!-- Files End -->
@@ -38,18 +43,17 @@
             </h3>
           </div>
           <div class="is-flex-shrink-0 mr-5">
-            <mount-action-button></mount-action-button>
+            <mount-action-button />
           </div>
         </div>
 
         <div class="list-container pt-0 is-flex-grow-1">
           <mount-list
-            ref="mountedList"
-            :autoLoad="true"
-            :hasMergerFunction="hasMergerFunction"
-            :isActive="pageType == `file`"
+            :auto-load="true"
+            :has-merger-function="hasMergerFunction"
+            :is-active="pageType === `file`"
             :path="rootPath"
-          ></mount-list>
+          />
         </div>
       </div>
       <!-- Mounted End -->
@@ -58,22 +62,15 @@
     <!-- Bottom Action Start -->
     <div class="bottom-area">
       <drop-entry-button
-        :active="pageType == `drop`"
+        :active="pageType === `drop`"
         :title="$t('FilesDrop')"
         @open="showDropPage"
-      ></drop-entry-button>
+      />
       <share-entry-button
-        :active="pageType == `share`"
+        :active="pageType === `share`"
         @open="showSharedList"
-      ></share-entry-button>
+      />
     </div>
     <!-- Bottom Action End -->
   </div>
 </template>
-
-<script>
-export default {
-  name: "side-bar",
-};
-</script>
-

@@ -1,15 +1,14 @@
 <script>
-import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
-import sortBy from 'lodash/sortBy'
-import last from 'lodash/last'
 import noticeBlock from '@/components/noticBlock/noticeBlock'
-import { mixin } from '@/mixins/mixin'
-import SyncBlock from '@/components/syncthing/SyncBlock.vue'
 import SmartBlock from '@/components/smartHome/SmartBlock.vue'
+import DiskLearnMore from '@/components/Storage/DiskLearnMore.vue'
+import SyncBlock from '@/components/syncthing/SyncBlock.vue'
 import events from '@/events/events'
 import Business_ShowNewAppTag from '@/mixins/app/Business_ShowNewAppTag'
-import DiskLearnMore from '@/components/Storage/DiskLearnMore.vue'
 import { ice_i18n } from '@/mixins/base/common-i18n'
+import { mixin } from '@/mixins/mixin'
+import sortBy from 'lodash/sortBy'
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 
 export default {
   name: 'CoreService',
@@ -51,27 +50,27 @@ export default {
       noticesData: {
         // example data:
         /* 'local-storage': {
-				  prelude: {
-					title: 'local-storage',
-					icon: 'mdi-usb',
-				  },
-				  content: {
-					a: {
-					  title: 'Found a new drive',
-					  icon: '/storage/disk.png',
-					  color: 'is-primary',
-					  path: '/storage',
-					  uuid: '456',
-					  value: '100G/500G'
-					},},
-				  contentType: 'list',
-				  operate: {
-					type: 'button',
-					title: 'More',
-					path: '/storage',
-					icon: 'mdi-arrow-right',
-				  },
-				}, */
+          prelude: {
+          title: 'local-storage',
+          icon: 'mdi-usb',
+          },
+          content: {
+          a: {
+            title: 'Found a new drive',
+            icon: '/storage/disk.png',
+            color: 'is-primary',
+            path: '/storage',
+            uuid: '456',
+            value: '100G/500G'
+          },},
+          contentType: 'list',
+          operate: {
+          type: 'button',
+          title: 'More',
+          path: '/storage',
+          icon: 'mdi-arrow-right',
+          },
+        }, */
       },
       dockerProgress: {},
       totalPercentage: 0,
@@ -123,16 +122,17 @@ export default {
   },
   methods: {
     createWS(domain) {
-      let socket
-      // reference:
-      socket = new WebSocket(`${this.$wsProtocol}//${this.$baseURL}/v2/message_bus/event/${domain}`)
+      const socket = new WebSocket(`${this.$wsProtocol}//${this.$baseURL}/v2/message_bus/event/${domain}`)
       socket.onopen = () => {
+        // eslint-disable-next-line no-console
         console.log('socket open')
       }
       socket.onclose = () => {
+        // eslint-disable-next-line no-console
         console.log('close socket')
       }
       socket.onerror = (e) => {
+        // eslint-disable-next-line no-console
         console.log('socket failure', e)
       }
       socket.onmessage = (event) => {
@@ -174,10 +174,9 @@ export default {
     },
     initMessageBus() {
       // config files
-      const subscriptionMessageSourse = ['local-storage']
       const WSHub = Object.create(null)
       // subscriptionMessageSourse.forEach((item) => {
-      // 	WSHub[item] = this.createWS(item)
+      //   WSHub[item] = this.createWS(item)
       // })
       return WSHub
     },
@@ -418,6 +417,7 @@ export default {
             })
           }
           catch (e) {
+            // eslint-disable-next-line no-console
             console.log(e)
           }
         }
@@ -585,59 +585,58 @@ export default {
 <style lang="scss" scoped>
 // full width to show with single notice
 ._singleWidth {
-	width: 100% !important;
+  width: 100% !important;
 }
 
 .swiper-container {
+  &:hover > .swiper-button-next:not(.swiper-button-disabled),
+  &:hover > .swiper-button-prev:not(.swiper-button-disabled) {
+    opacity: 1;
+  }
 
-	&:hover>.swiper-button-next:not(.swiper-button-disabled),
-	&:hover>.swiper-button-prev:not(.swiper-button-disabled) {
-		opacity: 1;
-	}
-
-	&>.swiper-button-disabled {
-		opacity: 0;
-	}
+  & > .swiper-button-disabled {
+    opacity: 0;
+  }
 }
 
 .swiper-button-prev,
 .swiper-button-next {
-	width: 2rem;
-	height: 2rem;
-	margin: 0 0.5rem;
-	top: calc(50% - 2rem);
-	z-index: 1;
-	opacity: 0;
+  width: 2rem;
+  height: 2rem;
+  margin: 0 0.5rem;
+  top: calc(50% - 2rem);
+  z-index: 1;
+  opacity: 0;
 }
 
 .swiper-pagination {
-	position: relative;
+  position: relative;
 
-	::v-deep span {
-		margin-left: 0.5rem;
-		margin-right: 0.5rem;
-		width: 2rem;
-		height: 0.25rem;
-		background: rgba(255, 255, 255, 0.4);
-		border-radius: 0.125rem;
-		display: inline-block;
-		position: relative;
+  ::v-deep span {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    width: 2rem;
+    height: 0.25rem;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 0.125rem;
+    display: inline-block;
+    position: relative;
 
-		&:after {
-			display: block;
-			width: 2rem;
-			height: 2rem;
-			position: absolute;
-			content: '';
-			background: rgba(255, 255, 255, 0);
-			border-radius: 0.125rem;
-			top: -0.875rem;
-			left: 0;
-		}
-	}
+    &:after {
+      display: block;
+      width: 2rem;
+      height: 2rem;
+      position: absolute;
+      content: '';
+      background: rgba(255, 255, 255, 0);
+      border-radius: 0.125rem;
+      top: -0.875rem;
+      left: 0;
+    }
+  }
 
-	::v-deep .swiper-pagination-bullet-active {
-		background: #FFFFFF;
-	}
+  ::v-deep .swiper-pagination-bullet-active {
+    background: #ffffff;
+  }
 }
 </style>

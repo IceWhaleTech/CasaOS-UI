@@ -1,12 +1,25 @@
-// @ts-check
 import antfu from '@antfu/eslint-config'
 
-export default antfu(
-  {
-    // Configures for antfu's config
-    typescript: false,
-    vue: true,
-    unocss: false,
-    markdown: true,
+export default antfu({
+  vue: {
+    vueVersion: 2,
   },
-)
+  formatters: {
+    /**
+     * Format CSS, LESS, SCSS files, also the `<style>` blocks in Vue
+     * By default uses Prettier
+     */
+    css: true,
+    /**
+     * Format HTML files
+     * By default uses Prettier
+     */
+    html: true,
+    /**
+     * Format Markdown files
+     * Supports Prettier and dprint
+     * By default uses Prettier
+     */
+    markdown: 'prettier',
+  },
+})

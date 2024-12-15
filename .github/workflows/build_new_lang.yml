@@ -1,36 +1,36 @@
-name: "Language build"
+name: Language build
 
 on:
-    workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
-    release:
-        runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                node-version: [18.x]
-            # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+  release:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
-        steps:
-            - uses: actions/checkout@v4
-            - name: "Use Node.js ${{ matrix.node-version }}"
-              uses: actions/setup-node@v4
-              with:
-                  node-version: ${{ matrix.node-version }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: 'Use Node.js ${{ matrix.node-version }}'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
 
-            - name: Install pnpm
-              uses: pnpm/action-setup@v2
-              with:
-                  version: 9.12.2
-                  run_install: false
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9.12.2
+          run_install: false
 
-            - run: pnpm install
-            - run: pnpm build
-            - run: |
-                  tar -zcvf linux-all-casaos-lang-build.tar.gz build
+      - run: pnpm install
+      - run: pnpm build
+      - run: |
+          tar -zcvf linux-all-casaos-lang-build.tar.gz build
 
-            - name: Archive tarball
-              uses: actions/upload-artifact@v4
-              with:
-                  name: ui-package
-                  path: ./linux-all-casaos-lang-build.tar.gz
+      - name: Archive tarball
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-package
+          path: ./linux-all-casaos-lang-build.tar.gz

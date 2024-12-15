@@ -1,11 +1,11 @@
-import {api} from "./service.js";
+import { api } from './service.js'
 
-const PREFIX = "/driver";
+const PREFIX = '/driver'
 const driver = {
 
-	// get driver list
-	getDriverList(data) {
-		return api.get(`${PREFIX}`, data);
-	}
+  // get driver list
+  getDriverList(data) {
+    return api.get(`${PREFIX}`, data)
+  },
 }
-export default driver;
+export default driver

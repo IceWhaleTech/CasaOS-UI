@@ -4,60 +4,13 @@
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2023-03-15 10:38:05
  * @FilePath: /CasaOS-UI/src/components/filebrowser/drop/DropAddButton.vue
- * @Description: 
- * 
- * Copyright (c) 2023 by IceWhale, All Rights Reserved. 
+ * @Description:
+ *
+ * Copyright (c) 2023 by IceWhale, All Rights Reserved.
 -->
-<template>
-  <div
-    :class="{ 'is-floating': isFloat }"
-    :style="positionStyle"
-    class="drop-button"
-  >
-    <b-dropdown
-      ref="drop"
-      :mobile-modal="false"
-      :position="tipPosition"
-      :style="cssVariables"
-      class="drop-tips"
-    >
-      <template #trigger>
-        <div ref="circleArea" class="circle-area is-clickable">
-          <div class="up-layer">
-            <b-image
-              :class="iconSize"
-              :src="require(`@/assets/img/drop/add_btn.svg`)"
-              class="mr-0 ml-0 no-click is-unselectable"
-            ></b-image>
-          </div>
-        </div>
-      </template>
-
-      <b-dropdown-item aria-role="menu-item" custom paddingless>
-        <div class="p-3">
-          <div class="close-button is-absolute" @click="closeDrop">
-            <b-icon class="is-16x16" custom-class="is-size-6" icon="close-outline" pack="casa"></b-icon>
-          </div>
-          <span class="has-text-title-06 mr-5 mb-3">
-            {{ $t("Access the following address with another device") }}
-          </span>
-          <div class="drop-grey-bg mt-3">
-            <p class="has-text-full-03">
-              {{ $t("Local Area Network Access") }}<br />
-              <span class="has-text-primary has-text-emphasis-03">{{
-                $baseURL
-              }}</span>
-            </p>
-          </div>
-        </div>
-      </b-dropdown-item>
-    </b-dropdown>
-  </div>
-</template>
-
 <script>
 export default {
-  name: "drop-add-button",
+  name: 'DropAddButton',
   props: {
     index: {
       type: Number,
@@ -86,72 +39,123 @@ export default {
   data() {
     return {
       posIndex: 2,
-    };
+    }
   },
   computed: {
     tipPosition() {
       if (this.index < this.posIndex) {
-        if (this.index % 5 == 4) {
-          return "is-bottom-right";
-        } else if (this.index % 5 == 0) {
-          return "is-bottom-left";
-        } else {
-          return "is-bottom-right";
+        if (this.index % 5 === 4) {
+          return 'is-bottom-right'
         }
-      } else {
-        return "is-top-left";
+        else if (this.index % 5 === 0) {
+          return 'is-bottom-left'
+        }
+        else {
+          return 'is-bottom-right'
+        }
+      }
+      else {
+        return 'is-top-left'
       }
     },
     positionStyle() {
       if (this.index < this.posIndex) {
-        const ratio = 1.86;
-        const angel =
-          this.showIndex < 5
+        const ratio = 1.86
+        const angel
+          = this.showIndex < 5
             ? 30 * (this.showIndex + 1)
-            : 45 * (this.showIndex % 5);
-        const realRadius =
-          this.showIndex < 5 ? this.radius : this.radius / ratio;
+            : 45 * (this.showIndex % 5)
+        const realRadius
+          = this.showIndex < 5 ? this.radius : this.radius / ratio
         return {
           left:
-            this.center.x +
-            (realRadius / 2) * Math.cos((angel * Math.PI) / 180) +
-            "px",
+            `${this.center.x
+            + (realRadius / 2) * Math.cos((angel * Math.PI) / 180)
+            }px`,
           top:
-            this.center.y -
-            (realRadius / 2) * Math.sin((angel * Math.PI) / 180) +
-            "px",
-        };
-      } else {
+            `${this.center.y
+            - (realRadius / 2) * Math.sin((angel * Math.PI) / 180)
+            }px`,
+        }
+      }
+      else {
         return {
-          right: this.isFloat ? "8px" : "32px",
-          bottom: "24px",
-          width: "48px",
-          height: "48px",
-          position: "fixed",
-        };
+          right: this.isFloat ? '8px' : '32px',
+          bottom: '24px',
+          width: '48px',
+          height: '48px',
+          position: 'fixed',
+        }
       }
     },
     iconSize() {
-      return this.index < this.posIndex ? "is-36x36" : "is-24x24";
+      return this.index < this.posIndex ? 'is-36x36' : 'is-24x24'
     },
     cssVariables() {
       return {
-        "--item-size": this.index < this.posIndex ? "80px" : "48px",
-      };
+        '--item-size': this.index < this.posIndex ? '80px' : '48px',
+      }
     },
   },
 
   created() {},
   mounted() {
-    this.$refs.drop.isActive = true;
+    this.$refs.drop.isActive = true
   },
   methods: {
     closeDrop() {
-      this.$refs.drop.isActive = false;
+      this.$refs.drop.isActive = false
     },
   },
-};
+}
 </script>
+
+<template>
+  <div
+    :class="{ 'is-floating': isFloat }"
+    :style="positionStyle"
+    class="drop-button"
+  >
+    <b-dropdown
+      ref="drop"
+      :mobile-modal="false"
+      :position="tipPosition"
+      :style="cssVariables"
+      class="drop-tips"
+    >
+      <template #trigger>
+        <div class="circle-area is-clickable">
+          <div class="up-layer">
+            <b-image
+              :class="iconSize"
+              :src="require(`@/assets/img/drop/add_btn.svg`)"
+              class="mr-0 ml-0 no-click is-unselectable"
+            />
+          </div>
+        </div>
+      </template>
+
+      <b-dropdown-item aria-role="menu-item" custom paddingless>
+        <div class="p-3">
+          <div class="close-button is-absolute" @click="closeDrop">
+            <b-icon class="is-16x16" custom-class="is-size-6" icon="close-outline" pack="casa" />
+          </div>
+          <span class="has-text-title-06 mr-5 mb-3">
+            {{ $t("Access the following address with another device") }}
+          </span>
+          <div class="drop-grey-bg mt-3">
+            <p class="has-text-full-03">
+              {{ $t("Local Area Network Access") }}<br>
+              <span class="has-text-primary has-text-emphasis-03">{{
+                $baseURL
+              }}</span>
+            </p>
+          </div>
+        </div>
+      </b-dropdown-item>
+    </b-dropdown>
+  </div>
+</template>
 
 <style lang="scss">
 .drop-button {
@@ -327,7 +331,7 @@ export default {
         padding-bottom: 0;
 
         &::before {
-          content: "";
+          content: '';
           display: block;
           box-sizing: content-box;
           width: 0px;
@@ -337,7 +341,7 @@ export default {
         }
 
         &::after {
-          content: "";
+          content: '';
           display: block;
           box-sizing: content-box;
           width: 0px;

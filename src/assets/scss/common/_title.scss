@@ -1,49 +1,51 @@
 .title {
+  font-weight: 600;
+
+  &.is-1 {
+    font-size: 2rem;
+  }
+
+  &.is-2 {
+    font-size: 1.5rem;
+  }
+
+  &.is-3 {
+    font-size: 1.25rem;
+  }
+
+  &.is-4 {
+    font-size: 1.125rem;
+  }
+
+  &.is-5 {
+    font-size: 1rem;
+  }
+
+  &.is-header {
+    font-family: $family-sans-serif;
+    font-size: 1rem;
     font-weight: 600;
-
-    &.is-1 {
-        font-size: 2rem;
-    }
-
-    &.is-2 {
-        font-size: 1.5rem;
-    }
-
-    &.is-3 {
-        font-size: 1.25rem;
-    }
-
-    &.is-4 {
-        font-size: 1.125rem;
-    }
-
-    &.is-5 {
-        font-size: 1rem;
-    }
-
-    &.is-header {
-        font-family: $family-sans-serif;
-        font-size: 1rem;
-        font-weight: 600;
-        line-height: 1.5rem;
-        letter-spacing: 0em;
-        text-align: left;
-    }
+    line-height: 1.5rem;
+    letter-spacing: 0em;
+    text-align: left;
+  }
 }
 
 .setting_title {
-    /* Text 500Medium/Text02 */
+  /* Text 500Medium/Text02 */
 
-    font-family: $family-sans-serif;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 1rem;
-    line-height: 1.5rem;
-    /* identical to box height, or 150% */
+  font-family: $family-sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  /* identical to box height, or 150% */
 
-    font-feature-settings: 'pnum'on, 'lnum'on;
+  font-feature-settings:
+    'pnum' on,
+    'lnum' on;
 
-    /* Gary/800 */
+  /* Gary/800 */
 
-    color: #29343D;
+  color: #29343d;
 }

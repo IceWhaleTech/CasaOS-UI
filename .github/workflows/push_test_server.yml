@@ -1,92 +1,92 @@
 name: push_test_server
 
 on:
-    push:
-        branches:
-            - main
-    workflow_dispatch:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
-    release:
-        if: github.repository == 'IceWhaleTech/CasaOS-UI'
-        runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                node-version: [18.x]
-            # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+  release:
+    if: github.repository == 'IceWhaleTech/CasaOS-UI'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
-        steps:
-            - uses: actions/checkout@v4
-            - name: "使用 Use Node.js ${{ matrix.node-version }}"
-              uses: actions/setup-node@v4
-              with:
-                  node-version: ${{ matrix.node-version }}
-                  cache: "pnpm"
-            - name: "缓存 Cache"
-              uses: actions/cache@v3
-              id: cache-dependencies
-              with:
-                  path: node_modules
-                  key: ${{runner.OS}}-${{hashFiles('**/yarn.lock')}}
+    steps:
+      - uses: actions/checkout@v4
+      - name: '使用 Use Node.js ${{ matrix.node-version }}'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: pnpm
+      - name: 缓存 Cache
+        uses: actions/cache@v3
+        id: cache-dependencies
+        with:
+          path: node_modules
+          key: ${{runner.OS}}-${{hashFiles('**/yarn.lock')}}
 
-            - name: install git
-              run: sudo apt install --yes git
+      - name: install git
+        run: sudo apt install --yes git
 
-            - name: git global
-              run: sudo git config --global --add safe.directory '*'
+      - name: git global
+        run: sudo git config --global --add safe.directory '*'
 
-            - name: Fetch all tags
-              run: sudo git fetch --force --tags
+      - name: Fetch all tags
+        run: sudo git fetch --force --tags
 
-            - name: Get version
-              id: get_version
-              # run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-              # run: echo "VERSION=$(git describe --abbrev=0 --tags | awk -F- '{print $1}')" >> $GITHUB_ENV
-              run: echo "VERSION=v00.00.00" >> $GITHUB_ENV
+      - name: Get version
+        id: get_version
+        # run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+        # run: echo "VERSION=$(git describe --abbrev=0 --tags | awk -F- '{print $1}')" >> $GITHUB_ENV
+        run: echo "VERSION=v00.00.00" >> $GITHUB_ENV
 
-            - name: show version
-              id: show_version
-              run: echo ${{ env.VERSION }}
-              # run: echo ${{ steps.get_version.outputs.VERSION }}
+      - name: show version
+        id: show_version
+        run: echo ${{ env.VERSION }}
+        # run: echo ${{ steps.get_version.outputs.VERSION }}
 
-            - name: Install pnpm
-              uses: pnpm/action-setup@v2
-              with:
-                  version: 9.12.2
-                  run_install: false
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9.12.2
+          run_install: false
 
-            - run: pnpm install
-            - run: pnpm build
-            - run: |
-                  tar -zcvf linux-all-casaos-${{ env.VERSION }}.tar.gz build
-                  ls
+      - run: pnpm install
+      - run: pnpm build
+      - run: |
+          tar -zcvf linux-all-casaos-${{ env.VERSION }}.tar.gz build
+          ls
 
-            - name: install sshpass
-              run: sudo apt install sshpass --yes
+      - name: install sshpass
+        run: sudo apt install sshpass --yes
 
-            - name: ZeroTier
-              uses: zerotier/github-action@v1.0.1
-              with:
-                  network_id: ${{ secrets.ZEROTIER_NETWORK_ID }}
-                  auth_token: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
+      - name: ZeroTier
+        uses: zerotier/github-action@v1.0.1
+        with:
+          network_id: ${{ secrets.ZEROTIER_NETWORK_ID }}
+          auth_token: ${{ secrets.ZEROTIER_CENTRAL_TOKEN }}
 
-            - name: ping hostname
-              shell: bash
-              run: |
-                  count=10
-                  while ! ping -c 1 10.147.18.11 ; do
-                    echo "waiting..." ;
-                    sleep 1 ;
-                    let count=count-1
-                  done
-                  echo "ping success"
+      - name: ping hostname
+        shell: bash
+        run: |
+          count=10
+          while ! ping -c 1 10.147.18.11 ; do
+            echo "waiting..." ;
+            sleep 1 ;
+            let count=count-1
+          done
+          echo "ping success"
 
-            - name: copy tar to target hostname
-              shell: bash
-              run: |
-                  sshpass -p "${{ secrets.ssh_password }}" scp -r -o StrictHostKeyChecking=no -P 22 ./linux-all-casaos-v00.00.00.tar.gz root@10.147.18.11:/var/www/download
-                  echo "ping success"
-            - name: Error Handling
-              if: ${{ failure() }}
-              run: |
-                  curl -X POST -H "Content-Type: application/json" -d '{"msg_type":"text","content":{"text":"CasaOS-UI push error"}}' ${{ secrets.SSH_ROBOT_URL }}
+      - name: copy tar to target hostname
+        shell: bash
+        run: |
+          sshpass -p "${{ secrets.ssh_password }}" scp -r -o StrictHostKeyChecking=no -P 22 ./linux-all-casaos-v00.00.00.tar.gz root@10.147.18.11:/var/www/download
+          echo "ping success"
+      - name: Error Handling
+        if: ${{ failure() }}
+        run: |
+          curl -X POST -H "Content-Type: application/json" -d '{"msg_type":"text","content":{"text":"CasaOS-UI push error"}}' ${{ secrets.SSH_ROBOT_URL }}

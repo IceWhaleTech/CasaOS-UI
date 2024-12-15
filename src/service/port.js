@@ -4,28 +4,28 @@
  * @LastEditors: Jerryk jerry@icewhale.org
  * @LastEditTime: 2022-07-12 22:41:08
  * @FilePath: \CasaOS-UI\src\service\port.js
- * @Description: 
- * 
- * Copyright (c) 2022 by IceWhale, All Rights Reserved. 
+ * @Description:
+ *
+ * Copyright (c) 2022 by IceWhale, All Rights Reserved.
  */
-import {api} from "./service.js";
+import { api } from './service.js'
 
-const PREFIX = "/port"
+const PREFIX = '/port'
 
 const port = {
-	// check if the port is available
-	check(port, type) {
-		return api.get(`${PREFIX}/state/${port}`, {
-			type: type
-		});
-	},
+  // check if the port is available
+  check(port, type) {
+    return api.get(`${PREFIX}/state/${port}`, {
+      type,
+    })
+  },
 
-	// get a able port
-	get(type) {
-		return api.get(`${PREFIX}`, {
-			type: type
-		});
-	}
+  // get a able port
+  get(type) {
+    return api.get(`${PREFIX}`, {
+      type,
+    })
+  },
 }
 
-export default port;
+export default port

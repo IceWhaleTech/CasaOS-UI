@@ -1,6 +1,6 @@
 <script>
-import { parse, stringify } from 'yaml'
 import composerize from 'composerize'
+import { parse, stringify } from 'yaml'
 
 export default {
   props: {
@@ -133,7 +133,6 @@ export default {
       return true
     },
     onSelect(val) {
-      const _this = this
       const reader = new FileReader()
       if (typeof FileReader === 'undefined') {
         this.$buefy.toast.open({
@@ -144,8 +143,8 @@ export default {
         return
       }
       reader.readAsText(val)
-      reader.onload = function () {
-        _this.dockerComposeCommands = this.result
+      reader.onload = () => {
+        this.dockerComposeCommands = reader.result
       }
     },
     clearInput() {

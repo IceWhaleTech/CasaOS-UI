@@ -1,9 +1,8 @@
 // Included below are all the defined variables from Bulma
 // Modify as needed, removing the !default attribute.
 // Bulma Variables
-@import "~bulma/sass/utilities/_all";
+@import '~bulma/sass/utilities/_all';
 // Colors
-
 
 $black: hsl(0, 0%, 4%) !default;
 $black-bis: hsl(0, 0%, 7%) !default;
@@ -32,17 +31,18 @@ $pot: rgb(214, 167, 56) !default;
 
 // Typography
 
-$family-sans-serif: BrittiSans,
--apple-system,
-BlinkMacSystemFont,
-"Segoe UI",
-"Helvetica Neue",
-"Noto Sans",
-"Noto Sans CJK SC",
-"Microsoft YaHei",
-"PingFang SC",
-"微软雅黑",
-sans-serif;
+$family-sans-serif:
+  BrittiSans,
+  -apple-system,
+  BlinkMacSystemFont,
+  'Segoe UI',
+  'Helvetica Neue',
+  'Noto Sans',
+  'Noto Sans CJK SC',
+  'Microsoft YaHei',
+  'PingFang SC',
+  '微软雅黑',
+  sans-serif;
 $family-monospace: monospace !default;
 $render-mode: optimizeLegibility !default;
 $main-background-color: $white !default;
@@ -68,11 +68,11 @@ $gap: 32px !default;
 // 960, 1152, and 1344 have been chosen because they are divisible by both 12 and 16
 $tablet: 769px !default;
 // 960px container + 4rem
-$desktop: 960px+(2 * $gap) !default;
+$desktop: 960px+ (2 * $gap) !default;
 // 1152px container + 4rem
-$widescreen: 1152px+(2 * $gap) !default;
+$widescreen: 1152px+ (2 * $gap) !default;
 // 1344px container + 4rem;
-$fullhd: 1304px+(2 * $gap) !default;
+$fullhd: 1304px+ (2 * $gap) !default;
 
 // Miscellaneous
 $image-placeholder-blur-enabled: false;
@@ -87,7 +87,6 @@ $speed: 86ms !default;
 // Flags
 
 $variable-columns: true !default;
-
 
 // The default Bulma derived variables are declared below
 
@@ -170,7 +169,6 @@ $size-normal: $size-6 !default;
 $size-medium: $size-5 !default;
 $size-large: $size-4 !default;
 
-
 // CasaOS Variables
 $grey-100: hsla(208, 16%, 96%, 1) !default;
 $grey-200: hsla(208, 16%, 94%, 1);
@@ -178,7 +176,7 @@ $grey-300: hsla(208, 16%, 91%, 1);
 $grey-600: hsla(208, 14%, 58%, 1);
 $grey-400: hsla(208, 16%, 85%, 1) !default;
 $gray-800: hsla(208, 20%, 20%, 1);
-$gray-font:rgba(144, 149, 153, 1);
+$gray-font: rgba(144, 149, 153, 1);
 
 // Colors
 $casablue: hsl(216, 90%, 54%) !default;
@@ -192,74 +190,96 @@ $ghost-light: findLightColor($ghost);
 $ghost-dark: findDarkColor($ghost);
 $ghost-invert: findColorInvert($ghost);
 
-$facebook: #1977F3;
-$twitter: #1D9BF0;
-$reddit: #FF4500;
-
+$facebook: #1977f3;
+$twitter: #1d9bf0;
+$reddit: #ff4500;
 
 // Lists and maps
-$custom-colors: ("grey": ($grey-600, $white)) !default;
+$custom-colors: (
+  'grey': (
+    $grey-600,
+    $white,
+  ),
+) !default;
 $custom-shades: null !default;
 
 // Setup $colors to use as bulma classes (e.g. 'is-twitter')
-$colors: mergeColorMaps(("white": ($white,
-$black,
-),
-"black": ($black,
-$white,
-),
-"light": ($light,
-$light-invert,
-),
-"dark": ($dark,
-$dark-invert,
-),
-"primary": ($primary,
-$primary-invert,
-$primary-light,
-$primary-dark,
-),
-"link": ($link,
-$link-invert,
-$link-light,
-$link-dark,
-),
-"info": ($info,
-$info-invert,
-$info-light,
-$info-dark,
-),
-"success": ($success,
-$success-invert,
-$success-light,
-$success-dark,
-),
-"warning": ($warning,
-$warning-invert,
-$warning-light,
-$warning-dark,
-),
-"danger": ($danger,
-$danger-invert,
-$danger-light,
-$danger-dark,
-),
-"facebook":($facebook,
-$white),
-"twitter":($twitter,
-$white),
-"reddit":($reddit,
-$white),
-),
-$custom-colors);
+$colors: mergeColorMaps(
+  (
+    'white': (
+      $white,
+      $black,
+    ),
+    'black': (
+      $black,
+      $white,
+    ),
+    'light': (
+      $light,
+      $light-invert,
+    ),
+    'dark': (
+      $dark,
+      $dark-invert,
+    ),
+    'primary': (
+      $primary,
+      $primary-invert,
+      $primary-light,
+      $primary-dark,
+    ),
+    'link': (
+      $link,
+      $link-invert,
+      $link-light,
+      $link-dark,
+    ),
+    'info': (
+      $info,
+      $info-invert,
+      $info-light,
+      $info-dark,
+    ),
+    'success': (
+      $success,
+      $success-invert,
+      $success-light,
+      $success-dark,
+    ),
+    'warning': (
+      $warning,
+      $warning-invert,
+      $warning-light,
+      $warning-dark,
+    ),
+    'danger': (
+      $danger,
+      $danger-invert,
+      $danger-light,
+      $danger-dark,
+    ),
+    'facebook': (
+      $facebook,
+      $white,
+    ),
+    'twitter': (
+      $twitter,
+      $white,
+    ),
+    'reddit': (
+      $reddit,
+      $white,
+    ),
+  ),
+  $custom-colors
+);
 
 // Links
 $link: $primary;
 $link-invert: $primary-invert;
 $link-focus-border: $primary;
 
-
-// BackDrop 
+// BackDrop
 $backDropColor: rgba(53, 54, 58, 0.4);
 $backDropBlur: blur(5px) saturate(180%);
 $backDropBorder: none;
@@ -295,4 +315,3 @@ $grey-200: hsla(208, 16%, 94%, 1);
 $grey-600: hsla(208, 14%, 58%, 1);
 $grey-400: hsla(208, 16%, 85%, 1) !default;
 $gray-800: hsla(208, 20%, 20%, 1);
-

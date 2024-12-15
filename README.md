@@ -7,21 +7,25 @@
 # How to develop this project
 
 ## Prerequisites
+
 1. Node 18 ([installation instructions](https://github.com/nvm-sh/nvm?tab=readme-ov-file#usage))
 2. pnpm@9.0.6 ([installation instructions](https://pnpm.io/installation))
 
 ## Environment variables
+
 If you want to connect dev UI version to your local CasaOS server, you will need to set up a couple of env variables:
+
 1. Copy `.env.dev` to `.env.dev.local` (this file is git-ignored)
 2. Set `VUE_APP_DEV_IP` to IP address of your local CasaOS server
 
 ## Set up dev server
+
 ```shell
 # install dependencies
 pnpm install
 
 # build
-pnpm dev 
+pnpm dev
 ```
 
 # How to build this project
@@ -31,7 +35,7 @@ pnpm dev
 pnpm install
 
 # build
-pnpm build 
+pnpm build
 ```
 
 # How to test this project
@@ -47,7 +51,6 @@ need contributions from community members just like you!
 
 - See <https://wiki.casaos.io/en/contribute> for ways of contribution to CasaOS
 - See <https://wiki.casaos.io/en/contribute/development> if you want to be involved in code contribution specificially
-
 
 # How to contact this project
 

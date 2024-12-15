@@ -1,26 +1,26 @@
 <script>
-import debounce from 'lodash/debounce'
+import VolumesInputGroup from '@/components/forms/VolumesInputGroup.vue'
+import { ice_i18n } from '@/mixins/base/common-i18n'
 import axios from 'axios'
-import { ValidationObserver, ValidationProvider } from 'vee-validate'
-import '@/plugins/vee-validate'
-import VueSlider from 'vue-slider-component'
-import 'vue-slider-component/theme/default.css'
-import YAML from 'yaml'
-import lowerFirst from 'lodash/lowerFirst'
-import isNil from 'lodash/isNil'
-import { isNumber, isString } from 'lodash/lang'
 import cloneDeep from 'lodash/cloneDeep'
-import merge from 'lodash/merge'
-import { nanoid } from 'nanoid'
+import debounce from 'lodash/debounce'
 import find from 'lodash/find'
 import isArray from 'lodash/isArray'
+import isNil from 'lodash/isNil'
 import isObject from 'lodash/isObject'
-import InputGroup from '../forms/InputGroup.vue'
-import EnvInputGroup from '../forms/EnvInputGroup.vue'
+import { isNumber, isString } from 'lodash/lang'
+import lowerFirst from 'lodash/lowerFirst'
+import merge from 'lodash/merge'
+import { nanoid } from 'nanoid'
+import { ValidationObserver, ValidationProvider } from 'vee-validate'
+import VueSlider from 'vue-slider-component'
+import YAML from 'yaml'
 import CommandsInput from '../forms/CommandsInput.vue'
+import EnvInputGroup from '../forms/EnvInputGroup.vue'
+import InputGroup from '../forms/InputGroup.vue'
 import Ports from '../forms/Ports.vue'
-import { ice_i18n } from '@/mixins/base/common-i18n'
-import VolumesInputGroup from '@/components/forms/VolumesInputGroup.vue'
+import '@/plugins/vee-validate'
+import 'vue-slider-component/theme/default.css'
 
 const data = [
   'AUDIT_CONTROL',
@@ -210,7 +210,7 @@ export default {
             .then((res) => {
               this.serviceStableVersion = res.data.data.tag
             })
-            .catch((e) => {
+            .catch(() => {
               this.serviceStableVersion = ''
             })
         }

@@ -5,87 +5,86 @@
 *************************************/
 
 .image {
-	&.is-40x40 {
-		height: 40px;
-		width: 40px;
-		
-		img {
-			height: 40px;
-			width: 40px !important;
-			max-height: 40px !important;
-		}
-	}
-	
-	&.is-28x28 {
-		height: 28px;
-		width: 28px;
-	}
-	
-	&.is-54x54 {
-		height: 54px;
-		width: 54px;
-	}
-	
-	&.is-64x64 {
-		height: 64px;
-		width: 64px;
-	}
-	
-	&.is-68x68 {
-		height: 68px;
-		width: 68px;
-	}
-	
-	&.is-72x72 {
-		height: 72px;
-		width: 72px;
-	}
-	
-	&.is-80x80 {
-		height: 80px;
-		width: 80px;
-		img {
-			height: 80px;
-			width: 80px !important;
-			max-height: 80px !important;
-		}
-	}
-	
-	&.is-100x100 {
-		height: 80px;
-		width: 80px;
-	}
-	
-	&.is-160x160 {
-		height: 160px;
-		width: 160px;
-	}
-	
-	&.is-176x176 {
-		height: 176px;
-		width: 176px;
-	}
-	
+  &.is-40x40 {
+    height: 40px;
+    width: 40px;
+
+    img {
+      height: 40px;
+      width: 40px !important;
+      max-height: 40px !important;
+    }
+  }
+
+  &.is-28x28 {
+    height: 28px;
+    width: 28px;
+  }
+
+  &.is-54x54 {
+    height: 54px;
+    width: 54px;
+  }
+
+  &.is-64x64 {
+    height: 64px;
+    width: 64px;
+  }
+
+  &.is-68x68 {
+    height: 68px;
+    width: 68px;
+  }
+
+  &.is-72x72 {
+    height: 72px;
+    width: 72px;
+  }
+
+  &.is-80x80 {
+    height: 80px;
+    width: 80px;
+    img {
+      height: 80px;
+      width: 80px !important;
+      max-height: 80px !important;
+    }
+  }
+
+  &.is-100x100 {
+    height: 80px;
+    width: 80px;
+  }
+
+  &.is-160x160 {
+    height: 160px;
+    width: 160px;
+  }
+
+  &.is-176x176 {
+    height: 176px;
+    width: 176px;
+  }
 }
 
 .img-c {
-	.image {
-		cursor: pointer;
-		transition: all 0.3s;
-	}
-	
-	.image.disabled {
-		transition: none;
-	}
-	
-	&:hover {
-		.image {
-			transform: scale3d(1.1, 1.1, 1.1);
-		}
-		
-		.image.disabled {
-			pointer-events: none;
-			transform: scale3d(1, 1, 1);
-		}
-	}
+  .image {
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .image.disabled {
+    transition: none;
+  }
+
+  &:hover {
+    .image {
+      transform: scale3d(1.1, 1.1, 1.1);
+    }
+
+    .image.disabled {
+      pointer-events: none;
+      transform: scale3d(1, 1, 1);
+    }
+  }
 }

@@ -1,15 +1,15 @@
-import { api } from "./service.js";
+import { api } from './service.js'
 
-const PREFIX = "/image"
+const PREFIX = '/image'
 
 const image = {
-	// image thumbnail/original image
-	getImage(path, type) {
-		return api.get(`${PREFIX}`, {
-			path: path,
-			type: type
-		});
-	}
+  // image thumbnail/original image
+  getImage(path, type) {
+    return api.get(`${PREFIX}`, {
+      path,
+      type,
+    })
+  },
 }
 
-export default image;
+export default image
