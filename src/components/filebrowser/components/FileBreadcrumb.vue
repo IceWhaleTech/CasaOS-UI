@@ -1,27 +1,5 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/4/24 上午11:20
-  * @FilePath: /CasaOS-UI/src/components/filebrowser/components/FileBreadcrumb.vue
-  * @Description:
-  *
-  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
-
-  -->
-
-<!--
- * @Author: JerryK
- * @Date: 2022-03-01 15:40:34
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-05-26 23:13:48
- * @Description:
- * @FilePath: \CasaOS-UI\src\components\filebrowser\components\FileBreadcrumb.vue
--->
 <script>
-import findLast from 'lodash/findLast'
-import map from 'lodash/map'
-import remove from 'lodash/remove'
-import slice from 'lodash/slice'
-import sum from 'lodash/sum'
+import { findLast, map, remove, slice, sum } from 'lodash-es'
 
 export default {
   inject: ['filePanel'],

@@ -7,7 +7,7 @@ import events from '@/events/events'
 import Business_ShowNewAppTag from '@/mixins/app/Business_ShowNewAppTag'
 import { ice_i18n } from '@/mixins/base/common-i18n'
 import { mixin } from '@/mixins/mixin'
-import sortBy from 'lodash/sortBy'
+import { sortBy } from 'lodash-es'
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 
 export default {

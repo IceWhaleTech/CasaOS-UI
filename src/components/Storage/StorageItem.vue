@@ -1,6 +1,6 @@
 <script>
 import { mixin } from '@/mixins/mixin'
-import delay from 'lodash/delay'
+import { delay } from 'lodash-es'
 
 export default {
   name: 'StorageItem',

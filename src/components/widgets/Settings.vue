@@ -1,5 +1,5 @@
 <script>
-import find from 'lodash/find'
+import { find } from 'lodash-es'
 
 const widgetsComponents = require.context(
   '@/widgets',

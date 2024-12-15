@@ -3,7 +3,7 @@ import cToolTip from '@/components/basicComponents/tooltip/tooltip.vue'
 import events from '@/events/events'
 import { ice_i18n } from '@/mixins/base/common-i18n'
 import { mixin } from '@/mixins/mixin'
-import filter from 'lodash/filter'
+import { filter } from 'lodash-es'
 
 export default {
   name: 'MergeStorages',

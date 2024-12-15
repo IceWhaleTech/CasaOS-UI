@@ -1,15 +1,5 @@
-<!--
- * @Author: Jerryk jerry@icewhale.org
- * @Date: 2022-06-01 20:06:46
- * @LastEditors: Jerryk jerry@icewhale.org
- * @LastEditTime: 2022-06-02 20:29:48
- * @FilePath: \CasaOS-UI\src\components\filebrowser\components\OperationStatusItem.vue
- * @Description:
- *
- * Copyright (c) 2022 by IceWhale, All Rights Reserved.
--->
 <script>
-import capitalize from 'lodash/capitalize'
+import { capitalize } from 'lodash-es'
 
 export default {
   name: 'OperationStatusItem',

@@ -1,6 +1,6 @@
 import events from '@/events/events'
 import Hitbox from 'hitbox-js'
-import pull from 'lodash/pull'
+import { pull } from 'lodash-es'
 import VueBreakpointMixin from 'vue-breakpoint-mixin'
 
 export default {

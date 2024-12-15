@@ -1,17 +1,8 @@
-<!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
-  * @LastEditTime: 2023/4/24 上午11:20
-  * @FilePath: /CasaOS-UI/src/components/filebrowser/drop/DropItem.vue
-  * @Description:
-  *
-  * Copyright (c) 2023 by IceWhale, All Rights Reserved.
-
-  -->
 <script>
 import events from '@/events/events'
 import { gsap } from 'gsap'
 import CustomEase from 'gsap/CustomEase'
-import delay from 'lodash/delay'
+import { delay } from 'lodash-es'
 import { VueEllipseProgress } from 'vue-ellipse-progress'
 
 export default {

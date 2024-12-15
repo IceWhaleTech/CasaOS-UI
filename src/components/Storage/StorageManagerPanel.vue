@@ -2,15 +2,14 @@
 import cToolTip from '@/components/basicComponents/tooltip/tooltip.vue'
 import events from '@/events/events'
 import { mixin } from '@/mixins/mixin'
-import delay from 'lodash/delay'
-import max from 'lodash/max'
-import orderBy from 'lodash/orderBy'
+import { delay, max, orderBy } from 'lodash-es'
 import LottieAnimation from 'lottie-web-vue'
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import Popper from 'vue-popperjs'
 import smoothReflow from 'vue-smooth-reflow'
 import DriveItem from './DriveItem.vue'
 import StorageCombination from './StorageCombination.vue'
+
 import StorageItem from './StorageItem.vue'
 
 export default {

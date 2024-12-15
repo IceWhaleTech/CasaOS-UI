@@ -1,6 +1,5 @@
 <script>
-import dropRight from 'lodash/dropRight'
-import trimStart from 'lodash/trimStart'
+import { dropRight, trimStart } from 'lodash-es'
 import CreatePanel from './CreatePanel.vue'
 import ListItem from './ListItem.vue'
 

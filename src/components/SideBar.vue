@@ -1,9 +1,6 @@
 <script>
 import Settings from '@/components/widgets/Settings.vue'
-import camelCase from 'lodash/camelCase'
-import find from 'lodash/find'
-import isEqual from 'lodash/isEqual'
-import lowerFirst from 'lodash/lowerFirst'
+import { camelCase, find, isEqual, lowerFirst } from 'lodash-es'
 import vueCustomScrollbar from 'vue-custom-scrollbar'
 import 'vue-custom-scrollbar/dist/vueScrollbar.css'
 
@@ -67,6 +64,7 @@ export default {
         ),
       )
       this.comps.push(componentName)
+      // eslint-disable-next-line ts/no-require-imports
       this.apps.push({ app: require(`@/widgets/${fileName.replace('./', '')}`).default })
     })
   },

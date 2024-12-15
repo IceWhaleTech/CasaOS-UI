@@ -1,8 +1,7 @@
 <script>
 import events from '@/events/events'
 import { mixin } from '@/mixins/mixin'
-import has from 'lodash/has'
-
+import { has } from 'lodash-es'
 import TreeListItem from './TreeListItem.vue'
 
 export default {

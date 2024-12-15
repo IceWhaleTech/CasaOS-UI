@@ -1,6 +1,6 @@
 <script>
 import { mixin, wallpaperType } from '@/mixins/mixin'
-import has from 'lodash/has'
+import { has } from 'lodash-es'
 
 export default {
   mixins: [mixin],

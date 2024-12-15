@@ -1,10 +1,8 @@
 <script>
 import RadialBar from '@/components/widgets/RadialBar.vue'
 import { mixin } from '@/mixins/mixin'
-import has from 'lodash/has'
-import orderBy from 'lodash/orderBy'
-import slice from 'lodash/slice'
 // import VueApexCharts from 'vue-apexcharts'
+import { has, orderBy, slice } from 'lodash-es'
 import smoothReflow from 'vue-smooth-reflow'
 
 export default {

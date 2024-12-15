@@ -1,7 +1,6 @@
 import copy from 'clipboard-copy'
 import dayjs from 'dayjs'
-import has from 'lodash/has'
-import union from 'lodash/union'
+import { has, union } from 'lodash-es'
 import qs from 'qs'
 import { renderSize } from './file_utils'
 

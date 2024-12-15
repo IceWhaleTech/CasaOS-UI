@@ -137,7 +137,7 @@ importers:
       jsonlint-mod:
         specifier: ^1.7.6
         version: 1.7.6
-      lodash:
+      lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
       lottie-web-vue:

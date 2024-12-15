@@ -4,9 +4,7 @@ import MergeStorages from '@/components/Storage/MergeStorages.vue'
 import events from '@/events/events'
 import { mixin } from '@/mixins/mixin'
 
-import dropRight from 'lodash/dropRight'
-import isEqual from 'lodash/isEqual'
-import orderBy from 'lodash/orderBy'
+import { dropRight, isEqual, orderBy } from 'lodash-es'
 
 import VueBreakpointMixin from 'vue-breakpoint-mixin'
 import EmptyHolder from './components/EmptyHolder.vue'

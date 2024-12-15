@@ -7,7 +7,7 @@ import business_OpenThirdApp from '@/mixins/app/Business_OpenThirdApp'
 import business_ShowNewAppTag from '@/mixins/app/Business_ShowNewAppTag'
 import commonI18n, { ice_i18n } from '@/mixins/base/common-i18n'
 import FileSaver from 'file-saver'
-import isNull from 'lodash/isNull'
+import { isNull } from 'lodash-es'
 import YAML from 'yaml'
 
 export default {

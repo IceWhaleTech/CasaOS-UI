@@ -1,5 +1,4 @@
-import filter from 'lodash/filter'
-import meanBy from 'lodash/meanBy'
+import { filter, meanBy } from 'lodash-es'
 
 class ProgressTracker {
   constructor(coalesceBelow = 0) {
@@ -24,7 +23,7 @@ class ProgressTracker {
     }
     this.patchProgressEvent(progress)
     this.layers[id].coalesced
-			= this.layers[id].progress == null && progress.total < this.coalesceBelow
+        = this.layers[id].progress == null && progress.total < this.coalesceBelow
     this.layers[id].progress = progress.current / progress.total || 0
   }
 
