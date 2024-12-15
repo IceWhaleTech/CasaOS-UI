@@ -1,4 +1,7 @@
 <script>
+import appStoreSvg from '@/assets/img/app/appstore.svg'
+import defaultAppIcon from '@/assets/img/app/default.svg'
+import filesSvg from '@/assets/img/app/files.svg'
 import ExternalLinkPanel from '@/components/Apps/ExternalLinkPanel'
 import events from '@/events/events'
 import business_LinkApp from '@/mixins/app/Business_LinkApp'
@@ -21,7 +24,7 @@ const builtInApplications = [
     title: {
       en_us: 'App Store',
     },
-    icon: require(`@/assets/img/app/appstore.svg`),
+    icon: appStoreSvg,
     status: 'running',
     app_type: 'system',
   },
@@ -31,7 +34,7 @@ const builtInApplications = [
     title: {
       en_us: 'Files',
     },
-    icon: require(`@/assets/img/app/files.svg`),
+    icon: filesSvg,
     status: 'running',
     app_type: 'system',
   },
@@ -148,7 +151,7 @@ export default {
         orgAppList.forEach((item) => {
           item.hostname = item.hostname || this.$baseIp
           // Container app does not have icon.
-          item.icon = item.icon || require(`@/assets/img/app/default.svg`)
+          item.icon = item.icon || defaultAppIcon
           if (item.app_type === 'v1app' || item.app_type === 'container') {
             orgOldAppList.push(item)
           }
