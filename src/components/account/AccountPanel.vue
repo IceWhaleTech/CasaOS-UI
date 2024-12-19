@@ -90,12 +90,12 @@
       </section>
       <!-- Modal-Card Body End -->
       <!-- Modal-Card Footer Start-->
-      <footer class="modal-card-foot is-flex is-align-items-center" :class="buttonAlign" v-if="state !== 1">
-        <b-button v-if="state != 1" :label="$t('Back')" rounded @click.stop="goto(1)" />
-        <b-button v-else-if="state == 2" :label="$t('Submit')" expaned rounded type="is-dark" @click="handleSubmit(saveUser)" />
-        <b-button v-else-if="state == 3" :label="$t('Submit')" expaned rounded type="is-dark" @click="handleSubmit(savePassword)" />
-        <b-button v-else-if="state == 4" :label="$t('Submit')" expaned rounded type="is-dark" @click="handleSubmit(saveAvatar)" />
-
+      
+      <footer v-if="state !== 1" class="modal-card-foot is-flex is-align-items-center" :class="buttonAlign">
+        <b-button :label="$t('Back')" rounded @click.stop="goto(1)" />
+        <b-button v-if="state === 2" :label="$t('Submit')" expaned rounded type="is-dark" @click="handleSubmit(saveUser)" />
+        <b-button v-else-if="state === 3" :label="$t('Submit')" expaned rounded type="is-dark" @click="handleSubmit(savePassword)" />
+        <b-button v-else-if="state === 4" :label="$t('Submit')" expaned rounded type="is-dark" @click="handleSubmit(saveAvatar)" />
       </footer>
       <!-- Modal-Card Footer End -->
     </ValidationObserver>
@@ -325,75 +325,75 @@ export default {
 
 <style lang="scss" scoped>
 .modal-card {
-	@include mobile {
-		margin: 0 !important;
+  @include mobile {
+    margin: 0 !important;
 
-		&.w-424 {
-			width: auto !important;
-		}
-	}
+    &.w-424 {
+      width: auto !important;
+    }
+  }
 }
 
 
 
 .edit-avatar {
-	cursor: pointer;
-	width: 80px;
-	height: 80px;
-	border-radius: 50%;
-	background-color: rgba(0, 0, 0, 0.5);
-	transition: all 0.3s;
-	z-index: 10;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	opacity: 0;
+  cursor: pointer;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: all 0.3s;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
 
-	.file-input {
-		width: 100%;
-		height: 100%;
-		opacity: 0;
-		border-radius: 50%;
-		cursor: pointer;
-	}
+  .file-input {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    border-radius: 50%;
+    cursor: pointer;
+  }
 
-	.icon {
-		pointer-events: none;
-		color: #fff !important;
-	}
+  .icon {
+    pointer-events: none;
+    color: #fff !important;
+  }
 
-	&:hover {
-		opacity: 1;
-	}
+  &:hover {
+    opacity: 1;
+  }
 }
 
 .cropper-wrapper {
-	width: 220px;
-	height: 220px;
-	overflow: hidden;
-	position: relative;
-	background-color: rgba(0, 0, 0, 0.2);
-	display: flex;
-	justify-content: center;
-	align-items: center;
+  width: 220px;
+  height: 220px;
+  overflow: hidden;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .preview {
-	border-radius: 50%;
+  border-radius: 50%;
 }
 
 .vue-advanced-cropper {
-	::v-deep img {
-		max-height: none !important;
-	}
+  ::v-deep img {
+    max-height: none !important;
+  }
 }
 
 ::v-deep .vue-preview__image {
-	max-height: none !important;
+  max-height: none !important;
 }
 
 ::v-deep .vue-simple-handler-wrapper {
-	width: 18px !important;
-	height: 18px !important;
+  width: 18px !important;
+  height: 18px !important;
 }
 </style>

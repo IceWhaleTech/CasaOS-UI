@@ -19,8 +19,8 @@
 </template>
 
 <script>
-import Parser from "rss-parser";
 import DOMPurify from 'dompurify';
+import { parse} from 'rss-to-json'
 export default {
 	name: "brand-bar",
 	components: {},
@@ -53,15 +53,14 @@ export default {
 		};
 	},
 	methods: {
-		async parseFeed() {
-			let parser = new Parser();
+		async parseFeed() {			
 			let params = await this.$api.file.getContent('/var/lib/casaos/baseinfo.conf').then(res => {
 				return JSON.parse(res.data.data)
 			})
 			this.$store.commit('SET_DEVICE_ID', params.i)
 			params.l = localStorage.getItem('lang') ? localStorage.getItem('lang') : navigator.language.toLowerCase().replace("-", "_");
 			let stringify = btoa(encodeURIComponent(JSON.stringify(params)))
-			let feed = await parser.parseURL('https://blog.casaos.io/feed/tag/dashboard/?key=' + stringify);
+			let feed = await parse('https://blog-casaos.zimaspace.com/feed/tag/dashboard/?key=' + stringify)
 			const newFeed = feed.items.map(item => {
 				return {
 					title: item.title,
@@ -69,6 +68,8 @@ export default {
 				}
 			})
 			this.rss = newFeed
+			
+			
 		},
 
 		gotoLink(link) {
