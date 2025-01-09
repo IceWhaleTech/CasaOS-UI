@@ -40,7 +40,8 @@
 		position: relative;
 
 		&.stop img {
-			filter: grayscale(100%);
+			filter: grayscale(100%) brightness(50%) contrast(120%);
+			opacity: 0.5;
 		}
 
 		img {
@@ -58,7 +59,6 @@
 		&.stop img {
 			filter: grayscale(100%) brightness(50%) contrast(120%);
 			opacity: 0.5;
-			transition: all 0.3s ease;
 		}
 
 		img {
