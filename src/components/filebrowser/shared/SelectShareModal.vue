@@ -51,7 +51,21 @@
 		<!-- Modal-Card Body End -->
 		<!-- Modal-Card Footer Start-->
 		<footer class="modal-card-foot is-flex is-align-items-center">
-			<div class="is-flex-grow-1"></div>
+			<div class="is-flex-grow-1">
+				<!-- Toggle for Anonymous Share -->
+					<b-switch v-model="anonymousShare"></b-switch>
+					<div v-if="anonymousShare">
+						<optgroup v-for="user in users" :key="share.users" :label="share.users">
+							<option
+								:key="user"
+								:value="user"
+								>
+								{{ user }}
+							</option>
+						</optgroup>
+					</div>
+				</div>
+			</div>
 			<div>
 				<b-button :label="$t('Submit')" :loading="isSaving" rounded type="is-primary" @click="saveShares"/>
 			</div>
@@ -167,7 +181,8 @@ export default {
 			const data = selectedList.map(item => {
 				return {
 					path: item.path,
-					anonymous: true
+					anonymous: item.anonymousShare,
+					valid_users: item.share.users,
 				}
 			})
 			try {
