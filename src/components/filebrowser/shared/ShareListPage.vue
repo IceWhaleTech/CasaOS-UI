@@ -76,6 +76,7 @@ export default {
 						is_dir: true,
 						name: name,
 						path: item.path,
+						valid_users: item.valid_users,
 						size: 0,
 						write: false,
 					};
