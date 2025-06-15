@@ -164,6 +164,10 @@ export default {
 			this.viewer.show()
 			this.onMouseMove()
 		},
+    download() {
+      this.$refs.dropDown?.toggle()
+      this.downloadFile(this.currentItem)
+    },
 		next() {
 			if (this.currentItemIndex < this.itemList.length - 1) {
 				this.currentItemIndex++
