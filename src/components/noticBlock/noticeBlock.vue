@@ -120,7 +120,7 @@ export default {
 			this.$messageBus('youshouldknow_cardclose');
 
 			if (this.noticeData.contentType === 'progress') {
-				this.$emit('deleteNotice', this.noticeData, this.noticeType);
+				this.$emit('delete-notice', this.noticeData, this.noticeType);
 				return
 			}
 			let promises = [];
@@ -128,7 +128,7 @@ export default {
 				promises.push(this.$api.users.delLetter(this.noticeData.content[contentKey].messageUUID));
 			}
 			Promise.all(promises).then(() => {
-				this.$emit('deleteNotice', this.noticeData, this.noticeType);
+				this.$emit('delete-notice', this.noticeData, this.noticeType);
 			});
 		},
 		eventBus() {
