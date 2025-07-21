@@ -21,6 +21,7 @@ import CommandsInput from '../forms/CommandsInput.vue'
 import Ports from '../forms/Ports.vue'
 import { ice_i18n } from '@/mixins/base/common-i18n'
 import VolumesInputGroup from '@/components/forms/VolumesInputGroup.vue'
+import LabelsInputGroup from '@/components/forms/LabelsInputGroup.vue'
 
 const data = [
   'AUDIT_CONTROL',
@@ -63,6 +64,7 @@ export default {
     EnvInputGroup,
     CommandsInput,
     VueSlider,
+    LabelsInputGroup,
   },
   filters: {
     duplexDisplay(val) {
@@ -119,6 +121,7 @@ export default {
             environment: [],
             devices: [],
             command: [],
+            labels: [],
             container_name: '',
             deploy: {
               resources: {
@@ -210,7 +213,7 @@ export default {
             .then((res) => {
               this.serviceStableVersion = res.data.data.tag
             })
-            .catch((e) => {
+            .catch((_e) => {
               this.serviceStableVersion = ''
             })
         }
@@ -400,6 +403,23 @@ export default {
       }
       else {
         composeServicesItem.environment = []
+      }
+
+      // Labels
+      if (composeServicesItemInput.labels) {
+        const labelsArray = Array.isArray(composeServicesItemInput.labels)
+          ? composeServicesItemInput.labels
+          : Object.entries(composeServicesItemInput.labels)
+        composeServicesItem.labels = labelsArray.map((item) => {
+          const ii = typeof item === 'object' ? Array.from(item) : item.split('=')
+          return {
+            key: ii[0],
+            value: ii[1]?.replace(/"/g, '') || '',
+          }
+        }).filter(label => label.key !== 'icon')
+      }
+      else {
+        composeServicesItem.labels = []
       }
 
       // Ports
@@ -670,6 +690,19 @@ export default {
           .map((env) => {
             return `${env.container}=${env.host}`
           })
+
+        // 处理标签数据
+        if (service.labels && service.labels.length > 0) {
+          outputService.labels = {}
+          service.labels.forEach((label) => {
+            if (label.key && label.value) {
+              outputService.labels[label.key] = label.value
+            }
+          })
+        }
+        else {
+          delete outputService.labels
+        }
       }
       if (this.dockerComposeCommands) {
         const yaml = YAML.parse(this.dockerComposeCommands)
@@ -886,10 +919,11 @@ export default {
 
           <Ports v-if="showPorts(service)" v-model="service.ports" :ports_in_use="ports_in_use" :show-host-post="showHostPort(service)" />
 
-          <VolumesInputGroup v-model="service.volumes" :label="$t('Volumes')" :message="$t('No volumes now, click “+” to add one.')" type="volume" />
-          <EnvInputGroup v-model="service.environment" :label="$t('Environment Variables')" :message="$t('No environment variables now, click “+” to add one.')" />
-          <InputGroup :devices="service.devices" :label="$t('Devices')" :message="$t('No devices now, click “+” to add one.')" type="device" />
-          <CommandsInput v-model="service.command" :label="$t('Container Command')" :message="$t('No commands now, click “+” to add one.')" />
+          <VolumesInputGroup v-model="service.volumes" :label="'Volumes'" :message="'No volumes now, click \'+\' to add one.'" type="volume" />
+          <EnvInputGroup v-model="service.environment" :label="'Environment Variables'" :message="'No environment variables now, click \'+\' to add one.'" />
+          <LabelsInputGroup v-model="service.labels" :label="'Labels'" :message="'No labels now, click \'+\' to add one.'" />
+          <InputGroup :devices="service.devices" :label="'Devices'" :message="'No devices now, click \'+\' to add one.'" type="device" />
+          <CommandsInput v-model="service.command" :label="'Container Command'" :message="'No commands now, click \'+\' to add one.'" />
 
           <b-field :label="$t('Privileged')">
             <b-switch v-model="service.privileged" />
