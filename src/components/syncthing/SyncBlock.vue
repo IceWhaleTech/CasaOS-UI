@@ -5,11 +5,11 @@
 		<div class="blur-background"></div>
 		<div class="wuji-content _box is-flex is-flex-direction-column">
 			<!-- Init State Start -->
-			<h6 class="title is-4 mb-0 has-text-white is-flex-shrink-0">{{ $t(`Sync your data`) }}</h6>
+			<h6 class="title is-4 mb-0 has-text-white is-flex-shrink-0">{{ $t(`Find Your Way`) }}</h6>
 			<div class="is-flex is-align-items-center is-flex-grow-1 _notice-content-text">
 				<div class="info ">
 					<div class="des two-line is-size-14px">
-						{{ $t(`Use Syncthing to sync your files between multiple devices.`) }}
+						{{ $t(`Use Mapple to Travel.`) }}
 					</div>
 				</div>
 				<b-image :src="require('@/assets/img/syncthing/sync.svg')" class="is-80x80"></b-image>
