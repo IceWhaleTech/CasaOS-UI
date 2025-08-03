@@ -17,7 +17,7 @@
 				</div>
 
 				<h2 v-animate-css="s2Ani" class="title is-2 mb-5 has-text-centered __attached_title">{{
-						$t('Welcome to CasaOS')
+						$t('Welcome to Your New Car!')
 					}}</h2>
 				<h2 v-animate-css="s3Ani" class="subtitle  has-text-centered __attached_sub_title">{{
 						$t(`Let's create your initial account`)
