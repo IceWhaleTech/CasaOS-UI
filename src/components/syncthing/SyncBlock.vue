@@ -9,7 +9,7 @@
 			<div class="is-flex is-align-items-center is-flex-grow-1 _notice-content-text">
 				<div class="info ">
 					<div class="des two-line is-size-14px">
-						{{ $t(`Use Mapple to Travel.`) }}
+						{{ $t(`Use Syncthing to sync your files between multiple devices.`) }}
 					</div>
 				</div>
 				<b-image :src="require('@/assets/img/syncthing/sync.svg')" class="is-80x80"></b-image>
