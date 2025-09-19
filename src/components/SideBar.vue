@@ -62,126 +62,44 @@ export default {
       return [...this.apps, ...this.npmWidgets]
     },
     activeApps() {
-      const showWidgets = this.widgetsSettings.filter((item) => {
-        return item.show
-      })
-      const newArray = showWidgets.map((item) => {
-        const obj = find(this.allApps, (o) => {
-          return o.app.name === item.name
-        })
-        return obj
-      }).filter(Boolean) // Remove any undefined items
-      return newArray
+      const showWidgets = this.widgetsSettings.filter(item => item.show)
+      return showWidgets.map(item => find(this.apps, o => o.app.name === item.name))
     },
     sidebarOpen() {
       return this.$store.state.sidebarOpen
     },
     showWidgets() {
-      return this.widgetsSettings.filter((item) => {
-        return item.show
-      })
+      return this.widgetsSettings.filter(item => item.show)
     },
   },
-  async created() {
-    // Load local widgets
-    this.loadLocalWidgets()
-    
-    // Load NPM widgets
-    await this.loadNpmWidgets()
+  created() {
+    // Add npm widget
+    this.apps.push({
+      app: {
+        ...WeatherWidget,
+        name: 'WeatherWidget',
+        initShow: true
+      }
+    })
+    this.comps.push('WeatherWidget')
+
+    // Add local widgets
+    widgetsComponents.keys().forEach(fileName => {
+      const componentName = lowerFirst(
+        camelCase(fileName.split('/').pop().replace(/\.\w+$/, ''))
+      )
+      const localWidget = require(`@/widgets/${fileName.replace('./', '')}`).default
+      this.comps.push(componentName)
+      this.apps.push({ app: localWidget })
+    })
   },
   mounted() {
     this.getConfig()
+
     window.addEventListener('resize', this.handleResize)
   },
 
   methods: {
-    /**
-     * @description: Load local widgets from @/widgets directory
-     * @return {*} void
-     */
-    loadLocalWidgets() {
-      widgetsComponents.keys().forEach((fileName) => {
-        const componentName = lowerFirst(
-          camelCase(
-            fileName
-              .split('/')
-              .pop()
-              .replace(/\.\w+$/, ''),
-          ),
-        )
-        this.comps.push(componentName)
-        this.apps.push({ 
-          app: require(`@/widgets/${fileName.replace('./', '')}`).default,
-          source: 'local'
-        })
-      })
-    },
-
-    /**
-     * @description: Load widgets from NPM packages
-     * @return {Promise<void>}
-     */
-    async loadNpmWidgets() {
-      if (!NPM_WIDGETS_CONFIG.length) return
-
-      const loadPromises = NPM_WIDGETS_CONFIG.map(async (widgetConfig) => {
-        try {
-          // Dynamic import of the NPM package
-          const module = await import(widgetConfig.package)
-          
-          // Get the component (could be default export or named export)
-          let component
-          if (widgetConfig.name && module[widgetConfig.name]) {
-            component = module[widgetConfig.name]
-          } else if (module.default) {
-            component = module.default
-          } else {
-            throw new Error(`Component ${widgetConfig.name || 'default'} not found in package ${widgetConfig.package}`)
-          }
-
-          // Ensure component has required properties
-          if (!component.name) {
-            component.name = widgetConfig.componentName || widgetConfig.name
-          }
-          if (!component.title) {
-            component.title = widgetConfig.title || component.name
-          }
-          if (!component.icon) {
-            component.icon = widgetConfig.icon || 'extension-outline'
-          }
-          if (component.initShow === undefined) {
-            component.initShow = widgetConfig.initShow !== undefined ? widgetConfig.initShow : true
-          }
-
-          // Register the component globally if needed
-          if (widgetConfig.componentName) {
-            this.$options.components[widgetConfig.componentName] = component
-          }
-
-          this.npmWidgets.push({
-            app: component,
-            source: 'npm',
-            package: widgetConfig.package,
-            config: widgetConfig
-          })
-
-          console.log(`Successfully loaded NPM widget: ${widgetConfig.package}`)
-        } catch (error) {
-          console.error(`Failed to load NPM widget ${widgetConfig.package}:`, error)
-          this.failedNpmWidgets.push({
-            ...widgetConfig,
-            error: error.message
-          })
-        }
-      })
-
-      await Promise.allSettled(loadPromises)
-    },
-
-    /**
-     * @description: Get Widgets Configs
-     * @return {*} void
-     */
     getConfig() {
       const initData = this.getInitData()
       this.$api.users.getCustomStorage(widgetsConfig).then((res) => {
@@ -208,19 +126,9 @@ export default {
     diffAndCombineData(initData, remoteData) {
       const newData = initData.map((item) => {
         const remoteItem = find(remoteData, el => el.name === item.name)
-        if (remoteItem && item.name === remoteItem.name) {
-          return {
-            name: item.name,
-            show: (item.show === remoteItem.show) ? item.show : remoteItem.show,
-            source: item.source || 'local' // Preserve source info
-          }
-        }
-        else {
-          return {
-            name: item.name,
-            show: item.show,
-            source: item.source || 'local'
-          }
+        return {
+          name: item.name,
+          show: remoteItem ? remoteItem.show : item.show
         }
       })
       this.widgetsSettings = newData
@@ -230,20 +138,11 @@ export default {
       this.isLoading = false
       this.handleResize()
     },
-
-    /**
-     * @description: Get Local and NPM widgets data
-     * @return {Array} array of widgets
-     */
     getInitData() {
-      return this.allApps.map((item) => {
-        return {
-          name: item.app.name,
-          show: item.app.initShow,
-          source: item.source || 'local',
-          ...(item.package && { package: item.package })
-        }
-      })
+      return this.apps.map(item => ({
+        name: item.app.name,
+        show: item.app.initShow ?? true
+      }))
     },
 
     /**
@@ -251,14 +150,8 @@ export default {
      * @return {*} void
      */
     saveData(data) {
-      this.$api.users.setCustomStorage(widgetsConfig, data).then((res) => {
-        if (res.data.success === 200) {
-          this.widgetsSettings = res.data.data
-        }
-      }).catch((error) => {
-        console.error('Failed to save widget config:', error)
-        // Still update local state even if save fails
-        this.widgetsSettings = data
+      this.$api.users.setCustomStorage(widgetsConfig, data).then(res => {
+        if (res.data.success === 200) this.widgetsSettings = res.data.data
       })
     },
 
@@ -269,68 +162,12 @@ export default {
 
     handleResize() {
       const ww = window.innerWidth
-      if (this.isLoading)
-        return false
-      const parentWidth = document.querySelector('.slider-content')?.offsetWidth
-      if (!parentWidth) return false
-      
+      const parentWidth = document.querySelector('.slider-content').offsetWidth
       this.$nextTick(() => {
         const padding = ww <= 480 ? 0 : -16
         this.$refs.sidebar.style.width = `${parentWidth + padding}px`
       })
     },
-
-    /**
-     * @description: Get info about loaded widgets
-     * @return {Object} Widget loading info
-     */
-    getWidgetInfo() {
-      return {
-        local: this.apps.length,
-        npm: this.npmWidgets.length,
-        failed: this.failedNpmWidgets.length,
-        total: this.allApps.length,
-        failedWidgets: this.failedNpmWidgets
-      }
-    },
-
-    /**
-     * @description: Reload a failed NPM widget
-     * @param {Object} widgetConfig - Widget configuration
-     * @return {Promise<boolean>} Success status
-     */
-    async reloadNpmWidget(widgetConfig) {
-      try {
-        const module = await import(widgetConfig.package)
-        let component = module.default || module[widgetConfig.name]
-        
-        if (!component) {
-          throw new Error(`Component not found in package ${widgetConfig.package}`)
-        }
-
-        // Setup component properties
-        if (!component.name) component.name = widgetConfig.componentName || widgetConfig.name
-        if (!component.title) component.title = widgetConfig.title || component.name
-        if (!component.icon) component.icon = widgetConfig.icon || 'extension-outline'
-        if (component.initShow === undefined) component.initShow = widgetConfig.initShow !== undefined ? widgetConfig.initShow : true
-
-        this.npmWidgets.push({
-          app: component,
-          source: 'npm',
-          package: widgetConfig.package,
-          config: widgetConfig
-        })
-
-        // Remove from failed list
-        this.failedNpmWidgets = this.failedNpmWidgets.filter(w => w.package !== widgetConfig.package)
-        
-        console.log(`Successfully reloaded NPM widget: ${widgetConfig.package}`)
-        return true
-      } catch (error) {
-        console.error(`Failed to reload NPM widget ${widgetConfig.package}:`, error)
-        return false
-      }
-    }
   },
 }
 </script>

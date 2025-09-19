@@ -1,10 +1,10 @@
 <!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+  * @LastEditors: CyberHuman-bot extra7088@gmail.com
   * @LastEditTime: 2022/12/1 下午8:02
   * @FilePath: /CasaOS-UI/src/views/Welcome.vue
   * @Description:
   *
-  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
+  * Copyright (c) 2025 by IceWhale, All Rights Reserved.
   -->
 
 <template>
@@ -17,7 +17,7 @@
 				</div>
 
 				<h2 v-animate-css="s2Ani" class="title is-2 mb-5 has-text-centered __attached_title">{{
-						$t('Welcome to Your New Car!')
+						$t('Welcome to Your New CasaOS Installation!')
 					}}</h2>
 				<h2 v-animate-css="s3Ani" class="subtitle  has-text-centered __attached_sub_title">{{
 						$t(`Let's create your initial account`)
