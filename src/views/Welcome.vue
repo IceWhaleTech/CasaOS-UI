@@ -1,10 +1,10 @@
 <!--
-  * @LastEditors: zhanghengxin ezreal.zhang@icewhale.org
+  * @LastEditors: CyberHuman-bot extra7088@gmail.com
   * @LastEditTime: 2022/12/1 下午8:02
   * @FilePath: /CasaOS-UI/src/views/Welcome.vue
   * @Description:
   *
-  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
+  * Copyright (c) 2025 by IceWhale, All Rights Reserved.
   -->
 
 <template>
