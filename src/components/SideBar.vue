@@ -7,12 +7,11 @@ import vueCustomScrollbar from 'vue-custom-scrollbar'
 import Settings from '@/components/widgets/Settings.vue'
 import 'vue-custom-scrollbar/dist/vueScrollbar.css'
 
-const widgetsComponents = require.context(
-  '@/widgets',
-  false,
-  /.vue$/,
-)
+// Import your npm widget
+import WeatherWidget from 'casaos-weather-widget'
 
+// Load local widgets dynamically
+const widgetsComponents = require.context('@/widgets', false, /.vue$/)
 const widgetsConfig = 'widgets_config'
 
 export default {
@@ -36,131 +35,94 @@ export default {
   },
   computed: {
     activeApps() {
-      const showWidgets = this.widgetsSettings.filter((item) => {
-        return item.show
-      })
-      const newArray = showWidgets.map((item) => {
-        const obj = find(this.apps, (o) => {
-          return o.app.name === item.name
-        })
-        return obj
-      })
-      return newArray
+      const showWidgets = this.widgetsSettings.filter(item => item.show)
+      return showWidgets.map(item => find(this.apps, o => o.app.name === item.name))
     },
     sidebarOpen() {
       return this.$store.state.sidebarOpen
     },
     showWidgets() {
-      return this.widgetsSettings.filter((item) => {
-        return item.show
-      })
+      return this.widgetsSettings.filter(item => item.show)
     },
   },
   created() {
-    widgetsComponents.keys().forEach((fileName) => {
+    // Add npm widget
+    this.apps.push({
+      app: {
+        ...WeatherWidget,
+        name: 'WeatherWidget',
+        initShow: true
+      }
+    })
+    this.comps.push('WeatherWidget')
+
+    // Add local widgets
+    widgetsComponents.keys().forEach(fileName => {
       const componentName = lowerFirst(
-        camelCase(
-          fileName
-            .split('/')
-            .pop()
-            .replace(/\.\w+$/, ''),
-        ),
+        camelCase(fileName.split('/').pop().replace(/\.\w+$/, ''))
       )
+      const localWidget = require(`@/widgets/${fileName.replace('./', '')}`).default
       this.comps.push(componentName)
-      this.apps.push({ app: require(`@/widgets/${fileName.replace('./', '')}`).default })
+      this.apps.push({ app: localWidget })
     })
   },
   mounted() {
     this.getConfig()
-
     window.addEventListener('resize', this.handleResize)
   },
-
   methods: {
-    /**
-     * @description: Get Widgets Configs
-     * @return {*} void
-     */
     getConfig() {
       const initData = this.getInitData()
-      this.$api.users.getCustomStorage(widgetsConfig).then((res) => {
+      this.$api.users.getCustomStorage(widgetsConfig).then(res => {
         if (res.status === 200) {
-          if (res.data === '') {
+          if (!res.data) {
             this.saveData(initData)
             this.widgetsSettings = initData
             this.isLoading = false
             this.handleResize()
-          }
-          else {
+          } else {
             this.diffAndCombineData(initData, res.data.data)
           }
         }
       })
     },
     diffAndCombineData(initData, remoteData) {
-      const newData = initData.map((item) => {
+      const newData = initData.map(item => {
         const remoteItem = find(remoteData, el => el.name === item.name)
-        if (remoteItem && item.name === remoteItem.name) {
-          return {
-            name: item.name,
-            show: (item.show === remoteItem.show) ? item.show : remoteItem.show,
-          }
-        }
-        else {
-          return {
-            name: item.name,
-            show: item.show,
-          }
+        return {
+          name: item.name,
+          show: remoteItem ? remoteItem.show : item.show
         }
       })
       this.widgetsSettings = newData
-      if (!isEqual(newData, remoteData)) {
-        this.saveData(newData)
-      }
+      if (!isEqual(newData, remoteData)) this.saveData(newData)
       this.isLoading = false
       this.handleResize()
     },
-    /**
-     * @description: Get Local widgets datas
-     * @return {Array} array of widgets
-     */
     getInitData() {
-      return this.apps.map((item) => {
-        return {
-          name: item.app.name,
-          show: item.app.initShow,
-        }
-      })
+      return this.apps.map(item => ({
+        name: item.app.name,
+        show: item.app.initShow ?? true
+      }))
     },
-
-    /**
-     * @description: Save Widgets Configs
-     * @return {*} void
-     */
     saveData(data) {
-      this.$api.users.setCustomStorage(widgetsConfig, data).then((res) => {
-        if (res.data.success === 200) {
-          this.widgetsSettings = res.data.data
-        }
+      this.$api.users.setCustomStorage(widgetsConfig, data).then(res => {
+        if (res.data.success === 200) this.widgetsSettings = res.data.data
       })
     },
-
     handleChange(data) {
       this.widgetsSettings = data
       this.saveData(this.widgetsSettings)
     },
-
     handleResize() {
+      if (this.isLoading) return
       const ww = window.innerWidth
-      if (this.isLoading)
-        return false
       const parentWidth = document.querySelector('.slider-content').offsetWidth
       this.$nextTick(() => {
         const padding = ww <= 480 ? 0 : -16
         this.$refs.sidebar.style.width = `${parentWidth + padding}px`
       })
     },
-
   },
 }
 </script>

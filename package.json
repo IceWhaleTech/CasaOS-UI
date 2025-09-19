@@ -1,6 +1,6 @@
 {
   "name": "casaos-main",
-  "version": "v0.4.5",
+  "version": "0.4.5",
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve --mode dev",
@@ -12,12 +12,12 @@
   "installConfig": {
     "hoistingLimits": "workspaces"
   },
-  "packageManager": "pnpm@9.0.6",
+  "packageManager": "yarn@1.22.22",
   "dependencies": {
+    "@fawmi/vue-google-maps": "^0.9.79",
     "@fontsource/roboto": "^5.0.5",
     "@icewhale/casaos-appmanagement-openapi": "latest",
     "@icewhale/casaos-openapi": "latest",
-    "@icewhale/icewhale-files-openapi": "latest",
     "@kangc/v-md-editor": "^1.7.11",
     "@mdi/font": "^6.9.96",
     "@tiptap/core": "^2.0.4",
@@ -31,11 +31,15 @@
     "@vue-office/pdf": "^1.6.0",
     "@vueuse/components": "^10.2.1",
     "@vueuse/core": "^10.2.1",
+    "@yundera/icewhale-files-openapi": "1.3.0-alpha133",
+    "apexcharts": "^5.3.5",
     "artplayer": "^4.6.2",
     "axios": "^0.28.1",
     "browser-info": "^1.3.0",
     "buefy": "^0.9.29",
     "bulma": "0.9.4",
+    "casaos-weather-widget": "^1.1.2",
+    "chart.js": "^4.5.0",
     "clipboard-copy": "^4.0.1",
     "codemirror": "^5.41.0",
     "composerize": "^1.2.0",
@@ -154,5 +158,18 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "description": "[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=IceWhaleTech_CasaOS-UI&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=IceWhaleTech_CasaOS-UI)\r [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=IceWhaleTech_CasaOS-UI&metric=bugs)](https://sonarcloud.io/summary/new_code?id=IceWhaleTech_CasaOS-UI)\r [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=IceWhaleTech_CasaOS-UI&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=IceWhaleTech_CasaOS-UI)\r [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=IceWhaleTech_CasaOS-UI&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=IceWhaleTech_CasaOS-UI)\r [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=IceWhaleTech_CasaOS-UI&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=IceWhaleTech_CasaOS-UI)",
+  "main": ".eslintrc.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CyberHuman-bot/Car-Stop.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CyberHuman-bot/Car-Stop/issues"
+  },
+  "homepage": "https://github.com/CyberHuman-bot/Car-Stop#readme"
 }
