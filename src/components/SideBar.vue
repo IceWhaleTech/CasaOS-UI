@@ -1,3 +1,4 @@
+
 <script>
 import lowerFirst from 'lodash/lowerFirst'
 import camelCase from 'lodash/camelCase'
@@ -15,27 +16,6 @@ const widgetsComponents = require.context(
 
 const widgetsConfig = 'widgets_config'
 
-// Configuration for NPM widgets
-const NPM_WIDGETS_CONFIG = [
-  // Example configurations - add your npm widget packages here
-  // {
-  //   package: '@your-org/weather-widget',
-  //   name: 'WeatherWidget',
-  //   componentName: 'weather',
-  //   title: 'Weather',
-  //   icon: 'weather-outline',
-  //   initShow: true
-  // },
-  // {
-  //   package: 'some-calendar-widget',
-  //   name: 'CalendarWidget', 
-  //   componentName: 'calendar',
-  //   title: 'Calendar',
-  //   icon: 'calendar-outline',
-  //   initShow: false
-  // }
-]
-
 export default {
   name: 'SideBar',
   components: {
@@ -47,8 +27,6 @@ export default {
       isLoading: true,
       comps: [],
       apps: [],
-      npmWidgets: [],
-      failedNpmWidgets: [],
       scrollSettings: {
         suppressScrollY: false,
         suppressScrollX: true,
@@ -58,39 +36,39 @@ export default {
     }
   },
   computed: {
-    allApps() {
-      return [...this.apps, ...this.npmWidgets]
-    },
     activeApps() {
-      const showWidgets = this.widgetsSettings.filter(item => item.show)
-      return showWidgets.map(item => find(this.apps, o => o.app.name === item.name))
+      const showWidgets = this.widgetsSettings.filter((item) => {
+        return item.show
+      })
+      const newArray = showWidgets.map((item) => {
+        const obj = find(this.apps, (o) => {
+          return o.app.name === item.name
+        })
+        return obj
+      })
+      return newArray
     },
     sidebarOpen() {
       return this.$store.state.sidebarOpen
     },
     showWidgets() {
-      return this.widgetsSettings.filter(item => item.show)
+      return this.widgetsSettings.filter((item) => {
+        return item.show
+      })
     },
   },
   created() {
-    // Add npm widget
-    this.apps.push({
-      app: {
-        ...WeatherWidget,
-        name: 'WeatherWidget',
-        initShow: true
-      }
-    })
-    this.comps.push('WeatherWidget')
-
-    // Add local widgets
-    widgetsComponents.keys().forEach(fileName => {
+    widgetsComponents.keys().forEach((fileName) => {
       const componentName = lowerFirst(
-        camelCase(fileName.split('/').pop().replace(/\.\w+$/, ''))
+        camelCase(
+          fileName
+            .split('/')
+            .pop()
+            .replace(/\.\w+$/, ''),
+        ),
       )
-      const localWidget = require(`@/widgets/${fileName.replace('./', '')}`).default
       this.comps.push(componentName)
-      this.apps.push({ app: localWidget })
+      this.apps.push({ app: require(`@/widgets/${fileName.replace('./', '')}`).default })
     })
   },
   mounted() {
@@ -100,6 +78,10 @@ export default {
   },
 
   methods: {
+    /**
+     * @description: Get Widgets Configs
+     * @return {*} void
+     */
     getConfig() {
       const initData = this.getInitData()
       this.$api.users.getCustomStorage(widgetsConfig).then((res) => {
@@ -114,21 +96,22 @@ export default {
             this.diffAndCombineData(initData, res.data.data)
           }
         }
-      }).catch((error) => {
-        console.error('Failed to load widget config:', error)
-        // Fallback to init data if API fails
-        this.widgetsSettings = initData
-        this.isLoading = false
-        this.handleResize()
       })
     },
-
     diffAndCombineData(initData, remoteData) {
       const newData = initData.map((item) => {
         const remoteItem = find(remoteData, el => el.name === item.name)
-        return {
-          name: item.name,
-          show: remoteItem ? remoteItem.show : item.show
+        if (remoteItem && item.name === remoteItem.name) {
+          return {
+            name: item.name,
+            show: (item.show === remoteItem.show) ? item.show : remoteItem.show,
+          }
+        }
+        else {
+          return {
+            name: item.name,
+            show: item.show,
+          }
         }
       })
       this.widgetsSettings = newData
@@ -138,11 +121,17 @@ export default {
       this.isLoading = false
       this.handleResize()
     },
+    /**
+     * @description: Get Local widgets datas
+     * @return {Array} array of widgets
+     */
     getInitData() {
-      return this.apps.map(item => ({
-        name: item.app.name,
-        show: item.app.initShow ?? true
-      }))
+      return this.apps.map((item) => {
+        return {
+          name: item.app.name,
+          show: item.app.initShow,
+        }
+      })
     },
 
     /**
@@ -150,8 +139,10 @@ export default {
      * @return {*} void
      */
     saveData(data) {
-      this.$api.users.setCustomStorage(widgetsConfig, data).then(res => {
-        if (res.data.success === 200) this.widgetsSettings = res.data.data
+      this.$api.users.setCustomStorage(widgetsConfig, data).then((res) => {
+        if (res.data.success === 200) {
+          this.widgetsSettings = res.data.data
+        }
       })
     },
 
@@ -162,12 +153,15 @@ export default {
 
     handleResize() {
       const ww = window.innerWidth
+      if (this.isLoading)
+        return false
       const parentWidth = document.querySelector('.slider-content').offsetWidth
       this.$nextTick(() => {
         const padding = ww <= 480 ? 0 : -16
         this.$refs.sidebar.style.width = `${parentWidth + padding}px`
       })
     },
+
   },
 }
 </script>
@@ -176,31 +170,10 @@ export default {
   <div v-if="!isLoading" ref="sidebar" :class="{ open: sidebarOpen }" class="side-bar contextmenu-canvas">
     <VueCustomScrollbar :settings="scrollSettings" class="scroll-area contextmenu-canvas">
       <div v-for="(item, index) in activeApps" :key="`widgets_${index}`">
-        <component 
-          :is="item.app" 
-          :class="{ 'last-block': index === activeApps.length - 1 }"
-          :data-source="item.source"
-          :data-package="item.package" 
-        />
-      </div>
-      
-      <!-- Debug info for development (remove in production) -->
-      <div v-if="$store.state.debug && failedNpmWidgets.length > 0" class="failed-widgets-debug">
-        <h4>Failed NPM Widgets:</h4>
-        <ul>
-          <li v-for="widget in failedNpmWidgets" :key="widget.package">
-            {{ widget.package }}: {{ widget.error }}
-            <button @click="reloadNpmWidget(widget)">Retry</button>
-          </li>
-        </ul>
+        <component :is="item.app" :class="{ 'last-block': index === activeApps.length - 1 }" />
       </div>
     </VueCustomScrollbar>
-    <Settings 
-      v-model="widgetsSettings" 
-      :class="{ 'mt-4': activeApps.length > 0 }" 
-      :widget-info="getWidgetInfo()"
-      @change="handleChange" 
-    />
+    <Settings v-model="widgetsSettings" :class="{ 'mt-4': activeApps.length > 0 }" @change="handleChange" />
   </div>
 </template>
 
@@ -237,46 +210,6 @@ export default {
     @include until(480px) {
         max-height: calc(100% - 4rem);
         height: 100% !important;
-    }
-}
-
-.failed-widgets-debug {
-    padding: 1rem;
-    margin-top: 1rem;
-    background: rgba(255, 0, 0, 0.1);
-    border-radius: 8px;
-    font-size: 0.875rem;
-
-    h4 {
-        margin-bottom: 0.5rem;
-        color: #ff6b6b;
-    }
-
-    ul {
-        list-style: none;
-        padding: 0;
-    }
-
-    li {
-        margin-bottom: 0.5rem;
-        padding: 0.5rem;
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 4px;
-        
-        button {
-            margin-left: 0.5rem;
-            padding: 0.25rem 0.5rem;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.75rem;
-
-            &:hover {
-                background: #0056b3;
-            }
-        }
     }
 }
 
