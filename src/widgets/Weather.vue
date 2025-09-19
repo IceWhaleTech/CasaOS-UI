@@ -80,7 +80,7 @@ export default {
     return {
       apiKey: "cea8e9e3b0f5ba0f8738baa15e170ff3",
       selectedCityIndex: 0,
-      cities: ["Baghdad", "London", "New York"],
+      cities: ["Baghdad", "London", "New York", "Tokyo", "Sydney", "Paris", "Berlin", "Moscow", "Dubai", "Singapore","Mumbai","Duhok","Erbil","Basra","Najaf"],
       weather: {
         temp: "--",
         desc: "--",
