@@ -122,6 +122,28 @@ export default {
     this.destroyUIEventBus()
   },
   methods: {
+    _isValidDiskEvent(evt) {
+      let p = {}
+      if (typeof evt?.properties === 'string') {
+        try { p = JSON.parse(evt.properties) } catch (_) { p = {} }
+      } else if (typeof evt?.properties === 'object' && evt.properties !== null) {
+        p = evt.properties
+      }
+
+      const asNum = (v) => {
+        const n = typeof v === 'number' ? v : parseFloat(v)
+        return Number.isFinite(n) ? n : NaN
+      }
+
+      const size = asNum(p.size)
+      if (!size || !Number.isFinite(size) || size <= 0) return false
+
+      const path = p['local-storage:path'] || p.path || ''
+      const mnt  = p.mount_point || ''
+      if (typeof path === 'string' && path.startsWith('/dev/loop') && !mnt) return false
+
+      return true
+    }
     createWS(domain) {
       let socket
       // reference:
@@ -217,6 +239,11 @@ export default {
       }
 
       const operateType = eventJson.name.split(':')[2]
+      if (eventJson.name === 'local-storage:disk:added' && !this._isValidDiskEvent(eventJson)) {
+        // delete letter which is invalid disk event!
+        this.$api.users.delLetter(eventJson.uuid)
+        return
+      }
       const entityUUID = eventJson.properties.serial || eventJson.properties['local-storage:uuid']
       switch (eventType) {
         case 'usb':
