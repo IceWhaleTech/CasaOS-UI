@@ -1,7 +1,6 @@
 <script>
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 import sortBy from 'lodash/sortBy'
-import last from 'lodash/last'
 import noticeBlock from '@/components/noticBlock/noticeBlock'
 import { mixin } from '@/mixins/mixin'
 import SyncBlock from '@/components/syncthing/SyncBlock.vue'
@@ -48,31 +47,7 @@ export default {
           },
         },
       },
-      noticesData: {
-        // example data:
-        /* 'local-storage': {
-				  prelude: {
-					title: 'local-storage',
-					icon: 'mdi-usb',
-				  },
-				  content: {
-					a: {
-					  title: 'Found a new drive',
-					  icon: '/storage/disk.png',
-					  color: 'is-primary',
-					  path: '/storage',
-					  uuid: '456',
-					  value: '100G/500G'
-					},},
-				  contentType: 'list',
-				  operate: {
-					type: 'button',
-					title: 'More',
-					path: '/storage',
-					icon: 'mdi-arrow-right',
-				  },
-				}, */
-      },
+      noticesData: {},
       dockerProgress: {},
       totalPercentage: 0,
     }
@@ -125,25 +100,33 @@ export default {
     _isValidDiskEvent(evt) {
       let p = {}
       if (typeof evt?.properties === 'string') {
-        try { p = JSON.parse(evt.properties) } catch (_) { p = {} }
-      } else if (typeof evt?.properties === 'object' && evt.properties !== null) {
+        try {
+          p = JSON.parse(evt.properties)
+        }
+        catch {
+          p = {}
+        }
+      }
+      else if (typeof evt?.properties === 'object' && evt.properties !== null) {
         p = evt.properties
       }
 
       const asNum = (v) => {
-        const n = typeof v === 'number' ? v : parseFloat(v)
-        return Number.isFinite(n) ? n : NaN
+        const n = typeof v === 'number' ? v : Number.parseFloat(v)
+        return Number.isFinite(n) ? n : Number.NaN
       }
 
       const size = asNum(p.size)
-      if (!size || !Number.isFinite(size) || size <= 0) return false
+      if (!size || !Number.isFinite(size) || size <= 0)
+        return false
 
       const path = p['local-storage:path'] || p.path || ''
-      const mnt  = p.mount_point || ''
-      if (typeof path === 'string' && path.startsWith('/dev/loop') && !mnt) return false
+      const mnt = p.mount_point || ''
+      if (typeof path === 'string' && path.startsWith('/dev/loop') && !mnt)
+        return false
 
       return true
-    }
+    },
     createWS(domain) {
       let socket
       // reference:

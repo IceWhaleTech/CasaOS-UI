@@ -1,55 +1,56 @@
-<template>
-	<b-field class="search-bar has-text-white mb-4" position="is-centered ">
-		<b-input v-model="keyText" :class="['ovh', isFocus ? 'fo' : '']" :placeholder="$t('Search...')" expanded
-			icon="search-outline" icon-pack="casa" icon-right="search-outline" icon-right-clickable size="is-medium"
-			@blur="onBlur" @focus="onFocus" @icon-right-click="gotoSearch" @keyup.enter.native="gotoSearch">
-		</b-input>
-	</b-field>
-</template>
-
 <script>
 export default {
-	name: "search-bar",
-	data() {
-		return {
-			isFocus: false,
-			keyText: "",
-			// searchEngine:this.$store.state.searchEngine
-		}
-	},
-	computed: {
-		searchEngine() {
-			return this.$store.state.searchEngine === "" ? "https://duckduckgo.com/?q=" : this.$store.state.searchEngine
-		}
-	},
-	methods: {
-		/**
-		 * @description: Handle Focus event
-		 * @return {*} void
-		 */
-		onFocus() {
-			this.isFocus = true;
-		},
+  name: 'SearchBar',
+  data() {
+    return {
+      isFocus: false,
+      keyText: '',
+      // searchEngine:this.$store.state.searchEngine
+    }
+  },
+  computed: {
+    searchEngine() {
+      return this.$store.state.searchEngine === '' ? 'https://duckduckgo.com/?q=' : this.$store.state.searchEngine
+    },
+  },
+  methods: {
+    /**
+     * @description: Handle Focus event
+     * @return {*} void
+     */
+    onFocus() {
+      this.isFocus = true
+    },
 
-		/**
-		 * @description: Handle Blur event
-		 * @return {*} void
-		 */
-		onBlur() {
-			if (this.keyText === "")
-				this.isFocus = false;
-		},
+    /**
+     * @description: Handle Blur event
+     * @return {*} void
+     */
+    onBlur() {
+      if (this.keyText === '')
+        this.isFocus = false
+    },
 
-		/**
-		 * @description: Pop up a new window and jump to google search
-		 * @return {*} void
-		 */
-		gotoSearch() {
-			window.open(this.searchEngine + this.keyText, '_blank')
-		}
-	},
+    /**
+     * @description: Pop up a new window and jump to google search
+     * @return {*} void
+     */
+    gotoSearch() {
+      window.open(this.searchEngine + this.keyText, '_blank')
+    },
+  },
 }
 </script>
+
+<template>
+  <b-field class="search-bar has-text-white mb-4" position="is-centered ">
+    <b-input
+      v-model="keyText" class="ovh" :class="[isFocus ? 'fo' : '']" :placeholder="$t('Search...')" expanded
+      icon="search-outline" icon-pack="casa" icon-right="search-outline" icon-right-clickable size="is-medium"
+      @blur="onBlur" @focus="onFocus" @icon-right-click="gotoSearch" @keyup.enter.native="gotoSearch"
+    />
+  </b-field>
+</template>
 
 <style lang="scss">
 .search-bar {
