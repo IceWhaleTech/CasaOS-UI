@@ -1,86 +1,98 @@
 name: alpha prerelease CI
 
 on:
-    #  手动触发事件
-    #  workflow_dispatch:
-    #    inputs:
-    #      logLevel:
-    #        description: 'Log level'
-    #        required: true
-    #        default: 'main build'
-    #      tags:
-    #        description: 'Tags'
-    push:
-        tags:
-            - "v*"
+  workflow_call:
+    secrets:
+      NPM_TOKEN:
+        required: true
+  push:
+    tags:
+      - "v*"
 jobs:
-    release:
-        runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                node-version: [18.x]
-            # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+  release:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+      # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
-        steps:
-            - uses: actions/checkout@v4
-            - name: "Use Node.js ${{ matrix.node-version }}"
-              uses: actions/setup-node@v4
-              with:
-                  node-version: ${{ matrix.node-version }}
-            - name: "缓存 Cache"
-              uses: actions/cache@v3
-              id: cache-dependencies
-              with:
-                  path: node_modules
-                  key: ${{runner.OS}}-${{hashFiles('**/yarn.lock')}}
-            - name: Fetch all tags
-              run: sudo git fetch --force --tags
-            - name: "读取当前版本号 Read the current version number"
-              id: version
-              uses: zhanghengxin/reading-a-file-of-JSON@ice
-              with:
-                  path: ./package.json
-                  property: version
-            - name: Get version
-              id: get_version
-              run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-            - name: "输出 echo artifact"
-              run: |
-                  echo ${{ steps.version.outputs.value }}
-                  echo github ${{ github }}
-                  echo github.sha ${{ github.sha }}
-                  echo env.VERSION ${{ steps.get_version.outputs.VERSION }}
-            - name: Install pnpm
-              uses: pnpm/action-setup@v2
-              with:
-                  version: 9.12.2
-                  run_install: false
+    steps:
+      - uses: actions/checkout@v4
 
-            - name: Install dependencies
-              run: |
-                  pnpm install
-              env:
-                  NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-            - run: pnpm build
-            - run: |
-                  tar -zcvf linux-all-casaos-${{ steps.get_version.outputs.VERSION }}.tar.gz build
-            - name: "更新 Update release"
-              uses: zhanghengxin/git-release-private@ice
-              with:
-                  token: ${{ secrets.GITHUB_TOKEN }}
-                  allow_override: true
-                  gzip: false
-                  prerelease: true
-                  tag: ${{ steps.get_version.outputs.VERSION }}
-                  files: ./linux-all-casaos-${{ steps.get_version.outputs.VERSION }}.tar.gz
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 8.6
+          run_install: false
 
-            - name: Upload to oss
-              id: upload_to_oss
-              uses: tvrcgo/upload-to-oss@master
-              with:
-                  key-id: ${{ secrets.OSS_KEY_ID }}
-                  key-secret: ${{ secrets.OSS_KEY_SECRET }}
-                  region: oss-cn-shanghai
-                  bucket: casaos
-                  assets: |
-                      ./linux-all-casaos-${{ steps.get_version.outputs.VERSION }}.tar.gz:/IceWhaleTech/CasaOS-UI/releases/download/${{ steps.get_version.outputs.VERSION }}/linux-all-casaos-${{ steps.get_version.outputs.VERSION }}.tar.gz
+      - name: "Use Node.js ${{ matrix.node-version }}"
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
+          registry-url: "https://registry.npmjs.org"
+        env:
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: "缓存 Cache"
+        uses: actions/cache@v3
+        id: cache-dependencies
+        with:
+          path: node_modules
+          key: ${{runner.OS}}-${{hashFiles('**/yarn.lock')}}
+
+      - name: Fetch all tags
+        run: sudo git fetch --force --tags
+      - name: "读取当前版本号 Read the current version number"
+
+        id: version
+        uses: zhanghengxin/reading-a-file-of-JSON@ice
+        with:
+          path: ./package.json
+          property: version
+
+      - name: Get version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
+      - name: "输出 echo artifact"
+        run: |
+          echo ${{ steps.version.outputs.value }}
+          echo github ${{ github }}
+          echo github.sha ${{ github.sha }}
+          echo env.VERSION ${{ steps.get_version.outputs.VERSION }}
+
+      - name: Install dependencies
+        run: |
+          pnpm install
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
+      - run: pnpm build
+      - run: |
+          tar -zcvf linux-all-casaos-${{ steps.get_version.outputs.VERSION }}.tar.gz build
+      - name: "更新 Update release"
+        uses: zhanghengxin/git-release-private@ice
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          allow_override: true
+          gzip: false
+          prerelease: true
+          tag: ${{ steps.get_version.outputs.VERSION }}
+          files: ./linux-all-casaos-${{ steps.get_version.outputs.VERSION }}.tar.gz
+
+      - name: Upload to oss
+        id: upload_to_oss
+        uses: tvrcgo/upload-to-oss@master
+        with:
+          key-id: ${{ secrets.OSS_KEY_ID }}
+          key-secret: ${{ secrets.OSS_KEY_SECRET }}
+          region: oss-cn-shanghai
+          bucket: casaos
+          assets: |
+            ./linux-all-casaos-${{ steps.get_version.outputs.VERSION }}.tar.gz:/IceWhaleTech/CasaOS-UI/releases/download/${{ steps.get_version.outputs.VERSION }}/linux-all-casaos-${{ steps.get_version.outputs.VERSION }}.tar.gz
