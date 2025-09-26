@@ -56,7 +56,11 @@ jobs:
                   version: 9.12.2
                   run_install: false
 
-            - run: pnpm install
+            - name: Install dependencies
+              run: |
+                  pnpm install
+              env:
+                  NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
             - run: pnpm build
             - run: |
                   tar -zcvf linux-all-casaos-${{ steps.get_version.outputs.VERSION }}.tar.gz build
