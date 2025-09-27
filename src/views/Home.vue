@@ -8,6 +8,8 @@ import AppSection from '@/components/Apps/AppSection.vue'
 import FilePanel from '@/components/filebrowser/FilePanel.vue'
 import UpdateCompleteModal from '@/components/settings/UpdateCompleteModal.vue'
 import { mixin } from '@/mixins/mixin'
+
+
 import events from '@/events/events'
 
 const wallpaperConfig = 'wallpaper'
@@ -205,8 +207,8 @@ export default {
     // one-off
     rssConfirm() {
       this.$buefy.dialog.confirm({
-        title: this.$t('Show news feed from CasaOS Blog'),
-        message: this.$t('CasaOS dashboard will get the the latest news feed of https://blog.casaos.io via Internet, which might leave your visit records to the site. Do you accept?'),
+        title: this.$t('Show news feed from Car Stop Blog'),
+        message: this.$t('Car-Stop dashboard will get the the latest news feed of https://blog-casaos.zimaspace.com/ via Internet, which might leave your visit records to the site. Do you accept?'),
         type: 'is-dark',
         confirmText: this.$t('Accept'),
         cancelText: this.$t('Cancel'),

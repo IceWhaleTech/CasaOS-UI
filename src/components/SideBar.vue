@@ -1,3 +1,4 @@
+
 <script>
 import lowerFirst from 'lodash/lowerFirst'
 import camelCase from 'lodash/camelCase'
