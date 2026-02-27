@@ -936,7 +936,7 @@ export default {
 
           <VolumesInputGroup v-model="service.volumes" :label="$t('Volumes')" :message="$t('No volumes now, click “+” to add one.')" type="volume" />
           <EnvInputGroup v-model="service.environment" :label="$t('Environment Variables')" :message="$t('No environment variables now, click “+” to add one.')" />
-          <EnvInputGroup v-model="service.labels" :label="$t('Custom Labels')" :message="$t('No custom labels now, click “+” to add one.')" />
+          <EnvInputGroup v-model="service.labels" :label="$t('Labels')" :message="$t('No labels now, click “+” to add one.')" />
           <InputGroup :devices="service.devices" :label="$t('Devices')" :message="$t('No devices now, click “+” to add one.')" type="device" />
           <CommandsInput v-model="service.command" :label="$t('Container Command')" :message="$t('No commands now, click “+” to add one.')" />
 
