@@ -577,7 +577,7 @@ export default {
           </div>
           <!-- Search Engine End -->
 
-          <!-- Language Start -->
+          <!-- Language Start
           <div
             class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4"
           >
@@ -595,7 +595,7 @@ export default {
               </b-field>
             </div>
           </div>
-          <!-- Language End -->
+           Language End -->
 
           <!-- WebUI Port Start -->
           <div
@@ -675,7 +675,7 @@ export default {
             </div>
           </div>
           <!--  Show other Docker container app(s) Switch End  -->
-          <!--  Recommended modules Switch Start  -->
+          <!--  Recommended modules Switch Start  
           <div
             class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4"
           >
@@ -699,9 +699,9 @@ export default {
               </b-field>
             </div>
           </div>
-          <!-- Recommended modules Switch End  -->
+          Recommended modules Switch End  -->
 
-          <!-- Automount USB Drive Start  -->
+          <!-- Automount USB Drive Start 
           <div
             class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4"
           >
@@ -732,7 +732,7 @@ export default {
               </b-field>
             </div>
           </div>
-          <!-- Automount USB Drive End  -->
+          Automount USB Drive End  -->
 
           <!-- Update Start -->
           <div class="_is-large hover-effect _is-radius pr-2 mr-4 ml-4">
