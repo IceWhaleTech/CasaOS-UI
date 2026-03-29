@@ -84,14 +84,14 @@ function unregisterAppStore(id) {
 		removeLoadingState.value = false;
 	})
 }
-
+/*
 function redirectURL() {
 	if (sourceDorpRef.value) {
 		sourceDorpRef.value.toggle();
 	}
 	window.open("https://awesome.casaos.io/content/3rd-party-app-stores/list.html", "_blank", "noopener");
 }
-
+*/
 function activeInput() {
 	if (componentState.value === "active_input_state") {
 		app.$refs.inputSourceURL.focus()
