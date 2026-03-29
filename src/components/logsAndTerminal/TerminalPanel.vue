@@ -18,10 +18,12 @@
 		<!-- Modal-Card Body Start -->
 		<section class="modal-card-body " style="overflow:hidden">
 			<div class="is-flex-grow-1">
+				<!--
 				<b-tabs :animated="false" @input="onInput">
 					<b-tab-item :label="$t('Terminal')" value="terminal">
 						<terminal-card ref="terminal" :initWsUrl="wsUrl"></terminal-card>
 					</b-tab-item>
+					-->
 					<b-tab-item :label="$t('Logs')" value="logs">
 						<logs-card ref="logs" :data="logData"></logs-card>
 					</b-tab-item>
