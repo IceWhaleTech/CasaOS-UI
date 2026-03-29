@@ -701,7 +701,7 @@ export default {
           </div>
           <!-- Recommended modules Switch End  -->
 
-          <!-- Automount USB Drive Start  -->
+          <!-- Automount USB Drive Start  
           <div
             class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4"
           >
@@ -732,7 +732,7 @@ export default {
               </b-field>
             </div>
           </div>
-          <!-- Automount USB Drive End  -->
+          Automount USB Drive End  -->
 
           <!-- Update Start -->
           <div class="_is-large hover-effect _is-radius pr-2 mr-4 ml-4">
