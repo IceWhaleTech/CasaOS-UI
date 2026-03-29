@@ -367,7 +367,7 @@ export default {
     /**
      * @description: Show Terminal panel
      * @return {*} void
-     */
+     
     showTerminalPanel() {
       this.$messageBus('terminallogs')
       this.$store.commit('SET_SIDEBAR_CLOSE')
@@ -382,7 +382,7 @@ export default {
         animation: 'zoom-in',
       })
     },
-
+**/
     rssConfirm() {
       if (this.rss_switch == false) {
         this.barData.rss_switch = false
