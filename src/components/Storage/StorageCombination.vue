@@ -1,7 +1,7 @@
 <template>
 	<div v-show="showCombination" class="mb-5 mt-2 pt-5 pb-5 border-1 combination-box">
 		<div class="is-relative is-flex is-justify-content-center top--2rem">
-			<div class="pr-4 pl-4 has-background-white">CasaOS HD</div>
+			<div class="pr-4 pl-4 has-background-white">Storage</div>
 		</div>
 		<div class="is-flex ">
 			<div class="is-flex-grow-1">
