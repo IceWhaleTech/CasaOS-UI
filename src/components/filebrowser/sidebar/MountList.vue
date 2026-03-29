@@ -20,7 +20,7 @@
 							{{ mergeStorageList.length }}
 						</div>
 					</div>
-					<div class="is-flex-grow-1 one-line">CasaOS HD</div>
+					<div class="is-flex-grow-1 one-line">Storage</div>
 					<div v-if="testMergeMiss > 0" class="is-flex is-align-items-center">
 						<b-icon class="warn" custom-size="casa-16px" icon="danger-outline" pack="casa"></b-icon>
 					</div>
