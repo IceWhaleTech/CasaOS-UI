@@ -81,6 +81,10 @@ const mutations = {
     state.isViewGird = val
   },
 
+  SET_SHOW_HIDDEN_FILES(state, val) {
+    state.showHiddenFiles = val
+  },
+
   SET_OPERATE_OBJECT(state, val) {
     state.operateObject = val
   },

@@ -219,6 +219,8 @@ export default {
 				mode = 'text/x-go'
 			} else if (ext.toLowerCase() == "vue") {
 				mode = 'text/x-vue'
+			} else if (ext.toLowerCase() === 'env' || this.item.name.toLowerCase().startsWith('.env')) {
+				mode = 'text/x-sh'
 			}
 			this.codemirror.setOption("mode", mode);
 			this.$api.file.download(this.item.path).then(res => {
