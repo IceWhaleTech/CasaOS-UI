@@ -3,7 +3,7 @@
 		<div class="blur-background"></div>
 
 		<div ref="wsettings" class="wsettings">
-			<b-dropdown :mobile-modal="false" :position="position" animation="fade1" aria-role="list">
+			<b-dropdown :mobile-modal="false" :position="position" animation="fade1" role="list">
 				<template #trigger>
 					<div class="widget-content" @click="$messageBus('widget_widgetsetting')">
 						<!-- Header Start -->
@@ -18,7 +18,7 @@
 						<!-- Header End -->
 					</div>
 				</template>
-				<b-dropdown-item :focusable="false" aria-role="menu-item" class="has-text-white has-text-left" custom>
+				<b-dropdown-item :focusable="false" role="menuitem" class="has-text-white has-text-left" custom>
 					<h2 class="title is-5 has-text-white">{{ $t('Widgets Settings') }}</h2>
 					<draggable v-model="settingsData" handle=".drag-handle" ghost-class="ghost" :animation="200"
 						@end="handleInput">
@@ -48,6 +48,7 @@
 
 <script>
 import find from 'lodash/find';
+import cloneDeep from 'lodash/cloneDeep';
 import draggable from 'vuedraggable';
 
 const widgetsComponents = require.context(
@@ -94,7 +95,7 @@ export default {
 
 	},
 	created() {
-		this.settingsData = JSON.parse(JSON.stringify(this.widgetsSettings))
+		this.settingsData = cloneDeep(this.widgetsSettings)
 		widgetsComponents.keys().forEach(fileName => {
 			const componentConfig = widgetsComponents(fileName)
 			this.apps.push({ app: componentConfig })
@@ -167,7 +168,7 @@ export default {
 	}
 
 	.circle-btn {
-		background: rgba(123, 123, 123, 0.16);
+		background: rgba(0, 0, 0, 0.5);
 		backdrop-filter: blur(24px);
 		color: #fff;
 		font-size: 1rem;
