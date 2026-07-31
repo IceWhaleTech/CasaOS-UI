@@ -20,17 +20,25 @@
 				</template>
 				<b-dropdown-item :focusable="false" aria-role="menu-item" class="has-text-white has-text-left" custom>
 					<h2 class="title is-5 has-text-white">{{ $t('Widgets Settings') }}</h2>
-					<div v-for="(item, index) in settingsData" :key="`setting_${index}`"
-						class="is-flex is-align-items-center item">
-						<div class="is-flex is-align-items-center is-flex-grow-1">
-							<b-icon :icon="getIcon(item.name)" pack="casa" class="mr-2"></b-icon>
-							<b>{{ $t(getTitle(item.name)) }}</b>
+					<draggable v-model="settingsData" handle=".drag-handle" ghost-class="ghost" animation="200"
+						@end="handleInput">
+						<div v-for="(item, index) in settingsData" :key="`setting_${index}`"
+							class="is-flex is-align-items-center item">
+							<span class="drag-handle mr-1" aria-hidden="true">
+								<span class="dot"></span><span class="dot"></span>
+								<span class="dot"></span><span class="dot"></span>
+								<span class="dot"></span><span class="dot"></span>
+							</span>
+							<div class="is-flex is-align-items-center is-flex-grow-1">
+								<b-icon :icon="getIcon(item.name)" pack="casa" class="mr-2"></b-icon>
+								<b>{{ $t(getTitle(item.name)) }}</b>
+							</div>
+							<b-field>
+								<b-switch v-model="item.show" class="is-flex-direction-row-reverse mr-0" size="is-small"
+									type="is-dark" @input="handleInput"></b-switch>
+							</b-field>
 						</div>
-						<b-field>
-							<b-switch v-model="item.show" class="is-flex-direction-row-reverse mr-0" size="is-small"
-								type="is-dark" @input="handleInput"></b-switch>
-						</b-field>
-					</div>
+					</draggable>
 				</b-dropdown-item>
 			</b-dropdown>
 		</div>
@@ -40,6 +48,7 @@
 
 <script>
 import find from 'lodash/find';
+import draggable from 'vuedraggable';
 
 const widgetsComponents = require.context(
 	'@/widgets',
@@ -51,6 +60,9 @@ const widgetsComponents = require.context(
 export default {
 	// eslint-disable-next-line vue/multi-word-component-names
 	name: "settings",
+	components: {
+		draggable,
+	},
 	data() {
 		return {
 			apps: [],
@@ -124,6 +136,34 @@ export default {
 
 	.item {
 		margin: 1.25rem 0;
+	}
+
+	.drag-handle {
+		cursor: grab;
+		opacity: 0.5;
+		display: inline-grid;
+		grid-template-columns: repeat(2, 3px);
+		grid-gap: 2px;
+		width: 12px;
+
+		&:hover {
+			opacity: 1;
+		}
+
+		&:active {
+			cursor: grabbing;
+		}
+
+		.dot {
+			width: 3px;
+			height: 3px;
+			border-radius: 50%;
+			background: #fff;
+		}
+	}
+
+	.ghost {
+		opacity: 0.4;
 	}
 
 	.circle-btn {
