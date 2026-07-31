@@ -20,9 +20,9 @@
 				</template>
 				<b-dropdown-item :focusable="false" aria-role="menu-item" class="has-text-white has-text-left" custom>
 					<h2 class="title is-5 has-text-white">{{ $t('Widgets Settings') }}</h2>
-					<draggable v-model="settingsData" handle=".drag-handle" ghost-class="ghost" animation="200"
+					<draggable v-model="settingsData" handle=".drag-handle" ghost-class="ghost" :animation="200"
 						@end="handleInput">
-						<div v-for="(item, index) in settingsData" :key="`setting_${index}`"
+						<div v-for="item in settingsData" :key="item.name"
 							class="is-flex is-align-items-center item">
 							<span class="drag-handle mr-1" aria-hidden="true">
 								<span class="dot"></span><span class="dot"></span>
