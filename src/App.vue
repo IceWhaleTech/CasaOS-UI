@@ -23,6 +23,17 @@
 		<router-view/>
 		<!-- Router View End -->
 
+		<app-launcher-check
+			v-if="appLauncher"
+			:app-detail="appLauncher"
+		/>
+		<app-iframe
+			v-if="appIframe"
+			:app-name="appIframe.name"
+			:url="appIframe.url"
+			@close="closeAppFrame"
+		/>
+
 	</div>
 </template>
 
@@ -30,7 +41,10 @@
 import BrandBar      from './components/BrandBar.vue'
 import ContactBar    from './components/ContactBar.vue'
 import CasaWallpaper from './components/wallpaper/CasaWallpaper.vue'
+import AppIframe from './components/Apps/AppIframe.vue'
+import AppLauncherCheck from './views/AppLauncherCheck.vue'
 import {mixin}       from './mixins/mixin';
+import events from '@/events/events'
 
 const customIconConfig = {
 	customIconPacks: {
@@ -67,7 +81,9 @@ export default {
 	components: {
 		BrandBar,
 		ContactBar,
-		CasaWallpaper
+		CasaWallpaper,
+		AppIframe,
+		AppLauncherCheck,
 	},
 	mixins: [mixin],
 	data() {
@@ -90,7 +106,9 @@ export default {
 				classes: "fadeInRight",
 				duration: 700
 			},
-			"vh": "0px"
+			"vh": "0px",
+			appIframe: null,
+			appLauncher: null,
 		}
 	},
 
@@ -121,8 +139,29 @@ _____             _____ _____
 		this.onWindowResize();
 		let vh = window.innerHeight * 0.01;
 		this["vh"] = `${vh}px`;
+		this.$EventBus.$on(events.OPEN_APP_IFRAME, this.openAppIframe)
+		this.$EventBus.$on(events.OPEN_APP_LAUNCHER, this.openAppLauncher)
+		this.$EventBus.$on(events.CLOSE_APP_IFRAME, this.closeAppFrame)
+	},
+	beforeDestroy() {
+		window.removeEventListener('resize', this.onWindowResize);
+		this.$EventBus.$off(events.OPEN_APP_IFRAME, this.openAppIframe)
+		this.$EventBus.$off(events.OPEN_APP_LAUNCHER, this.openAppLauncher)
+		this.$EventBus.$off(events.CLOSE_APP_IFRAME, this.closeAppFrame)
 	},
 	methods: {
+		openAppIframe(appData) {
+			this.appLauncher = null
+			this.appIframe = appData
+		},
+		openAppLauncher(appData) {
+			this.appIframe = null
+			this.appLauncher = appData
+		},
+		closeAppFrame() {
+			this.appIframe = null
+			this.appLauncher = null
+		},
 		/**
 		 * @description: Get and Set default language
 		 * @return {*} void

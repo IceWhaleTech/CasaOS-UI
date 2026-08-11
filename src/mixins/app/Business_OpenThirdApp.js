@@ -7,28 +7,26 @@
  * Copyright (c) 2022 by IceWhale, All Rights Reserved.
  */
 
+import events from '@/events/events'
+
 export default {
 	methods: {
 		openAppToNewWindow(appInfo) {
-			this.hasNewTag(appInfo.name) ? this.firstOpenThirdApp(appInfo) : this.openThirdApp(appInfo, true);
+			this.hasNewTag(appInfo.name) ? this.firstOpenThirdApp(appInfo) : this.openThirdApp(appInfo);
 		},
-		openThirdApp(appInfo, isNewWindows) {
+		openThirdApp(appInfo) {
 			this.$messageBus('apps_open', appInfo.name);
 			if (appInfo.hostname !== "" || appInfo.port !== "" || appInfo.index !== "") {
 				const hostIp = appInfo.hostname || this.$baseIp
 				const scheme = appInfo.scheme || 'http'
 				const port = appInfo.port ? `:${appInfo.port}` : ''
-				const url = `${scheme}://${hostIp}${port}${appInfo.index}`
+				const index = appInfo.index || ''
+				const url = `${scheme}://${hostIp}${port}${index}`
 
-				if (isNewWindows) {
-					window.open(url);
-				} else {
-					let html = document.createElement('a');
-					html.href = url;
-					html.rel = 'noreferrer';
-					document.getElementById('app').appendChild(html)
-					html.click();
-				}
+				this.$EventBus.$emit(events.OPEN_APP_IFRAME, {
+					name: appInfo.name,
+					url,
+				})
 			}
 		},
 		async openThirdContainerByAppInfo(appInfo) {
@@ -63,14 +61,7 @@ export default {
 		},
 		firstOpenThirdApp(appInfo) {
 			this.removeIdFromSessionStorage(appInfo.name);
-			let routeUrl = this.$router.resolve({
-				name: 'AppLauncherCheck',
-				path: '/launch',
-				query: {
-					appDetailData: JSON.stringify(appInfo)
-				}
-			});
-			window.open(routeUrl.href, '_blank');
+			this.$EventBus.$emit(events.OPEN_APP_LAUNCHER, appInfo)
 		}
 	}
 }

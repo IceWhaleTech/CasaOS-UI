@@ -27,5 +27,8 @@ const events = {
 	ACTIVE_DROP_UPLOAD: 'activeDropUpload',
 	SHOW_FILES_SIDEBAR: 'showFilesSidebar',
 	HIDE_FILES_SIDEBAR: 'hideFilesSidebar',
+	OPEN_APP_IFRAME: 'openAppIframe',
+	OPEN_APP_LAUNCHER: 'openAppLauncher',
+	CLOSE_APP_IFRAME: 'closeAppIframe',
 };
 export default events;
