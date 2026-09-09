@@ -452,7 +452,7 @@ export default {
             return item.count > 0
           }),
         )
-        this.currentCate = this.cateMenu[0]
+        this.currentCate = this.cateMenu[0] || { count: 0, id: 0, name: 'All' }
         this.currentSort = this.sortMenu[0]
         if (this.isFirst) {
           this.isFirst = false
