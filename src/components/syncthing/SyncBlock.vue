@@ -1,21 +1,20 @@
-
 <template>
 	<div class="common-card">
 
 		<div class="blur-background"></div>
 		<div class="wuji-content _box is-flex is-flex-direction-column">
 			<!-- Init State Start -->
-			<h6 class="title is-4 mb-0 has-text-white is-flex-shrink-0">{{ $t(`Sync your data`) }}</h6>
+			<h6 class="title is-4 mb-0 has-text-white is-flex-shrink-0">{{ $t(`Secure remote access`) }}</h6>
 			<div class="is-flex is-align-items-center is-flex-grow-1 _notice-content-text">
 				<div class="info ">
 					<div class="des two-line is-size-14px">
-						{{ $t(`Use Syncthing to sync your files between multiple devices.`) }}
+						{{ $t(`Use Cloudflared to securely access your home server from anywhere.`) }}
 					</div>
 				</div>
-				<b-image :src="require('@/assets/img/syncthing/sync.svg')" class="is-80x80"></b-image>
+				<b-image :src="require('@/assets/img/cloudflared/tunnel.svg')" class="is-80x80"></b-image>
 			</div>
 			<div class="buttons is-flex is-flex-shrink-0 is-flex-direction-row-reverse">
-				<b-button class="mb-0" rounded size="is-small" type="is-primary" @click="openSyncPanel">{{
+				<b-button class="mb-0" rounded size="is-small" type="is-primary" @click="openCloudflaredPanel">{{
 					$t(actionText)
 				}}
 				</b-button>
@@ -30,100 +29,97 @@
 import events from '@/events/events';
 
 export default {
-	name: "sync-block",
+	name: "cloudflared-block",
 	data() {
 		return {
 			isLoading: false,
 			isStarting: false,
-			syncBaseURL: "",
-			isSyncInstalled: false,
-			isSyncRunning: false,
-			syncPort: "",
-			syncId: ""
+			cloudflaredBaseURL: "",
+			isCloudflaredInstalled: false,
+			isCloudflaredRunning: false,
+			cloudflaredPort: "",
+			cloudflaredId: ""
 		}
 	},
 	created() {
-		this.checkSyncStatus()
+		this.checkCloudflaredStatus()
 
-		this.$EventBus.$on(events.UPDATE_SYNC_STATUS, () => {
-			this.checkSyncStatus();
+		this.$EventBus.$on(events.UPDATE_CLOUDFLARED_STATUS, () => {
+			this.checkCloudflaredStatus();
 		});
 
 	},
 	beforeDestroy() {
-		this.$EventBus.$off(events.UPDATE_SYNC_STATUS);
+		this.$EventBus.$off(events.UPDATE_CLOUDFLARED_STATUS);
 	},
 	computed: {
 		actionText() {
-			return !this.isSyncInstalled ? "Install" : "Open"
+			return !this.isCloudflaredInstalled ? "Install" : "Open"
 		}
 	},
 
 	methods: {
-		async checkSyncStatus() {
-			// const res = await this.$api.sys.getSystemApps()
+		async checkCloudflaredStatus() {
 			const listRes = await this.$api.container.getMyAppList();
 			const systemApps = listRes.data ? listRes.data.data.casaos_apps : [];
-			const is8384SyncInstalled = systemApps.some(app => {
-				return app.image.includes('syncthing') && app.port === 8384
+			const isDefaultCloudflaredInstalled = systemApps.some(app => {
+				return app.image.includes('cloudflared') && app.port === 8080
 			})
-			if (is8384SyncInstalled) {
-				this.isSyncInstalled = true
-				this.syncBaseURL = `http://${this.$baseIp}:8384`
-				this.syncPort = 8384
-				this.syncId = systemApps.find(app => {
-					return app.image.includes('syncthing') && app.port === 8384
-				}).port
-				this.isSyncRunning = systemApps.some(app => {
-					return app.image.includes('syncthing') && app.port === 8384 && app.state === 'running'
+			if (isDefaultCloudflaredInstalled) {
+				this.isCloudflaredInstalled = true
+				this.cloudflaredBaseURL = `http://${this.$baseIp}:8080`
+				this.cloudflaredPort = 8080
+				this.cloudflaredId = systemApps.find(app => {
+					return app.image.includes('cloudflared') && app.port === 8080
+				}).id
+				this.isCloudflaredRunning = systemApps.some(app => {
+					return app.image.includes('cloudflared') && app.port === 8080 && app.state === 'running'
 				})
 			} else {
-				this.isSyncInstalled = systemApps.some(app => {
-					return app.image.includes('syncthing')
+				this.isCloudflaredInstalled = systemApps.some(app => {
+					return app.image.includes('cloudflared')
 				})
-				if (this.isSyncInstalled) {
-					this.isSyncRunning = systemApps.some(app => {
-						return app.image.includes('syncthing') && app.state === "running"
+				if (this.isCloudflaredInstalled) {
+					this.isCloudflaredRunning = systemApps.some(app => {
+						return app.image.includes('cloudflared') && app.state === "running"
 					})
-					this.syncPort = systemApps.find(app => {
-						return app.image.includes('syncthing')
+					this.cloudflaredPort = systemApps.find(app => {
+						return app.image.includes('cloudflared')
 					}).port
-					this.syncId = systemApps.find(app => {
-						return app.image.includes('syncthing')
+					this.cloudflaredId = systemApps.find(app => {
+						return app.image.includes('cloudflared')
 					}).id
-					this.syncBaseURL = `http://${this.$baseIp}:${this.syncPort}`
+					this.cloudflaredBaseURL = `http://${this.$baseIp}:${this.cloudflaredPort}`
 				}
 			}
-
-
 		},
-		async openSyncPanel() {
-			await this.checkSyncStatus()
-			if (!this.isSyncInstalled) {
-				this.$EventBus.$emit(events.OPEN_APP_STORE_AND_GOTO_SYNCTHING);
+		async openCloudflaredPanel() {
+			await this.checkCloudflaredStatus()
+			if (!this.isCloudflaredInstalled) {
+				this.$EventBus.$emit(events.OPEN_APP_STORE_AND_GOTO_CLOUDFLARED);
 			} else {
-				if (this.isSyncRunning) {
-					window.open(this.syncBaseURL, '_blank');
+				if (this.isCloudflaredRunning) {
+					window.open(this.cloudflaredBaseURL, '_blank');
 				} else {
 					this.$buefy.dialog.confirm({
 						title: ' ',
-						message: this.$t('Syncthing is not running, start it?'),
+						message: this.$t('Cloudflared is not running, start it?'),
 						hasIcon: true,
 						closeOnConfirm: false,
 						confirmText: this.$t('Start'),
 						cancelText: this.$t('Cancel'),
 						onConfirm: (value, { close }) => {
 							this.$buefy.toast.open({
-								message: this.$t(`Starting Syncthing...`),
+								message: this.$t(`Starting Cloudflared...`),
 								type: 'is-white'
 							})
-							this.$api.container.updateState(this.syncId, "start").then((res) => {
+							this.$api.container.updateState(this.cloudflaredId, "start").then((res) => {
 								this.isStarting = false
 								if (res.data.success == 200) {
 									this.$EventBus.$emit(events.RELOAD_APP_LIST);
 									setTimeout(() => {
 										close()
-										window.open(this.syncBaseURL, '_blank');
+										window.open(this.cloudflaredBaseURL, '_blank');
 
 									}, 2000)
 								} else {
@@ -142,10 +138,10 @@ export default {
 	},
 	sockets: {
 		"app:install-end"() {
-			this.checkSyncStatus();
+			this.checkCloudflaredStatus();
 		},
 		"app:install-error"() {
-			this.checkSyncStatus();
+			this.checkCloudflaredStatus();
 		},
 	}
 }
