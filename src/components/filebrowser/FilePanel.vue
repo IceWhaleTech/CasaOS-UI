@@ -132,6 +132,11 @@
 										</b-field>
 									</div>
 									<div class="view-btns is-flex-shrink-0">
+										<b-tooltip :label="$t('Show Hidden Files')" position="is-left" type="is-dark">
+											<p class="is-clickable none-line-height mr-2" :class="{ 'has-text-primary': showHiddenFiles }" role="button" @click="toggleHiddenFiles">
+												<b-icon icon="eye-outline"></b-icon>
+											</p>
+										</b-tooltip>
 										<b-tooltip :label="$t('Change View')" position="is-left" type="is-dark">
 											<p class="is-clickable none-line-height" role="button" @click="changeView">
 												<b-icon :icon="viewIcon"></b-icon>
@@ -382,6 +387,9 @@ export default {
 				? "view-grid-outline"
 				: "format-list-bulleted";
 		},
+		showHiddenFiles() {
+			return this.$store.state.showHiddenFiles;
+		},
 		listView() {
 			return this.$store.state.isViewGird ? "gird-view" : "list-view";
 		},
@@ -578,10 +586,9 @@ export default {
 								extensions: item.extensions,
 							};
 						});
-						// filter hidden files
-						const filterList = newFileList.filter((item) => {
-							return !item.name.startsWith(".");
-						});
+						const filterList = this.showHiddenFiles
+							? newFileList
+							: newFileList.filter((item) => !item.name.startsWith("."));
 						this.listData = orderBy(filterList, ["is_dir"], ["desc"]);
 						this.handelListChange(this.listData);
 						this.errorMsg = "";
@@ -615,6 +622,10 @@ export default {
 		changeView() {
 			this.isViewGird = !this.$store.state.isViewGird;
 			this.$store.commit("SET_IS_VIEW_GRID", this.isViewGird);
+		},
+		toggleHiddenFiles() {
+			this.$store.commit('SET_SHOW_HIDDEN_FILES', !this.$store.state.showHiddenFiles);
+			this.reload();
 		},
 
 		/**
