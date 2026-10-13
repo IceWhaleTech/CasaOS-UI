@@ -117,6 +117,7 @@ export default {
             depends_on: [],
             ports: [],
             environment: [],
+            labels: [],
             devices: [],
             command: [],
             container_name: '',
@@ -402,6 +403,40 @@ export default {
         composeServicesItem.environment = []
       }
 
+      // Labels
+      composeServicesItem._internal_labels = [] 
+      if (composeServicesItemInput.labels) {
+        // Reserved CasaOS internal label namespace keys
+        const reservedLabels = [
+          'icon', 'name', 'origin', 'custom_id', 'desc', 'host', 
+          'index', 'web', 'protocol', 'casaos', 
+          'com.docker.compose.project', 'com.docker.compose.service', 
+          'io.casaos.v1.app.store.id', 'show_env'
+        ]
+        
+        const labelsArray = Array.isArray(composeServicesItemInput.labels)
+          ? composeServicesItemInput.labels
+          : Object.entries(composeServicesItemInput.labels)
+          
+        composeServicesItem.labels = labelsArray.map((item) => {
+          const ii = typeof item === 'object' ? Array.from(item) : item.split('=')
+          return {
+            host: ii[1].replace(/"/g, ''),
+            container: ii[0],
+          }
+        }).filter((lbl) => {
+          // If label matches internal system reserved key, cache it invisibly and hide from UI controls
+          if (reservedLabels.includes(lbl.container)) {
+            composeServicesItem._internal_labels.push(lbl)
+            return false
+          }
+          return true
+        })
+      }
+      else {
+        composeServicesItem.labels = []
+      }
+
       // Ports
       /*
       - "3000"
@@ -670,6 +705,19 @@ export default {
           .map((env) => {
             return `${env.container}=${env.host}`
           })
+        // Concat the user-edited labels with the safely preserved internal daemon labels
+        const allLabels = service.labels.concat((service._internal_labels || []))
+        
+        outputService.labels = allLabels
+          .filter((lbl) => {
+            if (lbl.container || lbl.host) {
+              return true
+            }
+            return false
+          })
+          .map((lbl) => {
+            return `${lbl.container}=${lbl.host}`
+          })
       }
       if (this.dockerComposeCommands) {
         const yaml = YAML.parse(this.dockerComposeCommands)
@@ -888,6 +936,7 @@ export default {
 
           <VolumesInputGroup v-model="service.volumes" :label="$t('Volumes')" :message="$t('No volumes now, click “+” to add one.')" type="volume" />
           <EnvInputGroup v-model="service.environment" :label="$t('Environment Variables')" :message="$t('No environment variables now, click “+” to add one.')" />
+          <EnvInputGroup v-model="service.labels" :label="$t('Labels')" :message="$t('No labels now, click “+” to add one.')" />
           <InputGroup :devices="service.devices" :label="$t('Devices')" :message="$t('No devices now, click “+” to add one.')" type="device" />
           <CommandsInput v-model="service.command" :label="$t('Container Command')" :message="$t('No commands now, click “+” to add one.')" />
 
