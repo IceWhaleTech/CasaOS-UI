@@ -15,6 +15,7 @@ import { vOnClickOutside } from '@vueuse/components'
 import AppTerminalPanel from './AppTerminalPanel.vue'
 import AppStoreSourceManagement from '@/components/Apps/AppStoreSourceManagement.vue'
 import { ice_i18n } from '@/mixins/base/common-i18n'
+import { storeDisplayName as resolveStoreDisplayName } from '@/mixins/base/store_display_name'
 import AppDetailInfo from '@/components/Apps/AppDetailInfo.vue'
 import ComposeConfig from '@/components/Apps/ComposeConfig.vue'
 import business_OpenThirdApp from '@/mixins/app/Business_OpenThirdApp'
@@ -444,6 +445,10 @@ export default {
      * @param {*}
      * @return {*} void
      */
+    storeDisplayName(item, fallback = 'All') {
+      return resolveStoreDisplayName(item, fallback)
+    },
+
     async getCategoryList() {
       this.isLoading = true
       try {
@@ -452,7 +457,8 @@ export default {
             return item.count > 0
           }),
         )
-        this.currentCate = this.cateMenu[0]
+        // Empty menu (e.g. only a v2 third-party store) must not leave currentCate undefined.
+        this.currentCate = this.cateMenu[0] || { count: 0, font: 'mdi-apps', id: 0, name: 'All' }
         this.currentSort = this.sortMenu[0]
         if (this.isFirst) {
           this.isFirst = false
@@ -502,8 +508,8 @@ export default {
       this.isLoading = true
 
       try {
-        const category = this.currentCate.name
-        const authorType = this.currentAuthor.name
+        const category = resolveStoreDisplayName(this.currentCate, 'All')
+        const authorType = resolveStoreDisplayName(this.currentAuthor, 'All')
         let res
         if (authorType !== 'All' && category !== 'All') {
           res = await this.$openAPI.appManagement.appStore
@@ -1401,7 +1407,7 @@ export default {
                 >
                   <template #trigger="{ active }">
                     <b-button
-                      :label="currentCate.name"
+                      :label="storeDisplayName(currentCate)"
                       type="is-text"
                       icon-left="category"
                       icon-pack="casa"
@@ -1449,7 +1455,7 @@ export default {
                 >
                   <template #trigger="{ active }">
                     <b-button
-                      :label="currentAuthor.name"
+                      :label="storeDisplayName(currentAuthor)"
                       type="is-text"
                       icon-left="posted-by"
                       icon-pack="casa"
