@@ -67,7 +67,7 @@ export default {
   directives: {
     OnClickOutside: vOnClickOutside,
   },
-  mixins: [business_ShowNewAppTag, business_OpenThirdApp],
+  mixins: [business_ShowNewAppTag, business_OpenThirdApp], // NOSONAR: Vue 2 mixins are required by the shared legacy components.
   props: {
     id: String,
     state: String,
@@ -107,6 +107,7 @@ export default {
       currentInstallAppText: '',
       currentInstallAppProgress: {},
       currentInstallAppProgressTotals: {},
+      editableSettingData: this.settingData ? { ...this.settingData } : {},
 
       sidebarOpen: false,
       cancelButtonText: 'Cancel',
@@ -338,11 +339,7 @@ export default {
 
     // Handling network types
     this.tempNetworks = this.configData.networks
-    this.networkModes = uniq(
-      this.tempNetworks.map((item) => {
-        return item.driver
-      }),
-    )
+    this.networkModes = [...new Set(this.tempNetworks.map(item => item.driver))]
     this.networks = this.networkModes.map((item) => {
       const tempitem = {}
       tempitem.driver = item
@@ -452,7 +449,7 @@ export default {
             return item.count > 0
           }),
         )
-        this.currentCate = this.cateMenu[0]
+        this.currentCate = this.cateMenu[0] || { count: 0, id: 0, name: 'All' }
         this.currentSort = this.sortMenu[0]
         if (this.isFirst) {
           this.isFirst = false
@@ -827,7 +824,7 @@ export default {
         if (valid) {
           this.isLoading = true
           this.$api.container
-            .update(this.id, this.settingData)
+            .update(this.id, this.editableSettingData)
             .then((res) => {
               if (res.data.success == 200) {
                 this.isLoading = false
@@ -955,10 +952,8 @@ export default {
         return 'bridge'
       }
       else {
-        const network = this.tempNetworks.filter((net) => {
-          return net.name == netId
-        })
-        return network[0].name
+        const network = this.tempNetworks.find(net => net.name == netId)
+        return network ? network.name : ''
       }
     },
 
@@ -1095,7 +1090,7 @@ export default {
 
           if (resData.message !== '') {
             const progress = Number(resData.message)
-            this.totalPercentage = progress < 0 ? 0 : progress
+            this.totalPercentage = Math.max(progress, 0)
 
             if (this.totalPercentage === 0) {
               this.currentInstallAppText = 'Starting installation'
@@ -1395,7 +1390,7 @@ export default {
                   :max-height="240"
                   :mobile-modal="false"
                   animation="fade1"
-                  aria-role="list"
+                  role="list"
                   class="app-select file-dropdown"
                   scrollable
                 >
@@ -1414,7 +1409,7 @@ export default {
                     :class="menu.id == currentCate.id ? 'is-active' : ''"
                     :data-title="menu.count"
                     :value="menu"
-                    aria-role="listitem"
+                    role="listitem"
                     class="_dropdown__item"
                   >
                     <div
@@ -1442,7 +1437,7 @@ export default {
                   :max-height="240"
                   :mobile-modal="false"
                   animation="fade1"
-                  aria-role="list"
+                  role="list"
                   class="app-select file-dropdown"
                   position="is-bottom-right"
                   scrollable
@@ -1462,7 +1457,7 @@ export default {
                     :class="menu.id == currentAuthor.id ? 'is-active' : ''"
                     :data-title="menu.count"
                     :value="menu"
-                    aria-role="listitem"
+                    role="listitem"
                     class="_dropdown__item"
                   >
                     <div
@@ -1697,7 +1692,7 @@ export default {
                 :type="{ 'is-danger': errors[0], 'is-success': valid }"
               >
                 <b-input
-                  v-model="settingData.label"
+                  v-model="editableSettingData.label"
                   :placeholder="$t('Your custom App Name')"
                   maxlength="40"
                 />
@@ -1708,8 +1703,8 @@ export default {
               <p class="control">
                 <span class="button is-static container-icon">
                   <b-image
-                    :key="settingData.icon"
-                    :src="settingData.icon"
+                    :key="editableSettingData.icon"
+                    :src="editableSettingData.icon"
                     :src-fallback="require('@/assets/img/app/default.svg')"
                     class="is-32x32"
                     ratio="1by1"
@@ -1717,14 +1712,14 @@ export default {
                 </span>
               </p>
               <b-input
-                v-model="settingData.icon"
+                v-model="editableSettingData.icon"
                 :placeholder="$t('Your custom icon URL')"
                 expanded
               />
             </b-field>
 
             <b-field label="Web UI">
-              <b-select v-model="settingData.protocol">
+              <b-select v-model="editableSettingData.protocol">
                 <option value="http">
                   http://
                 </option>
@@ -1732,12 +1727,12 @@ export default {
                   https://
                 </option>
               </b-select>
-              <b-input v-model="settingData.host" :placeholder="$baseHostname" expanded />
+              <b-input v-model="editableSettingData.host" :placeholder="$baseHostname" expanded />
               <b-autocomplete
-                v-model="settingData.port_map"
+                v-model="editableSettingData.port_map"
                 :data="
                   (() => {
-                    return (settingData.ports || []).map(item => {
+                    return (editableSettingData.ports || []).map(item => {
                       return item.host
                     })
                   })()
@@ -1746,10 +1741,10 @@ export default {
                 :placeholder="$t('Port')"
                 class="has-colon"
                 field="hostname"
-                @select="option => (settingData.port_map = option)"
+                @select="option => (editableSettingData.port_map = option)"
               />
               <b-input
-                v-model="settingData.index"
+                v-model="editableSettingData.index"
                 :placeholder="`/index.html ${$t('[Optional]')}`"
                 expanded
               />
@@ -1948,7 +1943,7 @@ export default {
 
     .dropdown-content {
         border-radius: 0.5rem;
-        overflow-y: overlay !important;
+        overflow-y: auto !important;
 
         &::-webkit-scrollbar {
             width: 8px;
@@ -2104,13 +2099,13 @@ export default {
     margin-bottom: 1rem;
     background: #fff6e5;
     border-radius: 0.25rem;
-    color: #d99000;
+    color: #8a5a00;
     font-size: 0.875rem;
     font-style: normal;
 }
 
 .is-overlay {
-    overflow: overlay;
+    overflow: auto;
 }
 
 .card-width {
