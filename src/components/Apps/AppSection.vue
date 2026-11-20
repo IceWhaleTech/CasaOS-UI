@@ -25,6 +25,9 @@
 				<b-dropdown-item aria-role="menuitem" @click="showExternalLinkPanel">
 					{{ $t('Add external link/APP') }}
 				</b-dropdown-item>
+				<b-dropdown-item v-if="hiddenList.length > 0" role="menuitem" @click="showHiddenApps">
+					{{ $t('Show hidden apps') }} ({{ hiddenList.length }})
+				</b-dropdown-item>
 			</b-dropdown>
 		</div>
 		<!-- Title Bar End -->
@@ -45,6 +48,7 @@
 					<app-card
 						:item="item"
 						@configApp="showConfigPanel"
+						@hideApp="hideApp"
 						@importApp="showContainerPanel"
 						@updateState="getList"
 					></app-card>
@@ -60,7 +64,7 @@
 		</draggable>
 		<!-- App List End -->
 
-		<template v-if="oldAppList.length > 0">
+		<template v-if="oldAppList.length > 0 && exsitingAppsShow">
 			<!-- Title Bar Start -->
 			<div class="title-bar is-flex is-align-items-center mt-2rem mb-5">
 				<app-section-title-tip
@@ -136,6 +140,7 @@ const builtInApplications = [
 ]
 
 const orderConfig = 'app_order'
+const hiddenConfig = 'app_hidden'
 
 export default {
 	mixins: [business_ShowNewAppTag, business_LinkApp],
@@ -144,6 +149,7 @@ export default {
 			user_id: localStorage.getItem('user_id'),
 			appList: [],
 			oldAppList: [],
+			hiddenList: [],
 			appConfig: {},
 			drag: false,
 			isLoading: false,
@@ -250,7 +256,12 @@ export default {
 						orgNewAppList.push(item)
 					}
 				})
+				this.hiddenList = await this.$api.users
+					.getCustomStorage(hiddenConfig)
+					.then(res => res.data?.data?.data || [])
+					.catch(() => [])
 				this.oldAppList = orgOldAppList
+				this.$store.commit('SET_NOTIMPORT_LIST', orgOldAppList)
 
 				let listLinkApp = await this.getLinkAppList()
 				listLinkApp.forEach(item => {
@@ -282,6 +293,7 @@ export default {
 				if (!isEqual(lateSortList, sortedList)) {
 					this.saveSortData()
 				}
+				this.appList = sortedAppList.filter(item => !this.hiddenList.includes(item.name))
 
 				this.isLoading = false
 				this.retryCount = 0
@@ -339,6 +351,16 @@ export default {
 		onSortEnd () {
 			this.drag = false
 			this.saveSortData()
+		},
+
+		async hideApp (item) {
+			await this.$api.users.setCustomStorage(hiddenConfig, { data: [...this.hiddenList, item.name] })
+			this.getList()
+		},
+
+		async showHiddenApps () {
+			await this.$api.users.setCustomStorage(hiddenConfig, { data: [] })
+			this.getList()
 		},
 
 		/**

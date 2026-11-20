@@ -314,7 +314,7 @@
   "Error when creating installation path for apps": "Erro ao criar caminho de instalação para apps",
   "Accept": "Aceitar",
   "We appreciate any feedback you may have.": "Agradecemos qualquer feedback que você possa ter!",
-  "Show other Docker container app(s)": "Mostrar outros contêiners",
+  "Show other Docker container app(s)": "Mostrar aplicativos legados",
   "Show news feed from CasaOS Blog": "Mostrar feed de notícias do blog CasaOS",
   "CasaOS dashboard will get the the latest news feed of https://blog.casaos.io via Internet, which might leave your visit records to the site. Do you accept?": "O dashboard CasaOS receberá as últimas notícias de https://blog.casaos.io pela Internet, que podem deixar seus registros de visita para o site. Você aceita?",
   "Feedback / Issue Report": "\nFeedback/Relatório de problemas",
@@ -409,5 +409,7 @@
   "Installing {title}": "Instalando {title}",
   "Legacy app (To be rebuilt).": "Aplicativo legado (a ser reconstruído).",
   "To be rebuilt.": "A ser reconstruído.",
-  "launch-and-open": "Iniciar e abrir"
+  "launch-and-open": "Iniciar e abrir",
+  "Hide": "Ocultar",
+  "Show hidden apps": "Mostrar apps ocultos"
 }

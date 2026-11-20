@@ -131,6 +131,12 @@ export default {
       },
       deep: true,
     },
+    'barData.existing_apps_switch': {
+      handler(val) {
+        this.$store.commit('SET_EXISTING_APPS_SWITCH', val !== false)
+      },
+      immediate: true,
+    },
     initBarData(val) {
       this.barData = val
     },
