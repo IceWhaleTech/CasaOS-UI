@@ -753,6 +753,10 @@ export default {
             }}
           </b-button>
 
+          <b-button expanded type="is-text" @click="$emit('hideApp', item)">
+            {{ $t('Hide') }}
+          </b-button>
+
           <b-button v-if="isLinkApp" class="mb-1" expanded type="is-text" @click="uninstallApp(true)">
             {{ $t('Delete') }}
             <b-loading v-model="isUninstalling" :is-full-page="false">
