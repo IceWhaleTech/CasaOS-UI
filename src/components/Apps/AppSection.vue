@@ -25,7 +25,7 @@
 				<b-dropdown-item aria-role="menuitem" @click="showExternalLinkPanel">
 					{{ $t('Add external link/APP') }}
 				</b-dropdown-item>
-				<b-dropdown-item v-if="hiddenList.length > 0" aria-role="menuitem" @click="showHiddenApps">
+				<b-dropdown-item v-if="hiddenList.length > 0" role="menuitem" @click="showHiddenApps">
 					{{ $t('Show hidden apps') }} ({{ hiddenList.length }})
 				</b-dropdown-item>
 			</b-dropdown>
