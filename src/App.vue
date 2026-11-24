@@ -128,8 +128,7 @@ _____             _____ _____
 		 * @return {*} void
 		 */
 		setInitLang() {
-			let lang = localStorage.getItem('lang') ? localStorage.getItem('lang') : this.getLangFromBrowser()
-			lang = lang.includes("_") ? lang : "en_us";
+			const lang = localStorage.getItem('lang') || this.getLangFromBrowser();
 			this.setLang(lang);
 		},
 		/**
