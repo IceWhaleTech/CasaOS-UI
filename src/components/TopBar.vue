@@ -87,7 +87,7 @@ export default {
         if (val === oldValue) {
           return
         }
-        const lang = val.includes('_') ? val : 'en_us'
+        const lang = val || 'en_us'
         this.$messageBus('dashboardsetting_language', lang)
         this.setLang(lang)
       },

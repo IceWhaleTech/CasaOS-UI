@@ -4,6 +4,7 @@ import union from 'lodash/union'
 import copy from 'clipboard-copy'
 import dayjs from 'dayjs'
 import { renderSize } from './file_utils'
+import { resolveLocale, getLocaleDirection } from './locale_utils'
 
 const typeMap = {
 	"image-x-generic": ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'svg', 'tiff'],
@@ -76,9 +77,15 @@ export const mixin = {
 		 */
 		//
 		setLang(lang) {
-			this.$store.commit('SET_LANGUAGE', lang);
-			localStorage.setItem('lang', lang)
-			this.$i18n.locale = lang;
+			const available = this.$i18n && this.$i18n.messages ? Object.keys(this.$i18n.messages) : [];
+			const resolved = resolveLocale(lang, available);
+			this.$store.commit('SET_LANGUAGE', resolved);
+			localStorage.setItem('lang', resolved);
+			this.$i18n.locale = resolved;
+			if (typeof document !== 'undefined' && document.documentElement) {
+				document.documentElement.lang = resolved.split('_')[0];
+				document.documentElement.dir = getLocaleDirection(resolved);
+			}
 		},
 
 
